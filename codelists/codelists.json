@@ -1,3 +1,160 @@
 {
-  "files": {}
+  "files": {
+    "opensafely-ethnicity-snomed-0removed.csv": {
+      "id": "opensafely/ethnicity-snomed-0removed/2e641f61",
+      "url": "https://www.opencodelists.org/codelist/opensafely/ethnicity-snomed-0removed/2e641f61/",
+      "downloaded_at": "2024-02-01 17:02:55.752611Z",
+      "sha": "8b849b5b785d80306e488d0109640c8c1d2da01b"
+    },
+    "opensafely-smoking-clear.csv": {
+      "id": "opensafely/smoking-clear/2020-04-29",
+      "url": "https://www.opencodelists.org/codelist/opensafely/smoking-clear/2020-04-29/",
+      "downloaded_at": "2024-02-01 17:02:55.896386Z",
+      "sha": "0b5f3afe1db96dcce5141220e893a42ba2e5a8f7"
+    },
+    "opensafely-smoking-unclear.csv": {
+      "id": "opensafely/smoking-unclear/2020-04-29",
+      "url": "https://www.opencodelists.org/codelist/opensafely/smoking-unclear/2020-04-29/",
+      "downloaded_at": "2024-02-01 17:02:56.042564Z",
+      "sha": "d9dad3e9d9491f765863b2617114c521957b6db1"
+    },
+    "nhsd-primary-care-domain-refsets-ast_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/ast_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/ast_cod/20210127/",
+      "downloaded_at": "2024-02-01 17:02:56.161008Z",
+      "sha": "662adcbaa8823de22b7f56175420e454da595177"
+    },
+    "opensafely-asthma-inhaler-steroid-medication.csv": {
+      "id": "opensafely/asthma-inhaler-steroid-medication/2020-04-15",
+      "url": "https://www.opencodelists.org/codelist/opensafely/asthma-inhaler-steroid-medication/2020-04-15/",
+      "downloaded_at": "2024-02-01 17:02:56.301000Z",
+      "sha": "4228da7a16336f633432039249e0665cecb0bec3"
+    },
+    "nhsd-primary-care-domain-refsets-astres_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/astres_cod/20200812",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/astres_cod/20200812/",
+      "downloaded_at": "2024-02-09 10:54:23.261861Z",
+      "sha": "98e2d004cc77c059f3383e22b6d909c561439040"
+    },
+    "user-angel-wong-hazardous-drinking.csv": {
+      "id": "user/angel-wong/hazardous-drinking/3c786eff",
+      "url": "https://www.opencodelists.org/codelist/user/angel-wong/hazardous-drinking/3c786eff/",
+      "downloaded_at": "2024-02-01 17:02:56.483540Z",
+      "sha": "7b7714a8b188c75e744b3bf9f6efb074ea292dc9"
+    },
+    "nhsd-primary-care-domain-refsets-illsub_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/illsub_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/illsub_cod/20210127/",
+      "downloaded_at": "2024-02-01 17:02:56.681016Z",
+      "sha": "31aeef3b18f2715d628d252ec94f8ba88f72c433"
+    },
+    "nhsd-primary-care-domain-refsets-illsubint_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/illsubint_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/illsubint_cod/20210127/",
+      "downloaded_at": "2024-02-01 17:02:56.793112Z",
+      "sha": "6b68ac82989ca3db741e03e9ea2947ae7581915e"
+    },
+    "nhsd-primary-care-domain-refsets-illsubassdec_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/illsubassdec_cod/20200812",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/illsubassdec_cod/20200812/",
+      "downloaded_at": "2024-02-01 17:02:56.919897Z",
+      "sha": "027e4593f9bfedcebd5c1f6119cc483648c4812c"
+    },
+    "nhsd-primary-care-domain-refsets-copd_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/copd_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/copd_cod/20210127/",
+      "downloaded_at": "2024-02-01 17:02:57.032403Z",
+      "sha": "5d08ae3a50efe6a5fa54806e9ffce16d14ba9955"
+    },
+    "bristol-copd-medications-bnf.csv": {
+      "id": "bristol/copd-medications-bnf/4b00637c",
+      "url": "https://www.opencodelists.org/codelist/bristol/copd-medications-bnf/4b00637c/",
+      "downloaded_at": "2024-02-09 10:54:23.988963Z",
+      "sha": "821a27601a67cb992663a4a84c4d493d53c4e924"
+    },
+    "nhsd-primary-care-domain-refsets-copdres_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/copdres_cod/20200812",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/copdres_cod/20200812/",
+      "downloaded_at": "2024-02-09 10:54:24.120962Z",
+      "sha": "58b2a092a7379250596e0a46897d1ae8e95277ca"
+    },
+    "nhsd-primary-care-domain-refsets-hyp_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/hyp_cod/20200812",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/hyp_cod/20200812/",
+      "downloaded_at": "2024-02-01 17:02:57.186824Z",
+      "sha": "00fdd3723042b0752e5f5131faf3a60756e07e16"
+    },
+    "nhsd-primary-care-domain-refsets-dmtype1_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/dmtype1_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/dmtype1_cod/20210127/",
+      "downloaded_at": "2024-02-01 17:02:57.362110Z",
+      "sha": "23e6cb9c5555fb756c9a68295bd701b6ddb34ebd"
+    },
+    "nhsd-primary-care-domain-refsets-dmnontype1_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/dmnontype1_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/dmnontype1_cod/20210127/",
+      "downloaded_at": "2024-02-01 17:02:57.559327Z",
+      "sha": "6abf111f4d4768cca47b1385fa8d233c2bafd380"
+    },
+    "nhsd-primary-care-domain-refsets-hf_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/hf_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/hf_cod/20210127/",
+      "downloaded_at": "2024-02-01 17:02:57.784916Z",
+      "sha": "c1fdc20e835c8e00b50e4728592b79bb3e3ee887"
+    },
+    "nhsd-primary-care-domain-refsets-mi_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/mi_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/mi_cod/20210127/",
+      "downloaded_at": "2024-02-01 17:02:57.893176Z",
+      "sha": "0fb41c6104328cbb930e4407078b693c59d9da9c"
+    },
+    "bristol-ild-snomed.csv": {
+      "id": "bristol/ild-snomed/2f3e3051",
+      "url": "https://www.opencodelists.org/codelist/bristol/ild-snomed/2f3e3051/",
+      "downloaded_at": "2024-02-01 17:02:58.026955Z",
+      "sha": "9e2de5190c0081e01bffef1a56aa4431885da94e"
+    },
+    "opensafely-covid-identification-in-primary-care-probable-covid-positive-test.csv": {
+      "id": "opensafely/covid-identification-in-primary-care-probable-covid-positive-test/508192f8",
+      "url": "https://www.opencodelists.org/codelist/opensafely/covid-identification-in-primary-care-probable-covid-positive-test/508192f8/",
+      "downloaded_at": "2024-02-01 17:02:58.147668Z",
+      "sha": "510e103970c4131e6e276fd3b5094b68d2e7905c"
+    },
+    "opensafely-documented-influenza-illness.csv": {
+      "id": "opensafely/documented-influenza-illness/2020-05-18",
+      "url": "https://www.opencodelists.org/codelist/opensafely/documented-influenza-illness/2020-05-18/",
+      "downloaded_at": "2024-02-01 17:02:58.260839Z",
+      "sha": "c0acfad55b4d97fdf941cf0ce90d927401e571ff"
+    },
+    "opensafely-covid-identification.csv": {
+      "id": "opensafely/covid-identification/2020-06-03",
+      "url": "https://www.opencodelists.org/codelist/opensafely/covid-identification/2020-06-03/",
+      "downloaded_at": "2024-02-01 17:02:58.418414Z",
+      "sha": "124db6929439379b7dacd55ba26ae4f2ed9370bc"
+    },
+    "nhsd-primary-care-domain-refsets-carehome_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/carehome_cod/20211221",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/carehome_cod/20211221/",
+      "downloaded_at": "2024-02-08 16:59:52.358427Z",
+      "sha": "11a75f8c271f6cd05276f49b038fbda8dfab77fe"
+    },
+    "opensafely-chronic-cardiac-disease.csv": {
+      "id": "opensafely/chronic-cardiac-disease/2020-04-08",
+      "url": "https://www.opencodelists.org/codelist/opensafely/chronic-cardiac-disease/2020-04-08/",
+      "downloaded_at": "2024-02-09 10:54:25.510100Z",
+      "sha": "2267f6fada9c77a2bbf62ce7a1c07ddf48348d61"
+    },
+    "nhsd-primary-care-domain-refsets-pulmohyp_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/pulmohyp_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/pulmohyp_cod/20210127/",
+      "downloaded_at": "2024-02-09 10:54:25.642529Z",
+      "sha": "47b0ad0e73cfd1b53edd33dfdf17173287f91a92"
+    },
+    "nhsd-primary-care-domain-refsets-tempcarhome_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/tempcarhome_cod/20200812",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/tempcarhome_cod/20200812/",
+      "downloaded_at": "2024-02-09 10:54:25.774557Z",
+      "sha": "931872c7b2c96884a1b4bdb5062356985875cea4"
+    }
+  }
 }

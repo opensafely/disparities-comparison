@@ -1,0 +1,123 @@
+code,term
+10273003,Acute infarction of papillary muscle
+1077002,Septal infarction by electrocardiogram
+1089431000000107,Postoperative nontransmural myocardial infarction
+1089441000000103,Postoperative transmural myocardial infarction
+1089451000000100,Acute nontransmural myocardial infarction
+1089471000000109,Acute transmural myocardial infarction
+12238111000119106,Acute ST segment elevation myocardial infarction of inferolateral wall
+12238151000119107,Acute ST segment elevation myocardial infarction of inferoposterior wall
+129574000,Postoperative myocardial infarction
+15712841000119100,Acute ST segment elevation myocardial infarction of posterolateral wall
+15712881000119105,Acute ST segment elevation myocardial infarction of anterolateral wall
+15712921000119103,Acute ST segment elevation myocardial infarction of lateral wall
+15712961000119108,Acute ST segment elevation myocardial infarction of anteroseptal wall
+15713041000119103,Acute ST segment elevation myocardial infarction of posterior wall
+15713081000119108,Acute ST segment elevation myocardial infarction due to left coronary artery occlusion
+15713121000119105,Acute ST segment elevation myocardial infarction due to right coronary artery occlusion
+15713161000119100,Acute ST segment elevation myocardial infarction of septum
+15713201000119105,Acute ST segment elevation myocardial infarction of posterobasal wall
+15960981000119105,Mural thrombus of left ventricle following acute myocardial infarction
+15990001,Acute myocardial infarction of posterolateral wall
+16837681000119104,Myocardial infarction due to demand ischemia
+17531000119105,Acute myocardial infarction due to left coronary artery occlusion
+194802003,True posterior myocardial infarction
+194809007,Acute atrial infarction
+194856005,Subsequent myocardial infarction
+194857001,Subsequent myocardial infarction of anterior wall
+194858006,Subsequent myocardial infarction of inferior wall
+194862000,Hemopericardium due to and following acute myocardial infarction
+194863005,Atrial septal defect due to and following acute myocardial infarction
+194865003,Rupture of cardiac wall without hemopericardium as current complication following acute myocardial infarction
+194866002,Rupture of chordae tendinae due to and following acute myocardial infarction
+194867006,Rupture of papillary muscle as current complication following acute myocardial infarction
+194868001,"Thrombosis of atrium, auricular appendage, and ventricle due to and following acute myocardial infarction"
+22298006,Myocardial infarction
+23311000119105,Acute myocardial infarction due to right coronary artery occlusion
+233825009,Acute Q wave infarction - anteroseptal
+233826005,Acute non-Q wave infarction - anteroseptal
+233827001,Acute Q wave infarction - anterolateral
+233828006,Acute non-Q wave infarction - anterolateral
+233829003,Acute Q wave infarction - inferior
+233830008,Acute non-Q wave infarction - inferior
+233831007,Acute Q wave infarction - inferolateral
+233832000,Acute non-Q wave infarction - inferolateral
+233833005,Acute Q wave infarction - lateral
+233834004,Acute non-Q wave infarction - lateral
+233835003,Acute widespread myocardial infarction
+233836002,Acute Q wave infarction - widespread
+233837006,Acute non-Q wave infarction - widespread
+233838001,Acute posterior myocardial infarction
+233843008,Silent myocardial infarction
+233846000,Post-infarction ventricular septal defect
+233847009,Cardiac rupture due to and following acute myocardial infarction
+282006,Acute myocardial infarction of basal-lateral wall
+285981000119103,Acute ST segment elevation myocardial infarction involving left anterior descending coronary artery
+285991000119100,Acute ST segment elevation myocardial infarction involving left main coronary artery
+30277009,Rupture of ventricle due to acute myocardial infarction
+304914007,Acute Q wave myocardial infarction
+307140009,Acute non-Q wave infarction
+311792005,Postoperative transmural myocardial infarction of anterior wall
+311793000,Postoperative transmural myocardial infarction of inferior wall
+311796008,Postoperative subendocardial myocardial infarction
+314207007,Non-Q wave myocardial infarction
+315287002,Diabetes mellitus insulin-glucose infusion in acute myocardial infarction
+371068009,Myocardial infarction with complication
+394659003,Acute coronary syndrome
+394710008,First myocardial infarction
+401303003,Acute ST segment elevation myocardial infarction
+401314000,Acute non-ST segment elevation myocardial infarction
+413444003,Acute myocardial ischemia
+41466009,"Myocardial imaging for infarct with ejection fraction, first pass technique"
+418044006,Myocardial infarction in recovery phase
+42531007,Microinfarct of heart
+428196007,Mixed myocardial ischemia and infarction
+429391004,New myocardial infarction compared to prior study
+52035003,Acute anteroapical myocardial infarction
+54329005,Acute myocardial infarction of anterior wall
+57054005,Acute myocardial infarction
+58612006,Acute myocardial infarction of lateral wall
+59063002,Acute myocardial infarction of apical-lateral wall
+62695002,Acute anteroseptal myocardial infarction
+63670007,"Myocardial imaging for infarct, planar technique"
+64627002,Acute myocardial infarction of high lateral wall
+65547006,Acute myocardial infarction of inferolateral wall
+66189004,Postmyocardial infarction syndrome
+70211005,Acute myocardial infarction of anterolateral wall
+703164000,Acute ST segment elevation myocardial infarction of anterior wall
+703165004,Acute ST segment elevation myocardial infarction of anterior wall involving right ventricle
+703209002,Subsequent ST segment elevation myocardial infarction of inferior wall
+703210007,Subsequent ST segment elevation myocardial infarction of anterior wall
+703211006,Subsequent ST segment elevation myocardial infarction
+703212004,Acute myocardial infarction during procedure
+703213009,Acute ST segment elevation myocardial infarction of inferior wall
+703251009,Acute myocardial infarction of inferior wall involving right ventricle
+703252002,Acute myocardial infarction of anterior wall involving right ventricle
+703253007,Acute ST segment elevation myocardial infarction of inferior wall involving right ventricle
+703326006,Mitral valve regurgitation due to and following acute myocardial infarction
+703328007,Mitral valve regurgitation due to acute myocardial infarction without papillary muscle and chordal rupture
+703330009,Mitral valve regurgitation due to acute myocardial infarction with papillary muscle and chordal rupture
+703360004,Subsequent non-ST segment elevation myocardial infarction
+70422006,Acute subendocardial infarction
+70998009,Acute myocardial infarction of basal inferior segment of left ventricle
+71023004,Pericarditis due to acute myocardial infarction
+736978009,Mural thrombus of right ventricle following acute myocardial infarction
+73795002,Acute myocardial infarction of inferior wall
+76593002,Acute myocardial infarction of inferoposterior wall
+79009004,Acute myocardial infarction of septum
+836293000,Acute myocardial infarction of right ventricle
+836294006,Acute myocardial infarction of apex of heart
+836295007,Acute myocardial infarction of inferolateral wall with posterior extension
+840309000,Acute ST segment elevation myocardial infarction due to occlusion of proximal portion of anterior descending branch of left coronary artery
+840312002,Acute ST segment elevation myocardial infarction due to occlusion of mid portion of anterior descending branch of left coronary artery
+840316004,Acute ST segment elevation myocardial infarction due to occlusion of distal portion of anterior descending branch of left coronary artery
+840609007,Acute ST segment elevation myocardial infarction due to occlusion of anterior descending branch of left coronary artery
+840680009,Acute ST segment elevation myocardial infarction due to occlusion of septal branch of anterior descending branch of left coronary artery
+846668006,Acute ST segment elevation myocardial infarction due to occlusion of diagonal branch of anterior descending branch of left coronary artery
+846683001,Acute ST segment elevation myocardial infarction due to occlusion of intermediate artery
+868214006,Acute ST segment elevation myocardial infarction due to occlusion of proximal portion of right coronary artery
+868217004,Acute ST segment elevation myocardial infarction due to occlusion of distal portion of right coronary artery
+868220007,Acute ST segment elevation myocardial infarction due to occlusion of mid portion of right coronary artery
+868224003,Acute ST segment elevation myocardial infarction due to occlusion of marginal branch of right coronary artery
+868225002,Acute ST segment elevation myocardial infarction due to occlusion of posterior descending branch of right coronary artery
+868226001,Acute ST segment elevation myocardial infarction due to occlusion of posterior lateral branch of right coronary artery

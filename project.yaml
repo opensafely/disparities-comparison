@@ -2,11 +2,33 @@ version: '3.0'
 
 # Ignore this`expectation` block. It is required but not used, and will be removed in future versions.
 expectations:
-  population_size: 1000
+  population_size: 100000
 
 actions:
-  generate_dataset:
-    run: ehrql:v1 generate-dataset analysis/dataset_definition.py --output output/dataset.csv.gz
+  generate_dataset_adults_s1:
+    run: >
+      ehrql:v1 generate-dataset analysis/dataset_definition.py 
+      -- adults season1_start_date season1_end_date
+      --output output/input_adults_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_adults_2016_2017.arrow
     outputs:
       highly_sensitive:
-        dataset: output/dataset.csv.gz
+        dataset: output/input_adults_2016_2017.arrow
+
+  # manipulate_dataset_adults_s1:
+  #   run: r:latest analysis/processing/data_manipulation_adults_s1.R
+  #   needs: [generate_dataset_adults_s1]
+  #   outputs:
+  #     highly_sensitive:
+  #       cohort: output/input_processed_adults_2016_2017.arrow
+
+  # generate_dataset_infants_s1:
+  #   run: >
+  #     ehrql:v1 generate-dataset analysis/dataset_definition.py 
+  #     -- infants season1_start_date season1_end_date
+  #     --output output/input_infants_2016_2017.arrow
+  #     --dummy-data-file analysis/dummydata/dummyextract_infants_2016_2017.arrow
+  #   outputs:
+  #     highly_sensitive:
+  #       dataset: output/input_infants_2016_2017.arrow
+  
