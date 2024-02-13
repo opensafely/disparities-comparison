@@ -69,6 +69,7 @@ dataset.define_population(
 dataset.registered = registered_patients
 dataset.sex = patients.sex
 dataset.age = case(
+  when(args[1] == "older_adults").then(age_at_start),
   when(args[1] == "adults").then(age_at_start),
   when(args[1] == "children_adolescents").then(age_at_start),
   when(args[1] == "infants").then(age_at_start_months),
@@ -109,14 +110,15 @@ dataset.stp = (practice_registrations.for_patient_on(index_date)).practice_stp
 #medication date
 medication_date = index_date - years(1)
 
-#has asthma if there is a recent asthma diagnosis and a medication prescribed 
-dataset.has_asthma = (
-  clinical_events.where(clinical_events.snomedct_code.is_in(codelists.asthma_codelist))
-  .exists_for_patient() & medications.where(medications.dmd_code
-  .is_in(codelists.asthma_medications))
-  .where(medications.date.is_on_or_between(medication_date, index_date))
-  .exists_for_patient()
-)
+#has asthma if there is an asthma diagnosis and a recent medication prescribed 
+if args[1] != "infants" and args[1] != "infants_subgroup" :
+  dataset.has_asthma = (
+    clinical_events.where(clinical_events.snomedct_code.is_in(codelists.asthma_codelist))
+    .exists_for_patient() & medications.where(medications.dmd_code
+    .is_in(codelists.asthma_medications))
+    .where(medications.date.is_on_or_between(medication_date, index_date))
+    .exists_for_patient()
+  )
 
 #reactive airway disease diagnosis 
 if args[1] == "children_adolescents" : 
@@ -307,5 +309,6 @@ def has_prior_event(codelist, where=True):
 
 #care home resident
 if args[1] == "older_adults" :
-  dataset.care_home_tpp = (addresses.care_home_is_potential_match.if_null_then(False))
+  dataset.care_home_tpp = (addresses.for_patient_on(index_date)
+  .care_home_is_potential_match.when_null_then(False))
   dataset.care_home_code = (has_prior_event(codelists.carehome_codelist))

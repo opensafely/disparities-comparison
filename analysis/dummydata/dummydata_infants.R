@@ -191,7 +191,7 @@ sim_list = lst(
   ##exclusion criteria 
   
   #severe combined immunodeficiency syndrome 
-  severe_immmunodeficiency = bn_node(
+  severe_immunodeficiency = bn_node(
     ~ rbernoulli(n = ..n, p = 0.02)
   ),
   

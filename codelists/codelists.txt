@@ -24,3 +24,7 @@ nhsd-primary-care-domain-refsets/carehome_cod/20211221
 opensafely/chronic-cardiac-disease/2020-04-08
 nhsd-primary-care-domain-refsets/pulmohyp_cod/20210127
 nhsd-primary-care-domain-refsets/tempcarhome_cod/20200812
+user/emprestige/rsv-identification-prescriptions-maximal-sensitivity-dmd/65062298
+user/emprestige/influenza-identification-prescriptions-maximal-sensitivity-dmd/4bf6af63
+user/emprestige/covid-19-identification-prescriptions-dmd/32e73c2e
+user/emprestige/copd-medications-new-dmd/1f3d48e5/

@@ -69,8 +69,8 @@ copd_codelist = codelist_from_csv(
   column = "code",
 )
 copd_medications = codelist_from_csv(
-  "codelists/bristol-copd-medications-bnf.csv",
-  column = "code",
+  "codelists/user-emprestige-copd-medications-new-dmd.csv",
+  column = "dmd_id",
 )
 
 # pulmonary fibrosis
@@ -131,12 +131,24 @@ covid_secondary_codelist = codelist_from_csv(
 
 # rsv primary - sensitive 
 
+# rsv primary - sensitive (prescriptions)
+rsv_prescriptions_codelist = codelist_from_csv(
+  "codelists/user-emprestige-rsv-identification-prescriptions-maximal-sensitivity-dmd.csv",
+  column = "dmd_id",
+)
+
 # rsv secondary - sensitive
 
 # covid primary - sensitive
 covid_primary_codelist = codelist_from_csv(
   "codelists/opensafely-covid-identification-in-primary-care-probable-covid-positive-test.csv",
   column = "CTV3ID",
+)
+
+# covid primary - sensitive (prescriptions)
+covid_prescriptions_codelist = codelist_from_csv(
+  "codelists/user-emprestige-covid-19-identification-prescriptions-dmd.csv",
+  column = "dmd_id",
 )
 
 # covid secondary - sensitive
@@ -147,12 +159,18 @@ covid_secondary_codelist = codelist_from_csv(
 
 # flu primary - sensitive
 
+# flu primary - sensitive (prescriptions)
+flu_prescriptions_codelist = codelist_from_csv(
+  "codelists/user-emprestige-influenza-identification-prescriptions-maximal-sensitivity-dmd.csv",
+  column = "dmd_id",
+)
+
 # flu secondary - sensitive
 
 ##exclusion criteria
 
 # care home 
-care_home_codelist = codelist_from_csv(
+carehome_codelist = codelist_from_csv(
   "codelists/nhsd-primary-care-domain-refsets-carehome_cod.csv",
   column = "code",
 )

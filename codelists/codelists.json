@@ -155,6 +155,30 @@
       "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/tempcarhome_cod/20200812/",
       "downloaded_at": "2024-02-09 10:54:25.774557Z",
       "sha": "931872c7b2c96884a1b4bdb5062356985875cea4"
+    },
+    "user-emprestige-rsv-identification-prescriptions-maximal-sensitivity-dmd.csv": {
+      "id": "user/emprestige/rsv-identification-prescriptions-maximal-sensitivity-dmd/65062298",
+      "url": "https://www.opencodelists.org/codelist/user/emprestige/rsv-identification-prescriptions-maximal-sensitivity-dmd/65062298/",
+      "downloaded_at": "2024-02-12 11:06:07.464507Z",
+      "sha": "3df89edeab0e2e010cda91cf8f00c03cd91c739d"
+    },
+    "user-emprestige-influenza-identification-prescriptions-maximal-sensitivity-dmd.csv": {
+      "id": "user/emprestige/influenza-identification-prescriptions-maximal-sensitivity-dmd/4bf6af63",
+      "url": "https://www.opencodelists.org/codelist/user/emprestige/influenza-identification-prescriptions-maximal-sensitivity-dmd/4bf6af63/",
+      "downloaded_at": "2024-02-12 11:06:07.639146Z",
+      "sha": "000e8053fa45aa912ac09bd9e7c51758fe69e04e"
+    },
+    "user-emprestige-covid-19-identification-prescriptions-dmd.csv": {
+      "id": "user/emprestige/covid-19-identification-prescriptions-dmd/32e73c2e",
+      "url": "https://www.opencodelists.org/codelist/user/emprestige/covid-19-identification-prescriptions-dmd/32e73c2e/",
+      "downloaded_at": "2024-02-12 11:13:31.540363Z",
+      "sha": "7c17a141fc9c02fa85d885fa6c21bc398e9a957e"
+    },
+    "user-emprestige-copd-medications-new-dmd.csv": {
+      "id": "user/emprestige/copd-medications-new-dmd/1f3d48e5",
+      "url": "https://www.opencodelists.org/codelist/user/emprestige/copd-medications-new-dmd/1f3d48e5/",
+      "downloaded_at": "2024-02-13 11:49:39.628031Z",
+      "sha": "8ca158de8df88cb9d1a961792c89ed650f5bd445"
     }
   }
 }
