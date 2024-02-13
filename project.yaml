@@ -22,7 +22,14 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/input_processed_older_adults_2016_2017.arrow
-
+        
+  describe_dataset_older_adults_s1:
+    run: r:latest analysis/report.R older_adults season1_start_date season1_end_date
+    needs: [process_dataset_older_adults_s1]
+    outputs:
+      moderately_sensitive:
+        cohort: output/descriptive_older_adults_2016_2017.png
+    
   generate_dataset_adults_s1:
     run: >
       ehrql:v1 generate-dataset analysis/dataset_definition.py 
