@@ -53,7 +53,7 @@ sim_list = lst(
   
   #age of the patient
   age = bn_node(
-    ~ as.integer(rnormTrunc(n = ..n, mean = 60, sd = 14, min = 65)), 
+    ~ as.integer(rnormTrunc(n = ..n, mean = 60, sd = 14, min = 65, max = 120)), 
     missing_rate = ~ 0.001
   ),
   
