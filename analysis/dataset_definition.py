@@ -301,11 +301,11 @@ dataset.rsv_primary = (case(
   #presence of code in 'specific' primary care codelist
   .then((has_infection_event(codelists.rsv_primary_codelist))
   #presence of at least two codes within two weeks in 'sensitive' primary care codelist
-  |(clinical_events.where(clinical_events.where(clinical_events.snomedct_code
+  |(clinical_events.where(clinical_events.snomedct_code
   .is_in(codelists.rsv_sensitive_codelist)).where(clinical_events
   .date.is_on_or_between(first_infection_event(codelists
   .rsv_sensitive_codelist).date, first_infection_event(codelists
-  .rsv_sensitive_codelist).date + days(14)))).count_distinct_for_patient()>1)
+  .rsv_sensitive_codelist).date + days(14))).count_distinct_for_patient()>1)
   #presence of code in 'sensitive' emergency care attendances codelist for infants
   |(case(when(cohort == "infants")
   .then(emergency_care_attendances.where(emergency_care_attendances
