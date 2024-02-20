@@ -283,7 +283,7 @@ if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
 
 ##outcomes
 
-#rsv primary
+#rsv primary care
 dataset.rsv_primary = (case(
   #primary analysis
   when(codelist_type == "specific")
@@ -301,10 +301,11 @@ dataset.rsv_primary = (case(
   #presence of code in 'specific' primary care codelist
   .then((has_infection_event(codelists.rsv_primary_codelist))
   #presence of at least two codes within two weeks in 'sensitive' primary care codelist
-  |(has_infection_event(codelists.rsv_sensitive_codelist)
-  .where.clinical_events.date.is_on_or_between(first_infection_event(codelists
+  |(clinical_events.where(clinical_events.where(clinical_events.snomedct_code
+  .is_in(codelists.rsv_sensitive_codelist)).where(clinical_events
+  .date.is_on_or_between(first_infection_event(codelists
   .rsv_sensitive_codelist).date, first_infection_event(codelists
-  .rsv_sensitive_codelist).date + days(14)).where(count_distinct_for_patient()>1))
+  .rsv_sensitive_codelist).date + days(14)))).count_distinct_for_patient()>1)
   #presence of code in 'sensitive' emergency care attendances codelist for infants
   |(case(when(cohort == "infants")
   .then(emergency_care_attendances.where(emergency_care_attendances
@@ -325,7 +326,7 @@ dataset.rsv_primary = (case(
 #   .then(first_prior_event(codelists.rsv_primary_sens_codelist).date))
 # )
 # 
-# #rsv secondary
+# #rsv secondary care
 # dataset.rsv_secondary = (case(
 #   when(codelist_type == "specific")
 #   .then(apcs.where(apcs.primary_diagnosis
@@ -361,7 +362,7 @@ dataset.rsv_primary = (case(
 #   .first_for_patient().admission_date)
 # ))
 # 
-# #covid primary 
+# #covid primary care
 # if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
 #   
 #   dataset.covid_primary = (case(
@@ -379,7 +380,7 @@ dataset.rsv_primary = (case(
 #     .then(first_prior_event(codelists.covid_sensitive_codelist)))
 #   )
 # 
-# #covid secondary
+# #covid secondary care
 #   dataset.covid_secondary = (case(
 #     when(codelist_type == "specific").then(
 #     apcs.where(apcs.primary_diagnosis
@@ -409,7 +410,7 @@ dataset.rsv_primary = (case(
 #     .is_in(codelists.covid_secondary_codelist)))
 #   ))
 # 
-# #flu primary 
+# #flu primary care
 # dataset.flu_primary = (
 #   clinical_events.where(clinical_events.ctv3_code
 #   .is_in(codelists.covid_primary_codelist)) #change codelist when available
@@ -424,7 +425,7 @@ dataset.rsv_primary = (case(
 #   .first_for_patient().date
 # )
 # 
-# #flu secondary
+# #flu secondary care
 # dataset.flu_secondary = (
 #   apcs.where(apcs.primary_diagnosis
 #   .is_in(codelists.covid_secondary_codelist)) #change codelist when available
