@@ -1,0 +1,660 @@
+code,term
+1008061000000102,Respiratory syncytial virus ribonucleic acid detection assay
+1014391000000101,Respiratory syncytial virus antigen level
+10151000132103,Fever caused by virus
+1018471000000102,Respiratory syncytial virus antigen assay
+102496004,Spiking fever
+102580004,Cough suppression
+103001002,Feeling feverish
+1030271000000105,Respiratory syncytial virus nucleic acid detection assay
+1036671000000106,Severe sepsis
+105592009,Septicemia
+10595003,Pseudoephedrine sulfate
+106051002,Finding related to respiratory sounds
+10625551000119103,Bronchopneumonia caused by respiratory syncytial virus
+1076281000000108,Amber flag sepsis
+1092461000119104,Sepsis without acute organ dysfunction
+1097821000000100,Arterial oxygen saturation breathing supplemental oxygen at rest
+111093005,Wood creosote
+11140008,"Respiratory assist, manual"
+111962006,Postural cough
+1163073003,Encephalitis caused by human respiratory syncytial virus
+117089007,"Administration of Respiratory Syncytial virus immune globulin, human"
+117090003,"Intravenous infusion of Respiratory syncytial virus immune globulin, human"
+1172717008,Levocloperastine fendizoate
+1172718003,Levocloperastine
+117956005,Bovine respiratory syncytial virus antigen assay
+11833005,Dry cough
+1217606008,Pholcodine monohydrate
+12177002,Pseudoephedrine hydrochloride
+122233003,Respiratory syncytial virus antigen assay
+122274003,Respiratory syncytial virus culture
+12529006,Expiratory crackles
+128118007,Viral infection of central nervous system
+128254003,Respiratory auscultation finding
+129451001,Respiratory bronchiolitis associated interstitial lung disease
+1322491000000105,Recently performed oxygen administration by non-rebreather mask
+13320001000004109,Human respiratory syncytial virus isolated in sputum by culture
+135882008,Feverish cold
+135883003,Cough with fever
+13789000,Coal tar creosote
+139108003,Feels hot/feverish
+139109006,Fever with sweating
+139176003,(Cough (& [symptom])) or (sputum - symptom)
+139179005,Dry cough
+139180008,Productive cough -clear sputum
+139181007,Productive cough -green sputum
+139182000,Productive cough-yellow sputum
+139183005,Productive cough NOS
+139186002,Chesty cough
+139189009,Unexplained cough
+139190000,Cough symptom NOS
+139200001,Difficulty breathing
+141478007,Fever: [examination of] or [O/E]
+141479004,O/E - fever - general
+141481002,O/E - fever examination - NAD
+141483004,O/E - fever - general NOS
+141493006,O/E - level of fever
+141499005,O/E - level of fever NOS
+141500001,O/E - character of fever
+141502009,O/E - fever - acute rise
+141503004,O/E - fever - gradual rise
+141504005,O/E - fever - continuous
+141505006,O/E - fever - remittent
+141506007,O/E - fever - intermittent
+141507003,O/E - staircase fever
+141508008,O/E - fever - irregular
+141509000,O/E - fever - fast fall-crisis
+141510005,O/E - fever-gradual fall-lysis
+141511009,O/E - fever character NOS
+141512002,O/E - fever NOS
+143587007,RSV antigen level
+1532007,Viral pharyngitis
+154313001,Septicaemia
+154372003,Viral infection NOS
+155497009,(Acute nasopharyngitis) or (common cold) or (acute coryza) or (acute rhinitis) or (sniffles) or (snuffles)
+155513009,Acute bronchiolitis
+158163006,[D]Chills with fever
+158166003,[D]Fever NEC
+158329004,[D]Mouth breathing
+158383001,[D]Cough
+158385008,[D]Cough with haemorrhage
+16146001,Viral bronchitis
+161850008,[Temperature] or [fever] or [pyrexia] symptoms
+161852000,Feels hot/feverish
+161853005,Fever with sweating
+161921002,(Cough (& [symptom])) or (sputum - symptom)
+161923004,Productive cough -clear sputum
+161924005,Productive cough -green sputum
+161925006,Productive cough-yellow sputum
+161926007,(Coughing up phlegm) or (productive cough NOS)
+161927003,Night cough present
+161929000,Chesty cough
+161932002,Morning cough
+161933007,Evening cough
+161934001,Unexplained cough
+161935000,Cough symptom NOS
+161945003,Difficulty breathing
+161947006,Nocturnal cough / wheeze
+162481009,Breathing aggravates symptom
+162896002,On examination - stertorous breathing
+162900004,On examination - air hunger
+162913005,On examination - rate of respiration
+162915003,On examination - rate of respiration slow
+162916002,On examination - tachypnea
+162920003,On examination - shallow breathing
+164284002,Fever: [examination of] or [O/E]
+164285001,On examination - fever - general
+164287009,On examination - fever examination - no abnormality detected
+164288004,On examination - pyrexia of unknown origin
+164289007,On examination - fever - general NOS
+164290003,On examination - method fever registered
+164292006,On examination - axillary temperature
+164293001,On examination - groin temperature
+164294007,On examination - rectal temperature
+164295008,On examination - core temperature
+164296009,On examination - skin strip temperature
+164299002,On examination - level of fever
+164301009,On examination - temperature low
+164304001,On examination - hyperpyrexia - greater than 40.5 degrees Celsius
+164305000,On examination - level of fever NOS
+164306004,On examination - character of fever
+164307008,On examination - fever - acute rise
+164308003,On examination - fever - gradual rise
+164309006,On examination - fever - continuous
+164311002,On examination - fever - remittent
+164312009,On examination - fever - intermittent
+164313004,On examination - staircase fever
+164314005,On examination - fever - irregular
+164315006,On examination - fever - fast fall-crisis
+164316007,On examination - fever-gradual fall-lysis
+164317003,On examination - fever character NOS
+164318008,On examination - fever NOS
+166223009,RSV antigen level
+166771000000103,Respiratory syncytial virus serology
+168501000000102,Respiratory syncytial virus serology
+173081000000100,Respiratory syncytial virus serology
+17361004,Tracheal breathing
+17986004,Barking cough
+18197001,Asthmatoid wheeze
+186392004,(Septicaemia NOS) or (sepsis)
+186694006,Sweating fever
+186750007,Respiratory syncytial virus infection
+186754003,Viral: [infection NOS] or [illness]
+186760003,Respiratory syncytial virus as the cause of diseases classified to other chapters
+186820006,Relapsing fever
+186822003,Relapsing fever NOS
+187332009,[X]Other specified septicemia
+187333004,"[X]Septicemia, unspecified"
+187341000000105,Respiratory syncytial virus antigen assay
+187374004,"[X]Relapsing fever, unspecified"
+187470009,[X]Other viral infections of unspecified site
+187471008,"[X]Viral infection, unspecified"
+18751000122108,Dropropizine
+187589007,Respiratory syncytial virus as the cause of diseases classified to other chapters
+190781000000101,Respiratory syncytial virus antigen assay
+191954008,Psychogenic cough
+19282004,Cough on exercise
+19510001,Diphenhydramine hydrochloride
+195648002,(Acute nasopharyngitis or rhinitis) or (common cold)
+195662009,Acute viral pharyngitis
+195727009,Acute respiratory syncytial virus bronchitis
+195735007,Acute obliterating bronchiolitis
+195736008,Acute bronchiolitis with bronchospasm
+195737004,Acute exudative bronchiolitis
+195738009,Obliterating fibrous bronchiolitis
+195739001,Acute bronchiolitis caused by respiratory syncytial virus
+195741000,Acute bronchiolitis NOS
+195881003,Pneumonia caused by respiratory syncytial virus
+198071002,Respiratory murmur
+19977002,Egophony
+200151000000106,Reflux cough
+20413008,Levopropoxyphene
+204561000000109,Respiratory syncytial virus nucleic acid detection
+20573003,Ineffective breathing pattern
+206304007,Perinatal hemoptysis of fetus and/or neonate
+206376005,Sepsis of the newborn
+20670007,Brassy cough
+206758001,[D]Pyrexia of unknown origin
+206760004,[D]Chills with fever
+206762007,[D]Fever NOS
+206763002,[D]Persistent fever
+206998007,[D]Mouth breathing
+207066005,[D]Cough
+207067001,[D]Cough syncope
+207069003,[D]Cough with hemorrhage
+207582004,[X]Other and unspecified abnormalities of breathing
+208136003,Cough fracture of ribs
+209871000000104,RSV nucleic acid detection
+209881000000102,RSV nucleic acid detection
+221051000000108,Respiratory syncytial virus prevention drugs Band 1
+221061000000106,Respiratory syncytial virus treatment and Hepatitis C treatment drugs Band 1
+225575005,Unable to cough up sputum
+225576006,Able to cough up sputum
+225914005,Bubbling respiration
+229313004,Manual hyperinflation
+230361008,Sepsis-associated encephalopathy
+232341009,Acute rhinitis
+233602006,Acute viral bronchiolitis
+233690008,Factitious asthma
+233785003,Infectious disorder of trachea
+233812001,Sepsis-associated lung injury
+234173007,Hyperdynamic septic shock
+234174001,Hypodynamic septic shock
+235657005,Sepsis-related gastritis
+238150007,Sepsis syndrome
+238151006,Sepsis-associated organ dysfunction
+238152004,Sepsis-related gastrointestinal ulceration
+240309006,Congenital sepsis NOS
+240310001,Grunting baby
+243140006,Lung inflation by intermittent compression of reservoir bag
+243184006,Ventilation with self-inflating bag
+24612001,Wheeze - rhonchi
+247410004,Painful cough
+248425001,Pyrexia
+248427009,Fever symptoms
+248430002,Pattern of fever
+248431003,Phase of fever
+248432005,Rising phase of fever
+248433000,Plateau phase of fever
+248434006,Falling phase of fever
+248435007,Prolonged fever
+248436008,Slightly remittent fever
+248443002,Intermittent hepatic fever
+248444008,Biphasic fever
+248445009,"Fever, diurnal variation"
+248446005,Reversed diurnal fever
+248449003,Central fever
+248573009,Noisy respiration
+248574003,Croupy breathing
+248575002,Groaning respiration
+248576001,Hissing respiration
+248577005,Rattling breathing
+248578000,Sobbing respiration
+248579008,Whistling respiration
+248580006,Whistling in nose
+248589007,Clearing throat - hawking
+248590003,Unable to cough
+248591004,Unable to huff
+248592006,Character of cough
+248593001,Cough when swallowing
+248594007,Tracheal esophageal fistula cough
+248615003,Large airway sounds
+248616002,Increased vocal resonance
+248617006,Decreased vocal resonance
+248618001,Moist crackles
+248619009,Bubbling crackles
+248621004,Transmitted sounds
+248622006,Respiratory clicking sound
+248623001,Respiratory squawk
+248624007,Respiratory squeak
+248701005,Cardiorespiratory murmur
+25423001,Sighing respiration
+263731006,Coughing
+266089004,Septicemia NOS
+266116004,Viral infection NOS
+266377009,(Acute nasopharyngitis) or (common cold) or (acute coryza) or (acute rhinitis) or (sniffles) or (snuffles)
+267034005,Productive cough NOS
+268893004,[D]Fever NEC
+268927009,On examination - type of respiration
+268984004,Examination of fever
+268985003,On examination - oral temperature taken
+269049009,O/E - method temperature taken (& [fever])
+271621004,Stertorous breathing
+271622006,Death rattle
+271634003,Whispering pectoriloquy
+271749004,Acute rise of fever
+271750004,Gradual rise of fever
+271751000,Continuous fever
+271752007,Staircase fever
+271753002,Irregular fever
+271754008,Rapid fall of fever
+271755009,Gradual fall of fever
+271897009,On examination - fever
+272039006,Complaining of cough
+272040008,Wheezing symptom
+273041000000105,Respiratory syncytial virus treatment and Hepatitis C treatment drugs band 1 
+273051000000108,Respiratory syncytial virus prevention drugs band 1 
+274308003,On examination - hyperpyrexia
+274640006,Fever with chills
+274664007,Chest pain on breathing
+275874003,On examination - oral temperature
+276229008,Sepsis-associated gastrointestinal hemorrhage
+276314008,Coughing ineffective
+276741000,Sepsis-associated myocardial dysfunction
+277357006,Sputum retention
+277638005,Sepsis-associated left ventricular failure
+277639002,Sepsis-associated right ventricular failure
+281794004,Viral upper respiratory tract infection
+284520004,Basal crepitations
+284523002,Persistent cough
+287121000000103,Barking cough 
+287131000000101,Barking cough 
+28743005,Productive cough
+288849009,Unable to breathe
+289097003,Unable to take deep breaths
+289098008,Does take deep breaths
+289100008,Difficulty taking deep breaths
+289102000,Unable to control breathing
+289104004,Does not control breathing
+289105003,Difficulty controlling breathing
+289107006,Ability to cough
+289111000,Does not huff
+289112007,Difficulty huffing
+289113002,Able to cough
+289114008,Does cough
+289115009,Does not cough
+289116005,Difficulty coughing
+289117001,Able to expectorate
+289118006,Unable to expectorate
+289120009,Does not expectorate
+289121008,Difficulty expectorating
+289965001,Croupy cough
+297208002,Expiratory grunting
+30034004,Dimethoxanate
+301235001,Finding of cough
+301236000,Effective cough
+301240009,Difficulty to clear sputum
+301241008,Unable to clear sputum
+301243006,Does not clear sputum
+301244000,Ability to cough up sputum
+301245004,Difficulty in coughing up sputum
+301246003,Does cough up sputum
+301247007,Does not cough up sputum
+301282008,Finding of respiration
+301285005,Finding of sound of breathing
+301287002,Expiratory stridor
+301288007,Quiet respiration
+301703002,Expiratory polyphonic wheeze
+301708006,Chest clear
+301826004,Intermittent stridor
+304213008,Low grade pyrexia
+306321000000105,Green traffic light - low risk of serious illness (Feverish illness in children 2007)
+306331000000107,Green traffic light - low risk of serious illness (Feverish illness in young children 2007) 
+306341000000103,Green traffic light - low risk of serious illness (Feverish illness in young children 2007) 
+306779000,Ability to cough voluntarily
+306780002,Able to cough voluntarily
+306781003,Unable to cough voluntarily
+306782005,Difficulty coughing voluntarily
+307487006,Biphasic stridor
+307631000000100,Amber traffic light - intermediate risk of serious illness (Feverish illness in children 2007)
+307641000000109,Amber traffic light - intermediate risk of serious illness (Feverish illness in children 2007) 
+307651000000107,Amber traffic light - intermediate risk of serious illness (Feverish illness in children 2007) 
+307661000000105,Red traffic light - high risk of serious illness (Feverish illness in children 2007)
+307671000000103,Red traffic light - high risk of serious illness (Feverish illness in children 2007) 
+307681000000101,Red traffic light - high risk of serious illness (Feverish illness in children 2007) 
+311000119101,Non-allergic rhinitis
+312130009,Viral infection by site
+312133006,Viral respiratory infection
+312134000,Viral lower respiratory infection
+31309002,Respiratory syncytial virus pharyngitis
+313274005,Respiratory syncytial virus swab
+314043005,Viral pleurisy
+315184001,Respiratory syncytial virus antigen level
+315246003,Unexplained cough
+315632006,On examination - tympanic temperature
+31572008,Inspiratory wheezing
+31801005,Benzonatate
+31846006,Medium rales
+320955005,Cough suppressants
+32370002,Diprophylline
+33778004,Bronchovesicular breath sounds
+34014006,Viral disease
+34050004,Respiratory syncytial virus pneumonia
+34055009,Crowing respiration
+34448000,Serologic test for respiratory syncytial virus
+34770001,Atelectatic rales
+34808003,Breathing problem
+349991003,Compound cough suppressant
+364054002,Characteristic of cough
+365023005,Finding related to ability to perform breathing functions
+365024004,Finding related to ability to breathe
+365025003,Finding related to ability to control breathing
+365026002,Finding related to ability to take deep breaths
+365027006,Finding related to ability to huff
+365028001,Finding related to ability to expectorate
+365030004,Finding related to ability to clear sputum
+365411000000103,Respiratory syncytial virus A detected
+365421000000109,Respiratory syncytial virus A detected 
+365431000000106,Respiratory syncytial virus A detected 
+365441000000102,Respiratory syncytial virus B detected
+365451000000104,Respiratory syncytial virus B detected 
+365461000000101,Respiratory syncytial virus B detected 
+365471000000108,Respiratory syncytial virus untyped strain detected
+365481000000105,Respiratory syncytial virus untyped strain detected 
+365491000000107,Respiratory syncytial virus untyped strain detected 
+365977007,Finding of pattern of fever
+365989009,Finding of phase of fever
+366124008,Finding related to ability to cough
+366125009,Finding related to ability to cough voluntarily
+366126005,Finding related to ability to cough up sputum
+366946004,Feverish cold
+366956000,Cough with fever
+367171008,Feverish cold
+367181007,Cough with fever
+371044001,Transient respiratory distress with sepsis
+372682005,Diphenhydramine
+372771005,Phenylephrine
+372791003,Antitussive agent
+372841007,Xylometazoline
+372849009,Expectorant agent
+372900003,Pseudoephedrine
+373230006,Cough AND/OR decongestant agent
+373773003,Terpin
+373904004,Feels hot/feverish
+373906002,Fever with sweating
+37636003,Pleural friction rub
+37957009,Pentoxyverine
+385479009,Follicular bronchiolitis
+386305005,Treatment of fever
+386661006,Fever
+386813002,Abnormal breathing
+387158001,Oxymetazoline
+387335009,Phenylpropanolamine hydrochloride
+387437002,Noscapine
+387464001,Phenylpropanolamine
+390757000,Respiratory syncytial virus antigen assay
+395842001,Carbocisteine
+395888007,Squill opiate
+396485009,Isoaminile
+396486005,Pholcodine
+396991000000105,[D]Fever NOS
+397843005,Sepsis-related gastrointestinal lesions
+398234006,Breathing system problem
+400661000000104,[X]Other specified septicaemia
+40100001,Obliterative bronchiolitis
+402966001,Septicemia affecting skin
+403457003,Congestive non-allergic rhinitis
+40428002,High-pitched rhonchi
+408684006,Healthcare associated respiratory syncytial virus disease
+408691009,Pleuritic breathing
+409091000000109,[X]Other and unspecified abnormalities of breathing
+409531005,Self-contained breathing apparatus
+409596002,Non-productive cough
+409631000,Acute viral disease
+409702008,Hyperpyrexia
+40988009,Obstructive rhinitis
+4120002,Bronchiolitis
+41229001,Septicemia of newborn
+412472003,Caramiphen
+414563008,Kussmaul's respiration
+416088008,Bovine respiratory syncytial virus disease
+416113008,Febrile disorder
+417770000,Human respiratory syncytial virus Group A
+417771001,Human respiratory syncytial virus Group B
+417772008,Human respiratory syncytial virus GA1
+417773003,Human respiratory syncytial virus GA2
+417774009,Human respiratory syncytial virus GA3
+417790009,Human respiratory syncytial virus GA4
+417791008,Human respiratory syncytial virus GA5
+417792001,Human respiratory syncytial virus GA6
+417793006,Human respiratory syncytial virus GA7
+417794000,Human respiratory syncytial virus GB1
+417795004,Human respiratory syncytial virus GB2
+417796003,Human respiratory syncytial virus GB3
+417797007,Human respiratory syncytial virus GB4
+417850002,Respiratory tract congestion and cough
+417901007,Decongestant
+420079008,Relapsing fever
+42136008,Swinging fever
+421681003,Squill liquid extract
+425696007,Manual respiratory assistance using bag and mask
+426000000,Fever greater than 100.4 Fahrenheit
+426976009,Pain provoked by breathing
+427591007,Nonrebreather oxygen mask
+428869006,Mixed rhinitis
+429266002,Sleep-related groaning
+42939002,Pyemia
+43025008,Paroxysmal cough
+430546009,Agonal respiration
+431231008,Acute rhinosinusitis
+440929004,Respiratory syncytial virus A present
+441048007,Respiratory syncytial virus B present
+441278007,Respiratory syncytial virus untyped strain present
+441551009,Inflammation of larynx caused by virus
+441761000000105,"[X]Relapsing fever, unspecified"
+444814009,Viral sinusitis
+445241004,Persistent cough after viral respiratory infection
+447931005,Clinical sepsis
+46107006,Relapsing fever
+463587004,Rebreathing oxygen face mask
+464233000,Partial-rebreathing oxygen face mask
+464581000000103,[X]Other viral infections of unspecified site
+464591000000101,"[X]Viral infection, unspecified"
+464645003,"Nasal breathing aid, external"
+464767009,Oxygen/air breathing gas mixer
+465014006,Oxygen/air/nitrous oxide breathing gas mixer
+465301000000100,[D]Fever NEC
+465311000000103,"[X]Septicemia, unspecified"
+46789001,Cough after eating
+468191000000103,[D]Fever NEC
+468246003,"Aerosol face mask, rebreathing"
+468414000,"Aerosol face mask, non-rebreathing"
+469515009,Helium/oxygen breathing gas mixer
+469536006,Fever relief cloth
+47378001,Viral thyroiditis
+47525004,Coarse respiratory crackles
+47653008,Harsh breath sounds
+48348007,Normal breath sounds
+48409008,Respiratory crackles
+495721000000108,[D]Pyrexia of unknown origin
+495731000000105,[D]Chills with fever
+495741000000101,[D]Persistent fever
+49727002,Cough
+497541000000102,[D]Mouth breathing
+49779001,Bovine respiratory syncytial virus
+498061000000106,[D]Cough
+498071000000104,[D]Cough syncope
+498091000000100,[D]Cough with haemorrhage
+51191000237106,Qualitative result of Respiratory syncytial virus antigen in nasal fluid
+51701000237100,Qualitative result of human respiratory syncytial virus ribonucleic acid nucleic acid amplification
+52409006,Bronchiolitis exudativa
+52673003,Decreased coughing
+53541006,Low-pitched rhonchi
+536861000000102,Cough symptom NOS
+53972003,Added respiratory sounds
+54514007,Bronchophony
+5505005,Acute bronchiolitis
+55735004,Respiratory syncytial virus infection
+56018004,Wheezing
+57089007,Respiratory syncytial virus bronchiolitis
+571041000000100,On examination - fever - general NOS
+571051000000102,On examination - level of fever NOS
+582151000000103,On examination - fever NOS
+58596002,Inspiratory stridor
+58840004,Decreased breath sounds
+593251000000102,Relapsing fever NOS
+598631000000100,On examination - fever character NOS
+59903001,Acute obliterating bronchiolitis
+59921000237106,Qualitative result of respiratory syncytial virus antigen in nasopharyngeal aspirate
+59994004,Hacking cough
+60025004,Transitory fever of newborn
+60466007,Abnormal airflow
+61398007,Clofedanol
+615621000000101,Respiratory syncytial virus as the cause of diseases classified to other chapters
+62085005,Grunting respiration
+621031000000103,Acute bronchiolitis NOS
+62444006,Cyclopentamine
+62545005,Ammonium carbonate
+62548007,Nocturnal cough
+62618004,Early morning cough
+62640008,Fine respiratory crackles
+62731002,Increasing frequency of cough
+63000007,Spasmodic cough
+6333002,Squill extract
+63642005,Superficial crackling rales
+63993003,Remittent fever
+6415009,Human respiratory syncytial virus
+65503000,Absent breath sounds
+65526007,Pleuropericardial friction rub
+65949001,Increased breath sounds
+66011008,Viral tracheitis
+66857006,Hemoptysis
+67216002,Pipazethate
+67395002,Amphoric breathing
+67636005,Guaiacol
+677011000000103,Productive cough NOS
+67750007,Ineffective airway clearance
+68095009,Wheezing stridor
+68699004,Phenylephrine bitartrate
+687221000000109,Congenital sepsis NOS
+691041000000103,Viral infection NOS
+697999004,Levodropropizine
+698092008,Cloperastine
+70076002,Rhinitis
+701331000000100,Septicemia NOS
+703407002,Butetamate
+703408007,Butetamate citrate
+703416003,Clofedanol hydrochloride
+703435003,Pholcodine citrate
+703553006,Oxolamine
+703554000,Oxolamine citrate
+703555004,Pentoxyverine citrate
+70407001,Stridor
+704651005,Dimemorfan
+704652003,Dimemorfan phosphate
+705312000,Nasal breathing aid
+706231003,Breathing gas mixer
+707779003,Ribonucleic acid of Human respiratory syncytial virus A
+707780000,Ribonucleic acid of Human respiratory syncytial virus B
+707781001,Ribonucleic acid of Human respiratory syncytial virus
+708181006,Cloperastine hydrochloride
+709251003,Antigen of Bovine respiratory syncytial virus
+70976000,Viral epiglottitis
+710945004,Dibunate
+710946003,Sodium dibunate
+713013008,Breath holding spell
+713478004,Clobutinol
+713854001,Perinatal sepsis
+7142008,Cough at rest
+717179001,Helicidine
+718004,Acute bronchiolitis with obstruction
+72204002,Respiratory syncytial virus laryngotracheobronchitis
+722892007,Fever due to infection
+723881000,Habitual snoring
+726649002,"Oxygen/air breathing gas mixer, emergency"
+72863001,Snoring
+73946006,Phenylephrine hydrochloride
+74863000,Hyperpyrexia
+75125004,Chills and fever
+7520000,Pyrexia of unknown origin
+75252003,Inspiratory crackles
+75327003,Xylometazoline hydrochloride
+75483001,Breathing painful
+755581000000101,Mild wheeze
+755591000000104,Moderate wheeze
+755601000000105,Severe wheeze
+755611000000107,Very severe wheeze
+757261000000103,Biliary sepsis
+765106006,Early-onset neonatal sepsis
+765107002,Late-onset neonatal sepsis
+765334007,Oxeladin
+765335008,Oxeladin citrate
+76571007,Septic shock
+767467006,Respiratory syncytial virus immune globulin
+769210005,Strength of cough
+769211009,No cough strength
+770349000,Sepsis caused by virus
+77047003,Vesicular breathing
+773117009,Laryngeal stridor
+773551000000105,Fever care management
+77957000,Intermittent fever
+781651000000101,Respiratory bronchiolitis associated interstitial lung disease
+784324003,Phenylephrine tannate
+789043007,Sepsis without septic shock
+79451004,Bronchial breathing
+79479005,Respiratory syncytial virus bronchitis
+807861000000106,Respiratory bronchiolitis associated interstitial lung disease
+80954004,Decreased respiratory function
+810511000000109,Episodic dry cough
+821021000000105,Detection of respiratory syncytial virus ribonucleic acid by nucleic acid amplification test
+82272006,Common cold
+82399006,Audible inspiration
+82400004,Coin sign
+831561000000109,Sepsis
+832361000000107,Sepsis
+832371000000100,Sepsis
+8442000,Purulent rhinitis
+85377008,Post-tussive crackles
+859701000000104,Suspected sepsis
+862231000000103,Massive haemoptysis
+867311000000104,Constant wheezing
+867411000000108,Respiratory syncytial virus monoclonal antibody prophylaxis
+87174009,Guaifenesin
+876251000000103,Respiratory syncytial virus monoclonal antibody prophylaxis
+87695000,Necrotizing bronchiolitis
+87896001,Creosote
+897656009,Rhinosinusitis
+908401000000100,Respiratory syncytial virus nucleic acid detection assay
+908411000000103,RSV nucleic acid detection assay 
+91302008,Sepsis
+926181000000107,Wheezing in absence of colds
+93447004,Eosinophilic nonallergic rhinitis
+935211000000102,Respiratory syncytial virus ribonucleic acid detection assay
+935221000000108,Respiratory syncytial virus ribonucleic acid detection assay 
+95618001,Neonatal respiratory depression
+95627000,Fever of newborn
+957421000000104,Uncomplicated sepsis
+957431000000102,Red flag sepsis
+9763007,Expiratory wheezing
+9910008,Oxymetazoline hydrochloride

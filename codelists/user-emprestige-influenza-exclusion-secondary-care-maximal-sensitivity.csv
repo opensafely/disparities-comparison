@@ -1,0 +1,67 @@
+code,term
+B300,Keratoconjunctivitis due to adenovirus H19.2
+B301,Conjunctivitis due to adenovirus H13.1
+B340,"Adenovirus infection, unspecified site"
+B341,"Enterovirus infection, unspecified site"
+B342,"Coronavirus infection, unspecified site"
+B960,Mycoplasma pneumoniae [M. pneumoniae] as the cause of diseases classified to other chapters
+B970,Adenovirus as the cause of diseases classified to other chapters
+B971,Enterovirus as the cause of diseases classified to other chapters
+B972,Coronavirus as the cause of diseases classified to other chapters
+B974,Respiratory syncytial virus as the cause of diseases classified to other chapters
+J01,Acute sinusitis
+J010,Acute maxillary sinusitis
+J011,Acute frontal sinusitis
+J012,Acute ethmoidal sinusitis
+J013,Acute sphenoidal sinusitis
+J014,Acute pansinusitis
+J018,Other acute sinusitis
+J019,"Acute sinusitis, unspecified"
+J03,Acute tonsillitis
+J038,Acute tonsillitis due to other specified organisms
+J039,"Acute tonsillitis, unspecified"
+J04,Acute laryngitis and tracheitis
+J040,Acute laryngitis
+J041,Acute tracheitis
+J042,Acute laryngotracheitis
+J05,Acute obstructive laryngitis [croup] and epiglottitis
+J050,Acute obstructive laryngitis [croup]
+J051,Acute epiglottitis
+J12,"Viral pneumonia, not elsewhere classified"
+J120,Adenoviral pneumonia
+J121,Respiratory syncytial virus pneumonia
+J122,Parainfluenza virus pneumonia
+J123,Human metapneumovirus pneumonia
+J128,Other viral pneumonia
+J129,"Viral pneumonia, unspecified"
+J157,Pneumonia due to Mycoplasma pneumoniae
+J16,"Pneumonia due to other infectious organisms, not elsewhere classified"
+J168,Pneumonia due to other specified infectious organisms
+J17,Pneumonia in diseases classified elsewhere
+J171,Pneumonia in viral diseases classified elsewhere
+J178,Pneumonia in other diseases classified elsewhere
+J18,"Pneumonia, organism unspecified"
+J180,"Bronchopneumonia, unspecified"
+J181,"Lobar pneumonia, unspecified"
+J182,"Hypostatic pneumonia, unspecified"
+J188,"Other pneumonia, organism unspecified"
+J189,"Pneumonia, unspecified"
+J200,Acute bronchitis due to Mycoplasma pneumoniae
+J201,Acute bronchitis due to Haemophilus influenzae
+J202,Acute bronchitis due to streptococcus
+J203,Acute bronchitis due to coxsackievirus
+J204,Acute bronchitis due to parainfluenza virus
+J205,Acute bronchitis due to respiratory syncytial virus
+J206,Acute bronchitis due to rhinovirus
+J207,Acute bronchitis due to echovirus
+J210,Acute bronchiolitis due to respiratory syncytial virus
+J211,Acute bronchiolitis due to human metapneumovirus
+J851,Abscess of lung with pneumonia
+P23,Congenital pneumonia
+P230,Congenital pneumonia due to viral agent
+P238,Congenital pneumonia due to other organisms
+P239,"Congenital pneumonia, unspecified"
+U071,"COVID-19, virus identified"
+U072,"COVID-19, virus not identified"
+U10,Multisystem inflammatory syndrome associated with COVID-19
+U109,"Multisystem inflammatory syndrome associated with COVID-19, unspecified"

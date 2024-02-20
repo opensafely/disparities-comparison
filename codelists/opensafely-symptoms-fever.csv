@@ -1,0 +1,186 @@
+code,term
+10151000132103,Fever caused by virus
+102496004,Spiking fever
+102599008,Warm skin
+103001002,Feeling feverish
+1087591000000100,"Fever in last 24 hours, Purulence, Attend rapidly under 3 days, Inflamed tonsils, No cough and/or coryza Clinical Score"
+1087601000000106,"Assessment using Fever in last 24 hours, Purulence, Attend rapidly under 3 days, Inflamed tonsils, No cough and/or coryza Clinical Score"
+1087611000000108,"Fever in last 24 hours, Purulence, Attend rapidly under 3 days, Inflamed tonsils, No cough and/or coryza Clinical Score"
+1104371000000107,Royal College of Physicians National Early Warning Score 2 - temperature score
+119751000146104,Fever caused by Severe acute respiratory syndrome coronavirus 2
+135882008,Feverish cold
+135883003,Cough with fever
+139106004,Temperature symptoms
+139108003,Feels hot/feverish
+139109006,Fever with sweating
+139110001,Rigors: [having] or [symptom]
+139112009,Temperature symptom NOS
+140804007,Febrile convulsion (& O/E)
+141478007,Fever: [examination of] or [O/E]
+141479004,O/E - fever - general
+141481002,O/E - fever examination - NAD
+141482009,O/E -pyrexia of unknown origin
+141483004,O/E - fever - general NOS
+141484005,O/E - method temperature taken (& [fever])
+141489000,O/E - core temperature
+141493006,O/E - level of fever
+141497007,O/E - temperature elevated
+141499005,O/E - level of fever NOS
+141500001,O/E - character of fever
+141502009,O/E - fever - acute rise
+141503004,O/E - fever - gradual rise
+141504005,O/E - fever - continuous
+141505006,O/E - fever - remittent
+141506007,O/E - fever - intermittent
+141507003,O/E - staircase fever
+141508008,O/E - fever - irregular
+141509000,O/E - fever - fast fall-crisis
+141510005,O/E - fever-gradual fall-lysis
+141511009,O/E - fever character NOS
+141512002,O/E - fever NOS
+158139003,"[D]Convulsions, febrile"
+158161008,Pyrexia [D]
+158162001,[D]Pyrexia of unknown origin
+158163006,[D]Chills with fever
+158166003,[D]Fever NEC
+161850008,[Temperature] or [fever] or [pyrexia] symptoms
+161852000,Feels hot/feverish
+161853005,Fever with sweating
+161854004,Rigors: [having] or [symptom]
+161855003,Complaining of shivering
+161856002,Temperature symptom NOS
+163595003,On examination - febrile convulsion
+164284002,Fever: [examination of] or [O/E]
+164285001,On examination - fever - general
+164288004,On examination - pyrexia of unknown origin
+164289007,On examination - fever - general NOS
+164299002,On examination - level of fever
+164303007,On examination - temperature elevated
+164304001,On examination - hyperpyrexia - greater than 40.5 degrees Celsius
+164305000,On examination - level of fever NOS
+164306004,On examination - character of fever
+164307008,On examination - fever - acute rise
+164308003,On examination - fever - gradual rise
+164309006,On examination - fever - continuous
+164311002,On examination - fever - remittent
+164312009,On examination - fever - intermittent
+164313004,On examination - staircase fever
+164314005,On examination - fever - irregular
+164315006,On examination - fever - fast fall-crisis
+164316007,On examination - fever-gradual fall-lysis
+164317003,On examination - fever character NOS
+164318008,On examination - fever NOS
+17038008,Increased skin temperature
+186694006,Sweating fever
+186820006,Relapsing fever
+186822003,Relapsing fever NOS
+187374004,"[X]Relapsing fever, unspecified"
+206733006,"[D]Convulsions, febrile"
+206758001,[D]Pyrexia of unknown origin
+206760004,[D]Chills with fever
+206762007,[D]Fever NOS
+206763002,[D]Persistent fever
+206764008,[D]Pyrexia of unknown origin NOS
+218051000000105,Febrile convulsion
+218061000000108,Febrile convulsion
+224962007,Hot sweats
+244491000000108,Pain provoked by temperature
+247739000,Hallucinations of temperature
+248424002,Hot and sweaty
+248425001,Pyrexia
+248426000,Pyrexia symptoms
+248427009,Fever symptoms
+248430002,Pattern of fever
+248431003,Phase of fever
+248432005,Rising phase of fever
+248433000,Plateau phase of fever
+248434006,Falling phase of fever
+248435007,Prolonged fever
+248436008,Slightly remittent fever
+248444008,Biphasic fever
+248445009,"Fever, diurnal variation"
+248446005,Reversed diurnal fever
+248447001,Fever defervescence
+248449003,Central fever
+248456009,Shivering or rigors
+248457000,Rigor - symptom
+267027008,Having rigors
+268893004,[D]Fever NEC
+268984004,Examination of fever
+269033007,Febrile convulsion (& O/E)
+269049009,O/E - method temperature taken (& [fever])
+271749004,Acute rise of fever
+271750004,Gradual rise of fever
+271751000,Continuous fever
+271752007,Staircase fever
+271753002,Irregular fever
+271754008,Rapid fall of fever
+271755009,Gradual fall of fever
+271897009,On examination - fever
+274234009,[D]Pyrexia
+274308003,On examination - hyperpyrexia
+274640006,Fever with chills
+304213008,Low grade pyrexia
+307200007,Recurrent febrile convulsion
+307631000000100,Amber traffic light - intermediate risk of serious illness (Feverish illness in children 2007)
+307641000000109,Amber traffic light - intermediate risk of serious illness (Feverish illness in children 2007) 
+307651000000107,Amber traffic light - intermediate risk of serious illness (Feverish illness in children 2007) 
+307661000000105,Red traffic light - high risk of serious illness (Feverish illness in children 2007)
+307671000000103,Red traffic light - high risk of serious illness (Feverish illness in children 2007) 
+307681000000101,Red traffic light - high risk of serious illness (Feverish illness in children 2007) 
+323091004,Febrile convulsions
+365977007,Finding of pattern of fever
+365989009,Finding of phase of fever
+366946004,Feverish cold
+366956000,Cough with fever
+367171008,Feverish cold
+367181007,Cough with fever
+367493005,Increased body temperature
+373904004,Feels hot/feverish
+373906002,Fever with sweating
+373932008,Feels hot
+373939004,Feels hot and sweaty
+37942002,Feels hot
+386305005,Treatment of fever
+386661006,Fever
+38880002,Rigor
+396991000000105,[D]Fever NOS
+41497008,Febrile convulsion
+416113008,Febrile disorder
+420079008,Relapsing fever
+42136008,Swinging fever
+426000000,Fever greater than 100.4 Fahrenheit
+432354000,Simple febrile seizure
+433083002,Complex febrile seizure
+43724002,Chill
+441761000000105,"[X]Relapsing fever, unspecified"
+450361000000103,[D]Pyrexia of unknown origin NOS
+46107006,Relapsing fever
+465301000000100,[D]Fever NEC
+468191000000103,[D]Fever NEC
+495541000000105,"[D]Convulsions, febrile"
+495721000000108,[D]Pyrexia of unknown origin
+495731000000105,[D]Chills with fever
+495741000000101,[D]Persistent fever
+50177009,Body temperature above reference range
+502181000000105,[D]Pyrexia
+571041000000100,On examination - fever - general NOS
+571051000000102,On examination - level of fever NOS
+582151000000103,On examination - fever NOS
+582631000000104,Temperature symptom NOS
+593251000000102,Relapsing fever NOS
+598631000000100,On examination - fever character NOS
+62166005,Hysterical fever
+63993003,Remittent fever
+64882008,Increased body temperature
+704425001,Chronic fever
+707793005,Hot skin
+722892007,Fever due to infection
+75125004,Chills and fever
+7520000,Pyrexia of unknown origin
+773551000000105,Fever care management
+77957000,Intermittent fever
+832471000000106,Pyrexia
+866631000000101,H/O fever 
+9619006,Aseptic fever
+999000951000000100,Temperature simple reference set

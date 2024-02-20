@@ -1,0 +1,38 @@
+code,term
+J01,Acute sinusitis
+J010,Acute maxillary sinusitis
+J011,Acute frontal sinusitis
+J012,Acute ethmoidal sinusitis
+J013,Acute sphenoidal sinusitis
+J014,Acute pansinusitis
+J018,Other acute sinusitis
+J019,"Acute sinusitis, unspecified"
+J03,Acute tonsillitis
+J039,"Acute tonsillitis, unspecified"
+J04,Acute laryngitis and tracheitis
+J040,Acute laryngitis
+J041,Acute tracheitis
+J042,Acute laryngotracheitis
+J05,Acute obstructive laryngitis [croup] and epiglottitis
+J050,Acute obstructive laryngitis [croup]
+J051,Acute epiglottitis
+J12,"Viral pneumonia, not elsewhere classified"
+J128,Other viral pneumonia
+J129,"Viral pneumonia, unspecified"
+J16,"Pneumonia due to other infectious organisms, not elsewhere classified"
+J168,Pneumonia due to other specified infectious organisms
+J17,Pneumonia in diseases classified elsewhere
+J171,Pneumonia in viral diseases classified elsewhere
+J178,Pneumonia in other diseases classified elsewhere
+J180,"Bronchopneumonia, unspecified"
+J181,"Lobar pneumonia, unspecified"
+J182,"Hypostatic pneumonia, unspecified"
+J189,"Pneumonia, unspecified"
+J20,Acute bronchitis
+J208,Acute bronchitis due to other specified organisms
+J209,"Acute bronchitis, unspecified"
+J40,"Bronchitis, not specified as acute or chronic"
+J851,Abscess of lung with pneumonia
+P23,Congenital pneumonia
+P230,Congenital pneumonia due to viral agent
+P239,"Congenital pneumonia, unspecified"

@@ -1,0 +1,42 @@
+id,name,active,notes
+35434009,Sickle cell-hemoglobin C disease (disorder),y,direct mapping
+47024008,Sickle cell-hemoglobin E disease (disorder),y,direct mapping
+417425009,Hemoglobin SS disease with crisis (disorder),y,direct mapping
+416180004,Hemoglobin SS disease without crisis (disorder),y,direct mapping
+928871000000100,Referral to sickle cell specialist nurse (procedure),y,direct mapping
+1027611000000101,Homozygous SS genotype (observable entity),y,direct mapping
+417357006,Sickling disorder due to hemoglobin S (disorder),y,direct mapping
+234391009,Sickle cell anemia with high hemoglobin F (disorder),y,direct mapping
+193370005,Proliferative retinopathy due to sickle cell disease (disorder),y,direct mapping
+127040003,Sickle cell-hemoglobin SS disease (disorder),y,direct mapping
+127041004,Sickle cell-beta-thalassemia (disorder),y,direct mapping
+13886001,Sickle cell nephropathy (disorder),y,direct mapping
+417048006,Sickle cell-thalassemia disease without crisis (disorder),y,descendant of concept mapped from leaf
+10759351000119103,Sickle cell anemia in mother complicating childbirth (disorder),y,descendant of concept mapped from leaf
+127044007,Sickle cell-delta beta^0^-thalassemia (disorder),y,descendant of concept mapped from leaf
+127047000,Sickle cell-hemoglobin Lepore disease (disorder),y,descendant of concept mapped from leaf
+416826005,Sickle cell-thalassemia disease with crisis (disorder),y,descendant of concept mapped from leaf
+416484003,Sickle cell-hemoglobin E disease with crisis (disorder),y,descendant of concept mapped from leaf
+440206000,Hemoglobin SS disease with vasoocclusive crisis (disorder),y,descendant of concept mapped from leaf
+416214006,Sickle cell-hemoglobin D disease without crisis (disorder),y,descendant of concept mapped from leaf
+127045008,Sickle cell anemia with coexistent alpha-thalassemia (disorder),y,descendant of concept mapped from leaf
+127042006,Sickle cell-beta^+^-thalassemia (disorder),y,descendant of concept mapped from leaf
+444108000,Acute sickle cell splenic sequestration crisis (disorder),y,descendant of concept mapped from leaf
+127043001,Sickle cell-beta^0^-thalassemia (disorder),y,descendant of concept mapped from leaf
+416638004,Sickle cell-hemoglobin E disease without crisis (disorder),y,descendant of concept mapped from leaf
+127048005,Sickle cell-Hemoglobin O Arab disease (disorder),y,descendant of concept mapped from leaf
+416290001,Hemoglobin S sickling disorder without crisis (disorder),y,descendant of concept mapped from leaf
+25472008,Sickle cell-hemoglobin D disease (disorder),y,descendant of concept mapped from leaf
+417748003,Sickle cell-hemoglobin D disease with crisis (disorder),y,descendant of concept mapped from leaf
+417683006,Sickle cell-hemoglobin C disease without crisis (disorder),y,descendant of concept mapped from leaf
+417517009,Sickle cell-hemoglobin C disease with crisis (disorder),y,descendant of concept mapped from leaf
+36472007,Sickle cell-thalassemia disease (disorder),y,descendant of concept mapped from leaf
+417279003,Hemoglobin S sickling disorder with crisis (disorder),y,descendant of concept mapped from leaf
+23269001,Double heterozygous sickling disorder (disorder),y,descendant of concept mapped from leaf
+455791000000104,[X]Other sickle cell disorders (disorder),n,via Query Table
+857161000000108,Sickle cell nephropathy,n,via Query Table
+191196006,Sickle cell anemia with no crisis (disorder),n,via Query Table
+72279006,Hemoglobin S disease with crisis (disorder),n,via Query Table
+21976009,Hemoglobin S disease without crisis (disorder),n,via Query Table
+928881000000103,Referral to sickle cell specialist nurse ,n,via Query Table
+191197002,Sickle cell anemia with crisis (disorder),n,via Query Table

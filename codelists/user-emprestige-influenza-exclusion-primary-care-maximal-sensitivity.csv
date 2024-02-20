@@ -1,0 +1,1570 @@
+code,term
+1002141000000100,Adenovirus group F polymerase chain reaction
+1005131000000102,Adenovirus antigen level
+1005461000000101,Enterovirus ribonucleic acid detection
+1008061000000102,Respiratory syncytial virus ribonucleic acid detection assay
+1008081000000106,Rhinovirus ribonucleic acid detection assay
+1008151000000104,Parainfluenza virus type 4 ribonucleic acid detection assay
+1008161000000101,Parainfluenza virus type 3 ribonucleic acid detection assay
+1008171000000108,Parainfluenza virus type 2 ribonucleic acid detection assay
+1008181000000105,Parainfluenza virus type 1 ribonucleic acid detection assay
+1008281000000104,Human metapneumovirus ribonucleic acid detection assay
+1008541000000105,Coronavirus ribonucleic acid detection assay
+1010619008,Inflammatory tracheobronchial papilloma
+1010751000000102,Adenovirus deoxyribonucleic acid detection assay
+1011501000000101,Bordetella pertussis deoxyribonucleic acid detection
+1014391000000101,Respiratory syncytial virus antigen level
+1017214008,Viremia caused by severe acute respiratory syndrome coronavirus 2
+1018471000000102,Respiratory syncytial virus antigen assay
+1020381000000100,Parainfluenza virus antigen assay
+1021141000000101,Respiratory syncytial virus serology
+10237005,Human rhinovirus 81
+102453009,Peritonsillar cellulitis
+1028501000000103,Enterovirus deoxyribonucleic acid detection
+1029431000000102,Adenovirus polymerase chain reaction
+1029481000000103,Coronavirus nucleic acid detection assay
+1029501000000107,Human metapneumovirus nucleic acid detection assay
+1029731000000105,Parainfluenza type 1 nucleic acid detection assay
+1029741000000101,Parainfluenza type 2 nucleic acid detection assay
+1029751000000103,Parainfluenza type 3 nucleic acid detection assay
+1029901000000102,Parainfluenza type 4 nucleic acid detection assay
+1030271000000105,Respiratory syncytial virus nucleic acid detection assay
+1031621000000104,Adenovirus nucleic acid detection assay
+1031661000000107,Rhinovirus nucleic acid detection assay
+10351008,Suppurative tonsillitis
+1046151000000109,Parainfluenza group ribonucleic acid detection assay
+1046161000000107,Parainfluenza group RNA detection assay 
+10509002,Acute bronchitis
+10625271000119109,Bronchopneumonia caused by Human metapneumovirus
+10625431000119105,Bronchopneumonia caused by Mycoplasma pneumoniae
+10625551000119103,Bronchopneumonia caused by respiratory syncytial virus
+10625751000119106,Bronchopneumonia due to virus
+10722007,Human adenovirus 18
+10809006,Parainfluenza virus laryngotracheitis
+1087141000119106,Human metapneumovirus infection
+1087801000000105,Suspected pertussis
+1092361000119109,Rubella pneumonia
+1098002,Human adenovirus 3
+109814008,Acute ulcerative gastroenteritis complicating pneumonia
+11014004,Human rhinovirus 102
+111274000,Acute abscess of nasal sinus
+11134001,Acute suppuration of sphenoidal sinus
+111849006,Adenoviral bronchitis
+111850006,Adenoviral meningitis
+111851005,Subacute adenoviral encephalitis
+111878007,Coxsackie meningitis
+1119302008,Acute disease caused by severe acute respiratory syndrome coronavirus 2
+112359001,Simian enterovirus 17
+112360006,Human rhinovirus 45
+112361005,Human rhinovirus 62
+112362003,Human rhinovirus 101
+11316005,Granuloma of vocal cords
+1153537004,Antigen of inactivated whole severe acute respiratory syndrome coronavirus 2
+115633003,Avian adenovirus group II
+115634009,Avian adenovirus group III
+1157045004,Antigen of severe acute respiratory syndrome coronavirus 2 protein
+1163073003,Encephalitis caused by human respiratory syncytial virus
+1163083004,Dacryoadenitis caused by human echovirus
+1163098002,Encephalitis caused by human echovirus
+1163100002,Encephalitis caused by human coxsackievirus
+1163489008,Bronchitis caused by Human metapneumovirus
+1163522000,Gastritis caused by human Enterovirus
+1163525003,Eye disease caused by Adenovirus
+1163532007,Nervous system infection caused by Adenovirus
+1163535009,Nervous system disease caused by human enterovirus
+1172606002,Idiopathic pleuroparenchymal fibroelastosis
+117275007,Ribonucleic acid of Enterovirus
+117280003,Ribonucleic acid of Rhinovirus
+117723004,Infectious bronchitis virus genotype determination
+117742000,Avian adenovirus 2 antigen assay
+117770003,Adenovirus 40 AND 41 antigen assay
+117943003,Bovine adenovirus 3 antigen assay
+117944009,Bovine adenovirus 5 antigen assay
+117945005,Bovine coronavirus antigen assay
+117956005,Bovine respiratory syncytial virus antigen assay
+11801001,Human rhinovirus 105
+118027005,Equine adenovirus antigen assay
+118105003,Adenovirus 40 AND 41 identification
+1187002002,Infectious mononucleosis caused by Adenovirus
+1187256004,Viral pneumonia due to infectious mononucleosis caused by human herpesvirus 4
+119731000146105,Cardiomyopathy due to disease caused by severe acute respiratory syndrome coronavirus 2
+119741000146102,Conjunctivitis due to disease caused by severe acute respiratory syndrome coronavirus 2
+119751000146104,Fever caused by severe acute respiratory syndrome coronavirus 2
+119981000146107,Dyspnea caused by severe acute respiratory syndrome coronavirus 2
+120984003,Antigen of Human respirovirus 3
+120987005,Antigen of Adenovirus
+121023001,Human adenovirus 40 antigen
+121024007,Human adenovirus 41 antigen
+121031006,Antigen of Human respirovirus 1
+121074009,Antigen of Bordetella pertussis
+121082009,Antigen of Parainfluenza virus
+121095004,Antigen of Bordetella parapertussis
+121177000,Ribosomal ribonucleic acid of Adenovirus
+121187001,Deoxyribonucleic acid of Mycoplasma pneumoniae
+121188006,Ribosomal ribonucleic acid of Mycoplasma pneumoniae
+121246006,Deoxyribonucleic acid of Adenovirus
+12139008,Human rhinovirus 97
+1217296006,Disease caused by severe acute respiratory syndrome coronavirus 2 following administration of vaccine product against severe acute respiratory syndrome coronavirus 2
+12181000119103,Contact granuloma of larynx
+12188008,Parainfluenza
+121960004,Adenovirus antigen assay
+122182009,Bordetella parapertussis antigen assay
+122183004,Bordetella pertussis antigen assay
+122206002,Bordetella pertussis culture
+122212007,Enterovirus culture
+122233003,Respiratory syncytial virus antigen assay
+122268003,Adenovirus species culture
+122274003,Respiratory syncytial virus culture
+122281005,Enterovirus identification
+122296009,Adenovirus deoxyribonucleic acid assay
+122297000,Adenovirus ribosomal ribonucleic acid assay
+12231001,Rat coronavirus
+122329007,Enterovirus ribonucleic acid assay
+122361006,Parainfluenza virus 1 antigen assay
+122362004,Parainfluenza virus 2 antigen assay
+122363009,Parainfluenza virus 3 antigen assay
+122364003,Parainfluenza virus antigen assay
+122397002,Parainfluenza virus culture
+122403008,Infectious bronchitis virus culture
+122410002,Mycoplasma pneumoniae deoxyribonucleic acid assay
+122411003,Mycoplasma pneumoniae ribosomal ribonucleic acid assay
+122418009,Rhinovirus ribonucleic acid assay
+123587001,Acute bronchopneumonia
+123589003,Necrotizing bronchopneumonia
+123590007,Focal pneumonia
+123591006,Confluent pneumonia
+123592004,Acute mucous pneumonia
+1240381000000105,Severe acute respiratory syndrome coronavirus 2
+1240391000000107,Antigen of severe acute respiratory syndrome coronavirus 2
+1240411000000107,Ribonucleic acid of severe acute respiratory syndrome coronavirus 2
+1240421000000101,Serotype severe acute respiratory syndrome coronavirus 2
+1240471000000102,Measurement of severe acute respiratory syndrome coronavirus 2 antigen
+1240511000000106,Detection of severe acute respiratory syndrome coronavirus 2 using polymerase chain reaction technique
+1240521000000100,Otitis media due to disease caused by severe acute respiratory syndrome coronavirus 2
+1240531000000103,Myocarditis due to disease caused by severe acute respiratory syndrome coronavirus 2
+1240541000000107,Infection of upper respiratory tract caused by severe acute respiratory syndrome coronavirus 2
+1240551000000105,Pneumonia caused by severe acute respiratory syndrome coronavirus 2
+1240561000000108,Encephalopathy due to disease caused by severe acute respiratory syndrome coronavirus 2
+1240571000000101,Gastroenteritis caused by severe acute respiratory syndrome coronavirus 2
+1240581000000104,Severe acute respiratory syndrome coronavirus 2 detected
+1240751000000100,Coronavirus disease 19 caused by severe acute respiratory syndrome coronavirus 2
+1240761000000102,Suspected coronavirus disease 19 caused by severe acute respiratory syndrome coronavirus 2
+12473007,Human rhinovirus 94
+12591000132100,Suspected severe acute respiratory syndrome
+12612001,Human adenovirus 31
+1263732006,Severe acute respiratory syndrome-related coronavirus
+1263733001,Severe acute respiratory syndrome coronavirus
+1264007008,Adenovirus infection in immunocompromised person
+1269559008,Detection of ribonucleic acid of severe acute respiratory syndrome coronavirus 2 using microchip real time polymerase chain reaction
+1282001,Perichondritis of larynx
+128358003,Murine parainfluenza virus 1
+128359006,Human parainfluenza virus 4a
+128360001,Human parainfluenza virus 4b
+128362009,Bovine parainfluenza virus 3
+128365006,Avian parainfluenza virus 3
+128366007,Avian parainfluenza virus 4
+128367003,Avian parainfluenza virus 5
+128368008,Avian parainfluenza virus 6
+128369000,Avian parainfluenza virus 7
+128370004,Avian parainfluenza virus 8
+128371000,Avian parainfluenza virus
+128405007,Coxsackie carditis
+12842000,Human echovirus 21
+1293004,Human coxsackievirus A8
+129451001,Respiratory bronchiolitis associated interstitial lung disease
+129452008,Nonspecific interstitial pneumonia
+129459004,Acute interstitial pneumonia
+129671003,Human echovirus infection
+12997006,Human enterovirus 68
+1300631000000101,Coronavirus disease 19 severity score
+1300671000000104,Coronavirus disease 19 severity scale
+1300721000000109,Coronavirus disease 19 caused by severe acute respiratory syndrome coronavirus 2 confirmed by laboratory test
+1300731000000106,Coronavirus disease 19 caused by severe acute respiratory syndrome coronavirus 2 confirmed using clinical diagnostic criteria
+13089009,Adenoviral bronchiolitis
+1321241000000105,Cardiomyopathy caused by severe acute respiratory syndrome coronavirus 2
+1321291000000100,Severe acute respiratory syndrome coronavirus 2 species detection test
+1321301000000101,Severe acute respiratory syndrome coronavirus 2 ribonucleic acid qualitative existence in specimen
+1321681000000104,Severe acute respiratory syndrome coronavirus 2 ribonucleic acid detection result equivocal
+1321711000000100,Point of care severe acute respiratory syndrome coronavirus 2 species detection test
+1321721000000106,Central laboratory severe acute respiratory syndrome coronavirus 2 species detection test
+1322781000000102,Severe acute respiratory syndrome coronavirus 2 antigen detection result positive
+1324601000000106,Severe acute respiratory syndrome coronavirus 2 ribonucleic acid detected
+1324611000000108,Measurement of severe acute respiratory syndrome coronavirus 2 antigen
+1325071000000105,COVID-19 Yorkshire Rehabilitation Screening tool
+1325081000000107,Assessment using COVID-19 Yorkshire Rehabilitation Screening tool
+1325171000000109,Acute disease caused by severe acute respiratory syndrome coronavirus 2 infection
+1325181000000106,Ongoing symptomatic disease caused by severe acute respiratory syndrome coronavirus 2
+13266007,Sphenoidal sinusitis
+13320001000004109,Human respiratory syncytial virus isolated in sputum by culture
+134260001,Enterovirus DNA detection
+13617004,Tracheobronchitis
+138389411000119105,Acute bronchitis caused by severe acute respiratory syndrome coronavirus 2
+141453008,O/E - follicular tonsillitis
+14174008,Human rhinovirus 88
+14465002,Ulcerative tonsillitis
+14535005,Acute nonparalytic poliomyelitis
+14551002,Ovine adenovirus 2
+14969004,Catarrhal laryngitis
+15030000,Human adenovirus 24
+15226006,Porcine respiratory coronavirus
+15329002,Human rhinovirus 110
+15513006,Equine adenovirus
+155498004,Acute sinusitis
+155499007,Acute maxillary sinusitis
+155500003,Acute frontal sinusitis
+155501004,(Acute sinusitis: [NOS] or [ethmoidal] or [sphenoidal]) or ([pansinusitis])
+155503001,Acute tonsillitis
+155505008,Acute laryngitis and tracheitis
+155506009,Acute laryngitis
+155510007,Acute laryngotracheobronchitis
+155512004,Acute: [bronchitis] or [chest infections] or [tracheobronchitis]
+155515002,Acute bronchitis NOS
+155549005,Viral pneumonia
+155551009,Bronchopneumonia
+155552002,Pneumonia NOS
+155554001,Mycoplasmal pneumonia
+155556004,Pertussis pneumonia
+155558003,Pneumonia NOS
+155616009,Bronchitis NOS
+15646009,Human adenovirus 33
+15652005,Human echovirus 13
+15680321000119108,Acute adenoviral follicular conjunctivitis of bilateral eyes
+15680361000119103,Acute adenoviral follicular conjunctivitis of left eye
+15680401000119107,Acute adenoviral follicular conjunctivitis of right eye
+15692481000119104,Keratitis of bilateral eyes caused by Adenovirus
+15692521000119104,Keratitis of left eye caused by Adenovirus
+15692561000119109,Keratitis of right eye caused by Adenovirus
+157109005,Congenital pneumonia
+15712003,Porcine adenovirus 3
+1573008,Human rhinovirus 9
+15738003,Human rhinovirus 90
+15755004,Simian enterovirus 6
+15805002,Acute sinusitis
+16036000,Acute empyema of frontal sinus
+16077531000119101,Acute hemorrhagic conjunctivitis of bilateral eyes caused by Enterovirus
+16146001,Viral bronchitis
+16362001,Human poliovirus 3
+16365004,Canine coronavirus
+16416005,Simian enterovirus 8
+164256007,On examination - follicular tonsillitis
+16532006,Human rhinovirus 34
+166771000000103,Respiratory syncytial virus serology
+167801000000103,Adenovirus nucleic acid detection
+16815003,Human echovirus 5
+168501000000102,Respiratory syncytial virus serology
+172401000000105,Adenovirus nucleic acid detection
+17303003,Adenovirus
+173081000000100,Respiratory syncytial virus serology
+17357005,Acute suppuration of frontal sinus
+177121000000109,Parainfluenza virus antigen assay
+17735001,Human rhinovirus 87
+17741008,Acute tonsillitis
+17833003,Human echovirus 31
+17851002,Human rhinovirus 2
+17904003,Hypertrophic laryngitis
+17905002,Human rhinovirus 93
+181007,Hemorrhagic bronchopneumonia
+18113003,Human rhinovirus 32
+1838001,Human rhinovirus
+18560002,Porcine adenovirus 1
+186351008,Bordetella pertussis (& infection)
+186352001,Bordetella parapertussis (& infection)
+18643000,Ethmoidal sinusitis
+186449008,[X]Mycoplasma pneumoniae [pplo] as the cause of diseases classified to other chapters
+186476008,Acute paralytic non-bulbar poliomyelitis
+186478009,"Acute paralytic poliomyelitis, vaccine-associated"
+186479001,"Acute paralytic poliomyelitis, wild virus, imported"
+186480003,"Acute paralytic poliomyelitis, wild virus, indigenous"
+186491005,Other enterovirus diseases of central nervous system
+186658007,Coxsackie virus disease
+186659004,Herpangina
+186678004,Keratoconjunctivitis caused by adenovirus
+186679007,Conjunctivitis caused by adenovirus
+186742003,Adenovirus (& infection)
+186745001,Rhinovirus (& infection)
+186747009,Coronavirus infection
+186750007,Respiratory syncytial virus infection
+186752004,"[X]Enterovirus infection, unspecified"
+186758000,Coronavirus as the cause of diseases classified to other chapters
+186760003,Respiratory syncytial virus as the cause of diseases classified to other chapters
+186764007,[X]Adenovirus as the cause of diseases classified to other chapters
+187341000000105,Respiratory syncytial virus antigen assay
+187351000000108,Parainfluenza virus antigen assay
+187465002,"[X]Adenovirus infection, unspecified"
+187466001,"[X]Enterovirus infection, unspecified"
+187467005,"[X]Coronavirus infection, unspecified"
+187576001,[X]Mycoplasma pneumoniae [pplo] as the cause of diseases classified to other chapters
+187585001,[X]Adenovirus as the cause of diseases classified to other chapters
+187586000,[X]Enterovirus as the cause of diseases classified to other chapters
+187587009,Coronavirus as the cause of diseases classified to other chapters
+187589007,Respiratory syncytial virus as the cause of diseases classified to other chapters
+18835008,Simian adenovirus
+189486241000119100,Asymptomatic severe acute respiratory syndrome coronavirus 2 infection
+190781000000101,Respiratory syncytial virus antigen assay
+190791000000104,Parainfluenza virus antigen assay
+191727003,Post measles pneumonia
+19219004,Human rhinovirus 4
+192650000,Meningitis caused by pertussis
+192667007,Echovirus meningitis
+19319001,Human echovirus 18
+19371009,Human parainfluenza virus 1
+194905000,Acute pericarditis caused by human coxsackievirus
+19493000,Human adenovirus 22
+194944008,Acute myocarditis - coxsackie
+195649005,Sinusitis (& acute)
+195651009,Other acute sinusitis
+195652002,Other acute sinusitis NOS
+195653007,Acute sinusitis NOS
+195665006,Tonsillitis (& acute)
+195666007,Acute erythematous tonsillitis
+195667003,Acute follicular tonsillitis
+195668008,Acute ulcerative tonsillitis
+195669000,Acute catarrhal tonsillitis
+195676005,Acute viral tonsillitis
+195677001,Recurrent acute tonsillitis
+195678006,Acute tonsillitis NOS
+195679003,Acute laryngitis and tracheitis
+195680000,Acute edematous laryngitis
+195681001,Acute ulcerative laryngitis
+195682008,Acute catarrhal laryngitis
+195683003,Acute phlegmonous laryngitis
+195686006,Acute suppurative laryngitis
+195688007,Acute viral laryngitis unspecified
+195690008,Acute laryngitis NOS
+195702002,Acute laryngotracheobronchitis
+195703007,Acute laryngitis and tracheitis NOS
+195709006,Pharyngolaryngitis
+195713004,Acute bronchitis (& wheezy)
+195714005,Acute fibrinous bronchitis
+195715006,Acute membranous bronchitis
+195716007,Acute pseudomembranous bronchitis
+195717003,Acute purulent bronchitis
+195723008,Acute mycoplasmal bronchitis
+195725001,Acute coxsackievirus bronchitis
+195726000,Acute parainfluenza virus bronchitis
+195727009,Acute respiratory syncytial virus bronchitis
+195728004,Acute bronchitis caused by rhinovirus
+195729007,Acute echovirus bronchitis
+195730002,Subacute bronchitis unspecified
+195731003,Acute viral bronchitis unspecified
+195733000,Acute bronchitis NOS
+195739001,Acute bronchiolitis caused by respiratory syncytial virus
+195790000,Pansinusitis
+195803003,Caseous tonsillitis
+195804009,Lingular tonsillitis
+195854003,Fibrinous chorditis
+195855002,Chorditis vocalis inferior
+195881003,Pneumonia caused by respiratory syncytial virus
+195882005,Viral pneumonia NEC
+195883000,Viral pneumonia NOS
+195894001,Mycoplasmal pneumonia
+195895000,Mycoplasmal pneumonia
+195900001,Pneumonia due to measles
+195907003,Pneumonia with other infectious diseases EC
+195911009,Chickenpox pneumonia
+195912002,Pneumonia with other infectious diseases EC NOS
+195913007,Pneumonia with infectious diseases EC NOS
+195932001,Atypical pneumonia
+195936003,Bronchitis: [unspecified (& chest infection)] or [recurrent wheezy]
+195937007,Tracheobronchitis NOS
+195938002,Laryngotracheobronchitis
+195940007,Bronchitis NOS
+196112005,Abscess of lung with pneumonia
+196196007,[X]Other acute sinusitis
+196204006,[X]Other viral pneumonia
+196209001,[X]Pneumonia in viral diseases classified elsewhere
+19680003,Parainfluenza 2 virus
+197339003,Coxsackie virus hepatitis
+197344005,Hepatitis caused by adenovirus
+198691000000108,Acute obstructive laryngitis
+200011000000106,Polymerase chain reaction test for enterovirus ribonucleic acid
+20398001,Human rhinovirus 86
+204351000000100,Coronavirus nucleic acid detection
+204421000000102,Human metapneumovirus nucleic acid detection
+204541000000108,Rhinovirus nucleic acid detection
+204561000000109,Respiratory syncytial virus nucleic acid detection
+206288009,Congenital viral pneumonia
+206291009,Congenital pneumonia NOS
+209531000000103,Coronavirus nucl acid detect
+209541000000107,Coronavirus nucl acid detect
+209611000000105,Human metapneumovirus nucleic acid detection
+209621000000104,Human metapneumovirus nucleic acid detection
+209831000000101,Rhinovirus nucleic acid detection
+209841000000105,Rhinovirus nucleic acid detection
+2104008,Bovine adenovirus infection
+21206001,Human echovirus 2
+213007,Simian enterovirus 7
+214081000000107,Acute obstructive laryngitis
+21490000,Human rhinovirus 112
+216411000000101,Enterovirus ribonucleic acid polymerase chain reaction
+216421000000107,Enterovirus ribonucleic acid polymerase chain reaction
+21722004,Human rhinovirus 92
+21813007,Human echovirus 17
+2185006,Human adenovirus 5
+21938003,Human rhinovirus 8
+21948001,Simian enterovirus 1
+221051000000108,Respiratory syncytial virus prevention drugs Band 1
+221061000000106,Respiratory syncytial virus treatment and Hepatitis C treatment drugs Band 1
+222008,Acute epiglottitis with obstruction
+22212008,Human adenovirus 28
+222341000000100,Parainfluenza type 1 nucleic acid detection
+222351000000102,Parainfluenza type 2 nucleic acid detection
+222361000000104,Parainfluenza type 3 nucleic acid detection
+2247004,Human adenovirus 6
+22521005,Human rhinovirus 1A
+22580008,Human poliovirus 1
+22594009,Bovine enterovirus 7
+22958004,Human rhinovirus 70
+230142004,Coxsackie A viral meningitis
+230143009,Coxsackie B viral meningitis
+230144003,Chronic echovirus meningoencephalitis
+230162007,Enteroviral encephalitis
+232389000,Pott's puffy tumor
+232390009,Suppurative sinusitis with complications
+232426008,Acute simple laryngitis
+232428009,Acute membranous laryngitis
+232429001,Acute subglottic laryngitis
+232432003,Pediatric acute epiglottitis and supraglottitis
+232433008,Adult acute epiglottitis and supraglottitis
+232458003,Laryngeal sarcoidosis
+232460001,Granulomatosis with polyangiitis of larynx
+233597004,Chest infection - unspecified bronchitis
+233599001,Acute mycoplasmal bronchitis
+233601004,Acute viral bronchitis
+233603001,Acute bronchiolitis caused by adenovirus
+233604007,Pneumonia
+233606009,Atypical pneumonia
+233611006,Fetal pneumonia
+233612004,Fetal pneumonia
+233617005,Hemorrhagic pneumonia
+233619008,Neonatal pneumonia
+233623000,Mononuclear interstitial pneumonia
+233624006,Herpes simplex pneumonia
+233625007,Giant cell pneumonia
+23376009,Human adenovirus 12
+233799004,Acute toxic tracheobronchitis
+2360007,Simian enterovirus 4
+236063005,Adenoviral gastroenteritis
+236302005,Acute interstitial pneumonia
+23684001,Human adenovirus 4
+23831003,Human coxsackievirus A2
+23884004,Acute suppuration of maxillary sinus
+23912008,Human rhinovirus 74
+240339001,Adenovirus food poisoning
+240459003,Abortive poliomyelitis
+240460008,Acute paralytic poliomyelitis
+240482001,Enteroviral exanthem
+240546009,Coxsackie virus exanthem
+240547000,Lymphonodular coxsackie pharyngitis
+240548005,Coxsackie muscle infection
+240549002,Neonatal coxsackie virus syndrome
+240550002,Neonatal echovirus disease
+24071003,Human coxsackievirus A6
+24347001,Cellulitis of vocal cords
+243607003,Family Coronaviridae
+243608008,Genus Coronavirus
+243633006,Genus Enterovirus
+24553000,Bovine adenovirus 1
+24747003,Human coxsackievirus A14
+24921000087105,Antigen of Bordetella pertussis filamentous hemagglutinin
+24931000087107,Antigen of Bordetella pertussis fimbriae
+249821000000109,Parainfluenza type 1 nucleic acid detection 
+249831000000106,Parainfluenza type 2 nucleic acid detection 
+249841000000102,Parainfluenza type 3 nucleic acid detection 
+24991000087108,Antigen of Bordetella pertussis pertactin
+25009005,Human rhinovirus 36
+2503006,Human rhinovirus 96
+25070008,Human rhinovirus 25
+25141000087100,Antigen of Bordetella pertussis fimbriae 2
+25151000087102,Antigen of Bordetella pertussis fimbriae 3
+25162000,Parainfluenza turkey/Ontario virus
+25225006,Disease caused by Adenovirus
+252451000000105,Parainfluenza type 1 nucleic acid detection 
+252461000000108,Parainfluenza type 2 nucleic acid detection 
+252471000000101,Parainfluenza type 3 nucleic acid detection 
+25268007,Simian enterovirus 14
+25330008,Human rhinovirus 77
+25471000087103,Antigen of Bordetella pertussis toxoid
+255834005,Pertussis toxin
+25764005,Acute abscess of frontal sinus
+26038000,Bovine enterovirus 4
+26162008,Human rhinovirus 19
+26183002,Bordetella parapertussis
+26314008,Human rhinovirus 82
+26420005,Simian enterovirus 12
+266108008,Hand foot and mouth disease
+266337001,Acute epiglottitis (non-streptococcal)
+266351001,Pneumonia with infectious diseases EC
+266354009,Bronchitis unspecified
+266378004,(Acute sinusitis: [NOS] or [ethmoidal] or [sphenoidal]) or ([pansinusitis])
+266380005,Acute: [bronchitis] or [chest infections] or [tracheobronchitis]
+26650005,Acute tracheitis
+26808007,Polypoid sinus degeneration
+26846000,Porcine enterovirus 3
+27028004,Human rhinovirus 91
+271532008,Echovirus disease
+27164000,Human rhinovirus 16
+27278006,Acute empyema of sphenoidal sinus
+273041000000105,Respiratory syncytial virus treatment and Hepatitis C treatment drugs band 1 
+273051000000108,Respiratory syncytial virus prevention drugs band 1 
+274102007,Vesicular pharyngitis
+274103002,Pneumonia NOS
+27475006,Parainfluenza virus bronchitis
+275483004,Sinusitis
+275484005,Maxillary sinusitis
+275485006,Frontal sinusitis
+275495004,Acute fibrinous laryngotracheobronchitis
+275499005,Acute wheezy bronchitis
+27555004,Human coxsackievirus B2
+276443001,Acute laryngitis and/or tracheitis
+276664005,Congenital coxsackie infection
+276692000,Congenital viral pneumonia
+276694004,Acquired neonatal pneumonia
+27806003,Coxsackie pericarditis
+27836007,Pertussis
+278516003,Lobar pneumonia
+27878001,Follicular tonsillitis
+2793000,Human coxsackievirus A12
+28192008,Enterovirus meningitis
+28522007,Mouse adenovirus
+28650002,Human rhinovirus 85
+28709001,Cellulitis of larynx
+28775008,Human rhinovirus 30
+29037009,Porcine adenovirus 2
+292508471000119105,History of disease caused by severe acute respiratory syndrome coronavirus 2
+29301000087104,Antigen of severe acute respiratory syndrome coronavirus 2 recombinant spike protein
+29324004,Human rhinovirus 50
+29569009,Human rhinovirus 113
+29576004,Human adenovirus 41
+29591002,Purulent bronchitis
+29608009,Acute epiglottitis
+29941005,Bovine enterovirus 6
+300999006,Basal pneumonia
+301000005,Left lower zone pneumonia
+301001009,Right lower zone pneumonia
+301002002,Left upper zone pneumonia
+301003007,Right middle zone pneumonia
+301004001,Right upper zone pneumonia
+30131000087101,Antigen of severe acute respiratory syndrome coronavirus 2 virus-like particle
+30131005,Porcine enterovirus 6
+30154001,Human echovirus 29
+301824001,Acute viral laryngotracheitis
+30239003,Acute abscess of sphenoidal sinus
+30270006,Infection caused by Human parainfluenza virus 3
+302911003,Acute lingual tonsillitis
+30471008,Porcine enterovirus 5
+30490000,Human adenovirus 11
+30718009,Human rhinovirus 51
+307500008,Cricoarytenoid joint arthritis
+30840007,Human coxsackievirus A18
+3096006,Human coxsackievirus A9
+31183009,Human echovirus 30
+312342009,Infective pneumonia
+312371005,Acute infective bronchitis
+312400008,Acute infective tracheobronchitis
+312423006,Infective laryngitis
+312424000,Infective tonsillitis
+31309002,Respiratory syncytial virus pharyngitis
+313274005,Respiratory syncytial virus swab
+313281000000109,Acute rhinosinusitis
+314559002,Adenoviral keratitis
+315184001,Respiratory syncytial virus antigen level
+31561003,Hypostatic bronchopneumonia
+3163006,Acute adenoviral follicular conjunctivitis
+32398004,Bronchitis
+32522009,Human adenovirus 35
+32580004,Enterovirus enteritis
+326101000000105,Polymerase chain reaction test for adenovirus
+326111000000107,Adenovirus polymerase chain reaction 
+326121000000101,Adenovirus polymerase chain reaction 
+326131000000104,Polymerase chain reaction test for adenovirus group F
+326141000000108,Adenovirus group F polymerase chain reaction 
+326151000000106,Adenovirus group F polymerase chain reaction 
+32771000237101,Titre of Mycoplasma pneumoniae in sputum
+32812008,Infection due to Parainfluenza virus 1
+33093008,Simian adenovirus infection
+33411000237107,Titre of Adenovirus antibody in serum by complement fixation
+33611008,Bovine adenovirus 6
+338111000000109,Acute rhinosinusitis
+33974008,Human adenovirus 15
+34050004,Respiratory syncytial virus pneumonia
+34583003,Equine rhinovirus 1
+34628001,SiAR 126 virus
+34632007,Human echovirus 27
+34910000,Human rhinovirus 21
+35005008,Bovine adenovirus 3
+35037009,Primary atypical interstitial pneumonia
+35161000,Human rhinovirus 39
+35168006,Acute empyema of ethmoidal sinus
+35301006,Acute tracheobronchitis
+35320008,Human rhinovirus 65
+35377009,Parainfluenza virus laryngotracheobronchitis
+35640008,Acute adenoviral encephalitis
+359628008,Conjunctivitis caused by enterovirus type 70
+36026003,Simian enterovirus
+3606000,Bovine adenovirus
+36155008,Hepatitis in coxsackie viral disease
+36204005,Human echovirus 1
+36426008,Subacute bronchitis
+365411000000103,Respiratory syncytial virus A detected
+365421000000109,Respiratory syncytial virus A detected 
+365431000000106,Respiratory syncytial virus A detected 
+365441000000102,Respiratory syncytial virus B detected
+365451000000104,Respiratory syncytial virus B detected 
+365461000000101,Respiratory syncytial virus B detected 
+365471000000108,Respiratory syncytial virus untyped strain detected
+365481000000105,Respiratory syncytial virus untyped strain detected 
+365491000000107,Respiratory syncytial virus untyped strain detected 
+365501000000101,Human metapneumovirus detected
+365511000000104,Human metapneumovirus detected 
+365521000000105,Human metapneumovirus detected 
+365601000000102,Human rhinovirus detected
+365611000000100,Human rhinovirus detected 
+365621000000106,Human rhinovirus detected 
+365631000000108,Human parainfluenza virus detected
+365641000000104,Human parainfluenza virus detected 
+365651000000101,Human parainfluenza virus detected 
+365661000000103,Human adenovirus detected
+365671000000105,Human adenovirus detected 
+365681000000107,Human adenovirus detected 
+365691000000109,Human enterovirus detected
+365701000000109,Human enterovirus detected 
+365711000000106,Human enterovirus detected 
+365751000000105,Mycoplasma pneumoniae detected
+365761000000108,Mycoplasma pneumoniae detected 
+365771000000101,Mycoplasma pneumoniae detected 
+367021008,Enterovirus DNA detection
+367251007,Enterovirus DNA detection
+36971009,Sinusitis
+370587002,Avian parainfluenza virus 2
+370589004,Pheasant adenovirus 1
+370590008,Genus Siadenovirus
+370591007,Turkey adenovirus 2
+371103000,Granulomatous epiglottitis
+37137006,Human rhinovirus 43
+372157009,Avian infectious bronchitis virus Ark-99
+37217002,Coxsackie myocarditis
+37426002,Ulcerative laryngitis
+37443004,Human adenovirus 13
+37544008,Bovine adenovirus 9
+37870004,Human echovirus 11
+379004,Human rhinovirus 13
+37948003,Acute laryngotracheitis without obstruction
+38203008,Human coxsackievirus A10
+38219001,Human coxsackievirus A5
+38220007,Human rhinovirus 72
+38350001,Genus Mastadenovirus
+38889001,Human coxsackievirus A19
+38910005,Human rhinovirus 53
+389486008,Adenovirus antigen level
+390218009,Adenovirus antigen level
+390757000,Respiratory syncytial virus antigen assay
+390793003,Bordetella pertussis rough phase IV
+391362008,Adenovirus antigen level
+39164004,Human echovirus
+39440005,Human rhinovirus 55
+39456000,Human rhinovirus 7
+39460002,Equine rhinovirus
+396285007,Bronchopneumonia
+396286008,Bilateral bronchopneumonia
+397928009,Infantile paralysis
+398102009,Acute poliomyelitis
+398256009,Epidemic acute poliomyelitis
+398327006,Anterior acute poliomyelitis
+398447004,Severe acute respiratory syndrome
+398505001,Enterovirus deoxyribonucleic acid assay
+40451000000103,Atypical pneumonia screening test
+40599000,Simian enterovirus 2
+40600002,Pneumococcal bronchitis
+406529000,Pneumonia severity index
+406568007,Coxsackievirus infection of the central nervous system
+406571004,Echovirus infection of the central nervous system
+406578005,Enterovirus infection of the central nervous system
+406595002,Infection caused by Mycoplasma pneumoniae
+407363007,Equine torovirus
+407364001,Bovine torovirus
+407365000,Feline infectious peritonitis virus
+407366004,Feline coronavirus
+407370007,Human coronavirus 229E
+407371006,Human coronavirus OC43
+407372004,Bovine coronavirus
+407468004,Genus Thogotovirus
+407483009,Genus Isavirus
+407484003,Infectious salmon anemia virus
+407489008,Human parainfluenza virus 1
+407491000,Human parainfluenza virus 2
+407493002,Human parainfluenza virus 3
+407496005,Infection caused by Human parainfluenza virus 1
+407498006,Human parainfluenza viruses
+40766000,Enteroviral lymphonodular pharyngitis
+407671000,Bilateral pneumonia
+40803002,Human rhinovirus 35
+408238007,Enterovirus ribonucleic acid detection
+408669002,Acute laryngitis with obstruction
+408684006,Healthcare associated respiratory syncytial virus disease
+408685007,Healthcare associated parainfluenza virus disease
+408686008,Healthcare associated adenoviral disease
+408688009,Healthcare associated severe acute respiratory syndrome
+41024002,Bovine enterovirus
+41207000,Adenoviral pneumonia
+413450008,Adenovirus nucleic acid detection
+413933004,Coxsackie myocarditis of newborn
+414341000000100,[X]Pneumonia in viral diseases classified elsewhere
+41476007,Human adenovirus 30
+415360003,Severe acute respiratory syndrome-related coronavirus
+415361004,Severe acute respiratory syndrome coronavirus AS
+415362006,Severe acute respiratory syndrome coronavirus BJ01
+415363001,Severe acute respiratory syndrome coronavirus BJ02
+415364007,Severe acute respiratory syndrome coronavirus BJ03
+415365008,Severe acute respiratory syndrome coronavirus BJ04
+415366009,Severe acute respiratory syndrome coronavirus BJ2232
+415367000,Severe acute respiratory syndrome coronavirus BJ302
+415368005,Severe acute respiratory syndrome coronavirus CUHK-AG01
+415369002,Severe acute respiratory syndrome coronavirus CUHK-AG02
+415370001,Severe acute respiratory syndrome coronavirus CUHK-AG03
+415371002,Severe acute respiratory syndrome coronavirus CUHK-L2
+415372009,Severe acute respiratory syndrome coronavirus CUHK-Su10
+415373004,Severe acute respiratory syndrome coronavirus CUHK-W1
+415374005,Severe acute respiratory syndrome coronavirus cw037
+415375006,Severe acute respiratory syndrome coronavirus cw049
+415376007,Severe acute respiratory syndrome coronavirus FRA
+415377003,Severe acute respiratory syndrome coronavirus Frankfurt 1
+415378008,Severe acute respiratory syndrome coronavirus GD01
+415379000,Severe acute respiratory syndrome coronavirus GD03T0013
+415380002,Severe acute respiratory syndrome coronavirus GD69
+415381003,Severe acute respiratory syndrome coronavirus GZ-A
+415382005,Severe acute respiratory syndrome coronavirus GZ-B
+415383000,Severe acute respiratory syndrome coronavirus GZ-C
+415384006,Severe acute respiratory syndrome coronavirus GZ-D
+415385007,Severe acute respiratory syndrome coronavirus GZ02
+415386008,Severe acute respiratory syndrome coronavirus GZ43
+415387004,Severe acute respiratory syndrome coronavirus GZ50
+415388009,Severe acute respiratory syndrome coronavirus GZ60
+415389001,Severe acute respiratory syndrome coronavirus HB
+415390005,Severe acute respiratory syndrome coronavirus HGZ8L1-A
+415391009,Severe acute respiratory syndrome coronavirus HGZ8L1-B
+415392002,Severe acute respiratory syndrome coronavirus HGZ8L2
+415393007,Severe acute respiratory syndrome coronavirus HKU-36871
+415394001,Severe acute respiratory syndrome coronavirus HKU-39849
+415395000,Severe acute respiratory syndrome coronavirus HKU-65806
+415396004,Severe acute respiratory syndrome coronavirus HKU-66078
+415397008,Severe acute respiratory syndrome coronavirus Hong Kong/03/2003
+415398003,Severe acute respiratory syndrome coronavirus HPZ-2003
+415399006,Severe acute respiratory syndrome coronavirus HSR 1
+415400004,Severe acute respiratory syndrome coronavirus HSZ-A
+415401000,Severe acute respiratory syndrome coronavirus HSZ-Bb
+415402007,Severe acute respiratory syndrome coronavirus HSZ-Bc
+415403002,Severe acute respiratory syndrome coronavirus HSZ-Cb
+415404008,Severe acute respiratory syndrome coronavirus HSZ-Cc
+415405009,Severe acute respiratory syndrome coronavirus HSZ2-A
+415406005,Severe acute respiratory syndrome coronavirus HSZ2-Bb
+415407001,Severe acute respiratory syndrome coronavirus HZS2-C
+415408006,Severe acute respiratory syndrome coronavirus HZS2-D
+415409003,Severe acute respiratory syndrome coronavirus HZS2-E
+415410008,Severe acute respiratory syndrome coronavirus HZS2-Fb
+415411007,Severe acute respiratory syndrome coronavirus HZS2-Fc
+415412000,Severe acute respiratory syndrome coronavirus HZS2-JMD
+415413005,Severe acute respiratory syndrome coronavirus LC1
+415414004,Severe acute respiratory syndrome coronavirus LC2
+415415003,Severe acute respiratory syndrome coronavirus LC3
+415416002,Severe acute respiratory syndrome coronavirus LC4
+415417006,Severe acute respiratory syndrome coronavirus LC5
+415418001,Severe acute respiratory syndrome coronavirus NS-1
+415419009,Severe acute respiratory syndrome coronavirus PUMC01
+415420003,Severe acute respiratory syndrome coronavirus PUMC02
+415421004,Severe acute respiratory syndrome coronavirus PUMC03
+415422006,Severe acute respiratory syndrome coronavirus sf098
+415423001,Severe acute respiratory syndrome coronavirus sf099
+415424007,Severe acute respiratory syndrome coronavirus Shanghai LY
+415425008,Severe acute respiratory syndrome coronavirus ShanghaiQXC1
+415426009,Severe acute respiratory syndrome coronavirus ShanghaiQXC2
+415427000,Severe acute respiratory syndrome coronavirus Sin 3765V
+415428005,Severe acute respiratory syndrome coronavirus Sin0409
+415429002,Severe acute respiratory syndrome coronavirus Sin1-11
+415430007,Severe acute respiratory syndrome coronavirus Sin2500
+415431006,Severe acute respiratory syndrome coronavirus Sin2677
+415432004,Severe acute respiratory syndrome coronavirus Sin2679
+415433009,Severe acute respiratory syndrome coronavirus Sin2748
+415434003,Severe acute respiratory syndrome coronavirus Sin2774
+415435002,Severe acute respiratory syndrome coronavirus Sin3-11
+415436001,Severe acute respiratory syndrome coronavirus Sin3408
+415437005,Severe acute respiratory syndrome coronavirus Sin3725V
+415438000,Severe acute respiratory syndrome coronavirus Sin842
+415439008,Severe acute respiratory syndrome coronavirus Sin845
+415440005,Severe acute respiratory syndrome coronavirus Sin846
+415441009,Severe acute respiratory syndrome coronavirus Sin847
+415442002,Severe acute respiratory syndrome coronavirus Sin848
+415443007,Severe acute respiratory syndrome coronavirus Sin849
+415444001,Severe acute respiratory syndrome coronavirus Sin850
+415445000,Severe acute respiratory syndrome coronavirus Sin852
+415446004,Severe acute respiratory syndrome coronavirus Sin_WNV
+415447008,Severe acute respiratory syndrome coronavirus SinP1
+415448003,Severe acute respiratory syndrome coronavirus SinP2
+415449006,Severe acute respiratory syndrome coronavirus SinP3
+415450006,Severe acute respiratory syndrome coronavirus SinP4
+415451005,Severe acute respiratory syndrome coronavirus SinP5
+415452003,Severe acute respiratory syndrome coronavirus SoD
+415453008,Severe acute respiratory syndrome coronavirus SZ1
+415454002,Severe acute respiratory syndrome coronavirus SZ13
+415455001,Severe acute respiratory syndrome coronavirus SZ16
+415456000,Severe acute respiratory syndrome coronavirus SZ3
+415457009,Severe acute respiratory syndrome coronavirus Taiwan
+415458004,Severe acute respiratory syndrome coronavirus Taiwan TC1
+415459007,Severe acute respiratory syndrome coronavirus Taiwan TC2
+415460002,Severe acute respiratory syndrome coronavirus Taiwan TC3
+41546002,Disease caused by Rhinovirus
+415461003,Severe acute respiratory syndrome coronavirus Tor2
+415462005,Severe acute respiratory syndrome coronavirus TW
+415463000,Severe acute respiratory syndrome coronavirus TW-GD1
+415464006,Severe acute respiratory syndrome coronavirus TW-GD2
+415465007,Severe acute respiratory syndrome coronavirus TW-GD3
+415466008,Severe acute respiratory syndrome coronavirus TW-GD5
+415467004,Severe acute respiratory syndrome coronavirus TW-HP1
+415468009,Severe acute respiratory syndrome coronavirus TW-HP2
+415469001,Severe acute respiratory syndrome coronavirus TW-HP3
+415470000,Severe acute respiratory syndrome coronavirus TW-HP4
+415471001,Severe acute respiratory syndrome coronavirus TW-JC2
+415472008,Severe acute respiratory syndrome coronavirus TW-KC1
+415473003,Severe acute respiratory syndrome coronavirus TW-KC2
+415474009,Severe acute respiratory syndrome coronavirus TW-PH1
+415475005,Severe acute respiratory syndrome coronavirus TW-YM4
+415476006,Severe acute respiratory syndrome coronavirus TW1
+415477002,Severe acute respiratory syndrome coronavirus TW10
+415478007,Severe acute respiratory syndrome coronavirus TW11
+415479004,Severe acute respiratory syndrome coronavirus TW2
+415480001,Severe acute respiratory syndrome coronavirus TW3
+415481002,Severe acute respiratory syndrome coronavirus TW4
+415482009,Severe acute respiratory syndrome coronavirus TW5
+415483004,Severe acute respiratory syndrome coronavirus TW6
+415484005,Severe acute respiratory syndrome coronavirus TW7
+415485006,Severe acute respiratory syndrome coronavirus TW8
+415486007,Severe acute respiratory syndrome coronavirus TW9
+415487003,Severe acute respiratory syndrome coronavirus TWC
+415488008,Severe acute respiratory syndrome coronavirus TWC2
+415489000,Severe acute respiratory syndrome coronavirus TWC3
+415490009,Severe acute respiratory syndrome coronavirus TWH
+415491008,Severe acute respiratory syndrome coronavirus TWJ
+415492001,Severe acute respiratory syndrome coronavirus TWK
+415493006,Severe acute respiratory syndrome coronavirus TWS
+415494000,Severe acute respiratory syndrome coronavirus TWY
+415495004,Severe acute respiratory syndrome coronavirus Urbani
+415496003,Severe acute respiratory syndrome coronavirus Vietnam
+415497007,Severe acute respiratory syndrome coronavirus WHU
+415498002,Severe acute respiratory syndrome coronavirus ZS-B
+415499005,Severe acute respiratory syndrome coronavirus ZS-C
+416088008,Bovine respiratory syncytial virus disease
+41662000,Bovine enterovirus 5
+416730002,Human metapneumovirus
+41678003,Bovine adenovirus 4
+417770000,Human respiratory syncytial virus Group A
+417771001,Human respiratory syncytial virus Group B
+417772008,Human respiratory syncytial virus GA1
+417773003,Human respiratory syncytial virus GA2
+417774009,Human respiratory syncytial virus GA3
+417790009,Human respiratory syncytial virus GA4
+417791008,Human respiratory syncytial virus GA5
+417792001,Human respiratory syncytial virus GA6
+417793006,Human respiratory syncytial virus GA7
+417794000,Human respiratory syncytial virus GB1
+417795004,Human respiratory syncytial virus GB2
+417796003,Human respiratory syncytial virus GB3
+417797007,Human respiratory syncytial virus GB4
+417798002,Human metapneumovirus Genotype A1
+417799005,Human metapneumovirus Genotype A2
+417800009,Human metapneumovirus Genotype B1
+417801008,Human metapneumovirus Genotype B2
+417802001,Human adenovirus 42
+417803006,Human adenovirus 43
+417804000,Human adenovirus 44
+417805004,Human adenovirus 45
+417806003,Human adenovirus 46
+417807007,Human adenovirus 47
+417808002,Human adenovirus 48
+417809005,Human adenovirus 49
+417810000,Human adenovirus 50
+417811001,Human adenovirus 51
+417812008,Human adenovirus species A
+417813003,Human adenovirus species B
+417814009,Human adenovirus species C
+417815005,Human adenovirus species D
+417816006,Human adenovirus species E
+417817002,Human adenovirus species F
+417818007,Human coronavirus NL63
+417819004,Human coronavirus HK1
+417820005,Human rhinovirus/enterovirus
+4179003,Simian enterovirus 11
+41854006,Genus Torovirus
+418746002,Coronavirus 229E
+41931000119102,Sinusitis co-occurrent with nasal polyps
+41988004,Human coxsackievirus B4
+42002000,Avian infectious bronchitis
+420441008,Human enterovirus 77
+42067008,Human coxsackievirus A16
+42084002,Human adenovirus 23
+420854009,Human rhinovirus 1
+421124007,Human enterovirus 75
+421170000,Human enterovirus 78
+421415007,Subacute adenoviral encephalitis with acquired immunodeficiency syndrome
+421508002,Viral pneumonia with acquired immunodeficiency syndrome
+421603003,Human enterovirus 73
+421671002,Pneumonia with acquired immunodeficiency syndrome
+421887001,Human enterovirus 76
+422298007,Human rhinovirus A
+422545005,Bovine adenovirus A
+42261000237104,Number concentration of human adenovirus by culture
+422715005,Porcine torovirus
+422739000,Bovine adenovirus B
+422793002,Human enterovirus B
+422844001,Ovine adenovirus A
+422912001,Turkey coronavirus
+422982005,Human enterovirus C
+423043004,Human enterovirus A
+423202008,Equine adenovirus B
+423262006,Equine adenovirus 1
+423396002,Equine adenovirus 1 infection
+4235009,Porcine enterovirus
+423544001,Goat adenovirus
+424005007,Murine adenovirus A
+42414003,Human rhinovirus 54
+424210000,Equine adenovirus 2
+424405002,Human torovirus
+424470006,Family Adenoviridae
+424561006,Murine adenovirus 1
+424637007,Genus Atadenovirus
+424741003,Porcine adenovirus A
+424904008,Ovine adenovirus B
+425070009,Bovine adenovirus C
+425121007,Equine adenovirus 2 infection
+425241008,Equine adenovirus A
+425270004,Porcine adenovirus B
+425996009,Bilateral basal pneumonia
+426696003,Lingular pneumonia
+427004,Human echovirus 4
+42761000000106,Atypical pneumonia screening test
+428234001,Human enterovirus D
+429297003,Acute nonparalytic poliomyelitis caused by human poliovirus 1
+42935008,Human rhinovirus 33
+429381000000103,[X]Other viral pneumonia
+43099005,Parainfluenza 3 virus
+431231008,Acute rhinosinusitis
+431701000000105,"[X]Enterovirus infection, unspecified"
+431711000000107,"[X]Coronavirus infection, unspecified"
+43229008,Parainfluenza virus
+43261000237109,Number concentration of Bordetella pertussis by culture
+43277008,Human rhinovirus 107
+43481000237101,Qualitative result of human parainfluenza culture
+43518005,Bovine rhinovirus 2
+43521000237101,Qualitative result of human rhinovirus culture
+43561000237107,Qualitative result of human adenovirus culture
+43603001,Porcine enterovirus 2
+43794009,Human echovirus 3
+439412001,Polymerase chain reaction test for adenovirus
+440925005,Human rhinovirus present
+440929004,Respiratory syncytial virus A present
+440930009,Human adenovirus present
+440990006,Mycoplasma pneumoniae present
+441048007,Respiratory syncytial virus B present
+441070005,Human enterovirus present
+441133003,Human metapneumovirus present
+441233009,Polymerase chain reaction test for Adenovirus group F
+441278007,Respiratory syncytial virus untyped strain present
+441344004,Human parainfluenza virus present
+441501000000103,[X]Enterovirus as the cause of diseases classified to other chapters
+441551009,Inflammation of larynx caused by virus
+441590008,Pneumonia caused by Severe acute respiratory syndrome coronavirus
+44172002,Human poliovirus
+44274007,Lymphoid interstitial pneumonia
+44291000237103,Number concentration of human rhinovirus by culture
+443101004,Ovine adenovirus D
+443114003,Bovine adenovirus F
+443122005,Bovine adenovirus D
+443123000,Bovine adenovirus E
+443197006,Turkey adenovirus B
+4433000,Human echovirus 6
+443405000,Fowl adenovirus A
+443472001,Turkey adenovirus A
+443485003,Duck adenovirus A
+443545007,Frog adenovirus
+443601000000100,[X]Adenovirus as the cause of diseases classified to other chapters
+444350008,Ovine adenovirus 7
+444360004,Turkey adenovirus 3
+444390006,Duck adenovirus 1
+44471000237101,Qualitative result of Bordetella pertussis culture
+444814009,Viral sinusitis
+445096001,Pneumonia caused by Human metapneumovirus
+445102008,Inflammation of bronchiole caused by Human metapneumovirus
+446311006,Acute bulbar poliomyelitis caused by Human poliovirus 2
+446312004,Acute poliomyelitis caused by Human poliovirus 1
+446754004,Enteritis caused by Human coxsackievirus
+446755003,Enteritis caused by Human echovirus
+446756002,Enteritis caused by Human enterovirus 71
+446957000,Acute bulbar poliomyelitis caused by Human poliovirus 1
+446958005,Acute paralytic poliomyelitis caused by Human poliovirus 1
+447262002,Acute paralytic poliomyelitis caused by Human poliovirus 2
+447378002,Acute paralytic poliomyelitis caused by Human poliovirus 3
+44781001,Human rhinovirus 27
+44802000,Human rhinovirus 24
+448520007,Human adenovirus 53
+450867005,Bovine rhinovirus A
+450868000,Bovine rhinovirus B
+450869008,Human rhinovirus B
+450870009,Human rhinovirus C
+454211000000100,[X]Other acute sinusitis
+45434007,Ovine adenovirus infection
+455511000000101,"[X]Adenovirus infection, unspecified"
+456511000000105,"[X]Enterovirus infection, unspecified"
+45843005,Human rhinovirus 59
+45913009,Laryngitis
+460345001,Myocarditis caused by echovirus
+46301003,Human rhinovirus 31
+46397005,Enterovirus heart infection
+46486009,Human rhinovirus 40
+46498004,Human rhinovirus 26
+464991000000105,[X]Mycoplasma pneumoniae [pplo] as the cause of diseases classified to other chapters
+46506009,Human echovirus 7
+468021000000100,[X]Mycoplasma pneumoniae [pplo] as the cause of diseases classified to other chapters
+46957004,Human adenovirus 8
+46962003,Canine adenovirus
+46970008,Pneumonia caused by Mycoplasma pneumoniae
+47015004,Simian enterovirus 13
+471272001,Cavitary pneumonia
+472011000000102,[X]Adenovirus as the cause of diseases classified to other chapters
+4738005,Porcine adenovirus infection
+4745005,Simian enterovirus 9
+48171002,Human coxsackievirus B6
+48291000,Bovine rhinovirus
+48313000,Bovine adenovirus 8
+48397003,Cold agglutinin disease due to Mycoplasma pneumonia
+48476000,Human rhinovirus 103
+49018005,Human coxsackievirus B
+49087008,Simian enterovirus 18
+49323000,Human rhinovirus 5
+49479002,Simian enterovirus 5
+49779001,Bovine respiratory syncytial virus
+49787000,Human adenovirus 19
+49835008,Feline infectious peritonitis virus
+49908003,Acute epiglottitis without obstruction
+49981000237105,Qualitative result of Middle East respiratory syndrome related coronavirus ribonucleic acid nucleic acid amplification
+50074000,Bovine enterovirus 3
+50081000237104,Qualitative result of Adenovirus deoxyribonucleic acid by polymerase chain reaction
+50191000237103,Qualitative result of Parainfluenza virus antigen in throat swab
+50241000237103,Qualitative result of Adenovirus antigen in serum
+5028002,Acute pansinusitis
+50321000237103,Qualitative result of severe acute respiratory syndrome coronavirus 2 ribonucleic acid nucleic acid amplification
+50346001,Human echovirus 15
+50381000237102,Qualitative result of Adenovirus deoxyribonucleic acid nucleic acid amplification
+50581000237106,Qualitative result of severe acute respiratory syndrome coronavirus 2 immunoglobulin M antibody in serum
+50804000,Catarrhal pneumonia
+5103007,Genus Aviadenovirus
+51141000237103,Qualitative result of Parainfluenza virus 4 ribonucleic acid nucleic acid amplification
+51191000237106,Qualitative result of Respiratory syncytial virus antigen in nasal fluid
+51209006,Viral tonsillitis
+51225001,Enteritis of turkeys coronavirus
+51391000237109,Qualitative result of Adenovirus ribonucleic acid nucleic acid amplification
+51411000237109,Qualitative result of human coronavirus ribonucleic acid nucleic acid amplification
+51441000237105,Qualitative result of Enterovirus ribonucleic acid nucleic acid amplification
+51631000237101,Qualitative result of severe acute respiratory syndrome coronavirus 2 antigen in serum
+51701000237100,Qualitative result of human respiratory syncytial virus ribonucleic acid nucleic acid amplification
+51741000237102,Qualitative result of Parainfluenza virus antigen in nasopharyngeal swab
+52241000237102,Qualitative result of Adenovirus species F deoxyribonucleic acid by polymerase chain reaction
+52411000237104,Qualitative result of severe acute respiratory syndrome coronavirus ribonucleic acid nucleic acid amplification
+5247005,Bordetella pertussis
+526005,Porcine epizootic diarrhea virus
+52657009,Human coxsackievirus A11
+52857006,Human rhinovirus 79
+53038008,Human echovirus 8
+532291000000105,Pneumonia with infectious diseases EC
+53349007,Human adenovirus 1
+53648006,Disease caused by Enterovirus
+53744000,Human coxsackievirus A
+53778006,Human rhinovirus 63
+543701000000101,Other enterovirus diseases of central nervous system
+54435006,Human adenovirus 10
+54875006,Bovine enterovirus 1
+5488007,Human adenovirus 25
+55014007,Family Orthomyxoviridae
+55125000,Equine rhinovirus infection
+55130001,Laryngotracheitis
+55174004,Human poliovirus 2
+55355000,Acute laryngopharyngitis
+55504008,Human rhinovirus 109
+55679008,Peribronchial pneumonia
+55735004,Respiratory syncytial virus infection
+55935007,Human rhinovirus 57
+55969008,Human rhinovirus 10
+55982000,Human coxsackievirus A3
+56529007,Adenoviral encephalitis
+567531000000100,Coronavirus as the cause of diseases classified to other chapters
+56874008,Ovine adenovirus 1
+57089007,Respiratory syncytial virus bronchiolitis
+576581000000107,Acute viral laryngitis unspecified
+57702005,Unresolved pneumonia
+57713008,Inflammation of vocal cord
+57757007,Human coxsackievirus
+57785009,Human rhinovirus 98
+57923009,Porcine enterovirus 7
+5811004,Human rhinovirus 52
+58445002,Human coxsackievirus A17
+58458001,Sialodacryoadenitis of rats virus
+58528009,Bovine rhinovirus infection
+58657002,Human echovirus 12
+58720004,Mycoplasma pneumoniae
+5875001,Acute bronchitis with obstruction
+58754003,Porcine adenovirus
+58763001,Acute empyema of nasal sinus
+58890000,Adenoviral bronchopneumonia
+58959001,Parainfluenza 5 virus
+59001000237103,Qualitative result of Bordetella pertussis deoxyribonucleic acid nucleic acid amplification
+59003004,Equine adenovirus infection
+59056002,Human echovirus 32
+59114004,Simian enterovirus 16
+59221008,Parainfluenza virus rhinopharyngitis
+5938005,Porcine enterovirus 4
+59475000,Pneumonia in pertussis
+59921000237106,Qualitative result of respiratory syncytial virus antigen in nasopharyngeal aspirate
+59967003,Acute laryngotracheitis with obstruction
+60066004,Human echovirus 34
+60087009,Human rhinovirus 22
+600981000000100,Other acute sinusitis NOS
+600991000000103,Acute sinusitis NOS
+60174000,Human rhinovirus 41
+603091000000105,Acute laryngitis NOS
+603111000000100,Pneumonia with other infectious diseases EC
+603131000000108,Acute laryngitis and tracheitis NOS
+603201000000106,Congenital pneumonia NOS
+60363000,Pneumonia
+60481000237104,Qualitative result of Human metapneumovirus ribonucleic acid nucleic acid amplification
+60485005,Pleurobronchopneumonia
+60521000237104,Qualitative result of Adenovirus group F ribonucleic acid nucleic acid amplification
+6060001,Human rhinovirus 48
+607911000000108,Other acute sinusitis
+60847003,Human rhinovirus 114
+61173003,Human rhinovirus 38
+615621000000101,Respiratory syncytial virus as the cause of diseases classified to other chapters
+616111000000105,Pneumonia with other infectious diseases EC NOS
+616131000000102,Pneumonia with infectious diseases EC NOS
+61696004,Simian enterovirus 15
+61711004,Acute abscess of ethmoidal sinus
+617941000000107,Viral pneumonia NEC
+617951000000105,Viral pneumonia NOS
+61958003,Adenoviral respiratory disease
+621011000000106,Acute bronchitis NOS
+62313001,Human adenovirus 16
+623471000000106,Acute tonsillitis NOS
+62408001,Human coxsackievirus B5
+62441000237106,Qualitative result of Adenovirus group F deoxyribonucleic acid nucleic acid amplification
+62641000237109,Qualitative result of severe acute respiratory syndrome coronavirus 2 immunoglobulin A antibody in serum
+62841000237108,Qualitative result of Parainfluenza virus 2 ribonucleic acid nucleic acid amplification
+63001000237108,Qualitative result of severe acute respiratory syndrome coronavirus 2 immunoglobulin G antibody in serum
+63140003,Acute suppuration of ethmoidal sinus
+63648009,Human rhinovirus 18
+63828000,Human rhinovirus 6
+63881000237109,Qualitative result of Parainfluenza virus 1 ribonucleic acid nucleic acid amplification
+63928004,Human rhinovirus 64
+64016000,Human rhinovirus 66
+6415009,Human respiratory syncytial virus
+64219004,Winter dysentery bovine coronavirus
+64361000237107,Qualitative result of Bordetella pertussis ribonucleic acid nucleic acid amplification
+64369009,Acute tracheitis without obstruction
+64375000,Acute laryngotracheitis
+64409008,Human rhinovirus 108
+644261000000103,Chest infection - unspecified bronchitis
+64667001,Interstitial pneumonia
+64703005,Terminal bronchopneumonia
+64764001,"Acute paralytic poliomyelitis, bulbar"
+64880000,Parainfluenza virus bronchopneumonia
+649111000000109,Tracheobronchitis NOS
+649121000000103,Bronchitis NOS
+64917006,Parainfluenza virus pneumonia
+65003007,Human adenovirus 34
+65080008,Human rhinovirus 84
+651000146102,Middle East respiratory syndrome
+65121000237103,Qualitative result of parainfluenza virus ribonucleic acid nucleic acid amplification
+651931000000103,Subacute bronchitis unspecified
+651941000000107,Acute viral bronchitis unspecified
+65199001,Simian enterovirus 3
+65718001,Adenoviral myocarditis
+65831002,Human rhinovirus 80
+65878001,Septic bronchitis
+66087004,Murine adenovirus infection
+66111006,Human adenovirus 9
+66122005,Human adenovirus 29
+66161000237104,Qualitative result of Parainfluenza virus 3 ribonucleic acid nucleic acid amplification
+66429007,Unresolved lobar pneumonia
+6655004,Acute laryngitis
+66581005,Human rhinovirus 42
+66619009,Human echovirus 9
+66641000237105,Qualitative result of severe acute respiratory syndrome coronavirus 2 antibody in serum
+66645000,Porcine hemagglutinating encephalomyelitis virus
+66721000237109,Qualitative result of Rhinovirus ribonucleic acid nucleic acid amplification
+66942000,Human rhinovirus 73
+670561000000106,Bronchitis unspecified
+67180006,Human rhinovirus 46
+674814021000119106,Acute respiratory distress syndrome due to disease caused by severe acute respiratory syndrome coronavirus 2
+6771007,Human coxsackievirus A20
+677801000000109,Pneumonia NOS
+67814005,Bronchopneumonia
+67832005,Acute ethmoidal sinusitis
+68016006,Human rhinovirus 14
+68272006,Acute maxillary sinusitis
+68409003,Organized pneumonia
+68506007,Bovine rhinovirus 1
+68749005,Bovine adenovirus 2
+68874003,Human enterovirus 71
+68883008,Human adenovirus 40
+68949000,Infection caused by Human parainfluenza virus 4
+68957002,Human adenovirus 7
+69239002,Human enterovirus
+697932005,Middle East respiratory syndrome coronavirus
+697934006,Subfamily Torovirinae
+697935007,Genus Alphacoronavirus
+697936008,Genus Betacoronavirus
+697937004,Genus Deltacoronavirus
+697938009,Genus Gammacoronavirus
+697939001,Avian coronavirus
+697940004,Betacoronavirus 1
+697941000,Alphacoronavirus 1
+697942007,Human coronavirus HKU1
+697943002,Murine coronavirus
+698222005,Human coxsackievirus A24 variant
+698257008,Coxsackie virus infection of oral cavity
+700217006,Suspected coronavirus infection
+700249006,Idiopathic interstitial pneumonia
+70075003,Human rhinovirus 115
+70233007,Infection caused by Human parainfluenza virus 2
+70385007,Adenoviral pharyngoconjunctivitis
+704980004,Human adenovirus 57
+70576008,Enteroviral encephalomyelitis
+7063008,Gangrenous pneumonia
+707779003,Ribonucleic acid of Human respiratory syncytial virus A
+707780000,Ribonucleic acid of Human respiratory syncytial virus B
+707781001,Ribonucleic acid of Human respiratory syncytial virus
+707784009,Ribonucleic acid of Severe acute respiratory syndrome coronavirus
+707785005,Ribonucleic acid of Severe acute respiratory syndrome coronavirus Urbani
+707881005,Ribonucleic acid of Echovirus 11
+707882003,Ribonucleic acid of Echovirus 30
+707883008,Ribonucleic acid of Echovirus 4
+707884002,Ribonucleic acid of Enterovirus 71
+707892006,Ribonucleic acid of Human coronavirus 229E
+707893001,Ribonucleic acid of Human coronavirus HKU1
+707894007,Ribonucleic acid of Human coronavirus NL63
+707895008,Ribonucleic acid of Human coronavirus OC43
+707896009,Ribonucleic acid of Human metapneumovirus A
+707897000,Ribonucleic acid of Human metapneumovirus B
+707898005,Ribonucleic acid of Human metapneumovirus
+707935009,Ribonucleic acid of Parainfluenza virus 1
+707936005,Ribonucleic acid of Parainfluenza virus 2
+707937001,Ribonucleic acid of Parainfluenza virus 3
+707938006,Ribonucleic acid of Parainfluenza virus 4
+707939003,Ribonucleic acid of Parainfluenza virus 4a
+707940001,Ribonucleic acid of Parainfluenza virus 4b
+707941002,Ribonucleic acid of Parainfluenza virus
+707945006,Ribonucleic acid of Porcine respiratory coronavirus
+708031000,Idiopathic eosinophilic pneumonia
+708161005,Deoxyribonucleic acid of Bordetella parapertussis
+708162003,Deoxyribonucleic acid of Bordetella pertussis
+70855006,Human echovirus 16
+70880006,Adenoviral enteritis
+709223007,Antigen of Bovine adenovirus 3
+709224001,Antigen of Bovine adenovirus 5
+709225000,Antigen of Bovine coronavirus
+709249002,Antigen of Bovine parainfluenza virus 3
+709251003,Antigen of Bovine respiratory syncytial virus
+709319001,Antigen of Canine adenovirus
+709320007,Antigen of Canine coronavirus
+709330003,Antigen of Enterovirus
+709332006,Antigen of Equine adenovirus
+709344009,Antigen of Human coronavirus 229E
+709345005,Antigen of Human coronavirus
+709346006,Antigen of Human coronavirus OC43
+709347002,Antigen of Human metapneumovirus
+709359003,Antigen of Infectious bronchitis virus
+709365003,Antigen of Parainfluenza virus 4
+709366002,Antigen of Porcine adenovirus
+709368001,Antigen of Porcine enterovirus
+709429009,Antigen of Adenovirus + antigen of Rotavirus
+709438006,Antigen of Parainfluenza virus 1 + 2 + 3
+709439003,Antigen of Enterovirus + antigen of Rhinovirus
+709663002,Supraglottitis
+709681004,Rhinolophus bat coronavirus HKU2
+70976000,Viral epiglottitis
+70986004,Human enteric coronavirus
+71186008,Croup
+71255007,Adenoviral laryngotracheobronchitis
+713084008,Pneumonia caused by Human coronavirus
+713260006,Subacute adenoviral encephalitis co-occurrent with human immunodeficiency virus infection
+713350004,Human enterovirus not human enterovirus 71
+713456006,Infection caused by Human enterovirus 71
+713610005,Antigen of acellular Bordetella pertussis
+714076000,Antigen of whole cell Bordetella pertussis
+714203003,Acute bronchitis co-occurrent with bronchiectasis
+71490002,Human rhinovirus 67
+715882005,Severe acute respiratory syndrome of upper respiratory tract
+716253006,Human echovirus 10
+716254000,Human echovirus 22
+716255004,Human echovirus 23
+716865000,Congenital infection caused by enterovirus
+719218000,Cryptogenic organizing pneumonia
+71926009,Infective pneumonia acquired prenatally
+7195006,Human rhinovirus 56
+720112004,Ribonucleic acid of Human coronavirus
+720170004,Deoxyribonucleic acid of Human adenovirus C
+721274005,Congenital infection caused by Echovirus
+721586007,Pharyngotonsillitis caused by Human herpes simplex virus
+721764008,Infection caused by Human poliovirus
+721765009,Meningitis caused by Human poliovirus
+721884000,Bat coronavirus HKU3
+72204002,Respiratory syncytial virus laryngotracheobronchitis
+72211003,Laryngeal granuloma
+72254008,Human coxsackievirus A1
+722547006,Meningitis caused by Human enterovirus 71
+722548001,Meningitis caused by Human enterovirus 70
+724499007,Idiopathic acute eosinophilic pneumonia
+725064005,Human adenovirus species G
+725065006,Human adenovirus 52
+725066007,Human adenovirus 54
+725067003,Human adenovirus 55
+725068008,Human adenovirus 56
+72570006,Porcine adenovirus 4
+725917007,Acute sinusitis caused by virus
+72593000,Human coxsackievirus A15
+72597004,Human coxsackievirus A21
+72656004,Granulomatous pneumonia
+72877003,Human coxsackievirus A24
+73657004,Human rhinovirus 58
+73815008,Ovine adenovirus 4
+73993004,Human adenovirus 26
+74246005,Human rhinovirus 20
+74305002,Human echovirus 14
+74497000,Avian infectious bronchitis virus
+74533001,Human echovirus 20
+74702001,Human rhinovirus 106
+7479004,Human adenovirus 14
+74871001,Human adenovirus
+74922007,Human adenovirus 20
+74924008,Human coxsackievirus A7
+7543009,Human coxsackievirus A13
+75565006,Human echovirus 25
+75570004,Viral pneumonia
+75715004,Human rhinovirus 61
+764948009,Bourbon virus
+764993001,Encephalitis caused by Mycoplasma pneumoniae
+76511000000100,Atypical pneumonia screening test
+76653009,Acute empyema of maxillary sinus
+766968000,Antigen of Human rhinovirus
+7678002,Cytomegaloviral pneumonia
+76892004,Human rhinovirus 11
+76985005,Human rhinovirus 89
+77116006,Infection caused by Bordetella parapertussis
+772146005,Pertussis suspected
+77319008,Human rhinovirus 29
+77379003,Human rhinovirus 37
+7746003,Human echovirus 24
+77470003,Enteroviral exanthematous fever
+77919000,Acute sphenoidal sinusitis
+78402008,Breda virus
+7842005,Caprine adenovirus
+78430008,Adenoviral pharyngitis
+78434004,Human enterovirus 69
+785728005,Bronchitis co-occurrent with wheeze
+785737005,Bronchitis co-occurrent with chronic wheeze
+785744001,Bronchitis co-occurrent with acute wheeze
+785745000,Acute bronchitis co-occurrent with wheeze
+78724007,Canine adenovirus 1
+78737005,Frontal sinusitis
+788393007,Antigen of Human mastadenovirus F
+78895009,Congenital pneumonia
+78911000,Parainfluenza virus pharyngitis
+79101004,Human rhinovirus 47
+79479005,Respiratory syncytial virus bronchitis
+79658004,Porcine enterovirus 1
+79804005,Human adenovirus 38
+79968007,Human echovirus 33
+80073003,Porcine transmissible gastroenteritis virus
+80129000,Murine hepatitis virus
+80257001,Acute bronchitis with bronchospasm
+80384002,Epiglottitis
+80441004,Ovine adenovirus 5
+80600003,Acute suppuration of nasal sinus
+80771000000105,Atypical pneumonia screening test
+80785003,Human rhinovirus 49
+810711000000102,Acute bronchiolitis due to human metapneumovirus
+810721000000108,Pneumonia due to Human metapneumovirus
+810871000000102,Parainfluenza type 4 nucleic acid detection
+810881000000100,Parainfluenza type 4 nucleic acid detection 
+81190003,Human adenovirus 2
+81227000,Human rhinovirus 83
+81401002,Human rhinovirus 99
+815291000000109,Measurement of Parainfluenza virus type 1 ribonucleic acid by nucleic acid amplification test
+815301000000108,Measurement of Parainfluenza virus type 2 ribonucleic acid by nucleic acid amplification test
+815351000000109,"Measurement of parainfluenza virus type 1,2 and 3 antigen"
+815501000000104,Measurement of Parainfluenza virus type 3 ribonucleic acid by nucleic acid amplification test
+815521000000108,Measurement of Parainfluenza virus ribonucleic acid by nucleic acid amplification test
+815641000000102,Measurement of Parainfluenza virus type 4 ribonucleic acid by nucleic acid amplification test
+81660009,Porcine enterovirus 8
+817031000000106,Determination of enterovirus genotype by ribonucleic acid analysis
+817051000000104,Measurement of enterovirus ribonucleic acid by nucleic acid amplification test
+817111000000102,Measurement of coronavirus ribonucleic acid by nucleic acid amplification test
+817191000000106,Determination of adenovirus genotype by deoxyribonucleic acid analysis
+817221000000104,Determination of coronavirus genotype by ribonucleic acid analysis
+81754003,Human rhinovirus 111
+81773004,Neonatal calf diarrhea coronavirus
+81907007,Human rhinovirus 12
+81933004,Avian enterovirus
+820151000000105,Measurement of rhinovirus ribonucleic acid by nucleic acid amplification test
+82059001,Human coxsackievirus B1
+82081006,Bovine adenovirus 7
+821021000000105,Detection of respiratory syncytial virus ribonucleic acid by nucleic acid amplification test
+82519006,Human echovirus 19
+82547005,Acute adenoviral meningoencephalitis
+82690000,Suppurative laryngitis
+82698007,Human rhinovirus 28
+82774008,Human rhinovirus 104
+83009004,Bovine enterovirus 2
+830151000000108,Measurement of adenovirus deoxyribonucleic acid by nucleic acid amplification test
+831801000000108,Acute bronchiolitis due to human metapneumovirus
+831811000000105,Pneumonia due to human metapneumovirus
+83264000,Epidemic pleurodynia
+83593001,Human coxsackievirus A22
+83804005,Human rhinovirus 17
+83915001,Fowl adenovirus 1
+840284009,Eczema coxsackium
+840459008,Cranial neuropathy due to sinusitis
+840533007,Severe acute respiratory syndrome coronavirus 2
+840536004,Antigen of severe acute respiratory syndrome coronavirus 2
+840539006,Disease caused by severe acute respiratory syndrome coronavirus 2
+840544004,Suspected disease caused by Severe acute respiratory coronavirus 2
+84080008,Human rhinovirus 60
+84101006,Human coronavirus
+84586005,Ovine adenovirus 3
+84895009,Caprine adenovirus infection
+85158000,Human adenovirus 21
+85164007,Human rhinovirus 76
+8519009,Acute tracheitis with obstruction
+85348007,Human rhinovirus 78
+85350004,Ovine adenovirus
+85402004,Meningoeruptive syndrome
+85469005,Hypostatic pneumonia
+8549006,Desquamative interstitial pneumonia
+8562005,Human rhinovirus 95
+85832003,Parainfluenza virus laryngitis
+85881001,Human adenovirus 32
+85915003,Laryngotracheobronchitis
+860870002,Erythema multiforme due to Mycoplasma pneumoniae infection
+86176002,Human rhinovirus 3
+866055006,Myelitis caused by Enterovirus
+866058008,Myelitis caused by Human echovirus
+866059000,Myelitis caused by Human coxsackievirus A
+866063007,Myelitis caused by Mycoplasma pneumoniae
+866124002,Myelitis caused by human poliovirus
+866151004,Lymphocytopenia due to severe acute respiratory syndrome coronavirus 2
+866152006,Thrombocytopenia due to severe acute respiratory syndrome coronavirus 2
+866251007,Myelitis caused by Human coxsackievirus B
+866901000000103,Eosinophilic bronchitis
+867411000000108,Respiratory syncytial virus monoclonal antibody prophylaxis
+86773000,Edematous laryngitis
+86780003,"Avian parainfluenza virus 2, strain Yucaipa"
+868192004,Subgenus Merbecovirus
+868193009,Subgenus Embecovirus
+868194003,Subgenus Hibecovirus
+868195002,Subgenus Nobecovirus
+868196001,Subgenus Sarbecovirus
+868197005,Subfamily Orthocoronavirinae
+86869009,Canine adenovirus 2
+86886003,Human coxsackievirus A4
+86976003,Human rhinovirus 44
+870573008,Interstitial pneumonia with autoimmune features
+870588003,Sepsis due to disease caused by severe acute respiratory syndrome coronavirus 2
+870589006,Acute kidney injury due to disease caused by severe acute respiratory syndrome coronavirus 2
+870590002,Acute hypoxemic respiratory failure due to disease caused by severe acute respiratory syndrome coronavirus 2
+870591003,Rhabdomyolysis due to disease caused by severe acute respiratory syndrome coronavirus 2
+870728004,Exanthem caused by human echovirus 16
+870729007,Exanthem caused by human echovirus
+871552002,Detection of severe acute respiratory syndrome coronavirus 2 antibody
+871553007,Detection of severe acute respiratory syndrome coronavirus 2 antigen
+871555000,Detection of ribonucleic acid of severe acute respiratory syndrome coronavirus 2
+871556004,Detection of ribonucleic acid of severe acute respiratory syndrome coronavirus 2 in nasopharyngeal swab
+871557008,Detection of ribonucleic acid of severe acute respiratory syndrome coronavirus 2 in oropharyngeal swab
+871558003,Detection of ribonucleic acid of severe acute respiratory syndrome coronavirus 2 in sputum
+871559006,Detection of ribonucleic acid of severe acute respiratory syndrome coronavirus 2 in bronchoalveolar lavage fluid
+871560001,Detection of ribonucleic acid of severe acute respiratory syndrome coronavirus 2 using polymerase chain reaction
+871562009,Detection of severe acute respiratory syndrome coronavirus 2
+87381000000105,Enterovirus ribonucleic acid detection
+87419001,Equine rhinovirus 2
+876251000000103,Respiratory syncytial virus monoclonal antibody prophylaxis
+87627001,Bovine adenovirus 5
+878151000000108,Suspected coronavirus infection
+878818001,Pharyngotonsillitis
+880529761000119102,Infection of lower respiratory tract caused by severe acute respiratory syndrome coronavirus 2
+88129004,Coxsackie endocarditis
+882784691000119100,Pneumonia caused by severe acute respiratory syndrome coronavirus 2
+88348008,Maxillary sinusitis
+88711001,Coronavirus (living organism)
+88716006,Human rhinovirus 75
+88900000,Human rhinovirus 68
+890351000000103,Suspected coronavirus infection
+89117003,Human parainfluenza virus 4
+89194009,Acute abscess of maxillary sinus
+89376006,Simian enterovirus 10
+894362851000119109,Disease caused by severe acute respiratory syndrome coronavirus 2 during pregnancy
+89523002,Dhori virus
+89549007,Catarrhal bronchitis
+89585007,Human coxsackievirus B3
+897656009,Rhinosinusitis
+89860009,Human adenovirus 27
+90176007,Tonsillitis
+90336009,Human adenovirus 39
+90389005,Genus Rhinovirus
+906511000000100,Adenovirus nucleic acid detection assay
+906521000000106,Adenovirus nucleic acid detection assay 
+906711000000107,Coronavirus nucleic acid detection assay
+906721000000101,Coronavirus nucleic acid detection assay 
+90717001,Human adenovirus 36
+907281000000108,Human metapneumovirus nucleic acid detection assay
+90729005,Thogoto virus
+907291000000105,Human metapneumovirus nucleic acid detection assay 
+907621000000105,Parainfluenza type 1 nucleic acid detection assay
+907631000000107,Parainfluenza type 1 nucleic acid detection assay 
+90779008,Human enterovirus 70
+908161000000107,Parainfluenza type 2 nucleic acid detection assay
+908171000000100,Parainfluenza type 2 nucleic acid detection assay 
+908191000000101,Parainfluenza type 3 nucleic acid detection assay
+908201000000104,Parainfluenza type 3 nucleic acid detection assay 
+908211000000102,Parainfluenza type 4 nucleic acid detection assay
+908221000000108,Parainfluenza type 4 nucleic acid detection assay 
+908361000000109,Rhinovirus nucleic acid detection assay
+908371000000102,Rhinovirus nucleic acid detection assay 
+908401000000100,Respiratory syncytial virus nucleic acid detection assay
+90929002,Human rhinovirus 100
+91038008,Acute frontal sinusitis
+91072000,Human echovirus 26
+91125002,Human adenovirus 37
+9119005,Human rhinovirus 23
+9141005,Human adenovirus 17
+9243001,Human rhinovirus 71
+933001,Human rhinovirus 15
+933661000000102,Adenovirus deoxyribonucleic acid detection assay
+933671000000109,Adenovirus deoxyribonucleic acid detection assay 
+933791000000101,Coronavirus ribonucleic acid detection assay
+933801000000102,Coronavirus ribonucleic acid detection assay 
+93417001,Conjunctivitis caused by Bordetella pertussis
+934751000000106,Human metapneumovirus ribonucleic acid detection assay
+934761000000109,Human metapneumovirus ribonucleic acid detection assay 
+934781000000100,Human metapneumovirus ribonucleic acid detection assay 
+934951000000108,Parainfluenza virus type 1 ribonucleic acid detection assay
+934961000000106,Parainfluenza type 1 ribonucleic acid detection assay 
+934971000000104,Parainfluenza virus type 2 ribonucleic acid detection assay
+934981000000102,Parainfluenza type 2 ribonucleic acid detection assay 
+934991000000100,Parainfluenza virus type 3 ribonucleic acid detection assay
+935001000000107,Parainfluenza type 3 ribonucleic acid detection assay 
+935011000000109,Parainfluenza virus type 4 ribonucleic acid detection assay
+935021000000103,Parainfluenza type 4 ribonucleic acid detection assay 
+935161000000107,Rhinovirus ribonucleic acid detection assay
+935171000000100,Rhinovirus ribonucleic acid detection assay 
+935211000000102,Respiratory syncytial virus ribonucleic acid detection assay
+935221000000108,Respiratory syncytial virus ribonucleic acid detection assay 
+95886009,Mycoplasmal tracheobronchitis
+968471000000107,Bordetella pertussis deoxyribonucleic acid assay
+96971000000109,Enterovirus ribonucleic acid detection
+99251000000100,Bilateral pneumonia
+9959007,Human rhinovirus 69

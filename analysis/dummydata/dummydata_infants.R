@@ -188,22 +188,22 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
-  ##exclusion criteria 
-  
-  #severe combined immunodeficiency syndrome 
-  severe_immunodeficiency = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.02)
-  ),
-  
-  #ventilator dependence
-  ventilator_dependent = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.01)
-  ),
-  
-  #risk group 
-  risk_group_infants = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.01)
-  )
+  # ##exclusion criteria 
+  # 
+  # #severe combined immunodeficiency syndrome 
+  # severe_immunodeficiency = bn_node(
+  #   ~ rbernoulli(n = ..n, p = 0.02)
+  # ),
+  # 
+  # #ventilator dependence
+  # ventilator_dependent = bn_node(
+  #   ~ rbernoulli(n = ..n, p = 0.01)
+  # ),
+  # 
+  # #risk group 
+  # risk_group_infants = bn_node(
+  #   ~ rbernoulli(n = ..n, p = 0.01)
+  # )
   
 )
 

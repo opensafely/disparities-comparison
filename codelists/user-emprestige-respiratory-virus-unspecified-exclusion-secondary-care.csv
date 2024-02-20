@@ -1,0 +1,20 @@
+code,term
+A37,Whooping cough
+A370,Whooping cough due to Bordetella pertussis
+A371,Whooping cough due to Bordetella parapertussis
+A378,Whooping cough due to other Bordetella species
+A379,"Whooping cough, unspecified"
+B300,Keratoconjunctivitis due to adenovirus H19.2
+B301,Conjunctivitis due to adenovirus H13.1
+B340,"Adenovirus infection, unspecified site"
+B341,"Enterovirus infection, unspecified site"
+B960,Mycoplasma pneumoniae [M. pneumoniae] as the cause of diseases classified to other chapters
+B970,Adenovirus as the cause of diseases classified to other chapters
+B971,Enterovirus as the cause of diseases classified to other chapters
+J122,Parainfluenza virus pneumonia
+J123,Human metapneumovirus pneumonia
+J157,Pneumonia due to Mycoplasma pneumoniae
+J200,Acute bronchitis due to Mycoplasma pneumoniae
+J204,Acute bronchitis due to parainfluenza virus
+J206,Acute bronchitis due to rhinovirus
+J211,Acute bronchiolitis due to human metapneumovirus

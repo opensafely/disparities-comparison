@@ -11,44 +11,47 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/input_older_adults_2016_2017.arrow
       --dummy-data-file analysis/dummydata/dummyextract_older_adults_2016_2017.arrow
-      -- older_adults season1_start_date season1_end_date
+      -- older_adults season1_start_date season1_end_date specific primary
     outputs:
       highly_sensitive:
         dataset: output/input_older_adults_2016_2017.arrow
         
+
   process_dataset_older_adults_s1:
-    run: r:latest analysis/data_processing.R older_adults season1_start_date season1_end_date
+    run: r:latest analysis/data_processing.R older_adults season1_start_date season1_end_date specific primary
     needs: [generate_dataset_older_adults_s1]
     outputs:
       highly_sensitive:
         cohort: output/input_processed_older_adults_2016_2017.arrow
-        
+       
+ 
   describe_dataset_older_adults_s1:
-    run: r:latest analysis/report.R older_adults season1_start_date season1_end_date
+    run: r:latest analysis/report.R older_adults season1_start_date season1_end_date specific primary
     needs: [process_dataset_older_adults_s1]
     outputs:
       moderately_sensitive:
         cohort: output/descriptive_older_adults_2016_2017.png
-    
+
   generate_dataset_adults_s1:
     run: >
       ehrql:v1 generate-dataset analysis/dataset_definition.py 
       --output output/input_adults_2016_2017.arrow
       --dummy-data-file analysis/dummydata/dummyextract_adults_2016_2017.arrow
-      -- adults season1_start_date season1_end_date
+      -- adults season1_start_date season1_end_date sensitive primary
     outputs:
       highly_sensitive:
         dataset: output/input_adults_2016_2017.arrow
 
   process_dataset_adults_s1:
-    run: r:latest analysis/data_processing.R adults season1_start_date season1_end_date
+    run: r:latest analysis/data_processing.R adults season1_start_date season1_end_date specific primary
     needs: [generate_dataset_adults_s1]
     outputs:
       highly_sensitive:
         cohort: output/input_processed_adults_2016_2017.arrow
-        
+       
+ 
   describe_dataset_adults_s1:
-    run: r:latest analysis/report.R adults season1_start_date season1_end_date
+    run: r:latest analysis/report.R adults season1_start_date season1_end_date specific primary
     needs: [process_dataset_adults_s1]
     outputs:
       moderately_sensitive:
@@ -59,20 +62,22 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/input_children_adolescents_2016_2017.arrow
       --dummy-data-file analysis/dummydata/dummyextract_children_adolescents_2016_2017.arrow
-      -- children_and_adolescents season1_start_date season1_end_date
+      -- children_and_adolescents season1_start_date season1_end_date specific primary
     outputs:
       highly_sensitive:
         dataset: output/input_children_adolescents_2016_2017.arrow
-        
+       
+ 
   process_dataset_children_adolescents_s1:
-    run: r:latest analysis/data_processing.R children_adolescents season1_start_date season1_end_date
+    run: r:latest analysis/data_processing.R children_adolescents season1_start_date season1_end_date specific primary
     needs: [generate_dataset_children_adolescents_s1]
     outputs:
       highly_sensitive:
         cohort: output/input_processed_children_adolescents_2016_2017.arrow
-        
+       
+ 
   describe_dataset_children_adolescents_s1:
-    run: r:latest analysis/report.R children_adolescents season1_start_date season1_end_date
+    run: r:latest analysis/report.R children_adolescents season1_start_date season1_end_date specific primary
     needs: [process_dataset_children_adolescents_s1]
     outputs:
       moderately_sensitive:
@@ -83,20 +88,21 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/input_infants_2016_2017.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_2016_2017.arrow
-      -- infants season1_start_date season1_end_date
+      -- infants season1_start_date season1_end_date primary specific
     outputs:
       highly_sensitive:
         dataset: output/input_infants_2016_2017.arrow
   
   process_dataset_infants_s1:
-    run: r:latest analysis/data_processing.R infants season1_start_date season1_end_date
+    run: r:latest analysis/data_processing.R infants season1_start_date season1_end_date specific primary
     needs: [generate_dataset_infants_s1]
     outputs:
       highly_sensitive:
         cohort: output/input_processed_infants_2016_2017.arrow
-        
+       
+ 
   describe_dataset_infants_s1:
-    run: r:latest analysis/report.R infants season1_start_date season1_end_date
+    run: r:latest analysis/report.R infants season1_start_date season1_end_date specific primary
     needs: [process_dataset_infants_s1]
     outputs:
       moderately_sensitive:

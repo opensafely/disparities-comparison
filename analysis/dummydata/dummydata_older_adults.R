@@ -260,16 +260,16 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
-  ##exclusion criteria 
-  
-  #care home resident
-  care_home_tpp = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.01)
-  ),
-  
-  care_home_code = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.1)
-  )
+  # ##exclusion criteria 
+  # 
+  # #care home resident
+  # care_home_tpp = bn_node(
+  #   ~ rbernoulli(n = ..n, p = 0.01)
+  # ),
+  # 
+  # care_home_code = bn_node(
+  #   ~ rbernoulli(n = ..n, p = 0.1)
+  # )
   
 )
 

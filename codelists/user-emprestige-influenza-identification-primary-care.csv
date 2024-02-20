@@ -1,0 +1,284 @@
+code,term
+1033051000000101,Influenza due to zoonotic influenza virus
+1033061000000103,Influenza due to zoonotic influenza virus 
+1033071000000105,Influenza due to pandemic influenza virus
+1033081000000107,Influenza due to pandemic influenza virus 
+1033091000000109,Influenza due to seasonal influenza virus
+1033101000000101,Influenza due to seasonal influenza virus 
+1033111000000104,Influenza with pneumonia due to seasonal influenza virus
+1033121000000105,Influenzal bronchopneumonia due to seasonal influenza virus 
+103516006,Influenzavirus A Bangkok
+103517002,Influenzavirus A England
+103518007,Influenzavirus A Hong Kong
+103519004,Influenzavirus A Leningrad
+103520005,Influenzavirus A Mississippi
+103521009,Influenzavirus A Phillipines
+103522002,Influenzavirus A Port Chalmers
+103523007,Influenzavirus A Texas
+103524001,Influenzavirus A Victoria
+1050601000000101,Influenza due to seasonal influenza virus
+1050981000000100,Influenza due to seasonal influenza virus
+10624911000119107,Otitis media caused by H1N1 influenza
+10624951000119108,Otitis media caused by influenza
+10628871000119101,Gastroenteritis caused by influenza
+10628911000119103,Gastroenteritis caused by Influenza A virus
+10629191000119100,Bronchiolitis caused by influenza virus
+10629351000119108,Myocarditis caused by Influenza A virus
+10674911000119108,Otitis media caused by Influenza A virus
+10677711000119101,Encephalopathy caused by Influenza A virus
+10685111000119102,Upper respiratory tract infection caused by Influenza
+111876006,Influenza due to other Influenza virus
+1119277000,Antigen of Influenza A virus A/Indonesia/05/2005 (H5N1)-like virus strain split virion hemagglutinin
+1149091008,Influenza caused by Influenza A virus subtype H2
+1157322000,Antigen of Influenza A virus A/California/7/2009 (H1N1)-like virus strain split virion hemagglutinin
+121006005,Antigen of Influenza A virus
+121008006,Antigen of Influenza B virus
+121026009,Antigen of Influenza C virus
+134251009,Influenza B antigen level
+142921000119103,Upper respiratory tract infection caused by avian influenza
+142931000119100,Pneumonia caused by H1N1 influenza
+142941000119109,Upper respiratory tract infection caused by H1N1 influenza
+142951000119106,Myocarditis caused by Influenza A virus subtype H1N1
+142961000119108,Gastroenteritis caused by H1N1 influenza
+142971000119102,Encephalopathy caused by H1N1 influenza
+142981000119104,Myocarditis caused by avian influenza
+142991000119101,Gastroenteritis caused by avian influenza
+143001000119100,Encephalopathy caused by avian influenza
+143111000119103,Pneumonia caused by avian influenza
+1553003,Influenzavirus B
+155559006,Influenza
+155560001,Influenzal pneumonia
+155561002,Influenza with encephalopathy
+16311000119108,Pneumonia caused by influenza
+181000124108,Influenza A virus present
+192691003,Encephalitis due to influenza
+192693000,Encephalitis due to influenza-virus identified
+194946005,Acute myocarditis - influenzal
+195878008,Pneumonia and influenza
+195920000,"Influenza with pneumonia, influenza virus identified"
+195921001,Influenza with pneumonia NOS
+195922008,Influenza with other respiratory manifestation
+195923003,Influenza with laryngitis
+195924009,Influenza with pharyngitis
+195925005,Influenza with respiratory manifestations NOS
+195927002,Influenza with other manifestations
+195928007,Influenza with encephalopathy
+195929004,Influenza with gastrointestinal tract involvement
+195930009,Influenza with other manifestations NOS
+196200002,"[X]Influenza with other respiratory manifestations, influenza virus identified"
+196201003,"[X]Influenza with other manifestations, influenza virus identified"
+196202005,"[X]Influenza with other respiratory manifestations, virus not identified"
+196203000,"[X]Influenza with other manifestations, virus not identified"
+243612002,Influenza virus A and B
+243613007,Influenza virus A
+243614001,Influenza virus C
+24601000087105,Antigen of live attenuated Influenza virus
+24662006,Influenza caused by Influenza B virus
+25031000087107,Antigen of Influenza A virus A/Kansas/14/2017 (H3N2)-like virus strain split virion hemagglutinin
+25041000087101,Antigen of Influenza A virus A/Brisbane/02/2018 (H1N1)pdm09-like virus strain split virion hemagglutinin
+25061000087100,Antigen of Influenza B virus B/Colorado/06/2017 (B/Victoria/2/87 lineage)-like virus strain split virion hemagglutinin
+25081000087106,Antigen of Influenza B virus B/Phuket/3073/2013 (B/Yamagata/16/88 lineage)-like virus strain split virion hemagglutinin
+25161000087104,Antigen of Influenza A virus A/Brisbane/02/2018 (H1N1)pdm09-like virus strain surface subunit hemagglutinin
+25181000087105,Antigen of Influenza A virus A/Kansas/14/2017 (H3N2)-like virus strain surface subunit hemagglutinin
+25201000087109,Antigen of Influenza B virus B/Colorado/06/2017 (B/Victoria/2/87 lineage)-like virus strain surface subunit hemagglutinin
+25221000087103,Antigen of Influenza B virus B/Phuket/3073/2013 (B/Yamagata/16/88 lineage)-like virus strain surface subunit hemagglutinin
+25231000087101,Antigen of live attenuated Influenza A virus A/Brisbane/02/2018 (H1N1)pdm09-like strain
+25241000087107,Antigen of live attenuated Influenza A virus A/Kansas/14/2017 (H3N2)-like strain
+25251000087105,Antigen of live attenuated Influenza B virus B/Colorado/06/2017 (B/Victoria/2/87 lineage)-like strain
+25261000087108,Antigen of live attenuated Influenza B virus B/Phuket/3073/2013 (B/Yamagata/16/88 lineage)-like strain
+25371000087106,Antigen of Influenza A virus subtype H3N2
+25481000087101,Antigen of Influenza B virus Yamagata lineage
+25491000087104,Antigen of Influenza B virus Victoria lineage
+25501000087107,Antigen of live attenuated Influenza A virus subtype H1N1
+25511000087109,Antigen of live attenuated Influenza A virus subtype H3N2
+25521000087101,Antigen of live attenuated Influenza B virus Yamagata lineage
+25531000087104,Antigen of live attenuated Influenza B virus Victoria lineage
+260210008,Antigen of Influenza virus
+266353003,Influenza NOS
+280331000000102,Avian influenza
+28105000,Influenzal laryngitis
+292631000000106,Avian influenza
+309789002,Encephalitis caused by influenza
+309806000,Encephalitis caused by influenza-virus identified
+313251006,Encephalitis caused by influenza-specific virus not identified
+328531000119104,Upper respiratory tract infection caused by Influenza A
+359371000000109,Influenza H1 virus detected
+359381000000106,Influenza H1 detected 
+359391000000108,Influenza H1 detected 
+359401000000106,Influenza H2 virus detected
+359411000000108,Influenza H2 detected 
+359421000000102,Influenza H2 detected 
+359431000000100,Influenza H3 virus detected
+359441000000109,Influenza H3 detected 
+359451000000107,Influenza H3 detected 
+359461000000105,Influenza H5 virus detected
+359471000000103,Influenza H5 detected 
+359481000000101,Influenza H5 detected 
+359491000000104,"Influenza A virus, other or untyped strain detected"
+359501000000105,"Influenza A, other or untyped strain detected"
+359511000000107,"Influenza A, other or untyped strain detected"
+359521000000101,Influenza B virus detected
+359531000000104,Influenza B detected 
+359541000000108,Influenza B detected 
+359829002,"Influenzavirus, type A, avian"
+359831006,"Influenzavirus, type A, equine"
+359833009,"Influenzavirus, type A, porcine"
+389069008,"Avian influenza virus, low pathogenic"
+389070009,"Avian influenza virus, highly pathogenic"
+407477006,Genus Alphainfluenzavirus
+407478001,Genus Betainfluenzavirus
+407479009,Influenza A virus
+407480007,Influenza B virus
+407481006,Genus Gammainfluenzavirus
+407482004,Influenza C virus
+408687004,Healthcare associated influenza disease
+41269000,Influenzal bronchopneumonia
+418181000000104,"[X]Influenza with other respiratory manifestations, influenza virus identified"
+418191000000102,"[X]Influenza with other manifestations, influenza virus identified"
+420362005,"Influenzavirus type A, avian, H1N1 strain"
+420508007,"Influenzavirus type A, avian, H3N2 strain"
+421264001,"Influenzavirus type A, avian, H5N1 strain"
+421539000,"Influenzavirus type A, avian, H1N2 strain"
+42501000237100,Number concentration of Influenza virus by culture
+426959005,Influenza B virus Yamagata lineage
+427672003,Influenza B virus Victoria lineage
+427873006,"Influenza caused by influenza virus type A, avian, H5N1 strain"
+42964004,Influenza with pneumonia
+430891000000103,"[X]Influenza with other respiratory manifestations, virus not identified"
+43692000,Influenzal acute upper respiratory infection
+440927002,Influenza A virus subtype H2 present
+441043003,Influenza A virus subtype H1 present
+441049004,Influenza A virus subtype H3 present
+441131000000104,"[X]Influenza with other manifestations, virus not identified"
+441343005,Influenza A virus subtype H5 present
+441345003,Influenza B virus present
+442269004,Antigen of Influenza A virus subtype H1N1
+442352004,Influenza A virus subtype H1N1
+442438000,Influenza caused by Influenza A virus
+442696006,Influenza caused by Influenza A virus subtype H1N1
+445346006,Detection of avian influenza A using polymerase chain reaction technique
+445403009,Detection of Influenza A virus subtype H1N1 using polymerase chain reaction technique
+446396002,Influenza A virus subtype H1
+446397006,Influenza A virus subtype H2
+446524007,Influenza A virus A/Leningrad/621/86 (H1N1)
+446525008,Influenza A virus A/Leningrad/624/86 (H1N1)
+446601007,Influenzavirus A subtype H3N2
+446645007,Influenza A virus subtype H3
+446646008,Influenza A virus subtype H3N2
+446647004,Influenza A virus subtype H5
+446648009,Influenza A virus subtype H7
+446649001,Influenza A virus subtype H9
+447493004,Influenza A virus A/Bangkok/1/79 (H3N2)
+447499000,Influenza A virus A/Bangkok/2/79 (H3N2)
+447503006,Influenza A virus A/Port Chalmers/1/73 (H3N2)
+447504000,Influenza A virus A/Texas/1/77 (H3N2)
+447508002,Influenza A virus A/Leningrad/385/80 (H3N2)
+447522002,Influenza A virus A/Mississippi/1/85 (H3N2)
+447530001,Influenza A virus A/Philippines/2/82 (H3N2)
+447573005,Influenza A virus A/England/42/72 (H3N2)
+447578001,Influenza A virus A/Hong Kong/1/68 (H3N2)
+447587005,Influenza A virus A/Victoria/3/75 (H3N2)
+448325003,Influenza A virus subtype H9N2
+448803002,Influenza A virus subtype N1
+448835002,Influenza A virus subtype N2
+449024000,Pandemic Influenza A (H1N1) 2009
+450480003,Influenza A virus subtype H3N2v
+450715004,Influenza caused by Influenza A virus subtype H7
+450716003,Influenza caused by Influenza A virus subtype H9
+46171006,"Influenza due to Influenza virus, type A, porcine"
+505131000000104,Influenza due to Influenza A virus subtype H1N1
+506781000000105,Influenza A virus H1N1 subtype detected
+506791000000107,Influenza H1N1 virus detected 
+506801000000106,Influenza H1N1 virus detected 
+510671000000104,Influenza due to Influenza A virus subtype H1N1
+540121000000103,Influenza with other manifestations
+540131000000101,Influenza with other manifestations NOS
+55207002,Influenzavirus A (living organism)
+55604004,Avian influenza
+609444009,Influenza A virus subtype H7N9
+6142004,Influenza
+616161000000107,Influenza with pneumonia NOS
+616171000000100,Influenza with other respiratory manifestation
+616181000000103,Influenza with respiratory manifestations NOS
+61700007,Influenza with non-respiratory manifestation
+63039003,Influenza with respiratory manifestation other than pneumonia
+670551000000108,Influenza NOS
+699872005,Influenza A virus untyped strain present
+700349009,Influenza A virus subtype H10
+700350009,Influenza A virus subtype H10N8
+702482001,Influenza A H1N1 virus 2009 pandemic strain present
+707448003,Influenza caused by Influenza A virus subtype H7N9
+707902004,Ribonucleic acid of Influenza A virus H1N1
+707903009,Ribonucleic acid of Influenza A virus H1
+707904003,Ribonucleic acid of Influenza A virus H2
+707905002,Ribonucleic acid of Influenza A virus H3
+707906001,Ribonucleic acid of Influenza A virus H5 Asian lineage
+707907005,Ribonucleic acid of Influenza A virus H5
+707908000,Ribonucleic acid of Influenza A virus H5a
+707909008,Ribonucleic acid of Influenza A virus H5b
+707910003,Ribonucleic acid of Influenza A virus H6
+707911004,Ribonucleic acid of Influenza A virus H7
+707912006,Ribonucleic acid of Influenza A virus H9
+707913001,Ribonucleic acid of Influenza A virus hemagglutinin
+707914007,Ribonucleic acid of Influenza A virus matrix protein
+707915008,Ribonucleic acid of Influenza A virus N1
+707916009,Ribonucleic acid of Influenza A virus N2
+707917000,Ribonucleic acid of Influenza A virus neuraminidase
+707918005,Ribonucleic acid of Influenza A virus non-structural protein
+707919002,Ribonucleic acid of Influenza A virus nucleoprotein
+707920008,Ribonucleic acid of Influenza A virus polymerase A
+707921007,Ribonucleic acid of Influenza A virus polymerase B2
+707922000,Ribonucleic acid of Influenza A virus polymerase
+707923005,Ribonucleic acid of Influenza A virus
+707924004,Ribonucleic acid of Influenza virus A swine origin
+707925003,Ribonucleic acid of Influenza B virus
+707926002,Ribonucleic acid of Influenza C virus
+707927006,Ribonucleic acid of Influenza virus
+708119004,Influenza A virus subtype H7 present
+708120005,Influenza A virus subtype H9 present
+708527000,Influenza A virus subtype H5N8
+709361007,Antigen of Influenza A virus subtype H1
+709362000,Antigen of Influenza A virus subtype H3
+709436005,Antigen of Influenza virus A + B
+709437001,Antigen of Influenza virus A + B + C
+711128004,"Influenza caused by influenza virus type A, avian, H3N2 strain"
+711330007,Influenza A virus subtype H1N1 detected
+713083002,Influenza caused by Influenza A virus subtype H5
+713151006,Influenza B virus/Shanghai/361/2002
+715333003,"Influenza A virus, not subtype H1N1"
+715346008,Influenza A virus subtype H7N7
+715347004,Influenza A virus subtype H7N3
+715348009,Influenza A virus subtype H7N2
+715349001,Influenza A virus subtype H2N2
+715350001,Influenza A virus subtype H10N7
+715870001,"Influenza A virus, not subtype H1 and not subtype H3"
+719590007,Influenza caused by seasonal influenza virus
+719865001,Influenza caused by pandemic influenza virus
+720313003,Antigen to Swine influenza virus
+721863005,Antigen of Influenza virus surface protein
+722259006,Influenza B virus Malaysia lineage
+725894000,Influenza virus
+738276008,Disorder of central nervous system co-occurrent and due to infection with influenza virus
+74644004,Influenza with encephalopathy
+772807005,Influenza A virus subtype H3N8
+772809008,Influenza A virus subtype H1N2
+772810003,Influenza caused by Influenza A virus subtype H3N2
+772827006,Influenza A virus subtype H5N1
+772828001,Influenza caused by Influenza A virus subtype H5N1
+772835009,Detection of Influenza A virus using polymerase chain reaction technique
+772839003,Pneumonia caused by Influenza A virus
+78046005,Myocarditis caused by influenza virus
+781602008,Genus Deltainfluenzavirus
+781630008,Influenza D virus
+78431007,"Influenza due to Influenza virus, type A, human"
+81524006,Influenza caused by Influenza C virus
+817831000000103,Determination of Influenza A virus genotype by ribonucleic acid analysis
+817841000000107,Determination of Influenza B virus genotype by ribonucleic acid analysis
+83440004,Influenza with involvement of gastrointestinal tract
+84037004,Swine influenza
+840582007,Antigen of inactivated whole Influenza A virus subtype H5N1
+84113001,Influenzavirus C
+84512003,Influenzal pharyngitis
+866126000,Myelitis caused by Influenza A virus
+871771002,Antigen of Influenza A virus subtype H5N1
+88152000,Equine influenza

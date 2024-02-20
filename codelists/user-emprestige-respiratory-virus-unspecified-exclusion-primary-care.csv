@@ -1,0 +1,733 @@
+code,term
+1005131000000102,Adenovirus antigen level
+10237005,Human rhinovirus 81
+10625271000119109,Bronchopneumonia caused by Human metapneumovirus
+10625431000119105,Bronchopneumonia caused by Mycoplasma pneumoniae
+10722007,Human adenovirus 18
+10809006,Parainfluenza virus laryngotracheitis
+1087141000119106,Human metapneumovirus infection
+1092951000119106,Pneumonia caused by Bordetella parapertussis
+1098002,Human adenovirus 3
+11014004,Human rhinovirus 102
+111849006,Adenoviral bronchitis
+111850006,Adenoviral meningitis
+111851005,Subacute adenoviral encephalitis
+111878007,Coxsackie meningitis
+112359001,Simian enterovirus 17
+112360006,Human rhinovirus 45
+112361005,Human rhinovirus 62
+112362003,Human rhinovirus 101
+115633003,Avian adenovirus group II
+115634009,Avian adenovirus group III
+1163083004,Dacryoadenitis caused by human echovirus
+1163098002,Encephalitis caused by human echovirus
+1163100002,Encephalitis caused by human coxsackievirus
+1163489008,Bronchitis caused by Human metapneumovirus
+1163522000,Gastritis caused by human Enterovirus
+1163525003,Eye disease caused by Adenovirus
+1163532007,Nervous system infection caused by Adenovirus
+1163535009,Nervous system disease caused by human enterovirus
+117275007,Ribonucleic acid of Enterovirus
+117280003,Ribonucleic acid of Rhinovirus
+11801001,Human rhinovirus 105
+1187002002,Infectious mononucleosis caused by Adenovirus
+120984003,Antigen of Human respirovirus 3
+120987005,Antigen of Adenovirus
+121023001,Human adenovirus 40 antigen
+121024007,Human adenovirus 41 antigen
+121031006,Antigen of Human respirovirus 1
+121032004,Antigen of Human orthorubulavirus 2
+121074009,Antigen of Bordetella pertussis
+121082009,Antigen of Parainfluenza virus
+121095004,Antigen of Bordetella parapertussis
+121177000,Ribosomal ribonucleic acid of Adenovirus
+121187001,Deoxyribonucleic acid of Mycoplasma pneumoniae
+121188006,Ribosomal ribonucleic acid of Mycoplasma pneumoniae
+12139008,Human rhinovirus 97
+12188008,Parainfluenza
+12473007,Human rhinovirus 94
+12612001,Human adenovirus 31
+1264007008,Adenovirus infection in immunocompromised person
+127513007,"Haemophilus parainfluenzae, biotype I"
+127514001,"Haemophilus parainfluenzae, biotype II"
+127515000,"Haemophilus parainfluenzae, biotype III"
+127516004,"Haemophilus parainfluenzae, biotype IV"
+127517008,"Haemophilus parainfluenzae, biotype V"
+127518003,"Haemophilus parainfluenzae, biotype VI"
+127519006,"Haemophilus parainfluenzae, biotype VII"
+127520000,"Haemophilus parainfluenzae, biotype VIII"
+128358003,Murine parainfluenza virus 1
+128359006,Human parainfluenza virus 4a
+128360001,Human parainfluenza virus 4b
+128362009,Bovine parainfluenza virus 3
+128365006,Avian parainfluenza virus 3
+128366007,Avian parainfluenza virus 4
+128367003,Avian parainfluenza virus 5
+128368008,Avian parainfluenza virus 6
+128369000,Avian parainfluenza virus 7
+128370004,Avian parainfluenza virus 8
+128371000,Avian parainfluenza virus
+128405007,Coxsackie carditis
+12842000,Human echovirus 21
+1293004,Human coxsackievirus A8
+129671003,Human echovirus infection
+12997006,Human enterovirus 68
+13089009,Adenoviral bronchiolitis
+134260001,Enterovirus DNA detection
+14174008,Human rhinovirus 88
+14535005,Acute nonparalytic poliomyelitis
+14551002,Ovine adenovirus 2
+15030000,Human adenovirus 24
+15329002,Human rhinovirus 110
+154300007,Whooping cough
+15513006,Equine adenovirus
+155554001,Mycoplasmal pneumonia
+155556004,Pertussis pneumonia
+15646009,Human adenovirus 33
+15652005,Human echovirus 13
+15680321000119108,Acute adenoviral follicular conjunctivitis of bilateral eyes
+15680361000119103,Acute adenoviral follicular conjunctivitis of left eye
+15680401000119107,Acute adenoviral follicular conjunctivitis of right eye
+15692481000119104,Keratitis of bilateral eyes caused by Adenovirus
+15692521000119104,Keratitis of left eye caused by Adenovirus
+15692561000119109,Keratitis of right eye caused by Adenovirus
+15712003,Porcine adenovirus 3
+1573008,Human rhinovirus 9
+15738003,Human rhinovirus 90
+15755004,Simian enterovirus 6
+16077531000119101,Acute hemorrhagic conjunctivitis of bilateral eyes caused by Enterovirus
+16362001,Human poliovirus 3
+16416005,Simian enterovirus 8
+16532006,Human rhinovirus 34
+16815003,Human echovirus 5
+17303003,Adenovirus
+17735001,Human rhinovirus 87
+17833003,Human echovirus 31
+17851002,Human rhinovirus 2
+17905002,Human rhinovirus 93
+18113003,Human rhinovirus 32
+1838001,Human rhinovirus
+18560002,Porcine adenovirus 1
+186350009,(Whooping cough) or (Bordetella)
+186351008,Bordetella pertussis (& infection)
+186352001,Bordetella parapertussis (& infection)
+186353006,Whooping cough - other specified organism
+186355004,Other whooping cough NOS
+186356003,Whooping cough NOS
+186449008,[X]Mycoplasma pneumoniae [pplo] as the cause of diseases classified to other chapters
+186476008,Acute paralytic non-bulbar poliomyelitis
+186478009,"Acute paralytic poliomyelitis, vaccine-associated"
+186479001,"Acute paralytic poliomyelitis, wild virus, imported"
+186480003,"Acute paralytic poliomyelitis, wild virus, indigenous"
+186491005,Other enterovirus diseases of central nervous system
+186658007,Coxsackie virus disease
+186659004,Herpangina
+186678004,Keratoconjunctivitis caused by adenovirus
+186679007,Conjunctivitis caused by adenovirus
+186742003,Adenovirus (& infection)
+186745001,Rhinovirus (& infection)
+186752004,"[X]Enterovirus infection, unspecified"
+186764007,[X]Adenovirus as the cause of diseases classified to other chapters
+187324001,[X]Whooping cough due to other Bordetella species
+187325000,"[X]Whooping cough, unspecified"
+187465002,"[X]Adenovirus infection, unspecified"
+187466001,"[X]Enterovirus infection, unspecified"
+187576001,[X]Mycoplasma pneumoniae [pplo] as the cause of diseases classified to other chapters
+187585001,[X]Adenovirus as the cause of diseases classified to other chapters
+187586000,[X]Enterovirus as the cause of diseases classified to other chapters
+18835008,Simian adenovirus
+19219004,Human rhinovirus 4
+192650000,Meningitis caused by pertussis
+192667007,Echovirus meningitis
+19319001,Human echovirus 18
+19371009,Human parainfluenza virus 1
+194905000,Acute pericarditis caused by human coxsackievirus
+19493000,Human adenovirus 22
+194944008,Acute myocarditis - coxsackie
+195725001,Acute coxsackievirus bronchitis
+195726000,Acute parainfluenza virus bronchitis
+195728004,Acute bronchitis caused by rhinovirus
+195729007,Acute echovirus bronchitis
+195894001,Mycoplasmal pneumonia
+195895000,Mycoplasmal pneumonia
+19680003,Parainfluenza 2 virus
+197339003,Coxsackie virus hepatitis
+197344005,Hepatitis caused by adenovirus
+20398001,Human rhinovirus 86
+2104008,Bovine adenovirus infection
+21206001,Human echovirus 2
+213007,Simian enterovirus 7
+21490000,Human rhinovirus 112
+21722004,Human rhinovirus 92
+21813007,Human echovirus 17
+2185006,Human adenovirus 5
+21938003,Human rhinovirus 8
+21948001,Simian enterovirus 1
+22212008,Human adenovirus 28
+2247004,Human adenovirus 6
+22521005,Human rhinovirus 1A
+22580008,Human poliovirus 1
+22594009,Bovine enterovirus 7
+22958004,Human rhinovirus 70
+230142004,Coxsackie A viral meningitis
+230143009,Coxsackie B viral meningitis
+230144003,Chronic echovirus meningoencephalitis
+230162007,Enteroviral encephalitis
+233599001,Acute mycoplasmal bronchitis
+233603001,Acute bronchiolitis caused by adenovirus
+23376009,Human adenovirus 12
+2360007,Simian enterovirus 4
+236063005,Adenoviral gastroenteritis
+23684001,Human adenovirus 4
+23831003,Human coxsackievirus A2
+23912008,Human rhinovirus 74
+240339001,Adenovirus food poisoning
+240459003,Abortive poliomyelitis
+240460008,Acute paralytic poliomyelitis
+240482001,Enteroviral exanthem
+240546009,Coxsackie virus exanthem
+240547000,Lymphonodular coxsackie pharyngitis
+240548005,Coxsackie muscle infection
+240549002,Neonatal coxsackie virus syndrome
+240550002,Neonatal echovirus disease
+24071003,Human coxsackievirus A6
+243633006,Genus Enterovirus
+24553000,Bovine adenovirus 1
+24747003,Human coxsackievirus A14
+24921000087105,Antigen of Bordetella pertussis filamentous hemagglutinin
+24931000087107,Antigen of Bordetella pertussis fimbriae
+24991000087108,Antigen of Bordetella pertussis pertactin
+25009005,Human rhinovirus 36
+2503006,Human rhinovirus 96
+25070008,Human rhinovirus 25
+25141000087100,Antigen of Bordetella pertussis fimbriae 2
+25151000087102,Antigen of Bordetella pertussis fimbriae 3
+25162000,Parainfluenza turkey/Ontario virus
+25225006,Disease caused by Adenovirus
+25268007,Simian enterovirus 14
+25330008,Human rhinovirus 77
+25471000087103,Antigen of Bordetella pertussis toxoid
+255834005,Pertussis toxin
+26038000,Bovine enterovirus 4
+26162008,Human rhinovirus 19
+26183002,Bordetella parapertussis
+26314008,Human rhinovirus 82
+26420005,Simian enterovirus 12
+266108008,Hand foot and mouth disease
+26846000,Porcine enterovirus 3
+27028004,Human rhinovirus 91
+271532008,Echovirus disease
+271567008,Whooping cough-like syndrome
+27164000,Human rhinovirus 16
+274102007,Vesicular pharyngitis
+27475006,Parainfluenza virus bronchitis
+27555004,Human coxsackievirus B2
+276664005,Congenital coxsackie infection
+27806003,Coxsackie pericarditis
+27836007,Pertussis
+2793000,Human coxsackievirus A12
+28192008,Enterovirus meningitis
+28522007,Mouse adenovirus
+28650002,Human rhinovirus 85
+28775008,Human rhinovirus 30
+29037009,Porcine adenovirus 2
+29324004,Human rhinovirus 50
+29569009,Human rhinovirus 113
+29576004,Human adenovirus 41
+29941005,Bovine enterovirus 6
+30131005,Porcine enterovirus 6
+30154001,Human echovirus 29
+30270006,Infection caused by Human parainfluenza virus 3
+30471008,Porcine enterovirus 5
+30490000,Human adenovirus 11
+30718009,Human rhinovirus 51
+30840007,Human coxsackievirus A18
+3096006,Human coxsackievirus A9
+31183009,Human echovirus 30
+314559002,Adenoviral keratitis
+3163006,Acute adenoviral follicular conjunctivitis
+32522009,Human adenovirus 35
+32580004,Enterovirus enteritis
+32812008,Infection due to Parainfluenza virus 1
+33093008,Simian adenovirus infection
+33611008,Bovine adenovirus 6
+33974008,Human adenovirus 15
+34583003,Equine rhinovirus 1
+34632007,Human echovirus 27
+34910000,Human rhinovirus 21
+35005008,Bovine adenovirus 3
+35161000,Human rhinovirus 39
+35320008,Human rhinovirus 65
+35377009,Parainfluenza virus laryngotracheobronchitis
+35640008,Acute adenoviral encephalitis
+359628008,Conjunctivitis caused by enterovirus type 70
+36026003,Simian enterovirus
+3606000,Bovine adenovirus
+36155008,Hepatitis in coxsackie viral disease
+36204005,Human echovirus 1
+365501000000101,Human metapneumovirus detected
+365511000000104,Human metapneumovirus detected 
+365521000000105,Human metapneumovirus detected 
+365601000000102,Human rhinovirus detected
+365611000000100,Human rhinovirus detected 
+365621000000106,Human rhinovirus detected 
+365631000000108,Human parainfluenza virus detected
+365641000000104,Human parainfluenza virus detected 
+365651000000101,Human parainfluenza virus detected 
+365661000000103,Human adenovirus detected
+365671000000105,Human adenovirus detected 
+365681000000107,Human adenovirus detected 
+365691000000109,Human enterovirus detected
+365701000000109,Human enterovirus detected 
+365711000000106,Human enterovirus detected 
+365751000000105,Mycoplasma pneumoniae detected
+365761000000108,Mycoplasma pneumoniae detected 
+365771000000101,Mycoplasma pneumoniae detected 
+370587002,Avian parainfluenza virus 2
+370589004,Pheasant adenovirus 1
+370590008,Genus Siadenovirus
+370591007,Turkey adenovirus 2
+37137006,Human rhinovirus 43
+37217002,Coxsackie myocarditis
+37443004,Human adenovirus 13
+37544008,Bovine adenovirus 9
+37870004,Human echovirus 11
+379004,Human rhinovirus 13
+38203008,Human coxsackievirus A10
+38219001,Human coxsackievirus A5
+38220007,Human rhinovirus 72
+38350001,Genus Mastadenovirus
+38889001,Human coxsackievirus A19
+38910005,Human rhinovirus 53
+389486008,Adenovirus antigen level
+390218009,Adenovirus antigen level
+390793003,Bordetella pertussis rough phase IV
+391362008,Adenovirus antigen level
+39164004,Human echovirus
+39440005,Human rhinovirus 55
+39456000,Human rhinovirus 7
+39460002,Equine rhinovirus
+397928009,Infantile paralysis
+398102009,Acute poliomyelitis
+398256009,Epidemic acute poliomyelitis
+398327006,Anterior acute poliomyelitis
+40599000,Simian enterovirus 2
+406568007,Coxsackievirus infection of the central nervous system
+406571004,Echovirus infection of the central nervous system
+406578005,Enterovirus infection of the central nervous system
+406595002,Infection caused by Mycoplasma pneumoniae
+407489008,Human parainfluenza virus 1
+407491000,Human parainfluenza virus 2
+407493002,Human parainfluenza virus 3
+407496005,Infection caused by Human parainfluenza virus 1
+407498006,Human parainfluenza viruses
+407499003,Turkey rhinotracheitis virus
+407501006,Genus Metapneumovirus
+40766000,Enteroviral lymphonodular pharyngitis
+40803002,Human rhinovirus 35
+408682005,Healthcare associated pertussis
+408685007,Healthcare associated parainfluenza virus disease
+408686008,Healthcare associated adenoviral disease
+41024002,Bovine enterovirus
+41207000,Adenoviral pneumonia
+413933004,Coxsackie myocarditis of newborn
+41476007,Human adenovirus 30
+41546002,Disease caused by Rhinovirus
+41662000,Bovine enterovirus 5
+416730002,Human metapneumovirus
+41678003,Bovine adenovirus 4
+417798002,Human metapneumovirus Genotype A1
+417799005,Human metapneumovirus Genotype A2
+417800009,Human metapneumovirus Genotype B1
+417801008,Human metapneumovirus Genotype B2
+417802001,Human adenovirus 42
+417803006,Human adenovirus 43
+417804000,Human adenovirus 44
+417805004,Human adenovirus 45
+417806003,Human adenovirus 46
+417807007,Human adenovirus 47
+417808002,Human adenovirus 48
+417809005,Human adenovirus 49
+417810000,Human adenovirus 50
+417811001,Human adenovirus 51
+417812008,Human adenovirus species A
+417813003,Human adenovirus species B
+417814009,Human adenovirus species C
+417815005,Human adenovirus species D
+417816006,Human adenovirus species E
+417817002,Human adenovirus species F
+417820005,Human rhinovirus/enterovirus
+4179003,Simian enterovirus 11
+41988004,Human coxsackievirus B4
+420441008,Human enterovirus 77
+42067008,Human coxsackievirus A16
+42084002,Human adenovirus 23
+420854009,Human rhinovirus 1
+421124007,Human enterovirus 75
+421170000,Human enterovirus 78
+421415007,Subacute adenoviral encephalitis with acquired immunodeficiency syndrome
+421603003,Human enterovirus 73
+421887001,Human enterovirus 76
+422298007,Human rhinovirus A
+422545005,Bovine adenovirus A
+422739000,Bovine adenovirus B
+422793002,Human enterovirus B
+422844001,Ovine adenovirus A
+422982005,Human enterovirus C
+423043004,Human enterovirus A
+423202008,Equine adenovirus B
+423262006,Equine adenovirus 1
+423396002,Equine adenovirus 1 infection
+4235009,Porcine enterovirus
+423544001,Goat adenovirus
+424005007,Murine adenovirus A
+42414003,Human rhinovirus 54
+424210000,Equine adenovirus 2
+424470006,Family Adenoviridae
+424561006,Murine adenovirus 1
+424637007,Genus Atadenovirus
+424741003,Porcine adenovirus A
+424904008,Ovine adenovirus B
+425070009,Bovine adenovirus C
+425121007,Equine adenovirus 2 infection
+425241008,Equine adenovirus A
+425270004,Porcine adenovirus B
+425295003,Avian metapneumovirus
+427004,Human echovirus 4
+428234001,Human enterovirus D
+429297003,Acute nonparalytic poliomyelitis caused by human poliovirus 1
+42935008,Human rhinovirus 33
+43099005,Parainfluenza 3 virus
+431701000000105,"[X]Enterovirus infection, unspecified"
+43229008,Parainfluenza virus
+43277008,Human rhinovirus 107
+43518005,Bovine rhinovirus 2
+43603001,Porcine enterovirus 2
+43794009,Human echovirus 3
+440925005,Human rhinovirus present
+440930009,Human adenovirus present
+440990006,Mycoplasma pneumoniae present
+441070005,Human enterovirus present
+441133003,Human metapneumovirus present
+441344004,Human parainfluenza virus present
+441501000000103,[X]Enterovirus as the cause of diseases classified to other chapters
+44172002,Human poliovirus
+443101004,Ovine adenovirus D
+443114003,Bovine adenovirus F
+443122005,Bovine adenovirus D
+443123000,Bovine adenovirus E
+443197006,Turkey adenovirus B
+4433000,Human echovirus 6
+443405000,Fowl adenovirus A
+443472001,Turkey adenovirus A
+443485003,Duck adenovirus A
+443545007,Frog adenovirus
+443601000000100,[X]Adenovirus as the cause of diseases classified to other chapters
+444061000000106,[X]Whooping cough due to other Bordetella species
+444350008,Ovine adenovirus 7
+444360004,Turkey adenovirus 3
+444390006,Duck adenovirus 1
+445096001,Pneumonia caused by Human metapneumovirus
+445102008,Inflammation of bronchiole caused by Human metapneumovirus
+446311006,Acute bulbar poliomyelitis caused by Human poliovirus 2
+446312004,Acute poliomyelitis caused by Human poliovirus 1
+446754004,Enteritis caused by Human coxsackievirus
+446755003,Enteritis caused by Human echovirus
+446756002,Enteritis caused by Human enterovirus 71
+446957000,Acute bulbar poliomyelitis caused by Human poliovirus 1
+446958005,Acute paralytic poliomyelitis caused by Human poliovirus 1
+447262002,Acute paralytic poliomyelitis caused by Human poliovirus 2
+447378002,Acute paralytic poliomyelitis caused by Human poliovirus 3
+44781001,Human rhinovirus 27
+44802000,Human rhinovirus 24
+448520007,Human adenovirus 53
+450867005,Bovine rhinovirus A
+450868000,Bovine rhinovirus B
+450869008,Human rhinovirus B
+450870009,Human rhinovirus C
+45434007,Ovine adenovirus infection
+455511000000101,"[X]Adenovirus infection, unspecified"
+456041000000104,"[X]Whooping cough, unspecified"
+456511000000105,"[X]Enterovirus infection, unspecified"
+45843005,Human rhinovirus 59
+460345001,Myocarditis caused by echovirus
+46301003,Human rhinovirus 31
+46397005,Enterovirus heart infection
+46486009,Human rhinovirus 40
+46498004,Human rhinovirus 26
+464991000000105,[X]Mycoplasma pneumoniae [pplo] as the cause of diseases classified to other chapters
+46506009,Human echovirus 7
+468021000000100,[X]Mycoplasma pneumoniae [pplo] as the cause of diseases classified to other chapters
+46957004,Human adenovirus 8
+46962003,Canine adenovirus
+46970008,Pneumonia caused by Mycoplasma pneumoniae
+47015004,Simian enterovirus 13
+472011000000102,[X]Adenovirus as the cause of diseases classified to other chapters
+4738005,Porcine adenovirus infection
+4745005,Simian enterovirus 9
+48171002,Human coxsackievirus B6
+48291000,Bovine rhinovirus
+48313000,Bovine adenovirus 8
+48397003,Cold agglutinin disease due to Mycoplasma pneumonia
+48476000,Human rhinovirus 103
+49018005,Human coxsackievirus B
+49087008,Simian enterovirus 18
+49323000,Human rhinovirus 5
+49479002,Simian enterovirus 5
+49787000,Human adenovirus 19
+50074000,Bovine enterovirus 3
+50346001,Human echovirus 15
+5103007,Genus Aviadenovirus
+51593004,Haemophilus parainfluenzae
+5247005,Bordetella pertussis
+52657009,Human coxsackievirus A11
+52857006,Human rhinovirus 79
+53038008,Human echovirus 8
+53349007,Human adenovirus 1
+53648006,Disease caused by Enterovirus
+53744000,Human coxsackievirus A
+53778006,Human rhinovirus 63
+543701000000101,Other enterovirus diseases of central nervous system
+54435006,Human adenovirus 10
+546371000000104,Whooping cough NOS
+54875006,Bovine enterovirus 1
+5488007,Human adenovirus 25
+55125000,Equine rhinovirus infection
+55174004,Human poliovirus 2
+55504008,Human rhinovirus 109
+555361000000102,Other whooping cough NOS
+55935007,Human rhinovirus 57
+55969008,Human rhinovirus 10
+55982000,Human coxsackievirus A3
+56529007,Adenoviral encephalitis
+56874008,Ovine adenovirus 1
+570791000000100,Whooping cough - other specified organism
+57757007,Human coxsackievirus
+57785009,Human rhinovirus 98
+57923009,Porcine enterovirus 7
+5811004,Human rhinovirus 52
+58445002,Human coxsackievirus A17
+58528009,Bovine rhinovirus infection
+58657002,Human echovirus 12
+58720004,Mycoplasma pneumoniae
+58754003,Porcine adenovirus
+58890000,Adenoviral bronchopneumonia
+58959001,Parainfluenza 5 virus
+59003004,Equine adenovirus infection
+59056002,Human echovirus 32
+59114004,Simian enterovirus 16
+59221008,Parainfluenza virus rhinopharyngitis
+5938005,Porcine enterovirus 4
+59475000,Pneumonia in pertussis
+60066004,Human echovirus 34
+60087009,Human rhinovirus 22
+60174000,Human rhinovirus 41
+6060001,Human rhinovirus 48
+60847003,Human rhinovirus 114
+61173003,Human rhinovirus 38
+61696004,Simian enterovirus 15
+61958003,Adenoviral respiratory disease
+62313001,Human adenovirus 16
+62408001,Human coxsackievirus B5
+63648009,Human rhinovirus 18
+63828000,Human rhinovirus 6
+63928004,Human rhinovirus 64
+64016000,Human rhinovirus 66
+64409008,Human rhinovirus 108
+64764001,"Acute paralytic poliomyelitis, bulbar"
+64880000,Parainfluenza virus bronchopneumonia
+64917006,Parainfluenza virus pneumonia
+65003007,Human adenovirus 34
+65080008,Human rhinovirus 84
+65199001,Simian enterovirus 3
+65718001,Adenoviral myocarditis
+65831002,Human rhinovirus 80
+66087004,Murine adenovirus infection
+66111006,Human adenovirus 9
+66122005,Human adenovirus 29
+66581005,Human rhinovirus 42
+66619009,Human echovirus 9
+66942000,Human rhinovirus 73
+67180006,Human rhinovirus 46
+6771007,Human coxsackievirus A20
+68016006,Human rhinovirus 14
+68506007,Bovine rhinovirus 1
+68749005,Bovine adenovirus 2
+68874003,Human enterovirus 71
+68883008,Human adenovirus 40
+68949000,Infection caused by Human parainfluenza virus 4
+68957002,Human adenovirus 7
+69239002,Human enterovirus
+698222005,Human coxsackievirus A24 variant
+698257008,Coxsackie virus infection of oral cavity
+70075003,Human rhinovirus 115
+70233007,Infection caused by Human parainfluenza virus 2
+70385007,Adenoviral pharyngoconjunctivitis
+704980004,Human adenovirus 57
+70576008,Enteroviral encephalomyelitis
+707881005,Ribonucleic acid of Echovirus 11
+707882003,Ribonucleic acid of Echovirus 30
+707883008,Ribonucleic acid of Echovirus 4
+707884002,Ribonucleic acid of Enterovirus 71
+707896009,Ribonucleic acid of Human metapneumovirus A
+707897000,Ribonucleic acid of Human metapneumovirus B
+707898005,Ribonucleic acid of Human metapneumovirus
+707935009,Ribonucleic acid of Parainfluenza virus 1
+707936005,Ribonucleic acid of Parainfluenza virus 2
+707937001,Ribonucleic acid of Parainfluenza virus 3
+707938006,Ribonucleic acid of Parainfluenza virus 4
+707939003,Ribonucleic acid of Parainfluenza virus 4a
+707940001,Ribonucleic acid of Parainfluenza virus 4b
+707941002,Ribonucleic acid of Parainfluenza virus
+708161005,Deoxyribonucleic acid of Bordetella parapertussis
+708162003,Deoxyribonucleic acid of Bordetella pertussis
+70855006,Human echovirus 16
+70880006,Adenoviral enteritis
+709223007,Antigen of Bovine adenovirus 3
+709224001,Antigen of Bovine adenovirus 5
+709249002,Antigen of Bovine parainfluenza virus 3
+709319001,Antigen of Canine adenovirus
+709330003,Antigen of Enterovirus
+709332006,Antigen of Equine adenovirus
+709347002,Antigen of Human metapneumovirus
+709365003,Antigen of Parainfluenza virus 4
+709366002,Antigen of Porcine adenovirus
+709368001,Antigen of Porcine enterovirus
+709429009,Antigen of Adenovirus + antigen of Rotavirus
+709438006,Antigen of Parainfluenza virus 1 + 2 + 3
+709439003,Antigen of Enterovirus + antigen of Rhinovirus
+71255007,Adenoviral laryngotracheobronchitis
+713260006,Subacute adenoviral encephalitis co-occurrent with human immunodeficiency virus infection
+713350004,Human enterovirus not human enterovirus 71
+713456006,Infection caused by Human enterovirus 71
+713610005,Antigen of acellular Bordetella pertussis
+714076000,Antigen of whole cell Bordetella pertussis
+71490002,Human rhinovirus 67
+716253006,Human echovirus 10
+716254000,Human echovirus 22
+716255004,Human echovirus 23
+716865000,Congenital infection caused by enterovirus
+7195006,Human rhinovirus 56
+721274005,Congenital infection caused by Echovirus
+721764008,Infection caused by Human poliovirus
+721765009,Meningitis caused by Human poliovirus
+72254008,Human coxsackievirus A1
+722547006,Meningitis caused by Human enterovirus 71
+722548001,Meningitis caused by Human enterovirus 70
+725064005,Human adenovirus species G
+725065006,Human adenovirus 52
+725066007,Human adenovirus 54
+725067003,Human adenovirus 55
+725068008,Human adenovirus 56
+72570006,Porcine adenovirus 4
+72593000,Human coxsackievirus A15
+72597004,Human coxsackievirus A21
+72877003,Human coxsackievirus A24
+73657004,Human rhinovirus 58
+73815008,Ovine adenovirus 4
+73993004,Human adenovirus 26
+74246005,Human rhinovirus 20
+74305002,Human echovirus 14
+74533001,Human echovirus 20
+74702001,Human rhinovirus 106
+7479004,Human adenovirus 14
+74871001,Human adenovirus
+74922007,Human adenovirus 20
+74924008,Human coxsackievirus A7
+7543009,Human coxsackievirus A13
+75565006,Human echovirus 25
+75715004,Human rhinovirus 61
+764993001,Encephalitis caused by Mycoplasma pneumoniae
+766968000,Antigen of Human rhinovirus
+76892004,Human rhinovirus 11
+76985005,Human rhinovirus 89
+77116006,Infection caused by Bordetella parapertussis
+77319008,Human rhinovirus 29
+77379003,Human rhinovirus 37
+7746003,Human echovirus 24
+77470003,Enteroviral exanthematous fever
+7842005,Caprine adenovirus
+78430008,Adenoviral pharyngitis
+78434004,Human enterovirus 69
+78724007,Canine adenovirus 1
+788393007,Antigen of Human mastadenovirus F
+78911000,Parainfluenza virus pharyngitis
+79101004,Human rhinovirus 47
+79658004,Porcine enterovirus 1
+79804005,Human adenovirus 38
+79968007,Human echovirus 33
+80441004,Ovine adenovirus 5
+80785003,Human rhinovirus 49
+810711000000102,Acute bronchiolitis due to human metapneumovirus
+810721000000108,Pneumonia due to Human metapneumovirus
+81190003,Human adenovirus 2
+81227000,Human rhinovirus 83
+81401002,Human rhinovirus 99
+81660009,Porcine enterovirus 8
+817031000000106,Determination of enterovirus genotype by ribonucleic acid analysis
+817191000000106,Determination of adenovirus genotype by deoxyribonucleic acid analysis
+81754003,Human rhinovirus 111
+81907007,Human rhinovirus 12
+81933004,Avian enterovirus
+82059001,Human coxsackievirus B1
+82081006,Bovine adenovirus 7
+82519006,Human echovirus 19
+82547005,Acute adenoviral meningoencephalitis
+82670009,Whooping cough caused by organism other than Bordetella pertussis
+82698007,Human rhinovirus 28
+82774008,Human rhinovirus 104
+83009004,Bovine enterovirus 2
+831801000000108,Acute bronchiolitis due to human metapneumovirus
+831811000000105,Pneumonia due to human metapneumovirus
+83264000,Epidemic pleurodynia
+83593001,Human coxsackievirus A22
+83804005,Human rhinovirus 17
+83915001,Fowl adenovirus 1
+840284009,Eczema coxsackium
+84080008,Human rhinovirus 60
+84586005,Ovine adenovirus 3
+84895009,Caprine adenovirus infection
+85158000,Human adenovirus 21
+85164007,Human rhinovirus 76
+85348007,Human rhinovirus 78
+85350004,Ovine adenovirus
+85402004,Meningoeruptive syndrome
+8562005,Human rhinovirus 95
+85832003,Parainfluenza virus laryngitis
+85881001,Human adenovirus 32
+860870002,Erythema multiforme due to Mycoplasma pneumoniae infection
+86176002,Human rhinovirus 3
+866055006,Myelitis caused by Enterovirus
+866058008,Myelitis caused by Human echovirus
+866059000,Myelitis caused by Human coxsackievirus A
+866063007,Myelitis caused by Mycoplasma pneumoniae
+866124002,Myelitis caused by human poliovirus
+866251007,Myelitis caused by Human coxsackievirus B
+86780003,"Avian parainfluenza virus 2, strain Yucaipa"
+86869009,Canine adenovirus 2
+86886003,Human coxsackievirus A4
+86976003,Human rhinovirus 44
+870728004,Exanthem caused by human echovirus 16
+870729007,Exanthem caused by human echovirus
+87419001,Equine rhinovirus 2
+87627001,Bovine adenovirus 5
+88129004,Coxsackie endocarditis
+88716006,Human rhinovirus 75
+88900000,Human rhinovirus 68
+89117003,Human parainfluenza virus 4
+89376006,Simian enterovirus 10
+89585007,Human coxsackievirus B3
+89860009,Human adenovirus 27
+90336009,Human adenovirus 39
+90389005,Genus Rhinovirus
+90717001,Human adenovirus 36
+90779008,Human enterovirus 70
+90929002,Human rhinovirus 100
+91072000,Human echovirus 26
+91125002,Human adenovirus 37
+9119005,Human rhinovirus 23
+9141005,Human adenovirus 17
+9243001,Human rhinovirus 71
+933001,Human rhinovirus 15
+93417001,Conjunctivitis caused by Bordetella pertussis
+9959007,Human rhinovirus 69

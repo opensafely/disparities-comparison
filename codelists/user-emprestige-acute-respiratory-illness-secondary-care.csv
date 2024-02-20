@@ -1,0 +1,34 @@
+code,term
+B34,Viral infection of unspecified site
+B348,Other viral infections of unspecified site
+B349,"Viral infection, unspecified"
+J04,Acute laryngitis and tracheitis
+J040,Acute laryngitis
+J041,Acute tracheitis
+J042,Acute laryngotracheitis
+J06,Acute upper respiratory infections of multiple and unspecified sites
+J068,Other acute upper respiratory infections of multiple sites
+J069,"Acute upper respiratory infection, unspecified"
+J09,Influenza due to identified zoonotic or pandemic influenza virus
+J10,Influenza due to identified seasonal influenza virus
+J100,"Influenza with pneumonia, seasonal influenza virus identified"
+J101,"Influenza with other respiratory manifestations, seasonal influenza virus identified"
+J108,"Influenza with other manifestations, seasonal influenza virus identified"
+J11,"Influenza, virus not identified"
+J110,"Influenza with pneumonia, virus not identified"
+J111,"Influenza with other respiratory manifestations, virus not identified"
+J118,"Influenza with other manifestations, virus not identified"
+J20,Acute bronchitis
+J208,Acute bronchitis due to other specified organisms
+J209,"Acute bronchitis, unspecified"
+J21,Acute bronchiolitis
+J218,Acute bronchiolitis due to other specified organisms
+J219,"Acute bronchiolitis, unspecified"
+J39,Other diseases of upper respiratory tract
+J390,Retropharyngeal and parapharyngeal abscess
+J391,Other abscess of pharynx
+J392,Other diseases of pharynx
+J393,"Upper respiratory tract hypersensitivity reaction, site unspecified"
+J398,Other specified diseases of upper respiratory tract
+J399,"Disease of upper respiratory tract, unspecified"
+J40,"Bronchitis, not specified as acute or chronic"
