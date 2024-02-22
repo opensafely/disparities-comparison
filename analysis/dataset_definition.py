@@ -15,6 +15,15 @@ from ehrql.tables.tpp import (
   apcs,
   emergency_care_attendances
 )
+
+from variable_lib import (
+  has_a_continuous_practice_registration_spanning,
+  most_recent_bmi,
+  practice_registration_as_of,
+  emergency_care_diagnosis_matches,
+  hospitalisation_diagnosis_matches
+)
+
 import codelists
 
 dataset = Dataset()
@@ -24,7 +33,7 @@ dataset = Dataset()
 # to JSON
 #######################################################################################
 study_dates = json.loads(
-    Path("analysis/design/study-dates.json").read_text(),
+  Path("analysis/design/study-dates.json").read_text(),
 )
 
 args = sys.argv
@@ -79,22 +88,26 @@ if cohort == "infants" or cohort == "infants_subgroup" :
 #infant risk group (cardiac disease, pulmonary hypertension)
 if cohort == "infants" or cohort == "infants_subgroup" :
   risk_group_infants = (case(
-    when(age_months < 12).then(apcs.where(apcs.any_diagnosis
-    .is_in(codelists.ventilation_codes))),
-    when(age_months >=12 & age_months <= 23).then(apcs.where(apcs.any_diagnosis
-    .is_in(codelists.ventilation_codes)) & 
-    clinical_events.where(clinical_events.ctv3_code
+    when(age_months < 12)
+    .then(hospitalisation_diagnosis_matches(codelists.ventilation_codes)
+    .exists_for_patient()),
+    when((age_months >=12) & (age_months <= 23) & 
+    ((clinical_events.where(clinical_events.ctv3_code
     .is_in(codelists.cardiac_disease_codelist))
-    .exists_for_patient()
-    |clinical_events.where(clinical_events.snomedct_code
+    .exists_for_patient())
+    |(clinical_events.where(clinical_events.snomedct_code
     .is_in(codelists.pulmonary_hypertension_codelist))
+    .exists_for_patient())))
+    .then(hospitalisation_diagnosis_matches(codelists.ventilation_codes)
     .exists_for_patient()))
   )
 
 #care home resident
 if cohort == "older_adults" :
-  care_home_tpp = (addresses.for_patient_on(index_date)
-    .care_home_is_potential_match.when_null_then(False))
+  care_home_tpp = (
+    addresses.for_patient_on(index_date)
+    .care_home_is_potential_match.when_null_then(False)
+  )
   care_home_code = (has_prior_event(codelists.carehome_codelist))
   care_home = care_home_tpp | care_home_code
 
@@ -189,7 +202,7 @@ def last_prior_event(codelist, where = True):
     )
     
 #query prior_events for date of earliest event-in-codelist
-def first_prior_event(codelist, where=True):
+def first_prior_event(codelist, where = True):
     return (
         prior_events.where(where)
         .where(prior_events.snomedct_code.is_in(codelist))
@@ -201,7 +214,7 @@ def first_prior_event(codelist, where=True):
 prior_meds = medications.where(medications.date.is_on_or_before(index_date))
 
 #query prior_meds for existence of event-in-codelist
-def has_prior_meds(codelist, where=True):
+def has_prior_meds(codelist, where = True):
     return (
         prior_meds.where(where)
         .where(prior_meds.dmd_code.is_in(codelist))
@@ -209,7 +222,7 @@ def has_prior_meds(codelist, where=True):
     )
 
 #query prior meds for date of most recent med-in-codelist
-def last_prior_meds(codelist, where=True):
+def last_prior_meds(codelist, where = True):
     return (
         prior_meds.where(where)
         .where(prior_meds.dmd_code.is_in(codelist))
@@ -218,7 +231,7 @@ def last_prior_meds(codelist, where=True):
     )
 
 #query prior_events for date of earliest event-in-codelist
-def first_prior_meds(codelist, where=True):
+def first_prior_meds(codelist, where = True):
     return (
         prior_meds.where(where)
         .where(prior_meds.dmd_code.is_in(codelist))
@@ -229,11 +242,13 @@ def first_prior_meds(codelist, where=True):
 #infections occuring after index date but before study end date
 infection_events = clinical_events.where(clinical_events.date.is_on_or_between(index_date, study_end_date))
 
-#query infection_events for existence of event-in-codelist
+#query infection_events for existence of event-in-codelist (get first of these)
 def has_infection_event(codelist, where = True):
     return (
         infection_events.where(where)
         .where(infection_events.snomedct_code.is_in(codelist))
+        .sort_by(clinical_events.date)
+        .first_for_patient()
         .exists_for_patient()
     )
 
@@ -247,7 +262,7 @@ def last_infection_event(codelist, where = True):
     )
   
 #query infection_events for date of earliest event-in-codelist
-def first_infection_event(codelist, where=True):
+def first_infection_event(codelist, where = True):
     return (
         infection_events.where(where)
         .where(infection_events.snomedct_code.is_in(codelist))
@@ -283,85 +298,151 @@ if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
 
 ##outcomes
 
-#rsv primary care
-dataset.rsv_primary = (case(
-  #primary analysis
-  when(codelist_type == "specific")
-  #presence of code in 'specific' primary care codelist
-  .then((has_infection_event(codelists.rsv_primary_codelist))
-  #presence of code in 'specific' emergency attendances codelist for infants
-  |(case(when(cohort == "infants").then(emergency_care_attendances
-  .where(emergency_care_attendances.diagnosis_01
-  .is_in(codelists.bronchiolitis_attendance)).exists_for_patient()),
-  when(cohort == "infants_subgroup").then(emergency_care_attendances
-  .where(emergency_care_attendances.diagnosis_01
-  .is_in(codelists.bronchiolitis_attendance)).exists_for_patient())))),
-  #sensitivity analysis
-  when(codelist_type == "sensitive")
-  #presence of code in 'specific' primary care codelist
-  .then((has_infection_event(codelists.rsv_primary_codelist))
-  #presence of at least two codes within two weeks in 'sensitive' primary care codelist
-  |(clinical_events.where(clinical_events.snomedct_code
-  .is_in(codelists.rsv_sensitive_codelist)).where(clinical_events
+#count number of clinical codes in sensitive codelist
+rsv_code_number = (
+  (clinical_events.where(clinical_events
   .date.is_on_or_between(first_infection_event(codelists
   .rsv_sensitive_codelist).date, first_infection_event(codelists
-  .rsv_sensitive_codelist).date + days(14))).count_distinct_for_patient()>1)
-  #presence of code in 'sensitive' emergency care attendances codelist for infants
-  |(case(when(cohort == "infants")
-  .then(emergency_care_attendances.where(emergency_care_attendances
-  .diagnosis_01.is_in(codelists.wheeze_attendance)).exists_for_patient()),
-  when(cohort == "infants_subgroup").then(emergency_care_attendances
-  .where(emergency_care_attendances.diagnosis_01
-  .is_in(codelists.wheeze_attendance)).exists_for_patient())))
-  #presence of code in 'sensitive' prescriptions codelist
-  |(medications.where(medications.dmd_code
-  .is_in(codelists.rsv_prescriptions_codelist)).exists_for_patient()))
+  .rsv_sensitive_codelist).date + days(14)))
+  .where(clinical_events.snomedct_code
+  .is_in(codelists.rsv_sensitive_codelist)))
+  .snomedct_code.count_distinct_for_patient()
+)
+
+#first event that satisfies above condition
+rsv_codes_date = (
+  case(when(rsv_code_number > 1)
+  .then(first_infection_event(codelists
+  .rsv_sensitive_codelist).date))
+)
+
+#occurance of event in exclusion list within one month of rsv_codes_date
+rsv_exclusion_primary = (case(
+  when(first_infection_event(codelists.rsv_primary_exclusion_codelist)
+  .date.is_on_or_between(rsv_codes_date - days(30), rsv_codes_date + days(30)))
+  .then(has_infection_event(codelists.rsv_primary_exclusion_codelist))
 ))
 
-# #date
-# dataset.rsv_primary_date = (case(
-#   when(codelist_type == "specific")
-#   .then(first_infection_event(codelists.rsv_primary_codelist).date),
-#   when(codelist_type == "sensitive")
-#   .then(first_prior_event(codelists.rsv_primary_sens_codelist).date))
-# )
-# 
-# #rsv secondary care
-# dataset.rsv_secondary = (case(
-#   when(codelist_type == "specific")
-#   .then(apcs.where(apcs.primary_diagnosis
-#   .is_in(codelists.rsv_secondary_codelist))
-#   .exists_for_patient()
-#   |apcs.where(apcs.secondary_diagnosis
-#   .is_in(codelists.rsv_secondary_codelist)) 
-#   .exists_for_patient()),
-#   when(codelist_type == "sensitive")
-#   .then(apcs.where(apcs.any_diagnosis
-#   .is_in(codelists.rsv_secondary_codelist))
-#   .exists_for_patient()
-#   |apcs.where(apcs.any_diagnosis
-#   .is_in(codelists.unspecified_lrti)) 
-#   .exists_for_patient())
-# ))
-# 
-# #date
-# dataset.rsv_secondary_date = (case(
-#   when(codelist_type == "specific")
-#   .then(apcs.sort_by(apcs.admission_date)
-#   .where(apcs.primary_diagnosis
-#   .is_in(codelists.rsv_secondary_codelist) 
-#   |apcs.secondary_diagnosis
-#   .is_in(codelists.rsv_secondary_codelist))
-#   .first_for_patient().admission_date),
-#   when(codelist_type == "sensitive")
-#   .then(apcs.sort_by(apcs.admission_date)
-#   .where(apcs.any_diagnosis
-#   .is_in(codelists.rsv_secondary_codelist) 
-#   |apcs.any_diagnosis
-#   .is_in(codelists.unspecified_lrti))
-#   .first_for_patient().admission_date)
-# ))
-# 
+#rsv primary care
+if codelist_type == "specific" :
+  if cohort == "infants" or cohort == "infants_subgroup" :
+    dataset.rsv_primary = (
+      (has_infection_event(codelists.rsv_primary_codelist))
+      |(emergency_care_attendances.where(emergency_care_attendances
+      .diagnosis_01.is_in(codelists.bronchiolitis_attendance))
+      .exists_for_patient())
+      |(emergency_care_attendances.where(emergency_care_attendances
+      .diagnosis_02.is_in(codelists.bronchiolitis_attendance))
+      .exists_for_patient())
+    )
+  else :
+    dataset.rsv_primary = has_infection_event(codelists.rsv_primary_codelist)
+
+if codelist_type == "sensitive" :
+  if cohort == "infants" or cohort == "infants_subgroup" :
+    dataset.rsv_primary = (
+      (has_infection_event(codelists.rsv_primary_codelist))
+      |(rsv_code_number >1)|(medications.where(medications.dmd_code
+      .is_in(codelists.rsv_prescriptions_codelist)).exists_for_patient())
+      |(emergency_care_diagnosis_matches(codelists.wheeze_attendance)
+      .exists_for_patient())
+      &(~rsv_exclusion_primary)
+    )
+  else :
+    dataset.rsv_primary = (
+      (has_infection_event(codelists.rsv_primary_codelist))
+      |(rsv_code_number >1)|(medications.where(medications.dmd_code
+      .is_in(codelists.rsv_prescriptions_codelist)).exists_for_patient())
+      &(~rsv_exclusion_primary)
+    )
+
+#rsv primary care date
+if codelist_type == "specific" :
+  if cohort == "infants" or cohort == "infants_subgroup" :
+    dataset.rsv_primary_date = (
+      minimum_of((first_infection_event(codelists.rsv_primary_codelist).date),
+      (((emergency_care_attendances.where(emergency_care_attendances
+      .diagnosis_01.is_in(codelists.bronchiolitis_attendance)))
+      |(emergency_care_attendances.where(emergency_care_attendances
+      .diagnosis_02.is_in(codelists.bronchiolitis_attendance))))
+      .arrival_date.minimum_for_patient()))
+    )
+  else :
+    dataset.rsv_primary_date = first_infection_event(codelists.rsv_primary_codelist).date
+
+if codelist_type == "sensitive" :
+  if cohort == "infants" or cohort == "infants_subgroup" :
+    dataset.rsv_primary_date = (case(
+      when(~rsv_exclusion_primary).then(
+      minimum_of((first_infection_event(codelists.rsv_primary_codelist).date),
+      (rsv_codes_date),(medications.where(medications.dmd_code
+      .is_in(codelists.rsv_prescriptions_codelist)).date.minimum_for_patient()),
+      ((emergency_care_diagnosis_matches(codelists.wheeze_attendance)
+      .arrival_date.minimum_for_patient())))))
+    )
+  else :
+    dataset.rsv_primary_date = (case(
+      when(~rsv_exclusion_primary).then(
+      minimum_of((first_infection_event(codelists.rsv_primary_codelist).date),
+      (rsv_codes_date),(medications.where(medications.dmd_code
+      .is_in(codelists.rsv_prescriptions_codelist))
+      .date.minimum_for_patient()))))
+    )
+
+#occurance of event in exclusion list within one month of secondary care diagnosis
+rsv_secondary_sens_date = (
+    apcs.sort_by(apcs.admission_date)
+    .where(
+    ((hospitalisation_diagnosis_matches(codelists
+    .rsv_secondary_codelist).exists_for_patient())
+    |(hospitalisation_diagnosis_matches(codelists
+    .unspecified_lrti).exists_for_patient())))
+    .first_for_patient().admission_date
+)
+rsv_exclusion_secondary = (case(
+  when((hospitalisation_diagnosis_matches(codelists
+  .rsv_secondary_exclusion_codelist))
+  .admission_date.minimum_for_patient()
+  .is_on_or_between(rsv_secondary_sens_date - days(30),
+  rsv_secondary_sens_date + days(30)))
+  .then((hospitalisation_diagnosis_matches(codelists
+  .rsv_secondary_exclusion_codelist))
+  .exists_for_patient())
+))
+
+#rsv secondary care
+if codelist_type == "specific" :
+  dataset.rsv_secondary = (apcs.where(apcs.primary_diagnosis
+    .is_in(codelists.rsv_secondary_codelist))
+    .exists_for_patient()
+    |apcs.where(apcs.secondary_diagnosis
+    .is_in(codelists.rsv_secondary_codelist))
+    .exists_for_patient()
+  )
+if codelist_type == "sensitive" :
+  dataset.rsv_secondary = (
+    hospitalisation_diagnosis_matches(codelists.rsv_secondary_codelist)
+    .exists_for_patient()
+    |(hospitalisation_diagnosis_matches(codelists.unspecified_lrti)
+    .exists_for_patient())
+    &(~rsv_exclusion_secondary)
+  )
+
+#rsv secondary care date
+if codelist_type == "specific" :
+  dataset.rsv_secondary_date = (
+    (apcs.where(apcs.primary_diagnosis
+    .is_in(codelists.rsv_secondary_codelist))
+    |apcs.where(apcs.secondary_diagnosis
+    .is_in(codelists.rsv_secondary_codelist)))
+    .first_for_patient().admission_date
+  )
+if codelist_type == "sensitive" :
+  dataset.rsv_secondary_date = (case(
+    when(~rsv_exclusion_secondary)
+    .then(rsv_secondary_sens_date))
+  )
+
 # #covid primary care
 # if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
 #   
@@ -390,7 +471,7 @@ dataset.rsv_primary = (case(
 #     .is_in(codelists.covid_secondary_codelist)) 
 #     .exists_for_patient()),
 #     when(codelist_type == "sensitive").then(
-#     apcs.where(apcs.any_diagnosis
+#     apcs.where(apcs.all_diagnoses
 #     .is_in(codelists.covid_secondary_codelist)) 
 #     .exists_for_patient())
 #   ))
@@ -406,7 +487,7 @@ dataset.rsv_primary = (case(
 #     .first_for_patient().admission_date),
 #     when(codelist_type == "sensitive")
 #     .then(apcs.sort_by(apcs.admission_date)
-#     .where(apcs.any_diagnosis
+#     .where(apcs.all_diagnoses
 #     .is_in(codelists.covid_secondary_codelist)))
 #   ))
 # 
