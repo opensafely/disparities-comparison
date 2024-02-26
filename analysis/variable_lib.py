@@ -3,7 +3,8 @@ from functools import reduce
 
 from ehrql.codes import SNOMEDCTCode, CTV3Code, ICD10Code
 from ehrql import case, days, when
-from ehrql.tables.tpp import emergency_care_attendances, apcs
+from ehrql.tables.tpp import (emergency_care_attendances, 
+apcs, clinical_events, patients)
 
 ###############################################################################
 # from https://github.com/opensafely/comparative-booster-spring2023/blob/main/analysis/variables_lib.py
@@ -24,7 +25,6 @@ def has_a_continuous_practice_registration_spanning(start_date, end_date):
     return _registrations_overlapping_period(start_date, end_date).exists_for_patient()
   
 def most_recent_bmi(*, minimum_age_at_measurement, where=True):
-    events = clinical_events
     age_threshold = patients.date_of_birth + days(
         # This is obviously inexact but, given that the dates of birth are rounded to
         # the first of the month anyway, there's no point trying to be more accurate
@@ -34,10 +34,10 @@ def most_recent_bmi(*, minimum_age_at_measurement, where=True):
         # This captures just explicitly recorded BMI observations rather than attempting
         # to calculate it from height and weight measurements. Investigation has shown
         # this to have no real benefit it terms of coverage or accuracy.
-        events.where(events.ctv3_code == CTV3Code("22K.."))
-        .where(events.date >= age_threshold)
+        clinical_events.where(clinical_events.ctv3_code == CTV3Code("22K.."))
+        .where(clinical_events.date >= age_threshold)
         .where(where)
-        .sort_by(events.date)
+        .sort_by(clinical_events.date)
         .last_for_patient()
     )
 
@@ -82,4 +82,3 @@ def hospitalisation_diagnosis_matches(codelist):
         for code_string in code_strings
     ]
     return apcs.where(any_of(conditions))
-

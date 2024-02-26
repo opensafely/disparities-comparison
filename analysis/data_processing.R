@@ -14,10 +14,13 @@ args <- commandArgs(trailingOnly = TRUE)
 study_start_date <- study_dates[[args[[2]]]]
 study_end_date <- study_dates[[args[[3]]]]
 cohort <- args[[1]]
+codelist_type <- args[[4]]
+investigation_type <- args[[5]]
 
 df_input <- read_feather(
   here::here("output", paste0("input_", cohort, "_", year(study_start_date),
-                              "_", year(study_end_date), ".arrow")))
+              "_", year(study_end_date), "_", codelist_type, "_", 
+              investigation_type,".arrow")))
 
 #assign ethnicity group
 df_input <- df_input %>%
@@ -86,40 +89,22 @@ df_input$end_time_severe <- study_end_date
 #calculate follow-up end date for mild outcomes
 df_input <- df_input %>%
   rowwise() %>%
-  mutate(end_time_mild = if (study_start_date >= covid_season_min) {
-    if (rsv_primary == TRUE) {
-      rsv_primary_date
-    } else if (covid_primary == TRUE) {
-      covid_primary_date
-    } else if (flu_primary == TRUE) {
-      flu_primary_date
-    } else {study_end_date}
-  } else {
-    if (rsv_primary == TRUE) {
-      rsv_primary_date
-    } else if (flu_primary == TRUE) {
-      flu_primary_date
-    } else {study_end_date}}
-  )
+  mutate(end_time_mild = case_when(
+    study_start_date >= covid_season_min & covid_primary ~ covid_primary_date,
+    rsv_primary ~ rsv_primary_date,
+    flu_primary ~ flu_primary_date,
+    TRUE ~ study_end_date
+  ))
 
 #calculate follow-up end date for severe outcomes 
 df_input <- df_input %>%
   rowwise() %>%
-  mutate(end_time_severe = if (study_start_date >= covid_season_min) {
-    if (rsv_secondary == TRUE) {
-      rsv_secondary_date
-    } else if (covid_secondary == TRUE) {
-      covid_secondary_date
-    } else if (flu_secondary == TRUE) {
-      flu_secondary_date
-    } else {study_end_date}
-  } else {
-    if (rsv_secondary == TRUE) {
-      rsv_secondary_date
-    } else if (flu_secondary == TRUE) {
-      flu_secondary_date
-    } else {study_end_date}}
-  )
+  mutate(end_time_severe = case_when(
+    study_start_date >= covid_season_min & covid_secondary ~ covid_secondary_date,
+    rsv_secondary ~ rsv_secondary_date,
+    flu_secondary ~ flu_secondary_date,
+    TRUE ~ study_end_date
+  ))
 
 #calculate survival time for both outcomes (in weeks)
 df_input$time_mild <- difftime(df_input$end_time_mild, study_start_date, df_input, "weeks")
@@ -128,4 +113,5 @@ df_input$time_severe <- difftime(df_input$end_time_severe, study_start_date, df_
 #write the new input file
 write_feather(df_input, here::here("output", 
   paste0("input_processed_", cohort, "_", year(study_start_date),
-         "_", year(study_end_date), ".arrow")))
+         "_", year(study_end_date), "_", codelist_type, 
+         "_", investigation_type, ".arrow")))

@@ -62,11 +62,6 @@ sim_list = lst(
     ~ factor(as.integer(runif(n = ..n, 1, 36)), levels = 1:36),
   ),
   
-  #whether the participant has diabetes or not
-  diabetes = bn_node(
-    ~ rbernoulli(n = ..n, p = plogis(-1 + age*0.02 + I(sex == "female")*-0.2))
-  ),
-  
   #region the patient lives in
   region = bn_node(
     ~ rfactor(n = ..n, levels = c(
@@ -131,7 +126,7 @@ sim_list = lst(
   ##comorbidities
   
   #smoking status
-  most_recent_smoking_code = bn_node(
+  smoking_status = bn_node(
     ~ rfactor(n = ..n, levels = c(
       "S", #smoker
       "E", #ever-smoked
@@ -157,8 +152,8 @@ sim_list = lst(
   
   #copd
   has_copd = bn_node(
-    ~ rbernoulli(n = ..n, p = plogis(-1 + I(most_recent_smoking_code == "S")*-0.5 +
-                                       I(most_recent_smoking_code == "E")*-0.1))
+    ~ rbernoulli(n = ..n, p = plogis(-1 + I(smoking_status == "S")*-0.5 +                                     
+                                       I(smoking_status == "E")*-0.1))
   ),
   
   #pulmonary fibrosis
@@ -166,14 +161,64 @@ sim_list = lst(
     ~ rbernoulli(n = ..n, p = 0.001)
   ),
   
-  #hypertension
-  has_hypertension = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.2)
+  #cystic fibrosis
+  has_cystic_fibrosis = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.02)
   ),
   
   #diabetes
   has_diabetes = bn_node(
     ~ rbernoulli(n = ..n, p = plogis(-1 + age*0.02 + I(sex == "female")*-0.2))
+  ),
+  
+  #addisons
+  has_addisons = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #severe obesity
+  severe_obesity = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
+  ),
+  
+  #chronic heart disease
+  has_chd = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #chronic kidney disease
+  has_ckd = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #chronic liver disease
+  has_cld = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #chronic respiratory disease
+  has_crd = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #chronic neurological disease
+  has_cnd = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #cancer within 3 years
+  has_cancer = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
+  ),
+  
+  #immunosuppression group
+  immunosuppressed = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #sickle cell disease
+  has_sickle_cell = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
   ),
   
   #heart failure
@@ -220,6 +265,26 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
+  #flu primary care
+  flu_primary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #date
+  flu_primary_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  #flu secondary care
+  flu_secondary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
+  ),
+  
+  #date
+  flu_secondary_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
   #covid primary care
   covid_primary = bn_node(
     ~ rbernoulli(n = ..n, p = 0.05)
@@ -240,25 +305,25 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
-  #flu primary care
-  flu_primary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.01)
+  #unspecified respiratory infection primary care 
+  overall_resp_primary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.3)
   ),
   
   #date
-  flu_primary_day = bn_node(
+  overall_resp_primary_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
-  #flu secondary care
-  flu_secondary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.1)
+  #unspecified respiratory infection secondary care 
+  overall_resp_secondary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.25)
   ),
   
   #date
-  flu_secondary_day = bn_node(
+  overall_resp_secondary_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
-  ),
+  )
   
   # ##exclusion criteria 
   # 

@@ -139,22 +139,46 @@
       "sha": "aa73a7f744885a01ca45abd614d19e90a25f1ccb"
     },
     "user-emprestige-respiratory-virus-unspecified-identification-primary-care.csv": {
-      "id": "user/emprestige/respiratory-virus-unspecified-identification-primary-care/2b95afdb",
-      "url": "https://www.opencodelists.org/codelist/user/emprestige/respiratory-virus-unspecified-identification-primary-care/2b95afdb/",
-      "downloaded_at": "2024-02-19 15:49:02.860337Z",
-      "sha": "6d8d2ca9aabff6a82a9b5e3032ecbfc6128e7777"
+      "id": "user/emprestige/respiratory-virus-unspecified-identification-primary-care/662b7b70",
+      "url": "https://www.opencodelists.org/codelist/user/emprestige/respiratory-virus-unspecified-identification-primary-care/662b7b70/",
+      "downloaded_at": "2024-02-23 14:09:43.056462Z",
+      "sha": "717de6f0b1aa1ddc173841c04256d1949303fb15"
+    },
+    "bristol-copd-exacerbations-snomed.csv": {
+      "id": "bristol/copd-exacerbations-snomed/162ebd1c",
+      "url": "https://www.opencodelists.org/codelist/bristol/copd-exacerbations-snomed/162ebd1c/",
+      "downloaded_at": "2024-02-23 14:09:43.191238Z",
+      "sha": "b0e32941638b2da1cc4584c0a6f092587a6589f7"
+    },
+    "bristol-asthma_exacerbations_snomed.csv": {
+      "id": "bristol/asthma_exacerbations_snomed/137bfd26",
+      "url": "https://www.opencodelists.org/codelist/bristol/asthma_exacerbations_snomed/137bfd26/",
+      "downloaded_at": "2024-02-23 14:09:43.336603Z",
+      "sha": "fe2a7ff5102e2c796585f5adfe69dd84bdd8d738"
     },
     "user-emprestige-respiratory-virus-unspecified-exclusion-primary-care.csv": {
-      "id": "user/emprestige/respiratory-virus-unspecified-exclusion-primary-care/26302fef",
-      "url": "https://www.opencodelists.org/codelist/user/emprestige/respiratory-virus-unspecified-exclusion-primary-care/26302fef/",
+      "id": "user/emprestige/respiratory-virus-unspecified-exclusion-primary-care/3159d510",
+      "url": "https://www.opencodelists.org/codelist/user/emprestige/respiratory-virus-unspecified-exclusion-primary-care/3159d510/",
       "downloaded_at": "2024-02-19 15:49:03.098150Z",
       "sha": "9f21dfc30d93a543736a62ed37c3a20f2c3e09ec"
     },
     "user-emprestige-respiratory-virus-unspecified-identification-secondary-care.csv": {
-      "id": "user/emprestige/respiratory-virus-unspecified-identification-secondary-care/12863ca6",
-      "url": "https://www.opencodelists.org/codelist/user/emprestige/respiratory-virus-unspecified-identification-secondary-care/12863ca6/",
-      "downloaded_at": "2024-02-19 15:49:03.281957Z",
-      "sha": "d1d7d3df58785e7f54f1f6c66afa68baa4ee6a07"
+      "id": "user/emprestige/respiratory-virus-unspecified-identification-secondary-care/4d1c083b",
+      "url": "https://www.opencodelists.org/codelist/user/emprestige/respiratory-virus-unspecified-identification-secondary-care/4d1c083b/",
+      "downloaded_at": "2024-02-23 14:09:43.657149Z",
+      "sha": "0a22905a56bb46c3c5d483f8d0a3cf516121c75f"
+    },
+    "opensafely-copd-exacerbation.csv": {
+      "id": "opensafely/copd-exacerbation/6858db5b",
+      "url": "https://www.opencodelists.org/codelist/opensafely/copd-exacerbation/6858db5b/",
+      "downloaded_at": "2024-02-23 14:09:43.764560Z",
+      "sha": "df8ebce026cf3cbbdde3e32a7698b243019b4175"
+    },
+    "opensafely-asthma-exacerbation-secondary-care.csv": {
+      "id": "opensafely/asthma-exacerbation-secondary-care/229001a8",
+      "url": "https://www.opencodelists.org/codelist/opensafely/asthma-exacerbation-secondary-care/229001a8/",
+      "downloaded_at": "2024-02-23 14:09:43.881803Z",
+      "sha": "4539261c8a45b1c365f436400026d5859c9a7896"
     },
     "user-emprestige-respiratory-virus-unspecified-exclusion-secondary-care.csv": {
       "id": "user/emprestige/respiratory-virus-unspecified-exclusion-secondary-care/0fd37cb0",

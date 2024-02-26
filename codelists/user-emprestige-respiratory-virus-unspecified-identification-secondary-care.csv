@@ -26,13 +26,9 @@ J171,Pneumonia in viral diseases classified elsewhere
 J178,Pneumonia in other diseases classified elsewhere
 J180,"Bronchopneumonia, unspecified"
 J181,"Lobar pneumonia, unspecified"
-J182,"Hypostatic pneumonia, unspecified"
 J189,"Pneumonia, unspecified"
 J20,Acute bronchitis
 J208,Acute bronchitis due to other specified organisms
 J209,"Acute bronchitis, unspecified"
 J40,"Bronchitis, not specified as acute or chronic"
 J851,Abscess of lung with pneumonia
-P23,Congenital pneumonia
-P230,Congenital pneumonia due to viral agent
-P239,"Congenital pneumonia, unspecified"

@@ -13,10 +13,13 @@ args <- commandArgs(trailingOnly = TRUE)
 study_start_date <- study_dates[[args[[2]]]]
 study_end_date <- study_dates[[args[[3]]]]
 cohort <- args[[1]]
+codelist_type <- args[[4]]
+investigation_type <- args[[5]]
 
 df_input <- read_feather(
   here::here("output", paste0("input_processed_", cohort, "_", year(study_start_date),
-                              "_", year(study_end_date), ".arrow")))
+             "_", year(study_end_date), "_", codelist_type, "_", 
+             investigation_type,".arrow")))
 
 lab <- ifelse(cohort == "infants", "Age (Months)", 
        ifelse(cohort == "infants_subgroup", "Age (Months)", "Age (Years)"))
@@ -27,7 +30,8 @@ plot_age <- ggplot(data = df_input, aes(age, frequency(age))) + geom_col(width =
 ggsave(
   plot = plot_age,
   filename = paste0("descriptive_", cohort, "_", year(study_start_date),
-    "_", year(study_end_date), ".png"), path = here::here("output"),
+    "_", year(study_end_date), "_", codelist_type, "_", 
+    investigation_type,".png"), path = here::here("output"),
 )
 
 

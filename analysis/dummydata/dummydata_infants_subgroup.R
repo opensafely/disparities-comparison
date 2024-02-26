@@ -195,26 +195,6 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
-  #covid primary care
-  covid_primary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.05)
-  ),
-  
-  #date
-  covid_primary_day = bn_node(
-    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
-  ),
-  
-  #covid secondary care
-  covid_secondary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.1)
-  ),
-  
-  #date
-  covid_secondary_day = bn_node(
-    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
-  ),
-  
   #flu primary care
   flu_primary = bn_node(
     ~ rbernoulli(n = ..n, p = 0.01)
@@ -235,22 +215,62 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
-  ##exclusion criteria 
-  
-  #severe combined immunodeficiency syndrome 
-  severe_immmunodeficiency = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.02)
+  #covid primary care
+  covid_primary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.05)
   ),
   
-  #ventilator dependence
-  ventilator_dependent = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.01)
+  #date
+  covid_primary_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
-  #risk group 
-  risk_group_infants = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.01)
+  #covid secondary care
+  covid_secondary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
+  ),
+  
+  #date
+  covid_secondary_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  #unspecified respiratory infection primary care 
+  overall_resp_primary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.3)
+  ),
+  
+  #date
+  overall_resp_primary_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  #unspecified respiratory infection secondary care 
+  overall_resp_secondary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.25)
+  ),
+  
+  #date
+  overall_resp_secondary_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   )
+  
+  # ##exclusion criteria 
+  # 
+  # #severe combined immunodeficiency syndrome 
+  # severe_immmunodeficiency = bn_node(
+  #   ~ rbernoulli(n = ..n, p = 0.02)
+  # ),
+  # 
+  # #ventilator dependence
+  # ventilator_dependent = bn_node(
+  #   ~ rbernoulli(n = ..n, p = 0.01)
+  # ),
+  # 
+  # #risk group 
+  # risk_group_infants = bn_node(
+  #   ~ rbernoulli(n = ..n, p = 0.01)
+  # )
   
 )
 

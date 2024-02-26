@@ -61,30 +61,6 @@ rsv_secondary_codelist = codelist_from_csv(
   column = "code",
 )
 
-# covid primary - specific
-covid_primary_codelist = codelist_from_csv(
-  "codelists/user-emprestige-covid-19-identification-primary-care.csv",
-  column = "code",
-)
-
-# covid secondary - specific
-covid_secondary_codelist = codelist_from_csv(
-  "codelists/opensafely-covid-identification.csv",
-  column = "icd10_code",
-)
-
-# flu primary - specific
-flu_primary_codelist = codelist_from_csv(
-  "codelists/user-emprestige-influenza-identification-primary-care.csv",
-  column = "code",
-)
-
-# flu secondary - specific
-flu_secondary_codelist = codelist_from_csv(
-  "codelists/user-emprestige-influenza-identification-secondary-care.csv",
-  column = "code",
-)
-
 # rsv primary - sensitive 
 rsv_sensitive_codelist = codelist_from_csv(
   "codelists/user-emprestige-rsv-identification-primary-care-maximal-sensitivity.csv",
@@ -115,27 +91,15 @@ rsv_secondary_exclusion_codelist = codelist_from_csv(
   column = "code",
 )
 
-# covid primary - sensitive
-covid_sensitive_codelist = codelist_from_csv(
-  "codelists/user-emprestige-covid-19-identification-primary-care-maximal-sensitivity.csv",
+# flu primary - specific
+flu_primary_codelist = codelist_from_csv(
+  "codelists/user-emprestige-influenza-identification-primary-care.csv",
   column = "code",
 )
 
-# covid primary - sensitive (prescriptions)
-covid_prescriptions_codelist = codelist_from_csv(
-  "codelists/user-emprestige-covid-19-identification-prescriptions-dmd.csv",
-  column = "dmd_id",
-)
-
-# covid primary exclusion
-covid_primary_exclusion_codelist = codelist_from_csv(
-  "codelists/user-emprestige-covid-19-exclusion-primary-care-maximal-sensitivity.csv",
-  column = "code",
-)
-
-# covid secondary exclusion
-covid_secondary_exclusion_codelist = codelist_from_csv(
-  "codelists/user-emprestige-covid-19-exclusion-secondary-care-maximal-sensitivity.csv",
+# flu secondary - specific
+flu_secondary_codelist = codelist_from_csv(
+  "codelists/user-emprestige-influenza-identification-secondary-care.csv",
   column = "code",
 )
 
@@ -187,9 +151,57 @@ flu_secondary_exclusion_codelist = codelist_from_csv(
   column = "code",
 )
 
+# covid primary - specific
+covid_primary_codelist = codelist_from_csv(
+  "codelists/user-emprestige-covid-19-identification-primary-care.csv",
+  column = "code",
+)
+
+# covid secondary - specific
+covid_secondary_codelist = codelist_from_csv(
+  "codelists/opensafely-covid-identification.csv",
+  column = "icd10_code",
+)
+
+# covid primary - sensitive
+covid_sensitive_codelist = codelist_from_csv(
+  "codelists/user-emprestige-covid-19-identification-primary-care-maximal-sensitivity.csv",
+  column = "code",
+)
+
+# covid primary - sensitive (prescriptions)
+covid_prescriptions_codelist = codelist_from_csv(
+  "codelists/user-emprestige-covid-19-identification-prescriptions-dmd.csv",
+  column = "dmd_id",
+)
+
+# covid primary exclusion
+covid_primary_exclusion_codelist = codelist_from_csv(
+  "codelists/user-emprestige-covid-19-exclusion-primary-care-maximal-sensitivity.csv",
+  column = "code",
+)
+
+# covid secondary exclusion
+covid_secondary_exclusion_codelist = codelist_from_csv(
+  "codelists/user-emprestige-covid-19-exclusion-secondary-care-maximal-sensitivity.csv",
+  column = "code",
+)
+
 # unspecified respiratory virus primary
 respiratory_virus_primary_codelist = codelist_from_csv(
   "codelists/user-emprestige-respiratory-virus-unspecified-identification-primary-care.csv",
+  column = "code",
+)
+
+#copd exacerbation primary
+copd_exacerbation_primary_codelist = codelist_from_csv(
+  "codelists/bristol-copd-exacerbations-snomed.csv",
+  column = "code",
+)
+
+#asthma exacerbation primary
+asthma_exacerbation_primary_codelist = codelist_from_csv(
+  "codelists/bristol-asthma_exacerbations_snomed.csv",
   column = "code",
 )
 
@@ -208,6 +220,18 @@ respiratory_virus_primary_exclusion_codelist = codelist_from_csv(
 # unspecified respiratory virus secondary
 respiratory_virus_secondary_codelist = codelist_from_csv(
   "codelists/user-emprestige-respiratory-virus-unspecified-identification-secondary-care.csv",
+  column = "code",
+)
+
+#copd exacerbation secondary
+copd_exacerbation_secondary_codelist = codelist_from_csv(
+  "codelists/opensafely-copd-exacerbation.csv",
+  column = "code",
+)
+
+#asthma exacerbation secondary
+asthma_exacerbation_secondary_codelist = codelist_from_csv(
+  "codelists/opensafely-copd-exacerbation.csv",
   column = "code",
 )
 
@@ -313,7 +337,7 @@ diabetes_resolved_codelist = codelist_from_csv(
 )
 
 # addisons
-addisions_codelist = codelist_from_csv(
+addisons_codelist = codelist_from_csv(
   "codelists/primis-covid19-vacc-uptake-addis_cod.csv",
   column = "code",
 )
@@ -391,10 +415,6 @@ lung_cancer_codelist = codelist_from_csv(
   "codelists/opensafely-lung-cancer-snomed.csv",
   column = "id",
 )
-chemo_codelist = codelist_from_csv(
-  "codelists/primis-covid19-vacc-uptake-dxt_chemo_cod.csv",
-  column = "code",
-)
 
 # immunosuppresion
 immunosuppression_diagnosis_codelist = codelist_from_csv(
@@ -407,6 +427,10 @@ immunosuppression_medications_codelist = codelist_from_csv(
 ) #dm+d codes
 immunosuppression_admin_codelist = codelist_from_csv(
   "codelists/primis-covid19-vacc-uptake-immunosuppression-admin-codes.csv",
+  column = "code",
+)
+chemo_codelist = codelist_from_csv(
+  "codelists/primis-covid19-vacc-uptake-dxt_chemo_cod.csv",
   column = "code",
 )
 

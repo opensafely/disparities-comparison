@@ -174,6 +174,27 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
+  #flu primary care
+  flu_primary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #date
+  flu_primary_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  #flu secondary care
+  flu_secondary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
+  ),
+  
+  #date
+  flu_secondary_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  
   #covid primary care
   covid_primary = bn_node(
     ~ rbernoulli(n = ..n, p = 0.05)
@@ -194,23 +215,23 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
-  #flu primary care
-  flu_primary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.01)
+  #unspecified respiratory infection primary care 
+  overall_resp_primary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.3)
   ),
   
   #date
-  flu_primary_day = bn_node(
+  overall_resp_primary_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
-  #flu secondary care
-  flu_secondary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.1)
+  #unspecified respiratory infection secondary care 
+  overall_resp_secondary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.25)
   ),
   
   #date
-  flu_secondary_day = bn_node(
+  overall_resp_secondary_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   )
   

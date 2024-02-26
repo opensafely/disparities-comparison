@@ -1,42 +1,23 @@
 code,term
-1010619008,Inflammatory tracheobronchial papilloma
-1010634002,Pneumonia caused by Acinetobacter
 102453009,Peritonsillar cellulitis
 10351008,Suppurative tonsillitis
 10509002,Acute bronchitis
 10625751000119106,Bronchopneumonia due to virus
-10692681000119108,Aspirin exacerbated respiratory disease
 10809006,Parainfluenza virus laryngotracheitis
-1082721000119101,Pneumonia caused by Ascaris
-1087061000119106,Gonococcal pneumonia
 1092361000119109,Rubella pneumonia
-1092951000119106,Pneumonia caused by Bordetella parapertussis
 111274000,Acute abscess of nasal sinus
 11134001,Acute suppuration of sphenoidal sinus
 111849006,Adenoviral bronchitis
-111900000,Pneumonia in aspergillosis
-11316005,Granuloma of vocal cords
-1149093006,Pneumonia caused by vancomycin resistant Enterococcus
-1172606002,Idiopathic pleuroparenchymal fibroelastosis
-1176988004,Pneumonia caused by genus Enterobacter
 117723004,Infectious bronchitis virus genotype determination
 1187256004,Viral pneumonia due to infectious mononucleosis caused by human herpesvirus 4
-1208602000,Pneumonia caused by Pseudomonas aeruginosa
-12181000119103,Contact granuloma of larynx
 122403008,Infectious bronchitis virus culture
 123587001,Acute bronchopneumonia
 123588006,Confluent bronchopneumonia with abscess formation
-123589003,Necrotizing bronchopneumonia
 123590007,Focal pneumonia
 123591006,Confluent pneumonia
 123592004,Acute mucous pneumonia
-124691000119101,Pneumonia caused by methicillin resistant Staphylococcus aureus
-1282001,Perichondritis of larynx
 128711000119106,Pneumonia caused by methicillin susceptible Staphylococcus aureus
 129451001,Respiratory bronchiolitis associated interstitial lung disease
-129452008,Nonspecific interstitial pneumonia
-129458007,Bronchiolitis obliterans organizing pneumonia
-129459004,Acute interstitial pneumonia
 13266007,Sphenoidal sinusitis
 133171000119105,Chronic pharyngolaryngitis
 13617004,Tracheobronchitis
@@ -55,20 +36,14 @@ code,term
 155549005,Viral pneumonia
 155551009,Bronchopneumonia
 155552002,Pneumonia NOS
-155553007,Bacterial pneumonia NOS
 155558003,Pneumonia NOS
 155616009,Bronchitis NOS
-157109005,Congenital pneumonia
 15805002,Acute sinusitis
-16036000,Acute empyema of frontal sinus
 16146001,Viral bronchitis
-164256007,On examination - follicular tonsillitis
 17357005,Acute suppuration of frontal sinus
 17741008,Acute tonsillitis
 17904003,Hypertrophic laryngitis
-181007,Hemorrhagic bronchopneumonia
 18643000,Ethmoidal sinusitis
-187052004,Pulmonary African histoplasmosis
 195649005,Sinusitis (& acute)
 195651009,Other acute sinusitis
 195652002,Other acute sinusitis NOS
@@ -110,25 +85,11 @@ code,term
 195811008,Chronic simple laryngitis
 195812001,Chronic catarrhal laryngitis
 195813006,Chronic hyperplastic laryngitis
-195854003,Fibrinous chorditis
-195855002,Chorditis vocalis inferior
 195880002,Viral pneumonia (& chest infection)
-195881003,Pneumonia caused by respiratory syncytial virus
 195882005,Viral pneumonia NEC
 195883000,Viral pneumonia NOS
-195886008,Group B streptococcal pneumonia
-195888009,Proteus pneumonia
-195889001,Legionella pneumonia
-195892002,Bacterial pneumonia NOS
-195896004,Pneumonia caused by pleuropneumonia-like organism
 195899006,(Pneumonia) or (chest infection) with infectious diseases EC
-195900001,Pneumonia due to measles
-195902009,Anthrax pneumonia
-195904005,Pneumonia with coccidioidomycosis
 195907003,Pneumonia with other infectious diseases EC
-195908008,Actinomycotic pneumonia
-195909000,Nocardial pneumonia
-195911009,Chickenpox pneumonia
 195912002,Pneumonia with other infectious diseases EC NOS
 195913007,Pneumonia with infectious diseases EC NOS
 195914001,Bronchopneumonia: [unspecified organism] or [chest infection - unspecified]
@@ -145,64 +106,19 @@ code,term
 196196007,[X]Other acute sinusitis
 196204006,[X]Other viral pneumonia
 198691000000108,Acute obstructive laryngitis
-206283000,Congenital staphylococcal pneumonia
-206284006,Congenital group A hemolytic streptococcal pneumonia
-206285007,Congenital group B hemolytic streptococcal pneumonia
-206286008,Congenital Escherichia coli pneumonia
-206287004,Congenital pseudomonal pneumonia
-206288009,Congenital viral pneumonia
-206289001,Congenital chlamydial pneumonia
-206290005,Other specified congenital pneumonia
-206291009,Congenital pneumonia NOS
-21060003,Acute bacterial epiglottitis
 214081000000107,Acute obstructive laryngitis
 222008,Acute epiglottitis with obstruction
 22754005,Staphylococcal pneumonia
 22951000119104,Spasmodic croup
-232389000,Pott's puffy tumor
 232390009,Suppurative sinusitis with complications
 232426008,Acute simple laryngitis
 232428009,Acute membranous laryngitis
 232429001,Acute subglottic laryngitis
 232432003,Pediatric acute epiglottitis and supraglottitis
 232433008,Adult acute epiglottitis and supraglottitis
-232434002,Chronic fungal laryngitis
-232439007,Relapsing polychondritis of larynx
-232458003,Laryngeal sarcoidosis
-232460001,Granulomatosis with polyangiitis of larynx
 233597004,Chest infection - unspecified bronchitis
 233601004,Acute viral bronchitis
 233604007,Pneumonia
-233606009,Atypical pneumonia
-233607000,Pneumococcal pneumonia
-233608005,Meningococcal pneumonia
-233609002,Pneumonia caused by Chlamydiaceae
-233610007,Neonatal chlamydial pneumonia
-233611006,Fetal pneumonia
-233612004,Fetal pneumonia
-233613009,Fungal pneumonia
-233614003,Pulmonary mucormycosis
-233617005,Hemorrhagic pneumonia
-233618000,Mycobacterial pneumonia
-233619008,Neonatal pneumonia
-233620002,Pneumonia due to parasitic infestation
-233621003,Rickettsial pneumonia
-233622005,Infectious mononucleosis pneumonia
-233623000,Mononuclear interstitial pneumonia
-233624006,Herpes simplex pneumonia
-233625007,Giant cell pneumonia
-233713004,Seasonal cryptogenic organizing pneumonia with biochemical cholestasis
-233799004,Acute toxic tracheobronchitis
-236302005,Acute interstitial pneumonia
-23884004,Acute suppuration of maxillary sinus
-240387006,Pulmonary glanders
-240391001,Pulmonary melioidosis
-240635003,Pneumonia caused by Leishmania
-240741002,Acute pulmonary African histoplasmosis
-24347001,Cellulitis of vocal cords
-2523007,Salmonella pneumonia
-25764005,Acute abscess of frontal sinus
-262678008,Post-radiotherapy laryngitis
 266337001,Acute epiglottitis (non-streptococcal)
 266350000,Pneumococcal lobar pneumonia
 266351001,Pneumonia with infectious diseases EC
@@ -211,23 +127,13 @@ code,term
 266378004,(Acute sinusitis: [NOS] or [ethmoidal] or [sphenoidal]) or ([pansinusitis])
 266380005,Acute: [bronchitis] or [chest infections] or [tracheobronchitis]
 26650005,Acute tracheitis
-26808007,Polypoid sinus degeneration
-27278006,Acute empyema of sphenoidal sinus
 274103002,Pneumonia NOS
 275483004,Sinusitis
 275484005,Maxillary sinusitis
 275485006,Frontal sinusitis
-275495004,Acute fibrinous laryngotracheobronchitis
 275499005,Acute wheezy bronchitis
 276443001,Acute laryngitis and/or tracheitis
-276692000,Congenital viral pneumonia
-276693005,Congenital bacterial pneumonia
-276694004,Acquired neonatal pneumonia
-276695003,Neonatal aspiration pneumonia
-277869007,Non-tuberculous mycobacterial pneumonia
 278516003,Lobar pneumonia
-27878001,Follicular tonsillitis
-28709001,Cellulitis of larynx
 29591002,Purulent bronchitis
 29608009,Acute epiglottitis
 29951006,Chronic laryngitis
@@ -249,172 +155,87 @@ code,term
 312423006,Infective laryngitis
 312424000,Infective tonsillitis
 313281000000109,Acute rhinosinusitis
-314978007,Postoperative pneumonia
-31561003,Hypostatic bronchopneumonia
-32204007,Pulmonary actinobacillosis
-32286006,Pneumonia in Q fever
 32398004,Bronchitis
-32904004,Pneumococcal laryngitis
 338111000000109,Acute rhinosinusitis
 34020007,Pneumonia caused by Streptococcus
-3487004,Candidiasis of lung
-35031000119100,Acute aspiration pneumonia
-35037009,Primary atypical interstitial pneumonia
-35168006,Acute empyema of ethmoidal sinus
 35301006,Acute tracheobronchitis
 35339003,Primary pneumonic plague
 36426008,Subacute bronchitis
 36971009,Sinusitis
-371103000,Granulomatous epiglottitis
 371127003,Obstructive sinusitis
 37426002,Ulcerative laryngitis
 37948003,Acute laryngotracheitis without obstruction
-38699009,Pneumonia caused by Histoplasma capsulatum
-38976008,Pneumonic plague
-39172002,Pneumonia caused by Proteus mirabilis
 396284006,Lobular pneumonia
 396285007,Bronchopneumonia
 396286008,Bilateral bronchopneumonia
-401300000,Atypical pneumonia screening test
-40451000000103,Atypical pneumonia screening test
-406529000,Pneumonia severity index
 407671000,Bilateral pneumonia
 408669002,Acute laryngitis with obstruction
-408680002,Healthcare associated bacterial pneumonia
-408681003,Healthcare associated legionnaire's disease
-409664000,Pneumonia caused by anaerobic bacteria
-409665004,Pneumonia caused by aerobic bacteria
-41048006,Haemophilus influenzae laryngitis
-41207000,Adenoviral pneumonia
-41381004,Pneumonia caused by Pseudomonas
-415125002,Pneumocystosis jirovecii pneumonia
 41931000119102,Sinusitis co-occurrent with nasal polyps
-422588002,Aspiration pneumonia
-425464007,Nosocomial pneumonia
-425996009,Bilateral basal pneumonia
 426696003,Lingular pneumonia
-42761000000106,Atypical pneumonia screening test
-427780002,Laryngitis due to gastroesophageal reflux
 429381000000103,[X]Other viral pneumonia
 430395005,Pneumonia caused by Gram negative bacteria
-430969000,Recurrent aspiration pneumonia
 431231008,Acute rhinosinusitis
-438764004,Postoperative aspiration pneumonia
 441551009,Inflammation of larynx caused by virus
 441590008,Pneumonia caused by Severe acute respiratory syndrome coronavirus
-441658007,Pneumonia caused by Staphylococcus aureus
-441942006,Pneumonia caused by infection caused by Streptococcus pyogenes
-442094008,Pneumonia caused by Histoplasma
-44274007,Lymphoid interstitial pneumonia
 444814009,Viral sinusitis
 445096001,Pneumonia caused by Human metapneumovirus
-44549008,Aspiration pneumonia resulting from a procedure
-45157009,Idiopathic fibrosing alveolitis
-45312009,Pneumonia in typhoid fever
 454211000000100,[X]Other acute sinusitis
-45556008,Pulmonary tularemia
-45841000000109,Atypical pneumonia screening test
 45913009,Laryngitis
-471272001,Cavitary pneumonia
-49908003,Acute epiglottitis without obstruction
-5028002,Acute pansinusitis
-50804000,Catarrhal pneumonia
 51209006,Viral tonsillitis
-51530003,Pneumonia caused by Escherichia coli
-53084003,Bacterial pneumonia
 532291000000105,Pneumonia with infectious diseases EC
-53926002,Plastic bronchitis
-54287007,Ozena laryngis
 55130001,Laryngotracheitis
 55355000,Acute laryngopharyngitis
-55419007,Tuberculosis of glottis
 55679008,Peribronchial pneumonia
-566801000000107,Other specified congenital pneumonia
 576581000000107,Acute viral laryngitis unspecified
 57702005,Unresolved pneumonia
-57713008,Inflammation of vocal cord
-58576005,Haemophilus influenzae epiglottitis
 5875001,Acute bronchitis with obstruction
-58763001,Acute empyema of nasal sinus
-59454008,Laryngitis sicca
-59475000,Pneumonia in pertussis
 59967003,Acute laryngotracheitis with obstruction
 600981000000100,Other acute sinusitis NOS
 600991000000103,Acute sinusitis NOS
 603091000000105,Acute laryngitis NOS
 603111000000100,Pneumonia with other infectious diseases EC
 603131000000108,Acute laryngitis and tracheitis NOS
-603201000000106,Congenital pneumonia NOS
 60363000,Pneumonia
 60485005,Pleurobronchopneumonia
 607911000000108,Other acute sinusitis
 616111000000105,Pneumonia with other infectious diseases EC NOS
 616131000000102,Pneumonia with infectious diseases EC NOS
 616141000000106,Pneumonia due to unspecified organism
-61711004,Acute abscess of ethmoidal sinus
 617941000000107,Viral pneumonia NEC
 617951000000105,Viral pneumonia NOS
 617981000000104,Bacterial pneumonia NOS
-61884008,Achromobacter pneumonia
 621011000000106,Acute bronchitis NOS
 623471000000106,Acute tonsillitis NOS
 63140003,Acute suppuration of ethmoidal sinus
 64369009,Acute tracheitis without obstruction
 64375000,Acute laryngotracheitis
 644261000000103,Chest infection - unspecified bronchitis
-64667001,Interstitial pneumonia
 64703005,Terminal bronchopneumonia
 649111000000109,Tracheobronchitis NOS
 649121000000103,Bronchitis NOS
 64917006,Parainfluenza virus pneumonia
 651931000000103,Subacute bronchitis unspecified
 651941000000107,Acute viral bronchitis unspecified
-652005,Gangrenous tonsillitis
 652331000000107,Basal pneumonia due to unspecified organism
 656891000000102,Lobar pneumonia due to unspecified organism
 65878001,Septic bronchitis
 66429007,Unresolved lobar pneumonia
 6655004,Acute laryngitis
 670561000000106,Bronchitis unspecified
-67525007,Secondary pneumonic plague
 677801000000109,Pneumonia NOS
 67814005,Bronchopneumonia
 67832005,Acute ethmoidal sinusitis
 68272006,Acute maxillary sinusitis
-68409003,Organized pneumonia
 689401000000108,Bronchopneumonia due to unspecified organism
 699014000,Recurrent pneumonia
-700249006,Idiopathic interstitial pneumonia
-70036007,Haemophilus influenzae pneumonia
-70341005,Tuberculous laryngitis
-7063008,Gangrenous pneumonia
-707503004,Pneumonia caused by Schistosoma mansoni
-707507003,Pneumonia caused by Schistosoma japonicum
-707508008,Pneumonia caused by Schistosoma haematobium
-708031000,Idiopathic eosinophilic pneumonia
 709663002,Supraglottitis
 70976000,Viral epiglottitis
 71186008,Croup
 713084008,Pneumonia caused by Human coronavirus
-713525001,Recurrent bacterial pneumonia
-713526000,Recurrent bacterial pneumonia co-occurrent with human immunodeficiency virus infection
-713544008,Bacterial pneumonia co-occurrent with human immunodeficiency virus infection
 714203003,Acute bronchitis co-occurrent with bronchiectasis
-719218000,Cryptogenic organizing pneumonia
-71926009,Infective pneumonia acquired prenatally
 721586007,Pharyngotonsillitis caused by Human herpes simplex virus
-72211003,Laryngeal granuloma
-724499007,Idiopathic acute eosinophilic pneumonia
 725917007,Acute sinusitis caused by virus
-72656004,Granulomatous pneumonia
-72854003,Aspiration pneumonia due to near drowning
-733051000,Pneumonia caused by Gram positive bacteria
-75426006,Aspiration pneumonia caused by regurgitated food
 75570004,Viral pneumonia
-76090006,Pittsburgh pneumonia
-763888005,Necrotizing pneumonia caused by Panton-Valentine leukocidin producing Staphylococcus aureus
-76511000000100,Atypical pneumonia screening test
-76653009,Acute empyema of maxillary sinus
 7678002,Cytomegaloviral pneumonia
 77919000,Acute sphenoidal sinusitis
 785728005,Bronchitis co-occurrent with wheeze
@@ -422,25 +243,17 @@ code,term
 785744001,Bronchitis co-occurrent with acute wheeze
 785745000,Acute bronchitis co-occurrent with wheeze
 78737005,Frontal sinusitis
-78895009,Congenital pneumonia
-80003002,Tuberculous pneumonia
 80257001,Acute bronchitis with bronchospasm
 80384002,Epiglottitis
 80600003,Acute suppuration of nasal sinus
 80771000000105,Atypical pneumonia screening test
-81164001,Ornithosis with pneumonia
 82690000,Suppurative laryngitis
 83271005,Chronic laryngotracheitis
 84753008,Pneumonia in systemic mycosis
 85083002,Streptococcal laryngitis
 8519009,Acute tracheitis with obstruction
-85469005,Hypostatic pneumonia
-8549006,Desquamative interstitial pneumonia
 85832003,Parainfluenza virus laryngitis
 85915003,Laryngotracheobronchitis
-866901000000103,Eosinophilic bronchitis
-86773000,Edematous laryngitis
-870573008,Interstitial pneumonia with autoimmune features
 878818001,Pharyngotonsillitis
 882784691000119100,Pneumonia caused by severe acute respiratory syndrome coronavirus 2
 88348008,Maxillary sinusitis
@@ -449,5 +262,3 @@ code,term
 897656009,Rhinosinusitis
 90176007,Tonsillitis
 91038008,Acute frontal sinusitis
-99251000000100,Bilateral pneumonia
-993251000000108,Atypical pneumonia screening test
