@@ -782,6 +782,47 @@ if codelist_type == "sensitive" :
       .admission_date.minimum_for_patient())
     )
 
+## outcomes - mortality 
+
+#rsv mortality 
+dataset.rsv_mortality = (
+  ons_deaths.underlying_cause_of_death
+  .is_in(codelists.rsv_secondary_codelist)
+)
+
+#rsv mortality date
+dataset.rsv_mortality_date = (case(when(
+  ons_deaths.underlying_cause_of_death
+  .is_in(codelists.rsv_secondary_codelist))
+  .then(ons_deaths.date))
+)
+
+#flu mortality 
+dataset.flu_mortality = (
+  ons_deaths.underlying_cause_of_death
+  .is_in(codelists.flu_secondary_codelist)
+)
+
+#rsv mortality date
+dataset.flu_mortality_date = (case(when(
+  ons_deaths.underlying_cause_of_death
+  .is_in(codelists.flu_secondary_codelist))
+  .then(ons_deaths.date))
+)
+
+#covid mortality 
+dataset.covid_mortality = (
+  ons_deaths.underlying_cause_of_death
+  .is_in(codelists.covid_secondary_codelist)
+)
+
+#covid mortality date
+dataset.covid_mortality_date = (case(when(
+  ons_deaths.underlying_cause_of_death
+  .is_in(codelists.covid_secondary_codelist))
+  .then(ons_deaths.date))
+)
+
 ## comorbidities for secondary investigation
 
 if investigation_type == "secondary" :

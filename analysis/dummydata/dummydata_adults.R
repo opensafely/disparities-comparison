@@ -323,6 +323,38 @@ sim_list = lst(
   #date
   overall_resp_secondary_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  ##mortality outcomes
+  
+  #rsv mortality
+  rsv_mortality = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
+  ),
+  
+  #date
+  rsv_mortality_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365)) 
+  ),
+  
+  #flu mortality
+  flu_mortality = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
+  ),
+  
+  #date
+  flu_mortality_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365)) 
+  ),
+  
+  #covid mortality
+  covid_mortality = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
+  ),
+  
+  #date
+  covid_mortality_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365)) 
   )
   
 )
