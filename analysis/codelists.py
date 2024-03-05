@@ -446,8 +446,8 @@ heart_failure_codelist = codelist_from_csv(
   column = "code",
 )
 
-# prior MI
-prior_mi_codelist = codelist_from_csv(
-  "codelists/nhsd-primary-care-domain-refsets-mi_cod.csv",
+# coronary heart disease
+coronary_heard_disease_codelist = codelist_from_csv(
+  "codelists/nhsd-primary-care-domain-refsets-chd_cod.csv",
   column = "code",
 )

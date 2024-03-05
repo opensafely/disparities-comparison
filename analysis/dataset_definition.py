@@ -21,7 +21,8 @@ from variable_lib import (
   most_recent_bmi,
   practice_registration_as_of,
   emergency_care_diagnosis_matches,
-  hospitalisation_diagnosis_matches
+  hospitalisation_diagnosis_matches,
+  cause_of_death_matches
 )
 
 import codelists
@@ -786,42 +787,59 @@ if codelist_type == "sensitive" :
 
 #rsv mortality 
 dataset.rsv_mortality = (
-  ons_deaths.underlying_cause_of_death
-  .is_in(codelists.rsv_secondary_codelist)
+  cause_of_death_matches(codelists
+  .rsv_secondary_codelist)
 )
 
 #rsv mortality date
 dataset.rsv_mortality_date = (case(when(
-  ons_deaths.underlying_cause_of_death
-  .is_in(codelists.rsv_secondary_codelist))
+  dataset.rsv_mortality)
   .then(ons_deaths.date))
 )
 
 #flu mortality 
 dataset.flu_mortality = (
-  ons_deaths.underlying_cause_of_death
-  .is_in(codelists.flu_secondary_codelist)
+  cause_of_death_matches(codelists
+  .flu_secondary_codelist)
 )
 
 #rsv mortality date
 dataset.flu_mortality_date = (case(when(
-  ons_deaths.underlying_cause_of_death
-  .is_in(codelists.flu_secondary_codelist))
+  dataset.flu_mortality)
   .then(ons_deaths.date))
 )
 
 #covid mortality 
 dataset.covid_mortality = (
-  ons_deaths.underlying_cause_of_death
-  .is_in(codelists.covid_secondary_codelist)
+  cause_of_death_matches(codelists
+  .covid_secondary_codelist)
 )
 
 #covid mortality date
 dataset.covid_mortality_date = (case(when(
-  ons_deaths.underlying_cause_of_death
-  .is_in(codelists.covid_secondary_codelist))
+  dataset.covid_mortality)
   .then(ons_deaths.date))
 )
+
+#overall mortality
+dataset.overall_resp_mortality = (
+  (dataset.rsv_mortality)|(dataset.flu_mortality) 
+  |(dataset.covid_mortality)
+  |(cause_of_death_matches(codelists
+  .respiratory_virus_secondary_codelist))
+)
+
+#overall mortality date
+dataset.overall_resp_mortality_date = (case(when(
+  dataset.overall_resp_mortality)
+  .then(ons_deaths.date))
+)
+
+#all cause mortality
+dataset.all_cause_mortality = ons_deaths.exists_for_patient()
+
+#all cause mortality date
+dataset.all_cause_mortality_date = ons_deaths.date
 
 ## comorbidities for secondary investigation
 
@@ -858,7 +876,7 @@ if investigation_type == "secondary" :
     dataset.immunosuppressed = immunosuppressed
     dataset.has_sickle_cell = has_sickle_cell
     dataset.has_heart_failure = has_heart_failure
-    dataset.has_prior_mi = has_prior_mi
+    dataset.has_coronary_heart_disease = has_coronary_heart_disease
 
   if cohort == "children_and_adolscents" :
 

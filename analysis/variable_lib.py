@@ -4,7 +4,7 @@ from functools import reduce
 from ehrql.codes import SNOMEDCTCode, CTV3Code, ICD10Code
 from ehrql import case, days, when
 from ehrql.tables.tpp import (emergency_care_attendances, 
-apcs, clinical_events, patients)
+apcs, clinical_events, patients, ons_deaths)
 
 ###############################################################################
 # from https://github.com/opensafely/comparative-booster-spring2023/blob/main/analysis/variables_lib.py
@@ -82,3 +82,15 @@ def hospitalisation_diagnosis_matches(codelist):
         for code_string in code_strings
     ]
     return apcs.where(any_of(conditions))
+  
+###############################################################################
+# from https://github.com/opensafely/comparative-booster-spring2023/blob/main/analysis/dataset_definition.py
+###############################################################################
+
+# query if causes of death match a given codelist
+def cause_of_death_matches(codelist):
+    conditions = [
+        getattr(ons_deaths, column_name).is_in(codelist)
+        for column_name in (["underlying_cause_of_death"]+[f"cause_of_death_{i:02d}" for i in range(1, 16)])
+    ]
+    return any_of(conditions)

@@ -226,8 +226,8 @@ sim_list = lst(
     ~ rbernoulli(n = ..n, p = 0.015)
   ),
   
-  #myocardial infarction
-  has_prior_mi = bn_node(
+  #coronary heart disease
+  has_coronary_heart_disease = bn_node(
     ~ rbernoulli(n = ..n, p = 0.1)
   ),
   
@@ -355,18 +355,27 @@ sim_list = lst(
   #date
   covid_mortality_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365)) 
-  )
+  ),
   
-  # ##exclusion criteria 
-  # 
-  # #care home resident
-  # care_home_tpp = bn_node(
-  #   ~ rbernoulli(n = ..n, p = 0.01)
-  # ),
-  # 
-  # care_home_code = bn_node(
-  #   ~ rbernoulli(n = ..n, p = 0.1)
-  # )
+  #unspecified respiratory infection secondary care
+  overall_resp_mortality = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.2)
+  ),
+  
+  #date
+  overall_resp_mortality_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  #all cause mortality
+  all_cause_mortality = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.3)
+  ),
+  
+  #date
+  all_cause_mortality_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  )
   
 )
 

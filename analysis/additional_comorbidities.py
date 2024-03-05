@@ -324,5 +324,8 @@ has_sickle_cell = has_prior_event(codelists.sickle_cell_codelist)
 #Heart Failure
 has_heart_failure = has_prior_event(codelists.heart_failure_codelist)
   
-#Prior MI 
-has_prior_mi = has_prior_event(codelists.prior_mi_codelist)
+#Coronary Heart Disease 
+has_coronary_heart_disease = (
+  has_prior_event(codelists
+  .coronary_heart_disease_codelist)
+)

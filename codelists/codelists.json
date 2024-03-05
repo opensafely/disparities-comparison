@@ -390,12 +390,6 @@
       "downloaded_at": "2024-02-16 16:45:18.540470Z",
       "sha": "f0debdf1c968242fa8790cd0b773662b8e169f43"
     },
-    "primis-covid19-vacc-uptake-dxt_chemo_cod.csv": {
-      "id": "primis-covid19-vacc-uptake/dxt_chemo_cod/v2.5",
-      "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/dxt_chemo_cod/v2.5/",
-      "downloaded_at": "2024-02-16 16:45:18.695174Z",
-      "sha": "b2a195593a709fb39e46b9780cf2e7a7158309b6"
-    },
     "primis-covid19-vacc-uptake-immdx_cov.csv": {
       "id": "primis-covid19-vacc-uptake/immdx_cov/v2.5",
       "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/immdx_cov/v2.5/",
@@ -414,6 +408,12 @@
       "downloaded_at": "2024-02-16 16:45:19.253752Z",
       "sha": "9574df184e685339849cc2bb6b68b3c3e3b1f949"
     },
+    "primis-covid19-vacc-uptake-dxt_chemo_cod.csv": {
+      "id": "primis-covid19-vacc-uptake/dxt_chemo_cod/v2.5",
+      "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/dxt_chemo_cod/v2.5/",
+      "downloaded_at": "2024-02-16 16:45:18.695174Z",
+      "sha": "b2a195593a709fb39e46b9780cf2e7a7158309b6"
+    },
     "opensafely-sickle-cell-disease-snomed.csv": {
       "id": "opensafely/sickle-cell-disease-snomed/2020-04-14",
       "url": "https://www.opencodelists.org/codelist/opensafely/sickle-cell-disease-snomed/2020-04-14/",
@@ -426,11 +426,11 @@
       "downloaded_at": "2024-02-01 17:02:57.784916Z",
       "sha": "c1fdc20e835c8e00b50e4728592b79bb3e3ee887"
     },
-    "nhsd-primary-care-domain-refsets-mi_cod.csv": {
-      "id": "nhsd-primary-care-domain-refsets/mi_cod/20210127",
-      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/mi_cod/20210127/",
-      "downloaded_at": "2024-02-01 17:02:57.893176Z",
-      "sha": "0fb41c6104328cbb930e4407078b693c59d9da9c"
+    "nhsd-primary-care-domain-refsets-chd_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/chd_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/chd_cod/20210127/",
+      "downloaded_at": "2024-03-05 10:06:09.469686Z",
+      "sha": "0dab9c8229e0005df9d4c01950469818c8f10d49"
     }
   }
 }

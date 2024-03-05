@@ -78,4 +78,4 @@ primis-covid19-vacc-uptake/immunosuppression-admin-codes/v2.5/
 primis-covid19-vacc-uptake/dxt_chemo_cod/v2.5/
 opensafely/sickle-cell-disease-snomed/2020-04-14/
 nhsd-primary-care-domain-refsets/hf_cod/20210127/
-nhsd-primary-care-domain-refsets/mi_cod/20210127/
+nhsd-primary-care-domain-refsets/chd_cod/20210127/
