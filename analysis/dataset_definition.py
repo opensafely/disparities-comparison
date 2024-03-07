@@ -66,7 +66,7 @@ registered_patients = case(
   .for_patient_on(registration_date).exists_for_patient()),
   otherwise = practice_registrations.for_patient_on(index_date).exists_for_patient()
 )
-is_female_or_male = patients.sex.is_in(["female", "male"])
+is_female_or_male = patients.sex.is_in(["Female", "Male"])
 is_appropriate_age = case(
   when(cohort == "older_adults").then((age_at_start <= 110) & (age_at_end >= 65)),
   when(cohort == "adults").then((age_at_start <= 64) & (age_at_end >= 18)),
@@ -280,8 +280,8 @@ vaccination_date = study_start_date - years(1)
 covid_season_min = datetime.strptime("2019-09-01", "%Y-%m-%d")
 
 #vaccinations
-if cohort == "adults" or cohort == "older_adults" or cohort == "children_adolescents" :
-  flu_vaccination = (
+if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
+  dataset.flu_vaccination = (
     vaccinations.where(vaccinations.target_disease.is_in(["Influenza"]))
     .sort_by(vaccinations.date)
     .where(vaccinations.date.is_on_or_between(vaccination_date, index_date))
@@ -289,8 +289,8 @@ if cohort == "adults" or cohort == "older_adults" or cohort == "children_adolesc
   )
 
 if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
-  if cohort == "adults" or cohort == "older_adults" or cohort == "children_adolescents" :
-    covid_vaccination_count = (
+  if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
+    dataset.covid_vaccination_count = (
     vaccinations.where(vaccinations.target_disease.is_in(["SARS-COV-2"]))
     .sort_by(vaccinations.date)
     .where(vaccinations.date.is_on_or_before(index_date))
@@ -853,7 +853,7 @@ if investigation_type == "secondary" :
     has_diabetes, has_addisons, severe_obesity,
     has_chd, has_ckd, has_cld, has_cnd, has_crd,
     has_cancer, immunosuppressed, has_sickle_cell,
-    has_heart_failure, has_prior_mi
+    has_heart_failure, has_coronary_heart_disease
   )
   
   if cohort == "adults" or cohort == "older_adults" :
@@ -878,11 +878,10 @@ if investigation_type == "secondary" :
     dataset.has_heart_failure = has_heart_failure
     dataset.has_coronary_heart_disease = has_coronary_heart_disease
 
-  if cohort == "children_and_adolscents" :
+  if cohort == "children_and_adolescents" :
 
-    dataset.has_reactive_airway = case(
-      when(dataset.age < 5).then(has_reactive_airway),
-      default = False
+    dataset.has_asthma_reactive_airway = case(
+      when(dataset.age <= 5).then(has_reactive_airway),
+      when(dataset.age > 5).then(has_asthma),
+      otherwise = False
     )
-
-    dataset.has_asthma = has_asthma

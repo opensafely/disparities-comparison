@@ -48,7 +48,7 @@ sim_list = lst(
   #sex of the patient
   sex = bn_node(
     ~ rfactor(n = ..n, levels = c("female", "male", "intersex", "unknown"),
-              p = c(0.51, 0.49, 0, 0)), missing_rate = ~0.001
+              p = c(0.51, 0.49, 0, 0))
   ),
   
   #age of the patient
@@ -146,10 +146,10 @@ sim_list = lst(
   #smoking status
   maternal_smoking_code = bn_node(
     ~ rfactor(n = ..n, levels = c(
-      "S", #smoker
-      "E", #ever-smoked
-      "N", #never smoked
-      "M" #missing
+      "Current", #smoker
+      "Former", #ever-smoked
+      "Never", #never smoked
+      "Unknown" #missing
     ), p = c(0.1, 0.2, 0.7, 0))
   ),
   

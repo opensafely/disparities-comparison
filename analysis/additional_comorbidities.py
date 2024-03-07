@@ -140,13 +140,13 @@ ever_smoked = (
   .exists_for_patient()
 )
 smoking_status = (case(
-  when(most_recent_smoking_code == "S").then("S"),
+  when(most_recent_smoking_code == "S").then("Current"),
   when((most_recent_smoking_code == "E") 
   | ((most_recent_smoking_code == "N") 
-  & (ever_smoked == True))).then("E"),
+  & (ever_smoked == True))).then("Former"),
   when((most_recent_smoking_code == "N") 
-  & (ever_smoked == False)).then("N"),
-  otherwise = "M")
+  & (ever_smoked == False)).then("Never"),
+  otherwise = "Unknown")
 )
   
 #drinking 

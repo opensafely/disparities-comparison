@@ -79,6 +79,36 @@ df_input <- df_input %>%
     TRUE ~ NA_character_
   ))
 
+#reverse order of IMD classfications
+recode(df_input$imd_quintile, "1 (most deprived)" = "5 (most deprived)",
+       "2" = "4", "3" = "3", "4" = "2", "5 (least deprived)" = "1 (least deprived)")
+
+#recode rurality to 5 levels
+df_input <- df_input %>%
+  mutate(
+    rurality_code = recode(rural_urban_classification, "1" = "1", "2" = "2", 
+                           "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
+                           "7" = "5", "8" = "5")
+  )
+
+#assign rurality classification 
+df_input <- df_input %>%
+  mutate(
+    rurality_classification = ifelse(df_input$rurality_code == "1", "Urban Major Conurbation",
+                              ifelse(df_input$rurality_code == "2", "Urban Minor Conurbation",
+                              ifelse(df_input$rurality_code == "3", "Urban City and Town",
+                              ifelse(df_input$rurality_code == "4", "Rural Town",
+                              ifelse(df_input$rurality_code == "5", "Rural Village", "Unknown"))))
+    ))
+
+#define household size categories
+df_input <- df_input %>%
+  mutate(
+    household_size_cat = ifelse(df_input$household_size >= 1 & df_input$household_size <= 2, "1",
+                         ifelse(df_input$household_size >= 3 & household_size <= 5, "2",
+                         ifelse(df_input$household_size >= 6, "3", "Unknown")))
+  )
+
 #define seasons for covid
 covid_season_min = as.Date("2019-09-01", format = "%Y-%m-%d")
 

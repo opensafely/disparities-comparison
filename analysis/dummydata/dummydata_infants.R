@@ -48,7 +48,7 @@ sim_list = lst(
   #sex of the patient
   sex = bn_node(
     ~ rfactor(n = ..n, levels = c("female", "male", "intersex", "unknown"),
-              p = c(0.51, 0.49, 0, 0)), missing_rate = ~0.001
+              p = c(0.51, 0.49, 0, 0))
   ),
   
   #age of the patient (months)
