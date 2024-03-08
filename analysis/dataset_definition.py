@@ -66,7 +66,7 @@ registered_patients = case(
   .for_patient_on(registration_date).exists_for_patient()),
   otherwise = practice_registrations.for_patient_on(index_date).exists_for_patient()
 )
-is_female_or_male = patients.sex.is_in(["Female", "Male"])
+is_female_or_male = patients.sex.is_in(["female", "male"])
 is_appropriate_age = case(
   when(cohort == "older_adults").then((age_at_start <= 110) & (age_at_end >= 65)),
   when(cohort == "adults").then((age_at_start <= 64) & (age_at_end >= 18)),
