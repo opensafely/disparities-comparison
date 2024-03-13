@@ -9,21 +9,9 @@ B970,Adenovirus as the cause of diseases classified to other chapters
 B971,Enterovirus as the cause of diseases classified to other chapters
 B972,Coronavirus as the cause of diseases classified to other chapters
 B974,Respiratory syncytial virus as the cause of diseases classified to other chapters
-J01,Acute sinusitis
-J010,Acute maxillary sinusitis
-J011,Acute frontal sinusitis
-J012,Acute ethmoidal sinusitis
-J013,Acute sphenoidal sinusitis
-J014,Acute pansinusitis
-J018,Other acute sinusitis
-J019,"Acute sinusitis, unspecified"
 J03,Acute tonsillitis
 J038,Acute tonsillitis due to other specified organisms
 J039,"Acute tonsillitis, unspecified"
-J04,Acute laryngitis and tracheitis
-J040,Acute laryngitis
-J041,Acute tracheitis
-J042,Acute laryngotracheitis
 J05,Acute obstructive laryngitis [croup] and epiglottitis
 J050,Acute obstructive laryngitis [croup]
 J051,Acute epiglottitis

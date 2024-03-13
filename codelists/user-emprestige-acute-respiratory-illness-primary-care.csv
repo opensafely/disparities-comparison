@@ -1,96 +1,9 @@
 code,term
-1001341000000106,Influenza A antigen level
-1001351000000109,Influenza B antigen level
-1002251000000108,Influenza A virus subtype H1N1 serology
-1008251000000105,Influenza B virus ribonucleic acid detection assay
-1008261000000108,Influenza A virus ribonucleic acid detection assay
-1010619008,Inflammatory tracheobronchial papilloma
-1010721000000107,Avian influenza virus ribonucleic acid detection assay
-1014261000000103,Influenza A antibody level
-1029881000000100,Influenza A nucleic acid detection assay
-1029911000000100,Influenza B nucleic acid detection assay
-1031631000000102,Avian influenza virus nucleic acid detection assay
-1033051000000101,Influenza due to zoonotic influenza virus
-1033061000000103,Influenza due to zoonotic influenza virus 
-1033071000000105,Influenza due to pandemic influenza virus
-1033081000000107,Influenza due to pandemic influenza virus 
-1033091000000109,Influenza due to seasonal influenza virus
-1033101000000101,Influenza due to seasonal influenza virus 
-1033111000000104,Influenza with pneumonia due to seasonal influenza virus
-1033121000000105,Influenzal bronchopneumonia due to seasonal influenza virus 
-103516006,Influenzavirus A Bangkok
-103517002,Influenzavirus A England
-103518007,Influenzavirus A Hong Kong
-103519004,Influenzavirus A Leningrad
-103520005,Influenzavirus A Mississippi
-103521009,Influenzavirus A Phillipines
-103522002,Influenzavirus A Port Chalmers
-103523007,Influenzavirus A Texas
-103524001,Influenzavirus A Victoria
-1050601000000101,Influenza due to seasonal influenza virus
 10509002,Acute bronchitis
-1050981000000100,Influenza due to seasonal influenza virus
-10624911000119107,Otitis media caused by H1N1 influenza
-10624951000119108,Otitis media caused by influenza
-10628871000119101,Gastroenteritis caused by influenza
-10628911000119103,Gastroenteritis caused by Influenza A virus
-10629191000119100,Bronchiolitis caused by influenza virus
-10629351000119108,Myocarditis caused by Influenza A virus
-10674911000119108,Otitis media caused by Influenza A virus
-10677711000119101,Encephalopathy caused by Influenza A virus
-10685111000119102,Upper respiratory tract infection caused by Influenza
-111274000,Acute abscess of nasal sinus
-111876006,Influenza due to other Influenza virus
-1119277000,Antigen of Influenza A virus A/Indonesia/05/2005 (H5N1)-like virus strain split virion hemagglutinin
-1149091008,Influenza caused by Influenza A virus subtype H2
-1157322000,Antigen of Influenza A virus A/California/7/2009 (H1N1)-like virus strain split virion hemagglutinin
-1172606002,Idiopathic pleuroparenchymal fibroelastosis
-118030003,Equine influenza virus antigen assay
-118089005,Influenza A virus and Influenza B virus antigen assay
-118090001,"Influenza A virus, Influenza B virus, and Influenza C virus antigen assay"
-11833005,Dry cough
-121006005,Antigen of Influenza A virus
-121008006,Antigen of Influenza B virus
-121026009,Antigen of Influenza C virus
-122011009,Influenza virus A Texas antibody assay
-122012002,Influenza virus A Victoria antibody assay
-122262002,Influenza virus culture
-122349003,Influenza A virus antigen assay
-122350003,Influenza B virus antigen assay
-123590007,Focal pneumonia
-123592004,Acute mucous pneumonia
-129452008,Nonspecific interstitial pneumonia
-129458007,Bronchiolitis obliterans organizing pneumonia
-129459004,Acute interstitial pneumonia
-134249005,Influenza A antigen level
-134251009,Influenza B antigen level
-135883003,Cough with fever
 13617004,Tracheobronchitis
-139168000,Influenza-like symptoms
-139176003,(Cough (& [symptom])) or (sputum - symptom)
-139179005,Dry cough
-139180008,Productive cough -clear sputum
-139181007,Productive cough -green sputum
-139182000,Productive cough-yellow sputum
-139183005,Productive cough NOS
-139186002,Chesty cough
-139189009,Unexplained cough
-139190000,Cough symptom NOS
-142921000119103,Upper respiratory tract infection caused by avian influenza
-142931000119100,Pneumonia caused by H1N1 influenza
-142941000119109,Upper respiratory tract infection caused by H1N1 influenza
-142951000119106,Myocarditis caused by Influenza A virus subtype H1N1
-142961000119108,Gastroenteritis caused by H1N1 influenza
-142971000119102,Encephalopathy caused by H1N1 influenza
-142981000119104,Myocarditis caused by avian influenza
-142991000119101,Gastroenteritis caused by avian influenza
-143001000119100,Encephalopathy caused by avian influenza
-143111000119103,Pneumonia caused by avian influenza
 14969004,Catarrhal laryngitis
 15199004,Acute bronchiolitis with bronchospasm
 1532007,Viral pharyngitis
-154372003,Viral infection NOS
-1553003,Influenzavirus B
 155496000,Respiratory infection: [acute] or [upper]
 155497009,(Acute nasopharyngitis) or (common cold) or (acute coryza) or (acute rhinitis) or (sniffles) or (snuffles)
 155506009,Acute laryngitis
@@ -100,47 +13,14 @@ code,term
 155513009,Acute bronchiolitis
 155515002,Acute bronchitis NOS
 155516001,Acute upper respiratory infection
-155518000,Upper respiratory disease (& upper)
 155538004,Upper respiratory tract disease NOS
 155547007,Infection of the upper respiratory tract
-155548002,Pneumonia and influenza &/or pneumonia
-155549005,Viral pneumonia
-155552002,Pneumonia NOS
-155558003,Pneumonia NOS
-155559006,Influenza
-155560001,Influenzal pneumonia
-155561002,Influenza with encephalopathy
-155562009,(Influenza NOS) or (influenza-like illness)
-155564005,Pneumonia or influenza NOS
 155616009,Bronchitis NOS
-157109005,Congenital pneumonia
 15805002,Acute sinusitis
-158383001,[D]Cough
-158385008,[D]Cough with haemorrhage
 16036000,Acute empyema of frontal sinus
 16146001,Viral bronchitis
-161913008,Influenza-like symptoms
-161921002,(Cough (& [symptom])) or (sputum - symptom)
-161923004,Productive cough -clear sputum
-161924005,Productive cough -green sputum
-161925006,Productive cough-yellow sputum
-161926007,(Coughing up phlegm) or (productive cough NOS)
-161929000,Chesty cough
-161934001,Unexplained cough
-161935000,Cough symptom NOS
-16311000119108,Pneumonia caused by influenza
 17357005,Acute suppuration of frontal sinus
-17986004,Barking cough
-181000124108,Influenza A virus present
 18643000,Ethmoidal sinusitis
-186741005,Specific viral infections
-186754003,Viral: [infection NOS] or [illness]
-187470009,[X]Other viral infections of unspecified site
-187471008,"[X]Viral infection, unspecified"
-192671000000106,Bronchiolitis obliterans
-192691003,Encephalitis due to influenza
-192693000,Encephalitis due to influenza-virus identified
-194946005,Acute myocarditis - influenzal
 195648002,(Acute nasopharyngitis or rhinitis) or (common cold)
 195656004,Acute phlegmonous pharyngitis
 195657008,Acute ulcerative pharyngitis
@@ -160,564 +40,102 @@ code,term
 195715006,Acute membranous bronchitis
 195716007,Acute pseudomembranous bronchitis
 195717003,Acute purulent bronchitis
-195720006,Acute streptococcal bronchitis
-195722003,Acute Moraxella catarrhalis bronchitis
-195723008,Acute mycoplasmal bronchitis
-195730002,Subacute bronchitis unspecified
 195731003,Acute viral bronchitis unspecified
 195733000,Acute bronchitis NOS
 195734006,Acute capillary bronchiolitis
-195735007,Acute obliterating bronchiolitis
 195736008,Acute bronchiolitis with bronchospasm
-195737004,Acute exudative bronchiolitis
-195738009,Obliterating fibrous bronchiolitis
 195740004,Acute bronchiolitis due to other specified organisms
 195741000,Acute bronchiolitis NOS
 195743002,Acute bronchitis or bronchiolitis NOS
-195750003,Other upper respiratory tract diseases
 195790000,Pansinusitis
-195822007,Other specified diseases of upper respiratory tract
-195874005,Other upper respiratory tract diseases NOS
-195876007,Other upper respiratory tract disease NOS
 195877003,Upper respiratory tract disease NOS
-195878008,Pneumonia and influenza
-195880002,Viral pneumonia (& chest infection)
-195882005,Viral pneumonia NEC
-195883000,Viral pneumonia NOS
-195899006,(Pneumonia) or (chest infection) with infectious diseases EC
-195903004,Pneumonia with other systemic mycoses
-195907003,Pneumonia with other infectious diseases EC
-195912002,Pneumonia with other infectious diseases EC NOS
-195913007,Pneumonia with infectious diseases EC NOS
-195920000,"Influenza with pneumonia, influenza virus identified"
-195921001,Influenza with pneumonia NOS
-195922008,Influenza with other respiratory manifestation
-195923003,Influenza with laryngitis
-195924009,Influenza with pharyngitis
-195925005,Influenza with respiratory manifestations NOS
-195927002,Influenza with other manifestations
-195928007,Influenza with encephalopathy
-195929004,Influenza with gastrointestinal tract involvement
-195930009,Influenza with other manifestations NOS
-195931008,(Influenza like illness) or (influenza NOS)
-195932001,Atypical pneumonia
-195933006,Other specified pneumonia or influenza
-195934000,Pneumonia or influenza NOS
 195936003,Bronchitis: [unspecified (& chest infection)] or [recurrent wheezy]
 195937007,Tracheobronchitis NOS
 195938002,Laryngotracheobronchitis
 195940007,Bronchitis NOS
-195950008,Emphysematous bronchitis
-196027008,Toxic bronchiolitis obliterans
-196112005,Abscess of lung with pneumonia
 196195006,Acute upper respiratory infection
 196199000,[X]Other acute upper respiratory infections of multiple sites
-196200002,"[X]Influenza with other respiratory manifestations, influenza virus identified"
-196201003,"[X]Influenza with other manifestations, influenza virus identified"
-196202005,"[X]Influenza with other respiratory manifestations, virus not identified"
-196203000,"[X]Influenza with other manifestations, virus not identified"
-196204006,[X]Other viral pneumonia
-196209001,[X]Pneumonia in viral diseases classified elsewhere
-196212003,[X]Pneumonia in other diseases classified elsewhere
 196215001,[X]Acute bronchitis due to other specified organisms
 196216000,[X]Acute bronchiolitis due to other specified organisms
-196217009,[X]Other diseases of the upper respiratory tract
-196228008,[X]Other specified diseases of upper respiratory tract
-202000009,Upper respiratory disease
-204271000000104,Avian influenza virus nucleic acid detection
-206288009,Congenital viral pneumonia
-206291009,Congenital pneumonia NOS
-206635005,[X]Congenital pneumonia due to other organisms
-20670007,Brassy cough
-207066005,[D]Cough
-207067001,[D]Cough syncope
-207069003,[D]Cough with hemorrhage
-209451000000106,Avian influenza virus nucleic acid detection
-209461000000109,Avian influenza virus nucleic acid detection
-22482002,Subacute obliterative bronchiolitis
 232426008,Acute simple laryngitis
 232428009,Acute membranous laryngitis
 233596008,Viral upper respiratory tract infection NOS
 233597004,Chest infection - unspecified bronchitis
-233598009,Acute bacterial bronchitis
-233599001,Acute mycoplasmal bronchitis
-233600003,Acute chlamydial bronchitis
 233601004,Acute viral bronchitis
-233604007,Pneumonia
-233606009,Atypical pneumonia
-233611006,Fetal pneumonia
-233612004,Fetal pneumonia
-233617005,Hemorrhagic pneumonia
-233619008,Neonatal pneumonia
-233623000,Mononuclear interstitial pneumonia
-233673002,Drug-induced bronchiolitis obliterans
-233723008,Bronchiolitis obliterans with usual interstitial pneumonitis
-236302005,Acute interstitial pneumonia
 23884004,Acute suppuration of maxillary sinus
-243612002,Influenza virus A and B
-243613007,Influenza virus A
-243614001,Influenza virus C
-24601000087105,Antigen of live attenuated Influenza virus
-24662006,Influenza caused by Influenza B virus
-247410004,Painful cough
-248589007,Clearing throat - hawking
-248594007,Tracheal esophageal fistula cough
-25031000087107,Antigen of Influenza A virus A/Kansas/14/2017 (H3N2)-like virus strain split virion hemagglutinin
-25041000087101,Antigen of Influenza A virus A/Brisbane/02/2018 (H1N1)pdm09-like virus strain split virion hemagglutinin
-25061000087100,Antigen of Influenza B virus B/Colorado/06/2017 (B/Victoria/2/87 lineage)-like virus strain split virion hemagglutinin
-25081000087106,Antigen of Influenza B virus B/Phuket/3073/2013 (B/Yamagata/16/88 lineage)-like virus strain split virion hemagglutinin
-25161000087104,Antigen of Influenza A virus A/Brisbane/02/2018 (H1N1)pdm09-like virus strain surface subunit hemagglutinin
-25181000087105,Antigen of Influenza A virus A/Kansas/14/2017 (H3N2)-like virus strain surface subunit hemagglutinin
-25201000087109,Antigen of Influenza B virus B/Colorado/06/2017 (B/Victoria/2/87 lineage)-like virus strain surface subunit hemagglutinin
-25221000087103,Antigen of Influenza B virus B/Phuket/3073/2013 (B/Yamagata/16/88 lineage)-like virus strain surface subunit hemagglutinin
-25231000087101,Antigen of live attenuated Influenza A virus A/Brisbane/02/2018 (H1N1)pdm09-like strain
-25241000087107,Antigen of live attenuated Influenza A virus A/Kansas/14/2017 (H3N2)-like strain
-25251000087105,Antigen of live attenuated Influenza B virus B/Colorado/06/2017 (B/Victoria/2/87 lineage)-like strain
-25261000087108,Antigen of live attenuated Influenza B virus B/Phuket/3073/2013 (B/Yamagata/16/88 lineage)-like strain
-25371000087106,Antigen of Influenza A virus subtype H3N2
-25481000087101,Antigen of Influenza B virus Yamagata lineage
-25491000087104,Antigen of Influenza B virus Victoria lineage
-25501000087107,Antigen of live attenuated Influenza A virus subtype H1N1
-25511000087109,Antigen of live attenuated Influenza A virus subtype H3N2
-25521000087101,Antigen of live attenuated Influenza B virus Yamagata lineage
-25531000087104,Antigen of live attenuated Influenza B virus Victoria lineage
-25764005,Acute abscess of frontal sinus
-260210008,Antigen of Influenza virus
-263731006,Coughing
-266115000,Other specific viral infection
-266116004,Viral infection NOS
 266338006,Upper respiratory infection NOS
-266351001,Pneumonia with infectious diseases EC
-266353003,Influenza NOS
 266354009,Bronchitis unspecified
 266375001,Respiratory infection: [acute] or [upper]
 266377009,(Acute nasopharyngitis) or (common cold) or (acute coryza) or (acute rhinitis) or (sniffles) or (snuffles)
 266380005,Acute: [bronchitis] or [chest infections] or [tracheobronchitis]
-266382002,Upper respiratory disease (& upper)
-266391003,Pneumonia and influenza &/or pneumonia
-266393000,(Influenza NOS) or (influenza-like illness)
-267034005,Productive cough NOS
-272039006,Complaining of cough
-27356002,Granulomatous rhinitis
-274103002,Pneumonia NOS
 275499005,Acute wheezy bronchitis
-276314008,Coughing ineffective
 276443001,Acute laryngitis and/or tracheitis
-276660001,Congenital viral disease
-276694004,Acquired neonatal pneumonia
-278516003,Lobar pneumonia
-280331000000102,Avian influenza
-28105000,Influenzal laryngitis
-28111002,Atrophic rhinitis
 281794004,Viral upper respiratory tract infection
-285342006,Influenza-like illness
-287121000000103,Barking cough 
-287131000000101,Barking cough 
-28743005,Productive cough
-289965001,Croupy cough
-292631000000106,Avian influenza
 29591002,Purulent bronchitis
-300999006,Basal pneumonia
-301000005,Left lower zone pneumonia
-301001009,Right lower zone pneumonia
-301002002,Left upper zone pneumonia
-301003007,Right middle zone pneumonia
-301004001,Right upper zone pneumonia
-301235001,Finding of cough
-301236000,Effective cough
 301824001,Acute viral laryngotracheitis
-309789002,Encephalitis caused by influenza
-309806000,Encephalitis caused by influenza-virus identified
-311000119101,Non-allergic rhinitis
-312133006,Viral respiratory infection
-312134000,Viral lower respiratory infection
-312342009,Infective pneumonia
 312371005,Acute infective bronchitis
 312400008,Acute infective tracheobronchitis
 312423006,Infective laryngitis
-313251006,Encephalitis caused by influenza-specific virus not identified
-315246003,Unexplained cough
-315642008,Influenza-like symptoms
-31741006,Blood in sputum - hemoptysis
-31886003,Bronchiolitis fibrosa obliterans
 32398004,Bronchitis
-328531000119104,Upper respiratory tract infection caused by Influenza A
-33601000087105,Acute bronchiolitis caused by chemical fumes
-34014006,Viral disease
-35037009,Primary atypical interstitial pneumonia
 35168006,Acute empyema of ethmoidal sinus
 35301006,Acute tracheobronchitis
-359371000000109,Influenza H1 virus detected
-359381000000106,Influenza H1 detected 
-359391000000108,Influenza H1 detected 
-359401000000106,Influenza H2 virus detected
-359411000000108,Influenza H2 detected 
-359421000000102,Influenza H2 detected 
-359431000000100,Influenza H3 virus detected
-359441000000109,Influenza H3 detected 
-359451000000107,Influenza H3 detected 
-359461000000105,Influenza H5 virus detected
-359471000000103,Influenza H5 detected 
-359481000000101,Influenza H5 detected 
-359491000000104,"Influenza A virus, other or untyped strain detected"
-359501000000105,"Influenza A, other or untyped strain detected"
-359511000000107,"Influenza A, other or untyped strain detected"
-359521000000101,Influenza B virus detected
-359531000000104,Influenza B detected 
-359541000000108,Influenza B detected 
-359829002,"Influenzavirus, type A, avian"
-359831006,"Influenzavirus, type A, equine"
-359833009,"Influenzavirus, type A, porcine"
 363746003,Acute pharyngitis
-36426008,Subacute bronchitis
-36669007,Ulcerative rhinitis
-366956000,Cough with fever
-367026003,Influenza A antigen level
-367027007,Influenza B antigen level
-367181007,Cough with fever
-367256002,Influenza A antigen level
-367257006,Influenza B antigen level
 36971009,Sinusitis
-371127003,Obstructive sinusitis
-385479009,Follicular bronchiolitis
-389069008,"Avian influenza virus, low pathogenic"
-389070009,"Avian influenza virus, highly pathogenic"
-40100001,Obliterative bronchiolitis
-402111000000105,[X]Other specified diseases of upper respiratory tract
-403457003,Congestive non-allergic rhinitis
-405944004,Asthmatic bronchitis
-40600002,Pneumococcal bronchitis
-406588006,Influenza of the central nervous system
-407477006,Genus Alphainfluenzavirus
-407478001,Genus Betainfluenzavirus
-407479009,Influenza A virus
-407480007,Influenza B virus
-407481006,Genus Gammainfluenzavirus
-407482004,Influenza C virus
-407671000,Bilateral pneumonia
 408669002,Acute laryngitis with obstruction
-408687004,Healthcare associated influenza disease
-409596002,Non-productive cough
-409631000,Acute viral disease
-40988009,Obstructive rhinitis
 411271000000104,[X]Other acute upper respiratory infections of multiple sites
 4120002,Bronchiolitis
-41269000,Influenzal bronchopneumonia
-414341000000100,[X]Pneumonia in viral diseases classified elsewhere
-417850002,Respiratory tract congestion and cough
-418181000000104,"[X]Influenza with other respiratory manifestations, influenza virus identified"
-418191000000102,"[X]Influenza with other manifestations, influenza virus identified"
 418961000000106,[X]Acute bronchiolitis due to other specified organisms
-41931000119102,Sinusitis co-occurrent with nasal polyps
-420362005,"Influenzavirus type A, avian, H1N1 strain"
-420508007,"Influenzavirus type A, avian, H3N2 strain"
-421264001,"Influenzavirus type A, avian, H5N1 strain"
-421539000,"Influenzavirus type A, avian, H1N2 strain"
-42501000237100,Number concentration of Influenza virus by culture
-425996009,Bilateral basal pneumonia
-426696003,Lingular pneumonia
-426959005,Influenza B virus Yamagata lineage
-427672003,Influenza B virus Victoria lineage
-427873006,"Influenza caused by influenza virus type A, avian, H5N1 strain"
-428869006,Mixed rhinitis
-429381000000103,[X]Other viral pneumonia
-42964004,Influenza with pneumonia
-43025008,Paroxysmal cough
-430891000000103,"[X]Influenza with other respiratory manifestations, virus not identified"
 431231008,Acute rhinosinusitis
 431681000000108,[X]Acute bronchitis due to other specified organisms
-431691000000105,[X]Other diseases of the upper respiratory tract
-43692000,Influenzal acute upper respiratory infection
-440927002,Influenza A virus subtype H2 present
-441043003,Influenza A virus subtype H1 present
-441049004,Influenza A virus subtype H3 present
-441131000000104,"[X]Influenza with other manifestations, virus not identified"
-441343005,Influenza A virus subtype H5 present
-441345003,Influenza B virus present
 441551009,Inflammation of larynx caused by virus
-442269004,Antigen of Influenza A virus subtype H1N1
-442341000000102,[X]Pneumonia in other diseases classified elsewhere
-442352004,Influenza A virus subtype H1N1
-442438000,Influenza caused by Influenza A virus
-442696006,Influenza caused by Influenza A virus subtype H1N1
-44274007,Lymphoid interstitial pneumonia
-443995002,Measurement of Influenza A virus subtype H1N1 antigen
 444814009,Viral sinusitis
 445130008,Acute infective adenoiditis
-445346006,Detection of avian influenza A using polymerase chain reaction technique
-445403009,Detection of Influenza A virus subtype H1N1 using polymerase chain reaction technique
-446396002,Influenza A virus subtype H1
-446397006,Influenza A virus subtype H2
-446524007,Influenza A virus A/Leningrad/621/86 (H1N1)
-446525008,Influenza A virus A/Leningrad/624/86 (H1N1)
-446601007,Influenzavirus A subtype H3N2
-44661000237109,Qualitative result of Influenza virus culture
-446645007,Influenza A virus subtype H3
-446646008,Influenza A virus subtype H3N2
-446647004,Influenza A virus subtype H5
-446648009,Influenza A virus subtype H7
-446649001,Influenza A virus subtype H9
-447493004,Influenza A virus A/Bangkok/1/79 (H3N2)
-447499000,Influenza A virus A/Bangkok/2/79 (H3N2)
-447503006,Influenza A virus A/Port Chalmers/1/73 (H3N2)
-447504000,Influenza A virus A/Texas/1/77 (H3N2)
-447508002,Influenza A virus A/Leningrad/385/80 (H3N2)
-447522002,Influenza A virus A/Mississippi/1/85 (H3N2)
-447530001,Influenza A virus A/Philippines/2/82 (H3N2)
-447573005,Influenza A virus A/England/42/72 (H3N2)
-447578001,Influenza A virus A/Hong Kong/1/68 (H3N2)
-447587005,Influenza A virus A/Victoria/3/75 (H3N2)
-448325003,Influenza A virus subtype H9N2
-448803002,Influenza A virus subtype N1
-448835002,Influenza A virus subtype N2
-449024000,Pandemic Influenza A (H1N1) 2009
-450480003,Influenza A virus subtype H3N2v
-450715004,Influenza caused by Influenza A virus subtype H7
-450716003,Influenza caused by Influenza A virus subtype H9
 45913009,Laryngitis
-46171006,"Influenza due to Influenza virus, type A, porcine"
-464581000000103,[X]Other viral infections of unspecified site
-464591000000101,"[X]Viral infection, unspecified"
-471272001,Cavitary pneumonia
-47378001,Viral thyroiditis
-478351000000102,[X]Congenital pneumonia due to other organisms
-49727002,Cough
-498061000000106,[D]Cough
-498071000000104,[D]Cough syncope
-498091000000100,[D]Cough with haemorrhage
 5028002,Acute pansinusitis
-505131000000104,Influenza due to Influenza A virus subtype H1N1
-505251000000100,Suspected influenza due to Influenza A virus subtype H1N1
-505261000000102,Suspected influenza A H1N1 
-505271000000109,Suspected influenza A H1N1 
-50661000237100,Qualitative result of Influenza A virus ribonucleic acid nucleic acid amplification
-506751000000104,Possible influenza due to Influenza A virus subtype H1N1
-506781000000105,Influenza A virus H1N1 subtype detected
-506791000000107,Influenza H1N1 virus detected 
-506801000000106,Influenza H1N1 virus detected 
-50804000,Catarrhal pneumonia
-510671000000104,Influenza due to Influenza A virus subtype H1N1
-511781000000101,Advice given about Influenza A virus subtype H1N1 infection
-511791000000104,Advice given about Influenza A virus subtype H1N1 infection 
-514121000000104,Influenza virus A subtype H1N1 antibody assay
 51476001,Nasopharyngitis
-51751000237104,Qualitative result of Avian influenza virus ribonucleic acid nucleic acid amplification
-51841000237107,Qualitative result of Influenza A virus H1 ribonucleic acid nucleic acid amplification
-520151000000106,Telephone consultation for suspected influenza A virus subtype  H1N1 
-520171000000102,Advice given about influenza A virus subtype H1N1 by telephone
-520181000000100,Advice given about influenza A virus subtype H1N1 by telephone 
-52041000237109,Qualitative result of Influenza B virus ribonucleic acid nucleic acid amplification
-52409006,Bronchiolitis exudativa
-532291000000105,Pneumonia with infectious diseases EC
-536861000000102,Cough symptom NOS
-540121000000103,Influenza with other manifestations
-540131000000101,Influenza with other manifestations NOS
-540141000000105,Other specified pneumonia or influenza
-540151000000108,Pneumonia or influenza NOS
 5505005,Acute bronchiolitis
-55207002,Influenzavirus A (living organism)
 55355000,Acute laryngopharyngitis
-55604004,Avian influenza
-55679008,Peribronchial pneumonia
 576581000000107,Acute viral laryngitis unspecified
-581971000000102,Other specified diseases of upper respiratory tract
 5875001,Acute bronchitis with obstruction
 58763001,Acute empyema of nasal sinus
-59903001,Acute obliterating bronchiolitis
-59994004,Hacking cough
 603091000000105,Acute laryngitis NOS
-603111000000100,Pneumonia with other infectious diseases EC
 603141000000104,Other acute upper respiratory infections
-603201000000106,Congenital pneumonia NOS
-60363000,Pneumonia
-60761000237101,Qualitative result of influenza A antigen in nasal fluid
-609444009,Influenza A virus subtype H7N9
-6142004,Influenza
-616091000000100,Pneumonia with other systemic mycoses
-616111000000105,Pneumonia with other infectious diseases EC NOS
-616131000000102,Pneumonia with infectious diseases EC NOS
-616161000000107,Influenza with pneumonia NOS
-616171000000100,Influenza with other respiratory manifestation
-616181000000103,Influenza with respiratory manifestations NOS
-61700007,Influenza with non-respiratory manifestation
-61711004,Acute abscess of ethmoidal sinus
-61761000237108,Qualitative result of influenza B antigen in nasal fluid
 617931000000103,Upper respiratory tract disease NOS
-617941000000107,Viral pneumonia NEC
-617951000000105,Viral pneumonia NOS
 621011000000106,Acute bronchitis NOS
 621021000000100,Acute bronchiolitis due to other specified organisms
 621031000000103,Acute bronchiolitis NOS
-621041000000107,Other upper respiratory tract diseases
-63039003,Influenza with respiratory manifestation other than pneumonia
 63140003,Acute suppuration of ethmoidal sinus
-633631000000108,Other upper respiratory tract disease NOS
-636511000000109,Other upper respiratory tract diseases NOS
 644251000000101,Viral upper respiratory tract infection NOS
 644261000000103,Chest infection - unspecified bronchitis
 645631000000105,Other upper respiratory infections of multiple sites
-64667001,Interstitial pneumonia
 649111000000109,Tracheobronchitis NOS
 649121000000103,Bronchitis NOS
-651931000000103,Subacute bronchitis unspecified
 651941000000107,Acute viral bronchitis unspecified
 65878001,Septic bronchitis
-66011008,Viral tracheitis
 6655004,Acute laryngitis
-670551000000108,Influenza NOS
 670561000000106,Bronchitis unspecified
-677011000000103,Productive cough NOS
-677801000000109,Pneumonia NOS
 67832005,Acute ethmoidal sinusitis
 68272006,Acute maxillary sinusitis
-68409003,Organized pneumonia
-691031000000107,Other specific viral infection
-691041000000103,Viral infection NOS
 693581000000101,Upper respiratory infection NOS
-699872005,Influenza A virus untyped strain present
 70020005,Adenoiditis
-700249006,Idiopathic interstitial pneumonia
-700349009,Influenza A virus subtype H10
-700350009,Influenza A virus subtype H10N8
 70076002,Rhinitis
-702482001,Influenza A H1N1 virus 2009 pandemic strain present
 705871000000109,Acute bronchitis or bronchiolitis NOS
-7063008,Gangrenous pneumonia
-707448003,Influenza caused by Influenza A virus subtype H7N9
-707902004,Ribonucleic acid of Influenza A virus H1N1
-707903009,Ribonucleic acid of Influenza A virus H1
-707904003,Ribonucleic acid of Influenza A virus H2
-707905002,Ribonucleic acid of Influenza A virus H3
-707906001,Ribonucleic acid of Influenza A virus H5 Asian lineage
-707907005,Ribonucleic acid of Influenza A virus H5
-707908000,Ribonucleic acid of Influenza A virus H5a
-707909008,Ribonucleic acid of Influenza A virus H5b
-707910003,Ribonucleic acid of Influenza A virus H6
-707911004,Ribonucleic acid of Influenza A virus H7
-707912006,Ribonucleic acid of Influenza A virus H9
-707913001,Ribonucleic acid of Influenza A virus hemagglutinin
-707914007,Ribonucleic acid of Influenza A virus matrix protein
-707915008,Ribonucleic acid of Influenza A virus N1
-707916009,Ribonucleic acid of Influenza A virus N2
-707917000,Ribonucleic acid of Influenza A virus neuraminidase
-707918005,Ribonucleic acid of Influenza A virus non-structural protein
-707919002,Ribonucleic acid of Influenza A virus nucleoprotein
-707920008,Ribonucleic acid of Influenza A virus polymerase A
-707921007,Ribonucleic acid of Influenza A virus polymerase B2
-707922000,Ribonucleic acid of Influenza A virus polymerase
-707923005,Ribonucleic acid of Influenza A virus
-707924004,Ribonucleic acid of Influenza virus A swine origin
-707925003,Ribonucleic acid of Influenza B virus
-707926002,Ribonucleic acid of Influenza C virus
-707927006,Ribonucleic acid of Influenza virus
-708031000,Idiopathic eosinophilic pneumonia
-708119004,Influenza A virus subtype H7 present
-708120005,Influenza A virus subtype H9 present
-708527000,Influenza A virus subtype H5N8
-709361007,Antigen of Influenza A virus subtype H1
-709362000,Antigen of Influenza A virus subtype H3
-709436005,Antigen of Influenza virus A + B
-709437001,Antigen of Influenza virus A + B + C
-711128004,"Influenza caused by influenza virus type A, avian, H3N2 strain"
-711330007,Influenza A virus subtype H1N1 detected
-713083002,Influenza caused by Influenza A virus subtype H5
-713151006,Influenza B virus/Shanghai/361/2002
-7142008,Cough at rest
 714203003,Acute bronchitis co-occurrent with bronchiectasis
-715333003,"Influenza A virus, not subtype H1N1"
-715346008,Influenza A virus subtype H7N7
-715347004,Influenza A virus subtype H7N3
-715348009,Influenza A virus subtype H7N2
-715349001,Influenza A virus subtype H2N2
-715350001,Influenza A virus subtype H10N7
-715870001,"Influenza A virus, not subtype H1 and not subtype H3"
 718004,Acute bronchiolitis with obstruction
-71926009,Infective pneumonia acquired prenatally
-719590007,Influenza caused by seasonal influenza virus
-719865001,Influenza caused by pandemic influenza virus
-72028005,Disease of upper respiratory system
-720313003,Antigen to Swine influenza virus
-721863005,Antigen of Influenza virus surface protein
-722259006,Influenza B virus Malaysia lineage
-724499007,Idiopathic acute eosinophilic pneumonia
-725894000,Influenza virus
 725917007,Acute sinusitis caused by virus
-72656004,Granulomatous pneumonia
-735464006,Acute noninfective bronchitis
-74644004,Influenza with encephalopathy
-75570004,Viral pneumonia
 76653009,Acute empyema of maxillary sinus
-772807005,Influenza A virus subtype H3N8
-772809008,Influenza A virus subtype H1N2
-772810003,Influenza caused by Influenza A virus subtype H3N2
-772827006,Influenza A virus subtype H5N1
-772828001,Influenza caused by Influenza A virus subtype H5N1
-772835009,Detection of Influenza A virus using polymerase chain reaction technique
-772839003,Pneumonia caused by Influenza A virus
-78046005,Myocarditis caused by influenza virus
-781602008,Genus Deltainfluenzavirus
-781630008,Influenza D virus
 78337007,Acute upper respiratory infection of multiple sites
-78431007,"Influenza due to Influenza virus, type A, human"
 785728005,Bronchitis co-occurrent with wheeze
-785737005,Bronchitis co-occurrent with chronic wheeze
 785744001,Bronchitis co-occurrent with acute wheeze
 785745000,Acute bronchitis co-occurrent with wheeze
 78737005,Frontal sinusitis
-78895009,Congenital pneumonia
-801631000000107,Influenza A nucleic acid detection
-801641000000103,Influenza A nucleic acid detection 
 80257001,Acute bronchitis with bronchospasm
 80600003,Acute suppuration of nasal sinus
-810511000000109,Episodic dry cough
-81524006,Influenza caused by Influenza C virus
-817791000000105,Measurement of Influenza A virus ribonucleic acid by nucleic acid amplification test
-817801000000109,Measurement of Influenza B virus ribonucleic acid by nucleic acid amplification test
-817831000000103,Determination of Influenza A virus genotype by ribonucleic acid analysis
-817841000000107,Determination of Influenza B virus genotype by ribonucleic acid analysis
-818951000000104,Measurement of Influenza A virus antiviral resistance by ribonucleic acid analysis
 82272006,Common cold
 82297005,Congestion of nasal sinus
-83440004,Influenza with involvement of gastrointestinal tract
-836478002,Subacute obliterative bronchiolitis caused by chemical fumes
-836479005,Subacute obliterative bronchiolitis caused by vapor
-838281000000105,Influenza B nucleic acid detection
-838291000000107,Influenza B nucleic acid detection 
-84037004,Swine influenza
-840582007,Antigen of inactivated whole Influenza A virus subtype H5N1
-84113001,Influenzavirus C
 8442000,Purulent rhinitis
-84512003,Influenzal pharyngitis
-85469005,Hypostatic pneumonia
-8549006,Desquamative interstitial pneumonia
-86287004,Hypertrophic rhinitis
-866126000,Myelitis caused by Influenza A virus
-866901000000103,Eosinophilic bronchitis
-870573008,Interstitial pneumonia with autoimmune features
-871771002,Antigen of Influenza A virus subtype H5N1
 87695000,Necrotizing bronchiolitis
-878820003,Rhinoconjunctivitis
-88152000,Equine influenza
 88171000119100,Acute adenoiditis
 88348008,Maxillary sinusitis
-89194009,Acute abscess of maxillary sinus
-89549007,Catarrhal bronchitis
 897656009,Rhinosinusitis
-906531000000108,Avian influenza virus nucleic acid detection assay
-906541000000104,Avian influenza virus nucleic acid detection assay 
-907311000000106,Influenza A nucleic acid detection assay
-907321000000100,Influenza A nucleic acid detection assay 
-907331000000103,Influenza B nucleic acid detection assay
-907341000000107,Influenza B nucleic acid detection assay 
 91038008,Acute frontal sinusitis
-9312005,Necrotic rhinitis
-933741000000106,Avian influenza virus ribonucleic acid detection assay
-933751000000109,Avian influenza virus ribonucleic acid detection assay 
-934791000000103,Influenza A virus ribonucleic acid detection assay
-934801000000104,Influenza A ribonucleic acid detection assay 
-934811000000102,Influenza B virus ribonucleic acid detection assay
-934821000000108,Influenza B ribonucleic acid detection assay 
-95886009,Mycoplasmal tracheobronchitis
-95891005,Influenza-like illness
-99251000000100,Bilateral pneumonia
-996211000000100,Influenza (A and B) serology
