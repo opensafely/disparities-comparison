@@ -1,13 +1,13 @@
 ##create a dummy dataset
 
-library("tidyverse")
-library("arrow")
-library("here")
-library("glue")
-library("EnvStats")
+library(tidyverse)
+library(arrow)
+library(here)
+library(glue)
+library(EnvStats)
 
-remotes::install_github("https://github.com/wjchulme/dd4d")
-library("dd4d")
+#remotes::install_github("https://github.com/wjchulme/dd4d")
+library(dd4d)
 
 ## create output directories ----
 fs::dir_create(here("analysis", "dummydata"))
@@ -110,7 +110,7 @@ sim_list = lst(
       "4",
       "5",
       "6"
-    ), p = c(0.81, 0.03, 0.1, 0.04, 0.02, 0))
+    ), p = c(0.81, 0.03, 0.1, 0.04, 0.02, 0.05))
   ),
   
   #household ID (to determine composition)
@@ -156,14 +156,14 @@ sim_list = lst(
                                        I(smoking_status == "Former")*-0.1))
   ),
   
-  #pulmonary fibrosis
-  has_pulmonary_fibrosis = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.001)
-  ),
-  
   #cystic fibrosis
   has_cystic_fibrosis = bn_node(
     ~ rbernoulli(n = ..n, p = 0.02)
+  ),
+  
+  #other chronic respiratory diseases
+  has_other_resp = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
   ),
   
   #diabetes
@@ -181,9 +181,9 @@ sim_list = lst(
     ~ rbernoulli(n = ..n, p = 0.1)
   ),
   
-  #chronic heart disease
+  #chronic heart diseases
   has_chd = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.01)
+    ~ rbernoulli(n = ..n, p = 0.08)
   ),
   
   #chronic kidney disease
@@ -219,16 +219,6 @@ sim_list = lst(
   #sickle cell disease
   has_sickle_cell = bn_node(
     ~ rbernoulli(n = ..n, p = 0.01)
-  ),
-  
-  #heart failure
-  has_heart_failure = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.015)
-  ),
-  
-  #coronary heart disease
-  has_coronary_heart_disease = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.1)
   ),
   
   #flu vaccination
@@ -375,6 +365,13 @@ sim_list = lst(
   #date
   all_cause_mortality_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  ##exclusion criteria
+  
+  #care home resident
+  care_home = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
   )
   
 )

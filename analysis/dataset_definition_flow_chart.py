@@ -2,7 +2,7 @@ import json, sys
 from pathlib import Path 
 
 from datetime import date, datetime
-from ehrql import create_dataset, case, when, maximum_of, minimum_of, years, days
+from ehrql import Dataset, case, when, maximum_of, minimum_of, years, days
 from ehrql.tables.tpp import ( 
   patients, 
   medications,
@@ -27,8 +27,7 @@ from variable_lib import (
 
 import codelists
 
-dataset = create_dataset()
-dataset.configure_dummy_data(population_size = 100000)
+dataset = Dataset()
 
 #######################################################################################
 # Import study dates defined in "./analysis/design/study-dates.R" script and then exported
@@ -54,6 +53,7 @@ age_at_start = patients.age_on(study_start_date)
 age_at_end = patients.age_on(study_end_date)
 age_months = (index_date - patients.date_of_birth).months
 age_at_start_months = (study_start_date - patients.date_of_birth).months
+#age_at_end_months = (study_end_date - patients.date_of_birth).months
 
 #get patients who are registered, have sex, age, and imd info
 registered_patients = case(
@@ -70,8 +70,8 @@ is_appropriate_age = case(
   when(cohort == "older_adults").then((age_at_start <= 110) & (age_at_end >= 65)),
   when(cohort == "adults").then((age_at_start <= 64) & (age_at_end >= 18)),
   when(cohort == "children_adolescents").then((age_at_start <= 17) & (age_at_end >= 2)),
-  when(cohort == "infants").then(age_at_start_months <= 23),
-  when(cohort == "infants_subgroup").then(age_at_start_months <= 23)
+  when(cohort == "infants").then((age_at_start_months <= 23) & (age_at_start_months >= 0)),
+  when(cohort == "infants_subgroup").then((age_at_start_months <= 23) & (age_at_start_months >= 0))
 )
 has_imd = (addresses.for_patient_on(index_date).imd_rounded.is_not_null())
 
@@ -215,6 +215,5 @@ dataset.age = case(
   when(cohort == "infants_subgroup").then(age_at_start_months)
 )
 
-dataset.is_female_or_male = is_female_or_male
-dataset.is_appropriate_age = is_appropriate_age
-dataset.has_imd = has_imd
+#get patients IMD rank
+dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded

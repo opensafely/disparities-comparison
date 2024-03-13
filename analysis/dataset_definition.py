@@ -55,6 +55,7 @@ age_at_start = patients.age_on(study_start_date)
 age_at_end = patients.age_on(study_end_date)
 age_months = (index_date - patients.date_of_birth).months
 age_at_start_months = (study_start_date - patients.date_of_birth).months
+#age_at_end_months = (study_end_date - patients.date_of_birth).months
 
 #get patients who are registered, have sex, age, and imd info
 registered_patients = case(
@@ -71,8 +72,8 @@ is_appropriate_age = case(
   when(cohort == "older_adults").then((age_at_start <= 110) & (age_at_end >= 65)),
   when(cohort == "adults").then((age_at_start <= 64) & (age_at_end >= 18)),
   when(cohort == "children_adolescents").then((age_at_start <= 17) & (age_at_end >= 2)),
-  when(cohort == "infants").then(age_at_start_months <= 23),
-  when(cohort == "infants_subgroup").then(age_at_start_months <= 23)
+  when(cohort == "infants").then((age_at_start_months <= 23) & (age_at_start_months >= 0)),
+  when(cohort == "infants_subgroup").then((age_at_start_months <= 23) & (age_at_start_months >= 0))
 )
 has_imd = (addresses.for_patient_on(index_date).imd_rounded.is_not_null())
 
@@ -849,11 +850,10 @@ if investigation_type == "secondary" :
     filter_codes_by_category, smoking_status,
     hazardous_drinking, drug_usage, has_asthma,
     has_reactive_airway, has_copd,
-    has_pulmonary_fibrosis, has_cystic_fibrosis,
+    has_cystic_fibrosis, has_other_resp,
     has_diabetes, has_addisons, severe_obesity,
     has_chd, has_ckd, has_cld, has_cnd, has_crd,
     has_cancer, immunosuppressed, has_sickle_cell,
-    has_heart_failure, has_coronary_heart_disease
   )
   
   if cohort == "adults" or cohort == "older_adults" :
@@ -863,8 +863,8 @@ if investigation_type == "secondary" :
     dataset.drug_usage = drug_usage
     dataset.has_asthma = has_asthma
     dataset.has_copd = has_copd
-    dataset.has_pulmonary_fibrosis = has_pulmonary_fibrosis
     dataset.has_cystic_fibrosis = has_cystic_fibrosis
+    dataset.has_other_resp = has_other_resp
     dataset.has_diabetes = has_diabetes
     dataset.has_addisons = has_addisons
     dataset.severe_obesity = severe_obesity
@@ -875,8 +875,6 @@ if investigation_type == "secondary" :
     dataset.has_cancer = has_cancer
     dataset.immunosuppressed = immunosuppressed
     dataset.has_sickle_cell = has_sickle_cell
-    dataset.has_heart_failure = has_heart_failure
-    dataset.has_coronary_heart_disease = has_coronary_heart_disease
 
   if cohort == "children_and_adolescents" :
 

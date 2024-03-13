@@ -181,18 +181,27 @@ has_copd = (
   .is_on_or_after(last_prior_event(codelists
   .copd_resolved_codelist).date))
 )
- 
-#pulmonary fibrosis diagnosis
-has_pulmonary_fibrosis = (
-  has_prior_event(codelists
-  .pulmonary_fibrosis_codelist)
-)
 
 #cystic fibrosis diagnosis
 has_cystic_fibrosis = (
   clinical_events.where(clinical_events.ctv3_code.
   is_in(codelists.cystic_fibrosis_codelist))
   .exists_for_patient()
+)
+
+#pulmonary fibrosis diagnosis
+has_pulmonary_fibrosis = (
+  has_prior_event(codelists
+  .pulmonary_fibrosis_codelist)
+)
+
+#Chronic Respiratory Disease
+has_crd = has_prior_event(codelists.crd_codelist)
+
+#other chronic respiratory disease
+has_other_resp = (
+  (has_pulmonary_fibrosis | has_crd) & 
+  (~has_asthma & ~ has_copd & ~ has_cystic_fibrosis)
 )
 
 #diabetes diagnosis
@@ -248,9 +257,13 @@ severe_obesity = case(
   otherwise = False
 )
   
-#Chronic Heart Disease
-has_chd = has_prior_event(codelists.chd_codelist)
-  
+#Chronic Heart Diseases
+has_chd = (
+  (has_prior_event(codelists.chd_codelist)) | 
+  (has_prior_event(codelists.heart_failure_codelist)) |
+  (has_prior_event(codelists.coronary_heart_disease_codelist))
+)
+
 #Chronic Kidney Disease
   
 ###############################################################################
@@ -274,9 +287,6 @@ has_cld = has_prior_event(codelists.cld_codelist)
 
 #Chronic Neurological Disease including Significant Learning Disorder
 has_cnd = has_prior_event(codelists.cnd_codelist)
-
-#Chronic Respiratory Disease
-has_crd = has_prior_event(codelists.crd_codelist)
 
 #Cancer within 3 years 
 has_cancer = (
@@ -320,12 +330,3 @@ immunosuppressed = immdx | immrx | immadm | dxt_chemo
   
 #Sickle Cell Disease
 has_sickle_cell = has_prior_event(codelists.sickle_cell_codelist)
-  
-#Heart Failure
-has_heart_failure = has_prior_event(codelists.heart_failure_codelist)
-  
-#Coronary Heart Disease 
-has_coronary_heart_disease = (
-  has_prior_event(codelists
-  .coronary_heart_disease_codelist)
-)

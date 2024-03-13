@@ -1,13 +1,13 @@
 ##create a dummy dataset
 
-library("tidyverse")
-library("arrow")
-library("here")
-library("glue")
-library("EnvStats")
+library(tidyverse)
+library(arrow)
+library(here)
+library(glue)
+library(EnvStats)
 
-remotes::install_github("https://github.com/wjchulme/dd4d")
-library("dd4d")
+#remotes::install_github("https://github.com/wjchulme/dd4d")
+library(dd4d)
 
 ## create output directories ----
 fs::dir_create(here("analysis", "dummydata"))
@@ -110,7 +110,7 @@ sim_list = lst(
       "4",
       "5",
       "6"
-    ), p = c(0.81, 0.03, 0.1, 0.04, 0.02, 0))
+    ), p = c(0.81, 0.03, 0.1, 0.04, 0.02, 0.05))
   ),
   
   #household ID (to determine composition)

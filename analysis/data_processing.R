@@ -1,9 +1,9 @@
-library("tidyverse")
-library("here")
-library("arrow")
-library("ggplot2")
-library("data.table")
-library("lubridate")
+library(tidyverse)
+library(here)
+library(arrow)
+library(ggplot2)
+library(data.table)
+library(lubridate)
 
 ## create output directories ----
 fs::dir_create(here("analysis"))
@@ -11,16 +11,24 @@ fs::dir_create(here("analysis"))
 #define study start date and study end date
 source(here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
-study_start_date <- study_dates[[args[[2]]]]
-study_end_date <- study_dates[[args[[3]]]]
-cohort <- args[[1]]
-codelist_type <- args[[4]]
-investigation_type <- args[[5]]
+if (length(args) == 0) {
+  study_start_date <- "2016-09-01"
+  study_end_date <- "2017-08-31"
+  cohort <- "adults"
+  codelist_type <- "specific"
+  investigation_type <- "primary"
+} else {
+  study_start_date <- study_dates[[args[[2]]]]
+  study_end_date <- study_dates[[args[[3]]]]
+  cohort <- args[[1]]
+  codelist_type <- args[[4]]
+  investigation_type <- args[[5]]
+}
 
 df_input <- read_feather(
-  here::here("output", paste0("input_", cohort, "_", year(study_start_date),
-              "_", year(study_end_date), "_", codelist_type, "_", 
-              investigation_type,".arrow")))
+  here::here("output", "data", paste0("input_", cohort, "_", 
+             year(study_start_date), "_", year(study_end_date), "_",
+             codelist_type, "_", investigation_type,".arrow")))
 
 #assign ethnicity group
 df_input <- df_input %>%
@@ -140,8 +148,11 @@ df_input <- df_input %>%
 df_input$time_mild <- difftime(df_input$end_time_mild, study_start_date, df_input, "weeks")
 df_input$time_severe <- difftime(df_input$end_time_severe, study_start_date, df_input, "weeks")
 
+## create output directories ----
+fs::dir_create(here("output", "data"))
+
 #write the new input file
-write_feather(df_input, here::here("output", 
+write_feather(df_input, here::here("output", "data", 
   paste0("input_processed_", cohort, "_", year(study_start_date),
          "_", year(study_end_date), "_", codelist_type, 
          "_", investigation_type, ".arrow")))
