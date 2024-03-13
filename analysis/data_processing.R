@@ -120,33 +120,47 @@ df_input <- df_input %>%
 #define seasons for covid
 covid_season_min = as.Date("2019-09-01", format = "%Y-%m-%d")
 
-#create variable for survival time
-df_input$end_time_mild <- study_end_date
-df_input$end_time_severe <- study_end_date
+# #create variable for survival time
+# df_input$end_time_mild <- study_end_date
+# df_input$end_time_severe <- study_end_date
+# 
+# #calculate follow-up end date for mild outcomes
+# df_input <- df_input %>%
+#   rowwise() %>%
+#   mutate(end_time_mild = case_when(
+#     study_start_date >= covid_season_min & covid_primary ~ covid_primary_date,
+#     rsv_primary ~ rsv_primary_date,
+#     flu_primary ~ flu_primary_date,
+#     TRUE ~ study_end_date
+#   ))
+# 
+# #calculate follow-up end date for severe outcomes 
+# df_input <- df_input %>%
+#   rowwise() %>%
+#   mutate(end_time_severe = case_when(
+#     study_start_date >= covid_season_min & covid_secondary ~ covid_secondary_date,
+#     rsv_secondary ~ rsv_secondary_date,
+#     flu_secondary ~ flu_secondary_date,
+#     TRUE ~ study_end_date
+#   ))
 
-#calculate follow-up end date for mild outcomes
-df_input <- df_input %>%
-  rowwise() %>%
-  mutate(end_time_mild = case_when(
-    study_start_date >= covid_season_min & covid_primary ~ covid_primary_date,
-    rsv_primary ~ rsv_primary_date,
-    flu_primary ~ flu_primary_date,
-    TRUE ~ study_end_date
-  ))
-
-#calculate follow-up end date for severe outcomes 
-df_input <- df_input %>%
-  rowwise() %>%
-  mutate(end_time_severe = case_when(
-    study_start_date >= covid_season_min & covid_secondary ~ covid_secondary_date,
-    rsv_secondary ~ rsv_secondary_date,
-    flu_secondary ~ flu_secondary_date,
-    TRUE ~ study_end_date
-  ))
-
-#calculate survival time for both outcomes (in weeks)
-df_input$time_mild <- difftime(df_input$end_time_mild, study_start_date, df_input, "weeks")
-df_input$time_severe <- difftime(df_input$end_time_severe, study_start_date, df_input, "weeks")
+#calculate survival time for both outcomes (in years)
+# df_input$time_mild <- as.numeric(difftime(df_input$end_time_mild, 
+#                       study_start_date, df_input, "weeks"))/52.25
+# df_input$time_severe <- as.numeric(difftime(df_input$end_time_severe, 
+#                         study_start_date, df_input, "weeks"))/52.25
+df_input$time_rsv_primary <- as.numeric(difftime(df_input$rsv_primary_date, 
+                             study_start_date, df_input, "weeks"))/52.25
+df_input$time_rsv_secondary <- as.numeric(difftime(df_input$rsv_secondary_date, 
+                               study_start_date, df_input, "weeks"))/52.25
+df_input$time_flu_primary <- as.numeric(difftime(df_input$flu_primary_date, 
+                             study_start_date, df_input, "weeks"))/52.25
+df_input$time_flu_secondary <- as.numeric(difftime(df_input$flu_secondary_date, 
+                               study_start_date, df_input, "weeks"))/52.25
+df_input$time_covid_primary <- as.numeric(difftime(df_input$covid_primary_date, 
+                               study_start_date, df_input, "weeks"))/52.25
+df_input$time_covid_secondary <- as.numeric(difftime(df_input$covid_secondary_date, 
+                                 study_start_date, df_input, "weeks"))/52.25
 
 ## create output directories ----
 fs::dir_create(here("output", "data"))

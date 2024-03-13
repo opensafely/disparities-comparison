@@ -4,12 +4,13 @@ library(arrow)
 library(ggplot2)
 library(data.table)
 library(gtsummary)
+library(survival)
 
 ## create output directories ----
 fs::dir_create(here("analysis"))
 
 #import redaction functions
-source(here("analysis", "functions", "redaction.R"))
+#source(here("analysis", "functions", "redaction.R"))
 
 #define study start date and study end date
 source(here("analysis", "design", "design.R"))
@@ -54,3 +55,6 @@ ggsave(
     "_", year(study_end_date), "_", codelist_type, "_",
     investigation_type,".png"), path = here::here("output", "models"),
 )
+
+#py <- pyears(time_mild ~ )
+
