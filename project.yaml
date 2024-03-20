@@ -411,3 +411,13 @@ actions:
     outputs:
       moderately_sensitive:
         png: output/models/descriptive_infants_2016_2017_sensitive_secondary.png
+
+  generate_dataset_adults_s7_spec:
+    run: >
+      ehrql:v1 generate-dataset analysis/dataset_definition.py
+      --output output/data/input_adults_2022_2023_specific_primary.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_adults_2022_2023.arrow
+      -- adults season7_start_date season7_end_date specific primary
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_adults_2022_2023_specific_primary.arrow

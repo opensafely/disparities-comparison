@@ -195,13 +195,13 @@ if cohort == "infants" or cohort == "infants_subgroup" :
   )
 
 #care home resident
-if cohort == "older_adults" :
-  care_home_tpp = (
-    addresses.for_patient_on(index_date)
-    .care_home_is_potential_match.when_null_then(False)
-  )
-  care_home_code = (has_prior_event(codelists.carehome_codelist))
-  care_home = care_home_tpp | care_home_code
+#if cohort == "older_adults" :
+care_home_tpp = (
+  addresses.for_patient_on(index_date)
+  .care_home_is_potential_match.when_null_then(False)
+)
+care_home_code = (has_prior_event(codelists.carehome_codelist))
+care_home = care_home_tpp | care_home_code
 
 #define population
 if cohort == "infants" or cohort == "infants_subgroup" :
@@ -212,6 +212,7 @@ if cohort == "infants" or cohort == "infants_subgroup" :
     & has_imd
     & (~severe_immunodeficiency)
     & (~risk_group_infants)
+    & (~care_home)
   )
 
 if cohort == "older_adults" :
@@ -229,6 +230,7 @@ if cohort == "adults" or cohort == "children_and_adolescents" :
     & is_female_or_male
     & is_appropriate_age
     & has_imd
+    & (~care_home)
   )
 
 #registration, sex and age 
@@ -265,12 +267,27 @@ dataset.rural_urban_classification = addresses.for_patient_on(index_date).rural_
 dataset.household_pseudo_id = household_memberships_2020.household_pseudo_id
 dataset.household_size = household_memberships_2020.household_size
 
-# #get patients practice's pseudonymised identifier
-# dataset.practice = practice_registrations.for_patient_on(index_date).practice_pseudo_id
+#get patients practice's pseudonymised identifier
+dataset.practice_pseudo_id = (
+  (practice_registrations.for_patient_on(index_date))
+  .practice_pseudo_id
+)
 
 #practice and patient information
-dataset.region = (practice_registrations.for_patient_on(index_date)).practice_nuts1_region_name
-dataset.stp = (practice_registrations.for_patient_on(index_date)).practice_stp
+dataset.region = (
+  (practice_registrations.for_patient_on(index_date))
+  .practice_nuts1_region_name
+)
+dataset.stp = (
+  (practice_registrations.for_patient_on(index_date))
+  .practice_stp
+)
+
+#date deregistered from practice
+dataset.deregistration_date = (
+  (practice_registrations
+  .for_patient_on(index_date)).end_date
+)
 
 ##comorbidities
 
@@ -396,12 +413,11 @@ if codelist_type == "sensitive" :
 
 #occurance of event in exclusion list within one month of secondary care diagnosis
 rsv_secondary_sens_date = (
-    apcs.sort_by(apcs.admission_date)
-    .where(
-    ((hospitalisation_diagnosis_matches(codelists
+    apcs.sort_by(apcs.admission_date).where(
+    (hospitalisation_diagnosis_matches(codelists
     .rsv_secondary_codelist).exists_for_patient())
     |(hospitalisation_diagnosis_matches(codelists
-    .unspecified_lrti).exists_for_patient())))
+    .unspecified_lrti).exists_for_patient()))
     .first_for_patient().admission_date
 )
 rsv_exclusion_secondary = (case(
@@ -571,218 +587,315 @@ if codelist_type == "sensitive" :
   
 ##outcomes - covid
 
-#count number of clinical codes in covid symptom list
-covid_code_number = (
-  (clinical_events.where(clinical_events
-  .date.is_on_or_between(first_infection_event(codelists
-  .covid_sensitive_codelist).date, first_infection_event(codelists
-  .covid_sensitive_codelist).date + days(14)))
-  .where(clinical_events.snomedct_code
-  .is_in(codelists.covid_sensitive_codelist)))
-  .snomedct_code.count_distinct_for_patient()
-)
+if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
 
-#date of first occurance of two of the above codes within 2 weeks
-covid_codes_date = (
-  case(when(covid_code_number > 1)
-  .then(first_infection_event(codelists
-  .covid_sensitive_codelist).date))
-)
-
-#occurance of event in exclusion list within one month of covid_codes_date
-covid_exclusion_primary = (case(
-  when((first_infection_event(codelists.covid_primary_exclusion_codelist)
-  .date.is_on_or_between(covid_codes_date - days(30), covid_codes_date + days(30)))
-  |(medications.where(medications.dmd_code
-  .is_in(codelists.covid_prescriptions_codelist)).date.minimum_for_patient()
-  .is_on_or_between(covid_codes_date - days(30), covid_codes_date + days(30))))
-  .then(has_infection_event(codelists.covid_primary_exclusion_codelist))
-))
-
-#covid primary care
-if codelist_type == "specific" :
-  dataset.covid_primary = has_infection_event(codelists.covid_primary_codelist)
-
-if codelist_type == "sensitive" :
-  dataset.covid_primary = (
-    (has_infection_event(codelists.covid_primary_codelist))
-    |(covid_code_number >1)|(medications.where(medications.dmd_code
-    .is_in(codelists.covid_prescriptions_codelist)).exists_for_patient())
-    &(~covid_exclusion_primary)
-  )
-
-#covid primary care date
-if codelist_type == "specific" :
-  dataset.covid_primary_date = (
-    first_infection_event(codelists
-    .covid_primary_codelist).date
-  )
-
-if codelist_type == "sensitive" :
-  dataset.covid_primary_date = (case(
-    when(~covid_exclusion_primary).then(
-    minimum_of((first_infection_event(codelists
-    .covid_primary_codelist).date),
-    (covid_codes_date),(medications.where(medications.dmd_code
-    .is_in(codelists.covid_prescriptions_codelist))
-    .date.minimum_for_patient()))))
-  )
-
-#occurance of event in exclusion list within one month of secondary care diagnosis
-covid_secondary_sens_date = (
-    apcs.sort_by(apcs.admission_date)
-    .where(
-    ((hospitalisation_diagnosis_matches(codelists
-    .covid_secondary_codelist).exists_for_patient())))
-    .first_for_patient().admission_date
-)
-covid_exclusion_secondary = (case(
-  when((hospitalisation_diagnosis_matches(codelists
-  .covid_secondary_exclusion_codelist))
-  .admission_date.minimum_for_patient()
-  .is_on_or_between(covid_secondary_sens_date - days(30),
-  covid_secondary_sens_date + days(30)))
-  .then((hospitalisation_diagnosis_matches(codelists
-  .covid_secondary_exclusion_codelist))
-  .exists_for_patient())
-))
-
-#covid secondary care
-if codelist_type == "specific" :
-  dataset.covid_secondary = (
-    apcs.where(apcs.primary_diagnosis
-    .is_in(codelists.covid_secondary_codelist))
-    .exists_for_patient()
-    |apcs.where(apcs.secondary_diagnosis
-    .is_in(codelists.covid_secondary_codelist))
-    .exists_for_patient()
-  )
-if codelist_type == "sensitive" :
-  dataset.covid_secondary = (
-    (hospitalisation_diagnosis_matches(codelists
-    .covid_secondary_codelist)
-    .exists_for_patient())
-    &(~covid_exclusion_secondary)
+  #count number of clinical codes in covid symptom list
+  covid_code_number = (
+    (clinical_events.where(clinical_events
+    .date.is_on_or_between(first_infection_event(codelists
+    .covid_sensitive_codelist).date, first_infection_event(codelists
+    .covid_sensitive_codelist).date + days(14)))
+    .where(clinical_events.snomedct_code
+    .is_in(codelists.covid_sensitive_codelist)))
+    .snomedct_code.count_distinct_for_patient()
   )
   
-#covid secondary care date
-if codelist_type == "specific" :
-  dataset.covid_secondary_date = (
-    apcs.sort_by(apcs.admission_date)
-    .where(apcs.primary_diagnosis
-    .is_in(codelists.covid_secondary_codelist) 
-    |apcs.secondary_diagnosis
-    .is_in(codelists.covid_secondary_codelist))
-    .first_for_patient()
-    .admission_date
+  #date of first occurance of two of the above codes within 2 weeks
+  covid_codes_date = (
+    case(when(covid_code_number > 1)
+    .then(first_infection_event(codelists
+    .covid_sensitive_codelist).date))
   )
-if codelist_type == "sensitive" :
-  dataset.covid_secondary_date = (case(
-    when(~covid_exclusion_secondary)
-    .then(covid_secondary_sens_date))
+  
+  #occurance of event in exclusion list within one month of covid_codes_date
+  covid_exclusion_primary = (case(
+    when((first_infection_event(codelists.covid_primary_exclusion_codelist)
+    .date.is_on_or_between(covid_codes_date - days(30), covid_codes_date + days(30)))
+    |(medications.where(medications.dmd_code
+    .is_in(codelists.covid_prescriptions_codelist)).date.minimum_for_patient()
+    .is_on_or_between(covid_codes_date - days(30), covid_codes_date + days(30))))
+    .then(has_infection_event(codelists.covid_primary_exclusion_codelist))
+  ))
+  
+  #covid primary care
+  if codelist_type == "specific" :
+    dataset.covid_primary = has_infection_event(codelists.covid_primary_codelist)
+  
+  if codelist_type == "sensitive" :
+    dataset.covid_primary = (
+      (has_infection_event(codelists.covid_primary_codelist))
+      |(covid_code_number >1)|(medications.where(medications.dmd_code
+      .is_in(codelists.covid_prescriptions_codelist)).exists_for_patient())
+      &(~covid_exclusion_primary)
+    )
+  
+  #covid primary care date
+  if codelist_type == "specific" :
+    dataset.covid_primary_date = (
+      first_infection_event(codelists
+      .covid_primary_codelist).date
+    )
+  
+  if codelist_type == "sensitive" :
+    dataset.covid_primary_date = (case(
+      when(~covid_exclusion_primary).then(
+      minimum_of((first_infection_event(codelists
+      .covid_primary_codelist).date),
+      (covid_codes_date),(medications.where(medications.dmd_code
+      .is_in(codelists.covid_prescriptions_codelist))
+      .date.minimum_for_patient()))))
+    )
+  
+  #occurance of event in exclusion list within one month of secondary care diagnosis
+  covid_secondary_sens_date = (
+      apcs.sort_by(apcs.admission_date).where(
+      (hospitalisation_diagnosis_matches(codelists
+      .covid_secondary_codelist).exists_for_patient())
+      |(hospitalisation_diagnosis_matches(codelists
+      .coronavirus_unspecified).exists_for_patient()))
+      .first_for_patient().admission_date
   )
+  covid_exclusion_secondary = (case(
+    when((hospitalisation_diagnosis_matches(codelists
+    .covid_secondary_exclusion_codelist))
+    .admission_date.minimum_for_patient()
+    .is_on_or_between(covid_secondary_sens_date - days(30),
+    covid_secondary_sens_date + days(30)))
+    .then((hospitalisation_diagnosis_matches(codelists
+    .covid_secondary_exclusion_codelist))
+    .exists_for_patient())
+  ))
+  
+  #covid secondary care
+  if codelist_type == "specific" :
+    dataset.covid_secondary = (
+      apcs.where(apcs.primary_diagnosis
+      .is_in(codelists.covid_secondary_codelist))
+      .exists_for_patient()
+      |apcs.where(apcs.secondary_diagnosis
+      .is_in(codelists.covid_secondary_codelist))
+      .exists_for_patient()
+    )
+  if codelist_type == "sensitive" :
+    dataset.covid_secondary = (
+      (hospitalisation_diagnosis_matches(codelists
+      .covid_secondary_codelist)
+      .exists_for_patient())
+      |(hospitalisation_diagnosis_matches(codelists
+      .coronavirus_unspecified).exists_for_patient())
+      &(~covid_exclusion_secondary)
+    )
+    
+  #covid secondary care date
+  if codelist_type == "specific" :
+    dataset.covid_secondary_date = (
+      apcs.sort_by(apcs.admission_date)
+      .where(apcs.primary_diagnosis
+      .is_in(codelists.covid_secondary_codelist) 
+      |apcs.secondary_diagnosis
+      .is_in(codelists.covid_secondary_codelist))
+      .first_for_patient()
+      .admission_date
+    )
+  if codelist_type == "sensitive" :
+    dataset.covid_secondary_date = (case(
+      when(~covid_exclusion_secondary)
+      .then(covid_secondary_sens_date))
+    )
   
 ##outcomes - unspecified respiratory infection
 
 #unspecified respiratory virus primary care
 if codelist_type == "sensitive" :
   if cohort == "older_adults" :
-    dataset.overall_resp_primary = (
-      (dataset.rsv_primary)|(dataset.flu_primary)
-      |(dataset.covid_primary)|(has_infection_event(codelists.
-      respiratory_virus_primary_codelist))
-      |(emergency_care_diagnosis_matches(codelists.
-      rtri_attendance).exists_for_patient())
-      |(emergency_care_diagnosis_matches(codelists.
-      copd_exacerbation_attendance).exists_for_patient())
-      |(has_infection_event(codelists
-      .copd_exacerbation_primary_codelist))
-      |(has_infection_event(codelists
-      .asthma_exacerbation_primary_codelist))
-    )  
+    if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
+      dataset.overall_resp_primary = (
+        (dataset.rsv_primary)|(dataset.flu_primary)|(dataset.covid_primary)
+        |(has_infection_event(codelists.
+        respiratory_virus_primary_codelist))
+        |(emergency_care_diagnosis_matches(codelists.
+        rtri_attendance).exists_for_patient())
+        |(emergency_care_diagnosis_matches(codelists.
+        copd_exacerbation_attendance).exists_for_patient())
+        |(has_infection_event(codelists
+        .copd_exacerbation_primary_codelist))
+        |(has_infection_event(codelists
+        .asthma_exacerbation_primary_codelist))
+      )
+    else:
+      dataset.overall_resp_primary = (
+        (dataset.rsv_primary)|(dataset.flu_primary)
+        |(has_infection_event(codelists.
+        respiratory_virus_primary_codelist))
+        |(emergency_care_diagnosis_matches(codelists.
+        rtri_attendance).exists_for_patient())
+        |(emergency_care_diagnosis_matches(codelists.
+        copd_exacerbation_attendance).exists_for_patient())
+        |(has_infection_event(codelists
+        .copd_exacerbation_primary_codelist))
+        |(has_infection_event(codelists
+        .asthma_exacerbation_primary_codelist))
+      )
   else:
-    dataset.overall_resp_primary = (
-      (dataset.rsv_primary)|(dataset.flu_primary)
-      |(dataset.covid_primary)|(has_infection_event(codelists.
-      respiratory_virus_primary_codelist))
-      |(emergency_care_diagnosis_matches(codelists.
-      rtri_attendance).exists_for_patient())
-    )
+    if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
+      dataset.overall_resp_primary = (
+        (dataset.rsv_primary)|(dataset.flu_primary)|(dataset.covid_primary)
+        |(has_infection_event(codelists.
+        respiratory_virus_primary_codelist))
+        |(emergency_care_diagnosis_matches(codelists.
+        rtri_attendance).exists_for_patient())
+      )
+    else:
+      dataset.overall_resp_primary = (
+        (dataset.rsv_primary)|(dataset.flu_primary)
+        |(has_infection_event(codelists.
+        respiratory_virus_primary_codelist))
+        |(emergency_care_diagnosis_matches(codelists.
+        rtri_attendance).exists_for_patient())
+      )
 
 #unspecified respiratory virus primary care date
 if codelist_type == "sensitive" :
   if cohort == "older_adults" :
-    dataset.overall_resp_primary_date = (
-      minimum_of(dataset.rsv_primary_date, dataset.flu_primary_date,
-      dataset.covid_primary_date, first_infection_event(codelists.
-      respiratory_virus_primary_codelist).date,
-      emergency_care_diagnosis_matches(codelists.
-      rtri_attendance).arrival_date.minimum_for_patient(),
-      emergency_care_diagnosis_matches(codelists.
-      copd_exacerbation_attendance)
-      .arrival_date.minimum_for_patient(),
-      first_infection_event(codelists
-      .copd_exacerbation_primary_codelist).date,
-      first_infection_event(codelists
-      .asthma_exacerbation_primary_codelist).date)
-    )  
+    if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
+      dataset.overall_resp_primary_date = (
+        minimum_of(dataset.rsv_primary_date, dataset.flu_primary_date,
+        dataset.covid_primary_date, first_infection_event(codelists.
+        respiratory_virus_primary_codelist).date,
+        emergency_care_diagnosis_matches(codelists.
+        rtri_attendance).arrival_date.minimum_for_patient(),
+        emergency_care_diagnosis_matches(codelists.
+        copd_exacerbation_attendance)
+        .arrival_date.minimum_for_patient(),
+        first_infection_event(codelists
+        .copd_exacerbation_primary_codelist).date,
+        first_infection_event(codelists
+        .asthma_exacerbation_primary_codelist).date)
+      ) 
+    else:
+      dataset.overall_resp_primary_date = (
+        minimum_of(dataset.rsv_primary_date, dataset.flu_primary_date,
+        first_infection_event(codelists.
+        respiratory_virus_primary_codelist).date,
+        emergency_care_diagnosis_matches(codelists.
+        rtri_attendance).arrival_date.minimum_for_patient(),
+        emergency_care_diagnosis_matches(codelists.
+        copd_exacerbation_attendance)
+        .arrival_date.minimum_for_patient(),
+        first_infection_event(codelists
+        .copd_exacerbation_primary_codelist).date,
+        first_infection_event(codelists
+        .asthma_exacerbation_primary_codelist).date)
+      )
   else:
-    dataset.overall_resp_primary_date = (
-      minimum_of(dataset.rsv_primary_date, dataset.flu_primary_date,
-      dataset.covid_primary_date, first_infection_event(codelists.
-      respiratory_virus_primary_codelist).date,
-      emergency_care_diagnosis_matches(codelists.
-      rtri_attendance).arrival_date.minimum_for_patient())
-    )
+    if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
+      dataset.overall_resp_primary_date = (
+        minimum_of(dataset.rsv_primary_date, dataset.flu_primary_date,
+        dataset.covid_primary_date, first_infection_event(codelists.
+        respiratory_virus_primary_codelist).date,
+        emergency_care_diagnosis_matches(codelists.
+        rtri_attendance).arrival_date.minimum_for_patient())
+      )
+    else:
+      dataset.overall_resp_primary_date = (
+        minimum_of(dataset.rsv_primary_date, dataset.flu_primary_date,
+        first_infection_event(codelists.
+        respiratory_virus_primary_codelist).date,
+        emergency_care_diagnosis_matches(codelists.
+        rtri_attendance).arrival_date.minimum_for_patient())
+      )
 
 #unspecified respiratory virus secondary care
 if codelist_type == "sensitive" :
   if cohort == "older_adults" :
-    dataset.overall_resp_secondary = (
-      (dataset.rsv_secondary)|(dataset.flu_secondary)
-      |(dataset.covid_secondary)
-      |(hospitalisation_diagnosis_matches(codelists.
-      respiratory_virus_secondary_codelist)
-      .exists_for_patient())
-      |(hospitalisation_diagnosis_matches(codelists
-      .copd_exacerbation_secondary_codelist)
-      .exists_for_patient())
-      |(hospitalisation_diagnosis_matches(codelists
-      .asthma_exacerbation_secondary_codelist)
-      .exists_for_patient())
-    )  
+    if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
+      dataset.overall_resp_secondary = (
+        (dataset.rsv_secondary)|(dataset.flu_secondary)
+        |(dataset.covid_secondary)
+        |(hospitalisation_diagnosis_matches(codelists.
+        respiratory_virus_secondary_codelist)
+        .exists_for_patient())
+        |(hospitalisation_diagnosis_matches(codelists
+        .copd_exacerbation_secondary_codelist)
+        .exists_for_patient())
+        |(hospitalisation_diagnosis_matches(codelists
+        .asthma_exacerbation_secondary_codelist)
+        .exists_for_patient())
+      )
+    else:
+      dataset.overall_resp_secondary = (
+        (dataset.rsv_secondary)|(dataset.flu_secondary)
+        |(hospitalisation_diagnosis_matches(codelists.
+        respiratory_virus_secondary_codelist)
+        .exists_for_patient())
+        |(hospitalisation_diagnosis_matches(codelists
+        .copd_exacerbation_secondary_codelist)
+        .exists_for_patient())
+        |(hospitalisation_diagnosis_matches(codelists
+        .asthma_exacerbation_secondary_codelist)
+        .exists_for_patient())
+      )
   else:
-    dataset.overall_resp_secondary = (
-      (dataset.rsv_secondary)|(dataset.flu_secondary)
-      |(dataset.covid_secondary)
-      |(hospitalisation_diagnosis_matches(codelists.
-      respiratory_virus_secondary_codelist)
-      .exists_for_patient())
-    )
+    if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
+      dataset.overall_resp_secondary = (
+        (dataset.rsv_secondary)|(dataset.flu_secondary)
+        |(dataset.covid_secondary)
+        |(hospitalisation_diagnosis_matches(codelists.
+        respiratory_virus_secondary_codelist)
+        .exists_for_patient())
+      )
+    else:
+      dataset.overall_resp_secondary = (
+        (dataset.rsv_secondary)|(dataset.flu_secondary)
+        |(hospitalisation_diagnosis_matches(codelists.
+        respiratory_virus_secondary_codelist)
+        .exists_for_patient())
+      )
   
 #unspecified respiratory virus secondary care date
 if codelist_type == "sensitive" :
   if cohort == "older_adults" :
-    dataset.overall_resp_secondary_date = (
-      minimum_of(dataset.rsv_secondary_date,
-      dataset.flu_secondary_date, dataset.covid_secondary_date,
-      hospitalisation_diagnosis_matches(codelists.
-      respiratory_virus_secondary_codelist).admission_date
-      .minimum_for_patient(), hospitalisation_diagnosis_matches(codelists
-      .copd_exacerbation_secondary_codelist)
-      .admission_date.minimum_for_patient(),
-      hospitalisation_diagnosis_matches(codelists
-      .asthma_exacerbation_secondary_codelist)
-      .admission_date.minimum_for_patient())
-    )  
+    if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
+      dataset.overall_resp_secondary_date = (
+        minimum_of(dataset.rsv_secondary_date,
+        dataset.flu_secondary_date, dataset.covid_secondary_date,
+        hospitalisation_diagnosis_matches(codelists.
+        respiratory_virus_secondary_codelist).admission_date
+        .minimum_for_patient(), hospitalisation_diagnosis_matches(codelists
+        .copd_exacerbation_secondary_codelist)
+        .admission_date.minimum_for_patient(),
+        hospitalisation_diagnosis_matches(codelists
+        .asthma_exacerbation_secondary_codelist)
+        .admission_date.minimum_for_patient())
+      ) 
+    else:
+      dataset.overall_resp_secondary_date = (
+        minimum_of(dataset.rsv_secondary_date,
+        dataset.flu_secondary_date, hospitalisation_diagnosis_matches(codelists
+        .respiratory_virus_secondary_codelist).admission_date
+        .minimum_for_patient(), hospitalisation_diagnosis_matches(codelists
+        .copd_exacerbation_secondary_codelist)
+        .admission_date.minimum_for_patient(),
+        hospitalisation_diagnosis_matches(codelists
+        .asthma_exacerbation_secondary_codelist)
+        .admission_date.minimum_for_patient())
+      )
   else:
-    dataset.overall_resp_secondary_date = (
-      minimum_of(dataset.rsv_secondary_date,
-      dataset.flu_secondary_date, dataset.covid_secondary_date,
-      hospitalisation_diagnosis_matches(codelists.
-      respiratory_virus_secondary_codelist)
-      .admission_date.minimum_for_patient())
-    )
+    if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
+      dataset.overall_resp_secondary_date = (
+        minimum_of(dataset.rsv_secondary_date,
+        dataset.flu_secondary_date, dataset.covid_secondary_date,
+        hospitalisation_diagnosis_matches(codelists.
+        respiratory_virus_secondary_codelist)
+        .admission_date.minimum_for_patient())
+      )
+    else:
+      dataset.overall_resp_secondary_date = (
+        minimum_of(dataset.rsv_secondary_date, dataset.flu_secondary_date, 
+        hospitalisation_diagnosis_matches(codelists
+        .respiratory_virus_secondary_codelist).admission_date
+        .minimum_for_patient())
+      )
 
 ## outcomes - mortality 
 
@@ -810,25 +923,36 @@ dataset.flu_mortality_date = (case(when(
   .then(ons_deaths.date))
 )
 
-#covid mortality 
-dataset.covid_mortality = (
-  cause_of_death_matches(codelists
-  .covid_secondary_codelist)
-)
+if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
 
-#covid mortality date
-dataset.covid_mortality_date = (case(when(
-  dataset.covid_mortality)
-  .then(ons_deaths.date))
-)
+  #covid mortality 
+  dataset.covid_mortality = (
+    cause_of_death_matches(codelists
+    .covid_secondary_codelist)
+  )
+  
+  #covid mortality date
+  dataset.covid_mortality_date = (case(when(
+    dataset.covid_mortality)
+    .then(ons_deaths.date))
+  )
 
 #overall mortality
-dataset.overall_resp_mortality = (
-  (dataset.rsv_mortality)|(dataset.flu_mortality) 
-  |(dataset.covid_mortality)
-  |(cause_of_death_matches(codelists
-  .respiratory_virus_secondary_codelist))
-)
+if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
+  
+  dataset.overall_resp_mortality = (
+    (dataset.rsv_mortality)|(dataset.flu_mortality)
+    |(dataset.covid_mortality)|(cause_of_death_matches(codelists
+    .respiratory_virus_secondary_codelist))
+  )
+
+else:
+
+  dataset.overall_resp_mortality = (
+    (dataset.rsv_mortality)|(dataset.flu_mortality)
+    |(cause_of_death_matches(codelists
+    .respiratory_virus_secondary_codelist))
+  )
 
 #overall mortality date
 dataset.overall_resp_mortality_date = (case(when(

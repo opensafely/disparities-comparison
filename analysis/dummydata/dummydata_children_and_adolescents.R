@@ -45,6 +45,12 @@ sim_list = lst(
     ~ rbernoulli(n = ..n, p = 0.99),
   ),
   
+  #date of deregistration
+  deregistration_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365)),
+    missing_rate = ~ 0.99
+  ),
+  
   #sex of the patient
   sex = bn_node(
     ~ rfactor(n = ..n, levels = c("female", "male", "intersex", "unknown"),
@@ -275,6 +281,11 @@ sim_list = lst(
   #date
   all_cause_mortality_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+
+  #care home resident
+  care_home = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
   )
   
 )

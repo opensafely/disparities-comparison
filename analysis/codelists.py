@@ -181,6 +181,9 @@ covid_primary_exclusion_codelist = codelist_from_csv(
   column = "code",
 )
 
+# covid secondary - sensitive
+coronavirus_unspecified = ["B972", "B342"]
+
 # covid secondary exclusion
 covid_secondary_exclusion_codelist = codelist_from_csv(
   "codelists/user-emprestige-covid-19-exclusion-secondary-care-maximal-sensitivity.csv",
