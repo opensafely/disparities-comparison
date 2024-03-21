@@ -56,27 +56,21 @@ not_age_count <- if (cohort == "infants" | cohort == "infants_subgroup") {
   registered_count - age_count
 }
 
-if (cohort == "older_adults") {
-  included_count <- sum(patients_df$registered & patients_df$is_female_or_male 
+if (cohort == "infants" | cohort == "infants_subgroup") {
+  included_count <- sum(!patients_df$severe_immunodeficiency
                         & patients_df$is_appropriate_age & patients_df$has_imd 
-                        & !patients_df$care_home, na.rm = TRUE)
-  excluded_count <- sum(!patients_df$is_female_or_male |!patients_df$has_imd 
-                        | patients_df$care_home, na.rm = TRUE) - not_age_count
-} else if (cohort == "infants" | cohort == "infants_subgroup") {
-  included_count <- sum(patients_df$is_female_or_male 
-                        & patients_df$is_appropriate_age & patients_df$has_imd 
-                        & !patients_df$risk_group_infants 
-                        & !patients_df$severe_immunodeficiency, na.rm = TRUE)
-  excluded_count <- sum(!patients_df$is_female_or_male |!patients_df$has_imd 
-                        | patients_df$risk_group_infants 
-                        | patients_df$severe_immunodeficiency, na.rm = TRUE) - 
+                        & patients_df$is_female_or_male & !patients_df$care_home
+                        & !patients_df$risk_group_infants, na.rm = TRUE)
+  excluded_count <- sum(!patients_df$is_female_or_male|!patients_df$has_imd 
+                        |patients_df$risk_group_infants|patients_df$care_home
+                        |patients_df$severe_immunodeficiency, na.rm = TRUE) - 
                     not_age_count
 } else {
   included_count <- sum(patients_df$registered & patients_df$is_female_or_male 
-                        & patients_df$is_appropriate_age & patients_df$has_imd,
-                        na.rm = TRUE)
-  excluded_count <- sum(!patients_df$is_female_or_male 
-                        |!patients_df$has_imd, na.rm = TRUE) - not_age_count
+                        & patients_df$is_appropriate_age & patients_df$has_imd 
+                        & !patients_df$care_home, na.rm = TRUE)
+  excluded_count <- sum(!patients_df$is_female_or_male|!patients_df$has_imd 
+                        |patients_df$care_home, na.rm = TRUE) - not_age_count
 }
 
 ## create output directories ----

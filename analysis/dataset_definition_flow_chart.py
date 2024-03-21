@@ -193,13 +193,12 @@ if cohort == "infants" or cohort == "infants_subgroup" :
   )
 
 #care home resident
-if cohort == "older_adults" :
-  care_home_tpp = (
-    addresses.for_patient_on(index_date)
-    .care_home_is_potential_match.when_null_then(False)
-  )
-  care_home_code = (has_prior_event(codelists.carehome_codelist))
-  dataset.care_home = care_home_tpp | care_home_code
+care_home_tpp = (
+  addresses.for_patient_on(index_date)
+  .care_home_is_potential_match.when_null_then(False)
+)
+care_home_code = (has_prior_event(codelists.carehome_codelist))
+dataset.care_home = care_home_tpp | care_home_code
 
 #define population
 dataset.define_population(practice_registrations.exists_for_patient())
