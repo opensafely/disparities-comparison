@@ -34,34 +34,34 @@ df_input <- read_feather(
 if(cohort == "older_adults") {
   df_input <- df_input %>%
     mutate(age_band = case_when(
-      df_input$age >= 65 & df_input$age <= 74 ~ "65-74y",
-      df_input$age >= 75 & df_input$age <= 89 ~ "75-89y",
-      df_input$age >= 90 ~ "90+y",
+      age >= 65 & age <= 74 ~ "65-74y",
+      age >= 75 & age <= 89 ~ "75-89y",
+      age >= 90 ~ "90+y",
       TRUE ~ NA_character_
     ))
 } else if(cohort == "adults") {
 df_input <- df_input %>%
   mutate(age_band = case_when(
-    df_input$age >= 18 & df_input$age <= 39 ~ "18-29y",
-    df_input$age >= 40 & df_input$age <= 64 ~ "40-64y",
+    age >= 18 & age <= 39 ~ "18-29y",
+    age >= 40 & age <= 64 ~ "40-64y",
     TRUE ~ NA_character_
   ))
 } else if(cohort == "children_adults") {
   df_input <- df_input %>%
     mutate(age_band = case_when(
-      df_input$age >= 2 & df_input$age <= 5 ~ "2-5y",
-      df_input$age >= 6 & df_input$age <= 9 ~ "6-9y",
-      df_input$age >= 10 & df_input$age <= 13 ~ "10-13y",
-      df_input$age >= 14 & df_input$age <= 17 ~ "14-17y",
+      age >= 2 & age <= 5 ~ "2-5y",
+      age >= 6 & age <= 9 ~ "6-9y",
+      age >= 10 & age <= 13 ~ "10-13y",
+      age >= 14 & age <= 17 ~ "14-17y",
       TRUE ~ NA_character_
     ))
 } else {
   df_input <- df_input %>%
     mutate(age_band = case_when(
-      df_input$age >= 0 & df_input$age <= 2 ~ "0-2m",
-      df_input$age >= 3 & df_input$age <= 5 ~ "3-5m",
-      df_input$age >= 6 & df_input$age <= 11 ~ "6-11m",
-      df_input$age >= 12 & df_input$age <= 23 ~ "12-23m",
+      age >= 0 & age <= 2 ~ "0-2m",
+      age >= 3 & age <= 5 ~ "3-5m",
+      age >= 6 & age <= 11 ~ "6-11m",
+      age >= 12 & age <= 23 ~ "12-23m",
       TRUE ~ NA_character_
     ))
 }
@@ -69,30 +69,29 @@ df_input <- df_input %>%
 #data manipulation
 df_input <- df_input %>%
   mutate(
-    
     #assign ethnicity group
     latest_ethnicity_group = case_when(
-      df_input$latest_ethnicity_code == "1" ~ "White",
-      df_input$latest_ethnicity_code == "2" ~ "Mixed",
-      df_input$latest_ethnicity_code == "3" ~ "Asian or Asian British",
-      df_input$latest_ethnicity_code == "4" ~ "Black or Black British",
-      df_input$latest_ethnicity_code == "5" ~ "Other Ethnic Groups",
+      latest_ethnicity_code == "1" ~ "White",
+      latest_ethnicity_code == "2" ~ "Mixed",
+      latest_ethnicity_code == "3" ~ "Asian or Asian British",
+      latest_ethnicity_code == "4" ~ "Black or Black British",
+      latest_ethnicity_code == "5" ~ "Other Ethnic Groups",
       TRUE ~ "Unknown"),
-    
     #calculate IMD quintile
     imd_quintile = case_when(
-      df_input$imd_rounded >= 0 & df_input$imd_rounded < as.integer(32800 * 1 / 5) ~ "1 (most deprived)",
-      df_input$imd_rounded < as.integer(32800 * 2 / 5) ~ "2",
-      df_input$imd_rounded < as.integer(32800 * 3 / 5) ~ "3",
-      df_input$imd_rounded < as.integer(32800 * 4 / 5) ~ "4",
-      df_input$imd_rounded < as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
+      imd_rounded >= 0 & imd_rounded < as.integer(32800 * 1 / 5) ~ "1 (most deprived)",
+      imd_rounded < as.integer(32800 * 2 / 5) ~ "2",
+      imd_rounded < as.integer(32800 * 3 / 5) ~ "3",
+      imd_rounded < as.integer(32800 * 4 / 5) ~ "4",
+      imd_rounded < as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
       TRUE ~ NA_character_
     )
   )
 
-#reverse order of IMD classfications
+#reverse order of IMD classifications
 recode(df_input$imd_quintile, "1 (most deprived)" = "5 (most deprived)",
-       "2" = "4", "3" = "3", "4" = "2", "5 (least deprived)" = "1 (least deprived)")
+          "2" = "4", "3" = "3", "4" = "2",
+          "5 (least deprived)" = "1 (least deprived)")
 
 #more data manipulation
 df_input <- df_input %>%
@@ -101,23 +100,24 @@ df_input <- df_input %>%
     rurality_code = recode(rural_urban_classification, "1" = "1", "2" = "2", 
                            "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
                            "7" = "5", "8" = "5"),
-    #assign rurality classification
-    rurality_classification = case_when(
-      df_input$rurality_code == "1" ~ "Urban Major Conurbation",
-      df_input$rurality_code == "2" ~ "Urban Minor Conurbation",
-      df_input$rurality_code == "3" ~ "Urban City and Town",
-      df_input$rurality_code == "4" ~ "Rural Town and Fringe",
-      df_input$rurality_code == "5" ~ "Rural Village and Dispersed",
-      TRUE ~ "Unknown"
-    ),
     #define household size categories
     household_size_cat = case_when(
-      df_input$household_size >= 1 & df_input$household_size <= 2 ~ "1",
-      df_input$household_size >= 3 & household_size <= 5 ~ "2",
-      df_input$household_size >= 6 ~ "3",
+      household_size >= 1 & household_size <= 2 ~ "1",
+      household_size >= 3 & household_size <= 5 ~ "2",
+      household_size >= 6 ~ "3",
       TRUE ~ "Unknown"
     ),
+    #assign rurality classification
+    rurality_classification = case_when(
+      rurality_code == "1" ~ "Urban Major Conurbation",
+      rurality_code == "2" ~ "Urban Minor Conurbation",
+      rurality_code == "3" ~ "Urban City and Town",
+      rurality_code == "4" ~ "Rural Town and Fringe",
+      rurality_code == "5" ~ "Rural Village and Dispersed",
+      TRUE ~ "Unknown"
+    )
   )
+
 
 #define seasons for covid
 covid_season_min = as.Date("2019-09-01", format = "%Y-%m-%d")
