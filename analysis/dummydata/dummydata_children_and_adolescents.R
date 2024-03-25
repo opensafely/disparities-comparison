@@ -160,6 +160,11 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
+  #number of cases
+  rsv_primary_cases = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 1))
+  ),
+  
   #rsv secondary care
   rsv_secondary = bn_node(
     ~ rbernoulli(n = ..n, p = 0.05)
@@ -168,6 +173,11 @@ sim_list = lst(
   #date
   rsv_secondary_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  #nummber of cases
+  rsv_secondary_cases = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 1))
   ),
   
   #flu primary care
@@ -180,6 +190,11 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
+  #number of cases
+  flu_primary_cases = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 1))
+  ),
+  
   #flu secondary care
   flu_secondary = bn_node(
     ~ rbernoulli(n = ..n, p = 0.1)
@@ -190,6 +205,10 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
+  #number of cases
+  flu_secondary_cases = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 1))
+  ),
   
   #covid primary care
   covid_primary = bn_node(
@@ -199,6 +218,11 @@ sim_list = lst(
   #date
   covid_primary_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  #number of cases
+  covid_primary_cases = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 1))
   ),
   
   #covid secondary care
@@ -211,6 +235,11 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
+  #number of cases
+  covid_secondary_cases = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 1))
+  ),
+  
   #unspecified respiratory infection primary care 
   overall_resp_primary = bn_node(
     ~ rbernoulli(n = ..n, p = 0.3)
@@ -221,6 +250,11 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
+  #number of cases
+  overall_resp_primary_cases = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 1))
+  ),
+  
   #unspecified respiratory infection secondary care 
   overall_resp_secondary = bn_node(
     ~ rbernoulli(n = ..n, p = 0.25)
@@ -229,6 +263,11 @@ sim_list = lst(
   #date
   overall_resp_secondary_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  #number of cases
+  overall_resp_secondary_cases = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 1))
   ),
   
   ##mortality outcomes
