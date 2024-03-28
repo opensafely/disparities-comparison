@@ -175,7 +175,12 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
-  #nummber of cases
+  #rsv secondary length of stay
+  rsv_los = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 45))
+  ),
+  
+  #number of cases
   rsv_secondary_cases = bn_node(
     ~ as.integer(rpois(n = ..n, lambda = 1))
   ),
@@ -203,6 +208,11 @@ sim_list = lst(
   #date
   flu_secondary_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  #flu secondary length of stay
+  flu_los = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 45))
   ),
   
   #number of cases
@@ -235,6 +245,11 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
   ),
   
+  #covid secondary length of stay
+  covid_los = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 45))
+  ),
+  
   #number of cases
   covid_secondary_cases = bn_node(
     ~ as.integer(rpois(n = ..n, lambda = 1))
@@ -263,6 +278,11 @@ sim_list = lst(
   #date
   overall_resp_secondary_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  #unspecified respiratory infection secondary length of stay
+  overall_resp_los = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 45))
   ),
   
   #number of cases

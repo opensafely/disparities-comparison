@@ -173,7 +173,6 @@ if (study_start_date < covid_season_min) {
       #assign censoring indicator
       rsv_primary_censor = case_when(
         rsv_primary_inf_date == rsv_primary_date ~ 0,
-        rsv_primary_inf_date == rsv_secondary_date ~ 0,
         TRUE ~ 1
       ),
       #infer rsv outcome 
@@ -189,7 +188,6 @@ if (study_start_date < covid_season_min) {
       #assign censoring indicator
       flu_primary_censor = case_when(
         flu_primary_inf_date == flu_primary_date ~ 0,
-        flu_primary_inf_date == flu_secondary_date ~ 0,
         TRUE ~ 1
       ),
       #infer flu outcome
@@ -205,7 +203,6 @@ if (study_start_date < covid_season_min) {
       #assign censoring indicator
       covid_primary_censor = case_when(
         covid_primary_inf_date == covid_primary_date ~ 0,
-        covid_primary_inf_date == covid_secondary_date ~ 0,
         TRUE ~ 1
       ),
       #infer covid outcome

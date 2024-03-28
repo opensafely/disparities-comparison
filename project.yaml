@@ -224,6 +224,16 @@ actions:
       highly_sensitive:
         dataset: output/data/input_adults_2022_2023_specific_primary.arrow
 
+  generate_dataset_infants_s7_spec:
+    run: >
+      ehrql:v1 generate-dataset analysis/dataset_definition.py
+      --output output/data/input_infants_2022_2023_specific_primary.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_infants_2022_2023.arrow
+      -- infants season7_start_date season7_end_date specific primary
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_infants_2022_2023_specific_primary.arrow
+
 ### sensitivity analysis
 
 ##  season 1 (2016/17)
