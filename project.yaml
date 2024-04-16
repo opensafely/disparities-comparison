@@ -223,6 +223,13 @@ actions:
     outputs:
       highly_sensitive:
         dataset: output/data/input_adults_2022_2023_specific_primary.arrow
+ 
+  process_dataset_adults_s7_spec:
+    run: r:latest analysis/data_processing.R adults season7_start_date season7_end_date specific primary
+    needs: [generate_dataset_adults_s7_spec]
+    outputs:
+      highly_sensitive:
+        cohort: output/data/input_processed_adults_2022_2023_specific_primary.arrow
 
   generate_dataset_infants_s7_spec:
     run: >
