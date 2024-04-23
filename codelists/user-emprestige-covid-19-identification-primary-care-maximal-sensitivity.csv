@@ -5,11 +5,9 @@ code,term
 102480002,Generalized acute body pains
 102496004,Spiking fever
 102577000,Trepopnea
-102580004,Cough suppression
 1029481000000103,Coronavirus nucleic acid detection assay
 103001002,Feeling feverish
 103006007,Unilateral headache
-10595003,Pseudoephedrine sulfate
 1084781000000104,Cardiovascular Limitations and Symptoms Profile shortness of breath score
 1089971000000104,Extended Medical Research Council dyspnoea scale grade 1
 1089981000000102,Extended Medical Research Council dyspnoea scale grade 2
@@ -22,18 +20,11 @@ code,term
 1099391000000103,Modified Medical Research Council dyspnoea scale grade 2
 1099401000000100,Modified Medical Research Council dyspnoea scale grade 3
 1099411000000103,Modified Medical Research Council dyspnoea scale grade 4
-111093005,Wood creosote
 111843007,Viral gastroenteritis
-1119294003,Unilateral headache on left side of head
-1119295002,Unilateral headache on right side of head
 1119302008,Acute disease caused by severe acute respiratory syndrome coronavirus 2
-111962006,Postural cough
 112105008,Sense of smell altered
-113611000119100,Myofascial pain syndrome of lumbar spine
 1153537004,Antigen of inactivated whole severe acute respiratory syndrome coronavirus 2
 1157045004,Antigen of severe acute respiratory syndrome coronavirus 2 protein
-1172717008,Levocloperastine fendizoate
-1172718003,Levocloperastine
 11833005,Dry cough
 119731000146105,Cardiomyopathy due to disease caused by severe acute respiratory syndrome coronavirus 2
 119741000146102,Conjunctivitis due to disease caused by severe acute respiratory syndrome coronavirus 2
@@ -41,10 +32,7 @@ code,term
 119981000146107,Dyspnea caused by severe acute respiratory syndrome coronavirus 2
 1217110005,Dyspnea when bending forward
 1217296006,Disease caused by severe acute respiratory syndrome coronavirus 2 following administration of vaccine product against severe acute respiratory syndrome coronavirus 2
-1217374002,Restrained eating behavior
 1217377009,Difficulty eating due to fatigue
-1217606008,Pholcodine monohydrate
-12177002,Pseudoephedrine hydrochloride
 1240381000000105,Severe acute respiratory syndrome coronavirus 2
 1240391000000107,Antigen of severe acute respiratory syndrome coronavirus 2
 1240411000000107,Ribonucleic acid of severe acute respiratory syndrome coronavirus 2
@@ -61,18 +49,7 @@ code,term
 1240581000000104,Severe acute respiratory syndrome coronavirus 2 detected
 1240751000000100,Coronavirus disease 19 caused by severe acute respiratory syndrome coronavirus 2
 1240761000000102,Suspected coronavirus disease 19 caused by severe acute respiratory syndrome coronavirus 2
-1264013004,Pain in muscle of hand
-1264014005,Pain in muscle of shoulder
-1264016007,Pain in muscle of forearm
-1264024002,Pain in multiple muscles
-1264027009,Pain in muscle of upper arm
-1264028004,Pain in muscle of lower leg
-1264030002,Pain in muscle of ankle joint
-1264031003,Pain in muscle of foot
-1264034006,Pain in muscle of thigh
-1264035007,Pain in muscle of pelvis
 1269559008,Detection of ribonucleic acid of severe acute respiratory syndrome coronavirus 2 using microchip real time polymerase chain reaction
-1279831004,"Congenital insensitivity to pain, anosmia, neuropathic arthropathy"
 128333008,Diarrheal disorder
 1300631000000101,Coronavirus disease 19 severity score
 1300671000000104,Coronavirus disease 19 severity scale
@@ -99,15 +76,11 @@ code,term
 1325081000000107,Assessment using COVID-19 Yorkshire Rehabilitation Screening tool
 1325171000000109,Acute disease caused by severe acute respiratory syndrome coronavirus 2 infection
 1325181000000106,Ongoing symptomatic disease caused by severe acute respiratory syndrome coronavirus 2
-134021000119105,Vomiting fecal matter
 135833008,Cardiovascular Limitations and Symptoms Profile shortness of breath score
 135882008,Feverish cold
 135883003,Cough with fever
-13789000,Coal tar creosote
 13791008,Asthenia
 138389411000119105,Acute bronchitis caused by severe acute respiratory syndrome coronavirus 2
-139080006,Appetite symptom
-139085001,Appetite symptom NOS
 139108003,Feels hot/feverish
 139109006,Fever with sweating
 139124002,"[Tiredness], [fatigue], [lethargy] or [malaise] symptom"
@@ -128,26 +101,15 @@ code,term
 139335002,(Vomiting (& [C/O] or [symptoms])) or (rumination)
 139337005,Vomiting
 139338000,Projectile vomiting
-139339008,Blood in vomit: [symptom] or [fresh blood]
-139340005,Vomiting blood - coffee ground
 139341009,Vomiting - bile stained
 139342002,Vomiting NOS
 139381002,Diarrhoea symptoms
 139383004,Diarrhoea
-139384005,Spurious diarrhoea - overflow
 139385006,Diarrhoea symptom: [NOS] or [& vomiting]
 139386007,Diarrhoea and vomiting
 139490008,Headache
 139523002,Loss of sense of smell
 139570001,Generalised headache
-139571002,Unilateral headache
-139572009,Bilateral headache
-139573004,Frontal headache
-139578008,Headache character
-139579000,Aching headache
-139580002,Throbbing headache
-139581003,Shooting headache
-139583000,Headache character NOS
 139656008,Throat symptoms (& sore throat symptom)
 139658009,Has a sore throat
 139660006,Sore throat symptom NOS
@@ -191,18 +153,14 @@ code,term
 158296002,[D]Headache
 158379001,[D]Shortness of breath
 158383001,[D]Cough
-158385008,[D]Cough with haemorrhage
 158420004,[D]Nausea and vomiting
 158421000,[D]Nausea
 158422007,[D]Vomiting
 158424008,[D]Nausea and vomiting NOS
-161824009,Appetite symptom
-161828007,Appetite symptom NOS
 161850008,[Temperature] or [fever] or [pyrexia] symptoms
 161852000,Feels hot/feverish
 161853005,Fever with sweating
 161868006,"([Tiredness] or [fatigue] or [lethargy] or [malaise] symptom) or (C/O ""muzzy head"")"
-161873000,Heavy legs
 161874006,Heavy feeling
 161921002,(Cough (& [symptom])) or (sputum - symptom)
 161923004,Productive cough -clear sputum
@@ -210,44 +168,31 @@ code,term
 161925006,Productive cough-yellow sputum
 161926007,(Coughing up phlegm) or (productive cough NOS)
 161929000,Chesty cough
-161932002,Morning cough
-161933007,Evening cough
 161934001,Unexplained cough
 161935000,Cough symptom NOS
 161937008,(Symptom: [SOB] or [breathlessness] or [dyspnoea]) or (breathlessness)
 161939006,Breathless - moderate exertion
 161940008,Breathless - mild exertion
 161941007,Dyspnea at rest
-161947006,Nocturnal cough / wheeze
 162012003,Loss of taste (& [C/O -])
 162055004,Nausea
 162057007,Nausea present
 162060000,Nausea NOS
 162061001,(Vomiting (& [C/O] or [symptoms])) or (rumination)
 162063003,(Vomiting) or (bilious attack) or (throwing up)
-162064009,Blood in vomit: [symptom] or [fresh blood]
 162065005,Vomiting - bile stained
 162067002,Vomiting NOS
 162103003,Diarrhoea (& symptoms) or loose stools
 162105005,Diarrhoea
-162106006,Spurious diarrhea - overflow
 162108007,Diarrhoea symptom: [NOS] or [& vomiting]
 162109004,Diarrhoea and vomiting
 162209005,Headache (& [C/O])
 162211001,Viral headache
 162254006,Anosmia (& C/O)
 162299003,Generalized headache
-162300006,Unilateral headache
-162301005,Bilateral headache
-162307009,Aching headache
-162308004,Throbbing headache
-162309007,Shooting headache
-162311003,Heavy head
-162312005,Headache character NOS
 162386003,Throat soreness (& symptom)
 162388002,Has a sore throat
 162390001,Sore throat symptom NOS
-164085008,On examination - smell abnormal
 164086009,On examination - anosmia
 164284002,Fever: [examination of] or [O/E]
 164285001,On examination - fever - general
@@ -276,13 +221,11 @@ code,term
 164316007,On examination - fever-gradual fall-lysis
 164317003,On examination - fever character NOS
 164318008,On examination - fever NOS
-16462851000119106,Myalgia caused by statin
 16932000,Nausea and vomiting
 17099003,Peripheral muscle fatigue
 17216000,"Dyspnea, class I"
 17986004,Barking cough
 186149001,(Specified virus enteritis) or (viral: [diarrhoea] or [vomiting])
-186165000,Diarrhoea: [infectious] or [travellers]
 186167008,Infectious diarrhea NOS
 186168003,(Infectious diarrhoea: [presumed] or [? & vomiting]) or (infantile gastroenteritis)
 186694006,Sweating fever
@@ -290,26 +233,17 @@ code,term
 186758000,Coronavirus as the cause of diseases classified to other chapters
 186820006,Relapsing fever
 186822003,Relapsing fever NOS
-18726006,Senile asthenia
 187284001,[X]Diarrhea and gastroenteritis of presumed infectious origin
 187374004,"[X]Relapsing fever, unspecified"
 187467005,"[X]Coronavirus infection, unspecified"
-18751000122108,Dropropizine
 187587009,Coronavirus as the cause of diseases classified to other chapters
 189486241000119100,Asymptomatic severe acute respiratory syndrome coronavirus 2 infection
-191954008,Psychogenic cough
-19282004,Cough on exercise
-19510001,Diphenhydramine hydrochloride
 195648002,(Acute nasopharyngitis or rhinitis) or (common cold)
 195654001,Throat: [acute pharyngitis] or [sore NOS (& viral)] or [infection]
 196746003,Persistent vomiting
 196749005,Persistent vomiting NOS
-200151000000106,Reflux cough
-20413008,Levopropoxyphene
 204351000000100,Coronavirus nucleic acid detection
 206304007,Perinatal hemoptysis of fetus and/or neonate
-206406008,Perinatal hematemesis
-206423004,Neonatal hematemesis
 206534003,(Neonatal diarrhoea) or (neonatal chloridorrhoea)
 20670007,Brassy cough
 206758001,[D]Pyrexia of unknown origin
@@ -326,22 +260,17 @@ code,term
 207057006,[D]Shortness of breath
 207066005,[D]Cough
 207067001,[D]Cough syncope
-207069003,[D]Cough with hemorrhage
 207110008,[D]Nausea and vomiting
 207111007,[D]Nausea
 207112000,[D]Vomiting
 207115003,[D]Projectile vomiting
 207116002,[D]Nausea and vomiting NOS
 207608007,[X]Other and unspecified disturbances of smell and taste
-208136003,Cough fracture of ribs
 209531000000103,Coronavirus nucl acid detect
 209541000000107,Coronavirus nucl acid detect
 224960004,Tired
-225575005,Unable to cough up sputum
-225576006,Able to cough up sputum
 225586007,Vomiting food
 230501005,Loss of sense of smell
-230502003,Congenital anosmia
 23141003,Gasping for breath
 232341009,Acute rhinitis
 236062000,Vomiting - infective
@@ -352,8 +281,6 @@ code,term
 247320008,Things smell different
 247321007,Unusual smell in nose
 247410004,Painful cough
-248269005,Tired on least exertion
-248278004,Attacks of weakness
 248425001,Pyrexia
 248427009,Fever symptoms
 248430002,Pattern of fever
@@ -369,9 +296,6 @@ code,term
 248446005,Reversed diurnal fever
 248449003,Central fever
 248589007,Clearing throat - hawking
-248590003,Unable to cough
-248593001,Cough when swallowing
-248594007,Tracheal esophageal fistula cough
 24921003,Dyspnea raising arms
 249469002,No interest in food
 249471002,Loss of appetite - symptom
@@ -384,19 +308,15 @@ code,term
 25209001,Inspiratory dyspnea
 2611000119103,Sensory disorder of smell and/or taste
 263731006,Coughing
-266082008,Epidemic diarrhea
 266178009,Viral: [ill-defined GIT infections (& diarrhoea)] or [gastroenteritis]
 266179001,(Gastroenteritis (& [viral NOS])) or (vomiting: [viral] or [& diarrhoea infection]) or (gastric flu)
 266180003,Infectious: [intestinal disease NOS] or [diarrhoea NOS]
 266377009,(Acute nasopharyngitis) or (common cold) or (acute coryza) or (acute rhinitis) or (sniffles) or (snuffles)
 266379007,Throat: [acute pharyngitis] or [infection NOS] or [sore]
-267032009,Tired all the time
 267034005,Productive cough NOS
 267036007,Dyspnea
-267051003,Vomiting blood - fresh
 267060006,Diarrhea symptom
 267061005,Diarrhea symptom NOS
-267096005,Frontal headache
 267102003,Sore throat
 267160008,"[Tiredness], [fatigue], [lethargy] or [malaise] symptom"
 267164004,Loss of taste (& symptom)
@@ -421,7 +341,6 @@ code,term
 272027003,Complaining of a headache
 272028008,Complaining of anosmia
 272029000,C/O - loss of smell sense (context-dependent category)
-272036004,Complaining of debility and malaise
 272039006,Complaining of cough
 272041007,Complaining of loss of taste sense
 272043005,Nausea
@@ -433,41 +352,23 @@ code,term
 275297005,"Diarrhea and vomiting, symptom"
 275462005,Disorder of smell
 275874003,On examination - oral temperature
-276314008,Coughing ineffective
-277357006,Sputum retention
-279016001,Cervicogenic headache
-279030006,Myofascial pain syndrome of neck
-279036000,Myofascial pain syndrome of thorax
-279041008,Myofascial pain syndrome of lower back
 279044000,Total body pain syndrome
 279070004,Muscle tension pain
-28221000119103,Abdominal muscle pain
-284523002,Persistent cough
 285186006,Unable to recognize odors
 287121000000103,Barking cough 
 287131000000101,Barking cough 
 28743005,Productive cough
-289113002,Able to cough
-289114008,Does cough
-289115009,Does not cough
-289116005,Difficulty coughing
 289163007,Appetite problem
-289965001,Croupy cough
 2919008,"Nausea, vomiting and diarrhea"
 29301000087104,Antigen of severe acute respiratory syndrome coronavirus 2 recombinant spike protein
 297216006,Increasing breathlessness
-298292009,Pain on movement of skeletal muscle
 299899002,Problem of sense of smell
 299900007,Sense of smell normal
-30034004,Dimethoxanate
 300359004,Finding of vomiting
 300388003,Finding of diarrhea
 300576004,Finding of nausea
 301235001,Finding of cough
 301236000,Effective cough
-301245004,Difficulty in coughing up sputum
-301246003,Does cough up sputum
-301247007,Does not cough up sputum
 30131000087101,Antigen of severe acute respiratory syndrome coronavirus 2 virus-like particle
 301790009,Vomited meal
 304213008,Low grade pyrexia
@@ -475,9 +376,6 @@ code,term
 306321000000105,Green traffic light - low risk of serious illness (Feverish illness in children 2007)
 306331000000107,Green traffic light - low risk of serious illness (Feverish illness in young children 2007) 
 306341000000103,Green traffic light - low risk of serious illness (Feverish illness in young children 2007) 
-306780002,Able to cough voluntarily
-306781003,Unable to cough voluntarily
-306782005,Difficulty coughing voluntarily
 30744009,Platypnea
 307631000000100,Amber traffic light - intermediate risk of serious illness (Feverish illness in children 2007)
 307641000000109,Amber traffic light - intermediate risk of serious illness (Feverish illness in children 2007) 
@@ -487,27 +385,17 @@ code,term
 307681000000101,Red traffic light - high risk of serious illness (Feverish illness in children 2007) 
 308119005,Infantile viral gastroenteritis
 308151006,[D]Projectile vomiting
-308904008,Hematemesis - cause unknown
 3094009,Vomiting in infants AND/OR children
 311000119101,Non-allergic rhinitis
 315246003,Unexplained cough
 315632006,On examination - tympanic temperature
 316048004,[V]Problem with smell or taste
-31801005,Benzonatate
-320955005,Cough suppressants
-32370002,Diprophylline
 332982000,Uncontrollable vomiting
 33888006,Persistent vomiting
 34560001,Expiratory dyspnea
-349991003,Compound cough suppressant
 359658002,Neonatal infantile diarrhea
-364628009,Characteristic of headache
-364760007,Finding of headache character
 365977007,Finding of pattern of fever
 365989009,Finding of phase of fever
-366124008,Finding related to ability to cough
-366125009,Finding related to ability to cough voluntarily
-366126005,Finding related to ability to cough up sputum
 366745007,Cardiovascular Limitations and Symptoms Profile shortness of breath score
 366748009,Cardiovascular Limitations and Symptoms Profile shortness of breath score
 366946004,Feverish cold
@@ -516,26 +404,10 @@ code,term
 367181007,Cough with fever
 367427004,"Acute pharyngitis, NOS"
 36955009,Loss of taste
-372593002,Cough suppressants
-372682005,Diphenhydramine
-372771005,Phenylephrine
-372791003,Antitussive agent
-372841007,Xylometazoline
-372849009,Expectorant agent
-372900003,Pseudoephedrine
-373230006,Cough AND/OR decongestant agent
-373773003,Terpin
 373904004,Feels hot/feverish
 373906002,Fever with sweating
-373931001,Sensation of heaviness in limbs
-37957009,Pentoxyverine
 386305005,Treatment of fever
 386661006,Fever
-387158001,Oxymetazoline
-387335009,Phenylpropanolamine hydrochloride
-387437002,Noscapine
-387464001,Phenylpropanolamine
-38823002,Aural headache
 390870001,Short of breath dressing/undressing
 390871002,Breathless - strenuous exertion
 390891000000102,[D]Smell or taste disorder NOS
@@ -545,16 +417,10 @@ code,term
 391125004,Medical Research Council Dyspnoea scale grade 4
 391126003,Medical Research Council Dyspnoea scale grade 5
 39161000000101,Decrease in appetite
-395842001,Carbocisteine
-395888007,Squill opiate
-396485009,Isoaminile
-396486005,Pholcodine
 396991000000105,[D]Fever NOS
-397702004,Borg Breathlessness Score finding
 39950000,"Dyspnea, class III"
 399993004,Disorder of taste
 400471000000109,[D]Nausea and vomiting NOS
-401281000,Borg Breathlessness Score: 3 moderate
 401282007,Borg Breathlessness Score: 4 somewhat severe
 401284008,Borg Breathlessness Score: 5 severe
 401286005,Borg Breathlessness Score: 6 severe (+)
@@ -565,27 +431,19 @@ code,term
 403457003,Congestive non-allergic rhinitis
 405165006,Nausea and vomiting status: disruptive effects
 405166007,Nausea and vomiting status
-405788002,Psychogenic loss of appetite
 407588003,Unable to complete a sentence in one breath
-40835002,Coffee ground vomiting
 409587002,Severe diarrhea
 409702008,Hyperpyrexia
 40988009,Obstructive rhinitis
 409966000,Acute diarrhea
-412472003,Caramiphen
 412591000000106,[D]Smell or taste disorder NOS
-41321000119101,Myofascial pain syndrome of thoracic spine
 41421000000102,Decrease in appetite
 414631000000100,[D]Malaise and fatigue NOS
 416113008,Febrile disorder
 417541000000103,[V]Problem with smell or taste
-41783004,Traumatic anosmia
 417850002,Respiratory tract congestion and cough
-417901007,Decongestant
-418450005,Defecation reflex - spurious diarrhea
 420079008,Relapsing fever
 42136008,Swinging fever
-421681003,Squill liquid extract
 422400008,Vomiting
 422587007,Nausea
 425721000000101,[D]Nausea and vomiting NOS
@@ -598,17 +456,13 @@ code,term
 44169009,Loss of sense of smell
 441761000000105,"[X]Relapsing fever, unspecified"
 443041000000108,[X]Other and unspecified disturbances of smell and taste
-444042007,Excessive postexertional fatigue
 444673007,Hyperemesis
-445241004,Persistent cough after viral respiratory infection
 44525005,Abnormal unpleasant perception of strong scent
 463761000000103,[D]Malaise and fatigue NOS
 465301000000100,[D]Fever NEC
 46641000000101,Decrease in appetite
-46789001,Cough after eating
 468191000000103,[D]Fever NEC
 468471000000105,[X]Diarrhea and gastroenteritis of presumed infectious origin
-469536006,Fever relief cloth
 470091000000105,[X]Other and unspecified disturbances of smell and taste
 48000002,Vomiting in newborn
 48541000,Alteration in bowel elimination: diarrhea
@@ -624,7 +478,6 @@ code,term
 498001000000107,[D]Shortness of breath
 498061000000106,[D]Cough
 498071000000104,[D]Cough syncope
-498091000000100,[D]Cough with haemorrhage
 498391000000103,[D]Nausea and vomiting
 498401000000100,[D]Nausea
 498411000000103,[D]Vomiting
@@ -633,9 +486,7 @@ code,term
 51388003,Pharyngeal pain
 51411000237109,Qualitative result of human coronavirus ribonucleic acid nucleic acid amplification
 51631000237101,Qualitative result of severe acute respiratory syndrome coronavirus 2 antigen in serum
-52673003,Decreased coughing
 536861000000102,Cough symptom NOS
-538741000000109,Headache character NOS
 542861000000102,Sore throat symptom NOS
 564521000000109,Infectious diarrhea NOS
 567531000000100,Coronavirus as the cause of diseases classified to other chapters
@@ -645,7 +496,6 @@ code,term
 57791006,Taste-blindness
 57948007,Agnosia for taste
 582151000000103,On examination - fever NOS
-582621000000101,Appetite symptom NOS
 582741000000100,Nausea NOS
 582751000000102,Vomiting NOS
 59265000,Paroxysmal dyspnea
@@ -655,95 +505,51 @@ code,term
 60025004,Transitory fever of newborn
 607801000000103,Persistent vomiting NOS
 60845006,Dyspnea on exertion
-61398007,Clofedanol
 62315008,Diarrhea
-62444006,Cyclopentamine
-62545005,Ammonium carbonate
-62548007,Nocturnal cough
-62618004,Early morning cough
 62731002,Increasing frequency of cough
 63000007,Spasmodic cough
-6333002,Squill extract
 63993003,Remittent fever
 64379006,Decrease in appetite
 65927007,Low frequency muscle fatigue
 66857006,Hemoptysis
-67216002,Pipazethate
 674814021000119106,Acute respiratory distress syndrome due to disease caused by severe acute respiratory syndrome coronavirus 2
-67636005,Guaiacol
 677011000000103,Productive cough NOS
 685501000000109,Diarrhea symptom NOS
-68699004,Phenylephrine bitartrate
 68962001,Muscle pain
 697990000,Hypogeusia
-697999004,Levodropropizine
-698092008,Cloperastine
 698861005,Intractable nausea and vomiting
-699682009,Localized masticatory muscle soreness
 700217006,Suspected coronavirus infection
 70076002,Rhinitis
-702549002,Centrally mediated myalgia
-703407002,Butetamate
-703408007,Butetamate citrate
-703416003,Clofedanol hydrochloride
-703435003,Pholcodine citrate
-703553006,Oxolamine
-703554000,Oxolamine citrate
-703555004,Pentoxyverine citrate
-704651005,Dimemorfan
-704652003,Dimemorfan phosphate
-708181006,Cloperastine hydrochloride
 708673009,Parosmia
 709345005,Antigen of Human coronavirus
-710945004,Dibunate
-710946003,Sodium dibunate
-712752004,Myalgia of pelvic floor
-712831003,Frequent headache
 713084008,Pneumonia caused by Human coronavirus
-713478004,Clobutinol
-713568000,Occasionally tired
 71419002,Bilious vomiting
 7142008,Cough at rest
-717179001,Helicidine
 720112004,Ribonucleic acid of Human coronavirus
 721615009,Non-infective neonatal diarrhea
-722027009,Kallman syndrome with heart disease
 722892007,Fever due to infection
-722933003,Bilious vomiting of newborn
 72365000,"Dyspnea, class II"
-726531007,Myofascial pain syndrome
 73322006,"Dyspnea, class IV"
 73335002,Increased nausea and vomiting
 735938006,Acute headache
 73879007,Nausea
-73946006,Phenylephrine hydrochloride
 74863000,Hyperpyrexia
 75125004,Chills and fever
 7520000,Pyrexia of unknown origin
-75327003,Xylometazoline hydrochloride
 763074005,Cardiovascular Limitations and Symptoms Profile shortness of breath score
-765334007,Oxeladin
-765335008,Oxeladin citrate
 765480005,Vomiting co-occurrent and due to infectious disease
-76821002,Epidemic cervical myalgia
-769211009,No cough strength
-771147003,Isolated arhinencephaly
 773551000000105,Fever care management
 77957000,Intermittent fever
-784324003,Phenylephrine tannate
 78901000000106,Decrease in appetite
 79117005,Central muscle fatigue
 79215008,High frequency muscle fatigue
 79890006,Loss of appetite
 80449002,Muscle fatigue
-80564000,"Minimal identifiable odor, function"
-810511000000109,Episodic dry cough
 817111000000102,Measurement of coronavirus ribonucleic acid by nucleic acid amplification test
 817221000000104,Determination of coronavirus genotype by ribonucleic acid analysis
 82272006,Common cold
 82991003,Generalized aches and pains
 83156004,Sense of smell impaired
-83264000,Epidemic pleurodynia
 840533007,Severe acute respiratory syndrome coronavirus 2
 840536004,Antigen of severe acute respiratory syndrome coronavirus 2
 840539006,Disease caused by severe acute respiratory syndrome coronavirus 2
@@ -767,10 +573,7 @@ code,term
 871559006,Detection of ribonucleic acid of severe acute respiratory syndrome coronavirus 2 in bronchoalveolar lavage fluid
 871560001,Detection of ribonucleic acid of severe acute respiratory syndrome coronavirus 2 using polymerase chain reaction
 871562009,Detection of severe acute respiratory syndrome coronavirus 2
-87174009,Guaifenesin
-8765009,Hematemesis
 878151000000108,Suspected coronavirus infection
-87896001,Creosote
 880529761000119102,Infection of lower respiratory tract caused by severe acute respiratory syndrome coronavirus 2
 882784691000119100,Pneumonia caused by severe acute respiratory syndrome coronavirus 2
 890351000000103,Suspected coronavirus infection
@@ -781,8 +584,4 @@ code,term
 933791000000101,Coronavirus ribonucleic acid detection assay
 933801000000102,Coronavirus ribonucleic acid detection assay 
 93447004,Eosinophilic nonallergic rhinitis
-93559003,Hypogonadism with anosmia
-95421005,Intercostal myalgia
 95627000,Fever of newborn
-95653008,Acute confusional migraine
-9910008,Oxymetazoline hydrochloride

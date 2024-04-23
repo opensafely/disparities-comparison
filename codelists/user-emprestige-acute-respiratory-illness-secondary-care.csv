@@ -3,6 +3,9 @@ J04,Acute laryngitis and tracheitis
 J040,Acute laryngitis
 J041,Acute tracheitis
 J042,Acute laryngotracheitis
+J05,Acute obstructive laryngitis [croup] and epiglottitis
+J050,Acute obstructive laryngitis [croup]
+J051,Acute epiglottitis
 J06,Acute upper respiratory infections of multiple and unspecified sites
 J068,Other acute upper respiratory infections of multiple sites
 J069,"Acute upper respiratory infection, unspecified"

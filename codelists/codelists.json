@@ -55,10 +55,10 @@
       "sha": "124db6929439379b7dacd55ba26ae4f2ed9370bc"
     },
     "user-emprestige-covid-19-identification-primary-care-maximal-sensitivity.csv": {
-      "id": "user/emprestige/covid-19-identification-primary-care-maximal-sensitivity/703930b6",
-      "url": "https://www.opencodelists.org/codelist/user/emprestige/covid-19-identification-primary-care-maximal-sensitivity/703930b6/",
-      "downloaded_at": "2024-02-19 15:46:51.858532Z",
-      "sha": "b00e42c9049a806ef2a2fcf2cc60c1a25d6cdb24"
+      "id": "user/emprestige/covid-19-identification-primary-care-maximal-sensitivity/52781f2a",
+      "url": "https://www.opencodelists.org/codelist/user/emprestige/covid-19-identification-primary-care-maximal-sensitivity/52781f2a/",
+      "downloaded_at": "2024-04-22 11:17:38.589443Z",
+      "sha": "a9d5d5c9e652a4850e36a8499243c6210bb4da5e"
     },
     "user-emprestige-covid-19-identification-prescriptions-dmd.csv": {
       "id": "user/emprestige/covid-19-identification-prescriptions-dmd/32e73c2e",
@@ -127,16 +127,16 @@
       "sha": "9c8b6953a4c8ef86fc614b9806d3d5de0fc00ee3"
     },
     "user-emprestige-acute-respiratory-illness-secondary-care.csv": {
-      "id": "user/emprestige/acute-respiratory-illness-secondary-care/4cb3f9f5",
-      "url": "https://www.opencodelists.org/codelist/user/emprestige/acute-respiratory-illness-secondary-care/4cb3f9f5/",
-      "downloaded_at": "2024-03-13 12:26:44.448269Z",
-      "sha": "7fabcc65c60774f702ba77bdc0ea70fbc357e88d"
+      "id": "user/emprestige/acute-respiratory-illness-secondary-care/680e1eda",
+      "url": "https://www.opencodelists.org/codelist/user/emprestige/acute-respiratory-illness-secondary-care/680e1eda/",
+      "downloaded_at": "2024-04-22 11:17:40.829040Z",
+      "sha": "de46568efaf9c6661d32428bd4d52b1a6fa8d53e"
     },
     "user-emprestige-influenza-exclusion-secondary-care-maximal-sensitivity.csv": {
-      "id": "user/emprestige/influenza-exclusion-secondary-care-maximal-sensitivity/65c36d2a",
-      "url": "https://www.opencodelists.org/codelist/user/emprestige/influenza-exclusion-secondary-care-maximal-sensitivity/65c36d2a/",
-      "downloaded_at": "2024-03-13 12:26:44.523373Z",
-      "sha": "5d5e5e1ab5c89c674602ab17ee051503b2f68234"
+      "id": "user/emprestige/influenza-exclusion-secondary-care-maximal-sensitivity/011d9210",
+      "url": "https://www.opencodelists.org/codelist/user/emprestige/influenza-exclusion-secondary-care-maximal-sensitivity/011d9210/",
+      "downloaded_at": "2024-04-22 11:17:41.079607Z",
+      "sha": "1086f49c7646b98bf1c8f9fea7fbe27da125eb02"
     },
     "user-emprestige-respiratory-virus-unspecified-identification-primary-care.csv": {
       "id": "user/emprestige/respiratory-virus-unspecified-identification-primary-care/662b7b70",

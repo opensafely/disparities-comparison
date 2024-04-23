@@ -10,7 +10,7 @@ user/emprestige/rsv-exclusion-secondary-care-maximal-sensitivity/625ccb9f/
 
 user/emprestige/covid-19-identification-primary-care/2f7731a6/
 opensafely/covid-identification/2020-06-03
-user/emprestige/covid-19-identification-primary-care-maximal-sensitivity/703930b6/
+user/emprestige/covid-19-identification-primary-care-maximal-sensitivity/52781f2a/
 user/emprestige/covid-19-identification-prescriptions-dmd/32e73c2e
 user/emprestige/covid-19-exclusion-primary-care-maximal-sensitivity/03e32400/
 user/emprestige/covid-19-exclusion-secondary-care-maximal-sensitivity/1fa5572b/
@@ -23,8 +23,8 @@ opensafely/symptoms-fever/758b5341/
 opensafely/symptoms-cough/72d8934b/
 user/emprestige/influenza-identification-prescriptions-maximal-sensitivity-dmd/4bf6af63
 user/emprestige/influenza-exclusion-primary-care-maximal-sensitivity/7ed2e05f/
-user/emprestige/acute-respiratory-illness-secondary-care/4cb3f9f5/
-user/emprestige/influenza-exclusion-secondary-care-maximal-sensitivity/65c36d2a/
+user/emprestige/acute-respiratory-illness-secondary-care/680e1eda/
+user/emprestige/influenza-exclusion-secondary-care-maximal-sensitivity/011d9210/
 
 user/emprestige/respiratory-virus-unspecified-identification-primary-care/662b7b70/
 bristol/copd-exacerbations-snomed/162ebd1c/
