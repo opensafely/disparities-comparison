@@ -6,8 +6,9 @@
 # Preliminaries ----
 
 ## Import libraries ----
-library("tidyverse")
-library("here")
+library(dplyr)
+library(purrr)
+library(here)
 
 ## create output directories ----
 fs::dir_create(here("analysis", "design"))
