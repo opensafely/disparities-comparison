@@ -2380,7 +2380,7 @@ results %>%
   group_by(Characteristic) %>%
   gt(groupname_col = "Characteristic") %>%
     row_group_order(groups = c(table_groups)) %>%
-    fmt_number(columns = c(Rate, decimals = 4)) %>% 
+    fmt_number(columns = tidyselect::where(is.numeric), decimals = 4) %>% 
     tab_header(
       title = "Rate per 1000 person-years of outcomes by characteristic",
       subtitle = "Group-wise breakdown"
