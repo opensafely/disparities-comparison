@@ -24,6 +24,7 @@ if (length(args) == 0) {
   codelist_type <- args[[4]]
   investigation_type <- args[[5]]
 }
+covid_season_min <- as.Date("2019-09-01")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_", cohort, "_", 
@@ -36,7 +37,7 @@ if(cohort == "older_adults") {
     mutate(age_band = case_when(
       age >= 65 & age <= 74 ~ "65-74y",
       age >= 75 & age <= 89 ~ "75-89y",
-      age >= 90 ~ "90+y",
+      age >= 90 ~ "90y+",
       TRUE ~ NA_character_)
     )
 } else if(cohort == "adults") {
@@ -84,8 +85,27 @@ df_input <- df_input %>%
       imd_rounded < as.integer(32800 * 3 / 5) ~ "3",
       imd_rounded < as.integer(32800 * 4 / 5) ~ "4",
       imd_rounded < as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
-      TRUE ~ NA_character_)
+      TRUE ~ NA_character_),
+    #format sex
+    sex = case_when(
+      sex == "female" ~ "Female",
+      sex == "male" ~ "Male",
+      TRUE ~ "Unknown")
   )
+
+# Identify columns with logical values, excluding specified columns
+logical_cols <- which(sapply(df_input, is.logical) & !grepl("primary|secondary|mortality|registered", names(df_input)))
+
+# Apply the mutation
+df_input <- df_input %>%
+  mutate(across(
+    .cols = logical_cols, 
+    .fns = ~case_when(
+      . == FALSE ~ "No",
+      . == TRUE ~ "Yes",
+      TRUE ~ NA_character_
+    )
+  ))
 
 #reverse order of IMD classifications
 recode(df_input$imd_quintile, "1 (most deprived)" = "5 (most deprived)",
@@ -114,6 +134,20 @@ df_input <- df_input %>%
       rurality_code == "5" ~ "Rural Village and Dispersed",
       TRUE ~ "Unknown")
   )
+
+#covid vaccination counts
+if (study_start_date >= covid_season_min) {
+  df_input <- df_input %>%
+    mutate(
+      covid_vaccination_count = case_when(
+        covid_vaccination_count == "0" ~ "0",
+        covid_vaccination_count == "1" ~ "1",
+        covid_vaccination_count == "2" ~ "2",
+        covid_vaccination_count == "3" ~ "3",
+        covid_vaccination_count == "4" ~ "4+",
+        TRUE ~ "0")
+    )
+}
 
 #define seasons for covid
 covid_season_min = as.Date("2019-09-01", format = "%Y-%m-%d")

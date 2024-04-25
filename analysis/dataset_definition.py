@@ -313,14 +313,14 @@ if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_ado
     .exists_for_patient()
   )
 
-if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
-  if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
-    dataset.covid_vaccination_count = (
-    vaccinations.where(vaccinations.target_disease.is_in(["SARS-COV-2"]))
-    .sort_by(vaccinations.date)
-    .where(vaccinations.date.is_on_or_before(index_date))
-    .count_for_patient()
-  )
+  if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
+    if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
+      dataset.covid_vaccination_count = (
+      vaccinations.where(vaccinations.target_disease.is_in(["SARS-COV-2"]))
+      .sort_by(vaccinations.date)
+      .where(vaccinations.date.is_on_or_before(index_date))
+      .count_for_patient()
+    )
 
 ##outcomes - rsv
 

@@ -46,8 +46,8 @@ if (cohort == "infants") {
            c("Age Group", "Sex", "Ethnicity", "IMD", "Rurality"))
 } else if (cohort == "children_and_adolescents") {
   table <- df_datatable[registered == TRUE, Total := n_distinct(patient_id)]
-  table <- df_datatable[registered == TRUE, Reactive_Airway := ifelse(age <= 5, has_asthma_reactive_airway, F)]
-  table <- df_datatable[registered == TRUE, Asthma := ifelse(age > 5, has_asthma_reactive_airway, F)]
+  table <- df_datatable[registered == TRUE, Reactive_Airway := ifelse(age <= 5, has_asthma_reactive_airway, "No")]
+  table <- df_datatable[registered == TRUE, Asthma := ifelse(age > 5, has_asthma_reactive_airway, "No")]
   table <- df_datatable[registered == TRUE, .(Total, age_band, sex, 
                         latest_ethnicity_group, imd_quintile, 
                         rurality_classification, Asthma, Reactive_Airway,
@@ -56,7 +56,7 @@ if (cohort == "infants") {
                     "imd_quintile", "rurality_classification",
                     "Reactive_Airway", "flu_vaccination"),
             c("Age Group", "Sex", "Ethnicity", "IMD", "Rurality",
-              "Reactive Airway", "Flu Vaccine"))
+              "Asthma or Reactive Airway", "Flu Vaccine"))
   if (study_start_date >= covid_season_min) {
     table[, covid_vaccination_count := df_datatable$covid_vaccination_count]
     setnames(table, "covid_vaccination_count", "Covid Vaccine Doses")
@@ -80,7 +80,7 @@ if (cohort == "infants") {
                     "severe_obesity", "has_chd", "has_ckd", "has_cld", 
                     "has_cnd", "has_cancer", "immunosuppressed", 
                     "has_sickle_cell", "flu_vaccination"),
-            c("Age_Group", "Sex", "Ethnicity", "IMD", "Rurality",
+            c("Age Group", "Sex", "Ethnicity", "IMD", "Rurality",
               "Smoking Status", "Hazardous Drinking", "Drug Usage",
               "Asthma", "COPD", "Cystic Fibrosis", "Other Chronic Respiratory Diseases",
               "Diabetes", "Addisons", "Severe Obesity", "Chronic Heart Diseases",

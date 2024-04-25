@@ -48,18 +48,18 @@ df_input <- read_feather(
 ## create output directories ----
 fs::dir_create(here("output", "models"))
 
-lab <- ifelse(cohort == "infants", "Age (Months)",
-       ifelse(cohort == "infants_subgroup", "Age (Months)", "Age (Years)"))
-
-plot_age <- ggplot(data = df_input, aes(age, frequency(age))) + geom_col(width = 0.9) +
-  xlab(lab) + ylab("Frequency")
-
-ggsave(
-  plot = plot_age,
-  filename = paste0("descriptive_", cohort, "_", year(study_start_date),
-    "_", year(study_end_date), "_", codelist_type, "_",
-    investigation_type,".png"), path = here::here("output", "models"),
-)
+# lab <- ifelse(cohort == "infants", "Age (Months)",
+#        ifelse(cohort == "infants_subgroup", "Age (Months)", "Age (Years)"))
+# 
+# plot_age <- ggplot(data = df_input, aes(age, frequency(age))) + geom_col(width = 0.9) +
+#   xlab(lab) + ylab("Frequency")
+# 
+# ggsave(
+#   plot = plot_age,
+#   filename = paste0("descriptive_", cohort, "_", year(study_start_date),
+#     "_", year(study_end_date), "_", codelist_type, "_",
+#     investigation_type,".png"), path = here::here("output", "models"),
+# )
 
 #calculate person time and rate for rsv mild outcomes
 py_rsv_primary <- pyears(time_rsv_primary ~ rsv_primary_inf, 
@@ -1281,298 +1281,82 @@ results <- rbind(
 
 #maternal influenza vaccination status 
 
-##children and adolescents cohort specific characteristics
+##children and adolescents, adult and older adult cohort specific characteristics 
 
-if (cohort == "children_and_adolescents") {
-  #calculate person time and rate for rsv mild outcomes by asthma/reactive airway
-  py_rsv_primary_asthma <- pyears(time_rsv_primary ~ rsv_primary_inf + asthma_reactive_airway,
-                                  data = df_input, data.frame = T)[["data"]]
-  py_1000_rsv_primary_asthma<- py_rsv_primary_asthma %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           rsv_mild_rate = n/pyears_1000)
-  rate_rsv_mild_asthma <- rlang::duplicate(py_1000_rsv_primary_asthma)
-  rate_rsv_mild_asthma <- subset(rate_rsv_mild_asthma,rsv_primary_inf == 1, 
-                                 select = c(rsv_mild_rate, asthma_reactive_airway))
-  
-  #calculate person time and rate for rsv severe by asthma/reactive airway
-  py_rsv_secondary_asthma <- pyears(time_rsv_secondary ~ rsv_secondary_inf + asthma_reactive_airway,
-                                    data = df_input, data.frame = T)[["data"]]
-  py_1000_rsv_secondary_asthma <- py_rsv_secondary_asthma %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           rsv_severe_rate = n/pyears_1000)
-  rate_rsv_severe_asthma <- rlang::duplicate(py_1000_rsv_secondary_asthma)
-  rate_rsv_severe_asthma <- subset(rate_rsv_severe_asthma, rsv_secondary_inf == 1, 
-                                   select = c(rsv_severe_rate, asthma_reactive_airway))
-  
-  #calculate person time and rate for rsv mortality by asthma/reactive airway
-  py_rsv_mortality_asthma <- pyears(time_rsv_mortality ~ rsv_mortality_inf + asthma_reactive_airway,
-                                    data = df_input, data.frame = T)[["data"]]
-  py_1000_rsv_mortality_asthma <- py_rsv_mortality_asthma %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           rsv_mortality_rate = n/pyears_1000)
-  rate_rsv_mortality_asthma <- rlang::duplicate(py_1000_rsv_mortality_asthma)
-  rate_rsv_mortality_asthma <- subset(rate_rsv_mortality_asthma, rsv_mortality_inf == 1, 
-                                      select = c(rsv_mortality_rate, asthma_reactive_airway))
-  
-  #calculate person time and rate for flu mild outcomes by asthma/reactive airway
-  py_flu_primary_asthma <- pyears(time_flu_primary ~ flu_primary_inf + asthma_reactive_airway,
-                                  data = df_input, data.frame = T)[["data"]]
-  py_1000_flu_primary_asthma <- py_flu_primary_asthma %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           flu_mild_rate = n/pyears_1000)
-  rate_flu_mild_asthma <- rlang::duplicate(py_1000_flu_primary_asthma)
-  rate_flu_mild_asthma <- subset(rate_flu_mild_asthma, flu_primary_inf == 1, 
-                                 select = c(flu_mild_rate, asthma_reactive_airway))
-  
-  #calculate person time and rate for flu severe by asthma/reactive airway
-  py_flu_secondary_asthma <- pyears(time_flu_secondary ~ flu_secondary_inf + asthma_reactive_airway,
-                                    data = df_input, data.frame = T)[["data"]]
-  py_1000_flu_secondary_asthma <- py_flu_secondary_asthma %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           flu_severe_rate = n/pyears_1000)
-  rate_flu_severe_asthma <- rlang::duplicate(py_1000_flu_secondary_asthma)
-  rate_flu_severe_asthma <- subset(rate_flu_severe_asthma, flu_secondary_inf == 1, 
-                                   select = c(flu_severe_rate, asthma_reactive_airway))
-  
-  #calculate person time and rate for flu mortality by asthma/reactive airway
-  py_flu_mortality_asthma <- pyears(time_flu_mortality ~ flu_mortality_inf + asthma_reactive_airway,
-                                    data = df_input, data.frame = T)[["data"]]
-  py_1000_flu_mortality_asthma <- py_flu_mortality_asthma %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           flu_mortality_rate = n/pyears_1000)
-  rate_flu_mortality_asthma <- rlang::duplicate(py_1000_flu_mortality_asthma)
-  rate_flu_mortality_asthma <- subset(rate_flu_mortality_asthma, flu_mortality_inf == 1, 
-                                      select = c(flu_mortality_rate, asthma_reactive_airway))
-  
-  if (study_start_date >= covid_season_min) {
-    #calculate person time and rate for covid mild outcomes by asthma/reactive airway
-    py_covid_primary_asthma <- pyears(time_covid_primary ~ covid_primary_inf + asthma_reactive_airway,
-                                      data = df_input, data.frame = T)[["data"]]
-    py_1000_covid_primary_asthma<- py_covid_primary_asthma %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             covid_mild_rate = n/pyears_1000)
-    rate_covid_mild_asthma <- rlang::duplicate(py_1000_covid_primary_asthma)
-    rate_covid_mild_asthma <- subset(rate_covid_mild_asthma, covid_primary_inf == 1, 
-                                     select = c(covid_mild_rate, asthma_reactive_airway))
-    
-    #calculate person time and rate for covid severe by asthma/reactive airway
-    py_covid_secondary_asthma <- pyears(time_covid_secondary ~ covid_secondary_inf + asthma_reactive_airway,
-                                        data = df_input, data.frame = T)[["data"]]
-    py_1000_covid_secondary_asthma <- py_covid_secondary_asthma %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             covid_severe_rate = n/pyears_1000)
-    rate_covid_severe_asthma <- rlang::duplicate(py_1000_covid_secondary_asthma)
-    rate_covid_severe_asthma <- subset(rate_covid_severe_asthma, 
-                                       covid_secondary_inf == 1, 
-                                       select = c(covid_severe_rate, 
-                                                  asthma_reactive_airway))
-    
-    #calculate person time and rate for covid mortality by asthma/reactive airway
-    py_covid_mortality_asthma <- pyears(time_covid_mortality ~ covid_mortality_inf + asthma_reactive_airway,
-                                        data = df_input, data.frame = T)[["data"]]
-    py_1000_covid_mortality_asthma <- py_covid_mortality_asthma %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             covid_mortality_rate = n/pyears_1000)
-    rate_covid_mortality_asthma <- rlang::duplicate(py_1000_covid_mortality_asthma)
-    rate_covid_mortality_asthma <- subset(rate_covid_mortality_asthma, 
-                                          covid_mortality_inf == 1, 
-                                          select = c(covid_mortality_rate, 
-                                                     asthma_reactive_airway))
-  }
-  
-  if (codelist_type == "sensitive") {
-    #calculate person time and rate for overall respiratory by asthma/reactive airway
-    py_overall_resp_primary_asthma <- pyears(time_overall_resp_primary ~ overall_resp_primary_inf + asthma_reactive_airway,
-                                             data = df_input, data.frame = T)[["data"]]
-    py_1000_overall_resp_primary_asthma<- py_overall_resp_primary_asthma %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             overall_resp_mild_rate = n/pyears_1000)
-    rate_overall_resp_mild_asthma <- rlang::duplicate(py_1000_overall_resp_primary_asthma)
-    rate_overall_resp_mild_asthma <- subset(rate_overall_resp_mild_asthma,
-                                            overall_resp_primary_inf == 1, 
-                                            select = c(overall_resp_mild_rate, 
-                                                       asthma_reactive_airway))
-    
-    #calculate person time and rate for overall_resp severe by asthma/reactive airway
-    py_overall_resp_secondary_asthma <- pyears(time_overall_resp_secondary ~ overall_resp_secondary_inf + asthma_reactive_airway,
-                                               data = df_input, data.frame = T)[["data"]]
-    py_1000_overall_resp_secondary_asthma <- py_overall_resp_secondary_asthma %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             overall_resp_severe_rate = n/pyears_1000)
-    rate_overall_resp_severe_asthma <- rlang::duplicate(py_1000_overall_resp_secondary_asthma)
-    rate_overall_resp_severe_asthma <- subset(rate_overall_resp_severe_asthma,
-                                              overall_resp_secondary_inf == 1, 
-                                              select = c(overall_resp_severe_rate, 
-                                                         asthma_reactive_airway))
-    
-    #calculate person time and rate for overall_resp mortality by asthma/reactive airway
-    py_overall_resp_mortality_asthma <- pyears(time_overall_resp_mortality ~ overall_resp_mortality_inf + asthma_reactive_airway,
-                                               data = df_input, data.frame = T)[["data"]]
-    py_1000_overall_resp_mortality_asthma <- py_overall_resp_mortality_asthma %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             overall_resp_mortality_rate = n/pyears_1000)
-    rate_overall_resp_mortality_asthma <- rlang::duplicate(py_1000_overall_resp_mortality_asthma)
-    rate_overall_resp_mortality_asthma <- subset(rate_overall_resp_mortality_asthma, 
-                                                 overall_resp_mortality_inf == 1, 
-                                                 select = c(overall_resp_mortality_rate, 
-                                                            asthma_reactive_airway))
-  }
-  
-  #calculate person time and rate for all cause mortality by asthma/reactive airway
-  py_all_cause_mortality_asthma <- pyears(time_all_cause_mortality ~ all_cause_mortality_inf + asthma_reactive_airway,
-                                          data = df_input, data.frame = T)[["data"]]
-  py_1000_all_cause_mortality_asthma <- py_all_cause_mortality_asthma %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           all_cause_mortality_rate = n/pyears_1000)
-  rate_all_cause_mortality_asthma <- rlang::duplicate(py_1000_all_cause_mortality_asthma)
-  rate_all_cause_mortality_asthma <- subset(rate_all_cause_mortality_asthma, 
-                                            all_cause_mortality_inf == 1, 
-                                            select = c(all_cause_mortality_rate, 
-                                                       asthma_reactive_airway))
-  
-  #add these to results table with 'Group' as asthma/reactive airway
-  results <- rbind(
-    results,
-    data.frame(
-      Outcome = c(rep("RSV mild", 5), rep("RSV severe", 5), rep("RSV mortality", 5), 
-                  rep("Flu mild", 5), rep("Flu severe", 5), rep("Flu mortality", 5)),
-      Rate = c(rate_rsv_mild_asthma$rsv_mild_rate, 
-               rate_rsv_severe_asthma$rsv_severe_rate, 
-               rate_rsv_mortality_asthma$rsv_mortality_rate, 
-               rate_flu_mild_asthma$flu_mild_rate, 
-               rate_flu_severe_asthma$flu_severe_rate, 
-               rate_flu_mortality_asthma$flu_mortality_rate),
-      Characteristic = rep("Asthma or Reactive Airway Disease", 30),
-      Group = c(rate_rsv_mild_asthma$asthma_reactive_airway, 
-                rate_rsv_severe_asthma$asthma_reactive_airway,
-                rate_rsv_mortality_asthma$asthma_reactive_airway,
-                rate_flu_mild_asthma$asthma_reactive_airway,
-                rate_flu_severe_asthma$asthma_reactive_airway, 
-                rate_flu_mortality_asthma$asthma_reactive_airway)
-    )
-  )
-  
-  if (study_start_date >= covid_season_min) {
-    #add covid results to results table with 'Group' as asthma/reactive airway
-    results <- rbind(
-      results,
-      data.frame(
-        Outcome = c(rep("COVID-19 mild", 5), rep("COVID-19 severe", 5), 
-                    rep("COVID-19 mortality", 5)),
-        Rate = c(rate_covid_mild_asthma$covid_mild_rate, 
-                 rate_covid_severe_asthma$covid_severe_rate, 
-                 rate_covid_mortality_asthma$covid_mortality_rate),
-        Characteristic = rep("Asthma or Reactive Airway Disease", 15),
-        Group = c(rate_covid_mild_asthma$asthma_reactive_airway, 
-                  rate_covid_severe_asthma$asthma_reactive_airway,
-                  rate_covid_mortality_asthma$asthma_reactive_airway)
-      )
-    ) 
-  }
-  
-  if (codelist_type == "sensitive") {
-    #add overall respiratory results to results table with 'Group' as asthma/reactive airway
-    results <- rbind(
-      results,
-      data.frame(
-        Outcome = c(rep("Overall respiratory mild", 5), 
-                    rep("Overall respiratory severe", 5), 
-                    rep("Overall respiratory mortality", 5)),
-        Rate = c(rate_overall_resp_mild_asthma$overall_resp_mild_rate, 
-                 rate_overall_resp_severe_asthma$overall_resp_severe_rate, 
-                 rate_overall_resp_mortality_asthma$overall_resp_mortality_rate),
-        Characteristic = rep("Asthma or Reactive Airway Disease", 15),
-        Group = c(rate_overall_resp_mild_asthma$asthma_reactive_airway, 
-                  rate_overall_resp_severe_asthma$asthma_reactive_airway,
-                  rate_overall_resp_mortality_asthma$asthma_reactive_airway)
-      )
-    )
-  }
-  
-  #add all cause mortality to results table with 'Group' as asthma/reactive airway
-  results <- rbind(
-    results,
-    data.frame(
-      Outcome = rep("All cause mortality", 5),
-      Rate = rate_all_cause_mortality_asthma$all_cause_mortality_rate,
-      Characteristic = rep("Asthma or Reactive Airway Disease", 5),
-      Group = rate_all_cause_mortality_asthma$asthma_reactive_airway
-    )
-  )
-  
+if (cohort == "children_and_adolescents" | cohort == "adults" | cohort == "older_adults") {
   if (study_start_date >= covid_season_min) {
     #calculate person time and rate for rsv mild outcomes by number of vaccines received against COVID-19
-    py_rsv_primary_cov_vaccines <- pyears(time_rsv_primary ~ rsv_primary_inf + covid_vaccines,
+    py_rsv_primary_cov_vaccines <- pyears(time_rsv_primary ~ rsv_primary_inf + covid_vaccination_count,
                                           data = df_input, data.frame = T)[["data"]]
     py_1000_rsv_primary_cov_vaccines<- py_rsv_primary_cov_vaccines %>%
       mutate(pyears_1000 = pyears/nrow(df_input)*1000,
              rsv_mild_rate = n/pyears_1000)
     rate_rsv_mild_cov_vaccines <- rlang::duplicate(py_1000_rsv_primary_cov_vaccines)
     rate_rsv_mild_cov_vaccines <- subset(rate_rsv_mild_cov_vaccines,rsv_primary_inf == 1, 
-                                         select = c(rsv_mild_rate, covid_vaccines))
+                                         select = c(rsv_mild_rate, covid_vaccination_count))
     
     #calculate person time and rate for rsv severe by number of vaccines received against COVID-19
-    py_rsv_secondary_cov_vaccines <- pyears(time_rsv_secondary ~ rsv_secondary_inf + covid_vaccines,
+    py_rsv_secondary_cov_vaccines <- pyears(time_rsv_secondary ~ rsv_secondary_inf + covid_vaccination_count,
                                             data = df_input, data.frame = T)[["data"]]
     py_1000_rsv_secondary_cov_vaccines <- py_rsv_secondary_cov_vaccines %>%
       mutate(pyears_1000 = pyears/nrow(df_input)*1000,
              rsv_severe_rate = n/pyears_1000)
     rate_rsv_severe_cov_vaccines <- rlang::duplicate(py_1000_rsv_secondary_cov_vaccines)
     rate_rsv_severe_cov_vaccines <- subset(rate_rsv_severe_cov_vaccines, rsv_secondary_inf == 1, 
-                                           select = c(rsv_severe_rate, covid_vaccines))
+                                           select = c(rsv_severe_rate, covid_vaccination_count))
     
     #calculate person time and rate for rsv mortality by number of vaccines received against COVID-19
-    py_rsv_mortality_cov_vaccines <- pyears(time_rsv_mortality ~ rsv_mortality_inf + covid_vaccines,
+    py_rsv_mortality_cov_vaccines <- pyears(time_rsv_mortality ~ rsv_mortality_inf + covid_vaccination_count,
                                             data = df_input, data.frame = T)[["data"]]
     py_1000_rsv_mortality_cov_vaccines <- py_rsv_mortality_cov_vaccines %>%
       mutate(pyears_1000 = pyears/nrow(df_input)*1000,
              rsv_mortality_rate = n/pyears_1000)
     rate_rsv_mortality_cov_vaccines <- rlang::duplicate(py_1000_rsv_mortality_cov_vaccines)
     rate_rsv_mortality_cov_vaccines <- subset(rate_rsv_mortality_cov_vaccines, rsv_mortality_inf == 1, 
-                                              select = c(rsv_mortality_rate, covid_vaccines))
+                                              select = c(rsv_mortality_rate, covid_vaccination_count))
     
     #calculate person time and rate for flu mild outcomes by number of vaccines received against COVID-19
-    py_flu_primary_cov_vaccines <- pyears(time_flu_primary ~ flu_primary_inf + covid_vaccines,
+    py_flu_primary_cov_vaccines <- pyears(time_flu_primary ~ flu_primary_inf + covid_vaccination_count,
                                           data = df_input, data.frame = T)[["data"]]
     py_1000_flu_primary_cov_vaccines <- py_flu_primary_cov_vaccines %>%
       mutate(pyears_1000 = pyears/nrow(df_input)*1000,
              flu_mild_rate = n/pyears_1000)
     rate_flu_mild_cov_vaccines <- rlang::duplicate(py_1000_flu_primary_cov_vaccines)
     rate_flu_mild_cov_vaccines <- subset(rate_flu_mild_cov_vaccines, flu_primary_inf == 1, 
-                                         select = c(flu_mild_rate, covid_vaccines))
+                                         select = c(flu_mild_rate, covid_vaccination_count))
     
     #calculate person time and rate for flu severe by number of vaccines received against COVID-19
-    py_flu_secondary_cov_vaccines <- pyears(time_flu_secondary ~ flu_secondary_inf + covid_vaccines,
+    py_flu_secondary_cov_vaccines <- pyears(time_flu_secondary ~ flu_secondary_inf + covid_vaccination_count,
                                             data = df_input, data.frame = T)[["data"]]
     py_1000_flu_secondary_cov_vaccines <- py_flu_secondary_cov_vaccines %>%
       mutate(pyears_1000 = pyears/nrow(df_input)*1000,
              flu_severe_rate = n/pyears_1000)
     rate_flu_severe_cov_vaccines <- rlang::duplicate(py_1000_flu_secondary_cov_vaccines)
     rate_flu_severe_cov_vaccines <- subset(rate_flu_severe_cov_vaccines, flu_secondary_inf == 1, 
-                                           select = c(flu_severe_rate, covid_vaccines))
+                                           select = c(flu_severe_rate, covid_vaccination_count))
     
     #calculate person time and rate for flu mortality by number of vaccines received against COVID-19
-    py_flu_mortality_cov_vaccines <- pyears(time_flu_mortality ~ flu_mortality_inf + covid_vaccines,
+    py_flu_mortality_cov_vaccines <- pyears(time_flu_mortality ~ flu_mortality_inf + covid_vaccination_count,
                                             data = df_input, data.frame = T)[["data"]]
     py_1000_flu_mortality_cov_vaccines <- py_flu_mortality_cov_vaccines %>%
       mutate(pyears_1000 = pyears/nrow(df_input)*1000,
              flu_mortality_rate = n/pyears_1000)
     rate_flu_mortality_cov_vaccines <- rlang::duplicate(py_1000_flu_mortality_cov_vaccines)
     rate_flu_mortality_cov_vaccines <- subset(rate_flu_mortality_cov_vaccines, flu_mortality_inf == 1, 
-                                              select = c(flu_mortality_rate, covid_vaccines))
+                                              select = c(flu_mortality_rate, covid_vaccination_count))
     
     #calculate person time and rate for covid mild outcomes by number of vaccines received against COVID-19
-    py_covid_primary_cov_vaccines <- pyears(time_covid_primary ~ covid_primary_inf + covid_vaccines,
+    py_covid_primary_cov_vaccines <- pyears(time_covid_primary ~ covid_primary_inf + covid_vaccination_count,
                                             data = df_input, data.frame = T)[["data"]]
     py_1000_covid_primary_cov_vaccines<- py_covid_primary_cov_vaccines %>%
       mutate(pyears_1000 = pyears/nrow(df_input)*1000,
              covid_mild_rate = n/pyears_1000)
     rate_covid_mild_cov_vaccines <- rlang::duplicate(py_1000_covid_primary_cov_vaccines)
     rate_covid_mild_cov_vaccines <- subset(rate_covid_mild_cov_vaccines, covid_primary_inf == 1, 
-                                           select = c(covid_mild_rate, covid_vaccines))
+                                           select = c(covid_mild_rate, covid_vaccination_count))
     
     #calculate person time and rate for covid severe by number of vaccines received against COVID-19
-    py_covid_secondary_cov_vaccines <- pyears(time_covid_secondary ~ covid_secondary_inf + covid_vaccines,
+    py_covid_secondary_cov_vaccines <- pyears(time_covid_secondary ~ covid_secondary_inf + covid_vaccination_count,
                                               data = df_input, data.frame = T)[["data"]]
     py_1000_covid_secondary_cov_vaccines <- py_covid_secondary_cov_vaccines %>%
       mutate(pyears_1000 = pyears/nrow(df_input)*1000,
@@ -1581,10 +1365,10 @@ if (cohort == "children_and_adolescents") {
     rate_covid_severe_cov_vaccines <- subset(rate_covid_severe_cov_vaccines, 
                                              covid_secondary_inf == 1, 
                                              select = c(covid_severe_rate, 
-                                                        covid_vaccines))
+                                                        covid_vaccination_count))
     
     #calculate person time and rate for covid mortality by number of vaccines received against COVID-19
-    py_covid_mortality_cov_vaccines <- pyears(time_covid_mortality ~ covid_mortality_inf + covid_vaccines,
+    py_covid_mortality_cov_vaccines <- pyears(time_covid_mortality ~ covid_mortality_inf + covid_vaccination_count,
                                               data = df_input, data.frame = T)[["data"]]
     py_1000_covid_mortality_cov_vaccines <- py_covid_mortality_cov_vaccines %>%
       mutate(pyears_1000 = pyears/nrow(df_input)*1000,
@@ -1593,11 +1377,11 @@ if (cohort == "children_and_adolescents") {
     rate_covid_mortality_cov_vaccines <- subset(rate_covid_mortality_cov_vaccines, 
                                                 covid_mortality_inf == 1, 
                                                 select = c(covid_mortality_rate, 
-                                                           covid_vaccines))
+                                                           covid_vaccination_count))
     
     if (codelist_type == "sensitive") {
       #calculate person time and rate for overall respiratory by number of vaccines received against COVID-19
-      py_overall_resp_primary_cov_vaccines <- pyears(time_overall_resp_primary ~ overall_resp_primary_inf + covid_vaccines,
+      py_overall_resp_primary_cov_vaccines <- pyears(time_overall_resp_primary ~ overall_resp_primary_inf + covid_vaccination_count,
                                                      data = df_input, data.frame = T)[["data"]]
       py_1000_overall_resp_primary_cov_vaccines<- py_overall_resp_primary_cov_vaccines %>%
         mutate(pyears_1000 = pyears/nrow(df_input)*1000,
@@ -1606,10 +1390,10 @@ if (cohort == "children_and_adolescents") {
       rate_overall_resp_mild_cov_vaccines <- subset(rate_overall_resp_mild_cov_vaccines,
                                                     overall_resp_primary_inf == 1, 
                                                     select = c(overall_resp_mild_rate, 
-                                                               covid_vaccines))
+                                                               covid_vaccination_count))
       
       #calculate person time and rate for overall_resp severe by number of vaccines received against COVID-19
-      py_overall_resp_secondary_cov_vaccines <- pyears(time_overall_resp_secondary ~ overall_resp_secondary_inf + covid_vaccines,
+      py_overall_resp_secondary_cov_vaccines <- pyears(time_overall_resp_secondary ~ overall_resp_secondary_inf + covid_vaccination_count,
                                                        data = df_input, data.frame = T)[["data"]]
       py_1000_overall_resp_secondary_cov_vaccines <- py_overall_resp_secondary_cov_vaccines %>%
         mutate(pyears_1000 = pyears/nrow(df_input)*1000,
@@ -1618,430 +1402,10 @@ if (cohort == "children_and_adolescents") {
       rate_overall_resp_severe_cov_vaccines <- subset(rate_overall_resp_severe_cov_vaccines,
                                                       overall_resp_secondary_inf == 1, 
                                                       select = c(overall_resp_severe_rate, 
-                                                                 covid_vaccines))
+                                                                 covid_vaccination_count))
       
       #calculate person time and rate for overall_resp mortality by number of vaccines received against COVID-19
-      py_overall_resp_mortality_cov_vaccines <- pyears(time_overall_resp_mortality ~ overall_resp_mortality_inf + covid_vaccines,
-                                                       data = df_input, data.frame = T)[["data"]]
-      py_1000_overall_resp_mortality_cov_vaccines <- py_overall_resp_mortality_cov_vaccines %>% 
-        mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-               overall_resp_mortality_rate = n/pyears_1000)
-      rate_overall_resp_mortality_cov_vaccines <- rlang::duplicate(py_1000_overall_resp_mortality_cov_vaccines)
-      rate_overall_resp_mortality_cov_vaccines <- subset(rate_overall_resp_mortality_cov_vaccines, 
-                                                        overall_resp_mortality_inf == 1, 
-                                                        select = c(overall_resp_mortality_rate, 
-                                                                   covid_vaccines))
-    }
-    
-    #calculate person time and rate for all cause mortality by number of vaccines received against COVID-19
-    py_all_cause_mortality_cov_vaccines <- pyears(time_all_cause_mortality ~ all_cause_mortality_inf + covid_vaccines,
-                                                  data = df_input, data.frame = T)[["data"]]
-    py_1000_all_cause_mortality_cov_vaccines <- py_all_cause_mortality_cov_vaccines %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             all_cause_mortality_rate = n/pyears_1000)
-    rate_all_cause_mortality_cov_vaccines <- rlang::duplicate(py_1000_all_cause_mortality_cov_vaccines)
-    rate_all_cause_mortality_cov_vaccines <- subset(rate_all_cause_mortality_cov_vaccines, 
-                                                    all_cause_mortality_inf == 1, 
-                                                    select = c(all_cause_mortality_rate, 
-                                                               covid_vaccines))
-    
-    #add these to results table with 'Group' as number of vaccines received against COVID-19
-    results <- rbind(
-      results,
-      data.frame(
-        Outcome = c(rep("RSV mild", 5), rep("RSV severe", 5), rep("RSV mortality", 5), 
-                    rep("Flu mild", 5), rep("Flu severe", 5), rep("Flu mortality", 5),
-                    rep("COVID-19 mild", 5), rep("COVID-19 severe", 5), 
-                    rep("COVID-19 mortality", 5)),
-        Rate = c(rate_rsv_mild_cov_vaccines$rsv_mild_rate, 
-                 rate_rsv_severe_cov_vaccines$rsv_severe_rate, 
-                 rate_rsv_mortality_cov_vaccines$rsv_mortality_rate, 
-                 rate_flu_mild_cov_vaccines$flu_mild_rate, 
-                 rate_flu_severe_cov_vaccines$flu_severe_rate, 
-                 rate_flu_mortality_cov_vaccines$flu_mortality_rate,
-                 rate_covid_mild_cov_vaccines$covid_mild_rate,
-                 rate_covid_severe_cov_vaccines$covid_severe_rate,
-                 rate_covid_mortality_cov_vaccines$covid_mortality_rate),
-        Characteristic = rep("Number of vaccines received against COVID-19", 45),
-        Group = c(rate_rsv_mild_cov_vaccines$covid_vaccines, 
-                  rate_rsv_severe_cov_vaccines$covid_vaccines,
-                  rate_rsv_mortality_cov_vaccines$covid_vaccines,
-                  rate_flu_mild_cov_vaccines$covid_vaccines,
-                  rate_flu_severe_cov_vaccines$covid_vaccines, 
-                  rate_flu_mortality_cov_vaccines$covid_vaccines,
-                  rate_covid_mild_cov_vaccines$covid_vaccines,
-                  rate_covid_severe_cov_vaccines$covid_vaccines,
-                  rate_covid_mortality_cov_vaccines$covid_vaccines)
-      )
-    )
-    
-    if (codelist_type == "sensitive") {
-      #add overall respiratory results to results table with 'Group' as number of vaccines received against COVID-19
-      results <- rbind(
-        results,
-        data.frame(
-          Outcome = c(rep("Overall respiratory mild", 5), 
-                      rep("Overall respiratory severe", 5), 
-                      rep("Overall respiratory mortality", 5)),
-          Rate = c(rate_overall_resp_mild_cov_vaccines$overall_resp_mild_rate, 
-                   rate_overall_resp_severe_cov_vaccines$overall_resp_severe_rate, 
-                   rate_overall_resp_mortality_cov_vaccines$overall_resp_mortality_rate),
-          Characteristic = rep("Number of vaccines received against COVID-19", 15),
-          Group = c(rate_overall_resp_mild_cov_vaccines$covid_vaccines, 
-                    rate_overall_resp_severe_cov_vaccines$covid_vaccines,
-                    rate_overall_resp_mortality_cov_vaccines$covid_vaccines)
-        )
-      )
-    }
-    
-    #add all cause mortality to results table with 'Group' as number of vaccines received against COVID-19
-    results <- rbind(
-      results,
-      data.frame(
-        Outcome = rep("All cause mortality", 5),
-        Rate = rate_all_cause_mortality_cov_vaccines$all_cause_mortality_rate,
-        Characteristic = rep("Number of vaccines received against COVID-19", 5),
-        Group = rate_all_cause_mortality_cov_vaccines$covid_vaccines
-      )
-    )
-  }
-  
-  #calculate person time and rate for rsv mild outcomes by vaccinated against influenza in season
-  py_rsv_primary_flu_vacc <- pyears(time_rsv_primary ~ rsv_primary_inf + flu_vaccination,
-                                    data = df_input, data.frame = T)[["data"]]
-  py_1000_rsv_primary_flu_vacc <- py_rsv_primary_flu_vacc %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           rsv_mild_rate = n/pyears_1000)
-  rate_rsv_mild_flu_vacc <- rlang::duplicate(py_1000_rsv_primary_flu_vacc)
-  rate_rsv_mild_flu_vacc <- subset(rate_rsv_mild_flu_vacc, rsv_primary_inf == 1, 
-                                   select = c(rsv_mild_rate, flu_vaccination))
-  
-  #calculate person time and rate for rsv severe by vaccinated against influenza in season
-  py_rsv_secondary_flu_vacc <- pyears(time_rsv_secondary ~ rsv_secondary_inf + flu_vaccination,
-                                      data = df_input, data.frame = T)[["data"]]
-  py_1000_rsv_secondary_flu_vacc <- py_rsv_secondary_flu_vacc %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           rsv_severe_rate = n/pyears_1000)
-  rate_rsv_severe_flu_vacc <- rlang::duplicate(py_1000_rsv_secondary_flu_vacc)
-  rate_rsv_severe_flu_vacc <- subset(rate_rsv_severe_flu_vacc, rsv_secondary_inf == 1, 
-                                     select = c(rsv_severe_rate, flu_vaccination))
-  
-  #calculate person time and rate for rsv mortality by vaccinated against influenza in season
-  py_rsv_mortality_flu_vacc <- pyears(time_rsv_mortality ~ rsv_mortality_inf + flu_vaccination,
-                                      data = df_input, data.frame = T)[["data"]]
-  py_1000_rsv_mortality_flu_vacc <- py_rsv_mortality_flu_vacc %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           rsv_mortality_rate = n/pyears_1000)
-  rate_rsv_mortality_flu_vacc <- rlang::duplicate(py_1000_rsv_mortality_flu_vacc)
-  rate_rsv_mortality_flu_vacc <- subset(rate_rsv_mortality_flu_vacc, rsv_mortality_inf == 1, 
-                                        select = c(rsv_mortality_rate, flu_vaccination))
-  
-  #calculate person time and rate for flu mild outcomes by vaccinated against influenza in season
-  py_flu_primary_flu_vacc <- pyears(time_flu_primary ~ flu_primary_inf + flu_vaccination,
-                                    data = df_input, data.frame = T)[["data"]]
-  py_1000_flu_primary_flu_vacc <- py_flu_primary_flu_vacc %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           flu_mild_rate = n/pyears_1000)
-  rate_flu_mild_flu_vacc <- rlang::duplicate(py_1000_flu_primary_flu_vacc)
-  rate_flu_mild_flu_vacc <- subset(rate_flu_mild_flu_vacc, flu_primary_inf == 1, 
-                                   select = c(flu_mild_rate, flu_vaccination))
-  
-  #calculate person time and rate for flu severe by vaccinated against influenza in season
-  py_flu_secondary_flu_vacc <- pyears(time_flu_secondary ~ flu_secondary_inf + flu_vaccination,
-                                      data = df_input, data.frame = T)[["data"]]
-  py_1000_flu_secondary_flu_vacc <- py_flu_secondary_flu_vacc %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           flu_severe_rate = n/pyears_1000)
-  rate_flu_severe_flu_vacc <- rlang::duplicate(py_1000_flu_secondary_flu_vacc)
-  rate_flu_severe_flu_vacc <- subset(rate_flu_severe_flu_vacc, flu_secondary_inf == 1, 
-                                     select = c(flu_severe_rate, flu_vaccination))
-  
-  #calculate person time and rate for flu mortality by vaccinated against influenza in season
-  py_flu_mortality_flu_vacc <- pyears(time_flu_mortality ~ flu_mortality_inf + flu_vaccination,
-                                      data = df_input, data.frame = T)[["data"]]
-  py_1000_flu_mortality_flu_vacc <- py_flu_mortality_flu_vacc %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           flu_mortality_rate = n/pyears_1000)
-  rate_flu_mortality_flu_vacc <- rlang::duplicate(py_1000_flu_mortality_flu_vacc)
-  rate_flu_mortality_flu_vacc <- subset(rate_flu_mortality_flu_vacc, flu_mortality_inf == 1, 
-                                        select = c(flu_mortality_rate, flu_vaccination))
-  
-  if (study_start_date >= covid_season_min) {
-    #calculate person time and rate for covid mild outcomes by vaccinated against influenza in season
-    py_covid_primary_flu_vacc <- pyears(time_covid_primary ~ covid_primary_inf + flu_vaccination,
-                                        data = df_input, data.frame = T)[["data"]]
-    py_1000_covid_primary_flu_vacc<- py_covid_primary_flu_vacc %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             covid_mild_rate = n/pyears_1000)
-    rate_covid_mild_flu_vacc <- rlang::duplicate(py_1000_covid_primary_flu_vacc)
-    rate_covid_mild_flu_vacc <- subset(rate_covid_mild_flu_vacc, covid_primary_inf == 1, 
-                                      select = c(covid_mild_rate, flu_vaccination))
-    
-    #calculate person time and rate for covid severe outcomes by vaccinated against influenza in season
-    py_covid_secondary_flu_vacc <- pyears(time_covid_secondary ~ covid_secondary_inf + flu_vaccination,
-                                          data = df_input, data.frame = T)[["data"]]
-    py_1000_covid_secondary_flu_vacc <- py_covid_secondary_flu_vacc %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             covid_severe_rate = n/pyears_1000)
-    rate_covid_severe_flu_vacc <- rlang::duplicate(py_1000_covid_secondary_flu_vacc)
-    rate_covid_severe_flu_vacc <- subset(rate_covid_severe_flu_vacc, 
-                                        covid_secondary_inf == 1, 
-                                        select = c(covid_severe_rate, flu_vaccination))
-    
-    #calculate person time and rate for covid mortality outcomes by vaccinated against influenza in season
-    py_covid_mortality_flu_vacc <- pyears(time_covid_mortality ~ covid_mortality_inf + flu_vaccination,
-                                          data = df_input, data.frame = T)[["data"]]
-    py_1000_covid_mortality_flu_vacc <- py_covid_mortality_flu_vacc %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             covid_mortality_rate = n/pyears_1000)
-    rate_covid_mortality_flu_vacc <- rlang::duplicate(py_1000_covid_mortality_flu_vacc)
-    rate_covid_mortality_flu_vacc <- subset(rate_covid_mortality_flu_vacc, 
-                                          covid_mortality_inf == 1, 
-                                          select = c(covid_mortality_rate, flu_vaccination))
-  }
-  
-  if (codelist_type == "sensitive") {
-    #calculate person time and rate for overall respiratory mild outcomes by vaccinated against influenza in season
-    py_overall_resp_primary_flu_vacc <- pyears(time_overall_resp_primary ~ overall_resp_primary_inf + flu_vaccination,
-                                               data = df_input, data.frame = T)[["data"]]
-    py_1000_overall_resp_primary_flu_vacc<- py_overall_resp_primary_flu_vacc %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             overall_resp_mild_rate = n/pyears_1000)
-    rate_overall_resp_mild_flu_vacc <- rlang::duplicate(py_1000_overall_resp_primary_flu_vacc)
-    rate_overall_resp_mild_flu_vacc <- subset(rate_overall_resp_mild_flu_vacc,
-                                             overall_resp_primary_inf == 1, 
-                                             select = c(overall_resp_mild_rate, flu_vaccination))
-    
-    #calculate person time and rate for overall respiratory severe outcomes by vaccinated against influenza in season
-    py_overall_resp_secondary_flu_vacc <- pyears(time_overall_resp_secondary ~ overall_resp_secondary_inf + flu_vaccination,
-                                                 data = df_input, data.frame = T)[["data"]]
-    py_1000_overall_resp_secondary_flu_vacc <- py_overall_resp_secondary_flu_vacc %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             overall_resp_severe_rate = n/pyears_1000)
-    rate_overall_resp_severe_flu_vacc <- rlang::duplicate(py_1000_overall_resp_secondary_flu_vacc)
-    rate_overall_resp_severe_flu_vacc <- subset(rate_overall_resp_severe_flu_vacc,
-                                               overall_resp_secondary_inf == 1, 
-                                               select = c(overall_resp_severe_rate, flu_vaccination))
-    
-    #calculate person time and rate for overall respiratory mortality outcomes by vaccinated against influenza in season
-    py_overall_resp_mortality_flu_vacc <- pyears(time_overall_resp_mortality ~ overall_resp_mortality_inf + flu_vaccination,
-                                                 data = df_input, data.frame = T)[["data"]]
-    py_1000_overall_resp_mortality_flu_vacc <- py_overall_resp_mortality_flu_vacc %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             overall_resp_mortality_rate = n/pyears_1000)
-    rate_overall_resp_mortality_flu_vacc <- rlang::duplicate(py_1000_overall_resp_mortality_flu_vacc)
-    rate_overall_resp_mortality_flu_vacc <- subset(rate_overall_resp_mortality_flu_vacc, 
-                                                 overall_resp_mortality_inf == 1, 
-                                                 select = c(overall_resp_mortality_rate, flu_vaccination))
-  }
-
-  #calculate person time and rate for all cause mortality outcomes by vaccinated against influenza in season
-  py_all_cause_mortality_flu_vacc <- pyears(time_all_cause_mortality ~ all_cause_mortality_inf + flu_vaccination,
-                                            data = df_input, data.frame = T)[["data"]]
-  py_1000_all_cause_mortality_flu_vacc <- py_all_cause_mortality_flu_vacc %>%
-    mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-           all_cause_mortality_rate = n/pyears_1000)
-  rate_all_cause_mortality_flu_vacc <- rlang::duplicate(py_1000_all_cause_mortality_flu_vacc)
-  rate_all_cause_mortality_flu_vacc <- subset(rate_all_cause_mortality_flu_vacc, 
-                                            all_cause_mortality_inf == 1, 
-                                            select = c(all_cause_mortality_rate, flu_vaccination))
-  
-  #add these to results table with 'Group' as vaccinated against influenza in season
-  results <- rbind(
-    results,
-    data.frame(
-      Outcome = c(rep("RSV mild", 2), rep("RSV severe", 2), rep("RSV mortality", 2), 
-                  rep("Flu mild", 2), rep("Flu severe", 2), rep("Flu mortality", 2)),
-      Rate = c(rate_rsv_mild_flu_vacc$rsv_mild_rate, 
-               rate_rsv_severe_flu_vacc$rsv_severe_rate, 
-               rate_rsv_mortality_flu_vacc$rsv_mortality_rate, 
-               rate_flu_mild_flu_vacc$flu_mild_rate, 
-               rate_flu_severe_flu_vacc$flu_severe_rate, 
-               rate_flu_mortality_flu_vacc$flu_mortality_rate),
-      Characteristic = rep("Vaccinated against Influenza in season", 12),
-      Group = c(rate_rsv_mild_flu_vacc$flu_vaccination, 
-                rate_rsv_severe_flu_vacc$flu_vaccination,
-                rate_rsv_mortality_flu_vacc$flu_vaccination,
-                rate_flu_mild_flu_vacc$flu_vaccination,
-                rate_flu_severe_flu_vacc$flu_vaccination, 
-                rate_flu_mortality_flu_vacc$flu_vaccination)
-    )
-  )
-  
-  if (study_start_date >= covid_season_min) {
-    #add covid results to results table with 'Group' as vaccinated against influenza in season
-    results <- rbind(
-      results,
-      data.frame(
-        Outcome = c(rep("COVID-19 mild", 2), rep("COVID-19 severe", 2), 
-                    rep("COVID-19 mortality", 2)),
-        Rate = c(rate_covid_mild_flu_vacc$covid_mild_rate,
-                 rate_covid_severe_flu_vacc$covid_severe_rate,
-                 rate_covid_mortality_flu_vacc$covid_mortality_rate),
-        Characteristic = rep("Vaccinated against Influenza in season", 6),
-        Group = c(rate_covid_mild_flu_vacc$flu_vaccination,
-                  rate_covid_severe_flu_vacc$flu_vaccination,
-                  rate_covid_mortality_flu_vacc$flu_vaccination)
-      )
-    )
-  }
-  
-  if (codelist_type == "sensitive") {
-    #add overall respiratory results to results table with 'Group' as vaccinated against influenza in season
-    results <- rbind(
-      results,
-      data.frame(
-        Outcome = c(rep("Overall respiratory mild", 2), 
-                    rep("Overall respiratory severe", 2), 
-                    rep("Overall respiratory mortality", 2)),
-        Rate = c(rate_overall_resp_mild_flu_vacc$overall_resp_mild_rate, 
-                 rate_overall_resp_severe_flu_vacc$overall_resp_severe_rate, 
-                 rate_overall_resp_mortality_flu_vacc$overall_resp_mortality_rate),
-        Characteristic = rep("Vaccinated against Influenza in season", 6),
-        Group = c(rate_overall_resp_mild_flu_vacc$flu_vaccination, 
-                  rate_overall_resp_severe_flu_vacc$flu_vaccination,
-                  rate_overall_resp_mortality_flu_vacc$flu_vaccination)
-      )
-    )
-  }
-  
-  #add all cause mortality to results table with 'Group' as vaccinated against influenza in season
-  results <- rbind(
-    results,
-    data.frame(
-      Outcome = rep("All cause mortality", 2),
-      Rate = rate_all_cause_mortality_flu_vacc$all_cause_mortality_rate,
-      Characteristic = rep("Vaccinated against Influenza in season", 2),
-      Group = rate_all_cause_mortality_flu_vacc$flu_vaccination
-    )
-  )
-}
-
-##adult and older adult cohort specific characteristics 
-
-if (cohort == "adults" | cohort == "older_adults") {
-  if (study_start_date >= covid_season_min) {
-    #calculate person time and rate for rsv mild outcomes by number of vaccines received against COVID-19
-    py_rsv_primary_cov_vaccines <- pyears(time_rsv_primary ~ rsv_primary_inf + covid_vaccines,
-                                          data = df_input, data.frame = T)[["data"]]
-    py_1000_rsv_primary_cov_vaccines<- py_rsv_primary_cov_vaccines %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             rsv_mild_rate = n/pyears_1000)
-    rate_rsv_mild_cov_vaccines <- rlang::duplicate(py_1000_rsv_primary_cov_vaccines)
-    rate_rsv_mild_cov_vaccines <- subset(rate_rsv_mild_cov_vaccines,rsv_primary_inf == 1, 
-                                         select = c(rsv_mild_rate, covid_vaccines))
-    
-    #calculate person time and rate for rsv severe by number of vaccines received against COVID-19
-    py_rsv_secondary_cov_vaccines <- pyears(time_rsv_secondary ~ rsv_secondary_inf + covid_vaccines,
-                                            data = df_input, data.frame = T)[["data"]]
-    py_1000_rsv_secondary_cov_vaccines <- py_rsv_secondary_cov_vaccines %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             rsv_severe_rate = n/pyears_1000)
-    rate_rsv_severe_cov_vaccines <- rlang::duplicate(py_1000_rsv_secondary_cov_vaccines)
-    rate_rsv_severe_cov_vaccines <- subset(rate_rsv_severe_cov_vaccines, rsv_secondary_inf == 1, 
-                                           select = c(rsv_severe_rate, covid_vaccines))
-    
-    #calculate person time and rate for rsv mortality by number of vaccines received against COVID-19
-    py_rsv_mortality_cov_vaccines <- pyears(time_rsv_mortality ~ rsv_mortality_inf + covid_vaccines,
-                                            data = df_input, data.frame = T)[["data"]]
-    py_1000_rsv_mortality_cov_vaccines <- py_rsv_mortality_cov_vaccines %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             rsv_mortality_rate = n/pyears_1000)
-    rate_rsv_mortality_cov_vaccines <- rlang::duplicate(py_1000_rsv_mortality_cov_vaccines)
-    rate_rsv_mortality_cov_vaccines <- subset(rate_rsv_mortality_cov_vaccines, rsv_mortality_inf == 1, 
-                                              select = c(rsv_mortality_rate, covid_vaccines))
-    
-    #calculate person time and rate for flu mild outcomes by number of vaccines received against COVID-19
-    py_flu_primary_cov_vaccines <- pyears(time_flu_primary ~ flu_primary_inf + covid_vaccines,
-                                          data = df_input, data.frame = T)[["data"]]
-    py_1000_flu_primary_cov_vaccines <- py_flu_primary_cov_vaccines %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             flu_mild_rate = n/pyears_1000)
-    rate_flu_mild_cov_vaccines <- rlang::duplicate(py_1000_flu_primary_cov_vaccines)
-    rate_flu_mild_cov_vaccines <- subset(rate_flu_mild_cov_vaccines, flu_primary_inf == 1, 
-                                         select = c(flu_mild_rate, covid_vaccines))
-    
-    #calculate person time and rate for flu severe by number of vaccines received against COVID-19
-    py_flu_secondary_cov_vaccines <- pyears(time_flu_secondary ~ flu_secondary_inf + covid_vaccines,
-                                            data = df_input, data.frame = T)[["data"]]
-    py_1000_flu_secondary_cov_vaccines <- py_flu_secondary_cov_vaccines %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             flu_severe_rate = n/pyears_1000)
-    rate_flu_severe_cov_vaccines <- rlang::duplicate(py_1000_flu_secondary_cov_vaccines)
-    rate_flu_severe_cov_vaccines <- subset(rate_flu_severe_cov_vaccines, flu_secondary_inf == 1, 
-                                           select = c(flu_severe_rate, covid_vaccines))
-    
-    #calculate person time and rate for flu mortality by number of vaccines received against COVID-19
-    py_flu_mortality_cov_vaccines <- pyears(time_flu_mortality ~ flu_mortality_inf + covid_vaccines,
-                                            data = df_input, data.frame = T)[["data"]]
-    py_1000_flu_mortality_cov_vaccines <- py_flu_mortality_cov_vaccines %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             flu_mortality_rate = n/pyears_1000)
-    rate_flu_mortality_cov_vaccines <- rlang::duplicate(py_1000_flu_mortality_cov_vaccines)
-    rate_flu_mortality_cov_vaccines <- subset(rate_flu_mortality_cov_vaccines, flu_mortality_inf == 1, 
-                                              select = c(flu_mortality_rate, covid_vaccines))
-    
-    #calculate person time and rate for covid mild outcomes by number of vaccines received against COVID-19
-    py_covid_primary_cov_vaccines <- pyears(time_covid_primary ~ covid_primary_inf + covid_vaccines,
-                                            data = df_input, data.frame = T)[["data"]]
-    py_1000_covid_primary_cov_vaccines<- py_covid_primary_cov_vaccines %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             covid_mild_rate = n/pyears_1000)
-    rate_covid_mild_cov_vaccines <- rlang::duplicate(py_1000_covid_primary_cov_vaccines)
-    rate_covid_mild_cov_vaccines <- subset(rate_covid_mild_cov_vaccines, covid_primary_inf == 1, 
-                                           select = c(covid_mild_rate, covid_vaccines))
-    
-    #calculate person time and rate for covid severe by number of vaccines received against COVID-19
-    py_covid_secondary_cov_vaccines <- pyears(time_covid_secondary ~ covid_secondary_inf + covid_vaccines,
-                                              data = df_input, data.frame = T)[["data"]]
-    py_1000_covid_secondary_cov_vaccines <- py_covid_secondary_cov_vaccines %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             covid_severe_rate = n/pyears_1000)
-    rate_covid_severe_cov_vaccines <- rlang::duplicate(py_1000_covid_secondary_cov_vaccines)
-    rate_covid_severe_cov_vaccines <- subset(rate_covid_severe_cov_vaccines, 
-                                             covid_secondary_inf == 1, 
-                                             select = c(covid_severe_rate, 
-                                                        covid_vaccines))
-    
-    #calculate person time and rate for covid mortality by number of vaccines received against COVID-19
-    py_covid_mortality_cov_vaccines <- pyears(time_covid_mortality ~ covid_mortality_inf + covid_vaccines,
-                                              data = df_input, data.frame = T)[["data"]]
-    py_1000_covid_mortality_cov_vaccines <- py_covid_mortality_cov_vaccines %>%
-      mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-             covid_mortality_rate = n/pyears_1000)
-    rate_covid_mortality_cov_vaccines <- rlang::duplicate(py_1000_covid_mortality_cov_vaccines)
-    rate_covid_mortality_cov_vaccines <- subset(rate_covid_mortality_cov_vaccines, 
-                                                covid_mortality_inf == 1, 
-                                                select = c(covid_mortality_rate, 
-                                                           covid_vaccines))
-    
-    if (codelist_type == "sensitive") {
-      #calculate person time and rate for overall respiratory by number of vaccines received against COVID-19
-      py_overall_resp_primary_cov_vaccines <- pyears(time_overall_resp_primary ~ overall_resp_primary_inf + covid_vaccines,
-                                                     data = df_input, data.frame = T)[["data"]]
-      py_1000_overall_resp_primary_cov_vaccines<- py_overall_resp_primary_cov_vaccines %>%
-        mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-               overall_resp_mild_rate = n/pyears_1000)
-      rate_overall_resp_mild_cov_vaccines <- rlang::duplicate(py_1000_overall_resp_primary_cov_vaccines)
-      rate_overall_resp_mild_cov_vaccines <- subset(rate_overall_resp_mild_cov_vaccines,
-                                                    overall_resp_primary_inf == 1, 
-                                                    select = c(overall_resp_mild_rate, 
-                                                               covid_vaccines))
-      
-      #calculate person time and rate for overall_resp severe by number of vaccines received against COVID-19
-      py_overall_resp_secondary_cov_vaccines <- pyears(time_overall_resp_secondary ~ overall_resp_secondary_inf + covid_vaccines,
-                                                       data = df_input, data.frame = T)[["data"]]
-      py_1000_overall_resp_secondary_cov_vaccines <- py_overall_resp_secondary_cov_vaccines %>%
-        mutate(pyears_1000 = pyears/nrow(df_input)*1000,
-               overall_resp_severe_rate = n/pyears_1000)
-      rate_overall_resp_severe_cov_vaccines <- rlang::duplicate(py_1000_overall_resp_secondary_cov_vaccines)
-      rate_overall_resp_severe_cov_vaccines <- subset(rate_overall_resp_severe_cov_vaccines,
-                                                      overall_resp_secondary_inf == 1, 
-                                                      select = c(overall_resp_severe_rate, 
-                                                                 covid_vaccines))
-      
-      #calculate person time and rate for overall_resp mortality by number of vaccines received against COVID-19
-      py_overall_resp_mortality_cov_vaccines <- pyears(time_overall_resp_mortality ~ overall_resp_mortality_inf + covid_vaccines,
+      py_overall_resp_mortality_cov_vaccines <- pyears(time_overall_resp_mortality ~ overall_resp_mortality_inf + covid_vaccination_count,
                                                        data = df_input, data.frame = T)[["data"]]
       py_1000_overall_resp_mortality_cov_vaccines <- py_overall_resp_mortality_cov_vaccines %>% 
         mutate(pyears_1000 = pyears/nrow(df_input)*1000,
@@ -2050,11 +1414,11 @@ if (cohort == "adults" | cohort == "older_adults") {
       rate_overall_resp_mortality_cov_vaccines <- subset(rate_overall_resp_mortality_cov_vaccines, 
                                                          overall_resp_mortality_inf == 1, 
                                                          select = c(overall_resp_mortality_rate, 
-                                                                    covid_vaccines))
+                                                                    covid_vaccination_count))
     }
     
     #calculate person time and rate for all cause mortality by number of vaccines received against COVID-19
-    py_all_cause_mortality_cov_vaccines <- pyears(time_all_cause_mortality ~ all_cause_mortality_inf + covid_vaccines,
+    py_all_cause_mortality_cov_vaccines <- pyears(time_all_cause_mortality ~ all_cause_mortality_inf + covid_vaccination_count,
                                                   data = df_input, data.frame = T)[["data"]]
     py_1000_all_cause_mortality_cov_vaccines <- py_all_cause_mortality_cov_vaccines %>%
       mutate(pyears_1000 = pyears/nrow(df_input)*1000,
@@ -2063,7 +1427,7 @@ if (cohort == "adults" | cohort == "older_adults") {
     rate_all_cause_mortality_cov_vaccines <- subset(rate_all_cause_mortality_cov_vaccines, 
                                                     all_cause_mortality_inf == 1, 
                                                     select = c(all_cause_mortality_rate, 
-                                                               covid_vaccines))
+                                                               covid_vaccination_count))
     
     #add these to results table with 'Group' as number of vaccines received against COVID-19
     results <- rbind(
@@ -2083,15 +1447,15 @@ if (cohort == "adults" | cohort == "older_adults") {
                  rate_covid_severe_cov_vaccines$covid_severe_rate,
                  rate_covid_mortality_cov_vaccines$covid_mortality_rate),
         Characteristic = rep("Number of vaccines received against COVID-19", 45),
-        Group = c(rate_rsv_mild_cov_vaccines$covid_vaccines, 
-                  rate_rsv_severe_cov_vaccines$covid_vaccines,
-                  rate_rsv_mortality_cov_vaccines$covid_vaccines,
-                  rate_flu_mild_cov_vaccines$covid_vaccines,
-                  rate_flu_severe_cov_vaccines$covid_vaccines, 
-                  rate_flu_mortality_cov_vaccines$covid_vaccines,
-                  rate_covid_mild_cov_vaccines$covid_vaccines,
-                  rate_covid_severe_cov_vaccines$covid_vaccines,
-                  rate_covid_mortality_cov_vaccines$covid_vaccines)
+        Group = c(rate_rsv_mild_cov_vaccines$covid_vaccination_count, 
+                  rate_rsv_severe_cov_vaccines$covid_vaccination_count,
+                  rate_rsv_mortality_cov_vaccines$covid_vaccination_count,
+                  rate_flu_mild_cov_vaccines$covid_vaccination_count,
+                  rate_flu_severe_cov_vaccines$covid_vaccination_count, 
+                  rate_flu_mortality_cov_vaccines$covid_vaccination_count,
+                  rate_covid_mild_cov_vaccines$covid_vaccination_count,
+                  rate_covid_severe_cov_vaccines$covid_vaccination_count,
+                  rate_covid_mortality_cov_vaccines$covid_vaccination_count)
       )
     )
     
@@ -2107,9 +1471,9 @@ if (cohort == "adults" | cohort == "older_adults") {
                    rate_overall_resp_severe_cov_vaccines$overall_resp_severe_rate, 
                    rate_overall_resp_mortality_cov_vaccines$overall_resp_mortality_rate),
           Characteristic = rep("Number of vaccines received against COVID-19", 15),
-          Group = c(rate_overall_resp_mild_cov_vaccines$covid_vaccines, 
-                    rate_overall_resp_severe_cov_vaccines$covid_vaccines,
-                    rate_overall_resp_mortality_cov_vaccines$covid_vaccines)
+          Group = c(rate_overall_resp_mild_cov_vaccines$covid_vaccination_count, 
+                    rate_overall_resp_severe_cov_vaccines$covid_vaccination_count,
+                    rate_overall_resp_mortality_cov_vaccines$covid_vaccination_count)
         )
       )
     }
@@ -2121,7 +1485,7 @@ if (cohort == "adults" | cohort == "older_adults") {
         Outcome = rep("All cause mortality", 5),
         Rate = rate_all_cause_mortality_cov_vaccines$all_cause_mortality_rate,
         Characteristic = rep("Number of vaccines received against COVID-19", 5),
-        Group = rate_all_cause_mortality_cov_vaccines$covid_vaccines
+        Group = rate_all_cause_mortality_cov_vaccines$covid_vaccination_count
       )
     )
   }
@@ -2351,42 +1715,34 @@ if (cohort == "infants") {
                    "Maternal Smoking Status", "Maternal Drinking", "Maternal Drug Usage",
                    "Maternal Pertussis Vaccination Status", 
                    "Maternal Influenza Vaccination Status")
-} else if (cohort == "children_and_adolescents") {
-  if (study_start_date >= covid_season_min) {
-    table_groups = c("Total", "Age", "Sex", "Ethnicity", "IMD Quintile",
-                   "Asthma or Reactive Airway Disease", 
-                   "Number of vaccines received against COVID-19",
-                   "Vaccinated against Influenza in season")
-  } else {
-    table_groups = c("Total", "Age", "Sex", "Ethnicity", "IMD Quintile",
-                     "Asthma or Reactive Airway Disease", 
-                     "Vaccinated against Influenza in season")
-  }
 } else {
   if (study_start_date >= covid_season_min) {
     table_groups = c("Total", "Age", "Sex", "Ethnicity", "IMD Quintile",
-                   "Number of vaccines received against COVID-19",
-                   "Vaccinated against Influenza in season")
+                     "Rurality Classification",
+                     "Number of vaccines received against COVID-19",
+                     "Vaccinated against Influenza in season")
   } else {
     table_groups = c("Total", "Age", "Sex", "Ethnicity", "IMD Quintile",
+                     "Rurality Classification",
                      "Vaccinated against Influenza in season")
   }
 } 
 
 #create gtsummary table which displays rate by group for each outcome type
 results %>%
+  mutate_if(is.numeric, round, digits = 4) %>%
   select(Outcome, Group, Characteristic, Rate) %>%
   spread(key = Outcome, value = Rate) %>%
   group_by(Characteristic) %>%
   gt(groupname_col = "Characteristic") %>%
     row_group_order(groups = c(table_groups)) %>%
-    fmt_number(columns = tidyselect::where(is.numeric), decimals = 4) %>% 
-    tab_header(
-      title = "Rate per 1000 person-years of outcomes by characteristic",
-      subtitle = "Group-wise breakdown"
-    ) %>%
+  tab_header(
+    title = "Rate per 1000 person-years of outcomes by characteristic",
+    subtitle = "Group-wise breakdown"
+  ) %>%
   gtsave(filename = paste0("results1_", cohort, "_", year(study_start_date),
-                               "_", year(study_end_date), ".html"), 
+                               "_", year(study_end_date), "_",
+                           codelist_type, ".html"), 
          path = here::here("output", "results"))
 
 if (length(args) == 0) {
@@ -2396,7 +1752,7 @@ if (length(args) == 0) {
     as_tibble() %>%
     write_csv(file = paste0(here::here("output", "results"), "/", "results1_",
                             cohort, "_", year(study_start_date), "_",
-                            year(study_end_date),".csv"))
+                            year(study_end_date), "_", codelist_type, ".csv"))
 } else {
   #export results table to csv
   results %>%
@@ -2404,5 +1760,5 @@ if (length(args) == 0) {
     as_tibble() %>%
       write_csv(path = paste0(here::here("output", "results"), "/", "results1_",
                               cohort, "_", year(study_start_date), "_",
-                              year(study_end_date),".csv"))
+                              year(study_end_date), "_", codelist_type, ".csv"))
 }
