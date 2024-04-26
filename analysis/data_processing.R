@@ -86,11 +86,11 @@ df_input <- df_input %>%
       imd_rounded < as.integer(32800 * 4 / 5) ~ "4",
       imd_rounded < as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
       TRUE ~ NA_character_),
-    #format sex
-    sex = case_when(
-      sex == "female" ~ "Female",
-      sex == "male" ~ "Male",
-      TRUE ~ "Unknown")
+    # #format sex
+    # sex = case_when(
+    #   sex == "female" ~ "Female",
+    #   sex == "male" ~ "Male",
+    #   TRUE ~ "Unknown")
   )
 
 # Identify columns with logical values, excluding specified columns

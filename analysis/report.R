@@ -439,88 +439,88 @@ results <- rbind(
 )
 
 #calculate person time and rate for rsv mild outcomes by sex
-py_rsv_primary_sex <- pyears(time_rsv_primary ~ rsv_primary_inf + sex,
+py_rsv_primary_sex <- pyears(time_rsv_primary ~ rsv_primary_inf + factor(sex),
                              data = df_input, data.frame = T)[["data"]]
 py_1000_rsv_primary_sex <- py_rsv_primary_sex %>%
   mutate(pyears_1000 = pyears/nrow(df_input)*1000,
          rsv_mild_rate = n/pyears_1000)
 rate_rsv_mild_sex <- rlang::duplicate(py_1000_rsv_primary_sex)
 rate_rsv_mild_sex <- subset(rate_rsv_mild_sex, rsv_primary_inf == 1, 
-                            select = c(rsv_mild_rate, sex))
+                            select = c(rsv_mild_rate, `factor(sex)`))
 
 #calculate person time and rate for rsv severe outcomes by sex
-py_rsv_secondary_sex <- pyears(time_rsv_secondary ~ rsv_secondary_inf + sex,
+py_rsv_secondary_sex <- pyears(time_rsv_secondary ~ rsv_secondary_inf + factor(sex),
                                data = df_input, data.frame = T)[["data"]]
 py_1000_rsv_secondary_sex <- py_rsv_secondary_sex %>%
   mutate(pyears_1000 = pyears/nrow(df_input)*1000,
          rsv_severe_rate = n/pyears_1000)
 rate_rsv_severe_sex <- rlang::duplicate(py_1000_rsv_secondary_sex)
 rate_rsv_severe_sex <- subset(rate_rsv_severe_sex, rsv_secondary_inf == 1, 
-                              select = c(rsv_severe_rate, sex))
+                              select = c(rsv_severe_rate, `factor(sex)`))
 
 #calculate person time and rate for rsv mortality by sex
-py_rsv_mortality_sex <- pyears(time_rsv_mortality ~ rsv_mortality_inf + sex,
+py_rsv_mortality_sex <- pyears(time_rsv_mortality ~ rsv_mortality_inf + factor(sex),
                                data = df_input, data.frame = T)[["data"]]
 py_1000_rsv_mortality_sex <- py_rsv_mortality_sex %>%
   mutate(pyears_1000 = pyears/nrow(df_input)*1000,
          rsv_mortality_rate = n/pyears_1000)
 rate_rsv_mortality_sex <- rlang::duplicate(py_1000_rsv_mortality_sex)
 rate_rsv_mortality_sex <- subset(rate_rsv_mortality_sex, rsv_mortality_inf == 1, 
-                                 select = c(rsv_mortality_rate, sex))
+                                 select = c(rsv_mortality_rate, `factor(sex)`))
 
 #calculate person time and rate for flu mild outcomes by sex
-py_flu_primary_sex <- pyears(time_flu_primary ~ flu_primary_inf + sex,
+py_flu_primary_sex <- pyears(time_flu_primary ~ flu_primary_inf + factor(sex),
                             data = df_input, data.frame = T)[["data"]]
 py_1000_flu_primary_sex <- py_flu_primary_sex %>%
   mutate(pyears_1000 = pyears/nrow(df_input)*1000,
          flu_mild_rate = n/pyears_1000)
 rate_flu_mild_sex <- rlang::duplicate(py_1000_flu_primary_sex)
 rate_flu_mild_sex <- subset(rate_flu_mild_sex, flu_primary_inf == 1, 
-                            select = c(flu_mild_rate, sex))
+                            select = c(flu_mild_rate, `factor(sex)`))
 
 #calculate person time and rate for flu severe outcomes by sex
-py_flu_secondary_sex <- pyears(time_flu_secondary ~ flu_secondary_inf + sex,
+py_flu_secondary_sex <- pyears(time_flu_secondary ~ flu_secondary_inf + factor(sex),
                               data = df_input, data.frame = T)[["data"]]
 py_1000_flu_secondary_sex <- py_flu_secondary_sex %>%
   mutate(pyears_1000 = pyears/nrow(df_input)*1000,
          flu_severe_rate = n/pyears_1000)
 rate_flu_severe_sex <- rlang::duplicate(py_1000_flu_secondary_sex)
 rate_flu_severe_sex <- subset(rate_flu_severe_sex, flu_secondary_inf == 1, 
-                              select = c(flu_severe_rate, sex))
+                              select = c(flu_severe_rate, `factor(sex)`))
 
 #calculate person time and rate for flu mortality by sex
-py_flu_mortality_sex <- pyears(time_flu_mortality ~ flu_mortality_inf + sex,
+py_flu_mortality_sex <- pyears(time_flu_mortality ~ flu_mortality_inf + factor(sex),
                               data = df_input, data.frame = T)[["data"]]
 py_1000_flu_mortality_sex <- py_flu_mortality_sex %>%
   mutate(pyears_1000 = pyears/nrow(df_input)*1000,
          flu_mortality_rate = n/pyears_1000)
 rate_flu_mortality_sex <- rlang::duplicate(py_1000_flu_mortality_sex)
 rate_flu_mortality_sex <- subset(rate_flu_mortality_sex, flu_mortality_inf == 1, 
-                                 select = c(flu_mortality_rate, sex))
+                                 select = c(flu_mortality_rate, `factor(sex)`))
 
 if (study_start_date >= covid_season_min) {
   #calculate person time and rate for covid mild outcomes by sex
-  py_covid_primary_sex <- pyears(time_covid_primary ~ covid_primary_inf + sex,
+  py_covid_primary_sex <- pyears(time_covid_primary ~ covid_primary_inf + factor(sex),
                                data = df_input, data.frame = T)[["data"]]
   py_1000_covid_primary_sex <- py_covid_primary_sex %>%
     mutate(pyears_1000 = pyears/nrow(df_input)*1000,
            covid_mild_rate = n/pyears_1000)
   rate_covid_mild_sex <- rlang::duplicate(py_1000_covid_primary_sex)
   rate_covid_mild_sex <- subset(rate_covid_mild_sex, covid_primary_inf == 1, 
-                                select = c(covid_mild_rate, sex))
+                                select = c(covid_mild_rate, `factor(sex)`))
   
   #calculate person time and rate for covid severe outcomes by sex
-  py_covid_secondary_sex <- pyears(time_covid_secondary ~ covid_secondary_inf + sex,
+  py_covid_secondary_sex <- pyears(time_covid_secondary ~ covid_secondary_inf + factor(sex),
                                  data = df_input, data.frame = T)[["data"]]
   py_1000_covid_secondary_sex <- py_covid_secondary_sex %>%
     mutate(pyears_1000 = pyears/nrow(df_input)*1000,
            covid_severe_rate = n/pyears_1000)
   rate_covid_severe_sex <- rlang::duplicate(py_1000_covid_secondary_sex)
   rate_covid_severe_sex <- subset(rate_covid_severe_sex, covid_secondary_inf == 1, 
-                                  select = c(covid_severe_rate, sex))
+                                  select = c(covid_severe_rate, `factor(sex)`))
   
   #calculate person time and rate for covid mortality by sex
-  py_covid_mortality_sex <- pyears(time_covid_mortality ~ covid_mortality_inf + sex,
+  py_covid_mortality_sex <- pyears(time_covid_mortality ~ covid_mortality_inf + factor(sex),
                                  data = df_input, data.frame = T)[["data"]]
   py_1000_covid_mortality_sex <- py_covid_mortality_sex %>%
     mutate(pyears_1000 = pyears/nrow(df_input)*1000,
@@ -528,12 +528,12 @@ if (study_start_date >= covid_season_min) {
   rate_covid_mortality_sex <- rlang::duplicate(py_1000_covid_mortality_sex)
   rate_covid_mortality_sex <- subset(rate_covid_mortality_sex, 
                                      covid_mortality_inf == 1, 
-                                     select = c(covid_mortality_rate, sex))
+                                     select = c(covid_mortality_rate, `factor(sex)`))
 }
 
 if (codelist_type == "sensitive") {
   #calculate person time and rate for overall_resp mild outcomes by sex
-  py_overall_resp_primary_sex <- pyears(time_overall_resp_primary ~ overall_resp_primary_inf + sex,
+  py_overall_resp_primary_sex <- pyears(time_overall_resp_primary ~ overall_resp_primary_inf + factor(sex),
                                data = df_input, data.frame = T)[["data"]]
   py_1000_overall_resp_primary_sex <- py_overall_resp_primary_sex %>%
     mutate(pyears_1000 = pyears/nrow(df_input)*1000,
@@ -541,10 +541,10 @@ if (codelist_type == "sensitive") {
   rate_overall_resp_mild_sex <- rlang::duplicate(py_1000_overall_resp_primary_sex)
   rate_overall_resp_mild_sex <- subset(rate_overall_resp_mild_sex,
                                        overall_resp_primary_inf == 1, 
-                                       select = c(overall_resp_mild_rate, sex))
+                                       select = c(overall_resp_mild_rate, `factor(sex)`))
   
   #calculate person time and rate for overall_resp severe outcomes by sex
-  py_overall_resp_secondary_sex <- pyears(time_overall_resp_secondary ~ overall_resp_secondary_inf + sex,
+  py_overall_resp_secondary_sex <- pyears(time_overall_resp_secondary ~ overall_resp_secondary_inf + factor(sex),
                                  data = df_input, data.frame = T)[["data"]]
   py_1000_overall_resp_secondary_sex <- py_overall_resp_secondary_sex %>%
     mutate(pyears_1000 = pyears/nrow(df_input)*1000,
@@ -552,10 +552,10 @@ if (codelist_type == "sensitive") {
   rate_overall_resp_severe_sex <- rlang::duplicate(py_1000_overall_resp_secondary_sex)
   rate_overall_resp_severe_sex <- subset(rate_overall_resp_severe_sex,
                                          overall_resp_secondary_inf == 1, 
-                                         select = c(overall_resp_severe_rate, sex))
+                                         select = c(overall_resp_severe_rate, `factor(sex)`))
   
   #calculate person time and rate for overall_resp mortality by sex
-  py_overall_resp_mortality_sex <- pyears(time_overall_resp_mortality ~ overall_resp_mortality_inf + sex,
+  py_overall_resp_mortality_sex <- pyears(time_overall_resp_mortality ~ overall_resp_mortality_inf + factor(sex),
                                  data = df_input, data.frame = T)[["data"]]
   py_1000_overall_resp_mortality_sex <- py_overall_resp_mortality_sex %>%
     mutate(pyears_1000 = pyears/nrow(df_input)*1000,
@@ -563,11 +563,11 @@ if (codelist_type == "sensitive") {
   rate_overall_resp_mortality_sex <- rlang::duplicate(py_1000_overall_resp_mortality_sex)
   rate_overall_resp_mortality_sex <- subset(rate_overall_resp_mortality_sex,
                                             overall_resp_mortality_inf == 1, 
-                                            select = c(overall_resp_mortality_rate, sex))
+                                            select = c(overall_resp_mortality_rate, `factor(sex)`))
 }
 
 #calculate person time and rate for all cause mortality by age group
-py_all_cause_mortality_sex <- pyears(time_all_cause_mortality ~ all_cause_mortality_inf + sex,
+py_all_cause_mortality_sex <- pyears(time_all_cause_mortality ~ all_cause_mortality_inf + factor(sex),
                                     data = df_input, data.frame = T)[["data"]]
 py_1000_all_cause_mortality_sex <- py_all_cause_mortality_sex %>%
   mutate(pyears_1000 = pyears/nrow(df_input)*1000,
@@ -575,7 +575,7 @@ py_1000_all_cause_mortality_sex <- py_all_cause_mortality_sex %>%
 rate_all_cause_mortality_sex <- rlang::duplicate(py_1000_all_cause_mortality_sex)
 rate_all_cause_mortality_sex <- subset(rate_all_cause_mortality_sex,
                                        all_cause_mortality_inf == 1, 
-                                       select = c(all_cause_mortality_rate, sex))
+                                       select = c(all_cause_mortality_rate, `factor(sex)`))
 
 #add these to the results table with 'Group' as sex
 results <- rbind(
@@ -588,8 +588,8 @@ results <- rbind(
              rate_rsv_mortality_sex$rsv_mortality_rate, rate_flu_mild_sex$flu_mild_rate,
              rate_flu_severe_sex$flu_severe_rate, rate_flu_mortality_sex$flu_mortality_rate),
     Characteristic = rep("Sex", 12),
-    Group = c(rate_rsv_mild_sex$sex, rate_rsv_severe_sex$sex, rate_rsv_mortality_sex$sex,
-              rate_flu_mild_sex$sex, rate_flu_severe_sex$sex, rate_flu_mortality_sex$sex)
+    Group = c(rate_rsv_mild_sex$`factor(sex)`, rate_rsv_severe_sex$`factor(sex)`, rate_rsv_mortality_sex$`factor(sex)`,
+              rate_flu_mild_sex$`factor(sex)`, rate_flu_severe_sex$`factor(sex)`, rate_flu_mortality_sex$`factor(sex)`)
   )
 )
 
@@ -602,7 +602,7 @@ if (study_start_date >= covid_season_min) {
       Rate = c(rate_covid_mild_sex$covid_mild_rate, rate_covid_severe_sex$covid_severe_rate, 
                rate_covid_mortality_sex$covid_mortality_rate),
       Characteristic = rep("Sex", 6),
-      Group = c(rate_covid_mild_sex$sex, rate_covid_severe_sex$sex, rate_covid_mortality_sex$sex)
+      Group = c(rate_covid_mild_sex$`factor(sex)`, rate_covid_severe_sex$`factor(sex)`, rate_covid_mortality_sex$`factor(sex)`)
     )
   )
 }
@@ -617,8 +617,8 @@ if (codelist_type == "sensitive") {
                rate_overall_resp_severe_sex$overall_resp_severe_rate, 
                rate_overall_resp_mortality_sex$overall_resp_mortality_rate),
       Characteristic = rep("Sex", 6),
-      Group = c(rate_overall_resp_mild_sex$sex, rate_overall_resp_severe_sex$sex, 
-                rate_overall_resp_mortality_sex$sex)
+      Group = c(rate_overall_resp_mild_sex$`factor(sex)`, rate_overall_resp_severe_sex$`factor(sex)`, 
+                rate_overall_resp_mortality_sex$`factor(sex)`)
     )
   )
 }
@@ -630,7 +630,7 @@ results <- rbind(
     Outcome = rep("All cause mortality", 2),
     Rate = rate_all_cause_mortality_sex$all_cause_mortality_rate,
     Characteristic = rep("Sex", 2),
-    Group = rate_all_cause_mortality_sex$sex
+    Group = rate_all_cause_mortality_sex$`factor(sex)`
   )
 )
 
@@ -1735,7 +1735,7 @@ results %>%
   spread(key = Outcome, value = Rate) %>%
   group_by(Characteristic) %>%
   gt(groupname_col = "Characteristic") %>%
-    row_group_order(groups = c(table_groups)) %>%
+  row_group_order(groups = c(table_groups)) %>%
   tab_header(
     title = "Rate per 1000 person-years of outcomes by characteristic",
     subtitle = "Group-wise breakdown"
@@ -1747,17 +1747,35 @@ results %>%
 
 if (length(args) == 0) {
   #export results table to csv
-  results %>%
-    tbl_summary() %>%
-    as_tibble() %>%
-    write_csv(file = paste0(here::here("output", "results"), "/", "results1_",
-                            cohort, "_", year(study_start_date), "_",
-                            year(study_end_date), "_", codelist_type, ".csv"))
+  results_table <- results %>%
+    mutate_if(is.numeric, round, digits = 4) %>%
+    select(Outcome, Group, Characteristic, Rate) %>%
+    spread(key = Outcome, value = Rate) %>%
+    group_by(Characteristic) %>%
+    gt(groupname_col = "Characteristic") %>%
+    row_group_order(groups = c(table_groups)) %>%
+    tab_header(
+      title = "Rate per 1000 person-years of outcomes by characteristic",
+      subtitle = "Group-wise breakdown"
+    )
+  results_table_frame <- as.data.frame(results_table) %>%
+    write_csv(file = paste0(here::here("output", "results"), "/", 
+              "results1_", cohort, "_", year(study_start_date), "_", 
+              year(study_end_date), "_", codelist_type, ".csv"))
 } else {
   #export results table to csv
-  results %>%
-    tbl_summary() %>%
-    as_tibble() %>%
+  results_table <- results %>%
+    mutate_if(is.numeric, round, digits = 4) %>%
+    select(Outcome, Group, Characteristic, Rate) %>%
+    spread(key = Outcome, value = Rate) %>%
+    group_by(Characteristic) %>%
+    gt(groupname_col = "Characteristic") %>%
+    row_group_order(groups = c(table_groups)) %>%
+    tab_header(
+      title = "Rate per 1000 person-years of outcomes by characteristic",
+      subtitle = "Group-wise breakdown"
+    )
+  results_table_frame <- as.data.frame(results_table) %>%
       write_csv(path = paste0(here::here("output", "results"), "/", "results1_",
                               cohort, "_", year(study_start_date), "_",
                               year(study_end_date), "_", codelist_type, ".csv"))
