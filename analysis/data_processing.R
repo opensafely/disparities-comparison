@@ -67,30 +67,34 @@ df_input <- df_input %>%
     )
 }
 
+df_input$age_band <- factor(df_input$age_band)
+
 #data manipulation
 df_input <- df_input %>%
   mutate(
     #assign ethnicity group
-    latest_ethnicity_group = case_when(
+    latest_ethnicity_group = factor(case_when(
       latest_ethnicity_code == "1" ~ "White",
       latest_ethnicity_code == "2" ~ "Mixed",
       latest_ethnicity_code == "3" ~ "Asian or Asian British",
       latest_ethnicity_code == "4" ~ "Black or Black British",
       latest_ethnicity_code == "5" ~ "Other Ethnic Groups",
-      TRUE ~ "Unknown"),
+      TRUE ~ "Unknown")),
     #calculate IMD quintile
-    imd_quintile = case_when(
+    imd_quintile = factor(case_when(
       imd_rounded >= 0 & imd_rounded < as.integer(32800 * 1 / 5) ~ "1 (most deprived)",
       imd_rounded < as.integer(32800 * 2 / 5) ~ "2",
       imd_rounded < as.integer(32800 * 3 / 5) ~ "3",
       imd_rounded < as.integer(32800 * 4 / 5) ~ "4",
       imd_rounded < as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
-      TRUE ~ NA_character_),
-    # #format sex
-    # sex = case_when(
-    #   sex == "female" ~ "Female",
-    #   sex == "male" ~ "Male",
-    #   TRUE ~ "Unknown")
+      TRUE ~ NA_character_)),
+    #format sex
+    sex = factor(case_when(
+      sex == "female" ~ "Female",
+      sex == "male" ~ "Male",
+      sex == "intersex" ~ "Intersex",
+      sex == "unknown" ~ "Unknown",
+      TRUE ~ "Unknown"))
   )
 
 # Identify columns with logical values, excluding specified columns
@@ -100,11 +104,11 @@ logical_cols <- which(sapply(df_input, is.logical) & !grepl("primary|secondary|m
 df_input <- df_input %>%
   mutate(across(
     .cols = logical_cols, 
-    .fns = ~case_when(
+    .fns = ~factor(case_when(
       . == FALSE ~ "No",
       . == TRUE ~ "Yes",
       TRUE ~ NA_character_
-    )
+    ))
   ))
 
 #reverse order of IMD classifications
@@ -120,32 +124,32 @@ df_input <- df_input %>%
                            "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
                            "7" = "5", "8" = "5"),
     #define household size categories
-    household_size_cat = case_when(
+    household_size_cat = factor(case_when(
       household_size >= 1 & household_size <= 2 ~ "1",
       household_size >= 3 & household_size <= 5 ~ "2",
       household_size >= 6 ~ "3",
-      TRUE ~ "Unknown"),
+      TRUE ~ "Unknown")),
     #assign rurality classification
-    rurality_classification = case_when(
+    rurality_classification = factor(case_when(
       rurality_code == "1" ~ "Urban Major Conurbation",
       rurality_code == "2" ~ "Urban Minor Conurbation",
       rurality_code == "3" ~ "Urban City and Town",
       rurality_code == "4" ~ "Rural Town and Fringe",
       rurality_code == "5" ~ "Rural Village and Dispersed",
-      TRUE ~ "Unknown")
+      TRUE ~ "Unknown"))
   )
 
 #covid vaccination counts
 if (study_start_date >= covid_season_min) {
   df_input <- df_input %>%
     mutate(
-      covid_vaccination_count = case_when(
+      covid_vaccination_count = factor(case_when(
         covid_vaccination_count == "0" ~ "0",
         covid_vaccination_count == "1" ~ "1",
         covid_vaccination_count == "2" ~ "2",
         covid_vaccination_count == "3" ~ "3",
         covid_vaccination_count == "4" ~ "4+",
-        TRUE ~ "0")
+        TRUE ~ "0"))
     )
 }
 
