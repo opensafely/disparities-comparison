@@ -156,6 +156,79 @@ if (study_start_date >= covid_season_min) {
 #define seasons for covid
 covid_season_min = as.Date("2019-09-01", format = "%Y-%m-%d")
 
+#infer outcomes from event dates 
+df_input <- df_input %>%
+  mutate(
+    #infer presence of mild rsv
+    rsv_primary = case_when(
+      !is.na(rsv_primary_date) ~ TRUE,
+      TRUE ~ FALSE),
+    #infer presence of severe rsv
+    rsv_secondary = case_when(
+      !is.na(rsv_secondary_date) ~ TRUE,
+      TRUE ~ FALSE),
+    #infer presence of rsv mortality
+    rsv_mortality = case_when(
+      !is.na(rsv_mortality_date) ~ TRUE,
+      TRUE ~ FALSE),
+    #infer presence of mild flu
+    flu_primary = case_when(
+      !is.na(flu_primary_date) ~ TRUE,
+      TRUE ~ FALSE),
+    #infer presence of severe flu
+    flu_secondary = case_when(
+      !is.na(flu_secondary_date) ~ TRUE,
+      TRUE ~ FALSE),
+    #infer presence of flu mortality
+    flu_mortality = case_when(
+      !is.na(flu_mortality_date) ~ TRUE,
+      TRUE ~ FALSE)
+  )
+
+if (study_start_date >= covid_season_min) {
+  df_input <- df_input %>%
+    mutate(
+      #infer presence of mild covid
+      covid_primary = case_when(
+        !is.na(covid_primary_date) ~ TRUE,
+        TRUE ~ FALSE),
+      #infer presence of severe covid
+      covid_secondary = case_when(
+        !is.na(covid_secondary_date) ~ TRUE,
+        TRUE ~ FALSE),
+      #infer presence of covid mortality
+      covid_mortality = case_when(
+        !is.na(covid_mortality_date) ~ TRUE,
+        TRUE ~ FALSE)
+    )
+}
+
+if (codelist_type == "sensitive") {
+  df_input <- df_input %>%
+    mutate(
+      #infer presence of mild overall respiratory
+      overall_resp_primary = case_when(
+        !is.na(overall_resp_primary_date) ~ TRUE,
+        TRUE ~ FALSE),
+      #infer presence of severe overall respiratory
+      overall_resp_secondary = case_when(
+        !is.na(overall_resp_secondary_date) ~ TRUE,
+        TRUE ~ FALSE),
+      #infer presence of overall respiratory mortality
+      overall_resp_mortality = case_when(
+        !is.na(overall_resp_mortality_date) ~ TRUE,
+        TRUE ~ FALSE)
+    )
+}
+
+df_input <- df_input %>%
+  mutate(
+    #infer presence of all cause mortality
+    all_cause_mortality = case_when(
+      !is.na(all_cause_mortality_date) ~ TRUE,
+      TRUE ~ FALSE)
+  )
+
 #define event time 
 if (study_start_date < covid_season_min) {
   df_input <- df_input %>%
