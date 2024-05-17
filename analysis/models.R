@@ -13,11 +13,11 @@ fs::dir_create(here("analysis"))
 source(here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- "2022-09-01"
-  study_end_date <- "2023-08-31"
-  cohort <- "infants"
-  codelist_type <- "specific"
-  investigation_type <- "primary"
+  study_start_date <- "2016-09-01"
+  study_end_date <- "2017-08-31"
+  cohort <- "adults"
+  codelist_type <- "sensitive"
+  investigation_type <- "secondary"
 } else {
   study_start_date <- study_dates[[args[[2]]]]
   study_end_date <- study_dates[[args[[3]]]]
@@ -822,15 +822,18 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
   cbind(model_name = model_names[i], model_outputs_list[[i]])
 }))
 
+## create output directories ----
+fs::dir_create(here("output", "results", "models"))
+
 #save model output 
 if (length(args) == 0) {
   model_outputs %>%
-    write_csv(file = paste0(here::here("output", "results"), "/", "model_outputs_",
-                            cohort, "_", year(study_start_date), "_",
-                            year(study_end_date), "_", codelist_type, ".csv"))
+    write_csv(file = paste0(here::here("output", "results", "models"), "/", 
+                            "model_outputs_", cohort, "_", year(study_start_date), 
+                            "_", year(study_end_date), "_", codelist_type, ".csv"))
 }  else{
   model_outputs %>%
-    write_csv(path = paste0(here::here("output", "results"), "/", "model_outputs_",
-                          cohort, "_", year(study_start_date), "_",
-                          year(study_end_date), "_", codelist_type, ".csv"))
+    write_csv(path = paste0(here::here("output", "results", "models"), "/", 
+                            "model_outputs_", cohort, "_", year(study_start_date),
+                            "_", year(study_end_date), "_", codelist_type, ".csv"))
 }

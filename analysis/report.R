@@ -1708,6 +1708,9 @@ if (cohort == "infants") {
   }
 } 
 
+## create output directories ----
+fs::dir_create(here("output", "results", "rates"))
+
 # #create gtsummary table which displays rate by group for each outcome type
 # final_results %>%
 #   mutate_if(is.numeric, round, digits = 4) %>%
@@ -1719,10 +1722,10 @@ if (cohort == "infants") {
 #     title = "Rate per 1000 person-years of outcomes by characteristic",
 #     subtitle = "Group-wise breakdown"
 #   ) %>%
-#   gtsave(filename = paste0("results1_", cohort, "_", year(study_start_date),
+#   gtsave(filename = paste0("rates_", cohort, "_", year(study_start_date),
 #                            "_", year(study_end_date), "_",
 #                            codelist_type, ".html"), 
-#          path = here::here("output", "results"))
+#          path = here::here("output", "results", "rates))
 
 if (length(args) == 0) {
   #export results table to csv
@@ -1737,8 +1740,8 @@ if (length(args) == 0) {
       subtitle = "Group-wise breakdown"
     )
   results_table_frame <- as.data.frame(results_table) %>%
-    write_csv(file = paste0(here::here("output", "results"), "/", 
-                            "results1_", cohort, "_", year(study_start_date), "_", 
+    write_csv(file = paste0(here::here("output", "results", "rates"), "/", 
+                            "rates_", cohort, "_", year(study_start_date), "_", 
                             year(study_end_date), "_", codelist_type, ".csv"))
 } else {
   #export results table to csv
@@ -1753,7 +1756,7 @@ if (length(args) == 0) {
       subtitle = "Group-wise breakdown"
     )
   results_table_frame <- as.data.frame(results_table) %>%
-    write_csv(path = paste0(here::here("output", "results"), "/", "results1_",
+    write_csv(path = paste0(here::here("output", "results", "rates"), "/", "rates_",
                             cohort, "_", year(study_start_date), "_",
                             year(study_end_date), "_", codelist_type, ".csv"))
 }

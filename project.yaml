@@ -134,14 +134,14 @@ actions:
     needs: [process_dataset_older_adults_s1_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/results1_older_adults_2016_2017_specific.csv
+        csv: output/results/rates/rates_older_adults_2016_2017_specific.csv
   
   analyse_dataset_older_adults_s1_spec:
     run: r:latest analysis/models.R older_adults season1_start_date season1_end_date specific primary
     needs: [process_dataset_older_adults_s1_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/model_outputs_older_adults_2016_2017_specific.csv
+        csv: output/results/models/model_outputs_older_adults_2016_2017_specific.csv
 
   generate_dataset_adults_s1_spec:
     run: >
@@ -165,14 +165,14 @@ actions:
     needs: [process_dataset_adults_s1_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/results1_adults_2016_2017_specific.csv
+        csv: output/results/rates/rates_adults_2016_2017_specific.csv
 
   analyse_dataset_adults_s1_spec:
     run: r:latest analysis/models.R adults season1_start_date season1_end_date specific primary
     needs: [process_dataset_adults_s1_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/model_outputs_adults_2016_2017_specific.csv
+        csv: output/results/models/model_outputs_adults_2016_2017_specific.csv
 
   generate_dataset_children_and_adolescents_s1_spec:
     run: >
@@ -196,14 +196,14 @@ actions:
     needs: [process_dataset_children_and_adolescents_s1_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/results1_children_and_adolescents_2016_2017_specific.csv
+        csv: output/results/rates/rates_children_and_adolescents_2016_2017_specific.csv
 
   analyse_dataset_children_and_adolescents_s1_spec:
     run: r:latest analysis/models.R children_and_adolescents season1_start_date season1_end_date specific primary
     needs: [process_dataset_children_and_adolescents_s1_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/model_outputs_children_and_adolescents_2016_2017_specific.csv
+        csv: output/results/models/model_outputs_children_and_adolescents_2016_2017_specific.csv
   
   generate_dataset_infants_s1_spec:
     run: >
@@ -227,14 +227,14 @@ actions:
     needs: [process_dataset_infants_s1_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/results1_infants_2016_2017_specific.csv
+        csv: output/results/rates/rates_infants_2016_2017_specific.csv
   
   analyse_dataset_infants_s1_spec:
     run: r:latest analysis/models.R infants season1_start_date season1_end_date specific primary
     needs: [process_dataset_infants_s1_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/model_outputs_infants_2016_2017_specific.csv
+        csv: output/results/models/model_outputs_infants_2016_2017_specific.csv
 
 ##  season 7 (2022/23) 
 
@@ -260,14 +260,14 @@ actions:
     needs: [process_dataset_older_adults_s7_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/results1_older_adults_2022_2023_specific.csv
+        csv: output/results/rates/rates_older_adults_2022_2023_specific.csv
   
   analyse_dataset_older_adults_s7_spec:
     run: r:latest analysis/models.R older_adults season7_start_date season7_end_date specific primary
     needs: [process_dataset_older_adults_s7_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/model_outputs_older_adults_2022_2023_specific.csv
+        csv: output/results/models/model_outputs_older_adults_2022_2023_specific.csv
 
   generate_dataset_adults_s7_spec:
     run: >
@@ -291,14 +291,14 @@ actions:
     needs: [process_dataset_adults_s7_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/results1_adults_2022_2023_specific.csv
+        csv: output/results/rates/rates_adults_2022_2023_specific.csv
   
   analyse_dataset_adults_s7_spec:
     run: r:latest analysis/models.R adults season7_start_date season7_end_date specific primary
     needs: [process_dataset_adults_s7_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/model_outputs_adults_2022_2023_specific.csv
+        csv: output/results/models/model_outputs_adults_2022_2023_specific.csv
 
   generate_dataset_children_and_adolescents_s7_spec:
     run: >
@@ -322,14 +322,14 @@ actions:
     needs: [process_dataset_children_and_adolescents_s7_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/results1_children_and_adolescents_2022_2023_specific.csv
+        csv: output/results/rates/rates_children_and_adolescents_2022_2023_specific.csv
   
   analyse_dataset_children_and_adolescents_s7_spec:
     run: r:latest analysis/models.R children_and_adolescents season7_start_date season7_end_date specific primary
     needs: [process_dataset_children_and_adolescents_s7_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/model_outputs_children_and_adolescents_2022_2023_specific.csv
+        csv: output/results/models/model_outputs_children_and_adolescents_2022_2023_specific.csv
 
   generate_dataset_infants_s7_spec:
     run: >
@@ -353,14 +353,14 @@ actions:
     needs: [process_dataset_infants_s7_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/results1_infants_2022_2023_specific.csv
+        csv: output/results/rates/rates_infants_2022_2023_specific.csv
   
   analyse_dataset_infants_s7_spec:
     run: r:latest analysis/models.R infants season7_start_date season7_end_date specific primary
     needs: [process_dataset_infants_s7_spec]
     outputs:
       moderately_sensitive:
-        csv: output/results/model_outputs_infants_2022_2023_specific.csv
+        csv: output/results/models/model_outputs_infants_2022_2023_specific.csv
 
 ### sensitivity analysis
 
@@ -388,14 +388,14 @@ actions:
     needs: [process_dataset_older_adults_s1_sens]
     outputs:
       moderately_sensitive:
-        csv: output/results/results1_older_adults_2016_2017_sensitive.csv
+        csv: output/results/rates/rates_older_adults_2016_2017_sensitive.csv
 
   analyse_dataset_older_adults_s1_sens:
     run: r:latest analysis/models.R older_adults season1_start_date season1_end_date sensitive primary
     needs: [process_dataset_older_adults_s1_sens]
     outputs:
       moderately_sensitive:
-        csv: output/results/model_outputs_older_adults_2016_2017_sensitive.csv
+        csv: output/results/models/model_outputs_older_adults_2016_2017_sensitive.csv
 
   generate_dataset_adults_s1_sens:
     run: >
@@ -419,14 +419,14 @@ actions:
     needs: [process_dataset_adults_s1_sens]
     outputs:
       moderately_sensitive:
-        csv: output/results/results1_adults_2016_2017_sensitive.csv
+        csv: output/results/rates/rates_adults_2016_2017_sensitive.csv
 
   analyse_dataset_adults_s1_sens:
     run: r:latest analysis/models.R adults season1_start_date season1_end_date sensitive primary
     needs: [process_dataset_adults_s1_sens]
     outputs:
       moderately_sensitive:
-        csv: output/results/model_outputs_adults_2016_2017_sensitive.csv
+        csv: output/results/models/model_outputs_adults_2016_2017_sensitive.csv
 
   generate_dataset_children_and_adolescents_s1_sens:
     run: >
@@ -450,14 +450,14 @@ actions:
     needs: [process_dataset_children_and_adolescents_s1_sens]
     outputs:
       moderately_sensitive:
-        csv: output/results/results1_children_and_adolescents_2016_2017_sensitive.csv
+        csv: output/results/rates/rates_children_and_adolescents_2016_2017_sensitive.csv
 
   analyse_dataset_children_and_adolescents_s1_sens:
     run: r:latest analysis/models.R children_and_adolescents season1_start_date season1_end_date sensitive primary
     needs: [process_dataset_children_and_adolescents_s1_sens]
     outputs:
       moderately_sensitive:
-        csv: output/results/model_outputs_children_and_adolescents_2016_2017_sensitive.csv
+        csv: output/results/models/model_outputs_children_and_adolescents_2016_2017_sensitive.csv
 
   generate_dataset_infants_s1_sens:
     run: >
@@ -481,14 +481,14 @@ actions:
     needs: [process_dataset_infants_s1_sens]
     outputs:
       moderately_sensitive:
-        csv: output/results/results1_infants_2016_2017_sensitive.csv
+        csv: output/results/rates/rates_infants_2016_2017_sensitive.csv
 
   analyse_dataset_infants_s1_sens:
     run: r:latest analysis/models.R infants season1_start_date season1_end_date sensitive primary
     needs: [process_dataset_infants_s1_sens]
     outputs:
       moderately_sensitive:
-        csv: output/results/model_outputs_infants_2016_2017_sensitive.csv
+        csv: output/results/models/model_outputs_infants_2016_2017_sensitive.csv
 
 ### secondary analysis
 
@@ -510,13 +510,6 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/data/input_processed_older_adults_2016_2017_sensitive_secondary.arrow
-
-  # describe_dataset_older_adults_s1_sens_sec:
-  #   run: r:latest analysis/report.R older_adults season1_start_date season1_end_date sensitive secondary
-  #   needs: [process_dataset_older_adults_s1_sens_sec]
-  #   outputs:
-  #     moderately_sensitive:
-  #       png: output/models/descriptive_older_adults_2016_2017_sensitive_secondary.png
   
   generate_dataset_adults_s1_sens_sec:
     run: >
@@ -534,13 +527,6 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/data/input_processed_adults_2016_2017_sensitive_secondary.arrow
-
-  # describe_dataset_adults_s1_sens_sec:
-  #   run: r:latest analysis/report.R adults season1_start_date season1_end_date sensitive secondary
-  #   needs: [process_dataset_adults_s1_sens_sec]
-  #   outputs:
-  #     moderately_sensitive:
-  #       png: output/models/descriptive_adults_2016_2017_sensitive_secondary.png
   
   generate_dataset_children_and_adolescents_s1_sens_sec:
     run: >
@@ -558,13 +544,6 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/data/input_processed_children_and_adolescents_2016_2017_sensitive_secondary.arrow
-
-  # describe_dataset_children_and_adolescents_s1_sens_sec:
-  #   run: r:latest analysis/report.R children_and_adolescents season1_start_date season1_end_date sensitive secondary
-  #   needs: [process_dataset_children_and_adolescents_s1_sens_sec]
-  #   outputs:
-  #     moderately_sensitive:
-  #       png: output/models/descriptive_children_and_adolescents_2016_2017_sensitive_secondary.png
   
   generate_dataset_infants_s1_sens_sec:
     run: >
@@ -582,10 +561,3 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/data/input_processed_infants_2016_2017_sensitive_secondary.arrow
-
-  # describe_dataset_infants_s1_sens_sec:
-  #   run: r:latest analysis/report.R infants season1_start_date season1_end_date sensitive secondary
-  #   needs: [process_dataset_infants_s1_sens_sec]
-  #   outputs:
-  #     moderately_sensitive:
-  #       png: output/models/descriptive_infants_2016_2017_sensitive_secondary.png
