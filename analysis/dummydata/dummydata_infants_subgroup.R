@@ -95,7 +95,7 @@ sim_list = lst(
   
   #rurality classification
   rural_urban_classification = bn_node(
-    ~ as.integer(runif(n = ..n, min = 1, max = 8))
+    ~ as.integer(runif(n = ..n, min = 1, max = 8), missing_rate = ~ 0.001)
   ),
   
   #gestational age
@@ -389,14 +389,12 @@ sim_list = lst(
   
   #all cause mortality
   all_cause_mortality = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.3)
+    ~ ifelse(death_day <= index_day + 365, TRUE, FALSE)
   ),
   
   #date
   all_cause_mortality_day = bn_node(
-    ~ ifelse(all_cause_mortality == TRUE,
-             as.integer(runif(n = ..n, index_day, index_day + 365)),
-             NA)
+    ~ ifelse(death_day <= index_day + 365, death_day, NA)
   ),
   
   ##exclusion criteria
