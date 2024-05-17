@@ -236,7 +236,38 @@ actions:
       moderately_sensitive:
         csv: output/results/model_outputs_infants_2016_2017_specific.csv
 
-##  season 7 (2022/23) - tester action for covid outcomes 
+##  season 7 (2022/23) 
+
+  generate_dataset_older_adults_s7_spec:
+    run: >
+      ehrql:v1 generate-dataset analysis/dataset_definition.py
+      --output output/data/input_older_adults_2022_2023_specific_primary.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2022_2023.arrow
+      -- older_adults season7_start_date season7_end_date specific primary
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_older_adults_2022_2023_specific_primary.arrow
+ 
+  process_dataset_older_adults_s7_spec:
+    run: r:latest analysis/data_processing.R older_adults season7_start_date season7_end_date specific primary
+    needs: [generate_dataset_older_adults_s7_spec]
+    outputs:
+      highly_sensitive:
+        cohort: output/data/input_processed_older_adults_2022_2023_specific_primary.arrow
+
+  describe_dataset_older_adults_s7_spec:
+    run: r:latest analysis/report.R older_adults season7_start_date season7_end_date specific primary
+    needs: [process_dataset_older_adults_s7_spec]
+    outputs:
+      moderately_sensitive:
+        csv: output/results/results1_older_adults_2022_2023_specific.csv
+  
+  analyse_dataset_older_adults_s7_spec:
+    run: r:latest analysis/models.R older_adults season7_start_date season7_end_date specific primary
+    needs: [process_dataset_older_adults_s7_spec]
+    outputs:
+      moderately_sensitive:
+        csv: output/results/model_outputs_older_adults_2022_2023_specific.csv
 
   generate_dataset_adults_s7_spec:
     run: >
@@ -268,6 +299,37 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/model_outputs_adults_2022_2023_specific.csv
+
+  generate_dataset_children_and_adolescents_s7_spec:
+    run: >
+      ehrql:v1 generate-dataset analysis/dataset_definition.py
+      --output output/data/input_children_and_adolescents_2022_2023_specific_primary.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2022_2023.arrow
+      -- children_and_adolescents season7_start_date season7_end_date specific primary
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_children_and_adolescents_2022_2023_specific_primary.arrow
+ 
+  process_dataset_children_and_adolescents_s7_spec:
+    run: r:latest analysis/data_processing.R children_and_adolescents season7_start_date season7_end_date specific primary
+    needs: [generate_dataset_children_and_adolescents_s7_spec]
+    outputs:
+      highly_sensitive:
+        cohort: output/data/input_processed_children_and_adolescents_2022_2023_specific_primary.arrow
+
+  describe_dataset_children_and_adolescents_s7_spec:
+    run: r:latest analysis/report.R children_and_adolescents season7_start_date season7_end_date specific primary
+    needs: [process_dataset_children_and_adolescents_s7_spec]
+    outputs:
+      moderately_sensitive:
+        csv: output/results/results1_children_and_adolescents_2022_2023_specific.csv
+  
+  analyse_dataset_children_and_adolescents_s7_spec:
+    run: r:latest analysis/models.R children_and_adolescents season7_start_date season7_end_date specific primary
+    needs: [process_dataset_children_and_adolescents_s7_spec]
+    outputs:
+      moderately_sensitive:
+        csv: output/results/model_outputs_children_and_adolescents_2022_2023_specific.csv
 
   generate_dataset_infants_s7_spec:
     run: >
