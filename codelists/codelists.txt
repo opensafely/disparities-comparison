@@ -1,39 +1,39 @@
 opensafely/ethnicity-snomed-0removed/2e641f61/
 
 
-user/emprestige/rsv-identification-primary-care/47b6884f/
-user/emprestige/rsv-identification-secondary-care/560dcda6/
-user/emprestige/rsv-identification-primary-care-maximal-sensitivity/7c882eaf/
-user/emprestige/rsv-identification-prescriptions-maximal-sensitivity-dmd/65062298/
-user/emprestige/rsv-exclusion-primary-care-maximal-sensitivity/0e4f7e8f/
-user/emprestige/rsv-exclusion-secondary-care-maximal-sensitivity/625ccb9f/
+opensafely/rsv-identification-primary-care/47b6884f/
+opensafely/rsv-identification-secondary-care/560dcda6/
+opensafely/rsv-identification-primary-care-maximal-sensitivity/7c882eaf/
+opensafely/rsv-identification-prescriptions-maximal-sensitivity-dmd/65062298/
+opensafely/rsv-exclusion-primary-care-maximal-sensitivity/0e4f7e8f/
+opensafely/rsv-exclusion-secondary-care-maximal-sensitivity/625ccb9f/
 
-user/emprestige/covid-19-identification-primary-care/2f7731a6/
+opensafely/covid-19-identification-primary-care/2f7731a6/
 opensafely/covid-identification/2020-06-03
-user/emprestige/covid-19-identification-primary-care-maximal-sensitivity/52781f2a/
-user/emprestige/covid-19-identification-prescriptions-dmd/32e73c2e
-user/emprestige/covid-19-exclusion-primary-care-maximal-sensitivity/03e32400/
-user/emprestige/covid-19-exclusion-secondary-care-maximal-sensitivity/1fa5572b/
+opensafely/covid-19-identification-primary-care-maximal-sensitivity/52781f2a/
+opensafely/covid-19-identification-prescriptions-dmd/32e73c2e
+opensafely/covid-19-exclusion-primary-care-maximal-sensitivity/03e32400/
+opensafely/covid-19-exclusion-secondary-care-maximal-sensitivity/1fa5572b/
 
-user/emprestige/influenza-identification-primary-care/2b370a92/
-user/emprestige/influenza-identification-secondary-care/3cfe5a71/
-user/emprestige/influenza-identification-primary-care-maximal-sensitivity/178d1749/
-user/emprestige/acute-respiratory-illness-primary-care/30f1c6ca/
+opensafely/influenza-identification-primary-care/2b370a92/
+opensafely/influenza-identification-secondary-care/3cfe5a71/
+opensafely/influenza-identification-primary-care-maximal-sensitivity/178d1749/
+opensafely/acute-respiratory-illness-primary-care/30f1c6ca/
 opensafely/symptoms-fever/758b5341/
 opensafely/symptoms-cough/72d8934b/
-user/emprestige/influenza-identification-prescriptions-maximal-sensitivity-dmd/4bf6af63
-user/emprestige/influenza-exclusion-primary-care-maximal-sensitivity/7ed2e05f/
-user/emprestige/acute-respiratory-illness-secondary-care/680e1eda/
-user/emprestige/influenza-exclusion-secondary-care-maximal-sensitivity/011d9210/
+opensafely/influenza-identification-prescriptions-maximal-sensitivity-dmd/4bf6af63
+opensafely/influenza-exclusion-primary-care-maximal-sensitivity/7ed2e05f/
+opensafely/acute-respiratory-illness-secondary-care/680e1eda/
+opensafely/influenza-exclusion-secondary-care-maximal-sensitivity/011d9210/
 
-user/emprestige/respiratory-virus-unspecified-identification-primary-care/662b7b70/
+opensafely/respiratory-virus-unspecified-identification-primary-care/662b7b70/
 bristol/copd-exacerbations-snomed/162ebd1c/
 bristol/asthma_exacerbations_snomed/137bfd26/
-user/emprestige/respiratory-virus-unspecified-exclusion-primary-care/3159d510/
-user/emprestige/respiratory-virus-unspecified-identification-secondary-care/4d1c083b/
+opensafely/respiratory-virus-unspecified-exclusion-primary-care/3159d510/
+opensafely/respiratory-virus-unspecified-identification-secondary-care/4d1c083b/
 opensafely/copd-exacerbation/6858db5b/
 opensafely/asthma-exacerbation-secondary-care/229001a8/
-user/emprestige/respiratory-virus-unspecified-exclusion-secondary-care/0fd37cb0/
+opensafely/respiratory-virus-unspecified-exclusion-secondary-care/0fd37cb0/
 
 
 opensafely/smoking-clear/2020-04-29/
@@ -52,7 +52,7 @@ primis-covid19-vacc-uptake/ast/v2.5/
 primis-covid19-vacc-uptake/astrxm1/v2.5/
 primis-covid19-vacc-uptake/astrxm2/v2.5/
 nhsd-primary-care-domain-refsets/copd_cod/20210127/
-user/emprestige/copd-medications-new-dmd/1f3d48e5/
+opensafely/copd-medications-new-dmd/20b7de09/
 nhsd-primary-care-domain-refsets/copdres_cod/20200812/
 bristol/ild-snomed/2f3e3051/
 opensafely/cystic-fibrosis/2020-07-20/
