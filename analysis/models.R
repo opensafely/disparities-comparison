@@ -16,8 +16,8 @@ if (length(args) == 0) {
   study_start_date <- "2016-09-01"
   study_end_date <- "2017-08-31"
   cohort <- "adults"
-  codelist_type <- "sensitive"
-  investigation_type <- "secondary"
+  codelist_type <- "specific"
+  investigation_type <- "primary"
 } else {
   study_start_date <- study_dates[[args[[2]]]]
   study_end_date <- study_dates[[args[[3]]]]
