@@ -97,12 +97,12 @@ if (cohort == "infants") {
 fs::dir_create(here("output", "table1"))
 
 #export
-table %>%
-  tbl_summary() %>% 
-  as_gt() %>%
-  gt::gtsave(filename = paste0("table1_", cohort, "_", year(study_start_date),
-             "_", year(study_end_date), ".html"), 
-             path = here::here("output", "table1"))
+# table %>%
+#   tbl_summary() %>% 
+#   as_gt() %>%
+#   gt::gtsave(filename = paste0("table1_", cohort, "_", year(study_start_date),
+#              "_", year(study_end_date), ".html"), 
+#              path = here::here("output", "table1"))
 
 table %>%
   tbl_summary() %>%
