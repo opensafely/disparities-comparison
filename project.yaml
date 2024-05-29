@@ -107,7 +107,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/table1/table1_infants_2016_2017.csv
-  
+
+### household information extraction
+
+## season 1 (2016/17)
+
+  extract_household_information_s1:
+    run: >
+      ehrql:v1 generate-dataset analysis/dataset_definition_household.py
+      --output output/data/input_household_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_household_2016_2017.arrow
+      -- season1_start_date season1_end_date
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_household_2016_2017.arrow
+
 ### primary analysis
 
 ##  season 1 (2016/17)
