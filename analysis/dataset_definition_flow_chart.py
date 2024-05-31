@@ -56,23 +56,22 @@ age_at_start_months = (study_start_date - patients.date_of_birth).months
 #age_at_end_months = (study_end_date - patients.date_of_birth).months
 
 #get patients who are registered, have sex, age, and imd info
-registered_patients = case(
-  when(cohort == "older_adults").then(practice_registrations
-  .for_patient_on(registration_date).exists_for_patient()),
-  when(cohort == "adults").then(practice_registrations
-  .for_patient_on(registration_date).exists_for_patient()),
-  when(cohort == "children_adolescents").then(practice_registrations
-  .for_patient_on(registration_date).exists_for_patient()),
-  otherwise = practice_registrations.for_patient_on(index_date).exists_for_patient()
-)
+if cohort == "infants" or cohort == "infants_subgroup" :
+  registered_patients = practice_registrations.for_patient_on(index_date).exists_for_patient()
+else :
+  registered_patients = practice_registrations.for_patient_on(registration_date).exists_for_patient()
+
 is_female_or_male = patients.sex.is_in(["female", "male"])
-is_appropriate_age = case(
-  when(cohort == "older_adults").then((age_at_start <= 110) & (age_at_end >= 65)),
-  when(cohort == "adults").then((age_at_start <= 64) & (age_at_end >= 18)),
-  when(cohort == "children_adolescents").then((age_at_start <= 17) & (age_at_end >= 2)),
-  when(cohort == "infants").then((age_at_start_months <= 23) & (age_at_start_months >= 0)),
-  when(cohort == "infants_subgroup").then((age_at_start_months <= 23) & (age_at_start_months >= 0))
-)
+
+if cohort == "infants" or cohort == "infants_subgroup" :
+  is_appropriate_age = (age_at_start_months <= 23) & (age_at_start_months >= 0)
+elif cohort == "children_and_adolescents" :
+  is_appropriate_age = (age_at_start <= 17) & (age_at_end >= 2)
+elif cohort == "adults" :
+  is_appropriate_age = (age_at_start <= 64) & (age_at_end >= 18)
+else :
+  is_appropriate_age = (age_at_start <= 110) & (age_at_end >= 65)
+
 has_imd = (addresses.for_patient_on(index_date).imd_rounded.is_not_null())
 
 ##define functions for queries
@@ -136,7 +135,10 @@ def first_prior_meds(codelist, where = True):
     )
 
 #infections occuring after index date but before study end date
-infection_events = clinical_events.where(clinical_events.date.is_on_or_between(index_date, study_end_date))
+infection_events = (
+  clinical_events.where(clinical_events.date
+  .is_on_or_between(index_date, study_end_date))
+)
 
 #query infection_events for existence of event-in-codelist (get first of these)
 def has_infection_event(codelist, where = True):
@@ -203,16 +205,15 @@ dataset.care_home = care_home_tpp | care_home_code
 #define population
 dataset.define_population(practice_registrations.exists_for_patient())
 
-#registration, sex and age 
+#registration and sex
 dataset.registered = registered_patients
 dataset.sex = patients.sex
-dataset.age = case(
-  when(cohort == "older_adults").then(age_at_start),
-  when(cohort == "adults").then(age_at_start),
-  when(cohort == "children_adolescents").then(age_at_start),
-  when(cohort == "infants").then(age_at_start_months),
-  when(cohort == "infants_subgroup").then(age_at_start_months)
-)
+
+#age
+if cohort == "infants" or cohort == "infants_subgroup" :
+  dataset.age = age_at_start_months
+else:
+  dataset.age = age_at_start
 
 #get patients IMD rank
 dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
