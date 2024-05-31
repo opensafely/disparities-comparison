@@ -32,9 +32,14 @@ known_variables <- c(
   "index_day"
 )
 
-# Define a helper function to calculate household size based on household_pseudo_id
-calculate_household_sizes <- function(pseudo_ids) {
-  as.integer(ave(pseudo_ids, pseudo_ids, FUN = function(x) rnormTrunc(1, mean = 2, sd = 3, min = 0)))
+#define helper function to calculate size of household
+calculate_household_size <- function(household_pseudo_id) {
+  
+  household_size <- as.data.frame(household_pseudo_id) %>%
+    group_by(household_pseudo_id) %>%
+    mutate(household_size = n()) 
+  return(household_size$household_size)
+  
 }
 
 #define a list which will contain all of the variables to be simulated
@@ -124,12 +129,12 @@ sim_list = lst(
   
   #household ID (to determine composition)
   household_pseudo_id = bn_node(
-    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
+    ~ as.integer(runif(n = ..n, min = 1, max = 30000))
   ),
   
   # number of people in household
   household_size = bn_node(
-    ~ calculate_household_sizes(household_pseudo_id)
+    ~ calculate_household_size(household_pseudo_id)
   ),
   
   ##outcomes 

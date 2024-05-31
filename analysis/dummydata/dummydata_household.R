@@ -1,5 +1,6 @@
 ##create a dummy dataset
 
+library(extraDistr)
 library(tidyverse)
 library(arrow)
 library(here)
@@ -32,27 +33,15 @@ known_variables <- c(
   "index_day"
 )
 
-#define helper function to calculate household ID based on household size
-calculate_household_id <- function(household_sizes) {
-  
-  #initialise a vector to store the household IDs
-  household_ids <- integer(population_size)
-  
-  #define position in the vector to assign the next ID
-  position <- 1
-  
-  #loop through the household sizes
-  for (i in seq_along(household_sizes)) {
-    #assign the household ID to the vector
-    household_ids[position:(position + household_sizes[i] - 1)] <- i
-    
-    #update the position
-    position <- position + household_sizes[i]
-  }
-  household_ids <- household_ids[sample(length(household_sizes))]
-  return(household_ids)
-}
+#define helper function to calculate size of household
+calculate_household_size <- function(household_pseudo_id) {
 
+  household_size <- as.data.frame(household_pseudo_id) %>%
+    group_by(household_pseudo_id) %>%
+    mutate(household_size = n()) 
+  return(household_size$household_size)
+  
+}
 
 #define a list which will contain all of the variables to be simulated
 sim_list = lst(
@@ -79,17 +68,19 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, min = 1, max = 8), missing_rate = ~ 0.001)
   ),
   
-  # number of people in household
-  household_size = bn_node(
-    ~ as.integer(rpois(n = ..n, lambda = 3))
+  #household ID (to determine composition)
+  household_pseudo_id = bn_node(
+    ~ as.integer(runif(n = ..n, min = 1, max = 30000))
   ),
   
-  #household ID (to determine composition) - sample based on size of household
-  household_pseudo_id = bn_node(
-    ~ calculate_household_id(household_size)
+  #number of people in household
+  household_size = bn_node(
+    ~ calculate_household_size(household_pseudo_id)
   )
   
 )
+
+
 
 bn <- bn_create(sim_list, known_variables = known_variables)
 
