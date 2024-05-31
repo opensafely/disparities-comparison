@@ -57,15 +57,16 @@ age_months = (index_date - patients.date_of_birth).months
 age_at_start_months = (study_start_date - patients.date_of_birth).months
 #age_at_end_months = (study_end_date - patients.date_of_birth).months
 
-#get patients who are registered, have sex, age, and imd info
+#get patients who are registered
 if cohort == "infants" or cohort == "infants_subgroup" :
   registered_patients = practice_registrations.for_patient_on(index_date).exists_for_patient()
-
 else :
   registered_patients = practice_registrations.for_patient_on(registration_date).exists_for_patient()
-  
+
+#have sex
 is_female_or_male = patients.sex.is_in(["female", "male"])
 
+#have age
 if cohort == "infants" or cohort == "infants_subgroup" :
   is_appropriate_age = (age_at_start_months <= 23) & (age_at_start_months >= 0)
 elif cohort == "children_and_adolescents" :
@@ -75,6 +76,7 @@ elif cohort == "adults" :
 else :
   is_appropriate_age = (age_at_start <= 110) & (age_at_end >= 65)
 
+#have imd
 has_imd = (addresses.for_patient_on(index_date).imd_rounded.is_not_null())
 
 ##define functions for queries
@@ -240,10 +242,11 @@ if cohort == "adults" or cohort == "children_and_adolescents" :
     & (~care_home)
   )
 
-#registration, sex and age 
+#registration and sex  
 dataset.registered = registered_patients
 dataset.sex = patients.sex
 
+#age
 if cohort == "infants" or cohort == "infants_subgroup" :
   dataset.age = age_at_start_months
 else:
