@@ -1,7 +1,6 @@
 library(tidyverse)
 library(here)
 library(arrow)
-library(ggplot2)
 library(data.table)
 library(lubridate)
 library(magrittr)
@@ -19,7 +18,6 @@ if (length(args) == 0) {
   study_start_date <- study_dates[[args[[1]]]]
   study_end_date <- study_dates[[args[[2]]]]
 }
-covid_season_min <- as.Date("2019-09-01")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_household_", year(study_start_date), 
@@ -48,14 +46,6 @@ df_input <- df_input %>%
       age >= 66 ~ "Older Adult",
     ))
   )
-#re-level so there is a reference category for the regression models
-df_input <- df_input %>% 
-  mutate(
-    rurality_classification = fct_relevel(rurality_classification, 
-                                          c("Urban Major Conurbation", "Urban Minor Conurbation", 
-                                            "Urban City and Town", "Rural Town and Fringe", 
-                                            "Rural Village and Dispersed", "Unknown"))
-  ) %>% arrange(rurality_classification)
 
 #calculate number of generations in household 
 df_input <- df_input %>%
@@ -76,15 +66,14 @@ df_input <- df_input %>%
   ) %>%
   ungroup()
 
-#re-level so there is a reference category for the regression models
-df_input <- df_input %>% 
-  mutate(
-    composition_category = fct_relevel(composition_category, 
-                           c("Living Alone", "Multiple of the Same Generation", 
-                             "One Other Generation", "Two Other Generations", 
-                             "Three Other Generations"))
-  ) %>% arrange(composition_category)
-
 #filter out children living alone
 df_filtered <- df_input %>%
   filter(!(household_size == 1 & age < 18))
+
+## create output directories ----
+fs::dir_create(here("output", "data"))
+
+#write the new input file
+write_feather(df_filtered, here::here("output", "data", 
+  paste0("input_household_processed_", year(study_start_date),
+        "_", year(study_end_date), ".arrow")))

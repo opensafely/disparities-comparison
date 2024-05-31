@@ -15,7 +15,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2016-09-01"
   study_end_date <- "2017-08-31"
-  cohort <- "children_and_adolescents"
+  cohort <- "adults"
   codelist_type <- "specific"
   investigation_type <- "primary"
 } else {
@@ -1084,6 +1084,219 @@ if (study_start_date >= covid_season_min) {
   )
 }
 
+#calculate total person-time for each outcome type by household composition type
+if (study_start_date >= covid_season_min) {
+  survival_hh_comp <- df_input %>%
+    group_by(composition_category) %>%
+    transmute(
+      rsv_mild = sum(time_rsv_primary),
+      rsv_severe = sum(time_rsv_secondary),
+      rsv_mortality = sum(time_rsv_mortality),
+      flu_mild = sum(time_flu_primary),
+      flu_severe = sum(time_flu_secondary),
+      flu_mortality = sum(time_flu_mortality),
+      covid_mild = sum(time_covid_primary),
+      covid_severe = sum(time_covid_secondary),
+      covid_mortality = sum(time_covid_mortality),
+      all_cause_mortality = sum(time_all_cause_mortality)
+    )
+} else if (codelist_type == "sensitive") {
+  survival_hh_comp <- df_input %>%
+    group_by(composition_category) %>%
+    transmute(
+      rsv_mild = sum(time_rsv_primary),
+      rsv_severe = sum(time_rsv_secondary),
+      rsv_mortality = sum(time_rsv_mortality),
+      flu_mild = sum(time_flu_primary),
+      flu_severe = sum(time_flu_secondary),
+      flu_mortality = sum(time_flu_mortality),
+      overall_resp = sum(time_overall_resp_primary),
+      overall_resp_severe = sum(time_overall_resp_secondary),
+      overall_resp_mortality = sum(time_overall_resp_mortality),
+      all_cause_mortality = sum(time_all_cause_mortality)
+    )
+} else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
+  survival_hh_comp <- df_input %>%
+    group_by(composition_category) %>%
+    transmute(
+      rsv_mild = sum(time_rsv_primary),
+      rsv_severe = sum(time_rsv_secondary),
+      rsv_mortality = sum(time_rsv_mortality),
+      flu_mild = sum(time_flu_primary),
+      flu_severe = sum(time_flu_secondary),
+      flu_mortality = sum(time_flu_mortality),
+      covid_mild = sum(time_covid_primary),
+      covid_severe = sum(time_covid_secondary),
+      covid_mortality = sum(time_covid_mortality),
+      overall_resp = sum(time_overall_resp_primary),
+      overall_resp_severe = sum(time_overall_resp_secondary),
+      overall_resp_mortality = sum(time_overall_resp_mortality),
+      all_cause_mortality = sum(time_all_cause_mortality)
+    )
+} else {
+  survival_hh_comp <- df_input %>%
+    group_by(composition_category) %>%
+    transmute(
+      rsv_mild = sum(time_rsv_primary),
+      rsv_severe = sum(time_rsv_secondary),
+      rsv_mortality = sum(time_rsv_mortality),
+      flu_mild = sum(time_flu_primary),
+      flu_severe = sum(time_flu_secondary),
+      flu_mortality = sum(time_flu_mortality),
+      all_cause_mortality = sum(time_all_cause_mortality)
+    )
+}
+
+#get unique rows
+survival_hh_comp <- unique(survival_hh_comp)
+
+#reshape
+survival_hh_comp <- survival_hh_comp %>%
+  pivot_longer(
+    cols = !composition_category,
+    names_to = "outcome",
+    values_to = "person_years"
+  )
+
+#calculate total number of events for each outcome type by household composition type
+if (study_start_date >= covid_season_min) {
+  events_hh_comp <- df_input %>%
+    group_by(composition_category) %>%
+    transmute(
+      rsv_mild = sum(rsv_primary_inf),
+      rsv_severe = sum(rsv_secondary_inf),
+      rsv_mortality = sum(rsv_mortality_inf),
+      flu_mild = sum(flu_primary_inf),
+      flu_severe = sum(flu_secondary_inf),
+      flu_mortality = sum(flu_mortality_inf),
+      covid_mild = sum(covid_primary_inf),
+      covid_severe = sum(covid_secondary_inf),
+      covid_mortality = sum(covid_mortality_inf),
+      all_cause_mortality = sum(all_cause_mortality_inf)
+    )
+} else if (codelist_type == "sensitive") {
+  events_hh_comp <- df_input %>%
+    group_by(composition_category) %>%
+    transmute(
+      rsv_mild = sum(rsv_primary_inf),
+      rsv_severe = sum(rsv_secondary_inf),
+      rsv_mortality = sum(rsv_mortality_inf),
+      flu_mild = sum(flu_primary_inf),
+      flu_severe = sum(flu_secondary_inf),
+      flu_mortality = sum(flu_mortality_inf),
+      overall_resp = sum(overall_resp_primary_inf),
+      overall_resp_severe = sum(overall_resp_secondary_inf),
+      overall_resp_mortality = sum(overall_resp_mortality_inf),
+      all_cause_mortality = sum(all_cause_mortality_inf)
+    )
+} else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
+  events_hh_comp <- df_input %>%
+    group_by(composition_category) %>%
+    transmute(
+      rsv_mild = sum(rsv_primary_inf),
+      rsv_severe = sum(rsv_secondary_inf),
+      rsv_mortality = sum(rsv_mortality_inf),
+      flu_mild = sum(flu_primary_inf),
+      flu_severe = sum(flu_secondary_inf),
+      flu_mortality = sum(flu_mortality_inf),
+      covid_mild = sum(covid_primary_inf),
+      covid_severe = sum(covid_secondary_inf),
+      covid_mortality = sum(covid_mortality_inf),
+      overall_resp = sum(overall_resp_primary_inf),
+      overall_resp_severe = sum(overall_resp_secondary_inf),
+      overall_resp_mortality = sum(overall_resp_mortality_inf),
+      all_cause_mortality = sum(all_cause_mortality_inf)
+    )
+} else {
+  events_hh_comp <- df_input %>%
+    group_by(composition_category) %>%
+    transmute(
+      rsv_mild = sum(rsv_primary_inf),
+      rsv_severe = sum(rsv_secondary_inf),
+      rsv_mortality = sum(rsv_mortality_inf),
+      flu_mild = sum(flu_primary_inf),
+      flu_severe = sum(flu_secondary_inf),
+      flu_mortality = sum(flu_mortality_inf),
+      all_cause_mortality = sum(all_cause_mortality_inf)
+    )
+}
+
+#get unique rows
+events_hh_comp <- unique(events_hh_comp)
+
+#reshape
+events_hh_comp <- events_hh_comp %>%
+  pivot_longer(
+    cols = !composition_category,
+    names_to = "outcome",
+    values_to = "events"
+  )
+
+#overall results
+results_hh_comp <- merge(survival_hh_comp, events_hh_comp)
+
+#calculate incidence rate per 1000 person-years
+results_hh_comp <- results_hh_comp %>%
+  mutate(incidence_rate = events / person_years * 1000)
+
+#add this to final results with 'Group' as IMD Quintile 
+hh_comp_groups <- as.numeric(length(unique(results_hh_comp$composition_category)))
+if (study_start_date >= covid_season_min) {
+  final_results <- rbind(
+    final_results,
+    data.frame(
+      Outcome = c("All-cause mortality", "COVID mild", "COVID mortality",
+                  "COVID severe", "Flu mild", "Flu mortality", 
+                  "Flu severe", "RSV mortality", "RSV mild", "RSV severe"),
+      PYears = results_hh_comp$person_years,
+      Events = results_hh_comp$events,
+      Rate = results_hh_comp$incidence_rate,
+      Characteristic = rep("Household Composition Category", 10 * hh_comp_groups),
+      Group = results_hh_comp$composition_category)
+  )
+} else if (codelist_type == "sensitive") {
+  final_results <- rbind(
+    final_results,
+    data.frame(
+      Outcome = c("All-cause mortality", "Flu mild", "Flu mortality",
+                  "Flu severe", "RSV mortality", "RSV mild", "RSV severe",
+                  "Overall respiratory mild", "Overall respiratory mortality",
+                  "Overall respiratory severe"),
+      PYears = results_hh_comp$person_years,
+      Events = results_hh_comp$events,
+      Rate = results_hh_comp$incidence_rate,
+      Characteristic = rep("Household Composition Category", 10 * hh_comp_groups),
+      Group = results_hh_comp$composition_category)
+  )
+} else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
+  final_results <- rbind(
+    final_results,
+    data.frame(
+      Outcome = c("All-cause mortality", "COVID mild", "COVID mortality",
+                  "COVID severe", "Flu mild", "Flu mortality", 
+                  "Flu severe", "RSV mortality", "RSV mild", "RSV severe",
+                  "Overall respiratory mild", "Overall respiratory mortality",
+                  "Overall respiratory severe"),
+      PYears = results_hh_comp$person_years,
+      Events = results_hh_comp$events,
+      Rate = results_hh_comp$incidence_rate,
+      Characteristic = rep("Household Composition Category", 13 * hh_comp_groups),
+      Group = results_hh_comp$composition_category)
+  )
+} else {
+  final_results <- rbind(
+    final_results,
+    data.frame(
+      Outcome = c("All-cause mortality", "Flu mild", "Flu mortality", 
+                  "Flu severe", "RSV mortality", "RSV mild", "RSV severe"),
+      PYears = results_hh_comp$person_years,
+      Events = results_hh_comp$events,
+      Rate = results_hh_comp$incidence_rate,
+      Characteristic = rep("Household Composition Category", 7 * hh_comp_groups),
+      Group = results_hh_comp$composition_category)
+  )
+}
+
 #calculate total person-time for each outcome type by rurality classification
 if (study_start_date >= covid_season_min) {
   survival_rurality <- df_input %>%
@@ -1688,22 +1901,23 @@ fs::dir_create(here("output", "results"))
 
 if (cohort == "infants") {
   table_groups = c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
-                   "Rurality Classification")
+                   "Household Composition Category", "Rurality Classification")
 } else if (cohort == "infants_subgroup") {
   table_groups = c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
-                   "Rurality Classification", "Gestational Age", "Maternal Age",
-                   "Maternal Smoking Status", "Maternal Drinking", "Maternal Drug Usage",
+                   "Household Composition Category", "Rurality Classification", 
+                   "Gestational Age", "Maternal Age", "Maternal Smoking Status",
+                   "Maternal Drinking", "Maternal Drug Usage",
                    "Maternal Pertussis Vaccination Status", 
                    "Maternal Influenza Vaccination Status")
 } else {
   if (study_start_date >= covid_season_min) {
     table_groups = c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
-                     "Rurality Classification",
+                     "Rurality Classification", "Household Composition Category",
                      "Number of vaccines received against COVID-19",
                      "Vaccinated against Influenza in season")
   } else {
     table_groups = c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
-                     "Rurality Classification",
+                     "Rurality Classification", "Household Composition Category",
                      "Vaccinated against Influenza in season")
   }
 } 
@@ -1721,11 +1935,7 @@ fs::dir_create(here("output", "results", "rates"))
 #   tab_header(
 #     title = "Rate per 1000 person-years of outcomes by characteristic",
 #     subtitle = "Group-wise breakdown"
-#   ) %>%
-#   gtsave(filename = paste0("rates_", cohort, "_", year(study_start_date),
-#                            "_", year(study_end_date), "_",
-#                            codelist_type, ".html"), 
-#          path = here::here("output", "results", "rates))
+#   ) 
 
 if (length(args) == 0) {
   #export results table to csv

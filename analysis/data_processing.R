@@ -32,6 +32,16 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_",
              codelist_type, "_", investigation_type,".arrow")))
 
+df_household <- read_feather(
+  here::here("output", "data", paste0("input_household_processed_", 
+             year(study_start_date), "_", year(study_end_date), ".arrow")))
+
+household_comp_vars <- tibble("patient_id" = df_household$patient_id,
+                              "num_generations"= df_household$num_generations, 
+                              "composition_category" = df_household$composition_category)
+
+df_input <- merge(df_input, household_comp_vars, by = "patient_id")
+  
 #calculate age bands
 if(cohort == "older_adults") {
   df_input <- df_input %>%
@@ -170,6 +180,13 @@ df_input <- df_input %>%
                               "Urban City and Town", "Rural Town and Fringe", 
                               "Rural Village and Dispersed", "Unknown"))
   ) %>% arrange(rurality_classification)
+df_input <- df_input %>% 
+  mutate(
+    composition_category = fct_relevel(composition_category, 
+                                       c("Multiple of the Same Generation", "Living Alone", 
+                                         "One Other Generation", "Two Other Generations", 
+                                         "Three Other Generations"))
+  ) %>% arrange(composition_category)
 
 #infer outcomes from event dates 
 df_input <- df_input %>%
