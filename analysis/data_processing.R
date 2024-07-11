@@ -41,6 +41,18 @@ household_comp_vars <- tibble("patient_id" = df_household$patient_id,
                               "composition_category" = df_household$composition_category)
 
 df_input <- merge(df_input, household_comp_vars, by = "patient_id")
+
+#create time dependency
+if(cohort == "infants" | cohort == "infants_subgroup") {
+  df_input <- df_input %>%
+    mutate(
+      date = map2(study_start_date, study_end_date, ~seq(.x, .y, by = 30.44))
+    ) %>%
+    unnest(date) %>%
+    mutate(
+      age = age + as.numeric((date - study_start_date)/30.44)
+    ) 
+}
   
 #calculate age bands
 if(cohort == "older_adults") {
