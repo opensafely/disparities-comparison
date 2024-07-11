@@ -18,8 +18,8 @@ if (length(args) == 0) {
   study_start_date <- "2016-09-01"
   study_end_date <- "2017-08-31"
   cohort <- "adults"
-  codelist_type <- "specific"
-  investigation_type <- "primary"
+  codelist_type <- "sensitive"
+  investigation_type <- "secondary"
 } else {
   study_start_date <- study_dates[[args[[2]]]]
   study_end_date <- study_dates[[args[[3]]]]
@@ -28,6 +28,8 @@ if (length(args) == 0) {
   investigation_type <- args[[5]]
 }
 covid_season_min <- as.Date("2019-09-01")
+covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
+covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
@@ -51,12 +53,12 @@ if (cohort == "infants") {
   table <- df_datatable[registered == TRUE, .(Total, age_band, sex, 
                         latest_ethnicity_group, imd_quintile, 
                         rurality_classification, Asthma, Reactive_Airway,
-                        flu_vaccination)]
+                        prior_flu_vaccination)]
   setnames(table, c("age_band", "sex", "latest_ethnicity_group", 
                     "imd_quintile", "rurality_classification",
-                    "Reactive_Airway", "flu_vaccination"),
+                    "Reactive_Airway", "prior_flu_vaccination"),
             c("Age Group", "Sex", "Ethnicity", "IMD", "Rurality",
-              "Asthma or Reactive Airway", "Flu Vaccine"))
+              "Asthma or Reactive Airway", "Prior Flu Vaccine"))
   if (study_start_date >= covid_season_min) {
     table[, covid_vaccination_count := df_datatable$covid_vaccination_count]
     setnames(table, "covid_vaccination_count", "Covid Vaccine Doses")
@@ -71,7 +73,7 @@ if (cohort == "infants") {
                         has_other_resp, has_diabetes, has_addisons,
                         severe_obesity, has_chd, has_ckd, has_cld, has_cnd,
                         has_cancer, immunosuppressed, has_sickle_cell,  
-                        flu_vaccination)]
+                        prior_flu_vaccination)]
   setnames(table, c("age_band", "sex", "latest_ethnicity_group", 
                     "imd_quintile", "rurality_classification",
                     "smoking_status", "hazardous_drinking", "drug_usage",
@@ -79,17 +81,31 @@ if (cohort == "infants") {
                     "has_other_resp", "has_diabetes", "has_addisons" ,
                     "severe_obesity", "has_chd", "has_ckd", "has_cld", 
                     "has_cnd", "has_cancer", "immunosuppressed", 
-                    "has_sickle_cell", "flu_vaccination"),
+                    "has_sickle_cell", "prior_flu_vaccination"),
             c("Age Group", "Sex", "Ethnicity", "IMD", "Rurality",
               "Smoking Status", "Hazardous Drinking", "Drug Usage",
               "Asthma", "COPD", "Cystic Fibrosis", "Other Chronic Respiratory Diseases",
               "Diabetes", "Addisons", "Severe Obesity", "Chronic Heart Diseases",
               "Chronic Kidney Disease", "Chronic Liver Disease", 
               "Chronic Neurological Disease", "Cancer Within 3 Years",
-              "Immunosuppressed", "Sickle Cell Disease", "Flu Vaccine"))
-  if (study_start_date >= covid_season_min) {
-    table[, covid_vaccination_count := df_datatable$covid_vaccination_count]
-    setnames(table, "covid_vaccination_count", "Covid Vaccine Doses")
+              "Immunosuppressed", "Sickle Cell Disease", "Prior Flu Vaccine"))
+  if (study_start_date >= covid_prior_vacc_min) {
+    table[, time_since_last_covid_vaccination := case_when(
+      time_length(difftime(study_start_date, df_datatable$last_covid_vaccination_date, 
+                           units = "days"), "months") >= 0 &
+        time_length(difftime(study_start_date, df_datatable$last_covid_vaccination_date, 
+                             units = "days"), "months") < 6 ~ "0-6m",
+      time_length(difftime(study_start_date, df_datatable$last_covid_vaccination_date,
+                           units = "days"), "months") >= 6 &
+        time_length(difftime(study_start_date, df_datatable$last_covid_vaccination_date,
+                             units = "days"), "months") < 12 ~ "6-12m",
+      time_length(difftime(study_start_date, df_datatable$last_covid_vaccination_date,
+                           units = "days"), "months") >= 12 &
+        time_length(difftime(study_start_date, df_datatable$last_covid_vaccination_date,
+                             units = "days"), "months") < 18 ~ "12m+",
+      TRUE ~ "Unknown"
+      )]
+    setnames(table, "time_since_last_covid_vaccination", "Time Since Last Covid Vaccine")
   }
  }
 
