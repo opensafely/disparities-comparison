@@ -232,16 +232,24 @@ sim_list = lst(
     ~ rbernoulli(n = ..n, p = 0.01)
   ),
   
-  #flu vaccination
-  flu_vaccination = bn_node(
+  #prior flu vaccination
+  prior_flu_vaccination = bn_node(
     ~ rbernoulli(n = ..n, p = 0.75)
   ),
   
-  #covid vaccination
-  covid_vaccination_count = bn_node(
-    ~ as.integer(rfactor(n = ..n, levels = c(
-      0, 1, 2, 3, 4, 5, 6), 
-      p = c(0.25, 0.4, 0.2, 0.1, 0.03, 0.01, 0.01)))
+  #current flu vaccination
+  flu_vaccination = bn_node(
+    ~rbernoulli(n = ..n, p = 0.75)
+  ),
+  
+  #date of last covid vaccination
+  last_covid_vaccination_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365))
+  ),
+  
+  #current covid vaccination
+  covid_vaccination = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.5)
   ),
   
   ##outcomes 
