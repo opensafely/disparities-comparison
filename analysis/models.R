@@ -37,7 +37,7 @@ if (cohort == "infants") {
   
   #rsv primary by ethnicity
   rsv_mild_ethnicity <- glm(rsv_primary_inf ~ latest_ethnicity_group + 
-                              age_band + sex + 
+                              age + sex + 
                               rurality_classification + 
                               offset(log(time_rsv_primary)), 
                             data = df_input, family = poisson)
@@ -45,7 +45,7 @@ if (cohort == "infants") {
   
   #rsv secondary by ethnicity
   rsv_severe_ethnicity <- glm(rsv_secondary_inf ~ latest_ethnicity_group +
-                                age_band + sex + 
+                                age + sex + 
                                 rurality_classification + 
                                 offset(log(time_rsv_secondary)),
                               data = df_input, family = poisson)
@@ -53,7 +53,7 @@ if (cohort == "infants") {
   
   #rsv mortality by ethnicity
   rsv_mortality_ethnicity <- glm(rsv_mortality ~ latest_ethnicity_group + 
-                                   age_band + sex + 
+                                   age + sex + 
                                    rurality_classification + 
                                    offset(log(time_rsv_mortality)),
                                  data = df_input, family = poisson)
@@ -61,7 +61,7 @@ if (cohort == "infants") {
   
   #flu primary by ethnicity
   flu_mild_ethnicity <- glm(flu_primary_inf ~ latest_ethnicity_group + 
-                              age_band + sex + 
+                              age + sex + 
                               rurality_classification + 
                               offset(log(time_flu_primary)),
                             data = df_input, family = poisson)
@@ -69,7 +69,7 @@ if (cohort == "infants") {
   
   #flu secondary by ethnicity
   flu_severe_ethnicity <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
-                                age_band + sex + 
+                                age + sex + 
                                 rurality_classification + 
                                 offset(log(time_flu_secondary)),
                               data = df_input, family = poisson)
@@ -77,7 +77,7 @@ if (cohort == "infants") {
   
   #flu mortality by ethnicity
   flu_mortality_ethnicity <- glm(flu_mortality ~ latest_ethnicity_group + 
-                                   age_band + sex + 
+                                   age + sex + 
                                    rurality_classification + 
                                    offset(log(time_flu_mortality)),
                                  data = df_input, family = poisson)
@@ -86,7 +86,7 @@ if (cohort == "infants") {
   if (study_start_date >= covid_season_min) {
     #covid primary by ethnicity
     covid_mild_ethnicity <- glm(covid_primary_inf ~ latest_ethnicity_group + 
-                                  age_band + sex + 
+                                  age + sex + 
                                   rurality_classification + 
                                   offset(log(time_covid_primary)),
                                 data = df_input, family = poisson)
@@ -94,7 +94,7 @@ if (cohort == "infants") {
     
     #covid secondary by ethnicity
     covid_severe_ethnicity <- glm(covid_secondary_inf ~ latest_ethnicity_group + 
-                                    age_band + sex + 
+                                    age + sex + 
                                     rurality_classification + 
                                     offset(log(time_covid_secondary)),
                                   data = df_input, family = poisson)
@@ -102,7 +102,7 @@ if (cohort == "infants") {
     
     #covid mortality by ethnicity
     covid_mortality_ethnicity <- glm(covid_mortality ~ latest_ethnicity_group + 
-                                       age_band + sex + 
+                                       age + sex + 
                                        rurality_classification + 
                                        offset(log(time_covid_mortality)),
                                      data = df_input, family = poisson)
@@ -112,7 +112,7 @@ if (cohort == "infants") {
   if (codelist_type == "sensitive") {
     #overall_resp primary by ethnicity
     overall_resp_mild_ethnicity <- glm(overall_resp_primary_inf ~ latest_ethnicity_group + 
-                                         age_band + sex + 
+                                         age + sex + 
                                          rurality_classification + 
                                          offset(log(time_overall_resp_primary)),
                                        data = df_input, family = poisson)
@@ -120,7 +120,7 @@ if (cohort == "infants") {
     
     #overall_resp secondary by ethnicity
     overall_resp_severe_ethnicity <- glm(overall_resp_secondary_inf ~ latest_ethnicity_group + 
-                                           age_band + sex + 
+                                           age + sex + 
                                            rurality_classification + 
                                            offset(log(time_overall_resp_secondary)),
                                          data = df_input, family = poisson)
@@ -128,7 +128,7 @@ if (cohort == "infants") {
     
     #overall_resp mortality by ethnicity
     overall_resp_mortality_ethnicity <- glm(overall_resp_mortality ~ latest_ethnicity_group + 
-                                              age_band + sex + 
+                                              age + sex + 
                                               rurality_classification + 
                                               offset(log(time_overall_resp_mortality)),
                                             data = df_input, family = poisson)
@@ -137,7 +137,7 @@ if (cohort == "infants") {
   
   #all cause mortality by ethnicity
   all_cause_mortality_ethnicity <- glm(all_cause_mortality ~ latest_ethnicity_group + 
-                                         age_band + sex + 
+                                         age + sex + 
                                          rurality_classification + 
                                          offset(log(time_all_cause_mortality)),
                                        data = df_input, family = poisson)
@@ -147,7 +147,7 @@ if (cohort == "infants") {
   
   #rsv primary by ses
   rsv_mild_ses <- glm(rsv_primary_inf ~ imd_quintile + 
-                        age_band + sex + 
+                        age + sex + 
                         rurality_classification + 
                         offset(log(time_rsv_primary)),
                       data = df_input, family = poisson)
@@ -155,7 +155,7 @@ if (cohort == "infants") {
   
   #rsv secondary by ses
   rsv_severe_ses <- glm(rsv_secondary_inf ~ imd_quintile + 
-                          age_band + sex + 
+                          age + sex + 
                           rurality_classification + 
                           offset(log(time_rsv_secondary)),
                         data = df_input, family = poisson)
@@ -163,7 +163,7 @@ if (cohort == "infants") {
   
   #rsv mortality by ses
   rsv_mortality_ses <- glm(rsv_mortality ~ imd_quintile + 
-                             age_band + sex + 
+                             age + sex + 
                              rurality_classification + 
                              offset(log(time_rsv_mortality)),
                            data = df_input, family = poisson)
@@ -171,7 +171,7 @@ if (cohort == "infants") {
   
   #flu primary by ses
   flu_mild_ses <- glm(flu_primary_inf ~ imd_quintile + 
-                        age_band + sex + 
+                        age + sex + 
                         rurality_classification + 
                         offset(log(time_flu_primary)),
                       data = df_input, family = poisson)
@@ -179,7 +179,7 @@ if (cohort == "infants") {
   
   #flu secondary by ses
   flu_severe_ses <- glm(flu_secondary_inf ~ imd_quintile + 
-                          age_band + sex + 
+                          age + sex + 
                           rurality_classification + 
                           offset(log(time_flu_secondary)),
                         data = df_input, family = poisson)
@@ -187,7 +187,7 @@ if (cohort == "infants") {
   
   #flu mortality by ses
   flu_mortality_ses <- glm(flu_mortality ~ imd_quintile + 
-                             age_band + sex + 
+                             age + sex + 
                              rurality_classification + 
                              offset(log(time_flu_mortality)),
                            data = df_input, family = poisson)
@@ -196,7 +196,7 @@ if (cohort == "infants") {
   if (study_start_date >= covid_season_min) {
     #covid primary by ses
     covid_mild_ses <- glm(covid_primary_inf ~ imd_quintile + 
-                            age_band + sex + 
+                            age + sex + 
                             rurality_classification + 
                             offset(log(time_covid_primary)),
                           data = df_input, family = poisson)
@@ -204,7 +204,7 @@ if (cohort == "infants") {
     
     #covid secondary by ses
     covid_severe_ses <- glm(covid_secondary_inf ~ imd_quintile + 
-                              age_band + sex + 
+                              age + sex + 
                               rurality_classification + 
                               offset(log(time_covid_secondary)),
                             data = df_input, family = poisson)
@@ -212,7 +212,7 @@ if (cohort == "infants") {
     
     #covid mortality by ses
     covid_mortality_ses <- glm(covid_mortality ~ imd_quintile + 
-                                 age_band + sex + 
+                                 age + sex + 
                                  rurality_classification + 
                                  offset(log(time_covid_mortality)),
                                data = df_input, family = poisson)
@@ -222,7 +222,7 @@ if (cohort == "infants") {
   if (codelist_type == "sensitive") {
     #overall_resp primary by ses
     overall_resp_mild_ses <- glm(overall_resp_primary_inf ~ imd_quintile + 
-                                   age_band + sex + 
+                                   age + sex + 
                                    rurality_classification + 
                                    offset(log(time_overall_resp_primary)),
                                  data = df_input, family = poisson)
@@ -230,7 +230,7 @@ if (cohort == "infants") {
     
     #overall_resp secondary by ses
     overall_resp_severe_ses <- glm(overall_resp_secondary_inf ~ imd_quintile + 
-                                     age_band + sex + 
+                                     age + sex + 
                                      rurality_classification + 
                                      offset(log(time_overall_resp_secondary)),
                                    data = df_input, family = poisson)
@@ -238,7 +238,7 @@ if (cohort == "infants") {
     
     #overall_resp mortality by ses
     overall_resp_mortality_ses <- glm(overall_resp_mortality ~ imd_quintile + 
-                                        age_band + sex + 
+                                        age + sex + 
                                         rurality_classification + 
                                         offset(log(time_overall_resp_mortality)),
                                       data = df_input, family = poisson)
@@ -247,7 +247,7 @@ if (cohort == "infants") {
   
   #all cause mortality by ses
   all_cause_mortality_ses <- glm(all_cause_mortality ~ imd_quintile + 
-                                   age_band + sex + 
+                                   age + sex + 
                                    rurality_classification + 
                                    offset(log(time_all_cause_mortality)),
                                  data = df_input, family = poisson)
@@ -257,7 +257,7 @@ if (cohort == "infants") {
   
   #rsv primary by household composition
   rsv_mild_hh_comp <- glm(rsv_primary_inf ~ composition_category + 
-                              age_band + sex + 
+                              age + sex + 
                               rurality_classification + 
                               offset(log(time_rsv_primary)), 
                             data = df_input, family = poisson)
@@ -265,7 +265,7 @@ if (cohort == "infants") {
   
   #rsv secondary by household composition
   rsv_severe_hh_comp <- glm(rsv_secondary_inf ~ composition_category +
-                                age_band + sex + 
+                                age + sex + 
                                 rurality_classification + 
                                 offset(log(time_rsv_secondary)),
                               data = df_input, family = poisson)
@@ -273,7 +273,7 @@ if (cohort == "infants") {
   
   #rsv mortality by household composition
   rsv_mortality_hh_comp <- glm(rsv_mortality ~ composition_category + 
-                                   age_band + sex + 
+                                   age + sex + 
                                    rurality_classification + 
                                    offset(log(time_rsv_mortality)),
                                  data = df_input, family = poisson)
@@ -281,7 +281,7 @@ if (cohort == "infants") {
   
   #flu primary by household composition
   flu_mild_hh_comp <- glm(flu_primary_inf ~ composition_category + 
-                              age_band + sex + 
+                              age + sex + 
                               rurality_classification + 
                               offset(log(time_flu_primary)),
                             data = df_input, family = poisson)
@@ -289,7 +289,7 @@ if (cohort == "infants") {
   
   #flu secondary by household composition
   flu_severe_hh_comp <- glm(flu_secondary_inf ~ composition_category + 
-                                age_band + sex + 
+                                age + sex + 
                                 rurality_classification + 
                                 offset(log(time_flu_secondary)),
                               data = df_input, family = poisson)
@@ -297,7 +297,7 @@ if (cohort == "infants") {
   
   #flu mortality by household composition
   flu_mortality_hh_comp <- glm(flu_mortality ~ composition_category + 
-                                   age_band + sex + 
+                                   age + sex + 
                                    rurality_classification + 
                                    offset(log(time_flu_mortality)),
                                  data = df_input, family = poisson)
@@ -306,7 +306,7 @@ if (cohort == "infants") {
   if (study_start_date >= covid_season_min) {
     #covid primary by household composition
     covid_mild_hh_comp <- glm(covid_primary_inf ~ composition_category + 
-                                  age_band + sex + 
+                                  age + sex + 
                                   rurality_classification + 
                                   offset(log(time_covid_primary)),
                                 data = df_input, family = poisson)
@@ -314,7 +314,7 @@ if (cohort == "infants") {
     
     #covid secondary by household composition
     covid_severe_hh_comp <- glm(covid_secondary_inf ~ composition_category + 
-                                    age_band + sex + 
+                                    age + sex + 
                                     rurality_classification + 
                                     offset(log(time_covid_secondary)),
                                   data = df_input, family = poisson)
@@ -322,7 +322,7 @@ if (cohort == "infants") {
     
     #covid mortality by household composition
     covid_mortality_hh_comp <- glm(covid_mortality ~ composition_category + 
-                                       age_band + sex + 
+                                       age + sex + 
                                        rurality_classification + 
                                        offset(log(time_covid_mortality)),
                                      data = df_input, family = poisson)
@@ -332,7 +332,7 @@ if (cohort == "infants") {
   if (codelist_type == "sensitive") {
     #overall_resp primary by household composition
     overall_resp_mild_hh_comp <- glm(overall_resp_primary_inf ~ composition_category + 
-                                         age_band + sex + 
+                                         age + sex + 
                                          rurality_classification + 
                                          offset(log(time_overall_resp_primary)),
                                        data = df_input, family = poisson)
@@ -340,7 +340,7 @@ if (cohort == "infants") {
     
     #overall_resp secondary by household composition
     overall_resp_severe_hh_comp <- glm(overall_resp_secondary_inf ~ composition_category + 
-                                           age_band + sex + 
+                                           age + sex + 
                                            rurality_classification + 
                                            offset(log(time_overall_resp_secondary)),
                                          data = df_input, family = poisson)
@@ -348,7 +348,7 @@ if (cohort == "infants") {
     
     #overall_resp mortality by household composition
     overall_resp_mortality_hh_comp <- glm(overall_resp_mortality ~ composition_category + 
-                                              age_band + sex + 
+                                              age + sex + 
                                               rurality_classification + 
                                               offset(log(time_overall_resp_mortality)),
                                             data = df_input, family = poisson)
@@ -357,7 +357,7 @@ if (cohort == "infants") {
   
   #all cause mortality by household composition
   all_cause_mortality_hh_comp <- glm(all_cause_mortality ~ composition_category + 
-                                         age_band + sex + 
+                                         age + sex + 
                                          rurality_classification + 
                                          offset(log(time_all_cause_mortality)),
                                        data = df_input, family = poisson)
