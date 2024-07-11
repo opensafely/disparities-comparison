@@ -26,6 +26,8 @@ if (length(args) == 0) {
   investigation_type <- args[[5]]
 }
 covid_season_min <- as.Date("2019-09-01")
+covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
+covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_", cohort, "_", 
@@ -162,16 +164,21 @@ df_input <- df_input %>%
   )
 
 #covid vaccination counts
-if (study_start_date >= covid_season_min & cohort != "infants" & cohort != "infants_subgroup") {
+if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
   df_input <- df_input %>%
     mutate(
-      covid_vaccination_count = factor(case_when(
-        covid_vaccination_count == "0" ~ "0",
-        covid_vaccination_count == "1" ~ "1",
-        covid_vaccination_count == "2" ~ "2",
-        covid_vaccination_count == "3" ~ "3",
-        covid_vaccination_count == "4" ~ "4+",
-        TRUE ~ "0"))
+      time_since_last_covid_vaccination = factor(case_when(
+      time_length(difftime(study_start_date, last_covid_vaccination_date, 
+                             units = "days"), "months") >= 0 &
+        time_length(difftime(study_start_date, last_covid_vaccination_date,
+                             units = "days"), "months") < 6 ~ "0-6m",
+      time_length(difftime(study_start_date, last_covid_vaccination_date,
+                           units = "days"), "months") >= 6 &
+        time_length(difftime(study_start_date, last_covid_vaccination_date, 
+                             units = "days"), "months") < 12 ~ "6-12m",
+      time_length(difftime(study_start_date, last_covid_vaccination_date,
+                           units = "days"), "months") >= 12 ~ "12m+",
+        TRUE ~ "Unknown"))
     )
 }
 
