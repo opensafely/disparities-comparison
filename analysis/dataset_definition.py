@@ -300,28 +300,30 @@ dataset.deregistration_date = (
 
 ##comorbidities
 
-#define earliest vaccination date 
-vaccination_date = study_start_date - years(1)
+#define earliest prior vaccination date 
+prior_vaccination_date = study_start_date - years(1)
 
 #define seasons for covid
 covid_season_min = datetime.strptime("2019-09-01", "%Y-%m-%d")
+covid_current_vacc_min = datetime.strptime("2020-09-01", "%Y-%m-%d")
+covid_prior_vacc_min = datetime.strptime("2021-09-01", "%Y-%m-%d") - years(1)
 
 #vaccinations
 if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
-  dataset.flu_vaccination = (
+  dataset.prior_flu_vaccination = (
     vaccinations.where(vaccinations.target_disease.is_in(["Influenza"]))
     .sort_by(vaccinations.date)
-    .where(vaccinations.date.is_on_or_between(vaccination_date, index_date))
+    .where(vaccinations.date.is_on_or_between(prior_vaccination_date, index_date))
     .exists_for_patient()
   )
 
   if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
     if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
-      dataset.covid_vaccination_count = (
+      dataset.last_covid_vaccination_date = (
       vaccinations.where(vaccinations.target_disease.is_in(["SARS-COV-2"]))
       .sort_by(vaccinations.date)
-      .where(vaccinations.date.is_on_or_before(index_date))
-      .count_for_patient()
+      .where(vaccinations.date.is_on_or_between(covid_prior_vacc_min, index_date))
+      .last_for_patient().date
     )
 
 ##outcomes - rsv
@@ -359,10 +361,10 @@ rsv_exclusion_primary = (case(
 #   if cohort == "infants" or cohort == "infants_subgroup" :
 #     dataset.rsv_primary = (
 #       (has_infection_event(codelists.rsv_primary_codelist))
-#       |(emergency_care_attendances.where(emergency_care_attendances
+#       |#(emergency_care_attendances.where(emergency_care_attendances
 #       .diagnosis_01.is_in(codelists.bronchiolitis_attendance))
 #       .exists_for_patient())
-#       |(emergency_care_attendances.where(emergency_care_attendances
+#       |#(emergency_care_attendances.where(emergency_care_attendances
 #       .diagnosis_02.is_in(codelists.bronchiolitis_attendance))
 #       .exists_for_patient())
 #     )
@@ -373,16 +375,16 @@ rsv_exclusion_primary = (case(
 #   if cohort == "infants" or cohort == "infants_subgroup" :
 #     dataset.rsv_primary = (
 #       (has_infection_event(codelists.rsv_primary_codelist))
-#       |(rsv_code_number >1)|(medications.where(medications.dmd_code
+#       |#(rsv_code_number >1)|(medications.where(medications.dmd_code
 #       .is_in(codelists.rsv_prescriptions_codelist)).exists_for_patient())
-#       |(emergency_care_diagnosis_matches(codelists.wheeze_attendance)
+#       |#(emergency_care_diagnosis_matches(codelists.wheeze_attendance)
 #       .exists_for_patient())
 #       &(~rsv_exclusion_primary)
 #     )
 #   else :
 #     dataset.rsv_primary = (
 #       (has_infection_event(codelists.rsv_primary_codelist))
-#       |(rsv_code_number >1)|(medications.where(medications.dmd_code
+#       |#(rsv_code_number >1)|(medications.where(medications.dmd_code
 #       .is_in(codelists.rsv_prescriptions_codelist)).exists_for_patient())
 #       &(~rsv_exclusion_primary)
 #     )
@@ -401,7 +403,7 @@ if codelist_type == "specific" :
     # #get number of RSV mild cases
     # dataset.rsv_primary_cases = (
     #   ((is_infection_event(codelists.rsv_primary_codelist).date)
-    #   |(emergency_care_attendances.where(emergency_care_attendances
+    #   |#(emergency_care_attendances.where(emergency_care_attendances
     #   .diagnosis_01.is_in(codelists.bronchiolitis_attendance))
     #   .arrival_date)|(emergency_care_attendances
     #   .where(emergency_care_attendances.diagnosis_02
@@ -427,9 +429,9 @@ if codelist_type == "sensitive" :
     )
     # dataset.rsv_primary_cases = (
     #   (is_infection_event(codelists.rsv_primary_codelist).date)
-    #   |(rsv_codes_date)|(medications.where(medications.dmd_code
+    #   |#(rsv_codes_date)|(medications.where(medications.dmd_code
     #   .is_in(codelists.rsv_prescriptions_codelist)).date)
-    #   |(emergency_care_diagnosis_matches(codelists.wheeze_attendance)
+    #   |#(emergency_care_diagnosis_matches(codelists.wheeze_attendance)
     #   .arrival_date).count_episodes_for_patient(days(14))
     # )
   else :
@@ -481,7 +483,7 @@ rsv_exclusion_secondary = (case(
 #   dataset.rsv_secondary = (
 #     (hospitalisation_diagnosis_matches(codelists.rsv_secondary_codelist)
 #     .exists_for_patient())
-#     |(hospitalisation_diagnosis_matches(codelists.unspecified_lrti)
+#     |#(hospitalisation_diagnosis_matches(codelists.unspecified_lrti)
 #     .exists_for_patient()) & (~rsv_exclusion_secondary)
 #   )
 
@@ -557,7 +559,7 @@ flu_exclusion_primary = (case(
 # if codelist_type == "sensitive" :
 #   dataset.flu_primary = (
 #     (has_infection_event(codelists.flu_sensitive_codelist))
-#     |(ILI_case)|(medications.where(medications.dmd_code
+#     |#(ILI_case)|(medications.where(medications.dmd_code
 #     .is_in(codelists.flu_prescriptions_codelist))
 #     .exists_for_patient()) & (~flu_exclusion_primary)
 #   )
@@ -602,7 +604,7 @@ flu_exclusion_secondary = (case(
 # if codelist_type == "specific" :
 #   dataset.flu_secondary = (apcs.where(apcs.primary_diagnosis
 #     .is_in(codelists.flu_secondary_codelist)).exists_for_patient()
-#     |apcs.where(apcs.secondary_diagnosis
+#     |#apcs.where(apcs.secondary_diagnosis
 #     .is_in(codelists.flu_secondary_codelist))
 #     .exists_for_patient()
 #   )
@@ -610,7 +612,7 @@ flu_exclusion_secondary = (case(
 #   dataset.flu_secondary = (
 #     hospitalisation_diagnosis_matches(codelists
 #     .flu_secondary_codelist).exists_for_patient()
-#     |(hospitalisation_diagnosis_matches(codelists
+#     |#(hospitalisation_diagnosis_matches(codelists
 #     .ari_secondary_codelist).exists_for_patient())
 #     &(~flu_exclusion_secondary)
 #   )
@@ -688,7 +690,7 @@ if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
   # if codelist_type == "sensitive" :
   #   dataset.covid_primary = (
   #     (has_infection_event(codelists.covid_primary_codelist))
-  #     |(covid_code_number >1)|(medications.where(medications.dmd_code
+  #     |#(covid_code_number >1)|(medications.where(medications.dmd_code
   #     .is_in(codelists.covid_prescriptions_codelist)).exists_for_patient())
   #     &(~covid_exclusion_primary)
   #   )
@@ -736,7 +738,7 @@ if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
   #     apcs.where(apcs.primary_diagnosis
   #     .is_in(codelists.covid_secondary_codelist))
   #     .exists_for_patient()
-  #     |apcs.where(apcs.secondary_diagnosis
+  #     |#apcs.where(apcs.secondary_diagnosis
   #     .is_in(codelists.covid_secondary_codelist))
   #     .exists_for_patient()
   #   )
@@ -745,7 +747,7 @@ if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
   #     (hospitalisation_diagnosis_matches(codelists
   #     .covid_secondary_codelist)
   #     .exists_for_patient())
-  #     |(hospitalisation_diagnosis_matches(codelists
+  #     |#(hospitalisation_diagnosis_matches(codelists
   #     .coronavirus_unspecified).exists_for_patient())
   #     &(~covid_exclusion_secondary)
   #   )
@@ -792,46 +794,46 @@ if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
 #     if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
 #       dataset.overall_resp_primary = (
 #         (dataset.rsv_primary)|(dataset.flu_primary)|(dataset.covid_primary)
-#         |(has_infection_event(codelists.
+#         |#(has_infection_event(codelists.
 #         respiratory_virus_primary_codelist))
-#         |(emergency_care_diagnosis_matches(codelists.
+#         |#(emergency_care_diagnosis_matches(codelists.
 #         rtri_attendance).exists_for_patient())
-#         |(emergency_care_diagnosis_matches(codelists.
+#         |#(emergency_care_diagnosis_matches(codelists.
 #         copd_exacerbation_attendance).exists_for_patient())
-#         |(has_infection_event(codelists
+#         |#(has_infection_event(codelists
 #         .copd_exacerbation_primary_codelist))
-#         |(has_infection_event(codelists
+#         |#(has_infection_event(codelists
 #         .asthma_exacerbation_primary_codelist))
 #       )
 #     else:
 #       dataset.overall_resp_primary = (
 #         (dataset.rsv_primary)|(dataset.flu_primary)
-#         |(has_infection_event(codelists.
+#         |#(has_infection_event(codelists.
 #         respiratory_virus_primary_codelist))
-#         |(emergency_care_diagnosis_matches(codelists.
+#         |#(emergency_care_diagnosis_matches(codelists.
 #         rtri_attendance).exists_for_patient())
-#         |(emergency_care_diagnosis_matches(codelists.
+#         |#(emergency_care_diagnosis_matches(codelists.
 #         copd_exacerbation_attendance).exists_for_patient())
-#         |(has_infection_event(codelists
+#         |#(has_infection_event(codelists
 #         .copd_exacerbation_primary_codelist))
-#         |(has_infection_event(codelists
+#         |#(has_infection_event(codelists
 #         .asthma_exacerbation_primary_codelist))
 #       )
 #   else:
 #     if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
 #       dataset.overall_resp_primary = (
 #         (dataset.rsv_primary)|(dataset.flu_primary)|(dataset.covid_primary)
-#         |(has_infection_event(codelists.
+#         |#(has_infection_event(codelists.
 #         respiratory_virus_primary_codelist))
-#         |(emergency_care_diagnosis_matches(codelists.
+#         |#(emergency_care_diagnosis_matches(codelists.
 #         rtri_attendance).exists_for_patient())
 #       )
 #     else:
 #       dataset.overall_resp_primary = (
 #         (dataset.rsv_primary)|(dataset.flu_primary)
-#         |(has_infection_event(codelists.
+#         |#(has_infection_event(codelists.
 #         respiratory_virus_primary_codelist))
-#         |(emergency_care_diagnosis_matches(codelists.
+#         |#(emergency_care_diagnosis_matches(codelists.
 #         rtri_attendance).exists_for_patient())
 #       )
 
@@ -892,27 +894,27 @@ if codelist_type == "sensitive" :
 #     if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
 #       dataset.overall_resp_secondary = (
 #         (dataset.rsv_secondary)|(dataset.flu_secondary)
-#         |(dataset.covid_secondary)
-#         |(hospitalisation_diagnosis_matches(codelists.
+#         |#(dataset.covid_secondary)
+#         |#(hospitalisation_diagnosis_matches(codelists.
 #         respiratory_virus_secondary_codelist)
 #         .exists_for_patient())
-#         |(hospitalisation_diagnosis_matches(codelists
+#         |#(hospitalisation_diagnosis_matches(codelists
 #         .copd_exacerbation_secondary_codelist)
 #         .exists_for_patient())
-#         |(hospitalisation_diagnosis_matches(codelists
+#         |#(hospitalisation_diagnosis_matches(codelists
 #         .asthma_exacerbation_secondary_codelist)
 #         .exists_for_patient())
 #       )
 #     else:
 #       dataset.overall_resp_secondary = (
 #         (dataset.rsv_secondary)|(dataset.flu_secondary)
-#         |(hospitalisation_diagnosis_matches(codelists.
+#         |#(hospitalisation_diagnosis_matches(codelists.
 #         respiratory_virus_secondary_codelist)
 #         .exists_for_patient())
-#         |(hospitalisation_diagnosis_matches(codelists
+#         |#(hospitalisation_diagnosis_matches(codelists
 #         .copd_exacerbation_secondary_codelist)
 #         .exists_for_patient())
-#         |(hospitalisation_diagnosis_matches(codelists
+#         |#(hospitalisation_diagnosis_matches(codelists
 #         .asthma_exacerbation_secondary_codelist)
 #         .exists_for_patient())
 #       )
@@ -920,15 +922,15 @@ if codelist_type == "sensitive" :
 #     if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
 #       dataset.overall_resp_secondary = (
 #         (dataset.rsv_secondary)|(dataset.flu_secondary)
-#         |(dataset.covid_secondary)
-#         |(hospitalisation_diagnosis_matches(codelists.
+#         |#(dataset.covid_secondary)
+#         |#(hospitalisation_diagnosis_matches(codelists.
 #         respiratory_virus_secondary_codelist)
 #         .exists_for_patient())
 #       )
 #     else:
 #       dataset.overall_resp_secondary = (
 #         (dataset.rsv_secondary)|(dataset.flu_secondary)
-#         |(hospitalisation_diagnosis_matches(codelists.
+#         |#(hospitalisation_diagnosis_matches(codelists.
 #         respiratory_virus_secondary_codelist)
 #         .exists_for_patient())
 #       )
