@@ -306,7 +306,7 @@ prior_vaccination_date = study_start_date - years(1)
 #define seasons for covid
 covid_season_min = datetime.strptime("2019-09-01", "%Y-%m-%d")
 covid_current_vacc_min = datetime.strptime("2020-09-01", "%Y-%m-%d")
-covid_prior_vacc_min = datetime.strptime("2021-09-01", "%Y-%m-%d") - years(1)
+covid_prior_vacc_min = datetime.strptime("2021-09-01", "%Y-%m-%d") 
 
 #vaccinations
 if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
@@ -316,15 +316,30 @@ if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_ado
     .where(vaccinations.date.is_on_or_between(prior_vaccination_date, index_date))
     .exists_for_patient()
   )
+  dataset.flu_vaccination_date = (
+    vaccinations.where(vaccinations.target_disease.is_in(["Influenza"]))
+    .sort_by(vaccinations.date)
+    .where(vaccinations.date.is_on_or_between(index_date, study_end_date))
+    .first_for_patient().date
+  )
 
-  if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_season_min :
+  if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_prior_vacc_min :
     if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
       dataset.last_covid_vaccination_date = (
       vaccinations.where(vaccinations.target_disease.is_in(["SARS-COV-2"]))
       .sort_by(vaccinations.date)
-      .where(vaccinations.date.is_on_or_between(covid_prior_vacc_min, index_date))
+      .where(vaccinations.date.is_on_or_between(prior_vaccination_date, index_date))
       .last_for_patient().date
     )
+
+  if datetime.strptime(study_start_date, "%Y-%m-%d") >= covid_current_vacc_min :
+    if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
+      dataset.covid_vaccination_date = (
+        vaccinations.where(vaccinations.target_disease.is_in(["SARS-COV-2"]))
+        .sort_by(vaccinations.date)
+        .where(vaccinations.date.is_on_or_between(index_date, study_end_date))
+        .first_for_patient().date
+      )
 
 ##outcomes - rsv
 

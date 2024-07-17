@@ -15,8 +15,8 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2016-09-01"
   study_end_date <- "2017-08-31"
-  cohort <- "adults"
-  codelist_type <- "specific"
+  cohort <- "infants"
+  codelist_type <- "sensitive"
   investigation_type <- "primary"
 } else {
   study_start_date <- study_dates[[args[[2]]]]
@@ -257,114 +257,114 @@ if (cohort == "infants") {
   
   #rsv primary by household composition
   rsv_mild_hh_comp <- glm(rsv_primary_inf ~ composition_category + 
-                              age + sex + 
-                              rurality_classification + 
-                              offset(log(time_rsv_primary)), 
-                            data = df_input, family = poisson)
+                            age + sex + 
+                            rurality_classification + 
+                            offset(log(time_rsv_primary)), 
+                          data = df_input, family = poisson)
   rsv_mild_hh_comp_output <- tidy(rsv_mild_hh_comp)
   
   #rsv secondary by household composition
   rsv_severe_hh_comp <- glm(rsv_secondary_inf ~ composition_category +
-                                age + sex + 
-                                rurality_classification + 
-                                offset(log(time_rsv_secondary)),
-                              data = df_input, family = poisson)
+                              age + sex + 
+                              rurality_classification + 
+                              offset(log(time_rsv_secondary)),
+                            data = df_input, family = poisson)
   rsv_severe_hh_comp_output <- tidy(rsv_severe_hh_comp)
   
   #rsv mortality by household composition
   rsv_mortality_hh_comp <- glm(rsv_mortality ~ composition_category + 
-                                   age + sex + 
-                                   rurality_classification + 
-                                   offset(log(time_rsv_mortality)),
-                                 data = df_input, family = poisson)
+                                 age + sex + 
+                                 rurality_classification + 
+                                 offset(log(time_rsv_mortality)),
+                               data = df_input, family = poisson)
   rsv_mortality_hh_comp_output <- tidy(rsv_mortality_hh_comp)
   
   #flu primary by household composition
   flu_mild_hh_comp <- glm(flu_primary_inf ~ composition_category + 
-                              age + sex + 
-                              rurality_classification + 
-                              offset(log(time_flu_primary)),
-                            data = df_input, family = poisson)
+                            age + sex + 
+                            rurality_classification + 
+                            offset(log(time_flu_primary)),
+                          data = df_input, family = poisson)
   flu_mild_hh_comp_output <- tidy(flu_mild_hh_comp)
   
   #flu secondary by household composition
   flu_severe_hh_comp <- glm(flu_secondary_inf ~ composition_category + 
-                                age + sex + 
-                                rurality_classification + 
-                                offset(log(time_flu_secondary)),
-                              data = df_input, family = poisson)
+                              age + sex + 
+                              rurality_classification + 
+                              offset(log(time_flu_secondary)),
+                            data = df_input, family = poisson)
   flu_severe_hh_comp_output <- tidy(flu_severe_hh_comp)
   
   #flu mortality by household composition
   flu_mortality_hh_comp <- glm(flu_mortality ~ composition_category + 
-                                   age + sex + 
-                                   rurality_classification + 
-                                   offset(log(time_flu_mortality)),
-                                 data = df_input, family = poisson)
+                                 age + sex + 
+                                 rurality_classification + 
+                                 offset(log(time_flu_mortality)),
+                               data = df_input, family = poisson)
   flu_mortality_hh_comp_output <- tidy(flu_mortality_hh_comp)
   
   if (study_start_date >= covid_season_min) {
     #covid primary by household composition
     covid_mild_hh_comp <- glm(covid_primary_inf ~ composition_category + 
-                                  age + sex + 
-                                  rurality_classification + 
-                                  offset(log(time_covid_primary)),
-                                data = df_input, family = poisson)
+                                age + sex + 
+                                rurality_classification + 
+                                offset(log(time_covid_primary)),
+                              data = df_input, family = poisson)
     covid_mild_hh_comp_output <- tidy(covid_mild_hh_comp)
     
     #covid secondary by household composition
     covid_severe_hh_comp <- glm(covid_secondary_inf ~ composition_category + 
-                                    age + sex + 
-                                    rurality_classification + 
-                                    offset(log(time_covid_secondary)),
-                                  data = df_input, family = poisson)
+                                  age + sex + 
+                                  rurality_classification + 
+                                  offset(log(time_covid_secondary)),
+                                data = df_input, family = poisson)
     covid_severe_hh_comp_output <- tidy(covid_severe_hh_comp)
     
     #covid mortality by household composition
     covid_mortality_hh_comp <- glm(covid_mortality ~ composition_category + 
-                                       age + sex + 
-                                       rurality_classification + 
-                                       offset(log(time_covid_mortality)),
-                                     data = df_input, family = poisson)
+                                     age + sex + 
+                                     rurality_classification + 
+                                     offset(log(time_covid_mortality)),
+                                   data = df_input, family = poisson)
     covid_mortality_hh_comp_output <- tidy(covid_mortality_hh_comp)
   }
   
   if (codelist_type == "sensitive") {
     #overall_resp primary by household composition
     overall_resp_mild_hh_comp <- glm(overall_resp_primary_inf ~ composition_category + 
-                                         age + sex + 
-                                         rurality_classification + 
-                                         offset(log(time_overall_resp_primary)),
-                                       data = df_input, family = poisson)
+                                       age + sex + 
+                                       rurality_classification + 
+                                       offset(log(time_overall_resp_primary)),
+                                     data = df_input, family = poisson)
     overall_resp_mild_hh_comp_output <- tidy(overall_resp_mild_hh_comp)
     
     #overall_resp secondary by household composition
     overall_resp_severe_hh_comp <- glm(overall_resp_secondary_inf ~ composition_category + 
-                                           age + sex + 
-                                           rurality_classification + 
-                                           offset(log(time_overall_resp_secondary)),
-                                         data = df_input, family = poisson)
+                                         age + sex + 
+                                         rurality_classification + 
+                                         offset(log(time_overall_resp_secondary)),
+                                       data = df_input, family = poisson)
     overall_resp_severe_hh_comp_output <- tidy(overall_resp_severe_hh_comp)
     
     #overall_resp mortality by household composition
     overall_resp_mortality_hh_comp <- glm(overall_resp_mortality ~ composition_category + 
-                                              age + sex + 
-                                              rurality_classification + 
-                                              offset(log(time_overall_resp_mortality)),
-                                            data = df_input, family = poisson)
+                                            age + sex + 
+                                            rurality_classification + 
+                                            offset(log(time_overall_resp_mortality)),
+                                          data = df_input, family = poisson)
     overall_resp_mortality_hh_comp_output <- tidy(overall_resp_mortality_hh_comp)
   }
   
   #all cause mortality by household composition
   all_cause_mortality_hh_comp <- glm(all_cause_mortality ~ composition_category + 
-                                         age + sex + 
-                                         rurality_classification + 
-                                         offset(log(time_all_cause_mortality)),
-                                       data = df_input, family = poisson)
+                                       age + sex + 
+                                       rurality_classification + 
+                                       offset(log(time_all_cause_mortality)),
+                                     data = df_input, family = poisson)
   all_cause_mortality_hh_comp_output <- tidy(all_cause_mortality_hh_comp)
-
-#add models for infants subgroup
-#} else if (cohort == "infants_subgroup") {
+  
+  #add models for infants subgroup
+  #} else if (cohort == "infants_subgroup") {
   
 } else {
   ##Use Poisson regression for outcomes looking first at ethnicity 
@@ -372,7 +372,7 @@ if (cohort == "infants") {
   rsv_mild_ethnicity <- glm(rsv_primary_inf ~ latest_ethnicity_group + 
                               age_band + sex + 
                               rurality_classification + 
-                              flu_vaccination +
+                              #prior_flu_vaccination +
                               offset(log(time_rsv_primary)), 
                             data = df_input, family = poisson)
   rsv_mild_ethnicity_output <- tidy(rsv_mild_ethnicity)
@@ -381,7 +381,7 @@ if (cohort == "infants") {
   rsv_severe_ethnicity <- glm(rsv_secondary_inf ~ latest_ethnicity_group +
                                 age_band + sex + 
                                 rurality_classification + 
-                                flu_vaccination +
+                                #prior_flu_vaccination +
                                 offset(log(time_rsv_secondary)),
                               data = df_input, family = poisson)
   rsv_severe_ethnicity_output <- tidy(rsv_severe_ethnicity)
@@ -390,16 +390,16 @@ if (cohort == "infants") {
   rsv_mortality_ethnicity <- glm(rsv_mortality ~ latest_ethnicity_group + 
                                    age_band + sex + 
                                    rurality_classification + 
-                                   flu_vaccination +
-                                     offset(log(time_rsv_mortality)),
-                                   data = df_input, family = poisson)
+                                   #prior_flu_vaccination +
+                                   offset(log(time_rsv_mortality)),
+                                 data = df_input, family = poisson)
   rsv_mortality_ethnicity_output <- tidy(rsv_mortality_ethnicity)
-    
+  
   #flu primary by ethnicity
   flu_mild_ethnicity <- glm(flu_primary_inf ~ latest_ethnicity_group + 
                               age_band + sex + 
                               rurality_classification + 
-                              flu_vaccination +
+                              #prior_flu_vaccination +
                               offset(log(time_flu_primary)),
                             data = df_input, family = poisson)
   flu_mild_ethnicity_output <- tidy(flu_mild_ethnicity)
@@ -408,7 +408,7 @@ if (cohort == "infants") {
   flu_severe_ethnicity <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
                                 age_band + sex + 
                                 rurality_classification + 
-                                flu_vaccination +
+                                #prior_flu_vaccination +
                                 offset(log(time_flu_secondary)),
                               data = df_input, family = poisson)
   flu_severe_ethnicity_output <- tidy(flu_severe_ethnicity)
@@ -417,17 +417,17 @@ if (cohort == "infants") {
   flu_mortality_ethnicity <- glm(flu_mortality ~ latest_ethnicity_group + 
                                    age_band + sex + 
                                    rurality_classification + 
-                                   flu_vaccination +
+                                   #prior_flu_vaccination +
                                    offset(log(time_flu_mortality)),
                                  data = df_input, family = poisson)
   flu_mortality_ethnicity_output <- tidy(flu_mortality_ethnicity)
-
+  
   if (codelist_type == "sensitive") {
     #overall_resp primary by ethnicity
     overall_resp_mild_ethnicity <- glm(overall_resp_primary_inf ~ latest_ethnicity_group + 
                                          age_band + sex + 
                                          rurality_classification + 
-                                         flu_vaccination +
+                                         #prior_flu_vaccination +
                                          offset(log(time_overall_resp_primary)),
                                        data = df_input, family = poisson)
     overall_resp_mild_ethnicity_output <- tidy(overall_resp_mild_ethnicity)
@@ -436,7 +436,7 @@ if (cohort == "infants") {
     overall_resp_severe_ethnicity <- glm(overall_resp_secondary_inf ~ latest_ethnicity_group + 
                                            age_band + sex + 
                                            rurality_classification + 
-                                           flu_vaccination +
+                                           #prior_flu_vaccination +
                                            offset(log(time_overall_resp_secondary)),
                                          data = df_input, family = poisson)
     overall_resp_severe_ethnicity_output <- tidy(overall_resp_severe_ethnicity)
@@ -445,7 +445,7 @@ if (cohort == "infants") {
     overall_resp_mortality_ethnicity <- glm(overall_resp_mortality ~ latest_ethnicity_group + 
                                               age_band + sex + 
                                               rurality_classification + 
-                                              flu_vaccination +
+                                              #prior_flu_vaccination +
                                               offset(log(time_overall_resp_mortality)),
                                             data = df_input, family = poisson)
     overall_resp_mortality_ethnicity_output <- tidy(overall_resp_mortality_ethnicity)
@@ -455,7 +455,7 @@ if (cohort == "infants") {
   all_cause_mortality_ethnicity <- glm(all_cause_mortality ~ latest_ethnicity_group + 
                                          age_band + sex + 
                                          rurality_classification + 
-                                         flu_vaccination +
+                                         #prior_flu_vaccination +
                                          offset(log(time_all_cause_mortality)),
                                        data = df_input, family = poisson)
   all_cause_mortality_ethnicity_output <- tidy(all_cause_mortality_ethnicity)
@@ -466,7 +466,7 @@ if (cohort == "infants") {
   rsv_mild_ses <- glm(rsv_primary_inf ~ imd_quintile + 
                         age_band + sex + 
                         rurality_classification + 
-                        flu_vaccination +
+                        #prior_flu_vaccination +
                         offset(log(time_rsv_primary)),
                       data = df_input, family = poisson)
   rsv_mild_ses_output <- tidy(rsv_mild_ses)
@@ -475,7 +475,7 @@ if (cohort == "infants") {
   rsv_severe_ses <- glm(rsv_secondary_inf ~ imd_quintile + 
                           age_band + sex + 
                           rurality_classification + 
-                          flu_vaccination +
+                          #prior_flu_vaccination +
                           offset(log(time_rsv_secondary)),
                         data = df_input, family = poisson)
   rsv_severe_ses_output <- tidy(rsv_severe_ses)
@@ -484,7 +484,7 @@ if (cohort == "infants") {
   rsv_mortality_ses <- glm(rsv_mortality ~ imd_quintile + 
                              age_band + sex + 
                              rurality_classification + 
-                             flu_vaccination +
+                             #prior_flu_vaccination +
                              offset(log(time_rsv_mortality)),
                            data = df_input, family = poisson)
   rsv_mortality_ses_output <- tidy(rsv_mortality_ses)
@@ -493,7 +493,7 @@ if (cohort == "infants") {
   flu_mild_ses <- glm(flu_primary_inf ~ imd_quintile + 
                         age_band + sex + 
                         rurality_classification + 
-                        flu_vaccination +
+                        #prior_flu_vaccination +
                         offset(log(time_flu_primary)),
                       data = df_input, family = poisson)
   flu_mild_ses_output <- tidy(flu_mild_ses)
@@ -502,7 +502,7 @@ if (cohort == "infants") {
   flu_severe_ses <- glm(flu_secondary_inf ~ imd_quintile + 
                           age_band + sex + 
                           rurality_classification + 
-                          flu_vaccination +
+                          #prior_flu_vaccination +
                           offset(log(time_flu_secondary)),
                         data = df_input, family = poisson)
   flu_severe_ses_output <- tidy(flu_severe_ses)
@@ -511,7 +511,7 @@ if (cohort == "infants") {
   flu_mortality_ses <- glm(flu_mortality ~ imd_quintile + 
                              age_band + sex + 
                              rurality_classification + 
-                             flu_vaccination +
+                             #prior_flu_vaccination +
                              offset(log(time_flu_mortality)),
                            data = df_input, family = poisson)
   flu_mortality_ses_output <- tidy(flu_mortality_ses)
@@ -521,7 +521,7 @@ if (cohort == "infants") {
     overall_resp_mild_ses <- glm(overall_resp_primary_inf ~ imd_quintile + 
                                    age_band + sex + 
                                    rurality_classification + 
-                                   flu_vaccination +
+                                   #prior_flu_vaccination +
                                    offset(log(time_overall_resp_primary)),
                                  data = df_input, family = poisson)
     overall_resp_mild_ses_output <- tidy(overall_resp_mild_ses)
@@ -530,7 +530,7 @@ if (cohort == "infants") {
     overall_resp_severe_ses <- glm(overall_resp_secondary_inf ~ imd_quintile + 
                                      age_band + sex + 
                                      rurality_classification + 
-                                     flu_vaccination +
+                                     #prior_flu_vaccination +
                                      offset(log(time_overall_resp_secondary)),
                                    data = df_input, family = poisson)
     overall_resp_severe_ses_output <- tidy(overall_resp_severe_ses)
@@ -539,17 +539,17 @@ if (cohort == "infants") {
     overall_resp_mortality_ses <- glm(overall_resp_mortality ~ imd_quintile + 
                                         age_band + sex + 
                                         rurality_classification + 
-                                        flu_vaccination +
+                                        #prior_flu_vaccination +
                                         offset(log(time_overall_resp_mortality)),
                                       data = df_input, family = poisson)
     overall_resp_mortality_ses_output <- tidy(overall_resp_mortality_ses)
   }
- 
+  
   #all cause mortality by ses
   all_cause_mortality_ses <- glm(all_cause_mortality ~ imd_quintile + 
                                    age_band + sex + 
                                    rurality_classification + 
-                                   flu_vaccination +
+                                   #prior_flu_vaccination +
                                    offset(log(time_all_cause_mortality)),
                                  data = df_input, family = poisson)
   all_cause_mortality_ses_output <- tidy(all_cause_mortality_ses)
@@ -558,94 +558,94 @@ if (cohort == "infants") {
   
   #rsv primary by household composition
   rsv_mild_hh_comp <- glm(rsv_primary_inf ~ composition_category + 
-                        age_band + sex + 
-                        rurality_classification + 
-                        flu_vaccination +
-                        offset(log(time_rsv_primary)),
-                      data = df_input, family = poisson)
+                            age_band + sex + 
+                            rurality_classification + 
+                            #prior_flu_vaccination +
+                            offset(log(time_rsv_primary)),
+                          data = df_input, family = poisson)
   rsv_mild_hh_comp_output <- tidy(rsv_mild_hh_comp)
   
   #rsv secondary by household composition
   rsv_severe_hh_comp <- glm(rsv_secondary_inf ~ composition_category + 
-                          age_band + sex + 
-                          rurality_classification + 
-                          flu_vaccination +
-                          offset(log(time_rsv_secondary)),
-                        data = df_input, family = poisson)
+                              age_band + sex + 
+                              rurality_classification + 
+                              #prior_flu_vaccination +
+                              offset(log(time_rsv_secondary)),
+                            data = df_input, family = poisson)
   rsv_severe_hh_comp_output <- tidy(rsv_severe_hh_comp)
   
   #rsv mortality by household composition
   rsv_mortality_hh_comp <- glm(rsv_mortality ~ composition_category + 
-                             age_band + sex + 
-                             rurality_classification + 
-                             flu_vaccination +
-                             offset(log(time_rsv_mortality)),
-                           data = df_input, family = poisson)
+                                 age_band + sex + 
+                                 rurality_classification + 
+                                 #prior_flu_vaccination +
+                                 offset(log(time_rsv_mortality)),
+                               data = df_input, family = poisson)
   rsv_mortality_hh_comp_output <- tidy(rsv_mortality_hh_comp)
   
   #flu primary by household composition
   flu_mild_hh_comp <- glm(flu_primary_inf ~ composition_category + 
-                        age_band + sex + 
-                        rurality_classification + 
-                        flu_vaccination +
-                        offset(log(time_flu_primary)),
-                      data = df_input, family = poisson)
+                            age_band + sex + 
+                            rurality_classification + 
+                            #prior_flu_vaccination +
+                            offset(log(time_flu_primary)),
+                          data = df_input, family = poisson)
   flu_mild_hh_comp_output <- tidy(flu_mild_hh_comp)
   
   #flu secondary by household composition
   flu_severe_hh_comp <- glm(flu_secondary_inf ~ composition_category + 
-                          age_band + sex + 
-                          rurality_classification + 
-                          flu_vaccination +
-                          offset(log(time_flu_secondary)),
-                        data = df_input, family = poisson)
+                              age_band + sex + 
+                              rurality_classification + 
+                              #prior_flu_vaccination +
+                              offset(log(time_flu_secondary)),
+                            data = df_input, family = poisson)
   flu_severe_hh_comp_output <- tidy(flu_severe_hh_comp)
   
   #flu mortality by household composition
   flu_mortality_hh_comp <- glm(flu_mortality ~ composition_category + 
-                             age_band + sex + 
-                             rurality_classification + 
-                             flu_vaccination +
-                             offset(log(time_flu_mortality)),
-                           data = df_input, family = poisson)
+                                 age_band + sex + 
+                                 rurality_classification + 
+                                 #prior_flu_vaccination +
+                                 offset(log(time_flu_mortality)),
+                               data = df_input, family = poisson)
   flu_mortality_hh_comp_output <- tidy(flu_mortality_hh_comp)
   
   if (codelist_type == "sensitive") {
     #overall_resp primary by household composition
     overall_resp_mild_hh_comp <- glm(overall_resp_primary_inf ~ composition_category + 
-                                   age_band + sex + 
-                                   rurality_classification + 
-                                   flu_vaccination +
-                                   offset(log(time_overall_resp_primary)),
-                                 data = df_input, family = poisson)
+                                       age_band + sex + 
+                                       rurality_classification + 
+                                       #prior_flu_vaccination +
+                                       offset(log(time_overall_resp_primary)),
+                                     data = df_input, family = poisson)
     overall_resp_mild_hh_comp_output <- tidy(overall_resp_mild_hh_comp)
     
     #overall_resp secondary by household composition
     overall_resp_severe_hh_comp <- glm(overall_resp_secondary_inf ~ composition_category + 
-                                     age_band + sex + 
-                                     rurality_classification + 
-                                     flu_vaccination +
-                                     offset(log(time_overall_resp_secondary)),
-                                   data = df_input, family = poisson)
+                                         age_band + sex + 
+                                         rurality_classification + 
+                                         #prior_flu_vaccination +
+                                         offset(log(time_overall_resp_secondary)),
+                                       data = df_input, family = poisson)
     overall_resp_severe_hh_comp_output <- tidy(overall_resp_severe_hh_comp)
     
     #overall_resp mortality by household composition
     overall_resp_mortality_hh_comp <- glm(overall_resp_mortality ~ composition_category + 
-                                        age_band + sex + 
-                                        rurality_classification + 
-                                        flu_vaccination +
-                                        offset(log(time_overall_resp_mortality)),
-                                      data = df_input, family = poisson)
+                                            age_band + sex + 
+                                            rurality_classification + 
+                                            #prior_flu_vaccination +
+                                            offset(log(time_overall_resp_mortality)),
+                                          data = df_input, family = poisson)
     overall_resp_mortality_hh_comp_output <- tidy(overall_resp_mortality_hh_comp)
   }
   
   #all cause mortality by household composition
   all_cause_mortality_hh_comp <- glm(all_cause_mortality ~ composition_category + 
-                                   age_band + sex + 
-                                   rurality_classification + 
-                                   flu_vaccination +
-                                   offset(log(time_all_cause_mortality)),
-                                 data = df_input, family = poisson)
+                                       age_band + sex + 
+                                       rurality_classification + 
+                                       #prior_flu_vaccination +
+                                       offset(log(time_all_cause_mortality)),
+                                     data = df_input, family = poisson)
   all_cause_mortality_hh_comp_output <- tidy(all_cause_mortality_hh_comp)
   
   if (study_start_date >= covid_season_min) {
@@ -655,8 +655,8 @@ if (cohort == "infants") {
     rsv_mild_ethnicity <- glm(rsv_primary_inf ~ latest_ethnicity_group +
                                 age_band + sex + 
                                 rurality_classification + 
-                                flu_vaccination +
-                                covid_vaccination_count +
+                                #prior_flu_vaccination +
+                                #time_since_last_covid_vaccination +
                                 offset(log(time_rsv_primary)), 
                               data = df_input, family = poisson)
     rsv_mild_ethnicity_output <- tidy(rsv_mild_ethnicity)
@@ -665,8 +665,8 @@ if (cohort == "infants") {
     rsv_severe_ethnicity <- glm(rsv_secondary_inf ~ latest_ethnicity_group +
                                   age_band + sex + 
                                   rurality_classification + 
-                                  flu_vaccination +
-                                  covid_vaccination_count +
+                                  #prior_flu_vaccination +
+                                  #time_since_last_covid_vaccination +
                                   offset(log(time_rsv_secondary)),
                                 data = df_input, family = poisson)
     rsv_severe_ethnicity_output <- tidy(rsv_severe_ethnicity)
@@ -675,8 +675,8 @@ if (cohort == "infants") {
     rsv_mortality_ethnicity <- glm(rsv_mortality ~ latest_ethnicity_group + 
                                      age_band + sex + 
                                      rurality_classification + 
-                                     flu_vaccination +
-                                     covid_vaccination_count +
+                                     #prior_flu_vaccination +
+                                     #time_since_last_covid_vaccination +
                                      offset(log(time_rsv_mortality)),
                                    data = df_input, family = poisson)
     rsv_mortality_ethnicity_output <- tidy(rsv_mortality_ethnicity)
@@ -685,8 +685,8 @@ if (cohort == "infants") {
     flu_mild_ethnicity <- glm(flu_primary_inf ~ latest_ethnicity_group + 
                                 age_band + sex + 
                                 rurality_classification + 
-                                flu_vaccination +
-                                covid_vaccination_count +
+                                #prior_flu_vaccination +
+                                #time_since_last_covid_vaccination +
                                 offset(log(time_flu_primary)),
                               data = df_input, family = poisson)
     flu_mild_ethnicity_output <- tidy(flu_mild_ethnicity)
@@ -695,8 +695,8 @@ if (cohort == "infants") {
     flu_severe_ethnicity <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
                                   age_band + sex + 
                                   rurality_classification + 
-                                  flu_vaccination +
-                                  covid_vaccination_count +
+                                  #prior_flu_vaccination +
+                                  #time_since_last_covid_vaccination +
                                   offset(log(time_flu_secondary)),
                                 data = df_input, family = poisson)
     flu_severe_ethnicity_output <- tidy(flu_severe_ethnicity)
@@ -705,8 +705,8 @@ if (cohort == "infants") {
     flu_mortality_ethnicity <- glm(flu_mortality ~ latest_ethnicity_group + 
                                      age_band + sex + 
                                      rurality_classification + 
-                                     flu_vaccination +
-                                     covid_vaccination_count +
+                                     #prior_flu_vaccination +
+                                     #time_since_last_covid_vaccination +
                                      offset(log(time_flu_mortality)),
                                    data = df_input, family = poisson)
     flu_mortality_ethnicity_output <- tidy(flu_mortality_ethnicity)
@@ -714,8 +714,8 @@ if (cohort == "infants") {
     covid_mild_ethnicity <- glm(covid_primary_inf ~ latest_ethnicity_group + 
                                   age_band + sex + 
                                   rurality_classification +
-                                  flu_vaccination +
-                                  covid_vaccination_count +
+                                  #prior_flu_vaccination +
+                                  #time_since_last_covid_vaccination +
                                   offset(log(time_covid_primary)),
                                 data = df_input, family = poisson)
     covid_mild_ethnicity_output <- tidy(covid_mild_ethnicity)
@@ -724,20 +724,20 @@ if (cohort == "infants") {
     covid_severe_ethnicity <- glm(covid_secondary_inf ~ latest_ethnicity_group + 
                                     age_band + sex + 
                                     rurality_classification + 
-                                    flu_vaccination +
-                                    covid_vaccination_count +
+                                    #prior_flu_vaccination +
+                                    #time_since_last_covid_vaccination +
                                     offset(log(time_covid_secondary)),
                                   data = df_input, family = poisson)
     covid_severe_ethnicity_output <- tidy(covid_severe_ethnicity)
     
     #covid mortality by ethnicity
     covid_mortality_ethnicity <- glm(covid_mortality ~ latest_ethnicity_group + 
-                                      age_band + sex + 
-                                      rurality_classification + 
-                                      flu_vaccination +
-                                      covid_vaccination_count +
-                                      offset(log(time_covid_mortality)),
-                                    data = df_input, family = poisson)
+                                       age_band + sex + 
+                                       rurality_classification + 
+                                       #prior_flu_vaccination +
+                                       #time_since_last_covid_vaccination +
+                                       offset(log(time_covid_mortality)),
+                                     data = df_input, family = poisson)
     covid_mortality_ethnicity_output <- tidy(covid_mortality_ethnicity)
     
     if (codelist_type == "sensitive") {
@@ -745,8 +745,8 @@ if (cohort == "infants") {
       overall_resp_mild_ethnicity <- glm(overall_resp_primary_inf ~ latest_ethnicity_group + 
                                            age_band + sex + 
                                            rurality_classification + 
-                                           flu_vaccination +
-                                           covid_vaccination_count +
+                                           #prior_flu_vaccination +
+                                           #time_since_last_covid_vaccination +
                                            offset(log(time_overall_resp_primary)),
                                          data = df_input, family = poisson)
       overall_resp_mild_ethnicity_output <- tidy(overall_resp_mild_ethnicity)
@@ -755,8 +755,8 @@ if (cohort == "infants") {
       overall_resp_severe_ethnicity <- glm(overall_resp_secondary_inf ~ latest_ethnicity_group + 
                                              age_band + sex + 
                                              rurality_classification + 
-                                             flu_vaccination +
-                                             covid_vaccination_count +
+                                             #prior_flu_vaccination +
+                                             #time_since_last_covid_vaccination +
                                              offset(log(time_overall_resp_secondary)),
                                            data = df_input, family = poisson)
       overall_resp_severe_ethnicity_output <- tidy(overall_resp_severe_ethnicity)
@@ -765,8 +765,8 @@ if (cohort == "infants") {
       overall_resp_mortality_ethnicity <- glm(overall_resp_mortality ~ latest_ethnicity_group + 
                                                 age_band + sex + 
                                                 rurality_classification + 
-                                                flu_vaccination +
-                                                covid_vaccination_count +
+                                                #prior_flu_vaccination +
+                                                #time_since_last_covid_vaccination +
                                                 offset(log(time_overall_resp_mortality)),
                                               data = df_input, family = poisson)
       overall_resp_mortality_ethnicity_output <- tidy(overall_resp_mortality_ethnicity)
@@ -776,8 +776,8 @@ if (cohort == "infants") {
     all_cause_mortality_ethnicity <- glm(all_cause_mortality ~ latest_ethnicity_group + 
                                            age_band + sex + 
                                            rurality_classification + 
-                                           flu_vaccination +
-                                           covid_vaccination_count +
+                                           #prior_flu_vaccination +
+                                           #time_since_last_covid_vaccination +
                                            offset(log(time_all_cause_mortality)),
                                          data = df_input, family = poisson)
     all_cause_mortality_ethnicity_output <- tidy(all_cause_mortality_ethnicity)
@@ -788,8 +788,8 @@ if (cohort == "infants") {
     rsv_mild_ses <- glm(rsv_primary_inf ~ imd_quintile + 
                           age_band + sex + 
                           rurality_classification + 
-                          flu_vaccination +
-                          covid_vaccination_count +
+                          #prior_flu_vaccination +
+                          #time_since_last_covid_vaccination +
                           offset(log(time_rsv_primary)),
                         data = df_input, family = poisson)
     rsv_mild_ses_output <- tidy(rsv_mild_ses)
@@ -798,8 +798,8 @@ if (cohort == "infants") {
     rsv_severe_ses <- glm(rsv_secondary_inf ~ imd_quintile + 
                             age_band + sex + 
                             rurality_classification +
-                            flu_vaccination +
-                            covid_vaccination_count +
+                            #prior_flu_vaccination +
+                            #time_since_last_covid_vaccination +
                             offset(log(time_rsv_secondary)),
                           data = df_input, family = poisson)
     rsv_severe_ses_output <- tidy(rsv_severe_ses)
@@ -808,8 +808,8 @@ if (cohort == "infants") {
     rsv_mortality_ses <- glm(rsv_mortality ~ imd_quintile + 
                                age_band + sex + 
                                rurality_classification + 
-                               flu_vaccination +
-                               covid_vaccination_count +
+                               #prior_flu_vaccination +
+                               #time_since_last_covid_vaccination +
                                offset(log(time_rsv_mortality)),
                              data = df_input, family = poisson)
     rsv_severe_ses_output <- tidy(rsv_mortality_ses)
@@ -818,8 +818,8 @@ if (cohort == "infants") {
     flu_mild_ses <- glm(flu_primary_inf ~ imd_quintile + 
                           age_band + sex + 
                           rurality_classification + 
-                          flu_vaccination +
-                          covid_vaccination_count +
+                          #prior_flu_vaccination +
+                          #time_since_last_covid_vaccination +
                           offset(log(time_flu_primary)),
                         data = df_input, family = poisson)
     flu_mild_ses_output <- tidy(flu_mild_ses)
@@ -828,8 +828,8 @@ if (cohort == "infants") {
     flu_severe_ses <- glm(flu_secondary_inf ~ imd_quintile + 
                             age_band + sex + 
                             rurality_classification + 
-                            flu_vaccination +
-                            covid_vaccination_count +
+                            #prior_flu_vaccination +
+                            #time_since_last_covid_vaccination +
                             offset(log(time_flu_secondary)),
                           data = df_input, family = poisson)
     flu_severe_ses_output <- tidy(flu_severe_ses)
@@ -838,40 +838,40 @@ if (cohort == "infants") {
     flu_mortality_ses <- glm(flu_mortality ~ imd_quintile + 
                                age_band + sex + 
                                rurality_classification + 
-                               flu_vaccination +
-                               covid_vaccination_count +
+                               #prior_flu_vaccination +
+                               #time_since_last_covid_vaccination +
                                offset(log(time_flu_mortality)),
                              data = df_input, family = poisson)
     flu_severe_mild_ses_output <- tidy(flu_mortality_ses)
-
+    
     #covid primary by ses
     covid_mild_ses <- glm(covid_primary_inf ~ imd_quintile + 
                             age_band + sex + 
                             rurality_classification + 
-                            flu_vaccination +
-                            covid_vaccination_count +
+                            #prior_flu_vaccination +
+                            #time_since_last_covid_vaccination +
                             offset(log(time_covid_primary)),
                           data = df_input, family = poisson)
     covid_mild_ses_output <- tidy(covid_mild_ses)
-   
+    
     #covid secondary by ses
     covid_severe_ses <- glm(covid_secondary_inf ~ imd_quintile + 
                               age_band + sex + 
                               rurality_classification + 
-                              flu_vaccination +
-                              covid_vaccination_count +
+                              #prior_flu_vaccination +
+                              #time_since_last_covid_vaccination +
                               offset(log(time_covid_secondary)),
                             data = df_input, family = poisson)
     covid_severe_ses_output <- tidy(covid_severe_ses)
-   
+    
     #covid mortality by ses
     covid_mortality_ses <- glm(covid_mortality ~ imd_quintile + 
-                                  age_band + sex + 
-                                  rurality_classification + 
-                                  flu_vaccination +
-                                  covid_vaccination_count +
-                                  offset(log(time_covid_mortality)),
-                                data = df_input, family = poisson)
+                                 age_band + sex + 
+                                 rurality_classification + 
+                                 #prior_flu_vaccination +
+                                 #time_since_last_covid_vaccination +
+                                 offset(log(time_covid_mortality)),
+                               data = df_input, family = poisson)
     covid_mortality_ses_output <- tidy(covid_mortality_ses)
     
     if (codelist_type == "sensitive") {
@@ -879,8 +879,8 @@ if (cohort == "infants") {
       overall_resp_mild_ses <- glm(overall_resp_primary_inf ~ imd_quintile + 
                                      age_band + sex + 
                                      rurality_classification +
-                                     flu_vaccination +
-                                     covid_vaccination_count +
+                                     #prior_flu_vaccination +
+                                     #time_since_last_covid_vaccination +
                                      offset(log(time_overall_resp_primary)),
                                    data = df_input, family = poisson)
       overall_resp_mild_ses_output <- tidy(overall_resp_mild_ses)
@@ -889,8 +889,8 @@ if (cohort == "infants") {
       overall_resp_severe_ses <- glm(overall_resp_secondary_inf ~ imd_quintile + 
                                        age_band + sex + 
                                        rurality_classification + 
-                                       flu_vaccination +
-                                       covid_vaccination_count +
+                                       #prior_flu_vaccination +
+                                       #time_since_last_covid_vaccination +
                                        offset(log(time_overall_resp_secondary)),
                                      data = df_input, family = poisson)
       overall_resp_severe_ses_output <- tidy(overall_resp_severe_ses)
@@ -899,8 +899,8 @@ if (cohort == "infants") {
       overall_resp_mortality_ses <- glm(overall_resp_mortality ~ imd_quintile + 
                                           age_band + sex + 
                                           rurality_classification + 
-                                          flu_vaccination +
-                                          covid_vaccination_count +
+                                          #prior_flu_vaccination +
+                                          #time_since_last_covid_vaccination +
                                           offset(log(time_overall_resp_mortality)),
                                         data = df_input, family = poisson)
       overall_resp_mortality_ses_output <- tidy(overall_resp_mortality_ses)
@@ -910,8 +910,8 @@ if (cohort == "infants") {
     all_cause_mortality_ses <- glm(all_cause_mortality ~ imd_quintile + 
                                      age_band + sex + 
                                      rurality_classification + 
-                                     flu_vaccination +
-                                     covid_vaccination_count +
+                                     #prior_flu_vaccination +
+                                     #time_since_last_covid_vaccination +
                                      offset(log(time_all_cause_mortality)),
                                    data = df_input, family = poisson)
     all_cause_mortality_ses_output <- tidy(all_cause_mortality_ses)
@@ -920,134 +920,134 @@ if (cohort == "infants") {
     
     #rsv primary by household composition
     rsv_mild_hh_comp <- glm(rsv_primary_inf ~ composition_category + 
-                          age_band + sex + 
-                          rurality_classification + 
-                          flu_vaccination +
-                          covid_vaccination_count +
-                          offset(log(time_rsv_primary)),
-                        data = df_input, family = poisson)
+                              age_band + sex + 
+                              rurality_classification + 
+                              #prior_flu_vaccination +
+                              #time_since_last_covid_vaccination +
+                              offset(log(time_rsv_primary)),
+                            data = df_input, family = poisson)
     rsv_mild_hh_comp_output <- tidy(rsv_mild_hh_comp)
     
     #rsv secondary by household composition
     rsv_severe_hh_comp <- glm(rsv_secondary_inf ~ composition_category + 
-                            age_band + sex + 
-                            rurality_classification +
-                            flu_vaccination +
-                            covid_vaccination_count +
-                            offset(log(time_rsv_secondary)),
-                          data = df_input, family = poisson)
+                                age_band + sex + 
+                                rurality_classification +
+                                #prior_flu_vaccination +
+                                #time_since_last_covid_vaccination +
+                                offset(log(time_rsv_secondary)),
+                              data = df_input, family = poisson)
     rsv_severe_hh_comp_output <- tidy(rsv_severe_hh_comp)
     
     #rsv mortality by household composition
     rsv_mortality_hh_comp <- glm(rsv_mortality ~ composition_category + 
-                               age_band + sex + 
-                               rurality_classification + 
-                               flu_vaccination +
-                               covid_vaccination_count +
-                               offset(log(time_rsv_mortality)),
-                             data = df_input, family = poisson)
+                                   age_band + sex + 
+                                   rurality_classification + 
+                                   #prior_flu_vaccination +
+                                   #time_since_last_covid_vaccination +
+                                   offset(log(time_rsv_mortality)),
+                                 data = df_input, family = poisson)
     rsv_severe_hh_comp_output <- tidy(rsv_mortality_hh_comp)
     
     #flu primary by household composition
     flu_mild_hh_comp <- glm(flu_primary_inf ~ composition_category + 
-                          age_band + sex + 
-                          rurality_classification + 
-                          flu_vaccination +
-                          covid_vaccination_count +
-                          offset(log(time_flu_primary)),
-                        data = df_input, family = poisson)
+                              age_band + sex + 
+                              rurality_classification + 
+                              #prior_flu_vaccination +
+                              #time_since_last_covid_vaccination +
+                              offset(log(time_flu_primary)),
+                            data = df_input, family = poisson)
     flu_mild_hh_comp_output <- tidy(flu_mild_hh_comp)
     
     #flu secondary by household composition
     flu_severe_hh_comp <- glm(flu_secondary_inf ~ composition_category + 
-                            age_band + sex + 
-                            rurality_classification + 
-                            flu_vaccination +
-                            covid_vaccination_count +
-                            offset(log(time_flu_secondary)),
-                          data = df_input, family = poisson)
+                                age_band + sex + 
+                                rurality_classification + 
+                                #prior_flu_vaccination +
+                                #time_since_last_covid_vaccination +
+                                offset(log(time_flu_secondary)),
+                              data = df_input, family = poisson)
     flu_severe_hh_comp_output <- tidy(flu_severe_hh_comp)
     
     #flu mortality by household composition
     flu_mortality_hh_comp <- glm(flu_mortality ~ composition_category + 
-                               age_band + sex + 
-                               rurality_classification + 
-                               flu_vaccination +
-                               covid_vaccination_count +
-                               offset(log(time_flu_mortality)),
-                             data = df_input, family = poisson)
+                                   age_band + sex + 
+                                   rurality_classification + 
+                                   #prior_flu_vaccination +
+                                   #time_since_last_covid_vaccination +
+                                   offset(log(time_flu_mortality)),
+                                 data = df_input, family = poisson)
     flu_severe_mild_hh_comp_output <- tidy(flu_mortality_hh_comp)
     
     #covid primary by household composition
     covid_mild_hh_comp <- glm(covid_primary_inf ~ composition_category + 
-                            age_band + sex + 
-                            rurality_classification + 
-                            flu_vaccination +
-                            covid_vaccination_count +
-                            offset(log(time_covid_primary)),
-                          data = df_input, family = poisson)
+                                age_band + sex + 
+                                rurality_classification + 
+                                #prior_flu_vaccination +
+                                #time_since_last_covid_vaccination +
+                                offset(log(time_covid_primary)),
+                              data = df_input, family = poisson)
     covid_mild_hh_comp_output <- tidy(covid_mild_hh_comp)
     
     #covid secondary by household composition
     covid_severe_hh_comp <- glm(covid_secondary_inf ~ composition_category + 
-                              age_band + sex + 
-                              rurality_classification + 
-                              flu_vaccination +
-                              covid_vaccination_count +
-                              offset(log(time_covid_secondary)),
-                            data = df_input, family = poisson)
+                                  age_band + sex + 
+                                  rurality_classification + 
+                                  #prior_flu_vaccination +
+                                  #time_since_last_covid_vaccination +
+                                  offset(log(time_covid_secondary)),
+                                data = df_input, family = poisson)
     covid_severe_hh_comp_output <- tidy(covid_severe_hh_comp)
     
     #covid mortality by household composition
     covid_mortality_hh_comp <- glm(covid_mortality ~ composition_category + 
-                                 age_band + sex + 
-                                 rurality_classification + 
-                                 flu_vaccination +
-                                 covid_vaccination_count +
-                                 offset(log(time_covid_mortality)),
-                               data = df_input, family = poisson)
+                                     age_band + sex + 
+                                     rurality_classification + 
+                                     #prior_flu_vaccination +
+                                     #time_since_last_covid_vaccination +
+                                     offset(log(time_covid_mortality)),
+                                   data = df_input, family = poisson)
     covid_mortality_hh_comp_output <- tidy(covid_mortality_hh_comp)
     
     if (codelist_type == "sensitive") {
       #overall_resp primary by household composition
       overall_resp_mild_hh_comp <- glm(overall_resp_primary_inf ~ composition_category + 
-                                     age_band + sex + 
-                                     rurality_classification +
-                                     flu_vaccination +
-                                     covid_vaccination_count +
-                                     offset(log(time_overall_resp_primary)),
-                                   data = df_input, family = poisson)
+                                         age_band + sex + 
+                                         rurality_classification +
+                                         #prior_flu_vaccination +
+                                         #time_since_last_covid_vaccination +
+                                         offset(log(time_overall_resp_primary)),
+                                       data = df_input, family = poisson)
       overall_resp_mild_hh_comp_output <- tidy(overall_resp_mild_hh_comp)
       
       #overall_resp secondary by household composition
       overall_resp_severe_hh_comp <- glm(overall_resp_secondary_inf ~ composition_category + 
-                                       age_band + sex + 
-                                       rurality_classification + 
-                                       flu_vaccination +
-                                       covid_vaccination_count +
-                                       offset(log(time_overall_resp_secondary)),
-                                     data = df_input, family = poisson)
+                                           age_band + sex + 
+                                           rurality_classification + 
+                                           #prior_flu_vaccination +
+                                           #time_since_last_covid_vaccination +
+                                           offset(log(time_overall_resp_secondary)),
+                                         data = df_input, family = poisson)
       overall_resp_severe_hh_comp_output <- tidy(overall_resp_severe_hh_comp)
       
       #overall_resp mortality by household composition
       overall_resp_mortality_hh_comp <- glm(overall_resp_mortality ~ composition_category + 
-                                          age_band + sex + 
-                                          rurality_classification + 
-                                          flu_vaccination +
-                                          covid_vaccination_count +
-                                          offset(log(time_overall_resp_mortality)),
-                                        data = df_input, family = poisson)
+                                              age_band + sex + 
+                                              rurality_classification + 
+                                              #prior_flu_vaccination +
+                                              #time_since_last_covid_vaccination +
+                                              offset(log(time_overall_resp_mortality)),
+                                            data = df_input, family = poisson)
       overall_resp_mortality_hh_comp_output <- tidy(overall_resp_mortality_hh_comp)
     }
     
     #all cause mortality by household composition
     all_cause_mortality_hh_comp <- glm(all_cause_mortality ~ composition_category + 
-                                     age_band + sex + 
-                                     rurality_classification + 
-                                     flu_vaccination +
-                                     covid_vaccination_count +
-                                     offset(log(time_all_cause_mortality)),
-                                   data = df_input, family = poisson)
+                                         age_band + sex + 
+                                         rurality_classification + 
+                                         #prior_flu_vaccination +
+                                         #time_since_last_covid_vaccination +
+                                         offset(log(time_all_cause_mortality)),
+                                       data = df_input, family = poisson)
     all_cause_mortality_hh_comp_output <- tidy(all_cause_mortality_hh_comp)
   }
 }
