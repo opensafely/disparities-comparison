@@ -12,5 +12,5 @@ venv/
 .Rproj.user/
 .RData
 create-project.R
-actions_names.txt
+action_names.txt
 yaml_action_names.R
