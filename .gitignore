@@ -11,3 +11,6 @@ venv/
 .Rhistory
 .Rproj.user/
 .RData
+create-project.R
+actions_names.txt
+yaml_action_names.R
