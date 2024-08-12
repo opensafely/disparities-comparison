@@ -13,9 +13,9 @@ fs::dir_create(here("analysis"))
 source(here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- "2016-09-01"
-  study_end_date <- "2017-08-31"
-  cohort <- "adults"
+  study_start_date <- "2020-09-01"
+  study_end_date <- "2021-08-31"
+  cohort <- "older_adults"
   codelist_type <- "specific"
   investigation_type <- "primary"
 } else {
@@ -26,6 +26,8 @@ if (length(args) == 0) {
   investigation_type <- args[[5]]
 }
 covid_season_min <- as.Date("2019-09-01")
+covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
+covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
@@ -39,58 +41,58 @@ fs::dir_create(here("output", "models"))
 if (study_start_date >= covid_season_min) {
   survival <- df_input %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   survival <- df_input %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   survival <- df_input %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else {
   survival <- df_input %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 }
   
@@ -109,58 +111,58 @@ survival <- survival %>%
 if (study_start_date >= covid_season_min) {
   events <- df_input %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   events <- df_input %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   events <- df_input %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else {
   events <- df_input %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 }
 
@@ -238,61 +240,61 @@ if (study_start_date >= covid_season_min) {
   survival_age <- df_input %>%
     group_by(age_band) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   survival_age <- df_input %>%
     group_by(age_band) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   survival_age <- df_input %>%
     group_by(age_band) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else {
   survival_age <- df_input %>%
     group_by(age_band) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 }
 
@@ -312,61 +314,61 @@ if (study_start_date >= covid_season_min) {
   events_age <- df_input %>%
     group_by(age_band) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   events_age <- df_input %>%
     group_by(age_band) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   events_age <- df_input %>%
     group_by(age_band) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else {
   events_age <- df_input %>%
     group_by(age_band) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 }
 
@@ -451,61 +453,61 @@ if (study_start_date >= covid_season_min) {
   survival_sex <- df_input %>%
     group_by(sex) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   survival_sex <- df_input %>%
     group_by(sex) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   survival_sex <- df_input %>%
     group_by(sex) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else {
   survival_sex <- df_input %>%
     group_by(sex) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 }
 
@@ -525,61 +527,61 @@ if (study_start_date >= covid_season_min) {
   events_sex <- df_input %>%
     group_by(sex) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   events_sex <- df_input %>%
     group_by(sex) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   events_sex <- df_input %>%
     group_by(sex) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else {
   events_sex <- df_input %>%
     group_by(sex) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 }
 
@@ -663,61 +665,61 @@ if (study_start_date >= covid_season_min) {
   survival_ethnicity <- df_input %>%
     group_by(latest_ethnicity_group) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   survival_ethnicity <- df_input %>%
     group_by(latest_ethnicity_group) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   survival_ethnicity <- df_input %>%
     group_by(latest_ethnicity_group) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else {
   survival_ethnicity <- df_input %>%
     group_by(latest_ethnicity_group) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 }
 
@@ -737,61 +739,61 @@ if (study_start_date >= covid_season_min) {
   events_ethnicity <- df_input %>%
     group_by(latest_ethnicity_group) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   events_ethnicity <- df_input %>%
     group_by(latest_ethnicity_group) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   events_ethnicity <- df_input %>%
     group_by(latest_ethnicity_group) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else {
   events_ethnicity <- df_input %>%
     group_by(latest_ethnicity_group) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 }
 
@@ -876,61 +878,61 @@ if (study_start_date >= covid_season_min) {
   survival_ses <- df_input %>%
     group_by(imd_quintile) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   survival_ses <- df_input %>%
     group_by(imd_quintile) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   survival_ses <- df_input %>%
     group_by(imd_quintile) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else {
   survival_ses <- df_input %>%
     group_by(imd_quintile) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 }
 
@@ -950,61 +952,61 @@ if (study_start_date >= covid_season_min) {
   events_ses <- df_input %>%
     group_by(imd_quintile) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   events_ses <- df_input %>%
     group_by(imd_quintile) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   events_ses <- df_input %>%
     group_by(imd_quintile) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else {
   events_ses <- df_input %>%
     group_by(imd_quintile) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 }
 
@@ -1089,61 +1091,61 @@ if (study_start_date >= covid_season_min) {
   survival_hh_comp <- df_input %>%
     group_by(composition_category) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   survival_hh_comp <- df_input %>%
     group_by(composition_category) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   survival_hh_comp <- df_input %>%
     group_by(composition_category) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else {
   survival_hh_comp <- df_input %>%
     group_by(composition_category) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 }
 
@@ -1163,61 +1165,61 @@ if (study_start_date >= covid_season_min) {
   events_hh_comp <- df_input %>%
     group_by(composition_category) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   events_hh_comp <- df_input %>%
     group_by(composition_category) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   events_hh_comp <- df_input %>%
     group_by(composition_category) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else {
   events_hh_comp <- df_input %>%
     group_by(composition_category) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 }
 
@@ -1302,61 +1304,61 @@ if (study_start_date >= covid_season_min) {
   survival_rurality <- df_input %>%
     group_by(rurality_classification) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   survival_rurality <- df_input %>%
     group_by(rurality_classification) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   survival_rurality <- df_input %>%
     group_by(rurality_classification) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      covid_mild = sum(time_covid_primary),
-      covid_severe = sum(time_covid_secondary),
-      covid_mortality = sum(time_covid_mortality),
-      overall_resp = sum(time_overall_resp_primary),
-      overall_resp_severe = sum(time_overall_resp_secondary),
-      overall_resp_mortality = sum(time_overall_resp_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      covid_mild = sum(time_covid_primary, na.rm = T),
+      covid_severe = sum(time_covid_secondary, na.rm = T),
+      covid_mortality = sum(time_covid_mortality, na.rm = T),
+      overall_resp = sum(time_overall_resp_primary, na.rm = T),
+      overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+      overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 } else {
   survival_rurality <- df_input %>%
     group_by(rurality_classification) %>%
     transmute(
-      rsv_mild = sum(time_rsv_primary),
-      rsv_severe = sum(time_rsv_secondary),
-      rsv_mortality = sum(time_rsv_mortality),
-      flu_mild = sum(time_flu_primary),
-      flu_severe = sum(time_flu_secondary),
-      flu_mortality = sum(time_flu_mortality),
-      all_cause_mortality = sum(time_all_cause_mortality)
+      rsv_mild = sum(time_rsv_primary, na.rm = T),
+      rsv_severe = sum(time_rsv_secondary, na.rm = T),
+      rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T),
+      all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
     )
 }
 
@@ -1376,61 +1378,61 @@ if (study_start_date >= covid_season_min) {
   events_rurality <- df_input %>%
     group_by(rurality_classification) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (codelist_type == "sensitive") {
   events_rurality <- df_input %>%
     group_by(rurality_classification) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   events_rurality <- df_input %>%
     group_by(rurality_classification) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      covid_mild = sum(covid_primary_inf),
-      covid_severe = sum(covid_secondary_inf),
-      covid_mortality = sum(covid_mortality_inf),
-      overall_resp = sum(overall_resp_primary_inf),
-      overall_resp_severe = sum(overall_resp_secondary_inf),
-      overall_resp_mortality = sum(overall_resp_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      covid_mild = sum(covid_primary_inf, na.rm = T),
+      covid_severe = sum(covid_secondary_inf, na.rm = T),
+      covid_mortality = sum(covid_mortality_inf, na.rm = T),
+      overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+      overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+      overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 } else {
   events_rurality <- df_input %>%
     group_by(rurality_classification) %>%
     transmute(
-      rsv_mild = sum(rsv_primary_inf),
-      rsv_severe = sum(rsv_secondary_inf),
-      rsv_mortality = sum(rsv_mortality_inf),
-      flu_mild = sum(flu_primary_inf),
-      flu_severe = sum(flu_secondary_inf),
-      flu_mortality = sum(flu_mortality_inf),
-      all_cause_mortality = sum(all_cause_mortality_inf)
+      rsv_mild = sum(rsv_primary_inf, na.rm = T),
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+      rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T),
+      all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
     )
 }
 
@@ -1529,40 +1531,40 @@ if (study_start_date >= covid_season_min) {
 ##children and adolescents, adult and older adult cohort specific characteristics 
 
 if (cohort == "children_and_adolescents" | cohort == "adults" | cohort == "older_adults") {
-  if (study_start_date >= covid_season_min) {
+  if (study_start_date >= covid_prior_vacc_min) {
     #calculate total person-time for each outcome type by time since last covid vaccine
     if (codelist_type == "sensitive") {
       survival_time_since_cov_vaccines <- df_input %>%
         group_by(time_since_last_covid_vaccination) %>%
         transmute(
-          rsv_mild = sum(time_rsv_primary),
-          rsv_severe = sum(time_rsv_secondary),
-          rsv_mortality = sum(time_rsv_mortality),
-          flu_mild = sum(time_flu_primary),
-          flu_severe = sum(time_flu_secondary),
-          flu_mortality = sum(time_flu_mortality),
-          covid_mild = sum(time_covid_primary),
-          covid_severe = sum(time_covid_secondary),
-          covid_mortality = sum(time_covid_mortality),
-          overall_resp = sum(time_overall_resp_primary),
-          overall_resp_severe = sum(time_overall_resp_secondary),
-          overall_resp_mortality = sum(time_overall_resp_mortality),
-          all_cause_mortality = sum(time_all_cause_mortality)
+          rsv_mild = sum(time_rsv_primary, na.rm = T),
+          rsv_severe = sum(time_rsv_secondary, na.rm = T),
+          rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+          flu_mild = sum(time_flu_primary, na.rm = T),
+          flu_severe = sum(time_flu_secondary, na.rm = T),
+          flu_mortality = sum(time_flu_mortality, na.rm = T),
+          covid_mild = sum(time_covid_primary, na.rm = T),
+          covid_severe = sum(time_covid_secondary, na.rm = T),
+          covid_mortality = sum(time_covid_mortality, na.rm = T),
+          overall_resp = sum(time_overall_resp_primary, na.rm = T),
+          overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+          overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+          all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
         )
     } else {
       survival_time_since_cov_vaccines <- df_input %>%
         group_by(time_since_last_covid_vaccination) %>%
         transmute(
-          rsv_mild = sum(time_rsv_primary),
-          rsv_severe = sum(time_rsv_secondary),
-          rsv_mortality = sum(time_rsv_mortality),
-          flu_mild = sum(time_flu_primary),
-          flu_severe = sum(time_flu_secondary),
-          flu_mortality = sum(time_flu_mortality),
-          covid_mild = sum(time_covid_primary),
-          covid_severe = sum(time_covid_secondary),
-          covid_mortality = sum(time_covid_mortality),
-          all_cause_mortality = sum(time_all_cause_mortality)
+          rsv_mild = sum(time_rsv_primary, na.rm = T),
+          rsv_severe = sum(time_rsv_secondary, na.rm = T),
+          rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+          flu_mild = sum(time_flu_primary, na.rm = T),
+          flu_severe = sum(time_flu_secondary, na.rm = T),
+          flu_mortality = sum(time_flu_mortality, na.rm = T),
+          covid_mild = sum(time_covid_primary, na.rm = T),
+          covid_severe = sum(time_covid_secondary, na.rm = T),
+          covid_mortality = sum(time_covid_mortality, na.rm = T),
+          all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
         )
     }
   
@@ -1580,36 +1582,36 @@ if (cohort == "children_and_adolescents" | cohort == "adults" | cohort == "older
     #calculate total number of events for each outcome type by time since last covid vaccine
     if (codelist_type == "sensitive") {
       events_time_since_cov_vaccines <- df_input %>%
-        group_by(time_since_last_covid_vaccination) %>%
+        group_by(time_since_last_covid_vaccination, na.rm = T) %>%
         transmute(
-          rsv_mild = sum(rsv_primary_inf),
-          rsv_severe = sum(rsv_secondary_inf),
-          rsv_mortality = sum(rsv_mortality_inf),
-          flu_mild = sum(flu_primary_inf),
-          flu_severe = sum(flu_secondary_inf),
-          flu_mortality = sum(flu_mortality_inf),
-          covid_mild = sum(covid_primary_inf),
-          covid_severe = sum(covid_secondary_inf),
-          covid_mortality = sum(covid_mortality_inf),
-          overall_resp = sum(overall_resp_primary_inf),
-          overall_resp_severe = sum(overall_resp_secondary_inf),
-          overall_resp_mortality = sum(overall_resp_mortality_inf),
-          all_cause_mortality = sum(all_cause_mortality_inf)
+          rsv_mild = sum(rsv_primary_inf, na.rm = T),
+          rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+          rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+          flu_mild = sum(flu_primary_inf, na.rm = T),
+          flu_severe = sum(flu_secondary_inf, na.rm = T),
+          flu_mortality = sum(flu_mortality_inf, na.rm = T),
+          covid_mild = sum(covid_primary_inf, na.rm = T),
+          covid_severe = sum(covid_secondary_inf, na.rm = T),
+          covid_mortality = sum(covid_mortality_inf, na.rm = T),
+          overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+          overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+          overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+          all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
           )
     } else {
       events_time_since_cov_vaccines <- df_input %>%
         group_by(time_since_last_covid_vaccination) %>%
         transmute(
-          rsv_mild = sum(rsv_primary_inf),
-          rsv_severe = sum(rsv_secondary_inf),
-          rsv_mortality = sum(rsv_mortality_inf),
-          flu_mild = sum(flu_primary_inf),
-          flu_severe = sum(flu_secondary_inf),
-          flu_mortality = sum(flu_mortality_inf),
-          covid_mild = sum(covid_primary_inf),
-          covid_severe = sum(covid_secondary_inf),
-          covid_mortality = sum(covid_mortality_inf),
-          all_cause_mortality = sum(all_cause_mortality_inf)
+          rsv_mild = sum(rsv_primary_inf, na.rm = T),
+          rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+          rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+          flu_mild = sum(flu_primary_inf, na.rm = T),
+          flu_severe = sum(flu_secondary_inf, na.rm = T),
+          flu_mortality = sum(flu_mortality_inf, na.rm = T),
+          covid_mild = sum(covid_primary_inf, na.rm = T),
+          covid_severe = sum(covid_secondary_inf, na.rm = T),
+          covid_mortality = sum(covid_mortality_inf, na.rm = T),
+          all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
         )
     }
 
@@ -1680,40 +1682,42 @@ if (cohort == "children_and_adolescents" | cohort == "adults" | cohort == "older
           Group = results_time_since_cov_vaccines$time_since_last_covid_vaccination)
         )
     }
-
+  } 
+  
+  if (study_start_date >= covid_current_vacc_min) {
     #calculate total person-time for each outcome type by current season covid vaccine
     if (codelist_type == "sensitive") {
       survival_cov_vaccines <- df_input %>%
         group_by(covid_vaccination) %>%
         transmute(
-          rsv_mild = sum(time_rsv_primary),
-          rsv_severe = sum(time_rsv_secondary),
-          rsv_mortality = sum(time_rsv_mortality),
-          flu_mild = sum(time_flu_primary),
-          flu_severe = sum(time_flu_secondary),
-          flu_mortality = sum(time_flu_mortality),
-          covid_mild = sum(time_covid_primary),
-          covid_severe = sum(time_covid_secondary),
-          covid_mortality = sum(time_covid_mortality),
-          overall_resp = sum(time_overall_resp_primary),
-          overall_resp_severe = sum(time_overall_resp_secondary),
-          overall_resp_mortality = sum(time_overall_resp_mortality),
-          all_cause_mortality = sum(time_all_cause_mortality)
+          rsv_mild = sum(time_rsv_primary, na.rm = T),
+          rsv_severe = sum(time_rsv_secondary, na.rm = T),
+          rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+          flu_mild = sum(time_flu_primary, na.rm = T),
+          flu_severe = sum(time_flu_secondary, na.rm = T),
+          flu_mortality = sum(time_flu_mortality, na.rm = T),
+          covid_mild = sum(time_covid_primary, na.rm = T),
+          covid_severe = sum(time_covid_secondary, na.rm = T),
+          covid_mortality = sum(time_covid_mortality, na.rm = T),
+          overall_resp = sum(time_overall_resp_primary, na.rm = T),
+          overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+          overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+          all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
         )
     } else {
       survival_cov_vaccines <- df_input %>%
         group_by(covid_vaccination) %>%
         transmute(
-          rsv_mild = sum(time_rsv_primary),
-          rsv_severe = sum(time_rsv_secondary),
-          rsv_mortality = sum(time_rsv_mortality),
-          flu_mild = sum(time_flu_primary),
-          flu_severe = sum(time_flu_secondary),
-          flu_mortality = sum(time_flu_mortality),
-          covid_mild = sum(time_covid_primary),
-          covid_severe = sum(time_covid_secondary),
-          covid_mortality = sum(time_covid_mortality),
-          all_cause_mortality = sum(time_all_cause_mortality)
+          rsv_mild = sum(time_rsv_primary, na.rm = T),
+          rsv_severe = sum(time_rsv_secondary, na.rm = T),
+          rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+          flu_mild = sum(time_flu_primary, na.rm = T),
+          flu_severe = sum(time_flu_secondary, na.rm = T),
+          flu_mortality = sum(time_flu_mortality, na.rm = T),
+          covid_mild = sum(time_covid_primary, na.rm = T),
+          covid_severe = sum(time_covid_secondary, na.rm = T),
+          covid_mortality = sum(time_covid_mortality, na.rm = T),
+          all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
         )
     }
     
@@ -1733,34 +1737,34 @@ if (cohort == "children_and_adolescents" | cohort == "adults" | cohort == "older
       events_cov_vaccines <- df_input %>%
         group_by(covid_vaccination) %>%
         transmute(
-          rsv_mild = sum(rsv_primary_inf),
-          rsv_severe = sum(rsv_secondary_inf),
-          rsv_mortality = sum(rsv_mortality_inf),
-          flu_mild = sum(flu_primary_inf),
-          flu_severe = sum(flu_secondary_inf),
-          flu_mortality = sum(flu_mortality_inf),
-          covid_mild = sum(covid_primary_inf),
-          covid_severe = sum(covid_secondary_inf),
-          covid_mortality = sum(covid_mortality_inf),
-          overall_resp = sum(overall_resp_primary_inf),
-          overall_resp_severe = sum(overall_resp_secondary_inf),
-          overall_resp_mortality = sum(overall_resp_mortality_inf),
-          all_cause_mortality = sum(all_cause_mortality_inf)
+          rsv_mild = sum(rsv_primary_inf, na.rm = T),
+          rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+          rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+          flu_mild = sum(flu_primary_inf, na.rm = T),
+          flu_severe = sum(flu_secondary_inf, na.rm = T),
+          flu_mortality = sum(flu_mortality_inf, na.rm = T),
+          covid_mild = sum(covid_primary_inf, na.rm = T),
+          covid_severe = sum(covid_secondary_inf, na.rm = T),
+          covid_mortality = sum(covid_mortality_inf, na.rm = T),
+          overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+          overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+          overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+          all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
         )
     } else {
       events_cov_vaccines <- df_input %>%
         group_by(covid_vaccination) %>%
         transmute(
-          rsv_mild = sum(rsv_primary_inf),
-          rsv_severe = sum(rsv_secondary_inf),
-          rsv_mortality = sum(rsv_mortality_inf),
-          flu_mild = sum(flu_primary_inf),
-          flu_severe = sum(flu_secondary_inf),
-          flu_mortality = sum(flu_mortality_inf),
-          covid_mild = sum(covid_primary_inf),
-          covid_severe = sum(covid_secondary_inf),
-          covid_mortality = sum(covid_mortality_inf),
-          all_cause_mortality = sum(all_cause_mortality_inf)
+          rsv_mild = sum(rsv_primary_inf, na.rm = T),
+          rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+          rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+          flu_mild = sum(flu_primary_inf, na.rm = T),
+          flu_severe = sum(flu_secondary_inf, na.rm = T),
+          flu_mortality = sum(flu_mortality_inf, na.rm = T),
+          covid_mild = sum(covid_primary_inf, na.rm = T),
+          covid_severe = sum(covid_secondary_inf, na.rm = T),
+          covid_mortality = sum(covid_mortality_inf, na.rm = T),
+          all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
         )
     }
     
@@ -1836,61 +1840,61 @@ if (cohort == "children_and_adolescents" | cohort == "adults" | cohort == "older
     survival_prior_flu_vacc <- df_input %>%
       group_by(prior_flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(time_rsv_primary),
-        rsv_severe = sum(time_rsv_secondary),
-        rsv_mortality = sum(time_rsv_mortality),
-        flu_mild = sum(time_flu_primary),
-        flu_severe = sum(time_flu_secondary),
-        flu_mortality = sum(time_flu_mortality),
-        covid_mild = sum(time_covid_primary),
-        covid_severe = sum(time_covid_secondary),
-        covid_mortality = sum(time_covid_mortality),
-        all_cause_mortality = sum(time_all_cause_mortality)
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        flu_mortality = sum(time_flu_mortality, na.rm = T),
+        covid_mild = sum(time_covid_primary, na.rm = T),
+        covid_severe = sum(time_covid_secondary, na.rm = T),
+        covid_mortality = sum(time_covid_mortality, na.rm = T),
+        all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
       )
   } else if (codelist_type == "sensitive") {
     survival_prior_flu_vacc <- df_input %>%
       group_by(prior_flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(time_rsv_primary),
-        rsv_severe = sum(time_rsv_secondary),
-        rsv_mortality = sum(time_rsv_mortality),
-        flu_mild = sum(time_flu_primary),
-        flu_severe = sum(time_flu_secondary),
-        flu_mortality = sum(time_flu_mortality),
-        overall_resp = sum(time_overall_resp_primary),
-        overall_resp_severe = sum(time_overall_resp_secondary),
-        overall_resp_mortality = sum(time_overall_resp_mortality),
-        all_cause_mortality = sum(time_all_cause_mortality)
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        flu_mortality = sum(time_flu_mortality, na.rm = T),
+        overall_resp = sum(time_overall_resp_primary, na.rm = T),
+        overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+        overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+        all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
       )
   } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
     survival_prior_flu_vacc <- df_input %>%
       group_by(prior_flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(time_rsv_primary),
-        rsv_severe = sum(time_rsv_secondary),
-        rsv_mortality = sum(time_rsv_mortality),
-        flu_mild = sum(time_flu_primary),
-        flu_severe = sum(time_flu_secondary),
-        flu_mortality = sum(time_flu_mortality),
-        covid_mild = sum(time_covid_primary),
-        covid_severe = sum(time_covid_secondary),
-        covid_mortality = sum(time_covid_mortality),
-        overall_resp = sum(time_overall_resp_primary),
-        overall_resp_severe = sum(time_overall_resp_secondary),
-        overall_resp_mortality = sum(time_overall_resp_mortality),
-        all_cause_mortality = sum(time_all_cause_mortality)
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        flu_mortality = sum(time_flu_mortality, na.rm = T),
+        covid_mild = sum(time_covid_primary, na.rm = T),
+        covid_severe = sum(time_covid_secondary, na.rm = T),
+        covid_mortality = sum(time_covid_mortality, na.rm = T),
+        overall_resp = sum(time_overall_resp_primary, na.rm = T),
+        overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+        overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+        all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
       )
   } else {
     survival_prior_flu_vacc <- df_input %>%
       group_by(prior_flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(time_rsv_primary),
-        rsv_severe = sum(time_rsv_secondary),
-        rsv_mortality = sum(time_rsv_mortality),
-        flu_mild = sum(time_flu_primary),
-        flu_severe = sum(time_flu_secondary),
-        flu_mortality = sum(time_flu_mortality),
-        all_cause_mortality = sum(time_all_cause_mortality)
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        flu_mortality = sum(time_flu_mortality, na.rm = T),
+        all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
       )
   }
   
@@ -1910,61 +1914,61 @@ if (cohort == "children_and_adolescents" | cohort == "adults" | cohort == "older
     events_prior_flu_vacc <- df_input %>%
       group_by(prior_flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(rsv_primary_inf),
-        rsv_severe = sum(rsv_secondary_inf),
-        rsv_mortality = sum(rsv_mortality_inf),
-        flu_mild = sum(flu_primary_inf),
-        flu_severe = sum(flu_secondary_inf),
-        flu_mortality = sum(flu_mortality_inf),
-        covid_mild = sum(covid_primary_inf),
-        covid_severe = sum(covid_secondary_inf),
-        covid_mortality = sum(covid_mortality_inf),
-        all_cause_mortality = sum(all_cause_mortality_inf)
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        flu_mortality = sum(flu_mortality_inf, na.rm = T),
+        covid_mild = sum(covid_primary_inf, na.rm = T),
+        covid_severe = sum(covid_secondary_inf, na.rm = T),
+        covid_mortality = sum(covid_mortality_inf, na.rm = T),
+        all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
       )
   } else if (codelist_type == "sensitive") {
     events_prior_flu_vacc <- df_input %>%
       group_by(prior_flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(rsv_primary_inf),
-        rsv_severe = sum(rsv_secondary_inf),
-        rsv_mortality = sum(rsv_mortality_inf),
-        flu_mild = sum(flu_primary_inf),
-        flu_severe = sum(flu_secondary_inf),
-        flu_mortality = sum(flu_mortality_inf),
-        overall_resp = sum(overall_resp_primary_inf),
-        overall_resp_severe = sum(overall_resp_secondary_inf),
-        overall_resp_mortality = sum(overall_resp_mortality_inf),
-        all_cause_mortality = sum(all_cause_mortality_inf)
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        flu_mortality = sum(flu_mortality_inf, na.rm = T),
+        overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+        overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+        overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+        all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
       )
   } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
     events_prior_flu_vacc <- df_input %>%
       group_by(prior_flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(rsv_primary_inf),
-        rsv_severe = sum(rsv_secondary_inf),
-        rsv_mortality = sum(rsv_mortality_inf),
-        flu_mild = sum(flu_primary_inf),
-        flu_severe = sum(flu_secondary_inf),
-        flu_mortality = sum(flu_mortality_inf),
-        covid_mild = sum(covid_primary_inf),
-        covid_severe = sum(covid_secondary_inf),
-        covid_mortality = sum(covid_mortality_inf),
-        overall_resp = sum(overall_resp_primary_inf),
-        overall_resp_severe = sum(overall_resp_secondary_inf),
-        overall_resp_mortality = sum(overall_resp_mortality_inf),
-        all_cause_mortality = sum(all_cause_mortality_inf)
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        flu_mortality = sum(flu_mortality_inf, na.rm = T),
+        covid_mild = sum(covid_primary_inf, na.rm = T),
+        covid_severe = sum(covid_secondary_inf, na.rm = T),
+        covid_mortality = sum(covid_mortality_inf, na.rm = T),
+        overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+        overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+        overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+        all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
       )
   } else {
     events_prior_flu_vacc <- df_input %>%
       group_by(prior_flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(rsv_primary_inf),
-        rsv_severe = sum(rsv_secondary_inf),
-        rsv_mortality = sum(rsv_mortality_inf),
-        flu_mild = sum(flu_primary_inf),
-        flu_severe = sum(flu_secondary_inf),
-        flu_mortality = sum(flu_mortality_inf),
-        all_cause_mortality = sum(all_cause_mortality_inf)
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        flu_mortality = sum(flu_mortality_inf, na.rm = T),
+        all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
       )
   }
   
@@ -2048,61 +2052,61 @@ if (cohort == "children_and_adolescents" | cohort == "adults" | cohort == "older
     survival_flu_vacc <- df_input %>%
       group_by(flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(time_rsv_primary),
-        rsv_severe = sum(time_rsv_secondary),
-        rsv_mortality = sum(time_rsv_mortality),
-        flu_mild = sum(time_flu_primary),
-        flu_severe = sum(time_flu_secondary),
-        flu_mortality = sum(time_flu_mortality),
-        covid_mild = sum(time_covid_primary),
-        covid_severe = sum(time_covid_secondary),
-        covid_mortality = sum(time_covid_mortality),
-        all_cause_mortality = sum(time_all_cause_mortality)
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        flu_mortality = sum(time_flu_mortality, na.rm = T),
+        covid_mild = sum(time_covid_primary, na.rm = T),
+        covid_severe = sum(time_covid_secondary, na.rm = T),
+        covid_mortality = sum(time_covid_mortality, na.rm = T),
+        all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
       )
   } else if (codelist_type == "sensitive") {
     survival_flu_vacc <- df_input %>%
       group_by(flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(time_rsv_primary),
-        rsv_severe = sum(time_rsv_secondary),
-        rsv_mortality = sum(time_rsv_mortality),
-        flu_mild = sum(time_flu_primary),
-        flu_severe = sum(time_flu_secondary),
-        flu_mortality = sum(time_flu_mortality),
-        overall_resp = sum(time_overall_resp_primary),
-        overall_resp_severe = sum(time_overall_resp_secondary),
-        overall_resp_mortality = sum(time_overall_resp_mortality),
-        all_cause_mortality = sum(time_all_cause_mortality)
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        flu_mortality = sum(time_flu_mortality, na.rm = T),
+        overall_resp = sum(time_overall_resp_primary, na.rm = T),
+        overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+        overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+        all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
       )
   } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
     survival_flu_vacc <- df_input %>%
       group_by(flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(time_rsv_primary),
-        rsv_severe = sum(time_rsv_secondary),
-        rsv_mortality = sum(time_rsv_mortality),
-        flu_mild = sum(time_flu_primary),
-        flu_severe = sum(time_flu_secondary),
-        flu_mortality = sum(time_flu_mortality),
-        covid_mild = sum(time_covid_primary),
-        covid_severe = sum(time_covid_secondary),
-        covid_mortality = sum(time_covid_mortality),
-        overall_resp = sum(time_overall_resp_primary),
-        overall_resp_severe = sum(time_overall_resp_secondary),
-        overall_resp_mortality = sum(time_overall_resp_mortality),
-        all_cause_mortality = sum(time_all_cause_mortality)
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        flu_mortality = sum(time_flu_mortality, na.rm = T),
+        covid_mild = sum(time_covid_primary, na.rm = T),
+        covid_severe = sum(time_covid_secondary, na.rm = T),
+        covid_mortality = sum(time_covid_mortality, na.rm = T),
+        overall_resp = sum(time_overall_resp_primary, na.rm = T),
+        overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T),
+        overall_resp_mortality = sum(time_overall_resp_mortality, na.rm = T),
+        all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
       )
   } else {
     survival_flu_vacc <- df_input %>%
       group_by(flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(time_rsv_primary),
-        rsv_severe = sum(time_rsv_secondary),
-        rsv_mortality = sum(time_rsv_mortality),
-        flu_mild = sum(time_flu_primary),
-        flu_severe = sum(time_flu_secondary),
-        flu_mortality = sum(time_flu_mortality),
-        all_cause_mortality = sum(time_all_cause_mortality)
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T),
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        flu_mortality = sum(time_flu_mortality, na.rm = T),
+        all_cause_mortality = sum(time_all_cause_mortality, na.rm = T)
       )
   }
   
@@ -2122,61 +2126,61 @@ if (cohort == "children_and_adolescents" | cohort == "adults" | cohort == "older
     events_flu_vacc <- df_input %>%
       group_by(flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(rsv_primary_inf),
-        rsv_severe = sum(rsv_secondary_inf),
-        rsv_mortality = sum(rsv_mortality_inf),
-        flu_mild = sum(flu_primary_inf),
-        flu_severe = sum(flu_secondary_inf),
-        flu_mortality = sum(flu_mortality_inf),
-        covid_mild = sum(covid_primary_inf),
-        covid_severe = sum(covid_secondary_inf),
-        covid_mortality = sum(covid_mortality_inf),
-        all_cause_mortality = sum(all_cause_mortality_inf)
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        flu_mortality = sum(flu_mortality_inf, na.rm = T),
+        covid_mild = sum(covid_primary_inf, na.rm = T),
+        covid_severe = sum(covid_secondary_inf, na.rm = T),
+        covid_mortality = sum(covid_mortality_inf, na.rm = T),
+        all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
       )
   } else if (codelist_type == "sensitive") {
     events_flu_vacc <- df_input %>%
       group_by(flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(rsv_primary_inf),
-        rsv_severe = sum(rsv_secondary_inf),
-        rsv_mortality = sum(rsv_mortality_inf),
-        flu_mild = sum(flu_primary_inf),
-        flu_severe = sum(flu_secondary_inf),
-        flu_mortality = sum(flu_mortality_inf),
-        overall_resp = sum(overall_resp_primary_inf),
-        overall_resp_severe = sum(overall_resp_secondary_inf),
-        overall_resp_mortality = sum(overall_resp_mortality_inf),
-        all_cause_mortality = sum(all_cause_mortality_inf)
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        flu_mortality = sum(flu_mortality_inf, na.rm = T),
+        overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+        overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+        overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+        all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
       )
   } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
     events_flu_vacc <- df_input %>%
       group_by(prior_flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(rsv_primary_inf),
-        rsv_severe = sum(rsv_secondary_inf),
-        rsv_mortality = sum(rsv_mortality_inf),
-        flu_mild = sum(flu_primary_inf),
-        flu_severe = sum(flu_secondary_inf),
-        flu_mortality = sum(flu_mortality_inf),
-        covid_mild = sum(covid_primary_inf),
-        covid_severe = sum(covid_secondary_inf),
-        covid_mortality = sum(covid_mortality_inf),
-        overall_resp = sum(overall_resp_primary_inf),
-        overall_resp_severe = sum(overall_resp_secondary_inf),
-        overall_resp_mortality = sum(overall_resp_mortality_inf),
-        all_cause_mortality = sum(all_cause_mortality_inf)
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        flu_mortality = sum(flu_mortality_inf, na.rm = T),
+        covid_mild = sum(covid_primary_inf, na.rm = T),
+        covid_severe = sum(covid_secondary_inf, na.rm = T),
+        covid_mortality = sum(covid_mortality_inf, na.rm = T),
+        overall_resp = sum(overall_resp_primary_inf, na.rm = T),
+        overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T),
+        overall_resp_mortality = sum(overall_resp_mortality_inf, na.rm = T),
+        all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
       )
   } else {
     events_flu_vacc <- df_input %>%
       group_by(flu_vaccination) %>%
       transmute(
-        rsv_mild = sum(rsv_primary_inf),
-        rsv_severe = sum(rsv_secondary_inf),
-        rsv_mortality = sum(rsv_mortality_inf),
-        flu_mild = sum(flu_primary_inf),
-        flu_severe = sum(flu_secondary_inf),
-        flu_mortality = sum(flu_mortality_inf),
-        all_cause_mortality = sum(all_cause_mortality_inf)
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T),
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        flu_mortality = sum(flu_mortality_inf, na.rm = T),
+        all_cause_mortality = sum(all_cause_mortality_inf, na.rm = T)
       )
   }
   
@@ -2273,10 +2277,16 @@ if (cohort == "infants") {
                    "Maternal Pertussis Vaccination Status", 
                    "Maternal Influenza Vaccination Status")
 } else {
-  if (study_start_date >= covid_season_min) {
+  if (study_start_date >= covid_prior_vacc_min) {
     table_groups = c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
                      "Rurality Classification", "Household Composition Category",
                      "Time Since Last COVID-19 Vaccination",
+                     "Vaccinated against COVID-19 in current season",
+                     "Vaccinated against influenza in previous season",
+                     "Vaccinated against influenza in current season")
+  } else if (study_start_date == covid_current_vacc_min) {
+    table_groups = c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
+                     "Rurality Classification", "Household Composition Category",
                      "Vaccinated against COVID-19 in current season",
                      "Vaccinated against influenza in previous season",
                      "Vaccinated against influenza in current season")
@@ -2318,7 +2328,8 @@ if (length(args) == 0) {
   results_table_frame <- as.data.frame(results_table) %>%
     write_csv(file = paste0(here::here("output", "results", "rates"), "/", 
                             "rates_", cohort, "_", year(study_start_date), "_", 
-                            year(study_end_date), "_", codelist_type, ".csv"))
+                            year(study_end_date), "_", codelist_type,
+                            , "_", investigation_type,".csv"))
 } else {
   #export results table to csv
   results_table <- final_results %>%
@@ -2334,5 +2345,6 @@ if (length(args) == 0) {
   results_table_frame <- as.data.frame(results_table) %>%
     write_csv(path = paste0(here::here("output", "results", "rates"), "/", "rates_",
                             cohort, "_", year(study_start_date), "_",
-                            year(study_end_date), "_", codelist_type, ".csv"))
+                            year(study_end_date), "_", codelist_type, "_", 
+                            investigation_type, ".csv"))
 }
