@@ -191,13 +191,18 @@ if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "
                              units = "days"), "months") < 12 ~ "6-12m",
       time_length(difftime(study_start_date, last_covid_vaccination_date,
                            units = "days"), "months") >= 12 ~ "12m+",
-        TRUE ~ "Unknown")),
+        TRUE ~ "Unknown"))
+  )
+}
+if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
+  df_input <- df_input %>% 
+    mutate(
       covid_vaccination_immunity_date = covid_vaccination_date + days(10),
       #current covid vaccination status including a lag time
       covid_vaccination = factor(if_else(
         is.na(covid_vaccination_immunity_date), "No", "Yes"
       ))
-  )
+    )
 }
 
 #define seasons for covid
