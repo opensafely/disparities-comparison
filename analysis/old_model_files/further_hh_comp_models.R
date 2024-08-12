@@ -26,6 +26,8 @@ if (length(args) == 0) {
   investigation_type <- args[[5]]
 }
 covid_season_min <- as.Date("2019-09-01")
+covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
+covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
@@ -378,10 +380,12 @@ if (length(args) == 0) {
   model_outputs %>%
     write_csv(file = paste0(here::here("output", "results", "models"), "/", 
                             "further_hh_comp_model_outputs_", cohort, "_", year(study_start_date), 
-                            "_", year(study_end_date), "_", codelist_type, ".csv"))
+                            "_", year(study_end_date), "_", codelist_type, 
+                            "_", investigation_type, ".csv"))
 }  else{
   model_outputs %>%
     write_csv(path = paste0(here::here("output", "results", "models"), "/", 
                             "further_hh_comp_model_outputs_", cohort, "_", year(study_start_date),
-                            "_", year(study_end_date), "_", codelist_type, ".csv"))
+                            "_", year(study_end_date), "_", codelist_type, 
+                            "_", investigation_type, ".csv"))
 }

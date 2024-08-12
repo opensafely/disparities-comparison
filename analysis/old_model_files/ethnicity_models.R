@@ -447,10 +447,12 @@ if (length(args) == 0) {
   model_outputs %>%
     write_csv(file = paste0(here::here("output", "results", "models"), "/", 
                             "ethnicity_model_outputs_", cohort, "_", year(study_start_date), 
-                            "_", year(study_end_date), "_", codelist_type, ".csv"))
+                            "_", year(study_end_date), "_", codelist_type,
+                            "_", investigation_type, ".csv"))
 }  else{
   model_outputs %>%
     write_csv(path = paste0(here::here("output", "results", "models"), "/", 
                             "ethnicity_model_outputs_", cohort, "_", year(study_start_date),
-                            "_", year(study_end_date), "_", codelist_type, ".csv"))
+                            "_", year(study_end_date), "_", codelist_type, 
+                            "_", investigation_type, ".csv"))
 }
