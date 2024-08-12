@@ -103,11 +103,6 @@ sim_list = lst(
     ~ as.integer(runif(n = ..n, min = 1, max = 8), missing_rate = ~ 0.001)
   ),
   
-  #gestational age
-  gestational_age = bn_node(
-    ~ rnorm(n = ..n, mean = 38, sd = 2)
-  ),
-  
   ##exposures
   
   #index of multiple deprivation
@@ -366,7 +361,7 @@ sim_list = lst(
   severe_immunodeficiency = bn_node(
     ~ rbernoulli(n = ..n, p = 0.1)
   ),
-
+  
   #care home resident
   care_home = bn_node(
     ~ rbernoulli(n = ..n, p = 0.1)

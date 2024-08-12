@@ -413,7 +413,7 @@ sim_list = lst(
   severe_immunodeficiency = bn_node(
     ~ rbernoulli(n = ..n, p = 0.1)
   ),
-
+  
   #care home resident
   care_home = bn_node(
     ~ rbernoulli(n = ..n, p = 0.1)
