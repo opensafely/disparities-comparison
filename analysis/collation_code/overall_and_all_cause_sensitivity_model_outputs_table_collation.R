@@ -12,12 +12,12 @@ if (length(args) == 0) {
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "results", "collated"))
+fs::dir_create(here("output", "collated", "analytic"))
 
 ##model outputs
 
 #import overall and all cause results table by cohort (sensitivity analysis)
-collated_model_outputs_overall_and_all_cause = rbind(
+collated_model_outputs_overall_and_all_cause_sensitivity = rbind(
   read_csv(here::here("output", "results", "models", 
                       paste0("overall_and_all_cause_ethnicity_model_outputs_", 
                              cohort, "_2016_2017_sensitive_primary.csv"))) 
@@ -266,5 +266,6 @@ collated_model_outputs_overall_and_all_cause = rbind(
 )
 
 #save as csv
-write_csv(collated_model_outputs, paste0(here::here("output", "results", "collated"),
-                                         "/", cohort, "_overall_and_all_cause_sensitivity_model_outputs_collated.csv"))
+write_csv(collated_model_outputs_overall_and_all_cause_sensitivity, 
+          paste0(here::here("output", "collated", "analytic"),
+          "/", cohort, "_overall_and_all_cause_sensitivity_model_outputs_collated.csv"))

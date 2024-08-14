@@ -12,7 +12,7 @@ if (length(args) == 0) {
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "flow_chart", "collated"))
+fs::dir_create(here("output", "collated", "descriptive"))
 
 ##flowchart
 
@@ -35,6 +35,5 @@ collated_flow_chart = rbind(
 )
 
 #save as csv
-write_csv(collated_flow_chart, paste0(here::here("output", "flow_chart", "collated"),
+write_csv(collated_flow_chart, paste0(here::here("output", "collated", "descriptive"),
           "/", cohort, "_flow_chart_collated.csv"))
-

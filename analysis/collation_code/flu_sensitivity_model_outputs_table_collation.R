@@ -12,7 +12,7 @@ if (length(args) == 0) {
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "results", "collated"))
+fs::dir_create(here("output", "collated", "analytic"))
 
 ##model outputs
 
@@ -266,5 +266,6 @@ collated_model_outputs_flu_sensitivity = rbind(
 )
 
 #save as csv
-write_csv(collated_model_outputs, paste0(here::here("output", "results", "collated"),
-                                         "/", cohort, "_flu_sensitivity_model_outputs_collated.csv"))
+write_csv(collated_model_outputs_flu_sensitivity, 
+          paste0(here::here("output", "collated", "analytic"),
+          "/", cohort, "_flu_sensitivity_model_outputs_collated.csv"))
