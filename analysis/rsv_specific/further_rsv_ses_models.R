@@ -111,7 +111,7 @@ if (study_start_date >= covid_season_min) {
 #define a vector of names for the model outputs
 if (study_start_date < covid_season_min) {
   model_names <- c("Mild RSV by IMD Quintile", "Severe RSV by IMD Quintile", 
-                   "RSV Mortality by IMD Quintile",)
+                   "RSV Mortality by IMD Quintile")
 } else if (codelist_type == "sensitive") {
   model_names <- c("Mild RSV by IMD Quintile", "Severe RSV by IMD Quintile", 
                    "RSV Mortality by IMD Quintile")
