@@ -768,7 +768,7 @@ action_finalise <- function(cohort) {
     
     action(
       name = glue("collate_flow_chart_tables_{cohort}"),
-      run = glue("r:latest analysis/flow_chart_table_collation.R {cohort}"),
+      run = glue("r:latest analysis/collation_code/flow_chart_table_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("process_flow_chart_data_{cohort}_s1"),
                    glue("process_flow_chart_data_{cohort}_s2"),
@@ -778,12 +778,27 @@ action_finalise <- function(cohort) {
                    glue("process_flow_chart_data_{cohort}_s6"),
                    glue("process_flow_chart_data_{cohort}_s7")),
       moderately_sensitive = lst(
-        csv = glue("output/results/collated/{cohort}_flow_chart_collated.csv"),
+        csv = glue("output/collated/descriptive/{cohort}_flow_chart_collated.csv"),
       )
     ),
     action(
       name = glue("collate_table1_tables_{cohort}"),
-      run = glue("r:latest analysis/table1_table_collation.R {cohort}"),
+      run = glue("r:latest analysis/collation_code/table1_table_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("describe_cohort_{cohort}_s1"),
+                   glue("describe_cohort_{cohort}_s2"),
+                   glue("describe_cohort_{cohort}_s3"),
+                   glue("describe_cohort_{cohort}_s4"),
+                   glue("describe_cohort_{cohort}_s5"),
+                   glue("describe_cohort_{cohort}_s6"),
+                   glue("describe_cohort_{cohort}_s7")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_table1_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_rates_tables_specific_primary_{cohort}"),
+      run = glue("r:latest analysis/collation_code/rates_table_specific_primary_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("describe_dataset_{cohort}_s1_specific_primary"),
                    glue("describe_dataset_{cohort}_s2_specific_primary"),
@@ -791,8 +806,16 @@ action_finalise <- function(cohort) {
                    glue("describe_dataset_{cohort}_s4_specific_primary"),
                    glue("describe_dataset_{cohort}_s5_specific_primary"),
                    glue("describe_dataset_{cohort}_s6_specific_primary"),
-                   glue("describe_dataset_{cohort}_s7_specific_primary"),
-                   glue("describe_dataset_{cohort}_s1_sensitive_primary"),
+                   glue("describe_dataset_{cohort}_s7_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_rates_specific_primary_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_rates_tables_sensitive_primary_{cohort}"),
+      run = glue("r:latest analysis/collation_code/rates_table_sensitive_primary_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("describe_dataset_{cohort}_s1_sensitive_primary"),
                    glue("describe_dataset_{cohort}_s2_sensitive_primary"),
                    glue("describe_dataset_{cohort}_s3_sensitive_primary"),
                    glue("describe_dataset_{cohort}_s4_sensitive_primary"),
@@ -800,34 +823,27 @@ action_finalise <- function(cohort) {
                    glue("describe_dataset_{cohort}_s6_sensitive_primary"),
                    glue("describe_dataset_{cohort}_s7_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/collated/{cohort}_table1_collated.csv"))
+        csv = glue("output/collated/descriptive/{cohort}_rates_sensitive_primary_collated.csv"))
     ),
     
     action(
-      name = glue("collate_rates_tables_{cohort}"),
-      run = glue("r:latest analysis/rates_table_collation.R {cohort}"),
+      name = glue("collate_rates_tables_sensitive_secondary_{cohort}"),
+      run = glue("r:latest analysis/collation_code/rates_table_sensitive_secondary_collation.R {cohort}"),
       arguments = c(cohort),
-      needs = list(glue("process_dataset_{cohort}_s1_specific_primary"),
-                   glue("process_dataset_{cohort}_s2_specific_primary"),
-                   glue("process_dataset_{cohort}_s3_specific_primary"),
-                   glue("process_dataset_{cohort}_s4_specific_primary"),
-                   glue("process_dataset_{cohort}_s5_specific_primary"),
-                   glue("process_dataset_{cohort}_s6_specific_primary"),
-                   glue("process_dataset_{cohort}_s7_specific_primary"),
-                   glue("process_dataset_{cohort}_s1_sensitive_primary"),
-                   glue("process_dataset_{cohort}_s2_sensitive_primary"),
-                   glue("process_dataset_{cohort}_s3_sensitive_primary"),
-                   glue("process_dataset_{cohort}_s4_sensitive_primary"),
-                   glue("process_dataset_{cohort}_s5_sensitive_primary"),
-                   glue("process_dataset_{cohort}_s6_sensitive_primary"),
-                   glue("process_dataset_{cohort}_s7_sensitive_primary")),
+      needs = list(glue("describe_dataset_{cohort}_s1_sensitive_secondary"),
+                   glue("describe_dataset_{cohort}_s2_sensitive_secondary"),
+                   glue("describe_dataset_{cohort}_s3_sensitive_secondary"),
+                   glue("describe_dataset_{cohort}_s4_sensitive_secondary"),
+                   glue("describe_dataset_{cohort}_s5_sensitive_secondary"),
+                   glue("describe_dataset_{cohort}_s6_sensitive_secondary"),
+                   glue("describe_dataset_{cohort}_s7_sensitive_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/collated/{cohort}_rates_collated.csv"))
+        csv = glue("output/collated/descriptive/{cohort}_rates_sensitive_secondary_collated.csv"))
     ),
     
     action(
       name = glue("collate_rsv_model_outputs_tables_{cohort}"),
-      run = glue("r:latest analysis/rsv_model_outputs_table_collation.R {cohort}"),
+      run = glue("r:latest analysis/collation_code/rsv_model_outputs_table_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_rsv_ethnicity_s1_specific_primary"),
                    glue("analyse_dataset_{cohort}_rsv_ethnicity_s2_specific_primary"),
@@ -879,12 +895,12 @@ action_finalise <- function(cohort) {
                    glue("analyse_dataset_{cohort}_rsv_full_s6_specific_primary"),
                    glue("analyse_dataset_{cohort}_rsv_full_s7_specific_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/collated/{cohort}_rsv_model_outputs_collated.csv"))
+        csv = glue("output/collated/analytic/{cohort}_rsv_model_outputs_collated.csv"))
     ),
     
     action(
       name = glue("collate_flu_model_outputs_tables_{cohort}"),
-      run = glue("r:latest analysis/flu_model_outputs_table_collation.R {cohort}"),
+      run = glue("r:latest analysis/collation_code/flu_model_outputs_table_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_flu_ethnicity_s1_specific_primary"),
                    glue("analyse_dataset_{cohort}_flu_ethnicity_s2_specific_primary"),
@@ -936,12 +952,12 @@ action_finalise <- function(cohort) {
                    glue("analyse_dataset_{cohort}_flu_full_s6_specific_primary"),
                    glue("analyse_dataset_{cohort}_flu_full_s7_specific_primary")),
       moderately_sensitive = lst(
-        glue("output/results/collated/{cohort}_flu_model_outputs_collated.csv"))
+        glue("output/collated/analytic/{cohort}_flu_model_outputs_collated.csv"))
     ),
     
     action(
       name = glue("collate_covid_model_outputs_tables_{cohort}"),
-      run = glue("r:latest analysis/covid_model_outputs_table_collation.R {cohort}"),
+      run = glue("r:latest analysis/collation_code/covid_model_outputs_table_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_covid_ethnicity_s4_specific_primary"),
                    glue("analyse_dataset_{cohort}_covid_ethnicity_s5_specific_primary"),
@@ -972,12 +988,12 @@ action_finalise <- function(cohort) {
                    glue("analyse_dataset_{cohort}_covid_full_s6_specific_primary"),
                    glue("analyse_dataset_{cohort}_covid_full_s7_specific_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/collated/{cohort}_covid_model_outputs_collated.csv"))
+        csv = glue("output/collated/analytic/{cohort}_covid_model_outputs_collated.csv"))
     ),
     
     action(
       name = glue("collate_overall_and_all_cause_model_outputs_tables_{cohort}"),
-      run = glue("r:latest analysis/overall_and_all_cause_model_outputs_table_collation.R {cohort}"),
+      run = glue("r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s1_specific_primary"),
                    glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s2_specific_primary"),
@@ -1029,12 +1045,12 @@ action_finalise <- function(cohort) {
                    glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s6_specific_primary"),
                    glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s7_specific_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/collated/{cohort}_overall_and_all_cause_model_outputs_collated.csv"))
+        csv = glue("output/collated/analytic/{cohort}_overall_and_all_cause_model_outputs_collated.csv"))
     ),
     
     action(
       name = glue("collate_rsv_sensitivity_model_outputs_tables_{cohort}"),
-      run = glue("r:latest analysis/rsv_sensitivity_model_outputs_table_collation.R {cohort}"),
+      run = glue("r:latest analysis/collation_code/rsv_sensitivity_model_outputs_table_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_rsv_ethnicity_s1_sensitive_primary"),
                    glue("analyse_dataset_{cohort}_rsv_ethnicity_s2_sensitive_primary"),
@@ -1086,12 +1102,12 @@ action_finalise <- function(cohort) {
                    glue("analyse_dataset_{cohort}_rsv_full_s6_sensitive_primary"),
                    glue("analyse_dataset_{cohort}_rsv_full_s7_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/collated/{cohort}_rsv_sensitivity_model_outputs_collated.csv"))
+        csv = glue("output/collated/analytic/{cohort}_rsv_sensitivity_model_outputs_collated.csv"))
     ),
     
     action(
       name = glue("collate_flu_sensitivity_model_outputs_tables_{cohort}"),
-      run = glue("r:latest analysis/flu_sensitivity_model_outputs_table_collation.R {cohort}"),
+      run = glue("r:latest analysis/collation_code/flu_sensitivity_model_outputs_table_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_flu_ethnicity_s1_sensitive_primary"),
                    glue("analyse_dataset_{cohort}_flu_ethnicity_s2_sensitive_primary"),
@@ -1143,12 +1159,12 @@ action_finalise <- function(cohort) {
                    glue("analyse_dataset_{cohort}_flu_full_s6_sensitive_primary"),
                    glue("analyse_dataset_{cohort}_flu_full_s7_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/collated/{cohort}_flu_sensitivity_model_outputs_collated.csv"))
+        csv = glue("output/collated/analytic/{cohort}_flu_sensitivity_model_outputs_collated.csv"))
     ),
     
     action(
       name = glue("collate_covid_sensitivity_model_outputs_tables_{cohort}"),
-      run = glue("r:latest analysis/covid_sensitivity_model_outputs_table_collation.R {cohort}"),
+      run = glue("r:latest analysis/collation_code/covid_sensitivity_model_outputs_table_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_covid_ethnicity_s4_sensitive_primary"),
                    glue("analyse_dataset_{cohort}_covid_ethnicity_s5_sensitive_primary"),
@@ -1179,12 +1195,12 @@ action_finalise <- function(cohort) {
                    glue("analyse_dataset_{cohort}_covid_full_s6_sensitive_primary"),
                    glue("analyse_dataset_{cohort}_covid_full_s7_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/collated/{cohort}_covid_sensitivity_model_outputs_collated.csv"))
+        csv = glue("output/collated/analytic/{cohort}_covid_sensitivity_model_outputs_collated.csv"))
     ),
     
     action(
       name = glue("collate_overall_and_all_cause_sensitivity_model_outputs_tables_{cohort}"),
-      run = glue("r:latest analysis/overall_and_all_cause_sensitivity_model_outputs_table_collation.R {cohort}"),
+      run = glue("r:latest analysis/collation_code/overall_and_all_cause_sensitivity_model_outputs_table_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s1_sensitive_primary"),
                    glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s2_sensitive_primary"),
@@ -1236,7 +1252,7 @@ action_finalise <- function(cohort) {
                    glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s6_sensitive_primary"),
                    glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s7_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/collated/{cohort}_overall_and_all_cause_sensitivity_model_outputs_collated.csv"))
+        csv = glue("output/collated/analytic/{cohort}_overall_and_all_cause_sensitivity_model_outputs_collated.csv"))
     )
   )
 }
@@ -1596,4 +1612,19 @@ names(actions_list) %>% tibble(action=.) %>%
   stop("Backend not recognised")
 }
 
+##filter actions based on prefix
 
+actions_list %>% 
+  names() %>% 
+  str_subset("^collate_rates") %>% 
+  tibble(action=.) %>% 
+  mutate(
+    model = action==""  & lag(action!="", 1, TRUE),
+    model_number = cumsum(model),
+  ) %>% 
+  group_by(model_number) %>% 
+  summarise(
+    sets = str_trim(paste(action, collapse=" "))
+  ) %>% pull(sets) %>% 
+  paste(collapse="\n") %>% 
+  writeLines(here("filtered_actions.txt"))

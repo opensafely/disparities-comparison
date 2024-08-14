@@ -43471,7 +43471,8 @@ actions:
   ## # # # # # # # # # # # # # # # # # # # 
 
   collate_flow_chart_tables_older_adults:
-    run: r:latest analysis/flow_chart_table_collation.R older_adults older_adults
+    run: r:latest analysis/collation_code/flow_chart_table_collation.R older_adults
+      older_adults
     needs:
     - process_flow_chart_data_older_adults_s1
     - process_flow_chart_data_older_adults_s2
@@ -43482,10 +43483,25 @@ actions:
     - process_flow_chart_data_older_adults_s7
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/older_adults_flow_chart_collated.csv
+        csv: output/collated/descriptive/older_adults_flow_chart_collated.csv
 
   collate_table1_tables_older_adults:
-    run: r:latest analysis/table1_table_collation.R older_adults older_adults
+    run: r:latest analysis/collation_code/table1_table_collation.R older_adults older_adults
+    needs:
+    - describe_cohort_older_adults_s1
+    - describe_cohort_older_adults_s2
+    - describe_cohort_older_adults_s3
+    - describe_cohort_older_adults_s4
+    - describe_cohort_older_adults_s5
+    - describe_cohort_older_adults_s6
+    - describe_cohort_older_adults_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/older_adults_table1_collated.csv
+
+  collate_rates_tables_specific_primary_older_adults:
+    run: r:latest analysis/collation_code/rates_table_specific_primary_collation.R
+      older_adults older_adults
     needs:
     - describe_dataset_older_adults_s1_specific_primary
     - describe_dataset_older_adults_s2_specific_primary
@@ -43494,6 +43510,14 @@ actions:
     - describe_dataset_older_adults_s5_specific_primary
     - describe_dataset_older_adults_s6_specific_primary
     - describe_dataset_older_adults_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/older_adults_rates_specific_primary_collated.csv
+
+  collate_rates_tables_sensitive_primary_older_adults:
+    run: r:latest analysis/collation_code/rates_table_sensitive_primary_collation.R
+      older_adults older_adults
+    needs:
     - describe_dataset_older_adults_s1_sensitive_primary
     - describe_dataset_older_adults_s2_sensitive_primary
     - describe_dataset_older_adults_s3_sensitive_primary
@@ -43503,31 +43527,26 @@ actions:
     - describe_dataset_older_adults_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/older_adults_table1_collated.csv
+        csv: output/collated/descriptive/older_adults_rates_sensitive_primary_collated.csv
 
-  collate_rates_tables_older_adults:
-    run: r:latest analysis/rates_table_collation.R older_adults older_adults
+  collate_rates_tables_sensitive_secondary_older_adults:
+    run: r:latest analysis/collation_code/rates_table_sensitive_secondary_collation.R
+      older_adults older_adults
     needs:
-    - process_dataset_older_adults_s1_specific_primary
-    - process_dataset_older_adults_s2_specific_primary
-    - process_dataset_older_adults_s3_specific_primary
-    - process_dataset_older_adults_s4_specific_primary
-    - process_dataset_older_adults_s5_specific_primary
-    - process_dataset_older_adults_s6_specific_primary
-    - process_dataset_older_adults_s7_specific_primary
-    - process_dataset_older_adults_s1_sensitive_primary
-    - process_dataset_older_adults_s2_sensitive_primary
-    - process_dataset_older_adults_s3_sensitive_primary
-    - process_dataset_older_adults_s4_sensitive_primary
-    - process_dataset_older_adults_s5_sensitive_primary
-    - process_dataset_older_adults_s6_sensitive_primary
-    - process_dataset_older_adults_s7_sensitive_primary
+    - describe_dataset_older_adults_s1_sensitive_secondary
+    - describe_dataset_older_adults_s2_sensitive_secondary
+    - describe_dataset_older_adults_s3_sensitive_secondary
+    - describe_dataset_older_adults_s4_sensitive_secondary
+    - describe_dataset_older_adults_s5_sensitive_secondary
+    - describe_dataset_older_adults_s6_sensitive_secondary
+    - describe_dataset_older_adults_s7_sensitive_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/older_adults_rates_collated.csv
+        csv: output/collated/descriptive/older_adults_rates_sensitive_secondary_collated.csv
 
   collate_rsv_model_outputs_tables_older_adults:
-    run: r:latest analysis/rsv_model_outputs_table_collation.R older_adults older_adults
+    run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R older_adults
+      older_adults
     needs:
     - analyse_dataset_older_adults_rsv_ethnicity_s1_specific_primary
     - analyse_dataset_older_adults_rsv_ethnicity_s2_specific_primary
@@ -43580,10 +43599,11 @@ actions:
     - analyse_dataset_older_adults_rsv_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/older_adults_rsv_model_outputs_collated.csv
+        csv: output/collated/analytic/older_adults_rsv_model_outputs_collated.csv
 
   collate_flu_model_outputs_tables_older_adults:
-    run: r:latest analysis/flu_model_outputs_table_collation.R older_adults older_adults
+    run: r:latest analysis/collation_code/flu_model_outputs_table_collation.R older_adults
+      older_adults
     needs:
     - analyse_dataset_older_adults_flu_ethnicity_s1_specific_primary
     - analyse_dataset_older_adults_flu_ethnicity_s2_specific_primary
@@ -43636,10 +43656,11 @@ actions:
     - analyse_dataset_older_adults_flu_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        glue("output/results/collated/{cohort}_flu_model_outputs_collated.csv"): output/results/collated/older_adults_flu_model_outputs_collated.csv
+        glue("output/collated/analytic/{cohort}_flu_model_outputs_collated.csv"): output/collated/analytic/older_adults_flu_model_outputs_collated.csv
 
   collate_covid_model_outputs_tables_older_adults:
-    run: r:latest analysis/covid_model_outputs_table_collation.R older_adults older_adults
+    run: r:latest analysis/collation_code/covid_model_outputs_table_collation.R older_adults
+      older_adults
     needs:
     - analyse_dataset_older_adults_covid_ethnicity_s4_specific_primary
     - analyse_dataset_older_adults_covid_ethnicity_s5_specific_primary
@@ -43671,11 +43692,11 @@ actions:
     - analyse_dataset_older_adults_covid_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/older_adults_covid_model_outputs_collated.csv
+        csv: output/collated/analytic/older_adults_covid_model_outputs_collated.csv
 
   collate_overall_and_all_cause_model_outputs_tables_older_adults:
-    run: r:latest analysis/overall_and_all_cause_model_outputs_table_collation.R older_adults
-      older_adults
+    run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
+      older_adults older_adults
     needs:
     - analyse_dataset_older_adults_overall_and_all_cause_ethnicity_s1_specific_primary
     - analyse_dataset_older_adults_overall_and_all_cause_ethnicity_s2_specific_primary
@@ -43728,11 +43749,11 @@ actions:
     - analyse_dataset_older_adults_overall_and_all_cause_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/older_adults_overall_and_all_cause_model_outputs_collated.csv
+        csv: output/collated/analytic/older_adults_overall_and_all_cause_model_outputs_collated.csv
 
   collate_rsv_sensitivity_model_outputs_tables_older_adults:
-    run: r:latest analysis/rsv_sensitivity_model_outputs_table_collation.R older_adults
-      older_adults
+    run: r:latest analysis/collation_code/rsv_sensitivity_model_outputs_table_collation.R
+      older_adults older_adults
     needs:
     - analyse_dataset_older_adults_rsv_ethnicity_s1_sensitive_primary
     - analyse_dataset_older_adults_rsv_ethnicity_s2_sensitive_primary
@@ -43785,11 +43806,11 @@ actions:
     - analyse_dataset_older_adults_rsv_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/older_adults_rsv_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/older_adults_rsv_sensitivity_model_outputs_collated.csv
 
   collate_flu_sensitivity_model_outputs_tables_older_adults:
-    run: r:latest analysis/flu_sensitivity_model_outputs_table_collation.R older_adults
-      older_adults
+    run: r:latest analysis/collation_code/flu_sensitivity_model_outputs_table_collation.R
+      older_adults older_adults
     needs:
     - analyse_dataset_older_adults_flu_ethnicity_s1_sensitive_primary
     - analyse_dataset_older_adults_flu_ethnicity_s2_sensitive_primary
@@ -43842,11 +43863,11 @@ actions:
     - analyse_dataset_older_adults_flu_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/older_adults_flu_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/older_adults_flu_sensitivity_model_outputs_collated.csv
 
   collate_covid_sensitivity_model_outputs_tables_older_adults:
-    run: r:latest analysis/covid_sensitivity_model_outputs_table_collation.R older_adults
-      older_adults
+    run: r:latest analysis/collation_code/covid_sensitivity_model_outputs_table_collation.R
+      older_adults older_adults
     needs:
     - analyse_dataset_older_adults_covid_ethnicity_s4_sensitive_primary
     - analyse_dataset_older_adults_covid_ethnicity_s5_sensitive_primary
@@ -43878,10 +43899,10 @@ actions:
     - analyse_dataset_older_adults_covid_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/older_adults_covid_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/older_adults_covid_sensitivity_model_outputs_collated.csv
 
   collate_overall_and_all_cause_sensitivity_model_outputs_tables_older_adults:
-    run: r:latest analysis/overall_and_all_cause_sensitivity_model_outputs_table_collation.R
+    run: r:latest analysis/collation_code/overall_and_all_cause_sensitivity_model_outputs_table_collation.R
       older_adults older_adults
     needs:
     - analyse_dataset_older_adults_overall_and_all_cause_ethnicity_s1_sensitive_primary
@@ -43935,10 +43956,10 @@ actions:
     - analyse_dataset_older_adults_overall_and_all_cause_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/older_adults_overall_and_all_cause_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/older_adults_overall_and_all_cause_sensitivity_model_outputs_collated.csv
 
   collate_flow_chart_tables_adults:
-    run: r:latest analysis/flow_chart_table_collation.R adults adults
+    run: r:latest analysis/collation_code/flow_chart_table_collation.R adults adults
     needs:
     - process_flow_chart_data_adults_s1
     - process_flow_chart_data_adults_s2
@@ -43949,10 +43970,25 @@ actions:
     - process_flow_chart_data_adults_s7
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/adults_flow_chart_collated.csv
+        csv: output/collated/descriptive/adults_flow_chart_collated.csv
 
   collate_table1_tables_adults:
-    run: r:latest analysis/table1_table_collation.R adults adults
+    run: r:latest analysis/collation_code/table1_table_collation.R adults adults
+    needs:
+    - describe_cohort_adults_s1
+    - describe_cohort_adults_s2
+    - describe_cohort_adults_s3
+    - describe_cohort_adults_s4
+    - describe_cohort_adults_s5
+    - describe_cohort_adults_s6
+    - describe_cohort_adults_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/adults_table1_collated.csv
+
+  collate_rates_tables_specific_primary_adults:
+    run: r:latest analysis/collation_code/rates_table_specific_primary_collation.R
+      adults adults
     needs:
     - describe_dataset_adults_s1_specific_primary
     - describe_dataset_adults_s2_specific_primary
@@ -43961,6 +43997,14 @@ actions:
     - describe_dataset_adults_s5_specific_primary
     - describe_dataset_adults_s6_specific_primary
     - describe_dataset_adults_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/adults_rates_specific_primary_collated.csv
+
+  collate_rates_tables_sensitive_primary_adults:
+    run: r:latest analysis/collation_code/rates_table_sensitive_primary_collation.R
+      adults adults
+    needs:
     - describe_dataset_adults_s1_sensitive_primary
     - describe_dataset_adults_s2_sensitive_primary
     - describe_dataset_adults_s3_sensitive_primary
@@ -43970,31 +44014,26 @@ actions:
     - describe_dataset_adults_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/adults_table1_collated.csv
+        csv: output/collated/descriptive/adults_rates_sensitive_primary_collated.csv
 
-  collate_rates_tables_adults:
-    run: r:latest analysis/rates_table_collation.R adults adults
+  collate_rates_tables_sensitive_secondary_adults:
+    run: r:latest analysis/collation_code/rates_table_sensitive_secondary_collation.R
+      adults adults
     needs:
-    - process_dataset_adults_s1_specific_primary
-    - process_dataset_adults_s2_specific_primary
-    - process_dataset_adults_s3_specific_primary
-    - process_dataset_adults_s4_specific_primary
-    - process_dataset_adults_s5_specific_primary
-    - process_dataset_adults_s6_specific_primary
-    - process_dataset_adults_s7_specific_primary
-    - process_dataset_adults_s1_sensitive_primary
-    - process_dataset_adults_s2_sensitive_primary
-    - process_dataset_adults_s3_sensitive_primary
-    - process_dataset_adults_s4_sensitive_primary
-    - process_dataset_adults_s5_sensitive_primary
-    - process_dataset_adults_s6_sensitive_primary
-    - process_dataset_adults_s7_sensitive_primary
+    - describe_dataset_adults_s1_sensitive_secondary
+    - describe_dataset_adults_s2_sensitive_secondary
+    - describe_dataset_adults_s3_sensitive_secondary
+    - describe_dataset_adults_s4_sensitive_secondary
+    - describe_dataset_adults_s5_sensitive_secondary
+    - describe_dataset_adults_s6_sensitive_secondary
+    - describe_dataset_adults_s7_sensitive_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/adults_rates_collated.csv
+        csv: output/collated/descriptive/adults_rates_sensitive_secondary_collated.csv
 
   collate_rsv_model_outputs_tables_adults:
-    run: r:latest analysis/rsv_model_outputs_table_collation.R adults adults
+    run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R adults
+      adults
     needs:
     - analyse_dataset_adults_rsv_ethnicity_s1_specific_primary
     - analyse_dataset_adults_rsv_ethnicity_s2_specific_primary
@@ -44047,10 +44086,11 @@ actions:
     - analyse_dataset_adults_rsv_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/adults_rsv_model_outputs_collated.csv
+        csv: output/collated/analytic/adults_rsv_model_outputs_collated.csv
 
   collate_flu_model_outputs_tables_adults:
-    run: r:latest analysis/flu_model_outputs_table_collation.R adults adults
+    run: r:latest analysis/collation_code/flu_model_outputs_table_collation.R adults
+      adults
     needs:
     - analyse_dataset_adults_flu_ethnicity_s1_specific_primary
     - analyse_dataset_adults_flu_ethnicity_s2_specific_primary
@@ -44103,10 +44143,11 @@ actions:
     - analyse_dataset_adults_flu_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        glue("output/results/collated/{cohort}_flu_model_outputs_collated.csv"): output/results/collated/adults_flu_model_outputs_collated.csv
+        glue("output/collated/analytic/{cohort}_flu_model_outputs_collated.csv"): output/collated/analytic/adults_flu_model_outputs_collated.csv
 
   collate_covid_model_outputs_tables_adults:
-    run: r:latest analysis/covid_model_outputs_table_collation.R adults adults
+    run: r:latest analysis/collation_code/covid_model_outputs_table_collation.R adults
+      adults
     needs:
     - analyse_dataset_adults_covid_ethnicity_s4_specific_primary
     - analyse_dataset_adults_covid_ethnicity_s5_specific_primary
@@ -44138,11 +44179,11 @@ actions:
     - analyse_dataset_adults_covid_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/adults_covid_model_outputs_collated.csv
+        csv: output/collated/analytic/adults_covid_model_outputs_collated.csv
 
   collate_overall_and_all_cause_model_outputs_tables_adults:
-    run: r:latest analysis/overall_and_all_cause_model_outputs_table_collation.R adults
-      adults
+    run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
+      adults adults
     needs:
     - analyse_dataset_adults_overall_and_all_cause_ethnicity_s1_specific_primary
     - analyse_dataset_adults_overall_and_all_cause_ethnicity_s2_specific_primary
@@ -44195,11 +44236,11 @@ actions:
     - analyse_dataset_adults_overall_and_all_cause_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/adults_overall_and_all_cause_model_outputs_collated.csv
+        csv: output/collated/analytic/adults_overall_and_all_cause_model_outputs_collated.csv
 
   collate_rsv_sensitivity_model_outputs_tables_adults:
-    run: r:latest analysis/rsv_sensitivity_model_outputs_table_collation.R adults
-      adults
+    run: r:latest analysis/collation_code/rsv_sensitivity_model_outputs_table_collation.R
+      adults adults
     needs:
     - analyse_dataset_adults_rsv_ethnicity_s1_sensitive_primary
     - analyse_dataset_adults_rsv_ethnicity_s2_sensitive_primary
@@ -44252,11 +44293,11 @@ actions:
     - analyse_dataset_adults_rsv_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/adults_rsv_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/adults_rsv_sensitivity_model_outputs_collated.csv
 
   collate_flu_sensitivity_model_outputs_tables_adults:
-    run: r:latest analysis/flu_sensitivity_model_outputs_table_collation.R adults
-      adults
+    run: r:latest analysis/collation_code/flu_sensitivity_model_outputs_table_collation.R
+      adults adults
     needs:
     - analyse_dataset_adults_flu_ethnicity_s1_sensitive_primary
     - analyse_dataset_adults_flu_ethnicity_s2_sensitive_primary
@@ -44309,11 +44350,11 @@ actions:
     - analyse_dataset_adults_flu_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/adults_flu_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/adults_flu_sensitivity_model_outputs_collated.csv
 
   collate_covid_sensitivity_model_outputs_tables_adults:
-    run: r:latest analysis/covid_sensitivity_model_outputs_table_collation.R adults
-      adults
+    run: r:latest analysis/collation_code/covid_sensitivity_model_outputs_table_collation.R
+      adults adults
     needs:
     - analyse_dataset_adults_covid_ethnicity_s4_sensitive_primary
     - analyse_dataset_adults_covid_ethnicity_s5_sensitive_primary
@@ -44345,10 +44386,10 @@ actions:
     - analyse_dataset_adults_covid_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/adults_covid_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/adults_covid_sensitivity_model_outputs_collated.csv
 
   collate_overall_and_all_cause_sensitivity_model_outputs_tables_adults:
-    run: r:latest analysis/overall_and_all_cause_sensitivity_model_outputs_table_collation.R
+    run: r:latest analysis/collation_code/overall_and_all_cause_sensitivity_model_outputs_table_collation.R
       adults adults
     needs:
     - analyse_dataset_adults_overall_and_all_cause_ethnicity_s1_sensitive_primary
@@ -44402,10 +44443,11 @@ actions:
     - analyse_dataset_adults_overall_and_all_cause_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/adults_overall_and_all_cause_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/adults_overall_and_all_cause_sensitivity_model_outputs_collated.csv
 
   collate_flow_chart_tables_children_and_adolescents:
-    run: r:latest analysis/flow_chart_table_collation.R children_and_adolescents children_and_adolescents
+    run: r:latest analysis/collation_code/flow_chart_table_collation.R children_and_adolescents
+      children_and_adolescents
     needs:
     - process_flow_chart_data_children_and_adolescents_s1
     - process_flow_chart_data_children_and_adolescents_s2
@@ -44416,10 +44458,26 @@ actions:
     - process_flow_chart_data_children_and_adolescents_s7
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/children_and_adolescents_flow_chart_collated.csv
+        csv: output/collated/descriptive/children_and_adolescents_flow_chart_collated.csv
 
   collate_table1_tables_children_and_adolescents:
-    run: r:latest analysis/table1_table_collation.R children_and_adolescents children_and_adolescents
+    run: r:latest analysis/collation_code/table1_table_collation.R children_and_adolescents
+      children_and_adolescents
+    needs:
+    - describe_cohort_children_and_adolescents_s1
+    - describe_cohort_children_and_adolescents_s2
+    - describe_cohort_children_and_adolescents_s3
+    - describe_cohort_children_and_adolescents_s4
+    - describe_cohort_children_and_adolescents_s5
+    - describe_cohort_children_and_adolescents_s6
+    - describe_cohort_children_and_adolescents_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/children_and_adolescents_table1_collated.csv
+
+  collate_rates_tables_specific_primary_children_and_adolescents:
+    run: r:latest analysis/collation_code/rates_table_specific_primary_collation.R
+      children_and_adolescents children_and_adolescents
     needs:
     - describe_dataset_children_and_adolescents_s1_specific_primary
     - describe_dataset_children_and_adolescents_s2_specific_primary
@@ -44428,6 +44486,14 @@ actions:
     - describe_dataset_children_and_adolescents_s5_specific_primary
     - describe_dataset_children_and_adolescents_s6_specific_primary
     - describe_dataset_children_and_adolescents_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/children_and_adolescents_rates_specific_primary_collated.csv
+
+  collate_rates_tables_sensitive_primary_children_and_adolescents:
+    run: r:latest analysis/collation_code/rates_table_sensitive_primary_collation.R
+      children_and_adolescents children_and_adolescents
+    needs:
     - describe_dataset_children_and_adolescents_s1_sensitive_primary
     - describe_dataset_children_and_adolescents_s2_sensitive_primary
     - describe_dataset_children_and_adolescents_s3_sensitive_primary
@@ -44437,31 +44503,25 @@ actions:
     - describe_dataset_children_and_adolescents_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/children_and_adolescents_table1_collated.csv
+        csv: output/collated/descriptive/children_and_adolescents_rates_sensitive_primary_collated.csv
 
-  collate_rates_tables_children_and_adolescents:
-    run: r:latest analysis/rates_table_collation.R children_and_adolescents children_and_adolescents
+  collate_rates_tables_sensitive_secondary_children_and_adolescents:
+    run: r:latest analysis/collation_code/rates_table_sensitive_secondary_collation.R
+      children_and_adolescents children_and_adolescents
     needs:
-    - process_dataset_children_and_adolescents_s1_specific_primary
-    - process_dataset_children_and_adolescents_s2_specific_primary
-    - process_dataset_children_and_adolescents_s3_specific_primary
-    - process_dataset_children_and_adolescents_s4_specific_primary
-    - process_dataset_children_and_adolescents_s5_specific_primary
-    - process_dataset_children_and_adolescents_s6_specific_primary
-    - process_dataset_children_and_adolescents_s7_specific_primary
-    - process_dataset_children_and_adolescents_s1_sensitive_primary
-    - process_dataset_children_and_adolescents_s2_sensitive_primary
-    - process_dataset_children_and_adolescents_s3_sensitive_primary
-    - process_dataset_children_and_adolescents_s4_sensitive_primary
-    - process_dataset_children_and_adolescents_s5_sensitive_primary
-    - process_dataset_children_and_adolescents_s6_sensitive_primary
-    - process_dataset_children_and_adolescents_s7_sensitive_primary
+    - describe_dataset_children_and_adolescents_s1_sensitive_secondary
+    - describe_dataset_children_and_adolescents_s2_sensitive_secondary
+    - describe_dataset_children_and_adolescents_s3_sensitive_secondary
+    - describe_dataset_children_and_adolescents_s4_sensitive_secondary
+    - describe_dataset_children_and_adolescents_s5_sensitive_secondary
+    - describe_dataset_children_and_adolescents_s6_sensitive_secondary
+    - describe_dataset_children_and_adolescents_s7_sensitive_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/children_and_adolescents_rates_collated.csv
+        csv: output/collated/descriptive/children_and_adolescents_rates_sensitive_secondary_collated.csv
 
   collate_rsv_model_outputs_tables_children_and_adolescents:
-    run: r:latest analysis/rsv_model_outputs_table_collation.R children_and_adolescents
+    run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R children_and_adolescents
       children_and_adolescents
     needs:
     - analyse_dataset_children_and_adolescents_rsv_ethnicity_s1_specific_primary
@@ -44515,10 +44575,10 @@ actions:
     - analyse_dataset_children_and_adolescents_rsv_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/children_and_adolescents_rsv_model_outputs_collated.csv
+        csv: output/collated/analytic/children_and_adolescents_rsv_model_outputs_collated.csv
 
   collate_flu_model_outputs_tables_children_and_adolescents:
-    run: r:latest analysis/flu_model_outputs_table_collation.R children_and_adolescents
+    run: r:latest analysis/collation_code/flu_model_outputs_table_collation.R children_and_adolescents
       children_and_adolescents
     needs:
     - analyse_dataset_children_and_adolescents_flu_ethnicity_s1_specific_primary
@@ -44572,10 +44632,10 @@ actions:
     - analyse_dataset_children_and_adolescents_flu_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        glue("output/results/collated/{cohort}_flu_model_outputs_collated.csv"): output/results/collated/children_and_adolescents_flu_model_outputs_collated.csv
+        glue("output/collated/analytic/{cohort}_flu_model_outputs_collated.csv"): output/collated/analytic/children_and_adolescents_flu_model_outputs_collated.csv
 
   collate_covid_model_outputs_tables_children_and_adolescents:
-    run: r:latest analysis/covid_model_outputs_table_collation.R children_and_adolescents
+    run: r:latest analysis/collation_code/covid_model_outputs_table_collation.R children_and_adolescents
       children_and_adolescents
     needs:
     - analyse_dataset_children_and_adolescents_covid_ethnicity_s4_specific_primary
@@ -44608,11 +44668,11 @@ actions:
     - analyse_dataset_children_and_adolescents_covid_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/children_and_adolescents_covid_model_outputs_collated.csv
+        csv: output/collated/analytic/children_and_adolescents_covid_model_outputs_collated.csv
 
   collate_overall_and_all_cause_model_outputs_tables_children_and_adolescents:
-    run: r:latest analysis/overall_and_all_cause_model_outputs_table_collation.R children_and_adolescents
-      children_and_adolescents
+    run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
+      children_and_adolescents children_and_adolescents
     needs:
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_ethnicity_s1_specific_primary
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_ethnicity_s2_specific_primary
@@ -44665,11 +44725,11 @@ actions:
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/children_and_adolescents_overall_and_all_cause_model_outputs_collated.csv
+        csv: output/collated/analytic/children_and_adolescents_overall_and_all_cause_model_outputs_collated.csv
 
   collate_rsv_sensitivity_model_outputs_tables_children_and_adolescents:
-    run: r:latest analysis/rsv_sensitivity_model_outputs_table_collation.R children_and_adolescents
-      children_and_adolescents
+    run: r:latest analysis/collation_code/rsv_sensitivity_model_outputs_table_collation.R
+      children_and_adolescents children_and_adolescents
     needs:
     - analyse_dataset_children_and_adolescents_rsv_ethnicity_s1_sensitive_primary
     - analyse_dataset_children_and_adolescents_rsv_ethnicity_s2_sensitive_primary
@@ -44722,11 +44782,11 @@ actions:
     - analyse_dataset_children_and_adolescents_rsv_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/children_and_adolescents_rsv_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/children_and_adolescents_rsv_sensitivity_model_outputs_collated.csv
 
   collate_flu_sensitivity_model_outputs_tables_children_and_adolescents:
-    run: r:latest analysis/flu_sensitivity_model_outputs_table_collation.R children_and_adolescents
-      children_and_adolescents
+    run: r:latest analysis/collation_code/flu_sensitivity_model_outputs_table_collation.R
+      children_and_adolescents children_and_adolescents
     needs:
     - analyse_dataset_children_and_adolescents_flu_ethnicity_s1_sensitive_primary
     - analyse_dataset_children_and_adolescents_flu_ethnicity_s2_sensitive_primary
@@ -44779,11 +44839,11 @@ actions:
     - analyse_dataset_children_and_adolescents_flu_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/children_and_adolescents_flu_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/children_and_adolescents_flu_sensitivity_model_outputs_collated.csv
 
   collate_covid_sensitivity_model_outputs_tables_children_and_adolescents:
-    run: r:latest analysis/covid_sensitivity_model_outputs_table_collation.R children_and_adolescents
-      children_and_adolescents
+    run: r:latest analysis/collation_code/covid_sensitivity_model_outputs_table_collation.R
+      children_and_adolescents children_and_adolescents
     needs:
     - analyse_dataset_children_and_adolescents_covid_ethnicity_s4_sensitive_primary
     - analyse_dataset_children_and_adolescents_covid_ethnicity_s5_sensitive_primary
@@ -44815,10 +44875,10 @@ actions:
     - analyse_dataset_children_and_adolescents_covid_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/children_and_adolescents_covid_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/children_and_adolescents_covid_sensitivity_model_outputs_collated.csv
 
   collate_overall_and_all_cause_sensitivity_model_outputs_tables_children_and_adolescents:
-    run: r:latest analysis/overall_and_all_cause_sensitivity_model_outputs_table_collation.R
+    run: r:latest analysis/collation_code/overall_and_all_cause_sensitivity_model_outputs_table_collation.R
       children_and_adolescents children_and_adolescents
     needs:
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_ethnicity_s1_sensitive_primary
@@ -44872,10 +44932,10 @@ actions:
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/children_and_adolescents_overall_and_all_cause_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/children_and_adolescents_overall_and_all_cause_sensitivity_model_outputs_collated.csv
 
   collate_flow_chart_tables_infants:
-    run: r:latest analysis/flow_chart_table_collation.R infants infants
+    run: r:latest analysis/collation_code/flow_chart_table_collation.R infants infants
     needs:
     - process_flow_chart_data_infants_s1
     - process_flow_chart_data_infants_s2
@@ -44886,10 +44946,25 @@ actions:
     - process_flow_chart_data_infants_s7
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/infants_flow_chart_collated.csv
+        csv: output/collated/descriptive/infants_flow_chart_collated.csv
 
   collate_table1_tables_infants:
-    run: r:latest analysis/table1_table_collation.R infants infants
+    run: r:latest analysis/collation_code/table1_table_collation.R infants infants
+    needs:
+    - describe_cohort_infants_s1
+    - describe_cohort_infants_s2
+    - describe_cohort_infants_s3
+    - describe_cohort_infants_s4
+    - describe_cohort_infants_s5
+    - describe_cohort_infants_s6
+    - describe_cohort_infants_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_table1_collated.csv
+
+  collate_rates_tables_specific_primary_infants:
+    run: r:latest analysis/collation_code/rates_table_specific_primary_collation.R
+      infants infants
     needs:
     - describe_dataset_infants_s1_specific_primary
     - describe_dataset_infants_s2_specific_primary
@@ -44898,6 +44973,14 @@ actions:
     - describe_dataset_infants_s5_specific_primary
     - describe_dataset_infants_s6_specific_primary
     - describe_dataset_infants_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_rates_specific_primary_collated.csv
+
+  collate_rates_tables_sensitive_primary_infants:
+    run: r:latest analysis/collation_code/rates_table_sensitive_primary_collation.R
+      infants infants
+    needs:
     - describe_dataset_infants_s1_sensitive_primary
     - describe_dataset_infants_s2_sensitive_primary
     - describe_dataset_infants_s3_sensitive_primary
@@ -44907,31 +44990,26 @@ actions:
     - describe_dataset_infants_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/infants_table1_collated.csv
+        csv: output/collated/descriptive/infants_rates_sensitive_primary_collated.csv
 
-  collate_rates_tables_infants:
-    run: r:latest analysis/rates_table_collation.R infants infants
+  collate_rates_tables_sensitive_secondary_infants:
+    run: r:latest analysis/collation_code/rates_table_sensitive_secondary_collation.R
+      infants infants
     needs:
-    - process_dataset_infants_s1_specific_primary
-    - process_dataset_infants_s2_specific_primary
-    - process_dataset_infants_s3_specific_primary
-    - process_dataset_infants_s4_specific_primary
-    - process_dataset_infants_s5_specific_primary
-    - process_dataset_infants_s6_specific_primary
-    - process_dataset_infants_s7_specific_primary
-    - process_dataset_infants_s1_sensitive_primary
-    - process_dataset_infants_s2_sensitive_primary
-    - process_dataset_infants_s3_sensitive_primary
-    - process_dataset_infants_s4_sensitive_primary
-    - process_dataset_infants_s5_sensitive_primary
-    - process_dataset_infants_s6_sensitive_primary
-    - process_dataset_infants_s7_sensitive_primary
+    - describe_dataset_infants_s1_sensitive_secondary
+    - describe_dataset_infants_s2_sensitive_secondary
+    - describe_dataset_infants_s3_sensitive_secondary
+    - describe_dataset_infants_s4_sensitive_secondary
+    - describe_dataset_infants_s5_sensitive_secondary
+    - describe_dataset_infants_s6_sensitive_secondary
+    - describe_dataset_infants_s7_sensitive_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/infants_rates_collated.csv
+        csv: output/collated/descriptive/infants_rates_sensitive_secondary_collated.csv
 
   collate_rsv_model_outputs_tables_infants:
-    run: r:latest analysis/rsv_model_outputs_table_collation.R infants infants
+    run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R infants
+      infants
     needs:
     - analyse_dataset_infants_rsv_ethnicity_s1_specific_primary
     - analyse_dataset_infants_rsv_ethnicity_s2_specific_primary
@@ -44984,10 +45062,11 @@ actions:
     - analyse_dataset_infants_rsv_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/infants_rsv_model_outputs_collated.csv
+        csv: output/collated/analytic/infants_rsv_model_outputs_collated.csv
 
   collate_flu_model_outputs_tables_infants:
-    run: r:latest analysis/flu_model_outputs_table_collation.R infants infants
+    run: r:latest analysis/collation_code/flu_model_outputs_table_collation.R infants
+      infants
     needs:
     - analyse_dataset_infants_flu_ethnicity_s1_specific_primary
     - analyse_dataset_infants_flu_ethnicity_s2_specific_primary
@@ -45040,10 +45119,11 @@ actions:
     - analyse_dataset_infants_flu_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        glue("output/results/collated/{cohort}_flu_model_outputs_collated.csv"): output/results/collated/infants_flu_model_outputs_collated.csv
+        glue("output/collated/analytic/{cohort}_flu_model_outputs_collated.csv"): output/collated/analytic/infants_flu_model_outputs_collated.csv
 
   collate_covid_model_outputs_tables_infants:
-    run: r:latest analysis/covid_model_outputs_table_collation.R infants infants
+    run: r:latest analysis/collation_code/covid_model_outputs_table_collation.R infants
+      infants
     needs:
     - analyse_dataset_infants_covid_ethnicity_s4_specific_primary
     - analyse_dataset_infants_covid_ethnicity_s5_specific_primary
@@ -45075,11 +45155,11 @@ actions:
     - analyse_dataset_infants_covid_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/infants_covid_model_outputs_collated.csv
+        csv: output/collated/analytic/infants_covid_model_outputs_collated.csv
 
   collate_overall_and_all_cause_model_outputs_tables_infants:
-    run: r:latest analysis/overall_and_all_cause_model_outputs_table_collation.R infants
-      infants
+    run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
+      infants infants
     needs:
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_s1_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_s2_specific_primary
@@ -45132,11 +45212,11 @@ actions:
     - analyse_dataset_infants_overall_and_all_cause_full_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/infants_overall_and_all_cause_model_outputs_collated.csv
+        csv: output/collated/analytic/infants_overall_and_all_cause_model_outputs_collated.csv
 
   collate_rsv_sensitivity_model_outputs_tables_infants:
-    run: r:latest analysis/rsv_sensitivity_model_outputs_table_collation.R infants
-      infants
+    run: r:latest analysis/collation_code/rsv_sensitivity_model_outputs_table_collation.R
+      infants infants
     needs:
     - analyse_dataset_infants_rsv_ethnicity_s1_sensitive_primary
     - analyse_dataset_infants_rsv_ethnicity_s2_sensitive_primary
@@ -45189,11 +45269,11 @@ actions:
     - analyse_dataset_infants_rsv_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/infants_rsv_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/infants_rsv_sensitivity_model_outputs_collated.csv
 
   collate_flu_sensitivity_model_outputs_tables_infants:
-    run: r:latest analysis/flu_sensitivity_model_outputs_table_collation.R infants
-      infants
+    run: r:latest analysis/collation_code/flu_sensitivity_model_outputs_table_collation.R
+      infants infants
     needs:
     - analyse_dataset_infants_flu_ethnicity_s1_sensitive_primary
     - analyse_dataset_infants_flu_ethnicity_s2_sensitive_primary
@@ -45246,11 +45326,11 @@ actions:
     - analyse_dataset_infants_flu_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/infants_flu_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/infants_flu_sensitivity_model_outputs_collated.csv
 
   collate_covid_sensitivity_model_outputs_tables_infants:
-    run: r:latest analysis/covid_sensitivity_model_outputs_table_collation.R infants
-      infants
+    run: r:latest analysis/collation_code/covid_sensitivity_model_outputs_table_collation.R
+      infants infants
     needs:
     - analyse_dataset_infants_covid_ethnicity_s4_sensitive_primary
     - analyse_dataset_infants_covid_ethnicity_s5_sensitive_primary
@@ -45282,10 +45362,10 @@ actions:
     - analyse_dataset_infants_covid_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/infants_covid_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/infants_covid_sensitivity_model_outputs_collated.csv
 
   collate_overall_and_all_cause_sensitivity_model_outputs_tables_infants:
-    run: r:latest analysis/overall_and_all_cause_sensitivity_model_outputs_table_collation.R
+    run: r:latest analysis/collation_code/overall_and_all_cause_sensitivity_model_outputs_table_collation.R
       infants infants
     needs:
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_s1_sensitive_primary
@@ -45339,7 +45419,7 @@ actions:
     - analyse_dataset_infants_overall_and_all_cause_full_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/collated/infants_overall_and_all_cause_sensitivity_model_outputs_collated.csv
+        csv: output/collated/analytic/infants_overall_and_all_cause_sensitivity_model_outputs_collated.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## End 
