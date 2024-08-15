@@ -24,27 +24,27 @@ collated_rates_specific_primary = rbind(
              subset = "2016_17"),
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
            "_2017_2018_specific_primary.csv")))
-  %>% mutate(codelist_type = "specific", "investigation_type" = "primary", 
+  %>% mutate(codelist_type = "specific", investigation_type = "primary", 
              subset = "2017_18"),
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
            "_2018_2019_specific_primary.csv"))) 
-  %>% mutate(codelist_type = "specific", "investigation_type" = "primary",
+  %>% mutate(codelist_type = "specific", investigation_type = "primary",
              subset = "2018_19"),
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
            "_2019_2020_specific_primary.csv")))
-  %>% mutate(codelist_type = "specific", "investigation_type" = "primary",
+  %>% mutate(codelist_type = "specific", investigation_type = "primary",
              subset = "2019_20"),
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
            "_2020_2021_specific_primary.csv"))) 
-  %>% mutate(codelist_type = "specific", "investigation_type" = "primary",
+  %>% mutate(codelist_type = "specific", investigation_type = "primary",
              subset = "2020_21"),
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
            "_2021_2022_specific_primary.csv"))) 
-  %>% mutate(codelist_type = "specific", "investigation_type" = "primary",
+  %>% mutate(codelist_type = "specific", investigation_type = "primary",
              subset = "2021_22"),
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
            "_2022_2023_specific_primary.csv"))) 
-  %>% mutate(codelist_type = "specific", "investigation_type" = "primary",
+  %>% mutate(codelist_type = "specific", investigation_type = "primary",
              subset = "2022_23")
 )
 

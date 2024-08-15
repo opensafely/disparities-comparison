@@ -161,5 +161,5 @@ collated_model_outputs_covid = rbind(
 )
 
 #save as csv
-write_csv(collated_model_outputs, paste0(here::here("output", "collated", "analytic"),
+write_csv(collated_model_outputs_covid, paste0(here::here("output", "collated", "analytic"),
           "/", cohort, "_covid_model_outputs_collated.csv"))

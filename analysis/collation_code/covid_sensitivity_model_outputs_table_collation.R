@@ -76,7 +76,8 @@ collated_model_outputs_covid_sensitivity = rbind(
   read_csv(here::here("output", "results", "models", 
                       paste0("covid_ethnicity_hh_comp_model_outputs_", 
                              cohort, "_2020_2021_sensitive_primary.csv"))) 
-  %>% mutate(model_type = "ethnicity_composition", subset = "2020_21"),
+  %>% mutate(model_type = "ethnicity_composition", codelist_type = "sensitive",
+             investigation_type = "primary", subset = "2020_21"),
   read_csv(here::here("output", "results", "models", 
                       paste0("covid_ses_hh_comp_model_outputs_", 
                              cohort, "_2020_2021_sensitive_primary.csv"))) 
