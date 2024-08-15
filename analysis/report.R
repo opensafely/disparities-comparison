@@ -2317,7 +2317,7 @@ if (length(args) == 0) {
   #export results table to csv
   results_table <- final_results %>%
     mutate_if(is.numeric, round, digits = 4) %>%
-    select(Outcome, Group, Characteristic, Rate) %>%
+    select(Outcome, Group, Characteristic, Events, Rate) %>%
     group_by(Characteristic) %>%
     gt(groupname_col = "Characteristic") %>%
     row_group_order(groups = c(table_groups)) %>%
@@ -2334,7 +2334,7 @@ if (length(args) == 0) {
   #export results table to csv
   results_table <- final_results %>%
     mutate_if(is.numeric, round, digits = 4) %>%
-    select(Outcome, Group, Characteristic, Rate) %>%
+    select(Outcome, Group, Characteristic, Events, Rate) %>%
     group_by(Characteristic) %>%
     gt(groupname_col = "Characteristic") %>%
     row_group_order(groups = c(table_groups)) %>%
