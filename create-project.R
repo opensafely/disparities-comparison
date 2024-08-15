@@ -1616,7 +1616,7 @@ names(actions_list) %>% tibble(action=.) %>%
 
 actions_list %>% 
   names() %>% 
-  str_subset("^collate_rates") %>% 
+  str_subset("^collate") %>% 
   tibble(action=.) %>% 
   mutate(
     model = action==""  & lag(action!="", 1, TRUE),
