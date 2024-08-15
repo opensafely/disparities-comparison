@@ -57,7 +57,7 @@ if (cohort == "infants") {
                                          age + sex + rurality_classification + 
                                          offset(log(time_overall_resp_mortality)),
                                        data = df_input, family = poisson)
-    overall_resp_mortality_ehtnicity_ses_output <- tidy(overall_resp_mortality_full)
+    overall_resp_mortality_full_output <- tidy(overall_resp_mortality_full)
   }
   
   #all cause mortality by ethnicity, socioeconomic status and household composition
