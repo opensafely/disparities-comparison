@@ -762,6 +762,26 @@ action_descriptive <- function(cohort, season, dates,
   
 }
 
+action_sensitivity <- function(cohort, season, dates, season_start_date, 
+                               season_end_date) {
+  
+  splice(
+    
+    action(
+      name = glue("phenotype_sensitivity_{cohort}_{season}"),
+      run = glue("r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R {cohort} {season_start_date} {season_end_date}"),
+      arguments = c(cohort, season, dates, season_start_date, season_end_date),
+      needs = list(glue("process_dataset_{cohort}_{season}_specific_primary"),
+                   glue("process_dataset_{cohort}_{season}_sensitive_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/sensitivity/phenotype_sensitivity_{cohort}_{dates}.csv")),
+    )
+    
+  )
+  
+
+}
+
 action_finalise <- function(cohort) {
   
   splice(
@@ -1253,7 +1273,24 @@ action_finalise <- function(cohort) {
                    glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s7_sensitive_primary")),
       moderately_sensitive = lst(
         csv = glue("output/collated/analytic/{cohort}_overall_and_all_cause_sensitivity_model_outputs_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_phenotype_sensitivity_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/phenotype_sensitivity_table_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("phenotype_sensitivity_{cohort}_s1"),
+                   glue("phenotype_sensitivity_{cohort}_s2"),
+                   glue("phenotype_sensitivity_{cohort}_s3"),
+                   glue("phenotype_sensitivity_{cohort}_s4"),
+                   glue("phenotype_sensitivity_{cohort}_s5"),
+                   glue("phenotype_sensitivity_{cohort}_s6"),
+                   glue("phenotype_sensitivity_{cohort}_s7")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_phenotype_sensitivity_collated.csv")
+      )
     )
+    
   )
 }
 
@@ -1393,7 +1430,7 @@ actions_list <- splice(
   action_specified("infants", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
   action_covid("infants", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
 
-  comment("# # # # # # # # # # # # # # # # # # #", "SENSITIVITY ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
+  comment("# # # # # # # # # # # # # # # # # # #", "SENSITIVE PHENOTYPES", "# # # # # # # # # # # # # # # # # # #"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Sensitive, Investigation Type: Primary", "# # # # # # # # # # # # # # # # # # #"),
   
@@ -1535,6 +1572,48 @@ actions_list <- splice(
   action_descriptive("infants", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
   action_descriptive("infants", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
   
+  comment("# # # # # # # # # # # # # # # # # # #", "SENSITIVITY ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_sensitivity("older_adults", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
+  action_sensitivity("older_adults", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
+  action_sensitivity("older_adults", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
+  action_sensitivity("older_adults", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
+  action_sensitivity("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_sensitivity("older_adults", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
+  action_sensitivity("older_adults", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Adults", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_sensitivity("adults", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
+  action_sensitivity("adults", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
+  action_sensitivity("adults", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
+  action_sensitivity("adults", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
+  action_sensitivity("adults", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_sensitivity("adults", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
+  action_sensitivity("adults", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Children and Adolescents", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_sensitivity("children_and_adolescents", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
+  action_sensitivity("children_and_adolescents", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
+  action_sensitivity("children_and_adolescents", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
+  action_sensitivity("children_and_adolescents", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
+  action_sensitivity("children_and_adolescents", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_sensitivity("children_and_adolescents", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
+  action_sensitivity("children_and_adolescents", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_sensitivity("infants", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
+  action_sensitivity("infants", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
+  action_sensitivity("infants", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
+  action_sensitivity("infants", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
+  action_sensitivity("infants", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_sensitivity("infants", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
+  action_sensitivity("infants", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
+  
   comment("# # # # # # # # # # # # # # # # # # #", "Files for release", "# # # # # # # # # # # # # # # # # # #"),
   
   action_finalise("older_adults"),
@@ -1616,7 +1695,7 @@ names(actions_list) %>% tibble(action=.) %>%
 
 actions_list %>% 
   names() %>% 
-  str_subset("^collate") %>% 
+  str_subset("^collate_phenotype") %>% 
   tibble(action=.) %>% 
   mutate(
     model = action==""  & lag(action!="", 1, TRUE),
