@@ -10,8 +10,8 @@ fs::dir_create(here("analysis"))
 source(here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- "2019-09-01"
-  study_end_date <- "2020-08-31"
+  study_start_date <- "2017-09-01"
+  study_end_date <- "2018-08-31"
   cohort <- "infants"
 } else {
   cohort <- args[[1]]
@@ -40,7 +40,7 @@ if (study_start_date >= covid_season_min) {
     mutate(
       rsv_mild_alt = if_else(rsv_primary_inf == 1, "RSV_Mild", "0"),
       rsv_severe_alt = if_else(rsv_secondary_inf == 1, "RSV_Severe", "0"),
-      flu_mild_alt = if_else(flu_primary_inf == 1, "Flu_mild", "0"),
+      flu_mild_alt = if_else(flu_primary_inf == 1, "Flu_Mild", "0"),
       flu_severe_alt = if_else(flu_secondary_inf == 1, "Flu_Severe", "0"),
       covid_mild_alt = if_else(covid_primary_inf == 1, "COVID_Mild", "0"),
       covid_severe_alt = if_else(covid_secondary_inf == 1, "COVID_Severe", "0")
@@ -50,7 +50,7 @@ if (study_start_date >= covid_season_min) {
     mutate(
       rsv_mild_alt = if_else(rsv_primary_inf == 1, "RSV_Mild", "0"),
       rsv_severe_alt = if_else(rsv_secondary_inf == 1, "RSV_Severe", "0"),
-      flu_mild_alt = if_else(flu_primary_inf == 1, "Flu_mild", "0"),
+      flu_mild_alt = if_else(flu_primary_inf == 1, "Flu_Mild", "0"),
       flu_severe_alt = if_else(flu_secondary_inf == 1, "Flu_Severe", "0")
     )
 }
@@ -89,7 +89,7 @@ if (study_start_date >= covid_season_min) {
     mutate(
       rsv_mild_alt = if_else(rsv_primary_inf == 1, "RSV_Mild", "0"),
       rsv_severe_alt = if_else(rsv_secondary_inf == 1, "RSV_Severe", "0"),
-      flu_mild_alt = if_else(flu_primary_inf == 1, "Flu_mild", "0"),
+      flu_mild_alt = if_else(flu_primary_inf == 1, "Flu_Mild", "0"),
       flu_severe_alt = if_else(flu_secondary_inf == 1, "Flu_Severe", "0"),
       covid_mild_alt = if_else(covid_primary_inf == 1, "COVID_Mild", "0"),
       covid_severe_alt = if_else(covid_secondary_inf == 1, "COVID_Severe", "0"),
@@ -101,7 +101,7 @@ if (study_start_date >= covid_season_min) {
     mutate(
       rsv_mild_alt = if_else(rsv_primary_inf == 1, "RSV_Mild", "0"),
       rsv_severe_alt = if_else(rsv_secondary_inf == 1, "RSV_Severe", "0"),
-      flu_mild_alt = if_else(flu_primary_inf == 1, "Flu_mild", "0"),
+      flu_mild_alt = if_else(flu_primary_inf == 1, "Flu_Mild", "0"),
       flu_severe_alt = if_else(flu_secondary_inf == 1, "Flu_Severe", "0"),
       overall_resp_mild_alt = if_else(overall_resp_primary_inf == 1, "Overall_Resp_Mild", "0"),
       overall_resp_severe_alt = if_else(overall_resp_secondary_inf == 1, "Overall_Resp_Severe", "0")
@@ -183,12 +183,12 @@ patients_specific <- full_join(patients_specific_mild, patients_specific_severe)
 
 #count number of patients in each category for sensitive phenotypes - separately for mild and severe
 patients_sensitive_mild <- rlang::duplicate(df_input_sensitive) %>% 
-  group_by("combo" = mild_combined_overall) %>%
+  group_by("combo" = mild_combined) %>%
   summarise(n = n()) %>%
   ungroup() %>%
   mutate(outcome_type = "mild", codelist_type = "sensitive")
 patients_sensitive_severe <- rlang::duplicate(df_input_sensitive) %>%
-  group_by("combo" = severe_combined_overall) %>%
+  group_by("combo" = severe_combined) %>%
   summarise(n = n()) %>%
   ungroup() %>% 
   mutate(outcome_type = "severe", codelist_type = "sensitive")
