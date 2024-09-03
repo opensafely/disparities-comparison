@@ -12,7 +12,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2017-09-01"
   study_end_date <- "2018-08-31"
-  cohort <- "infants"
+  cohort <- "adults"
 } else {
   cohort <- args[[1]]
   study_start_date <- study_dates[[args[[2]]]]
@@ -27,310 +27,636 @@ df_input_specific <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              "specific", "_", "primary",".arrow")))
 
+#select necessary columns
+if (study_start_date >= covid_season_min) {
+  df_input_specific <- df_input_specific %>% 
+    select(
+      patient_id, 
+      rsv_primary_inf, 
+      flu_primary_inf, 
+      covid_primary_inf,
+      rsv_secondary_inf,
+      flu_secondary_inf,
+      covid_secondary_inf,
+      rsv_primary_date, 
+      flu_primary_date, 
+      covid_primary_date,
+      rsv_secondary_date,
+      flu_secondary_date,
+      covid_secondary_date
+    )
+} else {
+  df_input_specific <- df_input_specific %>% 
+    select(
+      patient_id, 
+      rsv_primary_inf, 
+      flu_primary_inf, 
+      rsv_secondary_inf,
+      flu_secondary_inf,
+      rsv_primary_date, 
+      flu_primary_date,
+      rsv_secondary_date,
+      flu_secondary_date
+    )
+}
+
 df_input_sensitive <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
              year(study_start_date), "_", year(study_end_date), "_", 
              "sensitive", "_", "primary",".arrow")))
 
-##count number of patients in cohort which fall into specific categories 
-
-#create text coding for each category
+#select necessary columns
 if (study_start_date >= covid_season_min) {
-  df_input_specific <- df_input_specific %>%
-    mutate(
-      rsv_mild_alt = if_else(rsv_primary_inf == 1, "RSV_Mild", "0"),
-      rsv_severe_alt = if_else(rsv_secondary_inf == 1, "RSV_Severe", "0"),
-      flu_mild_alt = if_else(flu_primary_inf == 1, "Flu_Mild", "0"),
-      flu_severe_alt = if_else(flu_secondary_inf == 1, "Flu_Severe", "0"),
-      covid_mild_alt = if_else(covid_primary_inf == 1, "COVID_Mild", "0"),
-      covid_severe_alt = if_else(covid_secondary_inf == 1, "COVID_Severe", "0")
+  df_input_sensitive <- df_input_sensitive %>% 
+    select(
+      patient_id, 
+      rsv_primary_inf, 
+      flu_primary_inf, 
+      covid_primary_inf, 
+      overall_resp_primary_inf, 
+      rsv_secondary_inf, 
+      flu_secondary_inf, 
+      covid_secondary_inf, 
+      overall_resp_secondary_inf, 
+      rsv_primary_date, 
+      flu_primary_date, 
+      covid_primary_date, 
+      overall_resp_primary_date, 
+      rsv_secondary_date, 
+      flu_secondary_date, 
+      covid_secondary_date, 
+      overall_resp_secondary_date
     )
 } else {
-  df_input_specific <- df_input_specific %>%
-    mutate(
-      rsv_mild_alt = if_else(rsv_primary_inf == 1, "RSV_Mild", "0"),
-      rsv_severe_alt = if_else(rsv_secondary_inf == 1, "RSV_Severe", "0"),
-      flu_mild_alt = if_else(flu_primary_inf == 1, "Flu_Mild", "0"),
-      flu_severe_alt = if_else(flu_secondary_inf == 1, "Flu_Severe", "0")
+  df_input_sensitive <- df_input_sensitive %>% 
+    select(
+      patient_id, 
+      rsv_primary_inf, 
+      flu_primary_inf, 
+      overall_resp_primary_inf, 
+      rsv_secondary_inf, 
+      flu_secondary_inf, 
+      overall_resp_secondary_inf,
+      rsv_primary_date, 
+      flu_primary_date,
+      overall_resp_primary_date,
+      rsv_secondary_date, 
+      flu_secondary_date,
+      overall_resp_secondary_date
     )
 }
 
-#combine text coding for mild
-if (study_start_date >= covid_season_min) {
-  df_input_specific$mild_combined = paste0(
-    df_input_specific$rsv_mild_alt, "_",
-    df_input_specific$flu_mild_alt, "_",
-    df_input_specific$covid_mild_alt
-  )
-} else {
-  df_input_specific$mild_combined = paste0(
-    df_input_specific$rsv_mild_alt, "_",
-    df_input_specific$flu_mild_alt
-  )
+##define the episode length for all episodes (14 days)
+ep_interval <- function(inf_date) {
+  as.Date(seq(inf_date, by = "day", length.out = 14))
 }
 
-#combine text coding for severe
-if (study_start_date >= covid_season_min) {
-  df_input_specific$severe_combined = paste0(
-    df_input_specific$rsv_severe_alt, "_",
-    df_input_specific$flu_severe_alt, "_",
-    df_input_specific$covid_severe_alt
-  )
-} else {
-  df_input_specific$severe_combined = paste0(
-    df_input_specific$rsv_severe_alt, "_",
-    df_input_specific$flu_severe_alt
-  )
+##define a function to create a text coding for outcomes 
+alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {
+  
+  if (sensitivity == "sensitive") {
+    
+    if (study_start_date >= covid_season_min) {
+      
+      input <- input %>%
+        mutate(
+          rsv_mild_alt = if_else(rsv_primary_inf == 1, "RSV_Mild_0_0_0", "0_0_0_0"),
+          flu_mild_alt = if_else(flu_primary_inf == 1, "0_Flu_Mild_0_0", "0_0_0_0"),
+          covid_mild_alt = if_else(covid_primary_inf == 1, "0_0_COVID_Mild_0", "0_0_0_0"),
+          overall_resp_mild_alt = if_else(overall_resp_primary_inf == 1, "0_0_0_Overall_Resp_Mild", "0_0_0_0"),
+          rsv_severe_alt = if_else(rsv_secondary_inf == 1, "RSV_Severe_0_0_0", "0_0_0_0"),
+          flu_severe_alt = if_else(flu_secondary_inf == 1, "0_Flu_Severe_0_0", "0_0_0_0"),
+          covid_severe_alt = if_else(covid_secondary_inf == 1, "0_0_COVID_Severe_0", "0_0_0_0"),
+          overall_resp_severe_alt = if_else(overall_resp_secondary_inf == 1, "0_0_0_Overall_Resp_Severe", "0_0_0_0"),
+          primary_rsv_flu_within_14 = abs(rsv_primary_date - flu_primary_date <= 14),
+          primary_rsv_covid_within_14 = abs(rsv_primary_date - covid_primary_date <= 14),
+          primary_flu_covid_within_14 = abs(flu_primary_date - covid_primary_date <= 14),
+          primary_rsv_overall_within_14 = abs(rsv_primary_date - overall_resp_primary_date <= 14),
+          primary_flu_overall_within_14 = abs(flu_primary_date - overall_resp_primary_date <= 14),
+          primary_covid_overall_within_14 = abs(covid_primary_date - overall_resp_primary_date <= 14),
+          primary_rsv_flu_covid_within_14 = abs(rsv_primary_date - flu_primary_date <= 14) & 
+            abs(rsv_primary_date - covid_primary_date <= 14) & 
+            abs(flu_primary_date - covid_primary_date <= 14),
+          primary_rsv_flu_overall_within_14 = abs(rsv_primary_date - flu_primary_date <= 14) & 
+            abs(rsv_primary_date - overall_resp_primary_date <= 14) & 
+            abs(flu_primary_date - overall_resp_primary_date <= 14),
+          primary_rsv_covid_overall_within_14 = abs(rsv_primary_date - covid_primary_date <= 14) &
+            abs(rsv_primary_date - overall_resp_primary_date <= 14) & 
+            abs(covid_primary_date - overall_resp_primary_date <= 14),
+          primary_flu_covid_overall_within_14 = abs(flu_primary_date - covid_primary_date <= 14) & 
+            abs(flu_primary_date - overall_resp_primary_date <= 14) & 
+            abs(covid_primary_date - overall_resp_primary_date <= 14),
+          primary_rsv_flu_covid_overall_within_14 = abs(rsv_primary_date - flu_primary_date <= 14) &
+            abs(rsv_primary_date - covid_primary_date <= 14) & 
+            abs(rsv_primary_date - overall_resp_primary_date <= 14) & 
+            abs(flu_primary_date - covid_primary_date <= 14) & 
+            abs(flu_primary_date - overall_resp_primary_date <= 14) &
+            abs(covid_primary_date - overall_resp_primary_date <= 14),
+          secondary_rsv_flu_within_14 = abs(rsv_secondary_date - flu_secondary_date <= 14),
+          secondary_rsv_covid_within_14 = abs(rsv_secondary_date - covid_secondary_date <= 14),
+          secondary_flu_covid_within_14 = abs(flu_secondary_date - covid_secondary_date <= 14),
+          secondary_rsv_overall_within_14 = abs(rsv_secondary_date - overall_resp_secondary_date <= 14),
+          secondary_flu_overall_within_14 = abs(flu_secondary_date - overall_resp_secondary_date <= 14),
+          secondary_covid_overall_within_14 = abs(covid_secondary_date - overall_resp_secondary_date <= 14),
+          secondary_rsv_flu_covid_within_14 = abs(rsv_secondary_date - flu_secondary_date <= 14) &
+            abs(rsv_secondary_date - covid_secondary_date <= 14) & 
+            abs(flu_secondary_date - covid_secondary_date <= 14),
+          secondary_rsv_flu_overall_within_14 = abs(rsv_secondary_date - flu_secondary_date <= 14) &
+            abs(rsv_secondary_date - overall_resp_secondary_date <= 14) & 
+            abs(flu_secondary_date - overall_resp_secondary_date <= 14),
+          secondary_rsv_covid_overall_within_14 = abs(rsv_secondary_date - covid_secondary_date <= 14) &
+            abs(rsv_secondary_date - overall_resp_secondary_date <= 14) & 
+            abs(covid_secondary_date - overall_resp_secondary_date <= 14),
+          secondary_flu_covid_overall_within_14 = abs(flu_secondary_date - covid_secondary_date <= 14) &
+            abs(flu_secondary_date - overall_resp_secondary_date <= 14) & 
+            abs(covid_secondary_date - overall_resp_secondary_date <= 14),
+          secondary_rsv_flu_covid_overall_within_14 = abs(rsv_secondary_date - flu_secondary_date <= 14) & 
+            abs(rsv_secondary_date - covid_secondary_date <= 14) & 
+            abs(rsv_secondary_date - overall_resp_secondary_date <= 14) &
+            abs(flu_secondary_date - covid_secondary_date <= 14) & 
+            abs(flu_secondary_date - overall_resp_secondary_date <= 14) &
+            abs(covid_secondary_date - overall_resp_secondary_date <= 14),
+          across(contains("_within_14"), ~if_else(is.na(.x), FALSE, TRUE))
+        ) %>%
+        mutate(
+          rsv_mild_alt_combo = case_when(
+            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0_0",
+            primary_rsv_covid_within_14 ~ "RSV_Mild_0_COVID_Mild_0",
+            primary_rsv_overall_within_14 ~ "RSV_Mild_0_0_Overall_Resp_Mild",
+            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_0",
+            primary_rsv_flu_overall_within_14 ~ "RSV_Mild_Flu_Mild_0_Overall_Resp_Mild",
+            primary_rsv_covid_overall_within_14 ~ "RSV_Mild_0_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_covid_overall_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            TRUE ~ rsv_mild_alt
+          ),
+          flu_mild_alt_combo = case_when(
+            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0_0",
+            primary_flu_covid_within_14 ~ "0_Flu_Mild_COVID_Mild_0",
+            primary_flu_overall_within_14 ~ "0_Flu_Mild_0_Overall_Resp_Mild",
+            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_0",
+            primary_rsv_flu_overall_within_14 ~ "RSV_Mild_Flu_Mild_0_Overall_Resp_Mild",
+            primary_flu_covid_overall_within_14 ~ "0_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_covid_overall_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            TRUE ~ flu_mild_alt
+          ),
+          covid_mild_alt_combo = case_when(
+            primary_rsv_covid_within_14 ~ "RSV_Mild_0_COVID_Mild_0",
+            primary_flu_covid_within_14 ~ "0_Flu_Mild_COVID_Mild_0",
+            primary_covid_overall_within_14 ~ "0_0_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_0",
+            primary_rsv_covid_overall_within_14 ~ "RSV_Mild_0_COVID_Mild_Overall_Resp_Mild",
+            primary_flu_covid_overall_within_14 ~ "0_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_covid_overall_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            TRUE ~ covid_mild_alt
+          ),
+          overall_resp_mild_alt_combo = case_when(
+            primary_rsv_overall_within_14 ~ "RSV_Mild_0_0_Overall_Resp_Mild",
+            primary_flu_overall_within_14 ~ "0_Flu_Mild_0_Overall_Resp_Mild",
+            primary_covid_overall_within_14 ~ "0_0_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_overall_within_14 ~ "RSV_Mild_Flu_Mild_0_Overall_Resp_Mild",
+            primary_rsv_covid_overall_within_14 ~ "RSV_Mild_0_COVID_Mild_Overall_Resp_Mild",
+            primary_flu_covid_overall_within_14 ~ "0_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_covid_overall_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            TRUE ~ overall_resp_mild_alt
+          ),
+          rsv_severe_alt_combo = case_when(
+            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0_0",
+            secondary_rsv_covid_within_14 ~ "RSV_Severe_0_COVID_Severe_0",
+            secondary_rsv_overall_within_14 ~ "RSV_Severe_0_0_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_0",
+            secondary_rsv_flu_overall_within_14 ~ "RSV_Severe_Flu_Severe_0_Overall_Resp_Severe",
+            secondary_rsv_covid_overall_within_14 ~ "RSV_Severe_0_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_overall_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            TRUE ~ rsv_severe_alt
+          ),
+          flu_severe_alt_combo = case_when(
+            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0_0",
+            secondary_flu_covid_within_14 ~ "0_Flu_Severe_COVID_Severe_0",
+            secondary_flu_overall_within_14 ~ "0_Flu_Severe_0_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_0",
+            secondary_rsv_flu_overall_within_14 ~ "RSV_Severe_Flu_Severe_0_Overall_Resp_Severe",
+            secondary_flu_covid_overall_within_14 ~ "0_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_overall_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            TRUE ~ flu_severe_alt
+          ),
+          covid_severe_alt_combo = case_when(
+            secondary_rsv_covid_within_14 ~ "RSV_Severe_0_COVID_Severe_0",
+            secondary_flu_covid_within_14 ~ "0_Flu_Severe_COVID_Severe_0",
+            secondary_covid_overall_within_14 ~ "0_0_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_0",
+            secondary_rsv_covid_overall_within_14 ~ "RSV_Severe_0_COVID_Severe_Overall_Resp_Severe",
+            secondary_flu_covid_overall_within_14 ~ "0_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_overall_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            TRUE ~ covid_severe_alt
+          ),
+          overall_severe_alt_combo = case_when(
+            secondary_rsv_overall_within_14 ~ "RSV_Severe_0_0_Overall_Resp_Severe",
+            secondary_flu_overall_within_14 ~ "0_Flu_Severe_0_Overall_Resp_Severe",
+            secondary_covid_overall_within_14 ~ "0_0_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_overall_within_14 ~ "RSV_Severe_Flu_Severe_0_Overall_Resp_Severe",
+            secondary_rsv_covid_overall_within_14 ~ "RSV_Severe_0_COVID_Severe_Overall_Resp_Severe",
+            secondary_flu_covid_overall_within_14 ~ "0_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_overall_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            TRUE ~ overall_resp_severe_alt
+          )
+        )
+      
+    } else {
+      
+      input <- input %>% 
+        mutate(
+          rsv_mild_alt = if_else(rsv_primary_inf == 1, "RSV_Mild_0_0", "0_0_0"),
+          flu_mild_alt = if_else(flu_primary_inf == 1, "0_Flu_Mild_0", "0_0_0"),
+          overall_resp_mild_alt = if_else(overall_resp_primary_inf == 1, "0_0_Overall_Resp_Mild", "0_0_0"),
+          rsv_severe_alt = if_else(rsv_secondary_inf == 1, "RSV_Severe_0_0", "0_0_0"),
+          flu_severe_alt = if_else(flu_secondary_inf == 1, "0_Flu_Severe_0", "0_0_0"),
+          overall_resp_severe_alt = if_else(overall_resp_secondary_inf == 1, "0_0_Overall_Resp_Severe", "0_0_0"),
+          primary_rsv_flu_within_14 = abs(rsv_primary_date - flu_primary_date <= 14),
+          primary_rsv_overall_within_14 = abs(rsv_primary_date - overall_resp_primary_date <= 14),
+          primary_flu_overall_within_14 = abs(flu_primary_date - overall_resp_primary_date <= 14),
+          primary_rsv_flu_overall_within_14 = abs(rsv_primary_date - flu_primary_date <= 14) & 
+            abs(rsv_primary_date - overall_resp_primary_date <= 14) & 
+            abs(flu_primary_date - overall_resp_primary_date <= 14),
+          secondary_rsv_flu_within_14 = abs(rsv_secondary_date - flu_secondary_date <= 14),
+          secondary_rsv_overall_within_14 = abs(rsv_secondary_date - overall_resp_secondary_date <= 14),
+          secondary_flu_overall_within_14 = abs(flu_secondary_date - overall_resp_secondary_date <= 14),
+          secondary_rsv_flu_overall_within_14 = abs(rsv_secondary_date - flu_secondary_date <= 14) & 
+            abs(rsv_secondary_date - overall_resp_secondary_date <= 14) & 
+            abs(flu_secondary_date - overall_resp_secondary_date <= 14),
+          across(contains("_within_14"), ~if_else(is.na(.x), FALSE, TRUE))
+        ) %>%
+        mutate(
+          rsv_mild_alt_combo = case_when(
+            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0",
+            primary_rsv_overall_within_14 ~ "RSV_Mild_0_Overall_Resp_Mild",
+            primary_rsv_flu_overall_within_14 ~ "RSV_Mild_Flu_Mild_Overall_Resp_Mild",
+            TRUE ~ rsv_mild_alt
+          ),
+          flu_mild_alt_combo = case_when(
+            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0",
+            primary_flu_overall_within_14 ~ "0_Flu_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_overall_within_14 ~ "RSV_Mild_Flu_Mild_Overall_Resp_Mild",
+            TRUE ~ flu_mild_alt
+          ),
+          overall_resp_mild_alt_combo = case_when(
+            primary_rsv_overall_within_14 ~ "RSV_Mild_0_Overall_Resp_Mild",
+            primary_flu_overall_within_14 ~ "0_Flu_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_overall_within_14 ~ "RSV_Mild_Flu_Mild_Overall_Resp_Mild",
+            TRUE ~ overall_resp_mild_alt
+          ),
+          rsv_severe_alt_combo = case_when(
+            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0",
+            secondary_rsv_overall_within_14 ~ "RSV_Severe_0_Overall_Resp_Severe",
+            secondary_rsv_flu_overall_within_14 ~ "RSV_Severe_Flu_Severe_Overall_Resp_Severe",
+            TRUE ~ rsv_severe_alt
+          ),
+          flu_severe_alt_combo = case_when(
+            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0",
+            secondary_flu_overall_within_14 ~ "0_Flu_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_overall_within_14 ~ "RSV_Severe_Flu_Severe_Overall_Resp_Severe",
+            TRUE ~ flu_severe_alt
+          ),
+          overall_severe_alt_combo = case_when(
+            secondary_rsv_overall_within_14 ~ "RSV_Severe_0_Overall_Resp_Severe",
+            secondary_flu_overall_within_14 ~ "0_Flu_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_overall_within_14 ~ "RSV_Severe_Flu_Severe_Overall_Resp_Severe",
+            TRUE ~ overall_resp_severe_alt
+          )
+        )
+      
+    }
+    
+  } else {
+    
+    if (study_start_date >= covid_season_min) {
+      
+      input <- input %>%
+        mutate(
+          rsv_mild_alt = if_else(rsv_primary_inf == 1, "RSV_Mild_0_0", "0_0_0"),
+          flu_mild_alt = if_else(flu_primary_inf == 1, "0_Flu_Mild_0", "0_0_0"),
+          covid_mild_alt = if_else(covid_primary_inf == 1, "0_0_COVID_Mild", "0_0_0"),
+          rsv_severe_alt = if_else(rsv_secondary_inf == 1, "RSV_Severe_0_0", "0_0_0"),
+          flu_severe_alt = if_else(flu_secondary_inf == 1, "0_Flu_Severe_0", "0_0_0"),
+          covid_severe_alt = if_else(covid_secondary_inf == 1, "0_0_COVID_Severe", "0_0_0"),
+          primary_rsv_flu_within_14 = abs(rsv_primary_date - flu_primary_date <= 14),
+          primary_rsv_covid_within_14 = abs(rsv_primary_date - covid_primary_date <= 14),
+          primary_flu_covid_within_14 = abs(flu_primary_date - covid_primary_date <= 14),
+          primary_rsv_flu_covid_within_14 = abs(rsv_primary_date - flu_primary_date <= 14) & 
+            abs(rsv_primary_date - covid_primary_date <= 14) & 
+            abs(flu_primary_date - covid_primary_date <= 14),
+          secondary_rsv_flu_within_14 = abs(rsv_secondary_date - flu_secondary_date <= 14),
+          secondary_rsv_covid_within_14 = abs(rsv_secondary_date - covid_secondary_date <= 14),
+          secondary_flu_covid_within_14 = abs(flu_secondary_date - covid_secondary_date <= 14),
+          secondary_rsv_flu_covid_within_14 = abs(rsv_secondary_date - flu_secondary_date <= 14) & 
+            abs(rsv_secondary_date - covid_secondary_date <= 14) & 
+            abs(flu_secondary_date - covid_secondary_date <= 14),
+          across(contains("_within_14"), ~if_else(is.na(.x), FALSE, TRUE))
+          ) %>%
+        mutate(
+          rsv_mild_alt_combo = case_when(
+            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0",
+            primary_rsv_covid_within_14 ~ "RSV_Mild_0_COVID_Mild",
+            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
+            
+            TRUE ~ rsv_mild_alt
+          ),
+          flu_mild_alt_combo = case_when(
+            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0",
+            primary_flu_covid_within_14 ~ "0_Flu_Mild_COVID_Mild",
+            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
+            TRUE ~ flu_mild_alt
+          ),
+          covid_mild_alt_combo = case_when(
+            primary_rsv_covid_within_14 ~ "RSV_Mild_0_COVID_Mild",
+            primary_flu_covid_within_14 ~ "0_Flu_Mild_COVID_Mild",
+            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
+            TRUE ~ covid_mild_alt
+          ),
+          rsv_severe_alt_combo = case_when(
+            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0",
+            secondary_rsv_covid_within_14 ~ "RSV_Severe_0_COVID_Severe",
+            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
+            TRUE ~ rsv_severe_alt
+          ),
+          flu_severe_alt_combo = case_when(
+            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0",
+            secondary_flu_covid_within_14 ~ "0_Flu_Severe_COVID_Severe",
+            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
+            TRUE ~ flu_severe_alt
+          ),
+          covid_severe_alt_combo = case_when(
+            secondary_rsv_covid_within_14 ~ "RSV_Severe_0_COVID_Severe",
+            secondary_flu_covid_within_14 ~ "0_Flu_Severe_COVID_Severe",
+            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
+            TRUE ~ covid_severe_alt
+          )
+        )
+      
+    } else {
+      
+      input <- input %>% 
+        mutate(
+          rsv_mild_alt = if_else(rsv_primary_inf == 1, "RSV_Mild_0", "0_0"),
+          flu_mild_alt = if_else(flu_primary_inf == 1, "0_Flu_Mild", "0_0"),
+          rsv_severe_alt = if_else(rsv_secondary_inf == 1, "RSV_Severe_0", "0_0"),
+          flu_severe_alt = if_else(flu_secondary_inf == 1, "0_Flu_Severe", "0_0"),
+          primary_rsv_flu_within_14 = abs(rsv_primary_date - flu_primary_date <= 14),
+          secondary_rsv_flu_within_14 = abs(rsv_secondary_date - flu_secondary_date <= 14),
+          across(contains("_within_14"), ~if_else(is.na(.x), FALSE, TRUE))
+        ) %>%
+        mutate(
+          rsv_mild_alt_combo = if_else(primary_rsv_flu_within_14 == TRUE, 
+                                       "RSV_Mild_Flu_Mild", rsv_mild_alt),
+          flu_mild_alt_combo = if_else(primary_rsv_flu_within_14 == TRUE, 
+                                       "RSV_Mild_Flu_Mild", flu_mild_alt),
+          rsv_severe_alt_combo = if_else(secondary_rsv_flu_within_14 == TRUE, 
+                                         "RSV_Severe_Flu_Severe", rsv_severe_alt),
+          flu_severe_alt_combo = if_else(secondary_rsv_flu_within_14 == TRUE, 
+                                         "RSV_Severe_Flu_Severe", flu_severe_alt)
+        )
+      
+    }
+    
+  }
+  
+  return(input)
+  
 }
 
-#create text coding for each category
+#apply function
+df_input_specific <- alt_label(df_input_specific, "specific", study_start_date, covid_season_min)
+df_input_sensitive <- alt_label(df_input_sensitive, "sensitive", study_start_date, covid_season_min)
+
+#select necessary columns for a new dataframe to work on 
 if (study_start_date >= covid_season_min) {
-  df_input_sensitive <- df_input_sensitive %>%
-    mutate(
-      rsv_mild_alt = if_else(rsv_primary_inf == 1, "RSV_Mild", "0"),
-      rsv_severe_alt = if_else(rsv_secondary_inf == 1, "RSV_Severe", "0"),
-      flu_mild_alt = if_else(flu_primary_inf == 1, "Flu_Mild", "0"),
-      flu_severe_alt = if_else(flu_secondary_inf == 1, "Flu_Severe", "0"),
-      covid_mild_alt = if_else(covid_primary_inf == 1, "COVID_Mild", "0"),
-      covid_severe_alt = if_else(covid_secondary_inf == 1, "COVID_Severe", "0"),
-      overall_resp_mild_alt = if_else(overall_resp_primary_inf == 1, "Overall_Resp_Mild", "0"),
-      overall_resp_severe_alt = if_else(overall_resp_secondary_inf == 1, "Overall_Resp_Severe", "0")
-    )
+  df_spec <- df_input_specific %>%
+    select(patient_id, rsv_mild_alt_combo, flu_mild_alt_combo, 
+           covid_mild_alt_combo, rsv_severe_alt_combo, flu_severe_alt_combo,
+           covid_severe_alt_combo)
+  df_sens <- df_input_sensitive %>%
+    select(patient_id, rsv_mild_alt_combo, flu_mild_alt_combo, 
+           covid_mild_alt_combo, rsv_severe_alt_combo, 
+           flu_severe_alt_combo, covid_severe_alt_combo)
+  df_sens_overall <- df_input_sensitive %>%
+    select(patient_id, rsv_mild_alt_combo, flu_mild_alt_combo, 
+           covid_mild_alt_combo, overall_resp_mild_alt_combo,
+           rsv_severe_alt_combo, flu_severe_alt_combo, 
+           covid_severe_alt_combo, overall_severe_alt_combo)
 } else {
-  df_input_sensitive <- df_input_sensitive %>%
-    mutate(
-      rsv_mild_alt = if_else(rsv_primary_inf == 1, "RSV_Mild", "0"),
-      rsv_severe_alt = if_else(rsv_secondary_inf == 1, "RSV_Severe", "0"),
-      flu_mild_alt = if_else(flu_primary_inf == 1, "Flu_Mild", "0"),
-      flu_severe_alt = if_else(flu_secondary_inf == 1, "Flu_Severe", "0"),
-      overall_resp_mild_alt = if_else(overall_resp_primary_inf == 1, "Overall_Resp_Mild", "0"),
-      overall_resp_severe_alt = if_else(overall_resp_secondary_inf == 1, "Overall_Resp_Severe", "0")
-    )
+  df_spec <- df_input_specific %>%
+  select(patient_id, rsv_mild_alt_combo, flu_mild_alt_combo,
+         rsv_severe_alt_combo, flu_severe_alt_combo)
+  df_sens <- df_input_sensitive %>%
+    select(patient_id, rsv_mild_alt_combo, flu_mild_alt_combo, 
+           rsv_severe_alt_combo, flu_severe_alt_combo)
+  df_sens_overall <- df_input_sensitive %>%
+    select(patient_id, rsv_mild_alt_combo, flu_mild_alt_combo, 
+           overall_resp_mild_alt_combo, rsv_severe_alt_combo,
+           flu_severe_alt_combo, overall_severe_alt_combo)
 }
 
-#combine text coding for mild
+#reformat from wide to long
 if (study_start_date >= covid_season_min) {
-  df_input_sensitive$mild_combined = paste0(
-    df_input_sensitive$rsv_mild_alt, "_",
-    df_input_sensitive$flu_mild_alt, "_",
-    df_input_sensitive$covid_mild_alt
-  )
+  df_spec_mild <- df_spec %>%
+    pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo, covid_mild_alt_combo), 
+                 names_to = "mild_combo", values_to = "combo") %>%
+    mutate(codelist_type = "specific") %>%
+    select(combo, codelist_type)
+  df_spec_severe <- df_spec %>%
+    pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo, covid_severe_alt_combo), 
+                 names_to = "severe_combo", values_to = "combo") %>%
+    mutate(codelist_type = "specific") %>%
+    select(combo, codelist_type)
+  df_sens_mild <- df_sens %>%
+    pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo, covid_mild_alt_combo), 
+                 names_to = "mild_combo", values_to = "combo") %>%
+    mutate(codelist_type = "sensitive") %>%
+    select(combo, codelist_type)
+  df_sens_mild_overall <- df_sens_overall %>%
+    pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo, covid_mild_alt_combo, 
+                   overall_resp_mild_alt_combo), 
+                 names_to = "mild_combo", values_to = "combo") %>%
+    mutate(codelist_type = "sensitive") %>%
+    select(combo, codelist_type)
+  df_sens_severe <- df_sens %>%
+    pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo, covid_severe_alt_combo), 
+                 names_to = "severe_combo", values_to = "combo") %>%
+    mutate(codelist_type = "sensitive") %>%
+    select(combo, codelist_type)
+  df_sens_severe_overall <- df_sens_overall %>%
+    pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo, covid_severe_alt_combo, 
+                   overall_severe_alt_combo), 
+                 names_to = "severe_combo", values_to = "combo") %>%
+    mutate(codelist_type = "sensitive") %>%
+    select(combo, codelist_type)
 } else {
-  df_input_sensitive$mild_combined = paste0(
-    df_input_sensitive$rsv_mild_alt, "_",
-    df_input_sensitive$flu_mild_alt
-  )
+  df_spec_mild <- df_spec %>%
+    pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo),
+                 names_to = "mild_combo", values_to = "combo") %>%
+    mutate(codelist_type = "specific") %>%
+    select(combo, codelist_type)
+  df_spec_severe <- df_spec %>% 
+    pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo),
+                 names_to = "severe_combo", values_to = "combo") %>%
+    mutate(codelist_type = "specific") %>%
+    select(combo, codelist_type)
+  df_sens_mild <- df_sens %>%
+    pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo), 
+                 names_to = "mild_combo", values_to = "combo") %>%
+    mutate(codelist_type = "sensitive") %>%
+    select(combo, codelist_type)
+  df_sens_mild_overall <- df_sens_overall %>%
+    pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo, 
+                   overall_resp_mild_alt_combo), 
+                 names_to = "mild_combo", values_to = "combo") %>%
+    mutate(codelist_type = "sensitive") %>%
+    select(combo, codelist_type)
+  df_sens_severe <- df_sens %>%
+    pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo), 
+                 names_to = "severe_combo", values_to = "combo") %>%
+    mutate(codelist_type = "sensitive") %>%
+    select(combo, codelist_type)
+  df_sens_severe_overall <- df_sens_overall %>%
+    pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo, 
+                   overall_severe_alt_combo), 
+                 names_to = "severe_combo", values_to = "combo") %>%
+    mutate(codelist_type = "sensitive") %>%
+    select(combo, codelist_type)
 }
 
-#combine text coding for severe
-if (study_start_date >= covid_season_min) {
-  df_input_sensitive$severe_combined = paste0(
-    df_input_sensitive$rsv_severe_alt, "_",
-    df_input_sensitive$flu_severe_alt, "_",
-    df_input_sensitive$covid_severe_alt
-  )
-} else {
-  df_input_sensitive$severe_combined = paste0(
-    df_input_sensitive$rsv_severe_alt, "_",
-    df_input_sensitive$flu_severe_alt
-  )
-}
+##count number of patients in each category for phenotypes - separately for mild and severe 
 
-#for comparisons with overall resp outcome mild
-if (study_start_date >= covid_season_min) {
-  df_input_sensitive$mild_combined_overall = paste0(
-    df_input_sensitive$rsv_mild_alt, "_",
-    df_input_sensitive$flu_mild_alt, "_",
-    df_input_sensitive$covid_mild_alt, "_",
-    df_input_sensitive$overall_resp_mild_alt
-  )
-} else {
-  df_input_sensitive$mild_combined_overall = paste0(
-    df_input_sensitive$rsv_mild_alt, "_",
-    df_input_sensitive$flu_mild_alt, "_",
-    df_input_sensitive$overall_resp_mild_alt
-  )
-}
-
-#for comparisons with overall resp outcome severe
-if (study_start_date >= covid_season_min) {
-  df_input_sensitive$severe_combined_overall = paste0(
-    df_input_sensitive$rsv_severe_alt, "_",
-    df_input_sensitive$flu_severe_alt, "_",
-    df_input_sensitive$covid_severe_alt, "_",
-    df_input_sensitive$overall_resp_severe_alt
-  )
-} else {
-  df_input_sensitive$severe_combined_overall = paste0(
-    df_input_sensitive$rsv_severe_alt, "_",
-    df_input_sensitive$flu_severe_alt, "_",
-    df_input_sensitive$overall_resp_severe_alt
-  )
-}
-
-#calculate totals for 'specific' outcomes
-if (study_start_date >= covid_season_min) {
-  specific_totals_mild_full <- df_input_specific %>%
-    mutate(
-      RSV_Mild_Total = sum(rsv_primary_inf),
-      Flu_Mild_Total = sum(flu_primary_inf),
-      COVID_Mild_Total = sum(covid_primary_inf)
-    )
-  specific_totals_severe_full <- df_input_specific %>%
-    mutate(
-      RSV_Severe_Total = sum(rsv_secondary_inf),
-      Flu_Severe_Total = sum(flu_secondary_inf),
-      COVID_Severe_Total = sum(covid_secondary_inf)
-    )
-} else {
-  specific_totals_mild_full <- df_input_specific %>%
-    mutate(
-      RSV_Mild_Total = sum(rsv_primary_inf),
-      Flu_Mild_Total = sum(flu_primary_inf)
-    )
-  specific_totals_severe_full <- df_input_specific %>%
-    mutate(
-      RSV_Severe_Total = sum(rsv_secondary_inf),
-      Flu_Severe_Total = sum(flu_secondary_inf)
-    )
-}
-
-#calculate totals for 'sensitive' outcomes
-if (study_start_date >= covid_season_min) {
-  sensitive_totals_mild_full <- df_input_sensitive %>%
-    mutate(
-      RSV_Mild_Total = sum(rsv_primary_inf),
-      Flu_Mild_Total = sum(flu_primary_inf),
-      COVID_Mild_Total = sum(covid_primary_inf),
-      Overall_Resp_Mild_Total = sum(overall_resp_primary_inf)
-    )
-  sensitive_totals_severe_full <- df_input_sensitive %>%
-    mutate(
-      RSV_Severe_Total = sum(rsv_secondary_inf),
-      Flu_Severe_Total = sum(flu_secondary_inf),
-      COVID_Severe_Total = sum(covid_secondary_inf),
-      Overall_Resp_Severe_Total = sum(overall_resp_secondary_inf)
-    )
-} else {
-  sensitive_totals_mild_full <- df_input_sensitive %>%
-    mutate(
-      RSV_Mild_Total = sum(rsv_primary_inf),
-      Flu_Mild_Total = sum(flu_primary_inf),
-      Overall_Resp_Mild_Total = sum(overall_resp_primary_inf)
-    )
-  sensitive_totals_severe_full <- df_input_sensitive %>%
-    mutate(
-      RSV_Severe_Total = sum(rsv_secondary_inf),
-      Flu_Severe_Total = sum(flu_secondary_inf),
-      Overall_Resp_Severe_Total = sum(overall_resp_secondary_inf)
-    )
-}
-
-#reformat data 
-if (study_start_date >= covid_season_min) {
-  specific_totals_mild <- specific_totals_mild_full %>%
-    select(RSV_Mild_Total, Flu_Mild_Total, COVID_Mild_Total)
-  specific_totals_severe <- specific_totals_severe_full %>%
-    select(RSV_Severe_Total, Flu_Severe_Total, COVID_Severe_Total)
-  sensitive_totals_mild <- sensitive_totals_mild_full %>%
-    select(RSV_Mild_Total, Flu_Mild_Total, COVID_Mild_Total)
-  sensitive_totals_severe <- sensitive_totals_severe_full %>%
-    select(RSV_Severe_Total, Flu_Severe_Total, COVID_Severe_Total)
-  sensitive_overall_totals_mild <- sensitive_totals_mild_full %>%
-    select(RSV_Mild_Total, Flu_Mild_Total, COVID_Mild_Total,
-           Overall_Resp_Mild_Total)
-  sensitive_overall_totals_severe <- sensitive_totals_severe_full %>%
-    select(RSV_Severe_Total, Flu_Severe_Total, COVID_Severe_Total,
-           Overall_Resp_Severe_Total)
-} else {
-  specific_totals_mild <- specific_totals_mild_full %>%
-    select(RSV_Mild_Total, Flu_Mild_Total)
-  specific_totals_severe <- specific_totals_severe_full %>%
-    select(RSV_Severe_Total, Flu_Severe_Total)
-  sensitive_totals_mild <- sensitive_totals_mild_full %>%
-    select(RSV_Mild_Total, Flu_Mild_Total)
-  sensitive_totals_severe <- sensitive_totals_severe_full %>%
-    select(RSV_Severe_Total, Flu_Severe_Total)
-  sensitive_overall_totals_mild <- sensitive_totals_mild_full %>%
-    select(RSV_Mild_Total, Flu_Mild_Total, Overall_Resp_Mild_Total)
-  sensitive_overall_totals_severe <- sensitive_totals_severe_full %>%
-    select(RSV_Severe_Total, Flu_Severe_Total, Overall_Resp_Severe_Total)
-}
-
-specific_totals_m <- specific_totals_mild %>%
-  unique() %>%
-  gather(key = "combo", value = "n") %>%
-  mutate(outcome_type = "mild", codelist_type = "specific")
-specific_totals_s <- specific_totals_severe %>%
-  unique() %>%
-  gather(key = "combo", value = "n") %>%
-  mutate(outcome_type = "severe", codelist_type = "specific")
-specific_totals <- rbind(specific_totals_m, specific_totals_s)
-
-sensitive_totals_m <- sensitive_totals_mild %>%
-  unique() %>%
-  gather(key = "combo", value = "n") %>%
-  mutate(outcome_type = "mild", codelist_type = "sensitive")
-sensitive_totals_s <- sensitive_totals_severe %>%
-  unique() %>%
-  gather(key = "combo", value = "n") %>%
-  mutate(outcome_type = "severe", codelist_type = "sensitive")
-sensitive_totals <- rbind(sensitive_totals_m, sensitive_totals_s)
-
-sensitive_overall_totals_m <- sensitive_overall_totals_mild %>%
-  unique() %>%
-  gather(key = "combo", value = "n") %>%
-  mutate(outcome_type = "mild_overall", codelist_type = "sensitive")
-sensitive_overall_totals_s <- sensitive_overall_totals_severe %>%
-  unique() %>%
-  gather(key = "combo", value = "n") %>%
-  mutate(outcome_type = "severe_overall", codelist_type = "sensitive")
-sensitive_overall_totals <- rbind(sensitive_overall_totals_m, sensitive_overall_totals_s)
-
-#count number of patients in each category for specific phenotypes - separately for mild and severe 
-patients_specific_mild <- rlang::duplicate(df_input_specific) %>% 
-  group_by("combo" = mild_combined) %>%
+#specific phenotype
+patients_specific_mild <- df_spec_mild %>% 
+  group_by(combo) %>%
   summarise(n = n()) %>%
   ungroup() %>%
   mutate(outcome_type = "mild", codelist_type = "specific")
-patients_specific_severe <- rlang::duplicate(df_input_specific) %>%
-  group_by("combo" = severe_combined) %>%
+patients_specific_severe <- df_spec_severe %>%
+  group_by(combo) %>%
   summarise(n = n()) %>%
   ungroup() %>% 
   mutate(outcome_type = "severe", codelist_type = "specific")
 patients_specific <- full_join(patients_specific_mild, patients_specific_severe)
-patients_specific <- rbind(specific_totals, patients_specific)
 
-#count number of patients in each category for sensitive phenotypes - separately for mild and severe
-patients_sensitive_mild <- rlang::duplicate(df_input_sensitive) %>% 
-  group_by("combo" = mild_combined) %>%
+#sensitive phenotype
+patients_sensitive_mild <- df_sens_mild %>% 
+  group_by(combo) %>%
   summarise(n = n()) %>%
   ungroup() %>%
   mutate(outcome_type = "mild", codelist_type = "sensitive")
-patients_sensitive_severe <- rlang::duplicate(df_input_sensitive) %>%
-  group_by("combo" = severe_combined) %>%
+patients_sensitive_severe <- df_sens_severe %>%
+  group_by(combo) %>%
   summarise(n = n()) %>%
   ungroup() %>% 
   mutate(outcome_type = "severe", codelist_type = "sensitive")
 patients_sensitive <- full_join(patients_sensitive_mild, patients_sensitive_severe)
-patients_sensitive <- rbind(sensitive_totals, patients_sensitive)
-
-#count number of patients in each category for sensitive phenotypes now including overall resp - separately for mild and severe
-patients_sensitive_mild_overall <- rlang::duplicate(df_input_sensitive) %>% 
-  group_by("combo" = mild_combined_overall) %>%
+patients_sensitive_mild_overall <- df_sens_mild_overall %>% 
+  group_by(combo) %>%
   summarise(n = n()) %>%
   ungroup() %>%
   mutate(outcome_type = "mild_overall", codelist_type = "sensitive")
-patients_sensitive_severe_overall <- rlang::duplicate(df_input_sensitive) %>%
-  group_by("combo" = severe_combined_overall) %>%
+patients_sensitive_severe_overall <- df_sens_severe_overall %>%
+  group_by(combo) %>%
   summarise(n = n()) %>%
   ungroup() %>% 
   mutate(outcome_type = "severe_overall", codelist_type = "sensitive")
-patients_sensitive_overall <- full_join(patients_sensitive_mild_overall, 
-                                        patients_sensitive_severe_overall)
-patients_sensitive_overall <- rbind(sensitive_overall_totals, patients_sensitive_overall)
+patients_sensitive_overall <- full_join(patients_sensitive_mild_overall, patients_sensitive_severe_overall)
 
-#combine as one tibble 
+#get totals for sets 
+if (study_start_date >= covid_season_min) {
+  
+  patients_specific_totals <- tibble(
+    combo = c("RSV_Mild_Total", "Flu_Mild_Total", "COVID_Mild_Total", 
+              "RSV_Severe_Total", "Flu_Severe_Total", "COVID_Severe_Total"),
+    n = c(sum(patients_specific_mild[grep("RSV", patients_specific_mild$combo), "n"]),
+          sum(patients_specific_mild[grep("Flu", patients_specific_mild$combo), "n"]),
+          sum(patients_specific_mild[grep("COVID", patients_specific_mild$combo), "n"]),
+          sum(patients_specific_severe[grep("RSV", patients_specific_severe$combo), "n"]),
+          sum(patients_specific_severe[grep("Flu", patients_specific_severe$combo), "n"]),
+          sum(patients_specific_severe[grep("COVID", patients_specific_severe$combo), "n"])),
+    outcome_type = c("mild", "mild", "mild", "severe", "severe", "severe"),
+    codelist_type = rep("specific", 6),
+  )
+  patients_specific <- rbind(patients_specific_totals, patients_specific)
+  
+  patients_sensitive_totals <- tibble(
+    combo = c("RSV_Mild_Total", "Flu_Mild_Total", "COVID_Mild_Total", 
+              "RSV_Severe_Total", "Flu_Severe_Total", "COVID_Severe_Total"),
+    n = c(sum(patients_sensitive_mild[grep("RSV", patients_sensitive_mild$combo), "n"]),
+          sum(patients_sensitive_mild[grep("Flu", patients_sensitive_mild$combo), "n"]),
+          sum(patients_sensitive_mild[grep("COVID", patients_sensitive_mild$combo), "n"]),
+          sum(patients_sensitive_severe[grep("RSV", patients_sensitive_severe$combo), "n"]),
+          sum(patients_sensitive_severe[grep("Flu", patients_sensitive_severe$combo), "n"]),
+          sum(patients_sensitive_severe[grep("COVID", patients_sensitive_severe$combo), "n"])),
+    outcome_type = c("mild", "mild", "mild", "severe", "severe", "severe"),
+    codelist_type = rep("sensitive", 6),
+  )
+  patients_sensitive <- rbind(patients_sensitive_totals, patients_sensitive)
+  
+  patients_sensitive_totals_overall <- tibble(
+    combo = c("RSV_Mild_Total", "Flu_Mild_Total", "COVID_Mild_Total", 
+              "Overall_Resp_Mild_Total", "RSV_Severe_Total", "Flu_Severe_Total", 
+              "COVID_Severe_Total", "Overall_Resp_Severe_Total"),
+    n = c(sum(patients_sensitive_mild[grep("RSV", patients_sensitive_mild$combo), "n"]),
+          sum(patients_sensitive_mild[grep("Flu", patients_sensitive_mild$combo), "n"]),
+          sum(patients_sensitive_mild[grep("COVID", patients_sensitive_mild$combo), "n"]),
+          sum(patients_sensitive_mild_overall[grep("Overall", patients_sensitive_mild_overall$combo), "n"]),
+          sum(patients_sensitive_severe[grep("RSV", patients_sensitive_severe$combo), "n"]),
+          sum(patients_sensitive_severe[grep("Flu", patients_sensitive_severe$combo), "n"]),
+          sum(patients_sensitive_severe[grep("COVID", patients_sensitive_severe$combo), "n"]),
+          sum(patients_sensitive_severe_overall[grep("Overall", patients_sensitive_severe_overall$combo), "n"])),
+    outcome_type = c(rep("mild_overall", 4), rep("severe_overall", 4)),
+    codelist_type = rep("sensitive", 8),
+  )
+  patients_sensitive_overall <- rbind(patients_sensitive_totals_overall, 
+                                      patients_sensitive_overall)
+  
+} else {
+  
+  patients_specific_totals <- tibble(
+    combo = c("RSV_Mild_Total", "Flu_Mild_Total", 
+              "RSV_Severe_Total", "Flu_Severe_Total"),
+    n = c(sum(patients_specific_mild[grep("RSV", patients_specific_mild$combo), "n"]),
+          sum(patients_specific_mild[grep("Flu", patients_specific_mild$combo), "n"]),
+          sum(patients_specific_severe[grep("RSV", patients_specific_severe$combo), "n"]),
+          sum(patients_specific_severe[grep("Flu", patients_specific_severe$combo), "n"])),
+    outcome_type = c("mild", "mild", "severe", "severe"),
+    codelist_type = rep("specific", 4),
+  )
+  patients_specific <- rbind(patients_specific_totals, patients_specific)
+  
+  patients_sensitive_totals <- tibble(
+    combo = c("RSV_Mild_Total", "Flu_Mild_Total", 
+              "RSV_Severe_Total", "Flu_Severe_Total"),
+    n = c(sum(patients_sensitive_mild[grep("RSV", patients_sensitive_mild$combo), "n"]),
+          sum(patients_sensitive_mild[grep("Flu", patients_sensitive_mild$combo), "n"]),
+          sum(patients_sensitive_severe[grep("RSV", patients_sensitive_severe$combo), "n"]),
+          sum(patients_sensitive_severe[grep("Flu", patients_sensitive_severe$combo), "n"])),
+    outcome_type = c("mild", "mild", "severe", "severe"),
+    codelist_type = rep("sensitive", 4)
+  )
+  patients_sensitive <- rbind(patients_sensitive_totals, patients_sensitive)
+  
+  patients_sensitive_totals_overall <- tibble(
+    combo = c("RSV_Mild_Total", "Flu_Mild_Total", 
+              "Overall_Resp_Mild_Total", "RSV_Severe_Total", "Flu_Severe_Total", 
+              "Overall_Resp_Severe_Total"),
+    n = c(sum(patients_sensitive_mild[grep("RSV", patients_sensitive_mild$combo), "n"]),
+          sum(patients_sensitive_mild[grep("Flu", patients_sensitive_mild$combo), "n"]),
+          sum(patients_sensitive_mild_overall[grep("Overall", patients_sensitive_mild_overall$combo), "n"]),
+          sum(patients_sensitive_severe[grep("RSV", patients_sensitive_severe$combo), "n"]),
+          sum(patients_sensitive_severe[grep("Flu", patients_sensitive_severe$combo), "n"]),
+          sum(patients_sensitive_severe_overall[grep("Overall", patients_sensitive_severe_overall$combo), "n"])),
+    outcome_type = c(rep("mild_overall", 3), rep("severe_overall", 3)),
+    codelist_type = rep("sensitive", 6),
+  )
+  patients_sensitive_overall <- rbind(patients_sensitive_totals_overall,
+                                      patients_sensitive_overall)
+  
+}
+
+#combine as one 
 patients_combined <- patients_specific %>%
   full_join(patients_sensitive) %>%
   full_join(patients_sensitive_overall)
