@@ -4,7 +4,7 @@ from functools import reduce
 from ehrql.codes import SNOMEDCTCode, CTV3Code, ICD10Code
 from ehrql import case, days, when
 from ehrql.tables.tpp import (emergency_care_attendances, 
-apcs, clinical_events, patients, ons_deaths)
+apcs, clinical_events, patients, ons_deaths, practice_registrations)
 
 ###############################################################################
 # from https://github.com/opensafely/comparative-booster-spring2023/blob/main/analysis/variables_lib.py
