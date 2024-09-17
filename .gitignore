@@ -12,3 +12,4 @@ venv/
 .Rproj.user/
 .RData
 /IMG/*
+filtered_actions.txt
