@@ -1695,7 +1695,7 @@ names(actions_list) %>% tibble(action=.) %>%
 
 actions_list %>% 
   names() %>% 
-  str_subset("^collate_phenotype") %>% 
+  str_subset("^process_dataset") %>% 
   tibble(action=.) %>% 
   mutate(
     model = action==""  & lag(action!="", 1, TRUE),
