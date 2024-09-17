@@ -17,8 +17,8 @@ population_size <- 100000
 
 #define index date and study start date
 source(here("analysis", "design", "design.R"))
-study_start_date <- as.Date(study_dates$season1_start_date)
-study_end_date <- as.Date(study_dates$season1_end_date)
+study_start_date <- study_dates$season1_start_date
+study_end_date <- study_dates$season1_end_date
 index_date <- study_start_date
 
 #define index day and study start day
@@ -269,9 +269,16 @@ sim_list = lst(
              NA)
   ),
   
-  #number of cases
-  rsv_primary_cases = bn_node(
-    ~ as.integer(rpois(n = ..n, lambda = 1))
+  #rsv primary care - second episode
+  rsv_primary_second = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.005)
+  ),
+  
+  #date
+  rsv_primary_second_day = bn_node(
+    ~ ifelse(rsv_primary_second == TRUE, 
+             as.integer(runif(n = ..n, index_day, index_day + 365)), 
+             NA)
   ),
   
   #rsv secondary care
@@ -286,14 +293,27 @@ sim_list = lst(
              NA)
   ),
   
+  
   #rsv secondary length of stay
   rsv_los = bn_node(
     ~ as.integer(rpois(n = ..n, lambda = 45))
   ),
   
-  #number of cases
-  rsv_secondary_cases = bn_node(
-    ~ as.integer(rpois(n = ..n, lambda = 1))
+  #rsv secondary care - second episode
+  rsv_secondary_second = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #date
+  rsv_secondary_second_day = bn_node(
+    ~ ifelse(rsv_secondary_second == TRUE, 
+             as.integer(runif(n = ..n, index_day, index_day + 365)), 
+             NA)
+  ),
+  
+  #rsv secondary length of stay - second episode
+  rsv_los_second = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 45))
   ),
   
   #flu primary care
@@ -308,9 +328,16 @@ sim_list = lst(
              NA)
   ),
   
-  #number of cases
-  flu_primary_cases = bn_node(
-    ~ as.integer(rpois(n = ..n, lambda = 1))
+  #flu primary care - second episode
+  flu_primary_second = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.005)
+  ),
+  
+  #date
+  flu_primary_second_day = bn_node(
+    ~ ifelse(flu_primary_second == TRUE,
+             as.integer(runif(n = ..n, index_day, index_day + 365)),
+             NA)
   ),
   
   #flu secondary care
@@ -330,9 +357,21 @@ sim_list = lst(
     ~ as.integer(rpois(n = ..n, lambda = 45))
   ),
   
-  #number of cases
-  flu_secondary_cases = bn_node(
-    ~ as.integer(rpois(n = ..n, lambda = 1))
+  #flu secondary care - second episode
+  flu_secondary_second = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #date
+  flu_secondary_second_day = bn_node(
+    ~ ifelse(flu_secondary_second == TRUE,
+             as.integer(runif(n = ..n, index_day, index_day + 365)),
+             NA)
+  ),
+  
+  #flu secondary length of stay - second episode
+  flu_los_second = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 45))
   ),
   
   #covid primary care
@@ -347,9 +386,16 @@ sim_list = lst(
              NA)
   ),
   
-  #number of cases
-  covid_primary_cases = bn_node(
-    ~ as.integer(rpois(n = ..n, lambda = 1))
+  #covid primary care - second episode
+  covid_primary_second = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.005)
+  ),
+  
+  #date
+  covid_primary_second_day = bn_node(
+    ~ ifelse(covid_primary_second == TRUE,
+             as.integer(runif(n = ..n, index_day, index_day + 365)),
+             NA)
   ),
   
   #covid secondary care
@@ -369,9 +415,21 @@ sim_list = lst(
     ~ as.integer(rpois(n = ..n, lambda = 45))
   ),
   
-  #number of cases
-  covid_secondary_cases = bn_node(
-    ~ as.integer(rpois(n = ..n, lambda = 1))
+  #covid secondary care - second episode
+  covid_secondary_second = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #date
+  covid_secondary_second_day = bn_node(
+    ~ ifelse(covid_secondary_second == TRUE,
+             as.integer(runif(n = ..n, index_day, index_day + 365)),
+             NA)
+  ),
+  
+  #covid secondary length of stay - second episode
+  covid_los_second = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 45))
   ),
   
   #unspecified respiratory infection primary care 
@@ -386,9 +444,16 @@ sim_list = lst(
              NA)
   ),
   
-  #number of cases
-  overall_resp_primary_cases = bn_node(
-    ~ as.integer(rpois(n = ..n, lambda = 1))
+  #unspecified respiratory infection primary care - second episode
+  overall_resp_primary_second = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.005)
+  ),
+  
+  #date
+  overall_resp_primary_second_day = bn_node(
+    ~ ifelse(overall_resp_primary_second == TRUE,
+             as.integer(runif(n = ..n, index_day, index_day + 365)),
+             NA)
   ),
   
   #unspecified respiratory infection secondary care 
@@ -408,9 +473,21 @@ sim_list = lst(
     ~ as.integer(rpois(n = ..n, lambda = 45))
   ),
   
-  #number of cases
-  overall_resp_secondary_cases = bn_node(
-    ~ as.integer(rpois(n = ..n, lambda = 1))
+  #unspecified respiratory infection secondary care - second episode
+  overall_resp_secondary_second = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #date
+  overall_resp_secondary_second_day = bn_node(
+    ~ ifelse(overall_resp_secondary_second == TRUE,
+             as.integer(runif(n = ..n, index_day, index_day + 365)),
+             NA)
+  ),
+  
+  #unspecified respiratory infection secondary length of stay - second episode
+  overall_resp_los_second = bn_node(
+    ~ as.integer(rpois(n = ..n, lambda = 45))
   ),
   
   ##mortality outcomes
