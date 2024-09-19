@@ -1147,7 +1147,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2016_2017_specific_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s1_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season1_start_date season1_end_date specific primary older_adults
       s1 2016_2017 specific primary season1_start_date season1_end_date
     needs:
@@ -1598,7 +1598,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2017_2018_specific_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s2_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season2_start_date season2_end_date specific primary older_adults
       s2 2017_2018 specific primary season2_start_date season2_end_date
     needs:
@@ -2049,7 +2049,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2018_2019_specific_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s3_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season3_start_date season3_end_date specific primary older_adults
       s3 2018_2019 specific primary season3_start_date season3_end_date
     needs:
@@ -2500,7 +2500,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2019_2020_specific_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s4_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season4_start_date season4_end_date specific primary older_adults
       s4 2019_2020 specific primary season4_start_date season4_end_date
     needs:
@@ -3091,7 +3091,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2020_2021_specific_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s5_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season5_start_date season5_end_date specific primary older_adults
       s5 2020_2021 specific primary season5_start_date season5_end_date
     needs:
@@ -3682,7 +3682,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2021_2022_specific_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s6_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season6_start_date season6_end_date specific primary older_adults
       s6 2021_2022 specific primary season6_start_date season6_end_date
     needs:
@@ -4273,7 +4273,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2022_2023_specific_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s7_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season7_start_date season7_end_date specific primary older_adults
       s7 2022_2023 specific primary season7_start_date season7_end_date
     needs:
@@ -4868,7 +4868,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2016_2017_specific_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s1_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season1_start_date season1_end_date specific primary adults s1 2016_2017
       specific primary season1_start_date season1_end_date
     needs:
@@ -5317,7 +5317,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2017_2018_specific_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s2_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season2_start_date season2_end_date specific primary adults s2 2017_2018
       specific primary season2_start_date season2_end_date
     needs:
@@ -5766,7 +5766,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2018_2019_specific_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s3_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season3_start_date season3_end_date specific primary adults s3 2018_2019
       specific primary season3_start_date season3_end_date
     needs:
@@ -6215,7 +6215,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2019_2020_specific_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s4_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season4_start_date season4_end_date specific primary adults s4 2019_2020
       specific primary season4_start_date season4_end_date
     needs:
@@ -6804,7 +6804,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2020_2021_specific_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s5_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season5_start_date season5_end_date specific primary adults s5 2020_2021
       specific primary season5_start_date season5_end_date
     needs:
@@ -7393,7 +7393,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2021_2022_specific_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s6_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season6_start_date season6_end_date specific primary adults s6 2021_2022
       specific primary season6_start_date season6_end_date
     needs:
@@ -7982,7 +7982,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2022_2023_specific_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s7_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season7_start_date season7_end_date specific primary adults s7 2022_2023
       specific primary season7_start_date season7_end_date
     needs:
@@ -8578,7 +8578,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2016_2017_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s1_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season1_start_date season1_end_date specific primary
       children_and_adolescents s1 2016_2017 specific primary season1_start_date season1_end_date
     needs:
@@ -9029,7 +9029,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2017_2018_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s2_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season2_start_date season2_end_date specific primary
       children_and_adolescents s2 2017_2018 specific primary season2_start_date season2_end_date
     needs:
@@ -9480,7 +9480,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2018_2019_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s3_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season3_start_date season3_end_date specific primary
       children_and_adolescents s3 2018_2019 specific primary season3_start_date season3_end_date
     needs:
@@ -9931,7 +9931,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2019_2020_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s4_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season4_start_date season4_end_date specific primary
       children_and_adolescents s4 2019_2020 specific primary season4_start_date season4_end_date
     needs:
@@ -10522,7 +10522,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2020_2021_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s5_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season5_start_date season5_end_date specific primary
       children_and_adolescents s5 2020_2021 specific primary season5_start_date season5_end_date
     needs:
@@ -11113,7 +11113,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2021_2022_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s6_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season6_start_date season6_end_date specific primary
       children_and_adolescents s6 2021_2022 specific primary season6_start_date season6_end_date
     needs:
@@ -11704,7 +11704,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2022_2023_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s7_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season7_start_date season7_end_date specific primary
       children_and_adolescents s7 2022_2023 specific primary season7_start_date season7_end_date
     needs:
@@ -12297,7 +12297,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2016_2017_specific_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s1_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season1_start_date season1_end_date specific primary infants s1 2016_2017
       specific primary season1_start_date season1_end_date
     needs:
@@ -12746,7 +12746,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2017_2018_specific_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s2_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season2_start_date season2_end_date specific primary infants s2 2017_2018
       specific primary season2_start_date season2_end_date
     needs:
@@ -13195,7 +13195,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2018_2019_specific_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s3_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season3_start_date season3_end_date specific primary infants s3 2018_2019
       specific primary season3_start_date season3_end_date
     needs:
@@ -13644,7 +13644,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s4_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season4_start_date season4_end_date specific primary infants s4 2019_2020
       specific primary season4_start_date season4_end_date
     needs:
@@ -14233,7 +14233,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s5_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season5_start_date season5_end_date specific primary infants s5 2020_2021
       specific primary season5_start_date season5_end_date
     needs:
@@ -14822,7 +14822,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s6_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season6_start_date season6_end_date specific primary infants s6 2021_2022
       specific primary season6_start_date season6_end_date
     needs:
@@ -15411,7 +15411,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s7_specific_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season7_start_date season7_end_date specific primary infants s7 2022_2023
       specific primary season7_start_date season7_end_date
     needs:
@@ -16011,7 +16011,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2016_2017_sensitive_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s1_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season1_start_date season1_end_date sensitive primary older_adults
       s1 2016_2017 sensitive primary season1_start_date season1_end_date
     needs:
@@ -16462,7 +16462,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2017_2018_sensitive_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s2_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season2_start_date season2_end_date sensitive primary older_adults
       s2 2017_2018 sensitive primary season2_start_date season2_end_date
     needs:
@@ -16913,7 +16913,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2018_2019_sensitive_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s3_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season3_start_date season3_end_date sensitive primary older_adults
       s3 2018_2019 sensitive primary season3_start_date season3_end_date
     needs:
@@ -17364,7 +17364,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2019_2020_sensitive_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s4_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season4_start_date season4_end_date sensitive primary older_adults
       s4 2019_2020 sensitive primary season4_start_date season4_end_date
     needs:
@@ -17955,7 +17955,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2020_2021_sensitive_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s5_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season5_start_date season5_end_date sensitive primary older_adults
       s5 2020_2021 sensitive primary season5_start_date season5_end_date
     needs:
@@ -18546,7 +18546,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2021_2022_sensitive_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s6_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season6_start_date season6_end_date sensitive primary older_adults
       s6 2021_2022 sensitive primary season6_start_date season6_end_date
     needs:
@@ -19137,7 +19137,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2022_2023_sensitive_primary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s7_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season7_start_date season7_end_date sensitive primary older_adults
       s7 2022_2023 sensitive primary season7_start_date season7_end_date
     needs:
@@ -19730,7 +19730,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2016_2017_sensitive_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s1_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season1_start_date season1_end_date sensitive primary adults s1 2016_2017
       sensitive primary season1_start_date season1_end_date
     needs:
@@ -20179,7 +20179,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2017_2018_sensitive_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s2_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season2_start_date season2_end_date sensitive primary adults s2 2017_2018
       sensitive primary season2_start_date season2_end_date
     needs:
@@ -20628,7 +20628,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2018_2019_sensitive_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s3_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season3_start_date season3_end_date sensitive primary adults s3 2018_2019
       sensitive primary season3_start_date season3_end_date
     needs:
@@ -21077,7 +21077,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2019_2020_sensitive_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s4_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season4_start_date season4_end_date sensitive primary adults s4 2019_2020
       sensitive primary season4_start_date season4_end_date
     needs:
@@ -21666,7 +21666,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2020_2021_sensitive_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s5_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season5_start_date season5_end_date sensitive primary adults s5 2020_2021
       sensitive primary season5_start_date season5_end_date
     needs:
@@ -22255,7 +22255,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2021_2022_sensitive_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s6_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season6_start_date season6_end_date sensitive primary adults s6 2021_2022
       sensitive primary season6_start_date season6_end_date
     needs:
@@ -22844,7 +22844,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2022_2023_sensitive_primary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s7_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season7_start_date season7_end_date sensitive primary adults s7 2022_2023
       sensitive primary season7_start_date season7_end_date
     needs:
@@ -23440,7 +23440,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2016_2017_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s1_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season1_start_date season1_end_date sensitive primary
       children_and_adolescents s1 2016_2017 sensitive primary season1_start_date season1_end_date
     needs:
@@ -23891,7 +23891,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2017_2018_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s2_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season2_start_date season2_end_date sensitive primary
       children_and_adolescents s2 2017_2018 sensitive primary season2_start_date season2_end_date
     needs:
@@ -24342,7 +24342,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2018_2019_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s3_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season3_start_date season3_end_date sensitive primary
       children_and_adolescents s3 2018_2019 sensitive primary season3_start_date season3_end_date
     needs:
@@ -24793,7 +24793,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2019_2020_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s4_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season4_start_date season4_end_date sensitive primary
       children_and_adolescents s4 2019_2020 sensitive primary season4_start_date season4_end_date
     needs:
@@ -25384,7 +25384,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2020_2021_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s5_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season5_start_date season5_end_date sensitive primary
       children_and_adolescents s5 2020_2021 sensitive primary season5_start_date season5_end_date
     needs:
@@ -25975,7 +25975,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2021_2022_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s6_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season6_start_date season6_end_date sensitive primary
       children_and_adolescents s6 2021_2022 sensitive primary season6_start_date season6_end_date
     needs:
@@ -26566,7 +26566,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2022_2023_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s7_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season7_start_date season7_end_date sensitive primary
       children_and_adolescents s7 2022_2023 sensitive primary season7_start_date season7_end_date
     needs:
@@ -27160,7 +27160,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2016_2017_sensitive_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s1_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season1_start_date season1_end_date sensitive primary infants s1 2016_2017
       sensitive primary season1_start_date season1_end_date
     needs:
@@ -27610,7 +27610,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2017_2018_sensitive_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s2_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season2_start_date season2_end_date sensitive primary infants s2 2017_2018
       sensitive primary season2_start_date season2_end_date
     needs:
@@ -28060,7 +28060,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2018_2019_sensitive_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s3_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season3_start_date season3_end_date sensitive primary infants s3 2018_2019
       sensitive primary season3_start_date season3_end_date
     needs:
@@ -28510,7 +28510,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s4_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season4_start_date season4_end_date sensitive primary infants s4 2019_2020
       sensitive primary season4_start_date season4_end_date
     needs:
@@ -29100,7 +29100,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2020_2021_sensitive_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s5_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season5_start_date season5_end_date sensitive primary infants s5 2020_2021
       sensitive primary season5_start_date season5_end_date
     needs:
@@ -29690,7 +29690,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s6_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season6_start_date season6_end_date sensitive primary infants s6 2021_2022
       sensitive primary season6_start_date season6_end_date
     needs:
@@ -30280,7 +30280,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2022_2023_sensitive_primary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s7_sensitive_primary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season7_start_date season7_end_date sensitive primary infants s7 2022_2023
       sensitive primary season7_start_date season7_end_date
     needs:
@@ -30880,7 +30880,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2016_2017_sensitive_secondary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s1_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season1_start_date season1_end_date sensitive secondary older_adults
       s1 2016_2017 sensitive secondary season1_start_date season1_end_date
     needs:
@@ -31331,7 +31331,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2017_2018_sensitive_secondary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s2_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season2_start_date season2_end_date sensitive secondary older_adults
       s2 2017_2018 sensitive secondary season2_start_date season2_end_date
     needs:
@@ -31782,7 +31782,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2018_2019_sensitive_secondary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s3_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season3_start_date season3_end_date sensitive secondary older_adults
       s3 2018_2019 sensitive secondary season3_start_date season3_end_date
     needs:
@@ -32233,7 +32233,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2019_2020_sensitive_secondary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s4_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season4_start_date season4_end_date sensitive secondary older_adults
       s4 2019_2020 sensitive secondary season4_start_date season4_end_date
     needs:
@@ -32684,7 +32684,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2020_2021_sensitive_secondary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s5_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season5_start_date season5_end_date sensitive secondary older_adults
       s5 2020_2021 sensitive secondary season5_start_date season5_end_date
     needs:
@@ -33135,7 +33135,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2021_2022_sensitive_secondary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s6_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season6_start_date season6_end_date sensitive secondary older_adults
       s6 2021_2022 sensitive secondary season6_start_date season6_end_date
     needs:
@@ -33586,7 +33586,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_older_adults_2022_2023_sensitive_secondary.csv
 
   analyse_dataset_older_adults_further_overall_and_all_cause_full_s7_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       older_adults season7_start_date season7_end_date sensitive secondary older_adults
       s7 2022_2023 sensitive secondary season7_start_date season7_end_date
     needs:
@@ -34042,7 +34042,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2016_2017_sensitive_secondary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s1_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season1_start_date season1_end_date sensitive secondary adults s1 2016_2017
       sensitive secondary season1_start_date season1_end_date
     needs:
@@ -34492,7 +34492,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2017_2018_sensitive_secondary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s2_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season2_start_date season2_end_date sensitive secondary adults s2 2017_2018
       sensitive secondary season2_start_date season2_end_date
     needs:
@@ -34942,7 +34942,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2018_2019_sensitive_secondary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s3_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season3_start_date season3_end_date sensitive secondary adults s3 2018_2019
       sensitive secondary season3_start_date season3_end_date
     needs:
@@ -35392,7 +35392,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2019_2020_sensitive_secondary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s4_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season4_start_date season4_end_date sensitive secondary adults s4 2019_2020
       sensitive secondary season4_start_date season4_end_date
     needs:
@@ -35842,7 +35842,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2020_2021_sensitive_secondary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s5_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season5_start_date season5_end_date sensitive secondary adults s5 2020_2021
       sensitive secondary season5_start_date season5_end_date
     needs:
@@ -36292,7 +36292,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2021_2022_sensitive_secondary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s6_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season6_start_date season6_end_date sensitive secondary adults s6 2021_2022
       sensitive secondary season6_start_date season6_end_date
     needs:
@@ -36742,7 +36742,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_adults_2022_2023_sensitive_secondary.csv
 
   analyse_dataset_adults_further_overall_and_all_cause_full_s7_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       adults season7_start_date season7_end_date sensitive secondary adults s7 2022_2023
       sensitive secondary season7_start_date season7_end_date
     needs:
@@ -37211,7 +37211,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2016_2017_sensitive_secondary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s1_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season1_start_date season1_end_date sensitive secondary
       children_and_adolescents s1 2016_2017 sensitive secondary season1_start_date
       season1_end_date
@@ -37676,7 +37676,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2017_2018_sensitive_secondary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s2_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season2_start_date season2_end_date sensitive secondary
       children_and_adolescents s2 2017_2018 sensitive secondary season2_start_date
       season2_end_date
@@ -38141,7 +38141,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2018_2019_sensitive_secondary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s3_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season3_start_date season3_end_date sensitive secondary
       children_and_adolescents s3 2018_2019 sensitive secondary season3_start_date
       season3_end_date
@@ -38606,7 +38606,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2019_2020_sensitive_secondary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s4_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season4_start_date season4_end_date sensitive secondary
       children_and_adolescents s4 2019_2020 sensitive secondary season4_start_date
       season4_end_date
@@ -39071,7 +39071,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2020_2021_sensitive_secondary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s5_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season5_start_date season5_end_date sensitive secondary
       children_and_adolescents s5 2020_2021 sensitive secondary season5_start_date
       season5_end_date
@@ -39536,7 +39536,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2021_2022_sensitive_secondary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s6_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season6_start_date season6_end_date sensitive secondary
       children_and_adolescents s6 2021_2022 sensitive secondary season6_start_date
       season6_end_date
@@ -40001,7 +40001,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_children_and_adolescents_2022_2023_sensitive_secondary.csv
 
   analyse_dataset_children_and_adolescents_further_overall_and_all_cause_full_s7_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       children_and_adolescents season7_start_date season7_end_date sensitive secondary
       children_and_adolescents s7 2022_2023 sensitive secondary season7_start_date
       season7_end_date
@@ -40458,7 +40458,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2016_2017_sensitive_secondary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s1_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season1_start_date season1_end_date sensitive secondary infants s1 2016_2017
       sensitive secondary season1_start_date season1_end_date
     needs:
@@ -40908,7 +40908,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2017_2018_sensitive_secondary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s2_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season2_start_date season2_end_date sensitive secondary infants s2 2017_2018
       sensitive secondary season2_start_date season2_end_date
     needs:
@@ -41358,7 +41358,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2018_2019_sensitive_secondary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s3_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season3_start_date season3_end_date sensitive secondary infants s3 2018_2019
       sensitive secondary season3_start_date season3_end_date
     needs:
@@ -41808,7 +41808,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2019_2020_sensitive_secondary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s4_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season4_start_date season4_end_date sensitive secondary infants s4 2019_2020
       sensitive secondary season4_start_date season4_end_date
     needs:
@@ -42258,7 +42258,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2020_2021_sensitive_secondary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s5_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season5_start_date season5_end_date sensitive secondary infants s5 2020_2021
       sensitive secondary season5_start_date season5_end_date
     needs:
@@ -42708,7 +42708,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2021_2022_sensitive_secondary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s6_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season6_start_date season6_end_date sensitive secondary infants s6 2021_2022
       sensitive secondary season6_start_date season6_end_date
     needs:
@@ -43158,7 +43158,7 @@ actions:
         csv: output/results/models/further_flu_full_model_outputs_infants_2022_2023_sensitive_secondary.csv
 
   analyse_dataset_infants_further_overall_and_all_cause_full_s7_sensitive_secondary:
-    run: r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R
+    run: r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R
       infants season7_start_date season7_end_date sensitive secondary infants s7 2022_2023
       sensitive secondary season7_start_date season7_end_date
     needs:
@@ -43474,7 +43474,7 @@ actions:
   ## # # # # # # # # # # # # # # # # # # # 
 
   phenotype_sensitivity_older_adults_s1:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season1_start_date season1_end_date older_adults s1 2016_2017 season1_start_date
       season1_end_date
     needs:
@@ -43482,10 +43482,10 @@ actions:
     - process_dataset_older_adults_s1_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_older_adults_2016_2017.csv
+        csv: output/exploratory/phenotype_sensitivity_older_adults_2016_2017.csv
 
   phenotype_sensitivity_older_adults_s2:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season2_start_date season2_end_date older_adults s2 2017_2018 season2_start_date
       season2_end_date
     needs:
@@ -43493,10 +43493,10 @@ actions:
     - process_dataset_older_adults_s2_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_older_adults_2017_2018.csv
+        csv: output/exploratory/phenotype_sensitivity_older_adults_2017_2018.csv
 
   phenotype_sensitivity_older_adults_s3:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season3_start_date season3_end_date older_adults s3 2018_2019 season3_start_date
       season3_end_date
     needs:
@@ -43504,10 +43504,10 @@ actions:
     - process_dataset_older_adults_s3_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_older_adults_2018_2019.csv
+        csv: output/exploratory/phenotype_sensitivity_older_adults_2018_2019.csv
 
   phenotype_sensitivity_older_adults_s4:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season4_start_date season4_end_date older_adults s4 2019_2020 season4_start_date
       season4_end_date
     needs:
@@ -43515,10 +43515,10 @@ actions:
     - process_dataset_older_adults_s4_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_older_adults_2019_2020.csv
+        csv: output/exploratory/phenotype_sensitivity_older_adults_2019_2020.csv
 
   phenotype_sensitivity_older_adults_s5:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season5_start_date season5_end_date older_adults s5 2020_2021 season5_start_date
       season5_end_date
     needs:
@@ -43526,10 +43526,10 @@ actions:
     - process_dataset_older_adults_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_older_adults_2020_2021.csv
+        csv: output/exploratory/phenotype_sensitivity_older_adults_2020_2021.csv
 
   phenotype_sensitivity_older_adults_s6:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season6_start_date season6_end_date older_adults s6 2021_2022 season6_start_date
       season6_end_date
     needs:
@@ -43537,10 +43537,10 @@ actions:
     - process_dataset_older_adults_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_older_adults_2021_2022.csv
+        csv: output/exploratory/phenotype_sensitivity_older_adults_2021_2022.csv
 
   phenotype_sensitivity_older_adults_s7:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season7_start_date season7_end_date older_adults s7 2022_2023 season7_start_date
       season7_end_date
     needs:
@@ -43548,88 +43548,88 @@ actions:
     - process_dataset_older_adults_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_older_adults_2022_2023.csv
+        csv: output/exploratory/phenotype_sensitivity_older_adults_2022_2023.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Adults 
   ## # # # # # # # # # # # # # # # # # # # 
 
   phenotype_sensitivity_adults_s1:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R adults season1_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season1_start_date
       season1_end_date adults s1 2016_2017 season1_start_date season1_end_date
     needs:
     - process_dataset_adults_s1_specific_primary
     - process_dataset_adults_s1_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_adults_2016_2017.csv
+        csv: output/exploratory/phenotype_sensitivity_adults_2016_2017.csv
 
   phenotype_sensitivity_adults_s2:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R adults season2_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season2_start_date
       season2_end_date adults s2 2017_2018 season2_start_date season2_end_date
     needs:
     - process_dataset_adults_s2_specific_primary
     - process_dataset_adults_s2_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_adults_2017_2018.csv
+        csv: output/exploratory/phenotype_sensitivity_adults_2017_2018.csv
 
   phenotype_sensitivity_adults_s3:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R adults season3_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season3_start_date
       season3_end_date adults s3 2018_2019 season3_start_date season3_end_date
     needs:
     - process_dataset_adults_s3_specific_primary
     - process_dataset_adults_s3_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_adults_2018_2019.csv
+        csv: output/exploratory/phenotype_sensitivity_adults_2018_2019.csv
 
   phenotype_sensitivity_adults_s4:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R adults season4_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season4_start_date
       season4_end_date adults s4 2019_2020 season4_start_date season4_end_date
     needs:
     - process_dataset_adults_s4_specific_primary
     - process_dataset_adults_s4_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_adults_2019_2020.csv
+        csv: output/exploratory/phenotype_sensitivity_adults_2019_2020.csv
 
   phenotype_sensitivity_adults_s5:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R adults season5_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season5_start_date
       season5_end_date adults s5 2020_2021 season5_start_date season5_end_date
     needs:
     - process_dataset_adults_s5_specific_primary
     - process_dataset_adults_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_adults_2020_2021.csv
+        csv: output/exploratory/phenotype_sensitivity_adults_2020_2021.csv
 
   phenotype_sensitivity_adults_s6:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R adults season6_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season6_start_date
       season6_end_date adults s6 2021_2022 season6_start_date season6_end_date
     needs:
     - process_dataset_adults_s6_specific_primary
     - process_dataset_adults_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_adults_2021_2022.csv
+        csv: output/exploratory/phenotype_sensitivity_adults_2021_2022.csv
 
   phenotype_sensitivity_adults_s7:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R adults season7_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season7_start_date
       season7_end_date adults s7 2022_2023 season7_start_date season7_end_date
     needs:
     - process_dataset_adults_s7_specific_primary
     - process_dataset_adults_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_adults_2022_2023.csv
+        csv: output/exploratory/phenotype_sensitivity_adults_2022_2023.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Children and Adolescents 
   ## # # # # # # # # # # # # # # # # # # # 
 
   phenotype_sensitivity_children_and_adolescents_s1:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season1_start_date season1_end_date children_and_adolescents s1 2016_2017 season1_start_date
       season1_end_date
     needs:
@@ -43637,10 +43637,10 @@ actions:
     - process_dataset_children_and_adolescents_s1_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_children_and_adolescents_2016_2017.csv
+        csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2016_2017.csv
 
   phenotype_sensitivity_children_and_adolescents_s2:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season2_start_date season2_end_date children_and_adolescents s2 2017_2018 season2_start_date
       season2_end_date
     needs:
@@ -43648,10 +43648,10 @@ actions:
     - process_dataset_children_and_adolescents_s2_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_children_and_adolescents_2017_2018.csv
+        csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2017_2018.csv
 
   phenotype_sensitivity_children_and_adolescents_s3:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season3_start_date season3_end_date children_and_adolescents s3 2018_2019 season3_start_date
       season3_end_date
     needs:
@@ -43659,10 +43659,10 @@ actions:
     - process_dataset_children_and_adolescents_s3_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_children_and_adolescents_2018_2019.csv
+        csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2018_2019.csv
 
   phenotype_sensitivity_children_and_adolescents_s4:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season4_start_date season4_end_date children_and_adolescents s4 2019_2020 season4_start_date
       season4_end_date
     needs:
@@ -43670,10 +43670,10 @@ actions:
     - process_dataset_children_and_adolescents_s4_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_children_and_adolescents_2019_2020.csv
+        csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2019_2020.csv
 
   phenotype_sensitivity_children_and_adolescents_s5:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season5_start_date season5_end_date children_and_adolescents s5 2020_2021 season5_start_date
       season5_end_date
     needs:
@@ -43681,10 +43681,10 @@ actions:
     - process_dataset_children_and_adolescents_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_children_and_adolescents_2020_2021.csv
+        csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2020_2021.csv
 
   phenotype_sensitivity_children_and_adolescents_s6:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season6_start_date season6_end_date children_and_adolescents s6 2021_2022 season6_start_date
       season6_end_date
     needs:
@@ -43692,10 +43692,10 @@ actions:
     - process_dataset_children_and_adolescents_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_children_and_adolescents_2021_2022.csv
+        csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2021_2022.csv
 
   phenotype_sensitivity_children_and_adolescents_s7:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season7_start_date season7_end_date children_and_adolescents s7 2022_2023 season7_start_date
       season7_end_date
     needs:
@@ -43703,81 +43703,81 @@ actions:
     - process_dataset_children_and_adolescents_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_children_and_adolescents_2022_2023.csv
+        csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2022_2023.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Infants 
   ## # # # # # # # # # # # # # # # # # # # 
 
   phenotype_sensitivity_infants_s1:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R infants season1_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season1_start_date
       season1_end_date infants s1 2016_2017 season1_start_date season1_end_date
     needs:
     - process_dataset_infants_s1_specific_primary
     - process_dataset_infants_s1_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_infants_2016_2017.csv
+        csv: output/exploratory/phenotype_sensitivity_infants_2016_2017.csv
 
   phenotype_sensitivity_infants_s2:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R infants season2_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season2_start_date
       season2_end_date infants s2 2017_2018 season2_start_date season2_end_date
     needs:
     - process_dataset_infants_s2_specific_primary
     - process_dataset_infants_s2_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_infants_2017_2018.csv
+        csv: output/exploratory/phenotype_sensitivity_infants_2017_2018.csv
 
   phenotype_sensitivity_infants_s3:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R infants season3_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season3_start_date
       season3_end_date infants s3 2018_2019 season3_start_date season3_end_date
     needs:
     - process_dataset_infants_s3_specific_primary
     - process_dataset_infants_s3_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_infants_2018_2019.csv
+        csv: output/exploratory/phenotype_sensitivity_infants_2018_2019.csv
 
   phenotype_sensitivity_infants_s4:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R infants season4_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season4_start_date
       season4_end_date infants s4 2019_2020 season4_start_date season4_end_date
     needs:
     - process_dataset_infants_s4_specific_primary
     - process_dataset_infants_s4_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_infants_2019_2020.csv
+        csv: output/exploratory/phenotype_sensitivity_infants_2019_2020.csv
 
   phenotype_sensitivity_infants_s5:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R infants season5_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season5_start_date
       season5_end_date infants s5 2020_2021 season5_start_date season5_end_date
     needs:
     - process_dataset_infants_s5_specific_primary
     - process_dataset_infants_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_infants_2020_2021.csv
+        csv: output/exploratory/phenotype_sensitivity_infants_2020_2021.csv
 
   phenotype_sensitivity_infants_s6:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R infants season6_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season6_start_date
       season6_end_date infants s6 2021_2022 season6_start_date season6_end_date
     needs:
     - process_dataset_infants_s6_specific_primary
     - process_dataset_infants_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_infants_2021_2022.csv
+        csv: output/exploratory/phenotype_sensitivity_infants_2021_2022.csv
 
   phenotype_sensitivity_infants_s7:
-    run: r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R infants season7_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season7_start_date
       season7_end_date infants s7 2022_2023 season7_start_date season7_end_date
     needs:
     - process_dataset_infants_s7_specific_primary
     - process_dataset_infants_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/sensitivity/phenotype_sensitivity_infants_2022_2023.csv
+        csv: output/exploratory/phenotype_sensitivity_infants_2022_2023.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Files for release 

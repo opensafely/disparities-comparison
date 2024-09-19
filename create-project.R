@@ -577,7 +577,7 @@ action_specified <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_full_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/further_overall_and_all_cause_specific/overall_and_all_cause_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -762,24 +762,614 @@ action_descriptive <- function(cohort, season, dates,
   
 }
 
-action_sensitivity <- function(cohort, season, dates, season_start_date, 
+action_exploratory <- function(cohort, season, dates, season_start_date, 
                                season_end_date) {
   
   splice(
     
     action(
       name = glue("phenotype_sensitivity_{cohort}_{season}"),
-      run = glue("r:latest analysis/sensitivity_analyses/phenotype_sensitivity.R {cohort} {season_start_date} {season_end_date}"),
+      run = glue("r:latest analysis/exploratory_analyses/phenotype_sensitivity.R {cohort} {season_start_date} {season_end_date}"),
       arguments = c(cohort, season, dates, season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_specific_primary"),
                    glue("process_dataset_{cohort}_{season}_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/sensitivity/phenotype_sensitivity_{cohort}_{dates}.csv")),
+        csv = glue("output/exploratory/phenotype_sensitivity_{cohort}_{dates}.csv")),
+    )
+    
+  )
+
+}
+
+action_sensitivity <- function(cohort, season, dates, season_start_date, 
+                               season_end_date, codelist_type, 
+                               investigation_type_data, investigation_type) {
+  
+  splice(
+    
+    action(
+      name = glue("process_dataset_sensitivity_{cohort}_{season}"),
+      run = glue("r:latest analysis/sensitivity_analyses/data_processing_sens.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type_data} {investigation_type}"),
+      arguments = c(cohort, season, dates, season_start_date, season_end_date, 
+                    codelist_type, investigation_type_data, investigation_type),
+      needs = list(glue("generate_dataset_{cohort}_{season}_specific_primary"),
+                   glue("generate_dataset_{cohort}_{season}_sensitive_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/sensitivity/input_processed_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_rsv_ethnicity_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/rsv_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/rsv_ethnicity_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_flu_ethnicity_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/flu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/flu_ethnicity_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/overall_and_all_cause_ethnicity_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_rsv_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/rsv_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/rsv_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_flu_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/flu_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/flu_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/overall_and_all_cause_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_rsv_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/rsv_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/rsv_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_flu_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/flu_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/flu_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/overall_and_all_cause_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/rsv_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/rsv_ethnicity_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_flu_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/flu_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/flu_ethnicity_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/overall_and_all_cause_ethnicity_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/rsv_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/rsv_ethnicity_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/flu_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/flu_ethnicity_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/overall_and_all_cause_ethnicity_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/rsv_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/rsv_ses_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_flu_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/flu_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/flu_ses_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/overall_and_all_cause_ses_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_rsv_full_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/rsv_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/rsv_full_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_flu_full_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/flu_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/flu_full_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_overall_and_all_cause_full_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/overall_and_all_cause_full_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_rsv_ethnicity_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/further_rsv_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_rsv_ethnicity_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_flu_ethnicity_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/further_flu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_flu_ethnicity_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ethnicity_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_overall_and_all_cause_ethnicity_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_rsv_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/further_rsv_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_rsv_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_flu_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/further_flu_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_flu_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_overall_and_all_cause_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_rsv_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/further_rsv_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_rsv_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_flu_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/further_flu_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_flu_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_overall_and_all_cause_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_rsv_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/further_rsv_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_rsv_ethnicity_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_flu_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/further_flu_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_flu_ethnicity_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_overall_and_all_cause_ethnicity_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_rsv_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/further_rsv_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_rsv_ethnicity_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_flu_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/further_flu_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_flu_ethnicity_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_overall_and_all_cause_ethnicity_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_rsv_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/further_rsv_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_rsv_ses_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_flu_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/further_flu_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_flu_ses_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_overall_and_all_cause_ses_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_rsv_full_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/rsv_specific/further_rsv_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_rsv_full_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_flu_full_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/flu_specific/further_flu_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_flu_full_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_full_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_overall_and_all_cause_full_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    )
+    
+  )
+
+}
+
+action_covid_sensitivity <- function(cohort, season, dates, codelist_type,
+                                     investigation_type, season_start_date, 
+                                     season_end_date) {
+  
+  splice(
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_covid_ethnicity_sensitivity_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/covid_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/covid_ethnicity_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_covid_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/covid_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/covid_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_covid_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/covid_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/covid_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_covid_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/covid_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/covid_ethnicity_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_covid_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/covid_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/covid_ethnicity_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_covid_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/covid_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/covid_ses_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_covid_full_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/covid_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/covid_full_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_covid_ethnicity_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/further_covid_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_covid_ethnicity_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}further__covid_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/further_covid_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_covid_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_covid_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/further_covid_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_covid_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_covid_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/further_covid_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_covid_ethnicity_ses_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_covid_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/further_covid_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_covid_ethnicity_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_covid_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/further_covid_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_covid_ses_hh_comp_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_further_covid_full_{season}_{codelist_type}_sensitivity"),
+      run = glue("r:latest analysis/covid_specific/further_covid_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("process_dataset_sensitivity_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/further_covid_full_model_outputs_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
     )
     
   )
   
-
 }
 
 action_finalise <- function(cohort) {
@@ -1289,9 +1879,424 @@ action_finalise <- function(cohort) {
       moderately_sensitive = lst(
         csv = glue("output/collated/descriptive/{cohort}_phenotype_sensitivity_collated.csv")
       )
+    ),
+    
+    action(
+      name = glue("collate_rsv_model_outputs_tables_{cohort}_sensitivity"),
+      run = glue("r:latest analysis/collation_code/rsv_model_outputs_table_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_rsv_ethnicity_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s7_specific_sensitivity")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/analytic/{cohort}_rsv_model_outputs_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_flu_model_outputs_tables_{cohort}_sensitivity"),
+      run = glue("r:latest analysis/collation_code/flu_model_outputs_table_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_flu_ethnicity_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s7_specific_sensitivity")),
+      moderately_sensitive = lst(
+        glue("output/collated/analytic/{cohort}_flu_model_outputs_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_covid_model_outputs_tables_{cohort}_sensitivity"),
+      run = glue("r:latest analysis/collation_code/covid_model_outputs_table_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_covid_ethnicity_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_hh_comp_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_hh_comp_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_hh_comp_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_hh_comp_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_ses_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_ses_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_ses_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_ses_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_hh_comp_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_hh_comp_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_hh_comp_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_hh_comp_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_hh_comp_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_hh_comp_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_hh_comp_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_hh_comp_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_full_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_full_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_full_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_full_s7_specific_sensitivity")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/analytic/{cohort}_covid_model_outputs_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_overall_and_all_cause_model_outputs_tables_{cohort}_sensitivity"),
+      run = glue("r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s7_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s1_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s2_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s3_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s4_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s5_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s6_specific_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s7_specific_sensitivity")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/analytic/{cohort}_overall_and_all_cause_model_outputs_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_rsv_sensitivity_model_outputs_tables_{cohort}_sensitivity"),
+      run = glue("r:latest analysis/collation_code/rsv_sensitivity_model_outputs_table_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_rsv_ethnicity_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_hh_comp_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_rsv_full_s7_sensitive_sensitivity")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/analytic/{cohort}_rsv_sensitivity_model_outputs_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_flu_sensitivity_model_outputs_tables_{cohort}_sensitivity"),
+      run = glue("r:latest analysis/collation_code/flu_sensitivity_model_outputs_table_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_flu_ethnicity_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_hh_comp_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_ses_hh_comp_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_flu_full_s7_sensitive_sensitivity")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/analytic/{cohort}_flu_sensitivity_model_outputs_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_covid_sensitivity_model_outputs_tables_{cohort}_sensitivity"),
+      run = glue("r:latest analysis/collation_code/covid_sensitivity_model_outputs_table_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_covid_ethnicity_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_hh_comp_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_hh_comp_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_hh_comp_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_hh_comp_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_ses_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_ses_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_ses_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_ses_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_hh_comp_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_hh_comp_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_hh_comp_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_hh_comp_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_hh_comp_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_hh_comp_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_hh_comp_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_ses_hh_comp_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_full_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_full_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_full_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_covid_full_s7_sensitive_sensitivity")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/analytic/{cohort}_covid_sensitivity_model_outputs_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_overall_and_all_cause_sensitivity_model_outputs_tables_{cohort}_sensitivity"),
+      run = glue("r:latest analysis/collation_code/overall_and_all_cause_sensitivity_model_outputs_table_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_s7_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s1_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s2_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s3_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s4_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s5_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s6_sensitive_sensitivity"),
+                   glue("analyse_dataset_{cohort}_overall_and_all_cause_full_s7_sensitive_sensitivity")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/analytic/{cohort}_overall_and_all_cause_sensitivity_model_outputs_collated.csv"))
     )
     
   )
+  
 }
 
 # specify project ----
@@ -1576,43 +2581,125 @@ actions_list <- splice(
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults", "# # # # # # # # # # # # # # # # # # #"),
   
-  action_sensitivity("older_adults", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
-  action_sensitivity("older_adults", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
-  action_sensitivity("older_adults", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
-  action_sensitivity("older_adults", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
-  action_sensitivity("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
-  action_sensitivity("older_adults", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
-  action_sensitivity("older_adults", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
+  action_exploratory("older_adults", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
+  action_exploratory("older_adults", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
+  action_exploratory("older_adults", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
+  action_exploratory("older_adults", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
+  action_exploratory("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_exploratory("older_adults", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
+  action_exploratory("older_adults", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Adults", "# # # # # # # # # # # # # # # # # # #"),
   
-  action_sensitivity("adults", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
-  action_sensitivity("adults", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
-  action_sensitivity("adults", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
-  action_sensitivity("adults", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
-  action_sensitivity("adults", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
-  action_sensitivity("adults", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
-  action_sensitivity("adults", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
+  action_exploratory("adults", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
+  action_exploratory("adults", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
+  action_exploratory("adults", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
+  action_exploratory("adults", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
+  action_exploratory("adults", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_exploratory("adults", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
+  action_exploratory("adults", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Children and Adolescents", "# # # # # # # # # # # # # # # # # # #"),
   
-  action_sensitivity("children_and_adolescents", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
-  action_sensitivity("children_and_adolescents", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
-  action_sensitivity("children_and_adolescents", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
-  action_sensitivity("children_and_adolescents", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
-  action_sensitivity("children_and_adolescents", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
-  action_sensitivity("children_and_adolescents", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
-  action_sensitivity("children_and_adolescents", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
+  action_exploratory("children_and_adolescents", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
+  action_exploratory("children_and_adolescents", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
+  action_exploratory("children_and_adolescents", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
+  action_exploratory("children_and_adolescents", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
+  action_exploratory("children_and_adolescents", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_exploratory("children_and_adolescents", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
+  action_exploratory("children_and_adolescents", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants", "# # # # # # # # # # # # # # # # # # #"),
   
-  action_sensitivity("infants", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
-  action_sensitivity("infants", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
-  action_sensitivity("infants", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
-  action_sensitivity("infants", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
-  action_sensitivity("infants", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
-  action_sensitivity("infants", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
-  action_sensitivity("infants", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
+  action_exploratory("infants", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
+  action_exploratory("infants", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
+  action_exploratory("infants", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
+  action_exploratory("infants", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
+  action_exploratory("infants", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_exploratory("infants", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
+  action_exploratory("infants", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "SENSITIVITY ANALYSES: REDUCED SEASONS", "# # # # # # # # # # # # # # # # # # #"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Specific", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_sensitivity("older_adults", "s1", "2016_2017", "specific", "season1_start_date", "season1_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("older_adults", "s2", "2017_2018", "specific", "season2_start_date", "season2_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("older_adults", "s3", "2018_2019", "specific", "season3_start_date", "season3_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("older_adults", "s4", "2019_2020", "specific", "season4_start_date", "season4_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("older_adults", "s5", "2020_2021", "specific", "season5_start_date", "season5_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("older_adults", "s6", "2021_2022", "specific", "season6_start_date", "season6_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("older_adults", "s7", "2022_2023", "specific", "season7_start_date", "season7_end_date", "specific", "primary", "sensitivity"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Adults, Codelist Type: Specific", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_sensitivity("adults", "s1", "2016_2017", "specific", "season1_start_date", "season1_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("adults", "s2", "2017_2018", "specific", "season2_start_date", "season2_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("adults", "s3", "2018_2019", "specific", "season3_start_date", "season3_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("adults", "s4", "2019_2020", "specific", "season4_start_date", "season4_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("adults", "s5", "2020_2021", "specific", "season5_start_date", "season5_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("adults", "s6", "2021_2022", "specific", "season6_start_date", "season6_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("adults", "s7", "2022_2023", "specific", "season7_start_date", "season7_end_date", "specific", "primary", "sensitivity"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Children and Adolscents, Codelist Type: Specific", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_sensitivity("children_and_adolescents", "s1", "2016_2017", "specific", "season1_start_date", "season1_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("children_and_adolescents", "s2", "2017_2018", "specific", "season2_start_date", "season2_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("children_and_adolescents", "s3", "2018_2019", "specific", "season3_start_date", "season3_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("children_and_adolescents", "s4", "2019_2020", "specific", "season4_start_date", "season4_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("children_and_adolescents", "s5", "2020_2021", "specific", "season5_start_date", "season5_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("children_and_adolescents", "s6", "2021_2022", "specific", "season6_start_date", "season6_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("children_and_adolescents", "s7", "2022_2023", "specific", "season7_start_date", "season7_end_date", "specific", "primary", "sensitivity"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants, Codelist Type: Specific", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_sensitivity("infants", "s1", "2016_2017", "specific", "season1_start_date", "season1_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("infants", "s2", "2017_2018", "specific", "season2_start_date", "season2_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("infants", "s3", "2018_2019", "specific", "season3_start_date", "season3_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("infants", "s4", "2019_2020", "specific", "season4_start_date", "season4_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("infants", "s5", "2020_2021", "specific", "season5_start_date", "season5_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("infants", "s6", "2021_2022", "specific", "season6_start_date", "season6_end_date", "specific", "primary", "sensitivity"),
+  action_sensitivity("infants", "s7", "2022_2023", "specific", "season7_start_date", "season7_end_date", "specific", "primary", "sensitivity"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Sensitive", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_sensitivity("older_adults", "s1", "2016_2017", "sensitive", "season1_start_date", "season1_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("older_adults", "s2", "2017_2018", "sensitive", "season2_start_date", "season2_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("older_adults", "s3", "2018_2019", "sensitive", "season3_start_date", "season3_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("older_adults", "s4", "2019_2020", "sensitive", "season4_start_date", "season4_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("older_adults", "s5", "2020_2021", "sensitive", "season5_start_date", "season5_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("older_adults", "s6", "2021_2022", "sensitive", "season6_start_date", "season6_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("older_adults", "s7", "2022_2023", "sensitive", "season7_start_date", "season7_end_date", "sensitive", "primary", "sensitivity"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Adults, Codelist Type: Sensitive", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_sensitivity("adults", "s1", "2016_2017", "sensitive", "season1_start_date", "season1_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("adults", "s2", "2017_2018", "sensitive", "season2_start_date", "season2_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("adults", "s3", "2018_2019", "sensitive", "season3_start_date", "season3_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("adults", "s4", "2019_2020", "sensitive", "season4_start_date", "season4_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("adults", "s5", "2020_2021", "sensitive", "season5_start_date", "season5_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("adults", "s6", "2021_2022", "sensitive", "season6_start_date", "season6_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("adults", "s7", "2022_2023", "sensitive", "season7_start_date", "season7_end_date", "sensitive", "primary", "sensitivity"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Children and Adolescents, Codelist Type: Sensitive", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_sensitivity("children_and_adolescents", "s1", "2016_2017", "sensitive", "season1_start_date", "season1_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("children_and_adolescents", "s2", "2017_2018", "sensitive", "season2_start_date", "season2_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("children_and_adolescents", "s3", "2018_2019", "sensitive", "season3_start_date", "season3_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("children_and_adolescents", "s4", "2019_2020", "sensitive", "season4_start_date", "season4_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("children_and_adolescents", "s5", "2020_2021", "sensitive", "season5_start_date", "season5_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("children_and_adolescents", "s6", "2021_2022", "sensitive", "season6_start_date", "season6_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("children_and_adolescents", "s7", "2022_2023", "sensitive", "season7_start_date", "season7_end_date", "sensitive", "primary", "sensitivity"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants, Codelist Type: Sensitive", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_sensitivity("infants", "s1", "2016_2017", "sensitive", "season1_start_date", "season1_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("infants", "s2", "2017_2018", "sensitive", "season2_start_date", "season2_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("infants", "s3", "2018_2019", "sensitive", "season3_start_date", "season3_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("infants", "s4", "2019_2020", "sensitive", "season4_start_date", "season4_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("infants", "s5", "2020_2021", "sensitive", "season5_start_date", "season5_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("infants", "s6", "2021_2022", "sensitive", "season6_start_date", "season6_end_date", "sensitive", "primary", "sensitivity"),
+  action_sensitivity("infants", "s7", "2022_2023", "sensitive", "season7_start_date", "season7_end_date", "sensitive", "primary", "sensitivity"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Files for release", "# # # # # # # # # # # # # # # # # # #"),
   
@@ -1620,23 +2707,6 @@ actions_list <- splice(
   action_finalise("adults"),
   action_finalise("children_and_adolescents"),
   action_finalise("infants"),
-  
-  # action(
-  #   name = "release_objects",
-  #   run = "r:latest analysis/release_objects.R",
-  #   needs = list(
-  #     "combine_age75plus_descriptives",
-  #     "combine_age75plus_contrasts",
-  #     "combine_cv_descriptives",
-  #     "combine_cv_contrasts"
-  #   ),
-  #   moderately_sensitive = lst(
-  #     releaselist = "output/files-for-release.txt",
-  #     command = "output/osrelease-command.txt",
-  #     output1 = "output/release-objects/*.csv",
-  #     output2 = "output/release-objects/*/*.csv",
-  #   )
-  # ),
 
   comment("# # # # # # # # # # # # # # # # # # #", "End", "# # # # # # # # # # # # # # # # # # #")
 
@@ -1695,7 +2765,7 @@ names(actions_list) %>% tibble(action=.) %>%
 
 actions_list %>% 
   names() %>% 
-  str_subset("^process_dataset") %>% 
+  str_subset("^process_") %>% 
   tibble(action=.) %>% 
   mutate(
     model = action==""  & lag(action!="", 1, TRUE),
