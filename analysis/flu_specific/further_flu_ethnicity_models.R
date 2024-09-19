@@ -38,6 +38,14 @@ df_input <- read_feather(
 # if (cohort == "infants_subgroup") {
 
 # } else {
+#flu primary by ethnicity
+flu_mild_ethnicity_further <- glm(flu_primary_inf ~ latest_ethnicity_group + 
+                                    age_band + sex + rurality_classification + 
+                                    prior_flu_vaccination + flu_vaccination +
+                                    offset(log(time_flu_secondary)),
+                                  data = df_input, family = poisson)
+flu_mild_ethnicity_further_output <- tidy(flu_mild_ethnicity_further)
+
 #flu secondary by ethnicity
 flu_severe_ethnicity_further <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
                                       age_band + sex + 

@@ -169,13 +169,13 @@ if (study_start_date < covid_season_min) {
 }
 
 #create the model outputs list
-model_outputs_list <- list(all_cause_mortality_hh_comp_output)
+model_outputs_list <- list(all_cause_mortality_hh_comp_further_output)
 
 #adjust the model outputs list based on the conditions
 if (codelist_type == "sensitive") {
-  model_outputs_list <- c(model_outputs_list, list(overall_resp_mild_hh_comp_output,
-                                                   overall_resp_severe_hh_comp_output,
-                                                   overall_resp_mortality_hh_comp_output))
+  model_outputs_list <- c(model_outputs_list, list(overall_resp_mild_hh_comp_further_output,
+                                                   overall_resp_severe_hh_comp_further_output,
+                                                   overall_resp_mortality_hh_comp_further_output))
 }
 
 #bind model outputs together and add a column with the corresponding names

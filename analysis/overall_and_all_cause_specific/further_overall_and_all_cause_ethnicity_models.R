@@ -153,13 +153,13 @@ if (study_start_date < covid_season_min) {
 }
 
 #create the model outputs list
-model_outputs_list <- list(all_cause_mortality_ethnicity_output)
+model_outputs_list <- list(all_cause_mortality_ethnicity_further_output)
 
 #adjust the model outputs list based on the conditions
 if (codelist_type == "sensitive") {
-  model_outputs_list <- c(model_outputs_list, list(overall_resp_mild_ethnicity_output,
-                                                   overall_resp_severe_ethnicity_output,
-                                                   overall_resp_mortality_ethnicity_output))
+  model_outputs_list <- c(model_outputs_list, list(overall_resp_mild_ethnicity_further_output,
+                                                   overall_resp_severe_ethnicity_further_output,
+                                                   overall_resp_mortality_ethnicity_further_output))
 }
 
 
