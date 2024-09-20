@@ -7,7 +7,7 @@ library(broom)
 library(readr)
 
 ## create output directories ----
-fs::dir_create(here("analysis"))
+fs::dir_create(here("analysis", "rsv_specific"))
 
 #define study start date and study end date
 source(here("analysis", "design", "design.R"))
