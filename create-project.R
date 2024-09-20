@@ -172,7 +172,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        csv = glue("output/results/models/*"))
+        csv = glue("output/results/models/*.csv"))
     ),
     
     action(
@@ -182,7 +182,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        csv = glue("output/results/models/*"))
+        csv = glue("output/results/models/*.csv"))
     ),
     
     action(
@@ -192,7 +192,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        csv = glue("output/results/models/*"))
+        csv = glue("output/results/models/*.csv"))
     ),
     
     action(
@@ -202,7 +202,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        csv = glue("output/results/models/*"))
+        csv = glue("output/results/models/*.csv"))
     ),
     
     action(
@@ -212,7 +212,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        csv = glue("output/results/models/*"))
+        csv = glue("output/results/models/*.csv"))
     ),
     
     action(
@@ -222,7 +222,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        csv = glue("output/results/models/*"))
+        csv = glue("output/results/models/*.csv"))
       
     )
   
