@@ -1233,9 +1233,9 @@ action_sensitivity <- function(cohort, season, dates, season_start_date,
 
 }
 
-action_covid_sensitivity <- function(cohort, season, dates, codelist_type,
-                                     investigation_type, season_start_date, 
-                                     season_end_date) {
+action_covid_sensitivity <- function(cohort, season, dates, season_start_date, 
+                                     season_end_date, codelist_type,
+                                     investigation_type) {
   
   splice(
     
