@@ -176,7 +176,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
     ),
     
     action(
-      name = glue("analyses_dataset_{cohort}_rsv_further_{season}_{codelist_type}_{investigation_type}"),
+      name = glue("analyse_dataset_{cohort}_rsv_further_{season}_{codelist_type}_{investigation_type}"),
       run = glue("r:latest analysis/rsv_specific/further_rsv_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
@@ -196,7 +196,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
     ),
     
     action(
-      name = glue("analyses_dataset_{cohort}_flu_further_{season}_{codelist_type}_{investigation_type}"),
+      name = glue("analyse_dataset_{cohort}_flu_further_{season}_{codelist_type}_{investigation_type}"),
       run = glue("r:latest analysis/flu_specific/further_flu_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
@@ -216,7 +216,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
     ),
     
     action(
-      name = glue("analyses_dataset_{cohort}_overall_and_all_cause_further_{season}_{codelist_type}_{investigation_type}"),
+      name = glue("analyse_dataset_{cohort}_overall_and_all_cause_further_{season}_{codelist_type}_{investigation_type}"),
       run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
@@ -905,7 +905,7 @@ action_exploratory <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("phenotype_sensitivity_{cohort}_{season}"),
-      run = glue("r:latest analysis/exploratory_analyses/phenotype_sensitivity.R {cohort} {season_start_date} {season_end_date}"),
+      run = glue("r:latest analysis/exploratory_analyse/phenotype_sensitivity.R {cohort} {season_start_date} {season_end_date}"),
       arguments = c(cohort, season, dates, season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_specific_primary"),
                    glue("process_dataset_{cohort}_{season}_sensitive_primary")),
@@ -925,7 +925,7 @@ action_sensitivity <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("process_dataset_sensitivity_{cohort}_{season}_{codelist_type}"),
-      run = glue("r:latest analysis/sensitivity_analyses/data_processing_sens.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type_data} {investigation_type}"),
+      run = glue("r:latest analysis/sensitivity_analyse/data_processing_sens.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type_data} {investigation_type}"),
       arguments = c(cohort, season, dates, season_start_date, season_end_date, 
                     codelist_type, investigation_type_data, investigation_type),
       needs = list(glue("generate_dataset_{cohort}_{season}_{codelist_type}_primary")),
@@ -1016,7 +1016,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("process_dataset_sensitivity_{cohort}_{season}_{codelist_type}"),
-      run = glue("r:latest analysis/sensitivity_analyses/data_processing_sens.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type_data} {investigation_type}"),
+      run = glue("r:latest analysis/sensitivity_analyse/data_processing_sens.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type_data} {investigation_type}"),
       arguments = c(cohort, season, dates, season_start_date, season_end_date, 
                     codelist_type, investigation_type_data, investigation_type),
       needs = list(glue("generate_dataset_{cohort}_{season}_{codelist_type}_primary")),
@@ -2944,7 +2944,7 @@ actions_list <- splice(
   action_specified_infants("infants", "s7", "2022_2023", "sensitive", "primary", "season7_start_date", "season7_end_date"),
   action_covid_infants("infants", "s7", "2022_2023", "sensitive", "primary", "season7_start_date", "season7_end_date"),
   
-  comment("# # # # # # # # # # # # # # # # # # #", "SECONDARY ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
+  comment("# # # # # # # # # # # # # # # # # # #", "SECONDARY analyse", "# # # # # # # # # # # # # # # # # # #"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Sensitive, Investigation Type: Secondary", "# # # # # # # # # # # # # # # # # # #"),
 
@@ -2986,7 +2986,7 @@ actions_list <- splice(
   action_specified("infants", "s6", "2021_2022", "sensitive", "secondary", "season6_start_date", "season6_end_date"),
   action_specified("infants", "s7", "2022_2023", "sensitive", "secondary", "season7_start_date", "season7_end_date"),
   
-  comment("# # # # # # # # # # # # # # # # # # #", "DESCRIPTIVE ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
+  comment("# # # # # # # # # # # # # # # # # # #", "DESCRIPTIVE analyse", "# # # # # # # # # # # # # # # # # # #"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults", "# # # # # # # # # # # # # # # # # # #"),
   
@@ -3028,7 +3028,7 @@ actions_list <- splice(
   action_descriptive("infants", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
   action_descriptive("infants", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
   
-  comment("# # # # # # # # # # # # # # # # # # #", "EXPLORATORY ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
+  comment("# # # # # # # # # # # # # # # # # # #", "EXPLORATORY analyse", "# # # # # # # # # # # # # # # # # # #"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults", "# # # # # # # # # # # # # # # # # # #"),
   
@@ -3070,7 +3070,7 @@ actions_list <- splice(
   action_exploratory("infants", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
   action_exploratory("infants", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
   
-  comment("# # # # # # # # # # # # # # # # # # #", "SENSITIVITY ANALYSES: REDUCED SEASONS", "# # # # # # # # # # # # # # # # # # #"),
+  comment("# # # # # # # # # # # # # # # # # # #", "SENSITIVITY analyse: REDUCED SEASONS", "# # # # # # # # # # # # # # # # # # #"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Specific", "# # # # # # # # # # # # # # # # # # #"),
 
