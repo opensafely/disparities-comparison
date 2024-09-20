@@ -7,7 +7,7 @@ library(broom)
 library(readr)
 
 ## create output directories ----
-fs::dir_create(here("analysis"))
+fs::dir_create(here("analysis", "covid_specific"))
 
 #define study start date and study end date
 source(here("analysis", "design", "design.R"))
@@ -111,13 +111,15 @@ fs::dir_create(here("output", "results", "models"))
 #save model output 
 if (length(args) == 0) {
   model_outputs %>%
-    write_csv(file = paste0(here::here("output", "results", "models"), "/", 
+    write_csv(file = paste0(here::here("output", "results", "models",
+                            paste0("covid_", investigation_type)), "/", 
                             "covid_ethnicity_ses_model_outputs_", cohort, "_", 
                             year(study_start_date), "_", year(study_end_date),
                             "_", codelist_type, "_", investigation_type, ".csv"))
 }  else{
   model_outputs %>%
-    write_csv(path = paste0(here::here("output", "results", "models"), "/", 
+    write_csv(path = paste0(here::here("output", "results", "models",
+                            paste0("covid_", investigation_type)), "/", 
                             "covid_ethnicity_ses_model_outputs_", cohort, "_", 
                             year(study_start_date), "_", year(study_end_date), 
                             "_", codelist_type, "_", investigation_type, ".csv"))
