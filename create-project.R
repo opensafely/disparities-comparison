@@ -1670,7 +1670,7 @@ action_finalise <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_rsv_sensitivity_model_outputs_tables_{cohort}"),
+      name = glue("collate_rsv_sensitive_model_outputs_tables_{cohort}"),
       run = glue("r:latest analysis/collation_code/rsv_sensitivity_model_outputs_table_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_rsv_ethnicity_s1_sensitive_primary"),
@@ -1727,7 +1727,7 @@ action_finalise <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_flu_sensitivity_model_outputs_tables_{cohort}"),
+      name = glue("collate_flu_sensitive_model_outputs_tables_{cohort}"),
       run = glue("r:latest analysis/collation_code/flu_sensitivity_model_outputs_table_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_flu_ethnicity_s1_sensitive_primary"),
@@ -1820,7 +1820,7 @@ action_finalise <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_overall_and_all_cause_sensitivity_model_outputs_tables_{cohort}"),
+      name = glue("collate_overall_and_all_cause_sensitive_model_outputs_tables_{cohort}"),
       run = glue("r:latest analysis/collation_code/overall_and_all_cause_sensitivity_model_outputs_table_collation.R {cohort}"),
       arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_s1_sensitive_primary"),
