@@ -2573,80 +2573,112 @@ actions_list <- splice(
   action_sensitivity("older_adults", "s2", "2017_2018", "season2_start_date", "season2_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity("older_adults", "s3", "2018_2019", "season3_start_date", "season3_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity("older_adults", "s4", "2019_2020", "season4_start_date", "season4_end_date", "specific", "primary", "sensitivity"),
+  action_covid_sensitivity("older_adults", "s4", "2019_2020", "season4_start_date", "season4_end_date", "specific", "sensitivity"),
   action_sensitivity("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "specific", "primary", "sensitivity"),
+  action_covid_sensitivity("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "specific", "sensitivity"),
   action_sensitivity("older_adults", "s6", "2021_2022", "season6_start_date", "season6_end_date", "specific", "primary", "sensitivity"),
+  action_covid_sensitivity("older_adults", "s6", "2021_2022", "season6_start_date", "season6_end_date", "specific", "sensitivity"),
   action_sensitivity("older_adults", "s7", "2022_2023", "season7_start_date", "season7_end_date", "specific", "primary", "sensitivity"),
-
+  action_covid_sensitivity("older_adults", "s7", "2022_2023", "season7_start_date", "season7_end_date", "specific", "sensitivity"),
+  
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Adults, Codelist Type: Specific", "# # # # # # # # # # # # # # # # # # #"),
 
   action_sensitivity("adults", "s1", "2016_2017", "season1_start_date", "season1_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity("adults", "s2", "2017_2018", "season2_start_date", "season2_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity("adults", "s3", "2018_2019", "season3_start_date", "season3_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity("adults", "s4", "2019_2020", "season4_start_date", "season4_end_date", "specific", "primary", "sensitivity"),
+  action_covid_sensitivity("adults", "s4", "2019_2020", "season4_start_date", "season4_end_date", "specific", "sensitivity"),
   action_sensitivity("adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "specific", "primary", "sensitivity"),
+  action_covid_sensitivity("adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "specific", "sensitivity"),
   action_sensitivity("adults", "s6", "2021_2022", "season6_start_date", "season6_end_date", "specific", "primary", "sensitivity"),
+  action_covid_sensitivity("adults", "s6", "2021_2022", "season6_start_date", "season6_end_date", "specific", "sensitivity"),
   action_sensitivity("adults", "s7", "2022_2023", "season7_start_date", "season7_end_date", "specific", "primary", "sensitivity"),
-
+  action_covid_sensitivity("adults", "s7", "2022_2023", "season7_start_date", "season7_end_date", "specific", "sensitivity"),
+  
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Children and Adolscents, Codelist Type: Specific", "# # # # # # # # # # # # # # # # # # #"),
 
   action_sensitivity("children_and_adolescents", "s1", "2016_2017", "season1_start_date", "season1_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity("children_and_adolescents", "s2", "2017_2018", "season2_start_date", "season2_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity("children_and_adolescents", "s3", "2018_2019", "season3_start_date", "season3_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity("children_and_adolescents", "s4", "2019_2020", "season4_start_date", "season4_end_date", "specific", "primary", "sensitivity"),
+  action_covid_sensitivity("children_and_adolescents", "s4", "2019_2020", "season4_start_date", "season4_end_date", "specific", "sensitivity"),
   action_sensitivity("children_and_adolescents", "s5", "2020_2021", "season5_start_date", "season5_end_date", "specific", "primary", "sensitivity"),
+  action_covid_sensitivity("children_and_adolescents", "s5", "2020_2021", "season5_start_date", "season5_end_date", "specific", "sensitivity"),
   action_sensitivity("children_and_adolescents", "s6", "2021_2022", "season6_start_date", "season6_end_date", "specific", "primary", "sensitivity"),
+  action_covid_sensitivity("children_and_adolescents", "s6", "2021_2022", "season6_start_date", "season6_end_date", "specific", "sensitivity"),
   action_sensitivity("children_and_adolescents", "s7", "2022_2023", "season7_start_date", "season7_end_date", "specific", "primary", "sensitivity"),
-
+  action_covid_sensitivity("children_and_adolescents", "s7", "2022_2023", "season7_start_date", "season7_end_date", "specific", "sensitivity"),
+  
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants, Codelist Type: Specific", "# # # # # # # # # # # # # # # # # # #"),
 
   action_sensitivity("infants", "s1", "2016_2017", "season1_start_date", "season1_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity("infants", "s2", "2017_2018", "season2_start_date", "season2_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity("infants", "s3", "2018_2019", "season3_start_date", "season3_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity("infants", "s4", "2019_2020", "season4_start_date", "season4_end_date", "specific", "primary", "sensitivity"),
+  action_covid_sensitivity("infants", "s4", "2019_2020", "season4_start_date", "season4_end_date", "specific", "sensitivity"),
   action_sensitivity("infants", "s5", "2020_2021", "season5_start_date", "season5_end_date", "specific", "primary", "sensitivity"),
+  action_covid_sensitivity("infants", "s5", "2020_2021", "season5_start_date", "season5_end_date", "specific", "sensitivity"),
   action_sensitivity("infants", "s6", "2021_2022", "season6_start_date", "season6_end_date", "specific", "primary", "sensitivity"),
+  action_covid_sensitivity("infants", "s6", "2021_2022", "season6_start_date", "season6_end_date", "specific", "sensitivity"),
   action_sensitivity("infants", "s7", "2022_2023", "season7_start_date", "season7_end_date", "specific", "primary", "sensitivity"),
-
+  action_covid_sensitivity("infants", "s7", "2022_2023", "season7_start_date", "season7_end_date", "specific", "sensitivity"),
+  
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Sensitive", "# # # # # # # # # # # # # # # # # # #"),
 
   action_sensitivity("older_adults", "s1", "2016_2017", "season1_start_date", "season1_end_date", "sensitive", "primary", "sensitivity"),
   action_sensitivity("older_adults", "s2", "2017_2018", "season2_start_date", "season2_end_date", "sensitive", "primary", "sensitivity"),
   action_sensitivity("older_adults", "s3", "2018_2019", "season3_start_date", "season3_end_date", "sensitive", "primary", "sensitivity"),
   action_sensitivity("older_adults", "s4", "2019_2020", "season4_start_date", "season4_end_date", "sensitive", "primary", "sensitivity"),
+  action_covid_sensitivity("older_adults", "s4", "2019_2020", "season4_start_date", "season4_end_date", "sensitive", "sensitivity"),
   action_sensitivity("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "sensitive", "primary", "sensitivity"),
+  action_covid_sensitivity("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "sensitive", "sensitivity"),
   action_sensitivity("older_adults", "s6", "2021_2022", "season6_start_date", "season6_end_date", "sensitive", "primary", "sensitivity"),
+  action_covid_sensitivity("older_adults", "s6", "2021_2022", "season6_start_date", "season6_end_date", "sensitive", "sensitivity"),
   action_sensitivity("older_adults", "s7", "2022_2023", "season7_start_date", "season7_end_date", "sensitive", "primary", "sensitivity"),
-
+  action_covid_sensitivity("older_adults", "s7", "2022_2023", "season7_start_date", "season7_end_date", "sensitive", "sensitivity"),
+  
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Adults, Codelist Type: Sensitive", "# # # # # # # # # # # # # # # # # # #"),
 
   action_sensitivity("adults", "s1", "2016_2017", "season1_start_date", "season1_end_date", "sensitive", "primary", "sensitivity"),
   action_sensitivity("adults", "s2", "2017_2018", "season2_start_date", "season2_end_date", "sensitive", "primary", "sensitivity"),
   action_sensitivity("adults", "s3", "2018_2019", "season3_start_date", "season3_end_date", "sensitive", "primary", "sensitivity"),
   action_sensitivity("adults", "s4", "2019_2020", "season4_start_date", "season4_end_date", "sensitive", "primary", "sensitivity"),
+  action_covid_sensitivity("adults", "s4", "2019_2020", "season4_start_date", "season4_end_date", "sensitive", "sensitivity"),
   action_sensitivity("adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "sensitive", "primary", "sensitivity"),
+  action_covid_sensitivity("adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "sensitive", "sensitivity"),
   action_sensitivity("adults", "s6", "2021_2022", "season6_start_date", "season6_end_date", "sensitive", "primary", "sensitivity"),
+  action_covid_sensitivity("adults", "s6", "2021_2022", "season6_start_date", "season6_end_date", "sensitive", "sensitivity"),
   action_sensitivity("adults", "s7", "2022_2023", "season7_start_date", "season7_end_date", "sensitive", "primary", "sensitivity"),
-
+  action_covid_sensitivity("adults", "s7", "2022_2023", "season7_start_date", "season7_end_date", "sensitive", "sensitivity"),
+  
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Children and Adolescents, Codelist Type: Sensitive", "# # # # # # # # # # # # # # # # # # #"),
 
   action_sensitivity("children_and_adolescents", "s1", "2016_2017", "season1_start_date", "season1_end_date", "sensitive", "primary", "sensitivity"),
   action_sensitivity("children_and_adolescents", "s2", "2017_2018", "season2_start_date", "season2_end_date", "sensitive", "primary", "sensitivity"),
   action_sensitivity("children_and_adolescents", "s3", "2018_2019", "season3_start_date", "season3_end_date", "sensitive", "primary", "sensitivity"),
   action_sensitivity("children_and_adolescents", "s4", "2019_2020", "season4_start_date", "season4_end_date", "sensitive", "primary", "sensitivity"),
+  action_covid_sensitivity("children_and_adolescents", "s4", "2019_2020", "season4_start_date", "season4_end_date", "sensitive", "sensitivity"),
   action_sensitivity("children_and_adolescents", "s5", "2020_2021", "season5_start_date", "season5_end_date", "sensitive", "primary", "sensitivity"),
+  action_covid_sensitivity("children_and_adolescents", "s5", "2020_2021", "season5_start_date", "season5_end_date", "sensitive", "sensitivity"),
   action_sensitivity("children_and_adolescents", "s6", "2021_2022", "season6_start_date", "season6_end_date", "sensitive", "primary", "sensitivity"),
+  action_covid_sensitivity("children_and_adolescents", "s6", "2021_2022", "season6_start_date", "season6_end_date", "sensitive", "sensitivity"),
   action_sensitivity("children_and_adolescents", "s7", "2022_2023", "season7_start_date", "season7_end_date", "sensitive", "primary", "sensitivity"),
-
+  action_covid_sensitivity("children_and_adolescents", "s7", "2022_2023", "season7_start_date", "season7_end_date", "sensitive", "sensitivity"),
+  
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants, Codelist Type: Sensitive", "# # # # # # # # # # # # # # # # # # #"),
 
   action_sensitivity("infants", "s1", "2016_2017", "season1_start_date", "season1_end_date", "sensitive", "primary", "sensitivity"),
   action_sensitivity("infants", "s2", "2017_2018", "season2_start_date", "season2_end_date", "sensitive", "primary", "sensitivity"),
   action_sensitivity("infants", "s3", "2018_2019", "season3_start_date", "season3_end_date", "sensitive", "primary", "sensitivity"),
   action_sensitivity("infants", "s4", "2019_2020", "season4_start_date", "season4_end_date", "sensitive", "primary", "sensitivity"),
+  action_covid_sensitivity("infants", "s4", "2019_2020", "season4_start_date", "season4_end_date", "sensitive", "sensitivity"),
   action_sensitivity("infants", "s5", "2020_2021", "season5_start_date", "season5_end_date", "sensitive", "primary", "sensitivity"),
+  action_covid_sensitivity("infants", "s5", "2020_2021", "season5_start_date", "season5_end_date", "sensitive", "sensitivity"),
   action_sensitivity("infants", "s6", "2021_2022", "season6_start_date", "season6_end_date", "sensitive", "primary", "sensitivity"),
+  action_covid_sensitivity("infants", "s6", "2021_2022", "season6_start_date", "season6_end_date", "sensitive", "sensitivity"),
   action_sensitivity("infants", "s7", "2022_2023", "season7_start_date", "season7_end_date", "sensitive", "primary", "sensitivity"),
-
+  action_covid_sensitivity("infants", "s7", "2022_2023", "season7_start_date", "season7_end_date", "sensitive", "sensitivity"),
+  
   comment("# # # # # # # # # # # # # # # # # # #", "Files for release", "# # # # # # # # # # # # # # # # # # #"),
   
   action_finalise("older_adults"),
