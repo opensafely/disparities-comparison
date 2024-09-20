@@ -26868,13 +26868,14 @@ actions:
     run: r:latest analysis/collation_code/covid_model_outputs_table_collation.R older_adults
       older_adults
     needs:
-    - analyse_dataset_older_adults_covid_s1
-    - analyse_dataset_older_adults_covid_s2
-    - analyse_dataset_older_adults_covid_s3
-    - analyse_dataset_older_adults_covid_s4
-    - analyse_dataset_older_adults_covid_s5
-    - analyse_dataset_older_adults_covid_s6
-    - analyse_dataset_older_adults_covid_s7
+    - analyse_dataset_older_adults_covid_s4_specific_primary
+    - analyse_dataset_older_adults_covid_s5_specific_primary
+    - analyse_dataset_older_adults_covid_s6_specific_primary
+    - analyse_dataset_older_adults_covid_s7_specific_primary
+    - analyse_dataset_older_adults_covid_s4_sensitive_primary
+    - analyse_dataset_older_adults_covid_s5_sensitive_primary
+    - analyse_dataset_older_adults_covid_s6_sensitive_primary
+    - analyse_dataset_older_adults_covid_s7_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/older_adults_covid_model_outputs_collated.csv
@@ -26883,13 +26884,20 @@ actions:
     run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
       older_adults older_adults
     needs:
-    - analyse_dataset_older_adults_overall_and_all_cause_s1
-    - analyse_dataset_older_adults_overall_and_all_cause_s2
-    - analyse_dataset_older_adults_overall_and_all_cause_s3
-    - analyse_dataset_older_adults_overall_and_all_cause_s4
-    - analyse_dataset_older_adults_overall_and_all_cause_s5
-    - analyse_dataset_older_adults_overall_and_all_cause_s6
-    - analyse_dataset_older_adults_overall_and_all_cause_s7
+    - analyse_dataset_older_adults_overall_and_all_cause_s1_specific_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s2_specific_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s3_specific_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s4_specific_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s5_specific_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s6_specific_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s7_specific_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s1_sensitive_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s2_sensitive_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s3_sensitive_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s4_sensitive_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s5_sensitive_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s6_sensitive_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s7_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/older_adults_overall_and_all_cause_model_outputs_collated.csv
@@ -27097,13 +27105,14 @@ actions:
     run: r:latest analysis/collation_code/covid_model_outputs_table_collation.R adults
       adults
     needs:
-    - analyse_dataset_adults_covid_s1
-    - analyse_dataset_adults_covid_s2
-    - analyse_dataset_adults_covid_s3
-    - analyse_dataset_adults_covid_s4
-    - analyse_dataset_adults_covid_s5
-    - analyse_dataset_adults_covid_s6
-    - analyse_dataset_adults_covid_s7
+    - analyse_dataset_adults_covid_s4_specific_primary
+    - analyse_dataset_adults_covid_s5_specific_primary
+    - analyse_dataset_adults_covid_s6_specific_primary
+    - analyse_dataset_adults_covid_s7_specific_primary
+    - analyse_dataset_adults_covid_s4_sensitive_primary
+    - analyse_dataset_adults_covid_s5_sensitive_primary
+    - analyse_dataset_adults_covid_s6_sensitive_primary
+    - analyse_dataset_adults_covid_s7_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/adults_covid_model_outputs_collated.csv
@@ -27112,13 +27121,20 @@ actions:
     run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
       adults adults
     needs:
-    - analyse_dataset_adults_overall_and_all_cause_s1
-    - analyse_dataset_adults_overall_and_all_cause_s2
-    - analyse_dataset_adults_overall_and_all_cause_s3
-    - analyse_dataset_adults_overall_and_all_cause_s4
-    - analyse_dataset_adults_overall_and_all_cause_s5
-    - analyse_dataset_adults_overall_and_all_cause_s6
-    - analyse_dataset_adults_overall_and_all_cause_s7
+    - analyse_dataset_adults_overall_and_all_cause_s1_specific_primary
+    - analyse_dataset_adults_overall_and_all_cause_s2_specific_primary
+    - analyse_dataset_adults_overall_and_all_cause_s3_specific_primary
+    - analyse_dataset_adults_overall_and_all_cause_s4_specific_primary
+    - analyse_dataset_adults_overall_and_all_cause_s5_specific_primary
+    - analyse_dataset_adults_overall_and_all_cause_s6_specific_primary
+    - analyse_dataset_adults_overall_and_all_cause_s7_specific_primary
+    - analyse_dataset_adults_overall_and_all_cause_s1_sensitive_primary
+    - analyse_dataset_adults_overall_and_all_cause_s2_sensitive_primary
+    - analyse_dataset_adults_overall_and_all_cause_s3_sensitive_primary
+    - analyse_dataset_adults_overall_and_all_cause_s4_sensitive_primary
+    - analyse_dataset_adults_overall_and_all_cause_s5_sensitive_primary
+    - analyse_dataset_adults_overall_and_all_cause_s6_sensitive_primary
+    - analyse_dataset_adults_overall_and_all_cause_s7_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/adults_overall_and_all_cause_model_outputs_collated.csv
@@ -27328,13 +27344,14 @@ actions:
     run: r:latest analysis/collation_code/covid_model_outputs_table_collation.R children_and_adolescents
       children_and_adolescents
     needs:
-    - analyse_dataset_children_and_adolescents_covid_s1
-    - analyse_dataset_children_and_adolescents_covid_s2
-    - analyse_dataset_children_and_adolescents_covid_s3
-    - analyse_dataset_children_and_adolescents_covid_s4
-    - analyse_dataset_children_and_adolescents_covid_s5
-    - analyse_dataset_children_and_adolescents_covid_s6
-    - analyse_dataset_children_and_adolescents_covid_s7
+    - analyse_dataset_children_and_adolescents_covid_s4_specific_primary
+    - analyse_dataset_children_and_adolescents_covid_s5_specific_primary
+    - analyse_dataset_children_and_adolescents_covid_s6_specific_primary
+    - analyse_dataset_children_and_adolescents_covid_s7_specific_primary
+    - analyse_dataset_children_and_adolescents_covid_s4_sensitive_primary
+    - analyse_dataset_children_and_adolescents_covid_s5_sensitive_primary
+    - analyse_dataset_children_and_adolescents_covid_s6_sensitive_primary
+    - analyse_dataset_children_and_adolescents_covid_s7_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/children_and_adolescents_covid_model_outputs_collated.csv
@@ -27343,13 +27360,20 @@ actions:
     run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
       children_and_adolescents children_and_adolescents
     needs:
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s1
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s2
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s3
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s4
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s5
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s6
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s7
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s1_specific_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s2_specific_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s3_specific_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s4_specific_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s5_specific_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s6_specific_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s7_specific_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s1_sensitive_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s2_sensitive_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s3_sensitive_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s4_sensitive_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s5_sensitive_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s6_sensitive_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s7_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/children_and_adolescents_overall_and_all_cause_model_outputs_collated.csv
