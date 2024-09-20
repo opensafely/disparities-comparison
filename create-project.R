@@ -1240,7 +1240,7 @@ action_covid_sensitivity <- function(cohort, season, dates, codelist_type,
   splice(
     
     action(
-      name = glue("analyse_dataset_{cohort}_covid_ethnicity_sensitivity_{season}_{codelist_type}_sensitivity"),
+      name = glue("analyse_dataset_{cohort}_covid_ethnicity_{season}_{codelist_type}_sensitivity"),
       run = glue("r:latest analysis/covid_specific/covid_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
