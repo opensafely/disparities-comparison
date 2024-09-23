@@ -7,7 +7,7 @@ library(lubridate)
 library(magrittr)
 
 ## create output directories ----
-fs::dir_create(here("analysis"))
+fs::dir_create(here("analysis", "sensitivity_analyses"))
 
 #define study start date and study end date
 source(here("analysis", "design", "design.R"))
