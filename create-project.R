@@ -167,7 +167,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/rsv_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -177,7 +177,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_further_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -187,7 +187,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/flu_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -197,7 +197,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_further_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/further_flu_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -207,7 +207,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -217,7 +217,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_further_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -275,7 +275,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_ethnicity_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/rsv_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -285,7 +285,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_ethnicity_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/flu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -295,7 +295,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -305,7 +305,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/rsv_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -315,7 +315,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/flu_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -325,7 +325,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -335,7 +335,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/rsv_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -345,7 +345,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/flu_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -355,7 +355,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -365,7 +365,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/rsv_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -375,7 +375,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_ethnicity_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/flu_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -385,7 +385,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -395,7 +395,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/rsv_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -405,7 +405,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/flu_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -415,7 +415,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -425,7 +425,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/rsv_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -435,7 +435,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_ses_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/flu_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -445,7 +445,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -455,7 +455,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_full_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/rsv_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -465,7 +465,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_full_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/flu_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -475,7 +475,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_full_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -485,7 +485,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_ethnicity_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -495,7 +495,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_ethnicity_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/further_flu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -505,7 +505,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ethnicity_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -515,7 +515,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -525,7 +525,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/further_flu_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -535,7 +535,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -545,7 +545,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -555,7 +555,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/further_flu_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -565,7 +565,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -575,7 +575,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_ethnicity_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -585,7 +585,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_ethnicity_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/further_flu_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -595,7 +595,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ethnicity_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -605,7 +605,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_ethnicity_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -615,7 +615,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_ethnicity_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/further_flu_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -625,7 +625,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ethnicity_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -635,7 +635,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_ses_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -645,7 +645,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_ses_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/further_flu_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -655,7 +655,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ses_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -665,7 +665,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_full_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -675,7 +675,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_full_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/flu_specific/further_flu_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -685,7 +685,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_full_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -705,7 +705,7 @@ action_covid <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/covid_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -715,7 +715,7 @@ action_covid <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_further_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/further_covid_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -734,7 +734,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_ethnicity_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/covid_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -744,7 +744,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/covid_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -754,7 +754,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/covid_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -764,7 +764,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_ethnicity_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/covid_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -774,7 +774,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_ethnicity_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/covid_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -784,7 +784,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_ses_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/covid_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -794,7 +794,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_full_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/covid_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -804,7 +804,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_covid_ethnicity_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/further_covid_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -814,7 +814,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}further__covid_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/further_covid_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -824,7 +824,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_covid_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/further_covid_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -834,7 +834,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_covid_ethnicity_ses_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/further_covid_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -844,7 +844,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_covid_ethnicity_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/further_covid_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -854,7 +854,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_covid_ses_hh_comp_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/further_covid_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -864,7 +864,7 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_covid_full_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/covid_specific/further_covid_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -946,7 +946,7 @@ action_sensitivity <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/rsv_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -956,7 +956,7 @@ action_sensitivity <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_further_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -966,7 +966,7 @@ action_sensitivity <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/flu_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -976,7 +976,7 @@ action_sensitivity <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_further_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/further_flu_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -986,7 +986,7 @@ action_sensitivity <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -996,7 +996,7 @@ action_sensitivity <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_further_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1037,7 +1037,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_ethnicity_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/rsv_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1047,7 +1047,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_ethnicity_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/flu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1057,7 +1057,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1067,7 +1067,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/rsv_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1077,7 +1077,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/flu_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1087,7 +1087,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1097,7 +1097,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/rsv_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1107,7 +1107,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/flu_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1117,7 +1117,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1127,7 +1127,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/rsv_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1137,7 +1137,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/flu_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1147,7 +1147,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1157,7 +1157,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/rsv_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1167,7 +1167,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/flu_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1177,7 +1177,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1187,7 +1187,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/rsv_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1197,7 +1197,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/flu_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1207,7 +1207,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1217,7 +1217,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_rsv_full_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/rsv_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/rsv_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1227,7 +1227,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_full_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/flu_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/flu_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1237,7 +1237,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_overall_and_all_cause_full_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/overall_and_all_cause_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1247,7 +1247,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_ethnicity_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1257,7 +1257,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_ethnicity_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/further_flu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1267,7 +1267,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ethnicity_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1277,7 +1277,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1287,7 +1287,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/further_flu_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1297,7 +1297,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1307,7 +1307,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1317,7 +1317,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/further_flu_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1327,7 +1327,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1337,7 +1337,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1347,7 +1347,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/further_flu_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1357,7 +1357,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1367,7 +1367,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1377,7 +1377,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/further_flu_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1387,7 +1387,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1397,7 +1397,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1407,7 +1407,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/further_flu_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1417,7 +1417,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1427,7 +1427,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_rsv_full_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/rsv_specific/further_rsv_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_rsv/further_rsv_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1437,7 +1437,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_flu_full_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/flu_specific/further_flu_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1447,7 +1447,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_overall_and_all_cause_full_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/overall_and_all_cause_specific/further_overall_and_all_cause_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_overall_and_all_cause/further_overall_and_all_cause_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1467,7 +1467,7 @@ action_covid_sensitivity <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/covid_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1477,7 +1477,7 @@ action_covid_sensitivity <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_further_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/further_covid_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1497,7 +1497,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_ethnicity_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/covid_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1507,7 +1507,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/covid_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1517,7 +1517,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/covid_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1527,7 +1527,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/covid_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1537,7 +1537,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/covid_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1547,7 +1547,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/covid_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1557,7 +1557,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_covid_full_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/covid_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1567,7 +1567,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_covid_ethnicity_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/further_covid_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1577,7 +1577,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}further__covid_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/further_covid_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1587,7 +1587,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_covid_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/further_covid_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1597,7 +1597,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_covid_ethnicity_ses_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/further_covid_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1607,7 +1607,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_covid_ethnicity_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/further_covid_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1617,7 +1617,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_covid_ses_hh_comp_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/further_covid_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1627,7 +1627,7 @@ action_covid_sensitivity_infants <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_further_covid_full_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/covid_specific/further_covid_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/further_covid_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
@@ -1715,6 +1715,36 @@ action_finalise <- function(cohort) {
                    glue("describe_dataset_{cohort}_s7_sensitive_secondary")),
       moderately_sensitive = lst(
         csv = glue("output/collated/descriptive/{cohort}_rates_sensitive_secondary_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_rates_tables_specific_sensitivity_{cohort}"),
+      run = glue("r:latest analysis/collation_code/rates_table_specific_sensitivity_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("describe_dataset_{cohort}_s1_specific_sensitivity"),
+                   glue("describe_dataset_{cohort}_s2_specific_sensitivity"),
+                   glue("describe_dataset_{cohort}_s3_specific_sensitivity"),
+                   glue("describe_dataset_{cohort}_s4_specific_sensitivity"),
+                   glue("describe_dataset_{cohort}_s5_specific_sensitivity"),
+                   glue("describe_dataset_{cohort}_s6_specific_sensitivity"),
+                   glue("describe_dataset_{cohort}_s7_specific_sensitivity")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_rates_specific_sensitivity_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_rates_tables_sensitive_sensitivity_{cohort}"),
+      run = glue("r:latest analysis/collation_code/rates_table_sensitive_sensitivity_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("describe_dataset_{cohort}_s1_sensitive_sensitivity"),
+                   glue("describe_dataset_{cohort}_s2_sensitive_sensitivity"),
+                   glue("describe_dataset_{cohort}_s3_sensitive_sensitivity"),
+                   glue("describe_dataset_{cohort}_s4_sensitive_sensitivity"),
+                   glue("describe_dataset_{cohort}_s5_sensitive_sensitivity"),
+                   glue("describe_dataset_{cohort}_s6_sensitive_sensitivity"),
+                   glue("describe_dataset_{cohort}_s7_sensitive_sensitivity")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_rates_sensitive_sensitivity_collated.csv"))
     ),
     
     action(

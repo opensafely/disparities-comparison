@@ -13,8 +13,8 @@ fs::dir_create(here("analysis"))
 source(here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- as.Date("2022-09-01")
-  study_end_date <- as.Date("2023-08-31")
+  study_start_date <- as.Date("2019-09-01")
+  study_end_date <- as.Date("2020-08-31")
   cohort <- "adults"
   codelist_type <- "specific"
   investigation_type <- "primary"
@@ -227,6 +227,18 @@ df_input <- df_input %>%
                                          "Three Other Generations"))
   ) %>% arrange(composition_category)
 
+#set covid date to missing if existing date occurs before March 1st 2020
+if (study_start_date >= covid_season_min) {
+  df_input <- df_input %>%
+    mutate(
+      covid_primary_date = if_else(covid_primary_date < as.Date("2020-03-01"), NA, covid_primary_date),
+      covid_primary_second_date = if_else(covid_primary_date < as.Date("2020-03-01"), NA, covid_primary_second_date),
+      covid_secondary_date = if_else(covid_secondary_date < as.Date("2020-03-01"), NA, covid_secondary_date),
+      covid_secondary_second_date = if_else(covid_secondary_date < as.Date("2020-03-01"), NA, covid_secondary_second_date),
+      covid_mortality_date = if_else(covid_mortality_date < as.Date("2020-03-01"), NA, covid_mortality_date)
+    )
+}
+
 #infer outcomes from event dates 
 df_input <- df_input %>%
   mutate(
@@ -307,6 +319,7 @@ if (codelist_type == "sensitive") {
 df_input <- df_input %>%
   mutate(
     #infer presence of all cause mortality
+    all_cause_mortality_date = death_date,
     all_cause_mortality = if_else(
       !is.na(all_cause_mortality_date), TRUE, FALSE)
   )

@@ -143,7 +143,7 @@ sim_list = lst(
   rsv_primary_day = bn_node(
     ~ if_else(rsv_primary == TRUE, 
               as.integer(runif(n = ..n, index_day, index_day + 365)), 
-              NA_real_)
+              NA_integer_)
   ),
   
   #rsv primary care - second episode
@@ -157,7 +157,7 @@ sim_list = lst(
   rsv_primary_second_day = bn_node(
     ~ if_else(rsv_primary_second == TRUE, 
               as.integer(runif(n = ..n, rsv_primary_day + 14, index_day + 365)), 
-              NA_real_)
+              NA_integer_)
   ),
   
   #rsv secondary care
@@ -169,35 +169,35 @@ sim_list = lst(
   rsv_secondary_day = bn_node(
     ~ if_else(rsv_secondary == TRUE, 
               as.integer(runif(n = ..n, index_day, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #rsv secondary length of stay
   rsv_los = bn_node(
     ~ if_else(rsv_secondary == TRUE,
               as.integer(rpois(n = ..n, lambda = 45)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #rsv secondary care - second episode
   rsv_secondary_second = bn_node(
     ~ if_else(rsv_secondary == TRUE,
               rbernoulli(n = ..n, p = 0.01), 
-              NA_real_)
+              NA_integer_)
   ),
   
   #date
   rsv_secondary_second_day = bn_node(
     ~ if_else(rsv_secondary_second == TRUE, 
               as.integer(runif(n = ..n, rsv_secondary_day + 14, index_day + 365)), 
-              NA_real_)
+              NA_integer_)
   ),
   
   #rsv secondary length of stay - second episode
   rsv_los_second = bn_node(
     ~ if_else(rsv_secondary_second == TRUE,
               as.integer(rpois(n = ..n, lambda = 45)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #flu primary care
@@ -209,7 +209,7 @@ sim_list = lst(
   flu_primary_day = bn_node(
     ~ if_else(flu_primary == TRUE,
               as.integer(runif(n = ..n, index_day, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #flu primary care - second episode
@@ -223,7 +223,7 @@ sim_list = lst(
   flu_primary_second_day = bn_node(
     ~ if_else(flu_primary_second == TRUE,
               as.integer(runif(n = ..n, flu_primary_day + 14, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #flu secondary care
@@ -235,14 +235,14 @@ sim_list = lst(
   flu_secondary_day = bn_node(
     ~ if_else(flu_secondary == TRUE,
               as.integer(runif(n = ..n, index_day, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #flu secondary length of stay
   flu_los = bn_node(
     ~ if_else(flu_secondary == TRUE,
               as.integer(rpois(n = ..n, lambda = 45)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #flu secondary care - second episode
@@ -256,14 +256,14 @@ sim_list = lst(
   flu_secondary_second_day = bn_node(
     ~ if_else(flu_secondary_second == TRUE,
               as.integer(runif(n = ..n, flu_secondary_day + 14, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #flu secondary length of stay - second episode
   flu_los_second = bn_node(
     ~ if_else(flu_secondary_second == TRUE,
               as.integer(rpois(n = ..n, lambda = 45)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #covid primary care
@@ -275,7 +275,7 @@ sim_list = lst(
   covid_primary_day = bn_node(
     ~ if_else(covid_primary == TRUE,
               as.integer(runif(n = ..n, index_day, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #covid primary care - second episode
@@ -289,7 +289,7 @@ sim_list = lst(
   covid_primary_second_day = bn_node(
     ~ if_else(covid_primary_second == TRUE,
               as.integer(runif(n = ..n, covid_primary_day + 14, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #covid secondary care
@@ -301,14 +301,14 @@ sim_list = lst(
   covid_secondary_day = bn_node(
     ~ if_else(covid_secondary == TRUE,
               as.integer(runif(n = ..n, index_day, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #covid secondary length of stay
   covid_los = bn_node(
     ~ if_else(covid_secondary == TRUE,
               as.integer(rpois(n = ..n, lambda = 45)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #covid secondary care - second episode
@@ -322,14 +322,14 @@ sim_list = lst(
   covid_secondary_second_day = bn_node(
     ~ if_else(covid_secondary_second == TRUE,
               as.integer(runif(n = ..n, covid_secondary_day + 14, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #covid secondary length of stay - second episode
   covid_los_second = bn_node(
     ~ if_else(covid_secondary_second == TRUE,
               as.integer(rpois(n = ..n, lambda = 45)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #unspecified respiratory infection primary care 
@@ -342,7 +342,7 @@ sim_list = lst(
   overall_resp_primary_day = bn_node(
     ~ if_else(overall_resp_primary == TRUE,
               as.integer(runif(n = ..n, index_day, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #unspecified respiratory infection primary care - second episode
@@ -356,7 +356,7 @@ sim_list = lst(
   overall_resp_primary_second_day = bn_node(
     ~ if_else(overall_resp_primary_second == TRUE,
               as.integer(runif(n = ..n, overall_resp_primary_day + 14, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #unspecified respiratory infection secondary care 
@@ -369,14 +369,14 @@ sim_list = lst(
   overall_resp_secondary_day = bn_node(
     ~ if_else(overall_resp_secondary == TRUE,
               as.integer(runif(n = ..n, index_day, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #unspecified respiratory infection secondary length of stay
   overall_resp_los = bn_node(
     ~ if_else(overall_resp_secondary == TRUE,
               as.integer(rpois(n = ..n, lambda = 45)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #unspecified respiratory infection secondary care - second episode
@@ -390,14 +390,14 @@ sim_list = lst(
   overall_resp_secondary_second_day = bn_node(
     ~ if_else(overall_resp_secondary_second == TRUE,
               as.integer(runif(n = ..n, overall_resp_secondary_day + 14, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #unspecified respiratory infection secondary length of stay - second episode
   overall_resp_los_second = bn_node(
     ~ if_else(overall_resp_secondary_second == TRUE,
               as.integer(rpois(n = ..n, lambda = 45)),
-              NA_real_)
+              NA_integer_)
   ),
   
   ##mortality outcomes
@@ -411,7 +411,7 @@ sim_list = lst(
   rsv_mortality_day = bn_node(
     ~ if_else(rsv_mortality == TRUE,
               as.integer(runif(n = ..n, index_day, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #flu mortality
@@ -423,7 +423,7 @@ sim_list = lst(
   flu_mortality_day = bn_node(
     ~ if_else(flu_mortality == TRUE,
               as.integer(runif(n = ..n, index_day, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #covid mortality
@@ -435,7 +435,7 @@ sim_list = lst(
   covid_mortality_day = bn_node(
     ~ if_else(covid_mortality == TRUE,
               as.integer(runif(n = ..n, index_day, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #unspecified respiratory infection secondary care
@@ -449,7 +449,7 @@ sim_list = lst(
   overall_resp_mortality_day = bn_node(
     ~ if_else(overall_resp_mortality == TRUE,
               as.integer(runif(n = ..n, index_day, index_day + 365)),
-              NA_real_)
+              NA_integer_)
   ),
   
   #all cause mortality
@@ -459,7 +459,7 @@ sim_list = lst(
   
   #date
   all_cause_mortality_day = bn_node(
-    ~ if_else(death_day <= index_day + 365, death_day, NA_real_)
+    ~ if_else(death_day <= index_day + 365, death_day, NA_integer_)
   ),
   
   ##exclusion criteria
