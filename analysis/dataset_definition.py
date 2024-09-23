@@ -1853,14 +1853,14 @@ if codelist_type == "sensitive" :
       #get discharge date for second episode
       overall_resp_secondary_discharge_second = (case(
         when(~overall_resp_exclusion_secondary_second).then(case(
-        when(dataset.overall_resp_secondary_date_second == dataset
-        .rsv_secondary_date_second).then(rsv_secondary_discharge_second), 
-        when(dataset.overall_resp_secondary_date_second == dataset
-        .flu_secondary_date_second).then(flu_secondary_discharge_second),
-        when(dataset.overall_resp_secondary_date_second == dataset
-        .covid_secondary_date_second).then(covid_secondary_discharge_second),
-        when(dataset.overall_resp_secondary_date_second == 
-        overall_resp_secondary_sens_date_second)
+        when(dataset.overall_resp_secondary_second_date == dataset
+        .rsv_secondary_second_date).then(rsv_secondary_discharge_second), 
+        when(dataset.overall_resp_secondary_second_date == dataset
+        .flu_secondary_second_date).then(flu_secondary_discharge_second),
+        when(dataset.overall_resp_secondary_second_date == dataset
+        .covid_secondary_second_date).then(covid_secondary_discharge_second),
+        when(dataset.overall_resp_secondary_second_date == 
+        overall_resp_secondary_sens_second_date)
         .then(apcs.sort_by(apcs.admission_date).where(
         (hospitalisation_diagnosis_matches(codelists.
         respiratory_virus_secondary_codelist).exists_for_patient())
@@ -1869,7 +1869,7 @@ if codelist_type == "sensitive" :
         |(hospitalisation_diagnosis_matches(codelists
         .asthma_exacerbation_secondary_codelist).exists_for_patient()))
         .where(apcs.discharge_date.is_on_or_between(dataset.
-        overall_resp_secondary_date_second, study_end_date))
+        overall_resp_secondary_second_date, study_end_date))
         .first_for_patient().discharge_date))))
       )
       
@@ -1954,12 +1954,12 @@ if codelist_type == "sensitive" :
       #get discharge date for second episode
       overall_resp_secondary_discharge_second = (case(
         when(~overall_resp_exclusion_secondary_second).then(case(
-        when(dataset.overall_resp_secondary_date_second == dataset
-        .rsv_secondary_date_second).then(rsv_secondary_discharge_second), 
-        when(dataset.overall_resp_secondary_date_second == dataset
-        .flu_secondary_date_second).then(flu_secondary_discharge_second),
-        when(dataset.overall_resp_secondary_date_second == 
-        overall_resp_secondary_sens_date_second)
+        when(dataset.overall_resp_secondary_second_date == dataset
+        .rsv_secondary_second_date).then(rsv_secondary_discharge_second), 
+        when(dataset.overall_resp_secondary_second_date == dataset
+        .flu_secondary_second_date).then(flu_secondary_discharge_second),
+        when(dataset.overall_resp_secondary_second_date == 
+        overall_resp_secondary_sens_second_date)
         .then(apcs.sort_by(apcs.admission_date).where(
         (hospitalisation_diagnosis_matches(codelists.
         respiratory_virus_secondary_codelist).exists_for_patient())
@@ -1968,7 +1968,7 @@ if codelist_type == "sensitive" :
         |(hospitalisation_diagnosis_matches(codelists
         .asthma_exacerbation_secondary_codelist).exists_for_patient()))
         .where(apcs.discharge_date.is_on_or_between(dataset.
-        overall_resp_secondary_date_second, study_end_date))
+        overall_resp_secondary_second_date, study_end_date))
         .first_for_patient().discharge_date))))
       )
       
@@ -2069,19 +2069,19 @@ if codelist_type == "sensitive" :
       #get discharge date for second episode
       overall_resp_secondary_discharge_second = (case(
         when(~overall_resp_exclusion_secondary_second).then(case(
-        when(dataset.overall_resp_secondary_date_second == dataset
-        .rsv_secondary_date_second).then(rsv_secondary_discharge_second), 
-        when(dataset.overall_resp_secondary_date_second == dataset
-        .flu_secondary_date_second).then(flu_secondary_discharge_second),
-        when(dataset.overall_resp_secondary_date_second == dataset
-        .covid_secondary_date_second).then(covid_secondary_discharge_second),
-        when(dataset.overall_resp_secondary_date_second == 
-        overall_resp_secondary_sens_date_second).then(
+        when(dataset.overall_resp_secondary_second_date == dataset
+        .rsv_secondary_second_date).then(rsv_secondary_discharge_second), 
+        when(dataset.overall_resp_secondary_second_date == dataset
+        .flu_secondary_second_date).then(flu_secondary_discharge_second),
+        when(dataset.overall_resp_secondary_second_date == dataset
+        .covid_secondary_second_date).then(covid_secondary_discharge_second),
+        when(dataset.overall_resp_secondary_second_date == 
+        overall_resp_secondary_sens_second_date).then(
         apcs.sort_by(apcs.admission_date).where(   
         hospitalisation_diagnosis_matches(codelists.
         respiratory_virus_secondary_codelist).exists_for_patient())
         .where(apcs.discharge_date.is_on_or_between(dataset
-        .overall_resp_secondary_date_second, study_end_date)
+        .overall_resp_secondary_second_date, study_end_date)
         .first_for_patient().discharge_date)))))
       )
       
@@ -2155,17 +2155,17 @@ if codelist_type == "sensitive" :
       #get discharge date for second episode
       overall_resp_secondary_discharge_second = (case(
         when(~overall_resp_exclusion_secondary_second).then(case(
-        when(dataset.overall_resp_secondary_date_second == dataset
-        .rsv_secondary_date_second).then(rsv_secondary_discharge_second), 
-        when(dataset.overall_resp_secondary_date_second == dataset
-        .flu_secondary_date_second).then(flu_secondary_discharge_second),
-        when(dataset.overall_resp_secondary_date_second == 
-        overall_resp_secondary_sens_date_second).then(
+        when(dataset.overall_resp_secondary_second_date == dataset
+        .rsv_secondary_second_date).then(rsv_secondary_discharge_second), 
+        when(dataset.overall_resp_secondary_second_date == dataset
+        .flu_secondary_second_date).then(flu_secondary_discharge_second),
+        when(dataset.overall_resp_secondary_second_date == 
+        overall_resp_secondary_sens_second_date).then(
         apcs.sort_by(apcs.admission_date).where(   
         hospitalisation_diagnosis_matches(codelists.
         respiratory_virus_secondary_codelist).exists_for_patient())
         .where(apcs.discharge_date.is_on_or_between(dataset
-        .overall_resp_secondary_date_second, study_end_date)
+        .overall_resp_secondary_second_date, study_end_date)
         .first_for_patient().discharge_date)))))
       )
       
