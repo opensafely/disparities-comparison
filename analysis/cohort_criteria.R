@@ -25,17 +25,17 @@ patients_df <- read_csv(
 patients_df <- patients_df %>%
   mutate(
     has_imd = ifelse(is.na(patients_df$imd_rounded), F, T),
-    is_female_or_male = ifelse(patients_df$sex == "female" | patients_df$sex == "male", T, F)
+    is_female_or_male = if_else(patients_df$sex == "female" | patients_df$sex == "male", T, F)
   ) 
 
 if (cohort == "infants" | cohort == "infants_subgroup") {
-  is_appropriate_age = ifelse(patients_df$age >= 0 & patients_df$age <= 23, T, F)
+  is_appropriate_age = if_else(patients_df$age >= 0 & patients_df$age <= 23, T, F)
 } else if (cohort == "children_and_adolescents") {
-  is_appropriate_age = ifelse(patients_df$age >= 2 & patients_df$age <= 17, T, F)
+  is_appropriate_age = if_else(patients_df$age >= 2 & patients_df$age <= 17, T, F)
 } else if (cohort == "adults") {
-  is_appropriate_age = ifelse(patients_df$age >= 18 & patients_df$age <= 64, T, F)
+  is_appropriate_age = if_else(patients_df$age >= 18 & patients_df$age <= 64, T, F)
 } else {
-  is_appropriate_age = ifelse(patients_df$age >= 65, T, F)
+  is_appropriate_age = if_else(patients_df$age >= 65, T, F)
 }
   
 patients_df <- patients_df %>%
