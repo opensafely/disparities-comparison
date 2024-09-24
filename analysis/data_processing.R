@@ -92,13 +92,13 @@ df_input <- df_input %>%
     )
 }
 
-df_input$age_band <- factor(df_input$age_band)
+df_input$age_band <- as.factor(df_input$age_band)
 
 #data manipulation
 df_input <- df_input %>%
   mutate(
     #assign ethnicity group
-    latest_ethnicity_group = factor(case_when(
+    latest_ethnicity_group = as.factor(case_when(
       latest_ethnicity_code == "1" ~ "White",
       latest_ethnicity_code == "2" ~ "Mixed",
       latest_ethnicity_code == "3" ~ "Asian or Asian British",
@@ -106,7 +106,7 @@ df_input <- df_input %>%
       latest_ethnicity_code == "5" ~ "Other Ethnic Groups",
       TRUE ~ "Unknown")),
     #calculate IMD quintile
-    imd_quintile = factor(case_when(
+    imd_quintile = as.factor(case_when(
       imd_rounded >= 0 & imd_rounded < as.integer(32800 * 1 / 5) ~ "1 (most deprived)",
       imd_rounded < as.integer(32800 * 2 / 5) ~ "2",
       imd_rounded < as.integer(32800 * 3 / 5) ~ "3",
@@ -114,7 +114,7 @@ df_input <- df_input %>%
       imd_rounded < as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
       TRUE ~ NA_character_)),
     #format sex
-    sex = factor(case_when(
+    sex = as.factor(case_when(
       sex == "female" ~ "Female",
       sex == "male" ~ "Male",
       sex == "intersex" ~ "Intersex",
@@ -128,8 +128,8 @@ logical_cols <- which(sapply(df_input, is.logical) & !grepl("primary|secondary|m
 #apply mutation to convert logical columns to factors
 df_input <- df_input %>%
   mutate(across(
-    .cols = logical_cols, 
-    .fns = ~factor(case_when(
+    .cols = all_of(logical_cols), 
+    .fns = ~as.factor(case_when(
       . == FALSE ~ "No",
       . == TRUE ~ "Yes",
       TRUE ~ NA_character_
@@ -148,13 +148,13 @@ df_input <- df_input %>%
                            "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
                            "7" = "5", "8" = "5", .missing = "Unknown"),
     #define household size categories
-    household_size_cat = factor(case_when(
+    household_size_cat = as.factor(case_when(
       household_size >= 1 & household_size <= 2 ~ "1",
       household_size >= 3 & household_size <= 5 ~ "2",
       household_size >= 6 ~ "3",
       TRUE ~ "Unknown")),
     #assign rurality classification
-    rurality_classification = factor(case_when(
+    rurality_classification = as.factor(case_when(
       rurality_code == "1" ~ "Urban Major Conurbation",
       rurality_code == "2" ~ "Urban Minor Conurbation",
       rurality_code == "3" ~ "Urban City and Town",
@@ -170,7 +170,7 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
     #assign flu vaccination status
     flu_vaccination_immunity_date = flu_vaccination_date + days(10),
     #current flu vaccination status including a lag time
-    flu_vaccination = factor(if_else(
+    flu_vaccination = as.factor(if_else(
       is.na(flu_vaccination_immunity_date), "No", "Yes"
     ))
   )
@@ -180,7 +180,7 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
 if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
   df_input <- df_input %>%
     mutate(
-      time_since_last_covid_vaccination = factor(case_when(
+      time_since_last_covid_vaccination = as.factor(case_when(
       time_length(difftime(study_start_date, last_covid_vaccination_date, 
                              units = "days"), "months") >= 0 &
         time_length(difftime(study_start_date, last_covid_vaccination_date,
@@ -199,7 +199,7 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
     mutate(
       covid_vaccination_immunity_date = covid_vaccination_date + days(10),
       #current covid vaccination status including a lag time
-      covid_vaccination = factor(if_else(
+      covid_vaccination = as.factor(if_else(
         is.na(covid_vaccination_immunity_date), "No", "Yes"
       ))
     )
