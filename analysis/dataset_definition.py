@@ -2028,8 +2028,8 @@ if codelist_type == "sensitive" :
         hospitalisation_diagnosis_matches(codelists.
         respiratory_virus_secondary_codelist).exists_for_patient())
         .where(apcs.discharge_date.is_on_or_between(dataset
-        .overall_resp_secondary_date, study_end_date)
-        .first_for_patient().discharge_date)))))
+        .overall_resp_secondary_date, study_end_date))
+        .first_for_patient().discharge_date))))
       )
       
       #extract length of stay for first episode, in hours
@@ -2114,8 +2114,8 @@ if codelist_type == "sensitive" :
         hospitalisation_diagnosis_matches(codelists.
         respiratory_virus_secondary_codelist).exists_for_patient())
         .where(apcs.discharge_date.is_on_or_between(dataset
-        .overall_resp_secondary_date, study_end_date)
-        .first_for_patient().discharge_date)))))
+        .overall_resp_secondary_date, study_end_date))
+        .first_for_patient().discharge_date))))
       )
       
       #extract length of stay for first episode, in hours
@@ -2165,8 +2165,8 @@ if codelist_type == "sensitive" :
         hospitalisation_diagnosis_matches(codelists.
         respiratory_virus_secondary_codelist).exists_for_patient())
         .where(apcs.discharge_date.is_on_or_between(dataset
-        .overall_resp_secondary_second_date, study_end_date)
-        .first_for_patient().discharge_date)))))
+        .overall_resp_secondary_second_date, study_end_date))
+        .first_for_patient().discharge_date))))
       )
       
       #extract length of stay for second episode, in hours
