@@ -2862,6 +2862,8 @@ actions_list <- splice(
   action_household("s6", "2021_2022", "season6_start_date", "season6_end_date"),
   action_household("s7", "2022_2023", "season7_start_date", "season7_end_date"),
   
+  comment("# # # # # # # # # # # # # # # # # # #", "PRIMARY ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
+  
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Specific, Investigation Type: Primary", "# # # # # # # # # # # # # # # # # # #"),
 
   action_specified("older_adults", "s1", "2016_2017", "specific", "primary", "season1_start_date", "season1_end_date"),
@@ -2976,49 +2978,65 @@ actions_list <- splice(
   action_specified_infants("infants", "s7", "2022_2023", "sensitive", "primary", "season7_start_date", "season7_end_date"),
   action_covid_infants("infants", "s7", "2022_2023", "sensitive", "primary", "season7_start_date", "season7_end_date"),
   
-  comment("# # # # # # # # # # # # # # # # # # #", "SECONDARY analyse", "# # # # # # # # # # # # # # # # # # #"),
+  comment("# # # # # # # # # # # # # # # # # # #", "SECONDARY ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
 
-  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Sensitive, Investigation Type: Secondary", "# # # # # # # # # # # # # # # # # # #"),
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Specific, Investigation Type: Secondary", "# # # # # # # # # # # # # # # # # # #"),
 
-  action_specified("older_adults", "s1", "2016_2017", "sensitive", "secondary", "season1_start_date", "season1_end_date"),
-  action_specified("older_adults", "s2", "2017_2018", "sensitive", "secondary", "season2_start_date", "season2_end_date"),
-  action_specified("older_adults", "s3", "2018_2019", "sensitive", "secondary", "season3_start_date", "season3_end_date"),
-  action_specified("older_adults", "s4", "2019_2020", "sensitive", "secondary", "season4_start_date", "season4_end_date"),
-  action_specified("older_adults", "s5", "2020_2021", "sensitive", "secondary", "season5_start_date", "season5_end_date"),
-  action_specified("older_adults", "s6", "2021_2022", "sensitive", "secondary", "season6_start_date", "season6_end_date"),
-  action_specified("older_adults", "s7", "2022_2023", "sensitive", "secondary", "season7_start_date", "season7_end_date"),
-
-  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Adults, Codelist Type: Sensitive, Investigation Type: Secondary", "# # # # # # # # # # # # # # # # # # #"),
-
-  action_specified("adults", "s1", "2016_2017", "sensitive", "secondary", "season1_start_date", "season1_end_date"),
-  action_specified("adults", "s2", "2017_2018", "sensitive", "secondary", "season2_start_date", "season2_end_date"),
-  action_specified("adults", "s3", "2018_2019", "sensitive", "secondary", "season3_start_date", "season3_end_date"),
-  action_specified("adults", "s4", "2019_2020", "sensitive", "secondary", "season4_start_date", "season4_end_date"),
-  action_specified("adults", "s5", "2020_2021", "sensitive", "secondary", "season5_start_date", "season5_end_date"),
-  action_specified("adults", "s6", "2021_2022", "sensitive", "secondary", "season6_start_date", "season6_end_date"),
-  action_specified("adults", "s7", "2022_2023", "sensitive", "secondary", "season7_start_date", "season7_end_date"),
-
-  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Children and Adolescents, Codelist Type: Sensitive, Investigation Type: Secondary", "# # # # # # # # # # # # # # # # # # #"),
-
-  action_specified("children_and_adolescents", "s1", "2016_2017", "sensitive", "secondary", "season1_start_date", "season1_end_date"),
-  action_specified("children_and_adolescents", "s2", "2017_2018", "sensitive", "secondary", "season2_start_date", "season2_end_date"),
-  action_specified("children_and_adolescents", "s3", "2018_2019", "sensitive", "secondary", "season3_start_date", "season3_end_date"),
-  action_specified("children_and_adolescents", "s4", "2019_2020", "sensitive", "secondary", "season4_start_date", "season4_end_date"),
-  action_specified("children_and_adolescents", "s5", "2020_2021", "sensitive", "secondary", "season5_start_date", "season5_end_date"),
-  action_specified("children_and_adolescents", "s6", "2021_2022", "sensitive", "secondary", "season6_start_date", "season6_end_date"),
-  action_specified("children_and_adolescents", "s7", "2022_2023", "sensitive", "secondary", "season7_start_date", "season7_end_date"),
-
-  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants, Codelist Type: Sensitive, Investigation Type: Secondary", "# # # # # # # # # # # # # # # # # # #"),
-
-  action_specified("infants", "s1", "2016_2017", "sensitive", "secondary", "season1_start_date", "season1_end_date"),
-  action_specified("infants", "s2", "2017_2018", "sensitive", "secondary", "season2_start_date", "season2_end_date"),
-  action_specified("infants", "s3", "2018_2019", "sensitive", "secondary", "season3_start_date", "season3_end_date"),
-  action_specified("infants", "s4", "2019_2020", "sensitive", "secondary", "season4_start_date", "season4_end_date"),
-  action_specified("infants", "s5", "2020_2021", "sensitive", "secondary", "season5_start_date", "season5_end_date"),
-  action_specified("infants", "s6", "2021_2022", "sensitive", "secondary", "season6_start_date", "season6_end_date"),
-  action_specified("infants", "s7", "2022_2023", "sensitive", "secondary", "season7_start_date", "season7_end_date"),
+  action_specified("older_adults", "s1", "2016_2017", "specific", "secondary", "season1_start_date", "season1_end_date"),
+  action_specified("older_adults", "s2", "2017_2018", "specific", "secondary", "season2_start_date", "season2_end_date"),
+  action_specified("older_adults", "s3", "2018_2019", "specific", "secondary", "season3_start_date", "season3_end_date"),
+  action_specified("older_adults", "s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
+  action_covid("older_adults", "s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
+  action_specified("older_adults", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
+  action_covid("older_adults", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
+  action_specified("older_adults", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
+  action_covid("older_adults", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
+  action_specified("older_adults", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
+  action_covid("older_adults", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
   
-  comment("# # # # # # # # # # # # # # # # # # #", "DESCRIPTIVE analyse", "# # # # # # # # # # # # # # # # # # #"),
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Adults, Codelist Type: Specific, Investigation Type: Secondary", "# # # # # # # # # # # # # # # # # # #"),
+
+  action_specified("adults", "s1", "2016_2017", "specific", "secondary", "season1_start_date", "season1_end_date"),
+  action_specified("adults", "s2", "2017_2018", "specific", "secondary", "season2_start_date", "season2_end_date"),
+  action_specified("adults", "s3", "2018_2019", "specific", "secondary", "season3_start_date", "season3_end_date"),
+  action_specified("adults", "s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
+  action_covid("adults", "s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
+  action_specified("adults", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
+  action_covid("adults", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
+  action_specified("adults", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
+  action_covid("adults", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
+  action_specified("adults", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
+  action_covid("adults", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Children and Adolescents, Codelist Type: Specific, Investigation Type: Secondary", "# # # # # # # # # # # # # # # # # # #"),
+
+  action_specified("children_and_adolescents", "s1", "2016_2017", "specific", "secondary", "season1_start_date", "season1_end_date"),
+  action_specified("children_and_adolescents", "s2", "2017_2018", "specific", "secondary", "season2_start_date", "season2_end_date"),
+  action_specified("children_and_adolescents", "s3", "2018_2019", "specific", "secondary", "season3_start_date", "season3_end_date"),
+  action_specified("children_and_adolescents", "s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
+  action_covid("children_and_adolescents", "s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
+  action_specified("children_and_adolescents", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
+  action_covid("children_and_adolescents", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
+  action_specified("children_and_adolescents", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
+  action_covid("children_and_adolescents", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
+  action_specified("children_and_adolescents", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
+  action_covid("children_and_adolescents", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants, Codelist Type: Specific, Investigation Type: Secondary", "# # # # # # # # # # # # # # # # # # #"),
+
+  action_specified("infants", "s1", "2016_2017", "specific", "secondary", "season1_start_date", "season1_end_date"),
+  action_specified("infants", "s2", "2017_2018", "specific", "secondary", "season2_start_date", "season2_end_date"),
+  action_specified("infants", "s3", "2018_2019", "specific", "secondary", "season3_start_date", "season3_end_date"),
+  action_specified("infants", "s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
+  action_covid("infants", "s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
+  action_specified("infants", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
+  action_covid("infants", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
+  action_specified("infants", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
+  action_covid("infants", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
+  action_specified("infants", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
+  action_covid("infants", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "DESCRIPTIVE ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults", "# # # # # # # # # # # # # # # # # # #"),
   
@@ -3060,7 +3078,7 @@ actions_list <- splice(
   action_descriptive("infants", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
   action_descriptive("infants", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
   
-  comment("# # # # # # # # # # # # # # # # # # #", "EXPLORATORY analyse", "# # # # # # # # # # # # # # # # # # #"),
+  comment("# # # # # # # # # # # # # # # # # # #", "EXPLORATORY ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults", "# # # # # # # # # # # # # # # # # # #"),
   
@@ -3102,7 +3120,7 @@ actions_list <- splice(
   action_exploratory("infants", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
   action_exploratory("infants", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
   
-  comment("# # # # # # # # # # # # # # # # # # #", "SENSITIVITY analyse: REDUCED SEASONS", "# # # # # # # # # # # # # # # # # # #"),
+  comment("# # # # # # # # # # # # # # # # # # #", "SENSITIVITY ANALYSES: REDUCED SEASONS", "# # # # # # # # # # # # # # # # # # #"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Specific", "# # # # # # # # # # # # # # # # # # #"),
 
