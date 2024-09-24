@@ -240,6 +240,18 @@ df_input_filt <- df_input_filt %>%
                                          "Three Other Generations"))
   ) %>% arrange(composition_category)
 
+#set covid date to missing if existing date occurs before March 1st 2020
+if (study_start_date >= covid_season_min) {
+  df_input <- df_input %>%
+    mutate(
+      covid_primary_date = if_else(covid_primary_date < as.Date("2020-03-01"), NA_Date_, covid_primary_date),
+      covid_primary_second_date = if_else(covid_primary_date < as.Date("2020-03-01"), NA_Date_, covid_primary_second_date),
+      covid_secondary_date = if_else(covid_secondary_date < as.Date("2020-03-01"), NA_Date_, covid_secondary_date),
+      covid_secondary_second_date = if_else(covid_secondary_date < as.Date("2020-03-01"), NA_Date_, covid_secondary_second_date),
+      covid_mortality_date = if_else(covid_mortality_date < as.Date("2020-03-01"), NA_Date_, covid_mortality_date)
+    )
+}
+
 #infer outcomes from event dates 
 df_input_filt <- df_input_filt %>%
   mutate(

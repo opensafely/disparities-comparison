@@ -235,7 +235,7 @@ if (study_start_date >= covid_season_min) {
       covid_primary_second_date = if_else(covid_primary_date < as.Date("2020-03-01"), NA_Date_, covid_primary_second_date),
       covid_secondary_date = if_else(covid_secondary_date < as.Date("2020-03-01"), NA_Date_, covid_secondary_date),
       covid_secondary_second_date = if_else(covid_secondary_date < as.Date("2020-03-01"), NA_Date_, covid_secondary_second_date),
-      covid_mortality_date = if_else(covid_mortality_date < as.Date("2020-03-01"), NA_Date, covid_mortality_date)
+      covid_mortality_date = if_else(covid_mortality_date < as.Date("2020-03-01"), NA_Date_, covid_mortality_date)
     )
 }
 
