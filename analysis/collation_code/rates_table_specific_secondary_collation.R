@@ -17,37 +17,37 @@ fs::dir_create(here("output", "collated", "descriptive"))
 ##rates
 
 # import rates table by cohort 
-collated_rates_sensitive_secondary = rbind(
+collated_rates_specific_secondary = rbind(
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
-           "_2016_2017_sensitive_secondary.csv")))
-  %>% mutate(codelist_type = "sensitive", investigation_type = "secondary",
+           "_2016_2017_specific_secondary.csv")))
+  %>% mutate(codelist_type = "specific", investigation_type = "secondary",
              subset = "2016_17"),
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
-           "_2017_2018_sensitive_secondary.csv")))
-  %>% mutate(codelist_type = "sensitive", investigation_type = "secondary",
+           "_2017_2018_specific_secondary.csv")))
+  %>% mutate(codelist_type = "specific", investigation_type = "secondary",
              subset = "2017_18"),
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
-           "_2018_2019_sensitive_secondary.csv")))
-  %>% mutate(codelist_type = "sensitive", investigation_type = "secondary",
+           "_2018_2019_specific_secondary.csv")))
+  %>% mutate(codelist_type = "specific", investigation_type = "secondary",
              subset = "2018_19"),
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
-           "_2019_2020_sensitive_secondary.csv")))
-  %>% mutate(codelist_type = "sensitive", investigation_type = "secondary",
+           "_2019_2020_specific_secondary.csv")))
+  %>% mutate(codelist_type = "specific", investigation_type = "secondary",
              subset = "2019_20"),
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
-           "_2020_2021_sensitive_secondary.csv")))
-  %>% mutate(codelist_type = "sensitive", investigation_type = "secondary",
+           "_2020_2021_specific_secondary.csv")))
+  %>% mutate(codelist_type = "specific", investigation_type = "secondary",
              subset = "2020_21"),
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
-           "_2021_2022_sensitive_secondary.csv")))
-  %>% mutate(codelist_type = "sensitive", investigation_type = "secondary",
+           "_2021_2022_specific_secondary.csv")))
+  %>% mutate(codelist_type = "specific", investigation_type = "secondary",
              subset = "2021_22"),
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
-            "_2022_2023_sensitive_secondary.csv")))
-  %>% mutate(codelist_type = "sensitive", investigation_type = "secondary",
+            "_2022_2023_specific_secondary.csv")))
+  %>% mutate(codelist_type = "specific", investigation_type = "secondary",
              subset = "2022_23")
 )
 
 #save as csv
-write_csv(collated_rates_sensitive_secondary, paste0(here::here("output", "collated", "descriptive"), 
-          "/", cohort, "_rates_sensitive_secondary_collated.csv"))
+write_csv(collated_rates_specific_secondary, paste0(here::here("output", "collated", "descriptive"), 
+          "/", cohort, "_rates_specific_secondary_collated.csv"))
