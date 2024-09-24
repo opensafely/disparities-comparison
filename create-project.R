@@ -886,7 +886,7 @@ action_descriptive <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("process_dataset_{cohort}_{season}_sensitive_secondary"),
-      run = glue("r:latest analysis/data_processing.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/data_processing.R {cohort} {season_start_date} {season_end_date} sensitive secondary"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
                     season_start_date, season_end_date),
       needs = list(glue("generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
