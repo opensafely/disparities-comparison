@@ -15600,6 +15600,7 @@ actions:
       s1 2016_2017 season1_start_date season1_end_date specific primary sensitivity
     needs:
     - generate_dataset_older_adults_s1_specific_primary
+    - process_household_information_s1
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2016_2017_specific_sensitivity.csv
@@ -15680,6 +15681,7 @@ actions:
       s2 2017_2018 season2_start_date season2_end_date specific primary sensitivity
     needs:
     - generate_dataset_older_adults_s2_specific_primary
+    - process_household_information_s2
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2017_2018_specific_sensitivity.csv
@@ -15760,6 +15762,7 @@ actions:
       s3 2018_2019 season3_start_date season3_end_date specific primary sensitivity
     needs:
     - generate_dataset_older_adults_s3_specific_primary
+    - process_household_information_s3
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2018_2019_specific_sensitivity.csv
@@ -15840,6 +15843,7 @@ actions:
       s4 2019_2020 season4_start_date season4_end_date specific primary sensitivity
     needs:
     - generate_dataset_older_adults_s4_specific_primary
+    - process_household_information_s4
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2019_2020_specific_sensitivity.csv
@@ -15940,6 +15944,7 @@ actions:
       s5 2020_2021 season5_start_date season5_end_date specific primary sensitivity
     needs:
     - generate_dataset_older_adults_s5_specific_primary
+    - process_household_information_s5
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2020_2021_specific_sensitivity.csv
@@ -16040,6 +16045,7 @@ actions:
       s6 2021_2022 season6_start_date season6_end_date specific primary sensitivity
     needs:
     - generate_dataset_older_adults_s6_specific_primary
+    - process_household_information_s6
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2021_2022_specific_sensitivity.csv
@@ -16140,6 +16146,7 @@ actions:
       s7 2022_2023 season7_start_date season7_end_date specific primary sensitivity
     needs:
     - generate_dataset_older_adults_s7_specific_primary
+    - process_household_information_s7
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2022_2023_specific_sensitivity.csv
@@ -16244,6 +16251,7 @@ actions:
       season1_end_date specific primary sensitivity
     needs:
     - generate_dataset_adults_s1_specific_primary
+    - process_household_information_s1
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2016_2017_specific_sensitivity.csv
@@ -16323,6 +16331,7 @@ actions:
       season2_end_date specific primary sensitivity
     needs:
     - generate_dataset_adults_s2_specific_primary
+    - process_household_information_s2
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2017_2018_specific_sensitivity.csv
@@ -16402,6 +16411,7 @@ actions:
       season3_end_date specific primary sensitivity
     needs:
     - generate_dataset_adults_s3_specific_primary
+    - process_household_information_s3
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2018_2019_specific_sensitivity.csv
@@ -16481,6 +16491,7 @@ actions:
       season4_end_date specific primary sensitivity
     needs:
     - generate_dataset_adults_s4_specific_primary
+    - process_household_information_s4
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2019_2020_specific_sensitivity.csv
@@ -16580,6 +16591,7 @@ actions:
       season5_end_date specific primary sensitivity
     needs:
     - generate_dataset_adults_s5_specific_primary
+    - process_household_information_s5
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2020_2021_specific_sensitivity.csv
@@ -16679,6 +16691,7 @@ actions:
       season6_end_date specific primary sensitivity
     needs:
     - generate_dataset_adults_s6_specific_primary
+    - process_household_information_s6
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2021_2022_specific_sensitivity.csv
@@ -16778,6 +16791,7 @@ actions:
       season7_end_date specific primary sensitivity
     needs:
     - generate_dataset_adults_s7_specific_primary
+    - process_household_information_s7
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2022_2023_specific_sensitivity.csv
@@ -16881,6 +16895,7 @@ actions:
       s1 2016_2017 season1_start_date season1_end_date specific primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s1_specific_primary
+    - process_household_information_s1
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2016_2017_specific_sensitivity.csv
@@ -16963,6 +16978,7 @@ actions:
       s2 2017_2018 season2_start_date season2_end_date specific primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s2_specific_primary
+    - process_household_information_s2
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2017_2018_specific_sensitivity.csv
@@ -17045,6 +17061,7 @@ actions:
       s3 2018_2019 season3_start_date season3_end_date specific primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s3_specific_primary
+    - process_household_information_s3
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2018_2019_specific_sensitivity.csv
@@ -17127,6 +17144,7 @@ actions:
       s4 2019_2020 season4_start_date season4_end_date specific primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s4_specific_primary
+    - process_household_information_s4
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2019_2020_specific_sensitivity.csv
@@ -17229,6 +17247,7 @@ actions:
       s5 2020_2021 season5_start_date season5_end_date specific primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s5_specific_primary
+    - process_household_information_s5
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2020_2021_specific_sensitivity.csv
@@ -17331,6 +17350,7 @@ actions:
       s6 2021_2022 season6_start_date season6_end_date specific primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s6_specific_primary
+    - process_household_information_s6
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2021_2022_specific_sensitivity.csv
@@ -17433,6 +17453,7 @@ actions:
       s7 2022_2023 season7_start_date season7_end_date specific primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s7_specific_primary
+    - process_household_information_s7
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2022_2023_specific_sensitivity.csv
@@ -17539,6 +17560,7 @@ actions:
       season1_end_date specific primary sensitivity
     needs:
     - generate_dataset_infants_s1_specific_primary
+    - process_household_information_s1
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2016_2017_specific_sensitivity.csv
@@ -17978,6 +18000,7 @@ actions:
       season2_end_date specific primary sensitivity
     needs:
     - generate_dataset_infants_s2_specific_primary
+    - process_household_information_s2
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2017_2018_specific_sensitivity.csv
@@ -18417,6 +18440,7 @@ actions:
       season3_end_date specific primary sensitivity
     needs:
     - generate_dataset_infants_s3_specific_primary
+    - process_household_information_s3
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2018_2019_specific_sensitivity.csv
@@ -18856,6 +18880,7 @@ actions:
       season4_end_date specific primary sensitivity
     needs:
     - generate_dataset_infants_s4_specific_primary
+    - process_household_information_s4
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2019_2020_specific_sensitivity.csv
@@ -19435,6 +19460,7 @@ actions:
       season5_end_date specific primary sensitivity
     needs:
     - generate_dataset_infants_s5_specific_primary
+    - process_household_information_s5
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2020_2021_specific_sensitivity.csv
@@ -20014,6 +20040,7 @@ actions:
       season6_end_date specific primary sensitivity
     needs:
     - generate_dataset_infants_s6_specific_primary
+    - process_household_information_s6
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2021_2022_specific_sensitivity.csv
@@ -20593,6 +20620,7 @@ actions:
       season7_end_date specific primary sensitivity
     needs:
     - generate_dataset_infants_s7_specific_primary
+    - process_household_information_s7
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2022_2023_specific_sensitivity.csv
@@ -21176,6 +21204,7 @@ actions:
       s1 2016_2017 season1_start_date season1_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_older_adults_s1_sensitive_primary
+    - process_household_information_s1
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2016_2017_sensitive_sensitivity.csv
@@ -21256,6 +21285,7 @@ actions:
       s2 2017_2018 season2_start_date season2_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_older_adults_s2_sensitive_primary
+    - process_household_information_s2
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2017_2018_sensitive_sensitivity.csv
@@ -21336,6 +21366,7 @@ actions:
       s3 2018_2019 season3_start_date season3_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_older_adults_s3_sensitive_primary
+    - process_household_information_s3
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2018_2019_sensitive_sensitivity.csv
@@ -21416,6 +21447,7 @@ actions:
       s4 2019_2020 season4_start_date season4_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_older_adults_s4_sensitive_primary
+    - process_household_information_s4
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2019_2020_sensitive_sensitivity.csv
@@ -21516,6 +21548,7 @@ actions:
       s5 2020_2021 season5_start_date season5_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_older_adults_s5_sensitive_primary
+    - process_household_information_s5
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2020_2021_sensitive_sensitivity.csv
@@ -21616,6 +21649,7 @@ actions:
       s6 2021_2022 season6_start_date season6_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_older_adults_s6_sensitive_primary
+    - process_household_information_s6
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2021_2022_sensitive_sensitivity.csv
@@ -21716,6 +21750,7 @@ actions:
       s7 2022_2023 season7_start_date season7_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_older_adults_s7_sensitive_primary
+    - process_household_information_s7
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_older_adults_2022_2023_sensitive_sensitivity.csv
@@ -21820,6 +21855,7 @@ actions:
       season1_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_adults_s1_sensitive_primary
+    - process_household_information_s1
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2016_2017_sensitive_sensitivity.csv
@@ -21899,6 +21935,7 @@ actions:
       season2_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_adults_s2_sensitive_primary
+    - process_household_information_s2
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2017_2018_sensitive_sensitivity.csv
@@ -21978,6 +22015,7 @@ actions:
       season3_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_adults_s3_sensitive_primary
+    - process_household_information_s3
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2018_2019_sensitive_sensitivity.csv
@@ -22057,6 +22095,7 @@ actions:
       season4_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_adults_s4_sensitive_primary
+    - process_household_information_s4
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2019_2020_sensitive_sensitivity.csv
@@ -22156,6 +22195,7 @@ actions:
       season5_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_adults_s5_sensitive_primary
+    - process_household_information_s5
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2020_2021_sensitive_sensitivity.csv
@@ -22255,6 +22295,7 @@ actions:
       season6_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_adults_s6_sensitive_primary
+    - process_household_information_s6
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2021_2022_sensitive_sensitivity.csv
@@ -22354,6 +22395,7 @@ actions:
       season7_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_adults_s7_sensitive_primary
+    - process_household_information_s7
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_adults_2022_2023_sensitive_sensitivity.csv
@@ -22457,6 +22499,7 @@ actions:
       s1 2016_2017 season1_start_date season1_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s1_sensitive_primary
+    - process_household_information_s1
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2016_2017_sensitive_sensitivity.csv
@@ -22539,6 +22582,7 @@ actions:
       s2 2017_2018 season2_start_date season2_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s2_sensitive_primary
+    - process_household_information_s2
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2017_2018_sensitive_sensitivity.csv
@@ -22621,6 +22665,7 @@ actions:
       s3 2018_2019 season3_start_date season3_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s3_sensitive_primary
+    - process_household_information_s3
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2018_2019_sensitive_sensitivity.csv
@@ -22703,6 +22748,7 @@ actions:
       s4 2019_2020 season4_start_date season4_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s4_sensitive_primary
+    - process_household_information_s4
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2019_2020_sensitive_sensitivity.csv
@@ -22805,6 +22851,7 @@ actions:
       s5 2020_2021 season5_start_date season5_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s5_sensitive_primary
+    - process_household_information_s5
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2020_2021_sensitive_sensitivity.csv
@@ -22907,6 +22954,7 @@ actions:
       s6 2021_2022 season6_start_date season6_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s6_sensitive_primary
+    - process_household_information_s6
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2021_2022_sensitive_sensitivity.csv
@@ -23009,6 +23057,7 @@ actions:
       s7 2022_2023 season7_start_date season7_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_children_and_adolescents_s7_sensitive_primary
+    - process_household_information_s7
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_children_and_adolescents_2022_2023_sensitive_sensitivity.csv
@@ -23115,6 +23164,7 @@ actions:
       season1_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_infants_s1_sensitive_primary
+    - process_household_information_s1
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2016_2017_sensitive_sensitivity.csv
@@ -23554,6 +23604,7 @@ actions:
       season2_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_infants_s2_sensitive_primary
+    - process_household_information_s2
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2017_2018_sensitive_sensitivity.csv
@@ -23993,6 +24044,7 @@ actions:
       season3_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_infants_s3_sensitive_primary
+    - process_household_information_s3
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2018_2019_sensitive_sensitivity.csv
@@ -24432,6 +24484,7 @@ actions:
       season4_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_infants_s4_sensitive_primary
+    - process_household_information_s4
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2019_2020_sensitive_sensitivity.csv
@@ -25011,6 +25064,7 @@ actions:
       season5_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_infants_s5_sensitive_primary
+    - process_household_information_s5
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2020_2021_sensitive_sensitivity.csv
@@ -25590,6 +25644,7 @@ actions:
       season6_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_infants_s6_sensitive_primary
+    - process_household_information_s6
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2021_2022_sensitive_sensitivity.csv
@@ -26169,6 +26224,7 @@ actions:
       season7_end_date sensitive primary sensitivity
     needs:
     - generate_dataset_infants_s7_sensitive_primary
+    - process_household_information_s7
     outputs:
       moderately_sensitive:
         csv: output/sensitivity/input_processed_infants_2022_2023_sensitive_sensitivity.csv
