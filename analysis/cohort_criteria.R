@@ -11,7 +11,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2016-09-01"
   study_end_date <- "2017-08-31"
-  cohort <- "adults"
+  cohort <- "infants"
 } else {
   study_start_date <- study_dates[[args[[2]]]]
   study_end_date <- study_dates[[args[[3]]]]
@@ -63,14 +63,14 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
                         & !patients_df$risk_group_infants, na.rm = TRUE)
   excluded_count <- sum(!patients_df$is_female_or_male|!patients_df$has_imd 
                         |patients_df$risk_group_infants|patients_df$care_home
-                        |patients_df$severe_immunodeficiency, na.rm = TRUE) - 
+                        |patients_df$severe_immunodeficiency, na.rm = TRUE) + 
                     not_age_count
 } else {
   included_count <- sum(patients_df$registered & patients_df$is_female_or_male 
                         & patients_df$is_appropriate_age & patients_df$has_imd 
                         & !patients_df$care_home, na.rm = TRUE)
   excluded_count <- sum(!patients_df$is_female_or_male|!patients_df$has_imd 
-                        |patients_df$care_home, na.rm = TRUE) - not_age_count
+                        |patients_df$care_home, na.rm = TRUE) + not_age_count
 }
 
 ## create output directories ----
