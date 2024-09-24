@@ -538,7 +538,7 @@ if (study_start_date < covid_season_min) {
       #assign censoring indicator
       rsv_secondary_censor = if_else(is.na(rsv_secondary_date), 1, 0),
       #infer severe rsv outcome
-      # rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
+      rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
       # #infer severe case date for second episode of rsv
       # rsv_secondary_second_inf_date = case_when(
       #   is.na(rsv_secondary_second_date) & is.na(deregistration_date) & is.na(death_date) ~ study_end_date,
