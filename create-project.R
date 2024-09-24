@@ -885,6 +885,17 @@ action_descriptive <- function(cohort, season, dates, codelist_type,
   splice(
     
     action(
+      name = glue("process_dataset_{cohort}_{season}_sensitive_secondary"),
+      run = glue("r:latest analysis/data_processing.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+                    season_start_date, season_end_date),
+      needs = list(glue("generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+                   glue("process_household_information_{season}")),
+      highly_sensitive = lst(
+        cohort = glue("output/data/input_processed_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow"))
+    ),
+    
+    action(
       name = glue("describe_cohort_{cohort}_{season}"),
       run = glue("r:latest analysis/cohort_description.R {cohort} {season_start_date} {season_end_date} sensitive secondary"),
       arguments = c(cohort, season, dates, codelist_type, investigation_type, 
@@ -1985,18 +1996,18 @@ action_finalise_infants <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_rates_tables_sensitive_secondary_{cohort}"),
+      name = glue("collate_rates_tables_specific_secondary_{cohort}"),
       run = glue("r:latest analysis/collation_code/rates_table_sensitive_secondary_collation.R {cohort}"),
       arguments = c(cohort),
-      needs = list(glue("describe_dataset_{cohort}_s1_sensitive_secondary"),
-                   glue("describe_dataset_{cohort}_s2_sensitive_secondary"),
-                   glue("describe_dataset_{cohort}_s3_sensitive_secondary"),
-                   glue("describe_dataset_{cohort}_s4_sensitive_secondary"),
-                   glue("describe_dataset_{cohort}_s5_sensitive_secondary"),
-                   glue("describe_dataset_{cohort}_s6_sensitive_secondary"),
-                   glue("describe_dataset_{cohort}_s7_sensitive_secondary")),
+      needs = list(glue("describe_dataset_{cohort}_s1_specific_secondary"),
+                   glue("describe_dataset_{cohort}_s2_specific_secondary"),
+                   glue("describe_dataset_{cohort}_s3_specific_secondary"),
+                   glue("describe_dataset_{cohort}_s4_specific_secondary"),
+                   glue("describe_dataset_{cohort}_s5_specific_secondary"),
+                   glue("describe_dataset_{cohort}_s6_specific_secondary"),
+                   glue("describe_dataset_{cohort}_s7_specific_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/{cohort}_rates_sensitive_secondary_collated.csv"))
+        csv = glue("output/collated/descriptive/{cohort}_rates_specific_secondary_collated.csv"))
     ),
     
     action(
