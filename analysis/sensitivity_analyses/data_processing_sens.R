@@ -117,7 +117,7 @@ df_input_filt <- df_input_filt %>%
       latest_ethnicity_code == "3" ~ "Asian or Asian British",
       latest_ethnicity_code == "4" ~ "Black or Black British",
       latest_ethnicity_code == "5" ~ "Other Ethnic Groups",
-      TRUE ~ "Unknown")),
+      TRUE ~ "Unknown"), ordered = TRUE),
     #calculate IMD quintile
     imd_quintile = as.factor(case_when(
       imd_rounded >= 0 & imd_rounded < as.integer(32800 * 1 / 5) ~ "1 (most deprived)",
@@ -173,7 +173,7 @@ df_input_filt <- df_input_filt %>%
       rurality_code == "3" ~ "Urban City and Town",
       rurality_code == "4" ~ "Rural Town and Fringe",
       rurality_code == "5" ~ "Rural Village and Dispersed",
-      TRUE ~ "Unknown"))
+      TRUE ~ "Unknown"), ordered = TRUE)
   )
 
 #flu vaccination
@@ -219,19 +219,19 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
 }
 
 #re-level factors so they have reference categories for the regression models
-df_input_filt <- df_input_filt %>% 
-  mutate(
-    latest_ethnicity_group = fct_relevel(latest_ethnicity_group, 
-                             c("White", "Mixed", "Asian or Asian British", 
-                               "Black or Black British", "Other Ethnic Groups"))
-  ) %>% arrange(latest_ethnicity_group)
-df_input_filt <- df_input_filt %>% 
-  mutate(
-    rurality_classification = fct_relevel(rurality_classification, 
-                              c("Urban Major Conurbation", "Urban Minor Conurbation", 
-                              "Urban City and Town", "Rural Town and Fringe", 
-                              "Rural Village and Dispersed", "Unknown"))
-  ) %>% arrange(rurality_classification)
+# df_input_filt <- df_input_filt %>% 
+#   mutate(
+#     latest_ethnicity_group = fct_relevel(latest_ethnicity_group, 
+#                              c("White", "Mixed", "Asian or Asian British", 
+#                                "Black or Black British", "Other Ethnic Groups"))
+#   ) %>% arrange(latest_ethnicity_group)
+# df_input_filt <- df_input_filt %>% 
+#   mutate(
+#     rurality_classification = fct_relevel(rurality_classification, 
+#                               c("Urban Major Conurbation", "Urban Minor Conurbation", 
+#                               "Urban City and Town", "Rural Town and Fringe", 
+#                               "Rural Village and Dispersed", "Unknown"))
+#   ) %>% arrange(rurality_classification)
 df_input_filt <- df_input_filt %>% 
   mutate(
     composition_category = fct_relevel(composition_category, 
