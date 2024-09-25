@@ -92,7 +92,7 @@ def last_prior_event(codelist, where = True):
     return (
         prior_events.where(where)
         .where(prior_events.snomedct_code.is_in(codelist))
-        .sort_by(events.date)
+        .sort_by(clinical_events.date)
         .last_for_patient()
     )
     
@@ -101,7 +101,7 @@ def first_prior_event(codelist, where = True):
     return (
         prior_events.where(where)
         .where(prior_events.snomedct_code.is_in(codelist))
-        .sort_by(events.date)
+        .sort_by(clinical_events.date)
         .first_for_patient()
     )
 
