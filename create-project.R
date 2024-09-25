@@ -80,7 +80,7 @@ action_inclusion <- function(cohort, season, dates, season_start_date,
       run = glue("r:latest analysis/cohort_criteria.R {cohort} {season_start_date} {season_end_date}"),
       arguments = c(cohort, season, dates, season_start_date, season_end_date),
       needs = list(glue("generate_flow_chart_data_{cohort}_{season}")),
-      highly_sensitive = lst(
+      moderately_sensitive = lst(
         cohort = glue("output/flow_chart/flow_chart_processed_{cohort}_{dates}.csv"),
       )
     )
@@ -3052,6 +3052,21 @@ action_finalise <- function(cohort) {
       needs = list(glue("analyse_dataset_{cohort}_overall_and_all_cause_s5_specific_secondary")),
       moderately_sensitive = lst(
         csv = glue("output/collated/analytic/secondary/{cohort}_overall_and_all_cause_model_outputs_collated_secondary.csv"))
+    ),
+    
+    action(
+      name = glue("collate_phenotype_sensitivity_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/phenotype_sensitivity_table_collation.R {cohort}"),
+      arguments = c(cohort),
+      needs = list(glue("phenotype_sensitivity_{cohort}_s1"),
+                   glue("phenotype_sensitivity_{cohort}_s2"),
+                   glue("phenotype_sensitivity_{cohort}_s3"),
+                   glue("phenotype_sensitivity_{cohort}_s4"),
+                   glue("phenotype_sensitivity_{cohort}_s5"),
+                   glue("phenotype_sensitivity_{cohort}_s6"),
+                   glue("phenotype_sensitivity_{cohort}_s7")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_phenotype_sensitivity_collated.csv"))
     ),
     
     action(

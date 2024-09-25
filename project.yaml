@@ -34,7 +34,7 @@ actions:
     needs:
     - generate_flow_chart_data_older_adults_s1
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_older_adults_2016_2017.csv
 
   generate_flow_chart_data_older_adults_s2:
@@ -53,7 +53,7 @@ actions:
     needs:
     - generate_flow_chart_data_older_adults_s2
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_older_adults_2017_2018.csv
 
   generate_flow_chart_data_older_adults_s3:
@@ -72,7 +72,7 @@ actions:
     needs:
     - generate_flow_chart_data_older_adults_s3
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_older_adults_2018_2019.csv
 
   generate_flow_chart_data_older_adults_s4:
@@ -91,7 +91,7 @@ actions:
     needs:
     - generate_flow_chart_data_older_adults_s4
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_older_adults_2019_2020.csv
 
   generate_flow_chart_data_older_adults_s5:
@@ -110,7 +110,7 @@ actions:
     needs:
     - generate_flow_chart_data_older_adults_s5
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_older_adults_2020_2021.csv
 
   generate_flow_chart_data_older_adults_s6:
@@ -129,7 +129,7 @@ actions:
     needs:
     - generate_flow_chart_data_older_adults_s6
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_older_adults_2021_2022.csv
 
   generate_flow_chart_data_older_adults_s7:
@@ -148,7 +148,7 @@ actions:
     needs:
     - generate_flow_chart_data_older_adults_s7
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_older_adults_2022_2023.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
@@ -171,7 +171,7 @@ actions:
     needs:
     - generate_flow_chart_data_adults_s1
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_adults_2016_2017.csv
 
   generate_flow_chart_data_adults_s2:
@@ -190,7 +190,7 @@ actions:
     needs:
     - generate_flow_chart_data_adults_s2
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_adults_2017_2018.csv
 
   generate_flow_chart_data_adults_s3:
@@ -209,7 +209,7 @@ actions:
     needs:
     - generate_flow_chart_data_adults_s3
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_adults_2018_2019.csv
 
   generate_flow_chart_data_adults_s4:
@@ -228,7 +228,7 @@ actions:
     needs:
     - generate_flow_chart_data_adults_s4
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_adults_2019_2020.csv
 
   generate_flow_chart_data_adults_s5:
@@ -247,7 +247,7 @@ actions:
     needs:
     - generate_flow_chart_data_adults_s5
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_adults_2020_2021.csv
 
   generate_flow_chart_data_adults_s6:
@@ -266,7 +266,7 @@ actions:
     needs:
     - generate_flow_chart_data_adults_s6
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_adults_2021_2022.csv
 
   generate_flow_chart_data_adults_s7:
@@ -285,7 +285,7 @@ actions:
     needs:
     - generate_flow_chart_data_adults_s7
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_adults_2022_2023.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
@@ -308,7 +308,7 @@ actions:
     needs:
     - generate_flow_chart_data_children_and_adolescents_s1
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_children_and_adolescents_2016_2017.csv
 
   generate_flow_chart_data_children_and_adolescents_s2:
@@ -327,7 +327,7 @@ actions:
     needs:
     - generate_flow_chart_data_children_and_adolescents_s2
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_children_and_adolescents_2017_2018.csv
 
   generate_flow_chart_data_children_and_adolescents_s3:
@@ -346,7 +346,7 @@ actions:
     needs:
     - generate_flow_chart_data_children_and_adolescents_s3
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_children_and_adolescents_2018_2019.csv
 
   generate_flow_chart_data_children_and_adolescents_s4:
@@ -365,7 +365,7 @@ actions:
     needs:
     - generate_flow_chart_data_children_and_adolescents_s4
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_children_and_adolescents_2019_2020.csv
 
   generate_flow_chart_data_children_and_adolescents_s5:
@@ -384,7 +384,7 @@ actions:
     needs:
     - generate_flow_chart_data_children_and_adolescents_s5
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_children_and_adolescents_2020_2021.csv
 
   generate_flow_chart_data_children_and_adolescents_s6:
@@ -403,7 +403,7 @@ actions:
     needs:
     - generate_flow_chart_data_children_and_adolescents_s6
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_children_and_adolescents_2021_2022.csv
 
   generate_flow_chart_data_children_and_adolescents_s7:
@@ -422,7 +422,7 @@ actions:
     needs:
     - generate_flow_chart_data_children_and_adolescents_s7
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_children_and_adolescents_2022_2023.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
@@ -445,7 +445,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_s1
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_infants_2016_2017.csv
 
   generate_flow_chart_data_infants_s2:
@@ -464,7 +464,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_s2
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_infants_2017_2018.csv
 
   generate_flow_chart_data_infants_s3:
@@ -483,7 +483,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_s3
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_infants_2018_2019.csv
 
   generate_flow_chart_data_infants_s4:
@@ -502,7 +502,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_s4
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_infants_2019_2020.csv
 
   generate_flow_chart_data_infants_s5:
@@ -521,7 +521,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_s5
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_infants_2020_2021.csv
 
   generate_flow_chart_data_infants_s6:
@@ -540,7 +540,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_s6
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_infants_2021_2022.csv
 
   generate_flow_chart_data_infants_s7:
@@ -559,7 +559,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_s7
     outputs:
-      highly_sensitive:
+      moderately_sensitive:
         cohort: output/flow_chart/flow_chart_processed_infants_2022_2023.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
@@ -26513,6 +26513,21 @@ actions:
       moderately_sensitive:
         csv: output/collated/analytic/secondary/older_adults_overall_and_all_cause_model_outputs_collated_secondary.csv
 
+  collate_phenotype_sensitivity_tables_older_adults:
+    run: r:latest analysis/collation_code/phenotype_sensitivity_table_collation.R
+      older_adults older_adults
+    needs:
+    - phenotype_sensitivity_older_adults_s1
+    - phenotype_sensitivity_older_adults_s2
+    - phenotype_sensitivity_older_adults_s3
+    - phenotype_sensitivity_older_adults_s4
+    - phenotype_sensitivity_older_adults_s5
+    - phenotype_sensitivity_older_adults_s6
+    - phenotype_sensitivity_older_adults_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/older_adults_phenotype_sensitivity_collated.csv
+
   collate_rsv_outputs_tables_older_adults_sensitivity:
     run: r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R
       older_adults older_adults
@@ -26811,6 +26826,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/secondary/adults_overall_and_all_cause_model_outputs_collated_secondary.csv
+
+  collate_phenotype_sensitivity_tables_adults:
+    run: r:latest analysis/collation_code/phenotype_sensitivity_table_collation.R
+      adults adults
+    needs:
+    - phenotype_sensitivity_adults_s1
+    - phenotype_sensitivity_adults_s2
+    - phenotype_sensitivity_adults_s3
+    - phenotype_sensitivity_adults_s4
+    - phenotype_sensitivity_adults_s5
+    - phenotype_sensitivity_adults_s6
+    - phenotype_sensitivity_adults_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/adults_phenotype_sensitivity_collated.csv
 
   collate_rsv_outputs_tables_adults_sensitivity:
     run: r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R
@@ -27112,6 +27142,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/secondary/children_and_adolescents_overall_and_all_cause_model_outputs_collated_secondary.csv
+
+  collate_phenotype_sensitivity_tables_children_and_adolescents:
+    run: r:latest analysis/collation_code/phenotype_sensitivity_table_collation.R
+      children_and_adolescents children_and_adolescents
+    needs:
+    - phenotype_sensitivity_children_and_adolescents_s1
+    - phenotype_sensitivity_children_and_adolescents_s2
+    - phenotype_sensitivity_children_and_adolescents_s3
+    - phenotype_sensitivity_children_and_adolescents_s4
+    - phenotype_sensitivity_children_and_adolescents_s5
+    - phenotype_sensitivity_children_and_adolescents_s6
+    - phenotype_sensitivity_children_and_adolescents_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/children_and_adolescents_phenotype_sensitivity_collated.csv
 
   collate_rsv_outputs_tables_children_and_adolescents_sensitivity:
     run: r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R
