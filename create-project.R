@@ -2093,7 +2093,7 @@ action_exploratory <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("phenotype_sensitivity_{cohort}_{season}"),
-      run = glue("r:latest analysis/exploratory_analyse/phenotype_sensitivity.R {cohort} {season_start_date} {season_end_date}"),
+      run = glue("r:latest analysis/exploratory_analyses/phenotype_sensitivity.R {cohort} {season_start_date} {season_end_date}"),
       arguments = c(cohort, season, dates, season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_specific_primary"),
                    glue("process_dataset_{cohort}_{season}_sensitive_primary")),

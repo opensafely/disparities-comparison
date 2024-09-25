@@ -14775,7 +14775,7 @@ actions:
   ## # # # # # # # # # # # # # # # # # # # 
 
   phenotype_sensitivity_older_adults_s1:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season1_start_date season1_end_date older_adults s1 2016_2017 season1_start_date
       season1_end_date
     needs:
@@ -14786,7 +14786,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2016_2017.csv
 
   phenotype_sensitivity_older_adults_s2:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season2_start_date season2_end_date older_adults s2 2017_2018 season2_start_date
       season2_end_date
     needs:
@@ -14797,7 +14797,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2017_2018.csv
 
   phenotype_sensitivity_older_adults_s3:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season3_start_date season3_end_date older_adults s3 2018_2019 season3_start_date
       season3_end_date
     needs:
@@ -14808,7 +14808,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2018_2019.csv
 
   phenotype_sensitivity_older_adults_s4:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season4_start_date season4_end_date older_adults s4 2019_2020 season4_start_date
       season4_end_date
     needs:
@@ -14819,7 +14819,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2019_2020.csv
 
   phenotype_sensitivity_older_adults_s5:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season5_start_date season5_end_date older_adults s5 2020_2021 season5_start_date
       season5_end_date
     needs:
@@ -14830,7 +14830,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2020_2021.csv
 
   phenotype_sensitivity_older_adults_s6:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season6_start_date season6_end_date older_adults s6 2021_2022 season6_start_date
       season6_end_date
     needs:
@@ -14841,7 +14841,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2021_2022.csv
 
   phenotype_sensitivity_older_adults_s7:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R older_adults
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
       season7_start_date season7_end_date older_adults s7 2022_2023 season7_start_date
       season7_end_date
     needs:
@@ -14856,7 +14856,7 @@ actions:
   ## # # # # # # # # # # # # # # # # # # # 
 
   phenotype_sensitivity_adults_s1:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R adults season1_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season1_start_date
       season1_end_date adults s1 2016_2017 season1_start_date season1_end_date
     needs:
     - process_dataset_adults_s1_specific_primary
@@ -14866,7 +14866,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_adults_2016_2017.csv
 
   phenotype_sensitivity_adults_s2:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R adults season2_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season2_start_date
       season2_end_date adults s2 2017_2018 season2_start_date season2_end_date
     needs:
     - process_dataset_adults_s2_specific_primary
@@ -14876,7 +14876,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_adults_2017_2018.csv
 
   phenotype_sensitivity_adults_s3:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R adults season3_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season3_start_date
       season3_end_date adults s3 2018_2019 season3_start_date season3_end_date
     needs:
     - process_dataset_adults_s3_specific_primary
@@ -14886,7 +14886,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_adults_2018_2019.csv
 
   phenotype_sensitivity_adults_s4:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R adults season4_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season4_start_date
       season4_end_date adults s4 2019_2020 season4_start_date season4_end_date
     needs:
     - process_dataset_adults_s4_specific_primary
@@ -14896,7 +14896,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_adults_2019_2020.csv
 
   phenotype_sensitivity_adults_s5:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R adults season5_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season5_start_date
       season5_end_date adults s5 2020_2021 season5_start_date season5_end_date
     needs:
     - process_dataset_adults_s5_specific_primary
@@ -14906,7 +14906,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_adults_2020_2021.csv
 
   phenotype_sensitivity_adults_s6:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R adults season6_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season6_start_date
       season6_end_date adults s6 2021_2022 season6_start_date season6_end_date
     needs:
     - process_dataset_adults_s6_specific_primary
@@ -14916,7 +14916,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_adults_2021_2022.csv
 
   phenotype_sensitivity_adults_s7:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R adults season7_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season7_start_date
       season7_end_date adults s7 2022_2023 season7_start_date season7_end_date
     needs:
     - process_dataset_adults_s7_specific_primary
@@ -14930,7 +14930,7 @@ actions:
   ## # # # # # # # # # # # # # # # # # # # 
 
   phenotype_sensitivity_children_and_adolescents_s1:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season1_start_date season1_end_date children_and_adolescents s1 2016_2017 season1_start_date
       season1_end_date
     needs:
@@ -14941,7 +14941,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2016_2017.csv
 
   phenotype_sensitivity_children_and_adolescents_s2:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season2_start_date season2_end_date children_and_adolescents s2 2017_2018 season2_start_date
       season2_end_date
     needs:
@@ -14952,7 +14952,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2017_2018.csv
 
   phenotype_sensitivity_children_and_adolescents_s3:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season3_start_date season3_end_date children_and_adolescents s3 2018_2019 season3_start_date
       season3_end_date
     needs:
@@ -14963,7 +14963,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2018_2019.csv
 
   phenotype_sensitivity_children_and_adolescents_s4:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season4_start_date season4_end_date children_and_adolescents s4 2019_2020 season4_start_date
       season4_end_date
     needs:
@@ -14974,7 +14974,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2019_2020.csv
 
   phenotype_sensitivity_children_and_adolescents_s5:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season5_start_date season5_end_date children_and_adolescents s5 2020_2021 season5_start_date
       season5_end_date
     needs:
@@ -14985,7 +14985,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2020_2021.csv
 
   phenotype_sensitivity_children_and_adolescents_s6:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season6_start_date season6_end_date children_and_adolescents s6 2021_2022 season6_start_date
       season6_end_date
     needs:
@@ -14996,7 +14996,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2021_2022.csv
 
   phenotype_sensitivity_children_and_adolescents_s7:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R children_and_adolescents
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season7_start_date season7_end_date children_and_adolescents s7 2022_2023 season7_start_date
       season7_end_date
     needs:
@@ -15011,7 +15011,7 @@ actions:
   ## # # # # # # # # # # # # # # # # # # # 
 
   phenotype_sensitivity_infants_s1:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R infants season1_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season1_start_date
       season1_end_date infants s1 2016_2017 season1_start_date season1_end_date
     needs:
     - process_dataset_infants_s1_specific_primary
@@ -15021,7 +15021,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_2016_2017.csv
 
   phenotype_sensitivity_infants_s2:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R infants season2_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season2_start_date
       season2_end_date infants s2 2017_2018 season2_start_date season2_end_date
     needs:
     - process_dataset_infants_s2_specific_primary
@@ -15031,7 +15031,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_2017_2018.csv
 
   phenotype_sensitivity_infants_s3:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R infants season3_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season3_start_date
       season3_end_date infants s3 2018_2019 season3_start_date season3_end_date
     needs:
     - process_dataset_infants_s3_specific_primary
@@ -15041,7 +15041,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_2018_2019.csv
 
   phenotype_sensitivity_infants_s4:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R infants season4_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season4_start_date
       season4_end_date infants s4 2019_2020 season4_start_date season4_end_date
     needs:
     - process_dataset_infants_s4_specific_primary
@@ -15051,7 +15051,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_2019_2020.csv
 
   phenotype_sensitivity_infants_s5:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R infants season5_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season5_start_date
       season5_end_date infants s5 2020_2021 season5_start_date season5_end_date
     needs:
     - process_dataset_infants_s5_specific_primary
@@ -15061,7 +15061,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_2020_2021.csv
 
   phenotype_sensitivity_infants_s6:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R infants season6_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season6_start_date
       season6_end_date infants s6 2021_2022 season6_start_date season6_end_date
     needs:
     - process_dataset_infants_s6_specific_primary
@@ -15071,7 +15071,7 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_2021_2022.csv
 
   phenotype_sensitivity_infants_s7:
-    run: r:latest analysis/exploratory_analyse/phenotype_sensitivity.R infants season7_start_date
+    run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season7_start_date
       season7_end_date infants s7 2022_2023 season7_start_date season7_end_date
     needs:
     - process_dataset_infants_s7_specific_primary
