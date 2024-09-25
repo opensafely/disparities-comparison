@@ -105,13 +105,13 @@ df_input_filt <- df_input_filt %>%
     )
 }
 
-df_input_filt$age_band <- as.factor(df_input_filt$age_band)
+df_input_filt$age_band <- factor(df_input_filt$age_band)
 
 #data manipulation
 df_input_filt <- df_input_filt %>%
   mutate(
     #assign ethnicity group
-    latest_ethnicity_group = as.factor(case_when(
+    latest_ethnicity_group = factor(case_when(
       latest_ethnicity_code == "1" ~ "White",
       latest_ethnicity_code == "2" ~ "Mixed",
       latest_ethnicity_code == "3" ~ "Asian or Asian British",
@@ -119,7 +119,7 @@ df_input_filt <- df_input_filt %>%
       latest_ethnicity_code == "5" ~ "Other Ethnic Groups",
       TRUE ~ "Unknown"), ordered = TRUE),
     #calculate IMD quintile
-    imd_quintile = as.factor(case_when(
+    imd_quintile = factor(case_when(
       imd_rounded >= 0 & imd_rounded < as.integer(32800 * 1 / 5) ~ "1 (most deprived)",
       imd_rounded < as.integer(32800 * 2 / 5) ~ "2",
       imd_rounded < as.integer(32800 * 3 / 5) ~ "3",
@@ -127,7 +127,7 @@ df_input_filt <- df_input_filt %>%
       imd_rounded < as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
       TRUE ~ NA_character_)),
     #format sex
-    sex = as.factor(case_when(
+    sex = factor(case_when(
       sex == "female" ~ "Female",
       sex == "male" ~ "Male",
       sex == "intersex" ~ "Intersex",
@@ -142,7 +142,7 @@ logical_cols <- which(sapply(df_input_filt, is.logical) & !grepl("primary|second
 df_input_filt <- df_input_filt %>%
   mutate(across(
     .cols = all_of(logical_cols), 
-    .fns = ~as.factor(case_when(
+    .fns = ~factor(case_when(
       . == FALSE ~ "No",
       . == TRUE ~ "Yes",
       TRUE ~ NA_character_
@@ -161,13 +161,13 @@ df_input_filt <- df_input_filt %>%
                            "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
                            "7" = "5", "8" = "5", .missing = "Unknown"),
     #define household size categories
-    household_size_cat = as.factor(case_when(
+    household_size_cat = factor(case_when(
       household_size >= 1 & household_size <= 2 ~ "1",
       household_size >= 3 & household_size <= 5 ~ "2",
       household_size >= 6 ~ "3",
       TRUE ~ "Unknown")),
     #assign rurality classification
-    rurality_classification = as.factor(case_when(
+    rurality_classification = factor(case_when(
       rurality_code == "1" ~ "Urban Major Conurbation",
       rurality_code == "2" ~ "Urban Minor Conurbation",
       rurality_code == "3" ~ "Urban City and Town",
@@ -183,7 +183,7 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
     #assign flu vaccination status
     flu_vaccination_immunity_date = flu_vaccination_date + days(10),
     #current flu vaccination status including a lag time
-    flu_vaccination = as.factor(if_else(
+    flu_vaccination = factor(if_else(
       is.na(flu_vaccination_immunity_date), "No", "Yes"
     ))
   )
@@ -193,7 +193,7 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
 if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
   df_input_filt <- df_input_filt %>%
     mutate(
-      time_since_last_covid_vaccination = as.factor(case_when(
+      time_since_last_covid_vaccination = factor(case_when(
       time_length(difftime(study_start_date_sens, last_covid_vaccination_date, 
                              units = "days"), "months") >= 0 &
         time_length(difftime(study_start_date_sens, last_covid_vaccination_date,
@@ -212,7 +212,7 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
     mutate(
       covid_vaccination_immunity_date = covid_vaccination_date + days(10),
       #current covid vaccination status including a lag time
-      covid_vaccination = as.factor(if_else(
+      covid_vaccination = factor(if_else(
         is.na(covid_vaccination_immunity_date), "No", "Yes"
       ))
     )
@@ -242,7 +242,7 @@ df_input_filt <- df_input_filt %>%
 
 #set covid date to missing if existing date occurs before March 1st 2020
 if (study_start_date >= covid_season_min) {
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(
       covid_primary_date = if_else(covid_primary_date < as.Date("2020-03-01"), NA_Date_, covid_primary_date),
       covid_primary_second_date = if_else(covid_primary_date < as.Date("2020-03-01"), NA_Date_, covid_primary_second_date),
@@ -332,6 +332,7 @@ if (codelist_type == "sensitive") {
 df_input_filt <- df_input_filt %>%
   mutate(
     #infer presence of all cause mortality
+    all_cause_mortality_date = death_date,
     all_cause_mortality = if_else(
       !is.na(all_cause_mortality_date), TRUE, FALSE)
   )
@@ -447,7 +448,7 @@ if (study_start_date < covid_season_min) {
       )
   #for sensitive analyses define overall respiratory outcomes
   if (codelist_type == "sensitive") {
-    df_input <- df_input %>%
+    df_input_filt <- df_input_filt %>%
       mutate(
         #infer mild case date for overall respiratory
         overall_resp_primary_inf_date = case_when(
@@ -503,7 +504,7 @@ if (study_start_date < covid_season_min) {
         overall_resp_mortality_inf = if_else(overall_resp_mortality_censor == 0, 1, 0)
       )
   }
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(
       #infer all cause mortality outcome
       all_cause_mortality_inf_date = case_when(
@@ -517,7 +518,7 @@ if (study_start_date < covid_season_min) {
       all_cause_mortality_inf = if_else(all_cause_mortality_censor == 0, 1, 0)
     )
 } else {
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(
       #infer mild case date for rsv
       rsv_primary_inf_date = case_when(
@@ -678,7 +679,7 @@ if (study_start_date < covid_season_min) {
       )
   #for sensitive analyses define overall respiratory outcomes
   if (codelist_type == "sensitive") {
-    df_input <- df_input %>%
+    df_input_filt <- df_input_filt %>%
       mutate(
         #infer mild case date for overall respiratory
         overall_resp_primary_inf_date = case_when(
@@ -734,7 +735,7 @@ if (study_start_date < covid_season_min) {
         overall_resp_mortality_inf = if_else(overall_resp_mortality_censor == 0, 1, 0)
       )
   }
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(
       #infer all cause mortality outcome
       all_cause_mortality_inf_date = case_when(
@@ -751,7 +752,7 @@ if (study_start_date < covid_season_min) {
 
 #calculate time to event
 if (study_start_date < covid_season_min) {
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(
       #time until mild rsv outcome
       time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
@@ -785,7 +786,7 @@ if (study_start_date < covid_season_min) {
                            study_start_date - days(1), "weeks"), "years")
     )
   if (codelist_type == "sensitive") {
-    df_input <- df_input %>%
+    df_input_filt <- df_input_filt %>%
       mutate(
       #time until mild overall respiratory outcome
       time_overall_resp_primary = time_length(difftime(overall_resp_primary_inf_date, 
@@ -804,14 +805,14 @@ if (study_start_date < covid_season_min) {
                                     study_start_date - days(1), "weeks"), "years")
       )
   }
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(
       #time until all cause mortality
       time_all_cause_mortality = time_length(difftime(all_cause_mortality_inf_date, 
                                  study_start_date - days(1), "weeks"), "years")
     )
 } else {
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(
       #time until mild rsv outcome
       time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
@@ -860,7 +861,7 @@ if (study_start_date < covid_season_min) {
                              study_start_date - days(1), "weeks"), "years")
     )
   if (codelist_type == "sensitive") {
-    df_input <- df_input %>%
+    df_input_filt <- df_input_filt %>%
       mutate(
         #time until mild overall respiratory outcome
         time_overall_resp_primary = time_length(difftime(overall_resp_primary_inf_date, 
@@ -879,7 +880,7 @@ if (study_start_date < covid_season_min) {
                                       study_start_date - days(1), "weeks"), "years")
       )
   }
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(
       #time until all cause mortality
       time_all_cause_mortality = time_length(difftime(all_cause_mortality_inf_date, 

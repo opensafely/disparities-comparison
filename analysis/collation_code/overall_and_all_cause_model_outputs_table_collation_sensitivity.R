@@ -78,7 +78,7 @@ collated_model_outputs_overall_and_all_cause = rbind(
                       paste0("overall_and_all_cause_ethnicity_hh_comp_model_outputs_", 
                              cohort, "_2017_2018_specific_sensitivity.csv"))) 
   %>% mutate(model_type = "ethnicity_composition", codelist_type = "specific", 
-             investigation_type = "sensitivity", subset = "2016_17"),
+             investigation_type = "sensitivity", subset = "2017_18"),
   read_csv(here::here("output", "results", "models", "overall_and_all_cause_specific_sensitivity", 
                       paste0("overall_and_all_cause_ses_hh_comp_model_outputs_", 
                              cohort, "_2017_2018_specific_sensitivity.csv"))) 
@@ -193,7 +193,7 @@ collated_model_outputs_overall_and_all_cause = rbind(
                       paste0("overall_and_all_cause_full_model_outputs_", 
                              cohort, "_2020_2021_specific_sensitivity.csv"))) 
   %>% mutate(model_type = "full", codelist_type = "specific", 
-             investigation_type = "sensitivity", subset = "2019_20"),
+             investigation_type = "sensitivity", subset = "2020_21"),
   read_csv(here::here("output", "results", "models", "overall_and_all_cause_specific_sensitivity", 
                       paste0("overall_and_all_cause_ethnicity_model_outputs_", 
                              cohort, "_2021_2022_specific_sensitivity.csv"))) 
@@ -323,7 +323,7 @@ collated_model_outputs_overall_and_all_cause = rbind(
                       paste0("overall_and_all_cause_ethnicity_hh_comp_model_outputs_", 
                              cohort, "_2017_2018_sensitive_sensitivity.csv"))) 
   %>% mutate(model_type = "ethnicity_composition", codelist_type = "sensitive", 
-             investigation_type = "sensitivity", subset = "2016_17"),
+             investigation_type = "sensitivity", subset = "2017_18"),
   read_csv(here::here("output", "results", "models", "overall_and_all_cause_specific_sensitivity", 
                       paste0("overall_and_all_cause_ses_hh_comp_model_outputs_", 
                              cohort, "_2017_2018_sensitive_sensitivity.csv"))) 
@@ -438,7 +438,7 @@ collated_model_outputs_overall_and_all_cause = rbind(
                       paste0("overall_and_all_cause_full_model_outputs_", 
                              cohort, "_2020_2021_sensitive_sensitivity.csv"))) 
   %>% mutate(model_type = "full", codelist_type = "sensitive", 
-             investigation_type = "sensitivity", subset = "2019_20"),
+             investigation_type = "sensitivity", subset = "2020_21"),
   read_csv(here::here("output", "results", "models", "overall_and_all_cause_specific_sensitivity", 
                       paste0("overall_and_all_cause_ethnicity_model_outputs_", 
                              cohort, "_2021_2022_sensitive_sensitivity.csv"))) 
