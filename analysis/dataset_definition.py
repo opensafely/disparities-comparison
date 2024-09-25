@@ -2201,33 +2201,34 @@ if study_start_date >= covid_season_min :
   )
 
 #overall mortality
-if study_start_date >= covid_season_min :
+if codelist_type == "sensitive" :
+  if study_start_date >= covid_season_min :
+    
+    #overall mortality date
+    dataset.overall_resp_mortality_date = (case(
+      when(cause_of_death_matches(codelists
+      .rsv_secondary_codelist)).then(dataset.death_date),
+      when(cause_of_death_matches(codelists
+      .flu_secondary_codelist)).then(dataset.death_date),
+      when(cause_of_death_matches(codelists
+      .covid_secondary_codelist)).then(dataset.death_date),
+      when(cause_of_death_matches(codelists
+      .respiratory_virus_secondary_codelist))
+      .then(dataset.death_date), otherwise = None)
+    )
   
-  #overall mortality date
-  dataset.overall_resp_mortality_date = (case(
-    when(cause_of_death_matches(codelists
-    .rsv_secondary_codelist)).then(dataset.death_date),
-    when(cause_of_death_matches(codelists
-    .flu_secondary_codelist)).then(dataset.death_date),
-    when(cause_of_death_matches(codelists
-    .covid_secondary_codelist)).then(dataset.death_date),
-    when(cause_of_death_matches(codelists
-    .respiratory_virus_secondary_codelist))
-    .then(dataset.death_date), otherwise = None)
-  )
-
-else:
-
-  #overall mortality date
-  dataset.overall_resp_mortality_date = (case(
-    when(cause_of_death_matches(codelists
-    .rsv_secondary_codelist)).then(dataset.death_date),
-    when(cause_of_death_matches(codelists
-    .flu_secondary_codelist)).then(dataset.death_date),
-    when(cause_of_death_matches(codelists
-    .respiratory_virus_secondary_codelist))
-    .then(dataset.death_date), otherwise = None)
-  )
+  else:
+  
+    #overall mortality date
+    dataset.overall_resp_mortality_date = (case(
+      when(cause_of_death_matches(codelists
+      .rsv_secondary_codelist)).then(dataset.death_date),
+      when(cause_of_death_matches(codelists
+      .flu_secondary_codelist)).then(dataset.death_date),
+      when(cause_of_death_matches(codelists
+      .respiratory_virus_secondary_codelist))
+      .then(dataset.death_date), otherwise = None)
+    )
 
 ## comorbidities for secondary investigation 
 
