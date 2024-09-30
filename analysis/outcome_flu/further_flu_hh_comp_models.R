@@ -39,45 +39,12 @@ df_input <- read_feather(
 
 # } else {
 
-#flu primary by household composition
-flu_mild_hh_comp_further <- glm(flu_primary_inf ~ composition_category + 
-                                  age_band + sex + 
-                                  rurality_classification + 
-                                  prior_flu_vaccination +
-                                  flu_vaccination +
-                                  offset(log(time_flu_primary)),
-                                data = df_input, family = poisson)
-flu_mild_hh_comp_further_output <- tidy(flu_mild_hh_comp_further)
-
-#flu secondary by household composition
-flu_severe_hh_comp_further <- glm(flu_secondary_inf ~ composition_category + 
-                                    age_band + sex + 
-                                    rurality_classification + 
-                                    prior_flu_vaccination +
-                                    flu_vaccination +
-                                    offset(log(time_flu_secondary)),
-                                  data = df_input, family = poisson)
-flu_severe_hh_comp_further_output <- tidy(flu_severe_hh_comp_further)
-
-#flu mortality by household composition
-flu_mortality_hh_comp_further <- glm(flu_mortality ~ composition_category + 
-                                       age_band + sex + 
-                                       rurality_classification + 
-                                       prior_flu_vaccination +
-                                       flu_vaccination +
-                                       offset(log(time_flu_mortality)),
-                                     data = df_input, family = poisson)
-flu_mortality_hh_comp_further_output <- tidy(flu_mortality_hh_comp_further)
-
-if (study_start_date >= covid_season_min) {
   #flu primary by household composition
   flu_mild_hh_comp_further <- glm(flu_primary_inf ~ composition_category + 
                                     age_band + sex + 
                                     rurality_classification + 
                                     prior_flu_vaccination +
                                     flu_vaccination +
-                                    time_since_last_covid_vaccination +
-                                    covid_vaccination +
                                     offset(log(time_flu_primary)),
                                   data = df_input, family = poisson)
   flu_mild_hh_comp_further_output <- tidy(flu_mild_hh_comp_further)
@@ -85,11 +52,9 @@ if (study_start_date >= covid_season_min) {
   #flu secondary by household composition
   flu_severe_hh_comp_further <- glm(flu_secondary_inf ~ composition_category + 
                                       age_band + sex + 
-                                      rurality_classification +
+                                      rurality_classification + 
                                       prior_flu_vaccination +
                                       flu_vaccination +
-                                      time_since_last_covid_vaccination +
-                                      covid_vaccination +
                                       offset(log(time_flu_secondary)),
                                     data = df_input, family = poisson)
   flu_severe_hh_comp_further_output <- tidy(flu_severe_hh_comp_further)
@@ -100,32 +65,15 @@ if (study_start_date >= covid_season_min) {
                                          rurality_classification + 
                                          prior_flu_vaccination +
                                          flu_vaccination +
-                                         time_since_last_covid_vaccination +
-                                         covid_vaccination +
                                          offset(log(time_flu_mortality)),
                                        data = df_input, family = poisson)
-  flu_severe_mild_hh_comp_further_output <- tidy(flu_mortality_hh_comp_further)
-}
+  flu_mortality_hh_comp_further_output <- tidy(flu_mortality_hh_comp_further)
 # }
 
 #define a vector of names for the model outputs
-if (study_start_date < covid_season_min) {
-  model_names <- c("Mild Influenza by Household Composition",
-                   "Severe Influenza by Household Composition", 
-                   "Influenza Mortality by Household Composition")
-} else if (codelist_type == "sensitive") {
-  model_names <- c("Mild Influenza by Household Composition", 
-                   "Severe Influenza by Household Composition", 
-                   "Influenza Mortality by Household Composition")
-} else if (study_start_date >= covid_season_min) {
-  model_names <- c("Mild Influenza by Household Composition",
-                   "Severe Influenza by Household Composition", 
-                   "Influenza Mortality by Household Composition")
-} else {
-  model_names <- c("Mild Influenza by Household Composition", 
-                   "Severe Influenza by Household Composition", 
-                   "Influenza Mortality by Household Composition")
-}
+model_names <- c("Mild Influenza by Household Composition",
+                 "Severe Influenza by Household Composition", 
+                 "Influenza Mortality by Household Composition")
 
 #create the model outputs list
 model_outputs_list <- list(flu_mild_hh_comp_further_output,

@@ -65,64 +65,12 @@ df_input <- read_feather(
                                                offset(log(time_flu_mortality)),
                                              data = df_input, family = poisson)
   flu_mortality_ethnicity_ses_further_output <- tidy(flu_mortality_ethnicity_ses_further)
-
-  if (study_start_date >= covid_season_min) {
-    #flu primary by ethnicity and socioeconomic status
-    flu_mild_ethnicity_ses_further <- glm(flu_primary_inf ~ latest_ethnicity_group +
-                                            imd_quintile + age_band + sex + 
-                                            rurality_classification + 
-                                            prior_flu_vaccination +
-                                            flu_vaccination +
-                                            time_since_last_covid_vaccination +
-                                            covid_vaccination +
-                                            offset(log(time_flu_primary)), 
-                                          data = df_input, family = poisson)
-    flu_mild_ethnicity_ses_further_output <- tidy(flu_mild_ethnicity_ses_further)
-    
-    #flu secondary by ethnicity and socioeconomic status
-    flu_severe_ethnicity_ses_further <- glm(flu_secondary_inf ~ latest_ethnicity_group +
-                                              imd_quintile + age_band + sex + 
-                                              rurality_classification + 
-                                              prior_flu_vaccination +
-                                              flu_vaccination +
-                                              time_since_last_covid_vaccination +
-                                              covid_vaccination +
-                                              offset(log(time_flu_secondary)),
-                                            data = df_input, family = poisson)
-    flu_severe_ethnicity_ses_further_output <- tidy(flu_severe_ethnicity_ses_further)
-    
-    #flu mortality by ethnicity and socioeconomic status
-    flu_mortality_ethnicity_ses_further <- glm(flu_mortality ~ latest_ethnicity_group +
-                                                 imd_quintile + age_band + sex + 
-                                                 rurality_classification + 
-                                                 prior_flu_vaccination +
-                                                 flu_vaccination +
-                                                 time_since_last_covid_vaccination +
-                                                 covid_vaccination +
-                                                 offset(log(time_flu_mortality)),
-                                               data = df_input, family = poisson)
-    flu_mortality_ethnicity_ses_further_output <- tidy(flu_mortality_ethnicity_ses_further)
-  }
 #}
 
 #define a vector of names for the model outputs
-if (study_start_date < covid_season_min) {
-  model_names <- c("Mild Influenza by Ethnicity and IMD Quintile", 
-                   "Severe Influenza by Ethnicity and IMD Quintile",
-                   "Influenza Mortality By Ethnicity and IMD Quintile")
-} else if (codelist_type == "sensitive") {
-  model_names <- c("Mild Influenza by Ethnicity and IMD Quintile", 
-                   "Severe Influenza by Ethnicity and IMD Quintile",
-                   "Influenza Mortality By Ethnicity and IMD Quintile")
-} else if (study_start_date >= covid_season_min) {
-  model_names <- c("Mild Influenza by Ethnicity and IMD Quintile", 
-                   "Severe Influenza by Ethnicity and IMD Quintile",
-                   "Influenza Mortality By Ethnicity and IMD Quintile")
-} else {
-  model_names <- c("Mild Influenza by Ethnicity and IMD Quintile",
-                   "Severe Influenza by Ethnicity and IMD Quintile",
-                   "Influenza Mortality By Ethnicity and IMD Quintile")
-}
+model_names <- c("Mild Influenza by Ethnicity and IMD Quintile", 
+                 "Severe Influenza by Ethnicity and IMD Quintile",
+                 "Influenza Mortality By Ethnicity and IMD Quintile")
 
 #create the model outputs list
 model_outputs_list <- list(flu_mild_ethnicity_ses_further_output, 

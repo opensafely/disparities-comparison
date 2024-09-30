@@ -65,61 +65,12 @@ flu_mortality_ethnicity_further <- glm(flu_mortality ~ latest_ethnicity_group +
                                          offset(log(time_flu_mortality)),
                                        data = df_input, family = poisson)
 flu_mortality_ethnicity_further_output <- tidy(flu_mortality_ethnicity_further)
-
-if (study_start_date >= covid_season_min) {
-  #flu primary by ethnicity
-  flu_mild_ethnicity_further <- glm(flu_primary_inf ~ latest_ethnicity_group + 
-                                      age_band + sex + 
-                                      rurality_classification + 
-                                      prior_flu_vaccination +
-                                      flu_vaccination +
-                                      time_since_last_covid_vaccination +
-                                      covid_vaccination +
-                                      offset(log(time_flu_primary)),
-                                    data = df_input, family = poisson)
-  flu_mild_ethnicity_further_output <- tidy(flu_mild_ethnicity_further)
-  
-  #flu secondary by ethnicity
-  flu_severe_ethnicity_further <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
-                                        age_band + sex + 
-                                        rurality_classification + 
-                                        prior_flu_vaccination +
-                                        flu_vaccination +
-                                        time_since_last_covid_vaccination +
-                                        covid_vaccination +
-                                        offset(log(time_flu_secondary)),
-                                      data = df_input, family = poisson)
-  flu_severe_ethnicity_further_output <- tidy(flu_severe_ethnicity_further)
-  
-  #flu mortality by ethnicity
-  flu_mortality_ethnicity_further <- glm(flu_mortality ~ latest_ethnicity_group +
-                                           age_band + sex + 
-                                           rurality_classification +
-                                           prior_flu_vaccination +
-                                           flu_vaccination +
-                                           time_since_last_covid_vaccination +
-                                           covid_vaccination +
-                                           offset(log(time_flu_mortality)),
-                                         data = df_input, family = poisson)
-  flu_mortality_ethnicity_further_output <- tidy(flu_mortality_ethnicity_further)
-}
 # }
 
 #define a vector of names for the model outputs
-if (study_start_date < covid_season_min) {
-  model_names <- c("Mild Influenza by Ethnicity", "Severe Influenza by Ethnicity", 
-                   "Influenza Mortality by Ethnicity")
-} else if (codelist_type == "sensitive") {
-  model_names <- c("Mild Influenza by Ethnicity", "Severe Influenza by Ethnicity", 
-                   "Influenza Mortality by Ethnicity")
-} else if (study_start_date >= covid_season_min) {
-  model_names <- c("Mild Influenza by Ethnicity", "Severe Influenza by Ethnicity", 
-                   "Influenza Mortality by Ethnicity")
-} else {
-  model_names <- c("Mild Influenza by Ethnicity", "Severe Influenza by Ethnicity", 
-                   "Influenza Mortality by Ethnicity")
-}
-
+model_names <- c("Mild Influenza by Ethnicity", "Severe Influenza by Ethnicity", 
+                 "Influenza Mortality by Ethnicity")
+  
 #create the model outputs list
 model_outputs_list <- list(flu_mild_ethnicity_further_output, 
                            flu_severe_ethnicity_further_output, 

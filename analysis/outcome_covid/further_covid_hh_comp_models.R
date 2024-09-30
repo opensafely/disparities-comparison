@@ -44,8 +44,6 @@ if (study_start_date >= covid_season_min) {
   covid_mild_hh_comp_further <- glm(covid_primary_inf ~ composition_category + 
                                       age_band + sex + 
                                       rurality_classification + 
-                                      prior_flu_vaccination +
-                                      flu_vaccination +
                                       time_since_last_covid_vaccination +
                                       covid_vaccination + 
                                       offset(log(time_covid_primary)),
@@ -56,8 +54,6 @@ if (study_start_date >= covid_season_min) {
   covid_severe_hh_comp_further <- glm(covid_secondary_inf ~ composition_category + 
                                         age_band + sex + 
                                         rurality_classification + 
-                                        prior_flu_vaccination +
-                                        flu_vaccination +
                                         time_since_last_covid_vaccination +
                                         covid_vaccination +
                                         offset(log(time_covid_secondary)),
@@ -68,8 +64,6 @@ if (study_start_date >= covid_season_min) {
   covid_mortality_hh_comp_further <- glm(covid_mortality ~ composition_category +
                                            age_band + sex + 
                                            rurality_classification + 
-                                           prior_flu_vaccination +
-                                           flu_vaccination +
                                            time_since_last_covid_vaccination +
                                            covid_vaccination +
                                            offset(log(time_covid_mortality)),

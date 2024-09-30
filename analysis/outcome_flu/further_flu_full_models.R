@@ -32,8 +32,8 @@ df_input <- read_feather(
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
   
-  #add models for infants subgroup
-  #} else if (cohort == "infants_subgroup") {
+#add models for infants subgroup
+#} if (cohort == "infants_subgroup") {
   
 #} else {
   #flu primary by ethnicity, socioeconomic status and household composition
@@ -62,61 +62,12 @@ df_input <- read_feather(
                                       offset(log(time_flu_mortality)),
                                     data = df_input, family = poisson)
   flu_mortality_full_further_output <- tidy(flu_mortality_full_further)
-  
-  if (study_start_date >= covid_season_min) {
-    #flu primary by ethnicity, socioeconomic status and household composition
-    flu_mild_full_further <- glm(flu_primary_inf ~ latest_ethnicity_group + 
-                                   imd_quintile + composition_category + 
-                                   age_band + sex + rurality_classification + 
-                                   prior_flu_vaccination + flu_vaccination +
-                                   time_since_last_covid_vaccination +
-                                   covid_vaccination +
-                                   offset(log(time_flu_primary)), 
-                                 data = df_input, family = poisson)
-    flu_mild_full_further_output <- tidy(flu_mild_full_further)
-    
-    #flu secondary by ethnicity, socioeconomic status and household composition
-    flu_severe_full_further <- glm(flu_secondary_inf ~ latest_ethnicity_group +
-                                     imd_quintile + composition_category + 
-                                     age_band + sex + rurality_classification +
-                                     prior_flu_vaccination + flu_vaccination +
-                                     time_since_last_covid_vaccination +
-                                     covid_vaccination +
-                                     offset(log(time_flu_secondary)),
-                                   data = df_input, family = poisson)
-    flu_severe_full_further_output <- tidy(flu_severe_full_further)
-    
-    #flu mortality by ethnicity, socioeconomic status and household composition
-    flu_mortality_full_further <- glm(flu_mortality ~ latest_ethnicity_group + 
-                                        imd_quintile + composition_category + 
-                                        age_band + sex + rurality_classification + 
-                                        prior_flu_vaccination + flu_vaccination +
-                                        time_since_last_covid_vaccination +
-                                        covid_vaccination +
-                                        offset(log(time_flu_mortality)),
-                                      data = df_input, family = poisson)
-    flu_mortality_full_further_output <- tidy(flu_mortality_full_further)
-  }
 #}
 
 #define a vector of names for the model outputs
-if (study_start_date < covid_season_min) {
-  model_names <- c("Mild Influenza by Ethnicity, IMD Quintile and Household Composition", 
-                   "Severe Influenza by Ethnicity, IMD Quintile and Household Composition",
-                   "Influenza Mortality By Ethnicity, IMD Quintile and Household Composition")
-} else if (codelist_type == "sensitive") {
-  model_names <- c("Mild Influenza by Ethnicity, IMD Quintile and Household Composition", 
-                   "Severe Influenza by Ethnicity, IMD Quintile and Household Composition",
-                   "Influenza Mortality By Ethnicity, IMD Quintile and Household Composition")
-} else if (study_start_date >= covid_season_min) {
-  model_names <- c("Mild Influenza by Ethnicity, IMD Quintile and Household Composition", 
-                   "Severe Influenza by Ethnicity, IMD Quintile and Household Composition",
-                   "Influenza Mortality By Ethnicity, IMD Quintile and Household Composition")
-} else {
-  model_names <- c("Mild Influenza by Ethnicity, IMD Quintile and Household Composition",
-                   "Severe Influenza by Ethnicity, IMD Quintile and Household Composition",
-                   "Influenza Mortality By Ethnicity, IMD Quintile and Household Composition")
-}
+model_names <- c("Mild Influenza by Ethnicity, IMD Quintile and Household Composition", 
+                 "Severe Influenza by Ethnicity, IMD Quintile and Household Composition",
+                 "Influenza Mortality By Ethnicity, IMD Quintile and Household Composition")
 
 #create the model outputs list
 model_outputs_list <- list(flu_mild_full_further_output, 

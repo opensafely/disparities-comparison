@@ -41,8 +41,6 @@ df_input <- read_feather(
     covid_mild_full_further <- glm(covid_primary_inf ~ latest_ethnicity_group + 
                                      imd_quintile + composition_category +
                                      age_band + sex + rurality_classification +
-                                     prior_flu_vaccination +
-                                     flu_vaccination +
                                      time_since_last_covid_vaccination +
                                      covid_vaccination +
                                      offset(log(time_covid_primary)),
@@ -53,8 +51,6 @@ df_input <- read_feather(
     covid_severe_full_further <- glm(covid_secondary_inf ~ latest_ethnicity_group + 
                                        imd_quintile + composition_category +
                                        age_band + sex + rurality_classification + 
-                                       prior_flu_vaccination +
-                                       flu_vaccination +
                                        time_since_last_covid_vaccination +
                                        covid_vaccination +
                                        offset(log(time_covid_secondary)),
@@ -65,8 +61,6 @@ df_input <- read_feather(
     covid_mortality_full_further <- glm(covid_mortality ~ latest_ethnicity_group +
                                           imd_quintile + age_band + sex + 
                                           rurality_classification + 
-                                          prior_flu_vaccination +
-                                          flu_vaccination +
                                           time_since_last_covid_vaccination +
                                           covid_vaccination +
                                           offset(log(time_covid_mortality)),
