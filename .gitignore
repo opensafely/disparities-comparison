@@ -13,3 +13,4 @@ venv/
 .RData
 /IMG/*
 filtered_actions.txt
+.devcontainer/ehrql-main/
