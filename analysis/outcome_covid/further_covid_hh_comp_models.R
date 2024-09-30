@@ -42,28 +42,25 @@ df_input <- read_feather(
 if (study_start_date >= covid_season_min) {
   #covid primary by household composition
   covid_mild_hh_comp_further <- glm(covid_primary_inf ~ composition_category + 
-                                      age_band + sex + 
-                                      rurality_classification + 
+                                      age_band + sex + rurality_classification + 
                                       time_since_last_covid_vaccination +
-                                      covid_vaccination + 
+                                      covid_vaccination_mild + 
                                       offset(log(time_covid_primary)),
                                     data = df_input, family = poisson)
   covid_mild_hh_comp_further_output <- tidy(covid_mild_hh_comp_further)
   
   #covid secondary by household composition
   covid_severe_hh_comp_further <- glm(covid_secondary_inf ~ composition_category + 
-                                        age_band + sex + 
-                                        rurality_classification + 
+                                        age_band + sex + rurality_classification + 
                                         time_since_last_covid_vaccination +
-                                        covid_vaccination +
+                                        covid_vaccination_severe +
                                         offset(log(time_covid_secondary)),
                                       data = df_input, family = poisson)
   covid_severe_hh_comp_further_output <- tidy(covid_severe_hh_comp_further)
   
   #covid mortality by household composition
   covid_mortality_hh_comp_further <- glm(covid_mortality ~ composition_category +
-                                           age_band + sex + 
-                                           rurality_classification + 
+                                           age_band + sex + rurality_classification + 
                                            time_since_last_covid_vaccination +
                                            covid_vaccination +
                                            offset(log(time_covid_mortality)),

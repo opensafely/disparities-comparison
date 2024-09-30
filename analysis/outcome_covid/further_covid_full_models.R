@@ -42,7 +42,7 @@ df_input <- read_feather(
                                      imd_quintile + composition_category +
                                      age_band + sex + rurality_classification +
                                      time_since_last_covid_vaccination +
-                                     covid_vaccination +
+                                     covid_vaccination_mild +
                                      offset(log(time_covid_primary)),
                            data = df_input, family = poisson)
     covid_mild_full_further_output <- tidy(covid_mild_full_further)
@@ -52,7 +52,7 @@ df_input <- read_feather(
                                        imd_quintile + composition_category +
                                        age_band + sex + rurality_classification + 
                                        time_since_last_covid_vaccination +
-                                       covid_vaccination +
+                                       covid_vaccination_severe +
                                        offset(log(time_covid_secondary)),
                              data = df_input, family = poisson)
     covid_severe_full_further_output <- tidy(covid_severe_full_further)

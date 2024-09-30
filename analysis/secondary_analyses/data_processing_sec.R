@@ -48,17 +48,9 @@ household_comp_vars <- tibble("patient_id" = df_household$patient_id,
 
 df_input <- merge(df_input, household_comp_vars, by = "patient_id")
 
-#subset processed data to include only october-march 
-cols <- str_detect(names(df_input), "date")
-col_names <- colnames(df_input[, cols])
-#remove vaccination dates from the list of columns
-col_names <- col_names[!col_names %in% c(paste0(colnames(df_input[, str_detect(names(df_input), "vaccination")])))]
-df_input_filt <- df_input %>%
-  mutate(across(all_of(col_names), ~if_else(.x >= study_start_date_sens & .x <= study_end_date_sens, .x, NA_Date_)))
-
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(
       date = map2(study_start_date_sens, study_end_date_sens, ~seq(.x, .y, by = 30.44))
     ) %>%
@@ -70,7 +62,7 @@ if(cohort == "infants" | cohort == "infants_subgroup") {
   
 #calculate age bands
 if(cohort == "older_adults") {
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(age_band = case_when(
       age >= 65 & age <= 74 ~ "65-74y",
       age >= 75 & age <= 89 ~ "75-89y",
@@ -78,14 +70,14 @@ if(cohort == "older_adults") {
       TRUE ~ NA_character_)
     )
 } else if(cohort == "adults") {
-df_input_filt <- df_input_filt %>%
+df_input <- df_input %>%
   mutate(age_band = case_when(
     age >= 18 & age <= 39 ~ "18-29y",
     age >= 40 & age <= 64 ~ "40-64y",
     TRUE ~ NA_character_)
   )
 } else if(cohort == "children_adults") {
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(age_band = case_when(
       age >= 2 & age <= 5 ~ "2-5y",
       age >= 6 & age <= 9 ~ "6-9y",
@@ -94,7 +86,7 @@ df_input_filt <- df_input_filt %>%
       TRUE ~ NA_character_)
     )
 } else {
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(age_band = case_when(
       age >= 0 & age <= 2 ~ "0-2m",
       age >= 3 & age <= 5 ~ "3-5m",
@@ -104,10 +96,10 @@ df_input_filt <- df_input_filt %>%
     )
 }
 
-df_input_filt$age_band <- factor(df_input_filt$age_band)
+df_input$age_band <- factor(df_input$age_band)
 
 #data manipulation
-df_input_filt <- df_input_filt %>%
+df_input <- df_input %>%
   mutate(
     #assign ethnicity group
     latest_ethnicity_group = factor(case_when(
@@ -135,10 +127,10 @@ df_input_filt <- df_input_filt %>%
   )
 
 #identify columns with logical values, excluding specified columns
-logical_cols <- which(sapply(df_input_filt, is.logical) & !grepl("primary|secondary|mortality|registered", names(df_input_filt)))
+logical_cols <- which(sapply(df_input, is.logical) & !grepl("primary|secondary|mortality|registered", names(df_input)))
 
 #apply mutation to convert logical columns to factors
-df_input_filt <- df_input_filt %>%
+df_input <- df_input %>%
   mutate(across(
     .cols = all_of(logical_cols), 
     .fns = ~factor(case_when(
@@ -149,7 +141,7 @@ df_input_filt <- df_input_filt %>%
   ))
 
 #more data manipulation
-df_input_filt <- df_input_filt %>%
+df_input <- df_input %>%
   mutate(
     #recode imd quintile 
     imd_quintile = recode(imd_quintile, "1 (most deprived)" = "5 (most deprived)",
@@ -177,7 +169,7 @@ df_input_filt <- df_input_filt %>%
 
 #flu vaccination
 if (cohort != "infants" & cohort != "infants_subgroup") {
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(
     #assign flu vaccination status
     flu_vaccination_immunity_date = flu_vaccination_date + days(10),
@@ -188,9 +180,25 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
   )
 }
 
+#define two vaccinations categories for each outcome type, set vaccination to null
+#if immunity date occurs after outcome date 
+if (cohort != "infants" & cohort != "infants_subgroup") {
+  df_input <- df_input %>%
+    mutate(
+      #define flu_vaccination_mild
+      flu_vaccination_mild = factor(if_else(
+        flu_vaccination_immunity_date <= flu_primary_date, "Yes", "No"
+      )),
+      #define flu_vaccination severe 
+      flu_vaccination_severe = factor(ifelse(
+        flu_vaccination_immunity_date <= flu_secondary_date, "Yes", "No"
+      ))
+    )
+}
+
 #covid vaccination 
 if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(
       time_since_last_covid_vaccination = factor(case_when(
       time_length(difftime(study_start_date_sens, last_covid_vaccination_date, 
@@ -207,7 +215,7 @@ if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "
   )
 }
 if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
-  df_input_filt <- df_input_filt %>% 
+  df_input <- df_input %>% 
     mutate(
       covid_vaccination_immunity_date = covid_vaccination_date + days(10),
       #current covid vaccination status including a lag time
@@ -217,21 +225,37 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
     )
 }
 
+#define two vaccinations categories for each outcome type, set vaccination to null
+#if immunity date occurs after outcome date 
+if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
+  df_input <- df_input %>%
+    mutate(
+      #define covid_vaccination_mild
+      covid_vaccination_mild = factor(if_else(
+        covid_vaccination_immunity_date <= covid_primary_date, "Yes", "No"
+      )),
+      #define covid_vaccination severe 
+      covid_vaccination_severe = factor(ifelse(
+        covid_vaccination_immunity_date <= covid_secondary_date, "Yes", "No"
+      ))
+    )
+}
+
 #re-level factors so they have reference categories for the regression models
-# df_input_filt <- df_input_filt %>% 
+# df_input <- df_input %>% 
 #   mutate(
 #     latest_ethnicity_group = fct_relevel(latest_ethnicity_group, 
 #                              c("White", "Mixed", "Asian or Asian British", 
 #                                "Black or Black British", "Other Ethnic Groups"))
 #   ) %>% arrange(latest_ethnicity_group)
-# df_input_filt <- df_input_filt %>% 
+# df_input <- df_input %>% 
 #   mutate(
 #     rurality_classification = fct_relevel(rurality_classification, 
 #                               c("Urban Major Conurbation", "Urban Minor Conurbation", 
 #                               "Urban City and Town", "Rural Town and Fringe", 
 #                               "Rural Village and Dispersed", "Unknown"))
 #   ) %>% arrange(rurality_classification)
-df_input_filt <- df_input_filt %>% 
+df_input <- df_input %>% 
   mutate(
     composition_category = fct_relevel(composition_category, 
                                        c("Multiple of the Same Generation", "Living Alone", 
@@ -240,10 +264,10 @@ df_input_filt <- df_input_filt %>%
   ) %>% arrange(composition_category)
 
 if (study_start_date == as.Date("2017-09-01")) {
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     select(-contains("flu_"))
   #infer outcomes from event dates 
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(
       #infer presence of mild rsv
       rsv_primary = if_else(
@@ -261,7 +285,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       rsv_mortality = if_else(
         !is.na(rsv_mortality_date), TRUE, FALSE)
     )
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(
       #infer mild case date for rsv 
       rsv_primary_inf_date = case_when(
@@ -296,10 +320,10 @@ if (study_start_date == as.Date("2017-09-01")) {
       rsv_mortality_inf = if_else(rsv_mortality_censor == 0, 1, 0)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     select(-contains("rsv_"))
   #infer outcomes from event dates 
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(
       #infer presence of mild rsv
       flu_primary = if_else(
@@ -317,7 +341,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_mortality = if_else(
         !is.na(flu_mortality_date), TRUE, FALSE)
     )
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(
       #infer mild case date for flu 
       flu_primary_inf_date = case_when(
@@ -352,9 +376,9 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_mortality_inf = if_else(flu_mortality_censor == 0, 1, 0)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     select(-contains(c("rsv_", "flu_")))
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(
       #infer presence of mild covid
       covid_primary = if_else(
@@ -372,7 +396,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       covid_mortality = if_else(
         !is.na(covid_mortality_date), TRUE, FALSE)
     )
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(
       #infer mild case date for covid 
       covid_primary_inf_date = case_when(
@@ -408,14 +432,14 @@ if (study_start_date == as.Date("2017-09-01")) {
     )
 }
 
-df_input_filt <- df_input_filt %>%
+df_input <- df_input %>%
   mutate(
     #infer presence of all cause mortality
     all_cause_mortality_date = death_date,
     all_cause_mortality = if_else(
       !is.na(all_cause_mortality_date), TRUE, FALSE)
   )
-df_input_filt <- df_input_filt %>% 
+df_input <- df_input %>% 
   mutate(
     #infer all cause mortality outcome
     all_cause_mortality_inf_date = case_when(
@@ -432,7 +456,7 @@ df_input_filt <- df_input_filt %>%
 
 #calculate time to event
 if (study_start_date == as.Date("2017-09-01")) {
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(
       #time until mild rsv outcome
       time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
@@ -445,7 +469,7 @@ if (study_start_date == as.Date("2017-09-01")) {
                           study_start_date - days(1), "weeks"), "years")
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(
       #time until mild flu outcome
       time_flu_primary = time_length(difftime(flu_primary_inf_date, 
@@ -458,7 +482,7 @@ if (study_start_date == as.Date("2017-09-01")) {
                                                 study_start_date - days(1), "weeks"), "years")
   )
 } else if (study_start_date == as.Date("2020-09-01")) {
-    df_input_filt <- df_input_filt %>%
+    df_input <- df_input %>%
       mutate(
         #time until mild covid outcome
         time_covid_primary = time_length(difftime(covid_primary_inf_date, 
@@ -472,7 +496,7 @@ if (study_start_date == as.Date("2017-09-01")) {
     )
 }
 
-df_input_filt <- df_input_filt %>%
+df_input <- df_input %>%
   mutate(
     #time until all cause mortality
     time_all_cause_mortality = time_length(difftime(all_cause_mortality_inf_date, 
@@ -483,7 +507,7 @@ df_input_filt <- df_input_filt %>%
 fs::dir_create(here("output", "data"))
 
 #write the new input file
-write_feather(df_input_filt, here::here("output", "data", 
+write_feather(df_input, here::here("output", "data", 
   paste0("input_processed", cohort, "_", year(study_start_date),
          "_", year(study_end_date), "_", codelist_type, 
          "_secondary", ".arrow")))

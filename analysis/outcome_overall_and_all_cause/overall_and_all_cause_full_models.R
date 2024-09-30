@@ -45,7 +45,7 @@ if (cohort == "infants") {
     
     #overall_resp secondary by ethnicity, socioeconomic status and household composition
     overall_resp_severe_full <- glm(overall_resp_secondary_inf ~ latest_ethnicity_group +
-                                    imd_quintile + composition_category +
+                                      imd_quintile + composition_category +
                                       age + sex + rurality_classification + 
                                       offset(log(time_overall_resp_secondary)),
                                     data = df_input, family = poisson)

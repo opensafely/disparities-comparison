@@ -189,6 +189,22 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
   )
 }
 
+#define two vaccinations categories for each outcome type, set vaccination to null
+#if immunity date occurs after outcome date 
+if (cohort != "infants" & cohort != "infants_subgroup") {
+  df_input_filt <- df_input_filt %>%
+    mutate(
+      #define flu_vaccination_mild
+      flu_vaccination_mild = factor(if_else(
+        flu_vaccination_immunity_date <= flu_primary_date, "Yes", "No"
+      )),
+      #define flu_vaccination severe 
+      flu_vaccination_severe = factor(ifelse(
+        flu_vaccination_immunity_date <= flu_secondary_date, "Yes", "No"
+      ))
+    )
+}
+
 #covid vaccination 
 if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
   df_input_filt <- df_input_filt %>%
@@ -214,6 +230,22 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
       #current covid vaccination status including a lag time
       covid_vaccination = factor(if_else(
         is.na(covid_vaccination_immunity_date), "No", "Yes"
+      ))
+    )
+}
+
+#define two vaccinations categories for each outcome type, set vaccination to null
+#if immunity date occurs after outcome date 
+if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
+  df_input_filt <- df_input_filt %>%
+    mutate(
+      #define covid_vaccination_mild
+      covid_vaccination_mild = factor(if_else(
+        covid_vaccination_immunity_date <= covid_primary_date, "Yes", "No"
+      )),
+      #define covid_vaccination severe 
+      covid_vaccination_severe = factor(ifelse(
+        covid_vaccination_immunity_date <= covid_secondary_date, "Yes", "No"
       ))
     )
 }

@@ -31,38 +31,11 @@ df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
-
-if (cohort == "infants") {
-  if (study_start_date >= covid_season_min) {
-    #covid primary by ethnicity and socioeconomic status
-    covid_mild_ethnicity_ses <- glm(covid_primary_inf ~ latest_ethnicity_group + 
-                                      imd_quintile + age + sex + 
-                                      rurality_classification + 
-                                      offset(log(time_covid_primary)),
-                                    data = df_input, family = poisson)
-    covid_mild_ethnicity_ses_output <- tidy(covid_mild_ethnicity_ses)
-    
-    #covid secondary by ethnicity and socioeconomic status
-    covid_severe_ethnicity_ses <- glm(covid_secondary_inf ~ latest_ethnicity_group + 
-                                        imd_quintile + age + sex + 
-                                        rurality_classification + 
-                                        offset(log(time_covid_secondary)),
-                                      data = df_input, family = poisson)
-    covid_severe_ethnicity_ses_output <- tidy(covid_severe_ethnicity_ses)
-    
-    #covid mortality by ethnicity and socioeconomic status
-    covid_mortality_ethnicity_ses <- glm(covid_mortality ~ latest_ethnicity_group + 
-                                           imd_quintile + age + sex + 
-                                           rurality_classification + 
-                                           offset(log(time_covid_mortality)),
-                                         data = df_input, family = poisson)
-    covid_mortality_ethnicity_ses_output <- tidy(covid_mortality_ethnicity_ses)
-  }
   
-  #add models for infants subgroup
-  #} else if (cohort == "infants_subgroup") {
+#add models for infants subgroup
+#} if (cohort == "infants_subgroup") {
   
-} else {
+#} else {
   if (study_start_date >= covid_season_min) {
     #covid primary by ethnicity and socioeconomic status
     covid_mild_ethnicity_ses <- glm(covid_primary_inf ~ latest_ethnicity_group + 
@@ -88,7 +61,7 @@ if (cohort == "infants") {
                                          data = df_input, family = poisson)
     covid_mortality_ethnicity_ses_output <- tidy(covid_mortality_ethnicity_ses)
   }
-}
+#}
 
 #define a vector of names for the model outputs
 model_names <- c("Mild COVID-19 by Ethnicity and IMD Quintile", 

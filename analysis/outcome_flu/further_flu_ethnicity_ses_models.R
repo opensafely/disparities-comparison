@@ -41,7 +41,7 @@ df_input <- read_feather(
                                           imd_quintile + age_band + sex + 
                                           rurality_classification + 
                                           prior_flu_vaccination +
-                                          flu_vaccination +
+                                          flu_vaccination_mild +
                                           offset(log(time_flu_primary)), 
                                 data = df_input, family = poisson)
   flu_mild_ethnicity_ses_further_output <- tidy(flu_mild_ethnicity_ses_further)
@@ -51,7 +51,7 @@ df_input <- read_feather(
                                             imd_quintile + age_band + sex +
                                             rurality_classification + 
                                             prior_flu_vaccination +
-                                            flu_vaccination +
+                                            flu_vaccination_severe +
                                             offset(log(time_flu_secondary)),
                                           data = df_input, family = poisson)
   flu_severe_ethnicity_ses_further_output <- tidy(flu_severe_ethnicity_ses_further)

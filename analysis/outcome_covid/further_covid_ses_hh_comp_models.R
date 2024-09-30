@@ -38,28 +38,34 @@ df_input <- read_feather(
 #} else {
   if (study_start_date >= covid_season_min) {
     #covid primary by socioeconomic status and household composition
-    covid_mild_ses_hh_comp <- glm(covid_primary_inf ~ imd_quintile + 
-                                    composition_category + age_band + sex + 
-                                    rurality_classification +
-                                    offset(log(time_covid_primary)),
-                                  data = df_input, family = poisson)
-    covid_mild_ses_hh_comp_output <- tidy(covid_mild_ses_hh_comp)
+    covid_mild_ses_hh_comp_further <- glm(covid_primary_inf ~ imd_quintile + 
+                                            composition_category + age_band + 
+                                            sex + rurality_classification +
+                                            time_since_last_covid_vaccination +
+                                            covid_vaccination_mild +
+                                            offset(log(time_covid_primary)),
+                                          data = df_input, family = poisson)
+    covid_mild_ses_hh_comp_further_output <- tidy(covid_mild_ses_hh_comp_further)
     
     #covid secondary by socioeconomic status and household composition
-    covid_severe_ses_hh_comp <- glm(covid_secondary_inf ~ imd_quintile + 
-                                      composition_category + age_band + sex + 
-                                      rurality_classification + 
-                                      offset(log(time_covid_secondary)),
-                                    data = df_input, family = poisson)
-    covid_severe_ses_hh_comp_output <- tidy(covid_severe_ses_hh_comp)
+    covid_severe_ses_hh_comp_further <- glm(covid_secondary_inf ~ imd_quintile + 
+                                              composition_category + age_band + 
+                                              sex + rurality_classification + 
+                                              time_since_last_covid_vaccination +
+                                              covid_vaccination_severe +
+                                              offset(log(time_covid_secondary)),
+                                            data = df_input, family = poisson)
+    covid_severe_ses_hh_comp_further_output <- tidy(covid_severe_ses_hh_comp_further)
     
     #covid mortality by socioeconomic status and household composition
-    covid_mortality_ses_hh_comp <- glm(covid_mortality ~ imd_quintile + 
-                                         composition_category + age_band + sex + 
-                                         rurality_classification + 
-                                         offset(log(time_covid_mortality)),
-                                       data = df_input, family = poisson)
-    covid_mortality_ses_hh_comp_output <- tidy(covid_mortality_ses_hh_comp)
+    covid_mortality_ses_hh_comp_further <- glm(covid_mortality ~ imd_quintile + 
+                                                 composition_category + age_band + 
+                                                 sex + rurality_classification +
+                                                 time_since_last_covid_vaccination +
+                                                 covid_vaccination +
+                                                 offset(log(time_covid_mortality)),
+                                               data = df_input, family = poisson)
+    covid_mortality_ses_hh_comp_further_output <- tidy(covid_mortality_ses_hh_comp_further)
   }
 #}
 
@@ -69,9 +75,9 @@ model_names <- c("Mild COVID-19 by IMD Quintile and Household Composition",
                  "COVID-19 Mortality by IMD Quintile and Household Composition")
 
 #create the model outputs list
-model_outputs_list <- list(covid_mild_ses_hh_comp_output, 
-                           covid_severe_ses_hh_comp_output,
-                           covid_mortality_ses_hh_comp_output)
+model_outputs_list <- list(covid_mild_ses_hh_comp_further_output, 
+                           covid_severe_ses_hh_comp_further_output,
+                           covid_mortality_ses_hh_comp_further_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {
@@ -86,14 +92,14 @@ if (length(args) == 0) {
   model_outputs %>%
     write_csv(file = paste0(here::here("output", "results", "models",
                             paste0("covid_", investigation_type)), "/", 
-                            "covid_ses_hh_comp_model_outputs_", cohort, "_", 
-                            year(study_start_date), "_", year(study_end_date),
+                            "further_covid_ses_hh_comp_model_outputs_", cohort, 
+                            "_", year(study_start_date), "_", year(study_end_date),
                             "_", codelist_type, "_", investigation_type, ".csv"))
 }  else{
   model_outputs %>%
     write_csv(path = paste0(here::here("output", "results", "models", 
                             paste0("covid_", investigation_type)), "/", 
-                            "covid_ses_hh_comp_model_outputs_", cohort, "_", 
-                            year(study_start_date), "_", year(study_end_date), 
+                            "further_covid_ses_hh_comp_model_outputs_", cohort, 
+                            "_", year(study_start_date), "_", year(study_end_date), 
                             "_", codelist_type, "_", investigation_type, ".csv"))
 }

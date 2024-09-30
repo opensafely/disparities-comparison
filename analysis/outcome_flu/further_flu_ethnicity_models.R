@@ -41,27 +41,25 @@ df_input <- read_feather(
 #flu primary by ethnicity
 flu_mild_ethnicity_further <- glm(flu_primary_inf ~ latest_ethnicity_group + 
                                     age_band + sex + rurality_classification + 
-                                    prior_flu_vaccination + flu_vaccination +
+                                    prior_flu_vaccination + 
+                                    flu_vaccination_mild +
                                     offset(log(time_flu_secondary)),
                                   data = df_input, family = poisson)
 flu_mild_ethnicity_further_output <- tidy(flu_mild_ethnicity_further)
 
 #flu secondary by ethnicity
 flu_severe_ethnicity_further <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
-                                      age_band + sex + 
-                                      rurality_classification + 
+                                      age_band + sex + rurality_classification + 
                                       prior_flu_vaccination +
-                                      flu_vaccination +
+                                      flu_vaccination_severe +
                                       offset(log(time_flu_secondary)),
                                     data = df_input, family = poisson)
 flu_severe_ethnicity_further_output <- tidy(flu_severe_ethnicity_further)
 
 #flu mortality by ethnicity
 flu_mortality_ethnicity_further <- glm(flu_mortality ~ latest_ethnicity_group + 
-                                         age_band + sex + 
-                                         rurality_classification + 
-                                         prior_flu_vaccination +
-                                         flu_vaccination +
+                                         age_band + sex + rurality_classification + 
+                                         prior_flu_vaccination + flu_vaccination +
                                          offset(log(time_flu_mortality)),
                                        data = df_input, family = poisson)
 flu_mortality_ethnicity_further_output <- tidy(flu_mortality_ethnicity_further)
