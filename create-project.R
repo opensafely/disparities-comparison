@@ -1841,7 +1841,7 @@ action_sensitivity <- function(cohort, season, dates, season_start_date,
       needs = list(glue("generate_dataset_{cohort}_{season}_{codelist_type}_primary"),
                    glue("process_household_information_{season}")),
       moderately_sensitive = lst(
-        csv = glue("output/input_processed_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+        csv = glue("output/data/input_processed_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
     ),
     
     action(
@@ -1933,7 +1933,7 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
       needs = list(glue("generate_dataset_{cohort}_{season}_{codelist_type}_primary"),
                    glue("process_household_information_{season}")),
       moderately_sensitive = lst(
-        csv = glue("output/input_processed_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
+        csv = glue("output/data/input_processed_{cohort}_{dates}_{codelist_type}_sensitivity.csv")),
     ),
     
     action(
