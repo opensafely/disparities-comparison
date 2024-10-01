@@ -186,12 +186,16 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
   df_input <- df_input %>%
     mutate(
       #define flu_vaccination_mild
-      flu_vaccination_mild = factor(if_else(
-        flu_vaccination_immunity_date <= flu_primary_date, "Yes", "No"
+      flu_vaccination_mild = factor(case_when(
+        flu_vaccination_immunity_date > flu_primary_date ~ "No",
+        is.na(flu_vaccination_immunity_date) ~ "No",
+        TRUE ~ "Yes"
       )),
       #define flu_vaccination severe 
-      flu_vaccination_severe = factor(ifelse(
-        flu_vaccination_immunity_date <= flu_secondary_date, "Yes", "No"
+      flu_vaccination_severe = factor(case_when(
+        flu_vaccination_immunity_date > flu_secondary_date ~ "No",
+        is.na(flu_vaccination_immunity_date) ~ "No",
+        TRUE ~ "Yes"
       ))
     )
 }
@@ -231,12 +235,16 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
   df_input <- df_input %>%
     mutate(
       #define covid_vaccination_mild
-      covid_vaccination_mild = factor(if_else(
-        covid_vaccination_immunity_date <= covid_primary_date, "Yes", "No"
+      covid_vaccination_mild = fct_rev(factor(case_when(
+        covid_vaccination_immunity_date > covid_primary_date ~ "No",
+        is.na(covid_vaccination_immunity_date) ~ "No",
+        TRUE ~ "Yes")
       )),
       #define covid_vaccination severe 
-      covid_vaccination_severe = factor(ifelse(
-        covid_vaccination_immunity_date <= covid_secondary_date, "Yes", "No"
+      covid_vaccination_severe = factor(case_when(
+        covid_vaccination_immunity_date > covid_secondary_date ~ "No",
+        is.na(covid_vaccination_immunity_date) ~ "No",
+        TRUE ~ "Yes"
       ))
     )
 }
@@ -508,6 +516,6 @@ fs::dir_create(here("output", "data"))
 
 #write the new input file
 write_feather(df_input, here::here("output", "data", 
-  paste0("input_processed", cohort, "_", year(study_start_date),
+  paste0("input_processed_", cohort, "_", year(study_start_date),
          "_", year(study_end_date), "_", codelist_type, 
          "_secondary", ".arrow")))
