@@ -206,12 +206,16 @@ if (study_start_date >= covid_season_min) {
                  "all_cause_mortality")
 }
 
+results <- results %>%
+  slice(match(row_order, results$outcome))
+
 #final results table
 if (study_start_date >= covid_season_min) {
   final_results <- data.frame(
-    Outcome = c("All-cause mortality", "COVID mild", "COVID mortality",
-                "COVID severe", "Flu mild", "Flu mortality", 
-                "Flu severe", "RSV mortality", "RSV mild", "RSV severe"),
+    Outcome = c("RSV Mild", "RSV Severe", "RSV Mortality", 
+                "Flu Mild", "Flu Severe", "Flu Mortality", 
+                "COVID Mild", "COVID Severe", "COVID Mortality", 
+                "All-cause mortality"),
     PYears = results$person_years,
     Events = results$events,
     Rate = results$incidence_rate,
@@ -232,11 +236,12 @@ if (study_start_date >= covid_season_min) {
   )
 } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   final_results <- data.frame(
-    Outcome = c("All-cause mortality", "COVID mild", "COVID mortality",
-                "COVID severe", "Flu mild", "Flu mortality", 
-                "Flu severe", "RSV mortality", "RSV mild", "RSV severe",
+    Outcome = c("RSV Mild", "RSV Severe", "RSV Mortality", 
+                "Flu Mild", "Flu Severe", "Flu Mortality", 
+                "COVID Mild", "COVID Severe", "COVID Mortality", 
                 "Overall respiratory mild", "Overall respiratory mortality",
-                "Overall respiratory severe"),
+                "Overall respiratory severe",
+                "All-cause mortality"),
     PYears = results$person_years,
     Events = results$events,
     Rate = results$incidence_rate,
@@ -245,8 +250,9 @@ if (study_start_date >= covid_season_min) {
   )
 } else {
   final_results <- data.frame(
-    Outcome = c("All-cause mortality", "Flu mild", "Flu mortality", 
-                "Flu severe", "RSV mortality", "RSV mild", "RSV severe"),
+    Outcome = c("RSV Mild", "RSV Severe", "RSV Mortality", 
+                "Flu Mild", "Flu Severe", "Flu Mortality", 
+                "All-cause mortality"),
     PYears = results$person_years,
     Events = results$events,
     Rate = results$incidence_rate,
@@ -414,13 +420,17 @@ results_age <- results_age %>%
 
 #add this to final results with 'Group' as Age Group
 age_bands <- as.numeric(length(unique(results_age$age_band)))
+results_age <- results_age %>%
+  slice(match(rep(row_order, age_bands), results_age$outcome))
+
 if (study_start_date >= covid_season_min) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = c("All-cause mortality", "COVID mild", "COVID mortality",
-                  "COVID severe", "Flu mild", "Flu mortality", 
-                  "Flu severe", "RSV mortality", "RSV mild", "RSV severe"),
+      Outcome = c("RSV Mild", "RSV Severe", "RSV Mortality", 
+                  "Flu Mild", "Flu Severe", "Flu Mortality", 
+                  "COVID Mild", "COVID Severe", "COVID Mortality", 
+                  "All-cause mortality"),
       PYears = results_age$person_years,
       Events = results_age$events,
       Rate = results_age$incidence_rate,
@@ -445,11 +455,12 @@ if (study_start_date >= covid_season_min) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = c("All-cause mortality", "COVID mild", "COVID mortality",
-                  "COVID severe", "Flu mild", "Flu mortality", 
-                  "Flu severe", "RSV mortality", "RSV mild", "RSV severe",
+      Outcome = c("RSV Mild", "RSV Severe", "RSV Mortality", 
+                  "Flu Mild", "Flu Severe", "Flu Mortality", 
+                  "COVID Mild", "COVID Severe", "COVID Mortality", 
                   "Overall respiratory mild", "Overall respiratory mortality",
-                  "Overall respiratory severe"),
+                  "Overall respiratory severe",
+                  "All-cause mortality"),
       PYears = results_age$person_years,
       Events = results_age$events,
       Rate = results_age$incidence_rate,
@@ -460,8 +471,9 @@ if (study_start_date >= covid_season_min) {
   final_results <- rbind(
     final_results,
       data.frame(
-      Outcome = c("All-cause mortality", "Flu mild", "Flu mortality", 
-                  "Flu severe", "RSV mortality", "RSV mild", "RSV severe"),
+      Outcome = c("RSV Mild", "RSV Severe", "RSV Mortality", 
+                  "Flu Mild", "Flu Severe", "Flu Mortality", 
+                  "All-cause mortality"),
       PYears = results_age$person_years,
       Events = results_age$events,
       Rate = results_age$incidence_rate,
