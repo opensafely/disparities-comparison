@@ -9000,9 +9000,9 @@ actions:
         cohort: output/data/input_processed_older_adults_s2_specific_secondary.arrow
 
   describe_dataset_older_adults_s2_specific_secondary:
-    run: r:latest analysis/report.R older_adults season2_start_date season2_end_date
-      specific secondary older_adults s2 2017_2018 specific secondary season2_start_date
-      season2_end_date
+    run: r:latest analysis/secondary_analyses/report_sec.R older_adults season2_start_date
+      season2_end_date specific secondary older_adults s2 2017_2018 specific secondary
+      season2_start_date season2_end_date
     needs:
     - process_dataset_older_adults_s2_specific_secondary
     outputs:
@@ -9041,9 +9041,9 @@ actions:
         cohort: output/data/input_processed_older_adults_s3_specific_secondary.arrow
 
   describe_dataset_older_adults_s3_specific_secondary:
-    run: r:latest analysis/report.R older_adults season3_start_date season3_end_date
-      specific secondary older_adults s3 2018_2019 specific secondary season3_start_date
-      season3_end_date
+    run: r:latest analysis/secondary_analyses/report_sec.R older_adults season3_start_date
+      season3_end_date specific secondary older_adults s3 2018_2019 specific secondary
+      season3_start_date season3_end_date
     needs:
     - process_dataset_older_adults_s3_specific_secondary
     outputs:
@@ -9092,9 +9092,9 @@ actions:
         cohort: output/data/input_processed_older_adults_s5_specific_secondary.arrow
 
   describe_dataset_older_adults_s5_specific_secondary:
-    run: r:latest analysis/report.R older_adults season5_start_date season5_end_date
-      specific secondary older_adults s5 2020_2021 specific secondary season5_start_date
-      season5_end_date
+    run: r:latest analysis/secondary_analyses/report_sec.R older_adults season5_start_date
+      season5_end_date specific secondary older_adults s5 2020_2021 specific secondary
+      season5_start_date season5_end_date
     needs:
     - process_dataset_older_adults_s5_specific_secondary
     outputs:
@@ -9147,8 +9147,9 @@ actions:
         cohort: output/data/input_processed_adults_s2_specific_secondary.arrow
 
   describe_dataset_adults_s2_specific_secondary:
-    run: r:latest analysis/report.R adults season2_start_date season2_end_date specific
-      secondary adults s2 2017_2018 specific secondary season2_start_date season2_end_date
+    run: r:latest analysis/secondary_analyses/report_sec.R adults season2_start_date
+      season2_end_date specific secondary adults s2 2017_2018 specific secondary season2_start_date
+      season2_end_date
     needs:
     - process_dataset_adults_s2_specific_secondary
     outputs:
@@ -9187,8 +9188,9 @@ actions:
         cohort: output/data/input_processed_adults_s3_specific_secondary.arrow
 
   describe_dataset_adults_s3_specific_secondary:
-    run: r:latest analysis/report.R adults season3_start_date season3_end_date specific
-      secondary adults s3 2018_2019 specific secondary season3_start_date season3_end_date
+    run: r:latest analysis/secondary_analyses/report_sec.R adults season3_start_date
+      season3_end_date specific secondary adults s3 2018_2019 specific secondary season3_start_date
+      season3_end_date
     needs:
     - process_dataset_adults_s3_specific_secondary
     outputs:
@@ -9237,8 +9239,9 @@ actions:
         cohort: output/data/input_processed_adults_s5_specific_secondary.arrow
 
   describe_dataset_adults_s5_specific_secondary:
-    run: r:latest analysis/report.R adults season5_start_date season5_end_date specific
-      secondary adults s5 2020_2021 specific secondary season5_start_date season5_end_date
+    run: r:latest analysis/secondary_analyses/report_sec.R adults season5_start_date
+      season5_end_date specific secondary adults s5 2020_2021 specific secondary season5_start_date
+      season5_end_date
     needs:
     - process_dataset_adults_s5_specific_secondary
     outputs:
@@ -9292,9 +9295,9 @@ actions:
         cohort: output/data/input_processed_children_and_adolescents_s2_specific_secondary.arrow
 
   describe_dataset_children_and_adolescents_s2_specific_secondary:
-    run: r:latest analysis/report.R children_and_adolescents season2_start_date season2_end_date
-      specific secondary children_and_adolescents s2 2017_2018 specific secondary
-      season2_start_date season2_end_date
+    run: r:latest analysis/secondary_analyses/report_sec.R children_and_adolescents
+      season2_start_date season2_end_date specific secondary children_and_adolescents
+      s2 2017_2018 specific secondary season2_start_date season2_end_date
     needs:
     - process_dataset_children_and_adolescents_s2_specific_secondary
     outputs:
@@ -9334,9 +9337,9 @@ actions:
         cohort: output/data/input_processed_children_and_adolescents_s3_specific_secondary.arrow
 
   describe_dataset_children_and_adolescents_s3_specific_secondary:
-    run: r:latest analysis/report.R children_and_adolescents season3_start_date season3_end_date
-      specific secondary children_and_adolescents s3 2018_2019 specific secondary
-      season3_start_date season3_end_date
+    run: r:latest analysis/secondary_analyses/report_sec.R children_and_adolescents
+      season3_start_date season3_end_date specific secondary children_and_adolescents
+      s3 2018_2019 specific secondary season3_start_date season3_end_date
     needs:
     - process_dataset_children_and_adolescents_s3_specific_secondary
     outputs:
@@ -9386,9 +9389,9 @@ actions:
         cohort: output/data/input_processed_children_and_adolescents_s5_specific_secondary.arrow
 
   describe_dataset_children_and_adolescents_s5_specific_secondary:
-    run: r:latest analysis/report.R children_and_adolescents season5_start_date season5_end_date
-      specific secondary children_and_adolescents s5 2020_2021 specific secondary
-      season5_start_date season5_end_date
+    run: r:latest analysis/secondary_analyses/report_sec.R children_and_adolescents
+      season5_start_date season5_end_date specific secondary children_and_adolescents
+      s5 2020_2021 specific secondary season5_start_date season5_end_date
     needs:
     - process_dataset_children_and_adolescents_s5_specific_secondary
     outputs:
@@ -9444,8 +9447,9 @@ actions:
         cohort: output/data/input_processed_infants_s2_specific_secondary.arrow
 
   describe_dataset_infants_s2_specific_secondary:
-    run: r:latest analysis/report.R infants season2_start_date season2_end_date specific
-      secondary infants s2 2017_2018 specific secondary season2_start_date season2_end_date
+    run: r:latest analysis/secondary_analyses/report_sec.R infants season2_start_date
+      season2_end_date specific secondary infants s2 2017_2018 specific secondary
+      season2_start_date season2_end_date
     needs:
     - process_dataset_infants_s2_specific_secondary
     outputs:
@@ -9604,8 +9608,9 @@ actions:
         cohort: output/data/input_processed_infants_s3_specific_secondary.arrow
 
   describe_dataset_infants_s3_specific_secondary:
-    run: r:latest analysis/report.R infants season3_start_date season3_end_date specific
-      secondary infants s3 2018_2019 specific secondary season3_start_date season3_end_date
+    run: r:latest analysis/secondary_analyses/report_sec.R infants season3_start_date
+      season3_end_date specific secondary infants s3 2018_2019 specific secondary
+      season3_start_date season3_end_date
     needs:
     - process_dataset_infants_s3_specific_secondary
     outputs:
@@ -9764,8 +9769,9 @@ actions:
         cohort: output/data/input_processed_infants_s5_specific_secondary.arrow
 
   describe_dataset_infants_s5_specific_secondary:
-    run: r:latest analysis/report.R infants season5_start_date season5_end_date specific
-      secondary infants s5 2020_2021 specific secondary season5_start_date season5_end_date
+    run: r:latest analysis/secondary_analyses/report_sec.R infants season5_start_date
+      season5_end_date specific secondary infants s5 2020_2021 specific secondary
+      season5_start_date season5_end_date
     needs:
     - process_dataset_infants_s5_specific_secondary
     outputs:
