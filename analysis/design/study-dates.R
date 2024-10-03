@@ -1,7 +1,9 @@
 # # # # # # # # # # # # # # # # # # # # #
-# Purpose: Define the study dates that are used throughout the rest of the project
+# Purpose: Define the study dates that are used
+# throughout the rest of the project
 # Notes:
-# This script is separate from the design.R script as the dates are used by the study definition as well as analysis R scripts.
+# This script is separate from the design.R script as the dates
+# are used by the study definition as well as analysis R scripts.
 # # # # # # # # # # # # # # # # # # # # #
 
 library(lubridate)
@@ -12,7 +14,7 @@ fs::dir_create(here::here("analysis", "design"))
 # define key dates ----
 
 study_dates <- tibble::lst(
-  study_start_date = ymd("2016-03-01"), # first possible study entry date (when HES data is first available)
+  study_start_date = ymd("2016-03-01"), # first possible study entry date
   study_end_date = ymd("2024-01-28"), # last study entry dates
   season1_start_date = ymd("2016-09-01"), #start of first season
   season1_end_date = ymd("2017-08-31"), #end of first season
@@ -27,7 +29,9 @@ study_dates <- tibble::lst(
   season6_start_date = ymd("2021-09-01"), #start of first season
   season6_end_date = ymd("2022-08-31"), #end of first season
   season7_start_date = ymd("2022-09-01"), #start of first season
-  season7_end_date = ymd("2023-08-31"), #end of first season 
+  season7_end_date = ymd("2023-08-31"), #end of first season
 )
 
-jsonlite::write_json(study_dates, path = here::here("analysis", "design", "study-dates.json"), auto_unbox=TRUE, pretty =TRUE)
+jsonlite::write_json(study_dates, path = here::here("analysis",
+                     "design", "study-dates.json"), auto_unbox = TRUE,
+                     pretty = TRUE)
