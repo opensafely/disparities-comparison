@@ -4,6 +4,7 @@ library(here)
 library(glue)
 library(purrr)
 library(rlang)
+library(stringr)
 
 # create action functions ----
 
@@ -14,8 +15,9 @@ comment <- function(...) {
   comments
 }
 
+lst <- tibble::lst
 splice <- function(...) {
-     purrr::list_flatten(tibble::lst(...))
+  purrr::list_flatten(lst(...))
 }
 
 ## create function to convert comment "actions" in
@@ -26,7 +28,6 @@ convert_comment_actions <- function(yaml_txt) {
     str_replace_all("([^\\'])\\\n(\\s*)\\#\\#", "\\1\n\n\\2\\#\\#") %>%
     str_replace_all("\\#\\#\\'\\\n", "\n")
 }
-
 
 ## generic action function ----
 action <- function(
@@ -58,7 +59,6 @@ action <- function(
 
   action_list
 }
-
 
 ##actions for inclusion/exclusion
 
@@ -1888,7 +1888,6 @@ action_sensitivity_infants <- function(cohort, season, dates, season_start_date,
                                        investigation_type_data,
                                        investigation_type) {
   splice(
-
     action(
       name = glue("process_dataset_{cohort}_{season}_{codelist_type}",
                   "_sensitivity"),
@@ -4923,7 +4922,7 @@ actions_list <- splice(
                      "season7_end_date"),
   comment("# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #",
           "Cohort: Children and Adolescents",
-          "# # # # # # # # # # # # # # # # # # #"),
+          "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"),
   action_exploratory("children_and_adolescents", "s1", "2016_2017",
                      "season1_start_date", "season1_end_date"),
   action_exploratory("children_and_adolescents", "s2", "2017_2018",
@@ -5252,19 +5251,19 @@ if (Sys.getenv("OPENSAFELY_BACKEND") %in% c("expectations", "tpp")) {
 ## output to file ----
   writeLines(thisproject, here("project.yaml"))
 
-names(actions_list) %>%
-  tibble(action = .) %>%
-  mutate(
-     model = action == ""  & lag(action != "", 1, TRUE),
-     model_number = cumsum(model),
-  ) %>%
-  group_by(model_number) %>%
-  summarise(
-     sets = str_trim(paste(action, collapse = " "))
-  ) %>%
-  pull(sets) %>%
-  paste(collapse = "\n") %>%
-  writeLines(here("actions.txt"))
+  names(actions_list) %>%
+    tibble(action = .) %>%
+    mutate(
+       model = action == ""  & lag(action != "", 1, TRUE),
+       model_number = cumsum(model),
+    ) %>%
+    group_by(model_number) %>%
+    summarise(
+       sets = str_trim(paste(action, collapse = " "))
+    ) %>%
+    pull(sets) %>%
+    paste(collapse = "\n") %>%
+    writeLines(here("actions.txt"))
 
 # fail if backend not recognised
 } else {
