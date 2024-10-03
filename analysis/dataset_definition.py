@@ -1,13 +1,13 @@
 import json, sys
-from pathlib import Path 
+from pathlib import Path
 
 from datetime import date, datetime
 from ehrql import Dataset, create_dataset, case, when, maximum_of, minimum_of, years, days
-from ehrql.tables.tpp import ( 
-  patients, 
+from ehrql.tables.tpp import (
+  patients,
   medications,
   ons_deaths,
-  addresses, 
+  addresses,
   clinical_events,
   practice_registrations,
   household_memberships_2020,
@@ -66,7 +66,8 @@ age_months = (index_date - patients.date_of_birth).months
 age_at_start_months = (study_start_date - patients.date_of_birth).months
 #age_at_end_months = (study_end_date - patients.date_of_birth).months
 
-#get patients who are registered
+#get patients who meet registration criteria
+#(1 year continuous registration, for non-infants)
 if cohort == "infants" or cohort == "infants_subgroup" :
   registered_patients = practice_registrations.for_patient_on(index_date).exists_for_patient()
 else :
@@ -322,7 +323,7 @@ dataset.deregistration_date = (
 
 ##define comorbidities
 
-#define earliest prior vaccination date 
+#define earliest date to look for prior vaccination
 prior_vaccination_date = study_start_date - years(1)
 
 #define seasons for covid
@@ -521,8 +522,8 @@ else :
       when(is_infection_event(codelists.rsv_primary_exclusion_codelist)
       .where(clinical_events.date.is_on_or_between(dataset
       .rsv_primary_date + days(14), study_end_date - days(30)))
-      .sort_by(clinical_events.date).first_for_patient().date.
-      is_on_or_between(rsv_codes_second_date - days(30),
+      .sort_by(clinical_events.date).first_for_patient().date
+      .is_on_or_between(rsv_codes_second_date - days(30),
       rsv_codes_second_date + days(30))).then(True),
       when(medications.where(medications.dmd_code
       .is_in(codelists.rsv_prescriptions_codelist))
