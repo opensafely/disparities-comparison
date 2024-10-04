@@ -593,7 +593,7 @@ action_secondary_rsv <- function(cohort, season, dates, codelist_type,
       needs = list(glue("generate_dataset_{cohort}_s2_specific_secondary"),
                    glue("process_household_information_s2")),
       highly_sensitive = lst(
-        cohort = glue("output/data/input_processed_{cohort}_s2_specific_secondary.arrow")
+        cohort = glue("output/data/input_processed_{cohort}_{dates}_specific_secondary.arrow")
       )
     ),
     
@@ -646,7 +646,7 @@ action_secondary_flu <- function(cohort, season, dates, codelist_type,
       needs = list(glue("generate_dataset_{cohort}_s3_specific_secondary"),
                    glue("process_household_information_s3")),
       highly_sensitive = lst(
-        cohort = glue("output/data/input_processed_{cohort}_s3_specific_secondary.arrow")
+        cohort = glue("output/data/input_processed_{cohort}_{dates}_specific_secondary.arrow")
       )
     ),
     
@@ -708,7 +708,7 @@ action_secondary_covid <- function(cohort, season, dates, codelist_type,
       needs = list(glue("generate_dataset_{cohort}_s5_specific_secondary"),
                    glue("process_household_information_s5")),
       highly_sensitive = lst(
-        cohort = glue("output/data/input_processed_{cohort}_s5_specific_secondary.arrow")
+        cohort = glue("output/data/input_processed_{cohort}_{dates}_specific_secondary.arrow")
       )
     ),
     
@@ -771,7 +771,7 @@ action_secondary_rsv_infants <- function(cohort, season, dates, codelist_type,
       needs = list(glue("generate_dataset_{cohort}_s2_specific_secondary"),
                    glue("process_household_information_s2")),
       highly_sensitive = lst(
-        cohort = glue("output/data/input_processed_{cohort}_s2_specific_secondary.arrow")
+        cohort = glue("output/data/input_processed_{cohort}_{dates}_specific_secondary.arrow")
       )
     ),
     
@@ -944,7 +944,7 @@ action_secondary_flu_infants <- function(cohort, season, dates, codelist_type,
       needs = list(glue("generate_dataset_{cohort}_s3_specific_secondary"),
                    glue("process_household_information_s3")),
       highly_sensitive = lst(
-        cohort = glue("output/data/input_processed_{cohort}_s3_specific_secondary.arrow")
+        cohort = glue("output/data/input_processed_{cohort}_{dates}_specific_secondary.arrow")
       )
     ),
     
@@ -1117,7 +1117,7 @@ action_secondary_covid_infants <- function(cohort, season, dates, codelist_type,
       needs = list(glue("generate_dataset_{cohort}_s5_specific_secondary"),
                    glue("process_household_information_s5")),
       highly_sensitive = lst(
-        cohort = glue("output/data/input_processed_{cohort}_s5_specific_secondary.arrow")
+        cohort = glue("output/data/input_processed_{cohort}_{dates}_specific_secondary.arrow")
       )
     ),
     
