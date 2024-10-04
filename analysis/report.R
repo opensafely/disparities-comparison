@@ -25,6 +25,7 @@ if (length(args) == 0) {
   codelist_type <- args[[4]]
   investigation_type <- args[[5]]
 }
+
 covid_season_min <- as.Date("2019-09-01")
 covid_current_vacc_min <- as.Date("2020-09-01", "%Y-%m-%d")
 covid_prior_vacc_min <- as.Date("2021-09-01", "%Y-%m-%d")
@@ -186,6 +187,7 @@ results <- merge(survival, events, by = "outcome")
 results <- results %>%
   mutate(incidence_rate = events / person_years * 1000)
 
+#define row order desired
 if (study_start_date >= covid_season_min) {
   row_order <- c("rsv_mild", "rsv_severe", "rsv_mortality",
                  "flu_mild", "flu_severe", "flu_mortality",
@@ -1663,71 +1665,73 @@ if (study_start_date >= covid_season_min) {
 
 if (cohort == "children_and_adolescents" |
     cohort == "adults" | cohort == "older_adults") {
-  if (study_start_date >= covid_prior_vacc_min) {
-    survival_time_since_cov_vaccines <- df_input %>%
-      group_by(time_since_last_covid_vaccination) %>%
-      transmute(
-        covid_mild = sum(time_covid_primary, na.rm = T),
-        covid_severe = sum(time_covid_secondary, na.rm = T),
-        covid_mortality = sum(time_covid_mortality, na.rm = T)
-      )
-    #get unique rows
-    survival_time_since_cov_vaccines <- unique(survival_time_since_cov_vaccines)
-    #reshape
-    survival_time_since_cov_vaccines <- survival_time_since_cov_vaccines %>%
-      pivot_longer(
-        cols = !time_since_last_covid_vaccination,
-        names_to = "outcome",
-        values_to = "person_years"
-      )
-
-    #calculate total number of events for each outcome type
-    #by time since last covid vaccine
-    events_time_since_cov_vaccines <- df_input %>%
-      group_by(time_since_last_covid_vaccination) %>%
-      transmute(
-        covid_mild = sum(covid_primary_inf, na.rm = T),
-        covid_severe = sum(covid_secondary_inf, na.rm = T),
-        covid_mortality = sum(covid_mortality_inf, na.rm = T)
-      )
-
-    #get unique rows
-    events_time_since_cov_vaccines <- unique(events_time_since_cov_vaccines)
-    #reshape
-    events_time_since_cov_vaccines <- events_time_since_cov_vaccines %>%
+  if (study_start_date >= covid_current_vacc_min) {
+    if (study_start_date >= covid_prior_vacc_min) {
+      survival_time_since_cov_vacc <- df_input %>%
+        group_by(time_since_last_covid_vaccination) %>%
+        transmute(
+          covid_mild = sum(time_covid_primary, na.rm = T),
+          covid_severe = sum(time_covid_secondary, na.rm = T),
+          covid_mortality = sum(time_covid_mortality, na.rm = T)
+        )
+      #get unique rows
+      survival_time_since_cov_vacc <- unique(survival_time_since_cov_vacc)
+      #reshape
+      survival_time_since_cov_vacc <- survival_time_since_cov_vacc %>%
         pivot_longer(
           cols = !time_since_last_covid_vaccination,
           names_to = "outcome",
-          values_to = "events"
+          values_to = "person_years"
         )
-    #overall results
-    results_time_since_cov_vaccines <- merge(survival_time_since_cov_vaccines,
-                                             events_time_since_cov_vaccines)
-    #calculate incidence rate per 1000 person-years
-    results_time_since_cov_vaccines <- results_time_since_cov_vaccines %>%
-      mutate(incidence_rate = events / person_years * 1000)
-    #get number of groups
-    cov_vaccines_groups <- as.numeric(length(unique(
-      results_time_since_cov_vaccines$time_since_last_covid_vaccination)))
-
-    #reorder rows
-    results_time_since_cov_vaccines <- results_time_since_cov_vaccines %>%
-      group_by(time_since_last_covid_vaccination) %>%
-      slice(match(row_order, results_time_since_cov_vaccines$outcome))
-    #add this to final results with 'Group' as time since last covid vaccine
-    final_results <- rbind(
-      final_results,
-      data.frame(
-        Outcome = c(rep(c("COVID mild", "COVID mortality", "COVID severe"),
-                        cov_vaccines_groups)),
-        PYears = results_time_since_cov_vaccines$person_years,
-        Events = results_time_since_cov_vaccines$events,
-        Rate = results_time_since_cov_vaccines$incidence_rate,
-        Characteristic = c(rep("Time Since Last COVID-19 Vaccination",
-                               3 * cov_vaccines_groups)),
-        Group = results_time_since_cov_vaccines$
-          time_since_last_covid_vaccination)
-      )
+  
+      #calculate total number of events for each outcome type
+      #by time since last covid vaccine
+      events_time_since_cov_vacc <- df_input %>%
+        group_by(time_since_last_covid_vaccination) %>%
+        transmute(
+          covid_mild = sum(covid_primary_inf, na.rm = T),
+          covid_severe = sum(covid_secondary_inf, na.rm = T),
+          covid_mortality = sum(covid_mortality_inf, na.rm = T)
+        )
+  
+      #get unique rows
+      events_time_since_cov_vacc <- unique(events_time_since_cov_vacc)
+      #reshape
+      events_time_since_cov_vacc <- events_time_since_cov_vacc %>%
+          pivot_longer(
+            cols = !time_since_last_covid_vaccination,
+            names_to = "outcome",
+            values_to = "events"
+          )
+      #overall results
+      results_time_since_cov_vacc <- merge(survival_time_since_cov_vacc,
+                                           events_time_since_cov_vacc)
+      #calculate incidence rate per 1000 person-years
+      results_time_since_cov_vacc <- results_time_since_cov_vacc %>%
+        mutate(incidence_rate = events / person_years * 1000)
+      #get number of groups
+      cov_vaccines_groups <- as.numeric(length(unique(
+        results_time_since_cov_vacc$time_since_last_covid_vaccination)))
+  
+      #reorder rows
+      results_time_since_cov_vacc <- results_time_since_cov_vacc %>%
+        group_by(time_since_last_covid_vaccination) %>%
+        slice(match(row_order, results_time_since_cov_vacc$outcome))
+      #add this to final results with 'Group' as time since last covid vaccine
+      final_results <- rbind(
+        final_results,
+        data.frame(
+          Outcome = c(rep(c("COVID mild", "COVID mortality", "COVID severe"),
+                          cov_vaccines_groups)),
+          PYears = results_time_since_cov_vacc$person_years,
+          Events = results_time_since_cov_vacc$events,
+          Rate = results_time_since_cov_vacc$incidence_rate,
+          Characteristic = c(rep("Time Since Last COVID-19 Vaccination",
+                                 3 * cov_vaccines_groups)),
+          Group = results_time_since_cov_vacc$
+            time_since_last_covid_vaccination)
+        )
+    }
     #calculate total person-time for each outcome type by
     #current season covid vaccine
     survival_cov_vaccines_mild <- df_input %>%
@@ -1738,7 +1742,7 @@ if (cohort == "children_and_adolescents" |
     survival_cov_vaccines_severe <- df_input %>%
       group_by(covid_vaccination = covid_vaccination_severe) %>%
       transmute(
-        covid_severe = sum(time_covid_secondary, na.rm = T),
+        covid_severe = sum(time_covid_secondary, na.rm = T)
       )
     survival_cov_vaccines_mortality <- df_input %>%
       group_by(covid_vaccination) %>%
@@ -1782,7 +1786,7 @@ if (cohort == "children_and_adolescents" |
     events_cov_vaccines_severe <- df_input %>%
       group_by(covid_vaccination = covid_vaccination_severe) %>%
       transmute(
-        covid_severe = sum(covid_secondary_inf, na.rm = T),
+        covid_severe = sum(covid_secondary_inf, na.rm = T)
       )
     events_cov_vaccines_mortality <- df_input %>%
       group_by(covid_vaccination) %>%
@@ -1834,7 +1838,7 @@ if (cohort == "children_and_adolescents" |
                                6)),
         Group = results_cov_vaccines$covid_vaccination)
       )
-    }
+  }
   #calculate total person-time for each outcome type by flu vaccination status
   survival_prior_flu_vacc <- df_input %>%
     group_by(prior_flu_vaccination) %>%
@@ -2042,18 +2046,36 @@ if (cohort == "infants") {
 fs::dir_create(here("output", "results", "rates"))
 
 #export results table to csv
-results_table <- final_results %>%
-  mutate_if(is.numeric, round, digits = 4) %>%
-  select(Outcome, Group, Characteristic, Events, Rate) %>%
-  group_by(Characteristic) %>%
-  gt(groupname_col = "Characteristic") %>%
-  row_group_order(groups = c(table_groups)) %>%
-  tab_header(
-    title = "Rate per 1000 person-years of outcomes by characteristic",
-    subtitle = "Group-wise breakdown"
-  )
-results_table_frame <- as.data.frame(results_table) %>%
-  write_csv(path = paste0(here::here("output", "results", "rates"), "/",
-                          "rates_", cohort, "_", year(study_start_date), "_",
-                          year(study_end_date), "_", codelist_type, "_",
-                          investigation_type, ".csv"))
+if (length(args) == 0) {
+  results_table <- final_results %>%
+    mutate_if(is.numeric, round, digits = 4) %>%
+    select(Outcome, Group, Characteristic, Events, Rate) %>%
+    group_by(Characteristic) %>%
+    gt(groupname_col = "Characteristic") %>%
+    row_group_order(groups = c(table_groups)) %>%
+    tab_header(
+      title = "Rate per 1000 person-years of outcomes by characteristic",
+      subtitle = "Group-wise breakdown"
+    )
+  results_table_frame <- as.data.frame(results_table) %>%
+    write_csv(file = paste0(here::here("output", "results", "rates"), "/",
+                            "rates_", cohort, "_", year(study_start_date), "_",
+                            year(study_end_date), "_", codelist_type, "_",
+                            investigation_type, ".csv"))
+} else {
+  results_table <- final_results %>%
+    mutate_if(is.numeric, round, digits = 4) %>%
+    select(Outcome, Group, Characteristic, Events, Rate) %>%
+    group_by(Characteristic) %>%
+    gt(groupname_col = "Characteristic") %>%
+    row_group_order(groups = c(table_groups)) %>%
+    tab_header(
+      title = "Rate per 1000 person-years of outcomes by characteristic",
+      subtitle = "Group-wise breakdown"
+    )
+  results_table_frame <- as.data.frame(results_table) %>%
+    write_csv(path = paste0(here::here("output", "results", "rates"), "/",
+                            "rates_", cohort, "_", year(study_start_date), "_",
+                            year(study_end_date), "_", codelist_type, "_",
+                            investigation_type, ".csv"))
+}
