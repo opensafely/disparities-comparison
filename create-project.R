@@ -1301,13 +1301,13 @@ action_descriptive <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("process_cohort_{cohort}_{season}_specific_secondary"),
-      run = glue("r:latest analysis/data_processing.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/cohort_processing.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
       #               season_start_date, season_end_date),
       needs = list(glue("generate_dataset_{cohort}_{season}_specific_secondary"),
                    glue("process_household_information_{season}")),
       highly_sensitive = lst(
-        cohort = glue("output/data/input_processed_{cohort}_{dates}_specific_secondary.arrow")
+        cohort = glue("output/data/cohort_processed_{cohort}_{dates}_specific_secondary.arrow")
       )
     ),
     

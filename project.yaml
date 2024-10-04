@@ -7453,14 +7453,14 @@ actions:
         dataset: output/data/input_older_adults_2016_2017_specific_secondary.arrow
 
   process_cohort_older_adults_s1_specific_secondary:
-    run: r:latest analysis/data_processing.R older_adults season1_start_date season1_end_date
+    run: r:latest analysis/cohort_processing.R older_adults season1_start_date season1_end_date
       specific secondary
     needs:
     - generate_dataset_older_adults_s1_specific_secondary
     - process_household_information_s1
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_older_adults_2016_2017_specific_secondary.arrow
+        cohort: output/data/cohort_processed_older_adults_2016_2017_specific_secondary.arrow
 
   describe_cohort_older_adults_s1:
     run: r:latest analysis/cohort_description.R older_adults season1_start_date season1_end_date
@@ -7482,14 +7482,14 @@ actions:
         dataset: output/data/input_older_adults_2017_2018_specific_secondary.arrow
 
   process_cohort_older_adults_s2_specific_secondary:
-    run: r:latest analysis/data_processing.R older_adults season2_start_date season2_end_date
+    run: r:latest analysis/cohort_processing.R older_adults season2_start_date season2_end_date
       specific secondary
     needs:
     - generate_dataset_older_adults_s2_specific_secondary
     - process_household_information_s2
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_older_adults_2017_2018_specific_secondary.arrow
+        cohort: output/data/cohort_processed_older_adults_2017_2018_specific_secondary.arrow
 
   describe_cohort_older_adults_s2:
     run: r:latest analysis/cohort_description.R older_adults season2_start_date season2_end_date
@@ -7511,14 +7511,14 @@ actions:
         dataset: output/data/input_older_adults_2018_2019_specific_secondary.arrow
 
   process_cohort_older_adults_s3_specific_secondary:
-    run: r:latest analysis/data_processing.R older_adults season3_start_date season3_end_date
+    run: r:latest analysis/cohort_processing.R older_adults season3_start_date season3_end_date
       specific secondary
     needs:
     - generate_dataset_older_adults_s3_specific_secondary
     - process_household_information_s3
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_older_adults_2018_2019_specific_secondary.arrow
+        cohort: output/data/cohort_processed_older_adults_2018_2019_specific_secondary.arrow
 
   describe_cohort_older_adults_s3:
     run: r:latest analysis/cohort_description.R older_adults season3_start_date season3_end_date
@@ -7540,14 +7540,14 @@ actions:
         dataset: output/data/input_older_adults_2019_2020_specific_secondary.arrow
 
   process_cohort_older_adults_s4_specific_secondary:
-    run: r:latest analysis/data_processing.R older_adults season4_start_date season4_end_date
+    run: r:latest analysis/cohort_processing.R older_adults season4_start_date season4_end_date
       specific secondary
     needs:
     - generate_dataset_older_adults_s4_specific_secondary
     - process_household_information_s4
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_older_adults_2019_2020_specific_secondary.arrow
+        cohort: output/data/cohort_processed_older_adults_2019_2020_specific_secondary.arrow
 
   describe_cohort_older_adults_s4:
     run: r:latest analysis/cohort_description.R older_adults season4_start_date season4_end_date
@@ -7569,14 +7569,14 @@ actions:
         dataset: output/data/input_older_adults_2020_2021_specific_secondary.arrow
 
   process_cohort_older_adults_s5_specific_secondary:
-    run: r:latest analysis/data_processing.R older_adults season5_start_date season5_end_date
+    run: r:latest analysis/cohort_processing.R older_adults season5_start_date season5_end_date
       specific secondary
     needs:
     - generate_dataset_older_adults_s5_specific_secondary
     - process_household_information_s5
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_older_adults_2020_2021_specific_secondary.arrow
+        cohort: output/data/cohort_processed_older_adults_2020_2021_specific_secondary.arrow
 
   describe_cohort_older_adults_s5:
     run: r:latest analysis/cohort_description.R older_adults season5_start_date season5_end_date
@@ -7598,14 +7598,14 @@ actions:
         dataset: output/data/input_older_adults_2021_2022_specific_secondary.arrow
 
   process_cohort_older_adults_s6_specific_secondary:
-    run: r:latest analysis/data_processing.R older_adults season6_start_date season6_end_date
+    run: r:latest analysis/cohort_processing.R older_adults season6_start_date season6_end_date
       specific secondary
     needs:
     - generate_dataset_older_adults_s6_specific_secondary
     - process_household_information_s6
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_older_adults_2021_2022_specific_secondary.arrow
+        cohort: output/data/cohort_processed_older_adults_2021_2022_specific_secondary.arrow
 
   describe_cohort_older_adults_s6:
     run: r:latest analysis/cohort_description.R older_adults season6_start_date season6_end_date
@@ -7627,14 +7627,14 @@ actions:
         dataset: output/data/input_older_adults_2022_2023_specific_secondary.arrow
 
   process_cohort_older_adults_s7_specific_secondary:
-    run: r:latest analysis/data_processing.R older_adults season7_start_date season7_end_date
+    run: r:latest analysis/cohort_processing.R older_adults season7_start_date season7_end_date
       specific secondary
     needs:
     - generate_dataset_older_adults_s7_specific_secondary
     - process_household_information_s7
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_older_adults_2022_2023_specific_secondary.arrow
+        cohort: output/data/cohort_processed_older_adults_2022_2023_specific_secondary.arrow
 
   describe_cohort_older_adults_s7:
     run: r:latest analysis/cohort_description.R older_adults season7_start_date season7_end_date
@@ -7660,14 +7660,14 @@ actions:
         dataset: output/data/input_adults_2016_2017_specific_secondary.arrow
 
   process_cohort_adults_s1_specific_secondary:
-    run: r:latest analysis/data_processing.R adults season1_start_date season1_end_date
+    run: r:latest analysis/cohort_processing.R adults season1_start_date season1_end_date
       specific secondary
     needs:
     - generate_dataset_adults_s1_specific_secondary
     - process_household_information_s1
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_adults_2016_2017_specific_secondary.arrow
+        cohort: output/data/cohort_processed_adults_2016_2017_specific_secondary.arrow
 
   describe_cohort_adults_s1:
     run: r:latest analysis/cohort_description.R adults season1_start_date season1_end_date
@@ -7689,14 +7689,14 @@ actions:
         dataset: output/data/input_adults_2017_2018_specific_secondary.arrow
 
   process_cohort_adults_s2_specific_secondary:
-    run: r:latest analysis/data_processing.R adults season2_start_date season2_end_date
+    run: r:latest analysis/cohort_processing.R adults season2_start_date season2_end_date
       specific secondary
     needs:
     - generate_dataset_adults_s2_specific_secondary
     - process_household_information_s2
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_adults_2017_2018_specific_secondary.arrow
+        cohort: output/data/cohort_processed_adults_2017_2018_specific_secondary.arrow
 
   describe_cohort_adults_s2:
     run: r:latest analysis/cohort_description.R adults season2_start_date season2_end_date
@@ -7718,14 +7718,14 @@ actions:
         dataset: output/data/input_adults_2018_2019_specific_secondary.arrow
 
   process_cohort_adults_s3_specific_secondary:
-    run: r:latest analysis/data_processing.R adults season3_start_date season3_end_date
+    run: r:latest analysis/cohort_processing.R adults season3_start_date season3_end_date
       specific secondary
     needs:
     - generate_dataset_adults_s3_specific_secondary
     - process_household_information_s3
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_adults_2018_2019_specific_secondary.arrow
+        cohort: output/data/cohort_processed_adults_2018_2019_specific_secondary.arrow
 
   describe_cohort_adults_s3:
     run: r:latest analysis/cohort_description.R adults season3_start_date season3_end_date
@@ -7747,14 +7747,14 @@ actions:
         dataset: output/data/input_adults_2019_2020_specific_secondary.arrow
 
   process_cohort_adults_s4_specific_secondary:
-    run: r:latest analysis/data_processing.R adults season4_start_date season4_end_date
+    run: r:latest analysis/cohort_processing.R adults season4_start_date season4_end_date
       specific secondary
     needs:
     - generate_dataset_adults_s4_specific_secondary
     - process_household_information_s4
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_adults_2019_2020_specific_secondary.arrow
+        cohort: output/data/cohort_processed_adults_2019_2020_specific_secondary.arrow
 
   describe_cohort_adults_s4:
     run: r:latest analysis/cohort_description.R adults season4_start_date season4_end_date
@@ -7776,14 +7776,14 @@ actions:
         dataset: output/data/input_adults_2020_2021_specific_secondary.arrow
 
   process_cohort_adults_s5_specific_secondary:
-    run: r:latest analysis/data_processing.R adults season5_start_date season5_end_date
+    run: r:latest analysis/cohort_processing.R adults season5_start_date season5_end_date
       specific secondary
     needs:
     - generate_dataset_adults_s5_specific_secondary
     - process_household_information_s5
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_adults_2020_2021_specific_secondary.arrow
+        cohort: output/data/cohort_processed_adults_2020_2021_specific_secondary.arrow
 
   describe_cohort_adults_s5:
     run: r:latest analysis/cohort_description.R adults season5_start_date season5_end_date
@@ -7805,14 +7805,14 @@ actions:
         dataset: output/data/input_adults_2021_2022_specific_secondary.arrow
 
   process_cohort_adults_s6_specific_secondary:
-    run: r:latest analysis/data_processing.R adults season6_start_date season6_end_date
+    run: r:latest analysis/cohort_processing.R adults season6_start_date season6_end_date
       specific secondary
     needs:
     - generate_dataset_adults_s6_specific_secondary
     - process_household_information_s6
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_adults_2021_2022_specific_secondary.arrow
+        cohort: output/data/cohort_processed_adults_2021_2022_specific_secondary.arrow
 
   describe_cohort_adults_s6:
     run: r:latest analysis/cohort_description.R adults season6_start_date season6_end_date
@@ -7834,14 +7834,14 @@ actions:
         dataset: output/data/input_adults_2022_2023_specific_secondary.arrow
 
   process_cohort_adults_s7_specific_secondary:
-    run: r:latest analysis/data_processing.R adults season7_start_date season7_end_date
+    run: r:latest analysis/cohort_processing.R adults season7_start_date season7_end_date
       specific secondary
     needs:
     - generate_dataset_adults_s7_specific_secondary
     - process_household_information_s7
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_adults_2022_2023_specific_secondary.arrow
+        cohort: output/data/cohort_processed_adults_2022_2023_specific_secondary.arrow
 
   describe_cohort_adults_s7:
     run: r:latest analysis/cohort_description.R adults season7_start_date season7_end_date
@@ -7867,14 +7867,14 @@ actions:
         dataset: output/data/input_children_and_adolescents_2016_2017_specific_secondary.arrow
 
   process_cohort_children_and_adolescents_s1_specific_secondary:
-    run: r:latest analysis/data_processing.R children_and_adolescents season1_start_date
+    run: r:latest analysis/cohort_processing.R children_and_adolescents season1_start_date
       season1_end_date specific secondary
     needs:
     - generate_dataset_children_and_adolescents_s1_specific_secondary
     - process_household_information_s1
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_children_and_adolescents_2016_2017_specific_secondary.arrow
+        cohort: output/data/cohort_processed_children_and_adolescents_2016_2017_specific_secondary.arrow
 
   describe_cohort_children_and_adolescents_s1:
     run: r:latest analysis/cohort_description.R children_and_adolescents season1_start_date
@@ -7896,14 +7896,14 @@ actions:
         dataset: output/data/input_children_and_adolescents_2017_2018_specific_secondary.arrow
 
   process_cohort_children_and_adolescents_s2_specific_secondary:
-    run: r:latest analysis/data_processing.R children_and_adolescents season2_start_date
+    run: r:latest analysis/cohort_processing.R children_and_adolescents season2_start_date
       season2_end_date specific secondary
     needs:
     - generate_dataset_children_and_adolescents_s2_specific_secondary
     - process_household_information_s2
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_children_and_adolescents_2017_2018_specific_secondary.arrow
+        cohort: output/data/cohort_processed_children_and_adolescents_2017_2018_specific_secondary.arrow
 
   describe_cohort_children_and_adolescents_s2:
     run: r:latest analysis/cohort_description.R children_and_adolescents season2_start_date
@@ -7925,14 +7925,14 @@ actions:
         dataset: output/data/input_children_and_adolescents_2018_2019_specific_secondary.arrow
 
   process_cohort_children_and_adolescents_s3_specific_secondary:
-    run: r:latest analysis/data_processing.R children_and_adolescents season3_start_date
+    run: r:latest analysis/cohort_processing.R children_and_adolescents season3_start_date
       season3_end_date specific secondary
     needs:
     - generate_dataset_children_and_adolescents_s3_specific_secondary
     - process_household_information_s3
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_children_and_adolescents_2018_2019_specific_secondary.arrow
+        cohort: output/data/cohort_processed_children_and_adolescents_2018_2019_specific_secondary.arrow
 
   describe_cohort_children_and_adolescents_s3:
     run: r:latest analysis/cohort_description.R children_and_adolescents season3_start_date
@@ -7954,14 +7954,14 @@ actions:
         dataset: output/data/input_children_and_adolescents_2019_2020_specific_secondary.arrow
 
   process_cohort_children_and_adolescents_s4_specific_secondary:
-    run: r:latest analysis/data_processing.R children_and_adolescents season4_start_date
+    run: r:latest analysis/cohort_processing.R children_and_adolescents season4_start_date
       season4_end_date specific secondary
     needs:
     - generate_dataset_children_and_adolescents_s4_specific_secondary
     - process_household_information_s4
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_children_and_adolescents_2019_2020_specific_secondary.arrow
+        cohort: output/data/cohort_processed_children_and_adolescents_2019_2020_specific_secondary.arrow
 
   describe_cohort_children_and_adolescents_s4:
     run: r:latest analysis/cohort_description.R children_and_adolescents season4_start_date
@@ -7983,14 +7983,14 @@ actions:
         dataset: output/data/input_children_and_adolescents_2020_2021_specific_secondary.arrow
 
   process_cohort_children_and_adolescents_s5_specific_secondary:
-    run: r:latest analysis/data_processing.R children_and_adolescents season5_start_date
+    run: r:latest analysis/cohort_processing.R children_and_adolescents season5_start_date
       season5_end_date specific secondary
     needs:
     - generate_dataset_children_and_adolescents_s5_specific_secondary
     - process_household_information_s5
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_children_and_adolescents_2020_2021_specific_secondary.arrow
+        cohort: output/data/cohort_processed_children_and_adolescents_2020_2021_specific_secondary.arrow
 
   describe_cohort_children_and_adolescents_s5:
     run: r:latest analysis/cohort_description.R children_and_adolescents season5_start_date
@@ -8012,14 +8012,14 @@ actions:
         dataset: output/data/input_children_and_adolescents_2021_2022_specific_secondary.arrow
 
   process_cohort_children_and_adolescents_s6_specific_secondary:
-    run: r:latest analysis/data_processing.R children_and_adolescents season6_start_date
+    run: r:latest analysis/cohort_processing.R children_and_adolescents season6_start_date
       season6_end_date specific secondary
     needs:
     - generate_dataset_children_and_adolescents_s6_specific_secondary
     - process_household_information_s6
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_children_and_adolescents_2021_2022_specific_secondary.arrow
+        cohort: output/data/cohort_processed_children_and_adolescents_2021_2022_specific_secondary.arrow
 
   describe_cohort_children_and_adolescents_s6:
     run: r:latest analysis/cohort_description.R children_and_adolescents season6_start_date
@@ -8041,14 +8041,14 @@ actions:
         dataset: output/data/input_children_and_adolescents_2022_2023_specific_secondary.arrow
 
   process_cohort_children_and_adolescents_s7_specific_secondary:
-    run: r:latest analysis/data_processing.R children_and_adolescents season7_start_date
+    run: r:latest analysis/cohort_processing.R children_and_adolescents season7_start_date
       season7_end_date specific secondary
     needs:
     - generate_dataset_children_and_adolescents_s7_specific_secondary
     - process_household_information_s7
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_children_and_adolescents_2022_2023_specific_secondary.arrow
+        cohort: output/data/cohort_processed_children_and_adolescents_2022_2023_specific_secondary.arrow
 
   describe_cohort_children_and_adolescents_s7:
     run: r:latest analysis/cohort_description.R children_and_adolescents season7_start_date
@@ -8074,14 +8074,14 @@ actions:
         dataset: output/data/input_infants_2016_2017_specific_secondary.arrow
 
   process_cohort_infants_s1_specific_secondary:
-    run: r:latest analysis/data_processing.R infants season1_start_date season1_end_date
+    run: r:latest analysis/cohort_processing.R infants season1_start_date season1_end_date
       specific secondary
     needs:
     - generate_dataset_infants_s1_specific_secondary
     - process_household_information_s1
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_infants_2016_2017_specific_secondary.arrow
+        cohort: output/data/cohort_processed_infants_2016_2017_specific_secondary.arrow
 
   describe_cohort_infants_s1:
     run: r:latest analysis/cohort_description.R infants season1_start_date season1_end_date
@@ -8103,14 +8103,14 @@ actions:
         dataset: output/data/input_infants_2017_2018_specific_secondary.arrow
 
   process_cohort_infants_s2_specific_secondary:
-    run: r:latest analysis/data_processing.R infants season2_start_date season2_end_date
+    run: r:latest analysis/cohort_processing.R infants season2_start_date season2_end_date
       specific secondary
     needs:
     - generate_dataset_infants_s2_specific_secondary
     - process_household_information_s2
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_infants_2017_2018_specific_secondary.arrow
+        cohort: output/data/cohort_processed_infants_2017_2018_specific_secondary.arrow
 
   describe_cohort_infants_s2:
     run: r:latest analysis/cohort_description.R infants season2_start_date season2_end_date
@@ -8132,14 +8132,14 @@ actions:
         dataset: output/data/input_infants_2018_2019_specific_secondary.arrow
 
   process_cohort_infants_s3_specific_secondary:
-    run: r:latest analysis/data_processing.R infants season3_start_date season3_end_date
+    run: r:latest analysis/cohort_processing.R infants season3_start_date season3_end_date
       specific secondary
     needs:
     - generate_dataset_infants_s3_specific_secondary
     - process_household_information_s3
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_infants_2018_2019_specific_secondary.arrow
+        cohort: output/data/cohort_processed_infants_2018_2019_specific_secondary.arrow
 
   describe_cohort_infants_s3:
     run: r:latest analysis/cohort_description.R infants season3_start_date season3_end_date
@@ -8161,14 +8161,14 @@ actions:
         dataset: output/data/input_infants_2019_2020_specific_secondary.arrow
 
   process_cohort_infants_s4_specific_secondary:
-    run: r:latest analysis/data_processing.R infants season4_start_date season4_end_date
+    run: r:latest analysis/cohort_processing.R infants season4_start_date season4_end_date
       specific secondary
     needs:
     - generate_dataset_infants_s4_specific_secondary
     - process_household_information_s4
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_infants_2019_2020_specific_secondary.arrow
+        cohort: output/data/cohort_processed_infants_2019_2020_specific_secondary.arrow
 
   describe_cohort_infants_s4:
     run: r:latest analysis/cohort_description.R infants season4_start_date season4_end_date
@@ -8190,14 +8190,14 @@ actions:
         dataset: output/data/input_infants_2020_2021_specific_secondary.arrow
 
   process_cohort_infants_s5_specific_secondary:
-    run: r:latest analysis/data_processing.R infants season5_start_date season5_end_date
+    run: r:latest analysis/cohort_processing.R infants season5_start_date season5_end_date
       specific secondary
     needs:
     - generate_dataset_infants_s5_specific_secondary
     - process_household_information_s5
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_infants_2020_2021_specific_secondary.arrow
+        cohort: output/data/cohort_processed_infants_2020_2021_specific_secondary.arrow
 
   describe_cohort_infants_s5:
     run: r:latest analysis/cohort_description.R infants season5_start_date season5_end_date
@@ -8219,14 +8219,14 @@ actions:
         dataset: output/data/input_infants_2021_2022_specific_secondary.arrow
 
   process_cohort_infants_s6_specific_secondary:
-    run: r:latest analysis/data_processing.R infants season6_start_date season6_end_date
+    run: r:latest analysis/cohort_processing.R infants season6_start_date season6_end_date
       specific secondary
     needs:
     - generate_dataset_infants_s6_specific_secondary
     - process_household_information_s6
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_infants_2021_2022_specific_secondary.arrow
+        cohort: output/data/cohort_processed_infants_2021_2022_specific_secondary.arrow
 
   describe_cohort_infants_s6:
     run: r:latest analysis/cohort_description.R infants season6_start_date season6_end_date
@@ -8248,14 +8248,14 @@ actions:
         dataset: output/data/input_infants_2022_2023_specific_secondary.arrow
 
   process_cohort_infants_s7_specific_secondary:
-    run: r:latest analysis/data_processing.R infants season7_start_date season7_end_date
+    run: r:latest analysis/cohort_processing.R infants season7_start_date season7_end_date
       specific secondary
     needs:
     - generate_dataset_infants_s7_specific_secondary
     - process_household_information_s7
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_infants_2022_2023_specific_secondary.arrow
+        cohort: output/data/cohort_processed_infants_2022_2023_specific_secondary.arrow
 
   describe_cohort_infants_s7:
     run: r:latest analysis/cohort_description.R infants season7_start_date season7_end_date
