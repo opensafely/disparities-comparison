@@ -47,6 +47,7 @@ df_input <- merge(df_input, household_comp_vars, by = "patient_id")
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
   print(nrow(df_input))
+  print(nrow(df_household))
   print(class(study_start_date))
   print(class(study_end_date))
   df_input <- df_input %>%
