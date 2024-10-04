@@ -47,7 +47,7 @@ sim_list = lst(
   
   #whether the patient is registered with the practice
   registered = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.99),
+    ~ rbernoulli(n = ..n, p = 0.99)
   ),
   
   #date of deregistration
@@ -70,7 +70,7 @@ sim_list = lst(
   
   #sustainability transformation partnership code (here a pseudocode just represented by a number)
   stp = bn_node(
-    ~ factor(as.integer(runif(n = ..n, 1, 36)), levels = 1:36),
+    ~ factor(as.integer(runif(n = ..n, 1, 36)), levels = 1:36)
   ),
   
   #region the patient lives in
@@ -85,7 +85,7 @@ sim_list = lst(
       "London",
       "South East",
       "South West"
-    ), p = c(0.2, 0.2, 0.3, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05)),
+    ), p = c(0.2, 0.2, 0.3, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05))
   ),
   
   #practice ID
@@ -148,12 +148,12 @@ sim_list = lst(
   
   #drinking 
   hazardous_drinking = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.1),
+    ~ rbernoulli(n = ..n, p = 0.1)
   ),
   
   #drug usage
   drug_usage = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.05),
+    ~ rbernoulli(n = ..n, p = 0.05)
   ),
   
   #has asthma 

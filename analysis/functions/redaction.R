@@ -205,7 +205,7 @@ redacted_summary_cat <- function(
   }
   
   dat_freq <- tibble(
-    .level = (fct_explicit_na(variable, na_level=.missing_name)),
+    .level = (fct_explicit_na(variable, na_level=.missing_name))
   ) %>%
     group_by(.level, .drop=FALSE) %>%
     tally() %>%
@@ -213,7 +213,7 @@ redacted_summary_cat <- function(
       n = as.integer(round(n/redaction_accuracy)*redaction_accuracy),
       pct=n/sum(n),
       n_nonmiss=if_else(.level==.missing_name, 0L, n),
-      pct_nonmiss = (n_nonmiss/sum(n_nonmiss, na.rm=TRUE)),
+      pct_nonmiss = (n_nonmiss/sum(n_nonmiss, na.rm=TRUE))
     ) %>% select(-n_nonmiss)
   
   dat_freq[[.redacted_name]] <- redactor(dat_freq$n, redaction_threshold)
@@ -258,7 +258,7 @@ redacted_summary_catcat <- function(
   
   dat_freq <- tibble(
     .level1 = (fct_explicit_na(variable1, na_level=.missing_name)),
-    .level2 = (fct_explicit_na(variable2, na_level=.missing_name)),
+    .level2 = (fct_explicit_na(variable2, na_level=.missing_name))
   ) %>%
     group_by(.level2, .level1, .drop=FALSE) %>%
     tally() %>%
@@ -266,7 +266,7 @@ redacted_summary_catcat <- function(
       pct = n/sum(n),
       n = as.integer(round(n/redaction_accuracy)*redaction_accuracy),
       n_nonmiss = if_else(.level1==.missing_name, 0L, n),
-      pct_nonmiss = (n_nonmiss/sum(n_nonmiss, na.rm=TRUE)),
+      pct_nonmiss = (n_nonmiss/sum(n_nonmiss, na.rm=TRUE))
     ) %>%
     select(-n_nonmiss)
   
@@ -274,7 +274,7 @@ redacted_summary_catcat <- function(
   dat_freq_redact0 <- dat_freq %>%
     group_by(.level1) %>%
     mutate(
-      .redacted_name1 = redactor(n, redaction_threshold),
+      .redacted_name1 = redactor(n, redaction_threshold)
     ) %>%
     group_by(.level2) %>%
     mutate(

@@ -403,7 +403,7 @@ if (study_start_date < covid_season_min) {
                    "Mild Overall Respiratory Virus by IMD Quintile",
                    "Severe Overall Respiratory Virus by IMD Quintile",
                    "Overall Respiratory Virus Mortality by IMD Quintile",
-                   "All Cause Mortality by IMD Quintile",)
+                   "All Cause Mortality by IMD Quintile")
 }
 
 #create the model outputs list

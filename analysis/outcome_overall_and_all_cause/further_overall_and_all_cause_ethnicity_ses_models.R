@@ -147,7 +147,7 @@ if (study_start_date < covid_season_min) {
   model_names <- c("Mild Overall Respiratory Virus by Ethnicity and IMD Quintile",
                    "Severe Overall Respiratory Virus by Ethnicity and IMD Quintile",
                    "Overall Respiratory Virus Mortality by Ethnicity and IMD Quintile",
-                   "All Cause Mortality by Ethnicity and IMD Quintile",)
+                   "All Cause Mortality by Ethnicity and IMD Quintile")
 }
 
 #create the model outputs list

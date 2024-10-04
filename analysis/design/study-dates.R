@@ -29,7 +29,7 @@ study_dates <- tibble::lst(
   season6_start_date = ymd("2021-09-01"), #start of first season
   season6_end_date = ymd("2022-08-31"), #end of first season
   season7_start_date = ymd("2022-09-01"), #start of first season
-  season7_end_date = ymd("2023-08-31"), #end of first season
+  season7_end_date = ymd("2023-08-31") #end of first season
 )
 
 jsonlite::write_json(study_dates, path = here::here("analysis",

@@ -48,7 +48,7 @@ sim_list = lst(
   
   #whether the patient is registered with the practice
   registered = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.99),
+    ~ rbernoulli(n = ..n, p = 0.99)
   ),
   
   #date of deregistration

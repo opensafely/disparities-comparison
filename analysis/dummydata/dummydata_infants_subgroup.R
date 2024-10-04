@@ -47,7 +47,7 @@ sim_list = lst(
   
   #whether the patient is registered with the practice
   registered = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.99),
+    ~ rbernoulli(n = ..n, p = 0.99)
   ),
   
   #date of deregistration
@@ -64,12 +64,12 @@ sim_list = lst(
   
   #age of the patient
   age = bn_node(
-    ~ as.integer(rnormTrunc(n = ..n, mean = 12, sd = 4, min = 0, max = 23)),
+    ~ as.integer(rnormTrunc(n = ..n, mean = 12, sd = 4, min = 0, max = 23))
   ),
   
   #sustainability transformation partnership code (here a pseudocode just represented by a number)
   stp = bn_node(
-    ~ factor(as.integer(runif(n = ..n, 1, 36)), levels = 1:36),
+    ~ factor(as.integer(runif(n = ..n, 1, 36)), levels = 1:36)
   ),
   
   #region the patient lives in
@@ -84,7 +84,7 @@ sim_list = lst(
       "London",
       "South East",
       "South West"
-    ), p = c(0.2, 0.2, 0.3, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05)),
+    ), p = c(0.2, 0.2, 0.3, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05))
   ),
   
   #practice ID
@@ -146,7 +146,7 @@ sim_list = lst(
   
   #matching family ID for mother
   mother_id = bn_node(
-    ~ baby_id,
+    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
   ),
   
   #age 
@@ -166,12 +166,12 @@ sim_list = lst(
   
   #drinking 
   maternal_drinking = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.05),
+    ~ rbernoulli(n = ..n, p = 0.05)
   ),
   
   #drug usage
   maternal_drug_usage = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.01),
+    ~ rbernoulli(n = ..n, p = 0.01)
   ),
   
   #flu vaccination

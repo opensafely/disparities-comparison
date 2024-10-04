@@ -43,7 +43,7 @@ df_input <- df_input %>%
       age < 18 ~ "Child", 
       age >= 17 & age < 30 ~ "Young Adult",
       age >= 30 & age < 66 ~ "Adult",
-      age >= 66 ~ "Older Adult",
+      age >= 66 ~ "Older Adult"
     ))
   )
 

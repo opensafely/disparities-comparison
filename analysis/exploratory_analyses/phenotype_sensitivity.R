@@ -674,7 +674,7 @@ if (study_start_date >= covid_season_min) {
           sum(patients_specific_severe[grep("Flu", patients_specific_severe$combo), "n"]),
           sum(patients_specific_severe[grep("COVID", patients_specific_severe$combo), "n"])),
     outcome_type = c("mild", "mild", "mild", "severe", "severe", "severe"),
-    codelist_type = rep("specific", 6),
+    codelist_type = rep("specific", 6)
   )
   patients_specific <- rbind(patients_specific_totals, patients_specific)
   
@@ -688,7 +688,7 @@ if (study_start_date >= covid_season_min) {
           sum(patients_sensitive_severe[grep("Flu", patients_sensitive_severe$combo), "n"]),
           sum(patients_sensitive_severe[grep("COVID", patients_sensitive_severe$combo), "n"])),
     outcome_type = c("mild", "mild", "mild", "severe", "severe", "severe"),
-    codelist_type = rep("sensitive", 6),
+    codelist_type = rep("sensitive", 6)
   )
   patients_sensitive <- rbind(patients_sensitive_totals, patients_sensitive)
   
@@ -705,7 +705,7 @@ if (study_start_date >= covid_season_min) {
           sum(patients_sensitive_severe[grep("COVID", patients_sensitive_severe$combo), "n"]),
           sum(patients_sensitive_severe_overall[grep("Overall", patients_sensitive_severe_overall$combo), "n"])),
     outcome_type = c(rep("mild_overall", 4), rep("severe_overall", 4)),
-    codelist_type = rep("sensitive", 8),
+    codelist_type = rep("sensitive", 8)
   )
   patients_sensitive_overall <- rbind(patients_sensitive_totals_overall, 
                                       patients_sensitive_overall)
@@ -720,7 +720,7 @@ if (study_start_date >= covid_season_min) {
           sum(patients_specific_severe[grep("RSV", patients_specific_severe$combo), "n"]),
           sum(patients_specific_severe[grep("Flu", patients_specific_severe$combo), "n"])),
     outcome_type = c("mild", "mild", "severe", "severe"),
-    codelist_type = rep("specific", 4),
+    codelist_type = rep("specific", 4)
   )
   patients_specific <- rbind(patients_specific_totals, patients_specific)
   
@@ -747,7 +747,7 @@ if (study_start_date >= covid_season_min) {
           sum(patients_sensitive_severe[grep("Flu", patients_sensitive_severe$combo), "n"]),
           sum(patients_sensitive_severe_overall[grep("Overall", patients_sensitive_severe_overall$combo), "n"])),
     outcome_type = c(rep("mild_overall", 3), rep("severe_overall", 3)),
-    codelist_type = rep("sensitive", 6),
+    codelist_type = rep("sensitive", 6)
   )
   patients_sensitive_overall <- rbind(patients_sensitive_totals_overall,
                                       patients_sensitive_overall)
