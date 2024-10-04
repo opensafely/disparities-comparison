@@ -85,7 +85,7 @@ df_input_filt <- df_input_filt %>%
     age >= 40 & age <= 64 ~ "40-64y",
     TRUE ~ NA_character_)
   )
-} else if(cohort == "children_adults") {
+} else if(cohort == "children_and_adolescents") {
   df_input_filt <- df_input_filt %>%
     mutate(age_band = case_when(
       age >= 2 & age <= 5 ~ "2-5y",
