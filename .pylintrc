@@ -1,0 +1,45 @@
+[MASTER]
+ignore=.devcontainer
+disable=all
+
+# Enable error (E) and fatal (F) messages, as well as specific warnings related to correctness
+enable=E,F,
+       undefined-variable,
+       used-before-assignment,
+       return-in-init,
+       return-outside-function,
+       not-in-loop,
+       duplicate-key,
+       unreachable,
+       dangerous-default-value,
+       arguments-differ,
+       signature-differs,
+       abstract-method,
+       super-init-not-called,
+       no-member,
+       not-callable,
+       assignment-from-no-return,
+       no-value-for-parameter,
+       too-many-function-args,
+       unexpected-keyword-arg,
+       redundant-keyword-arg,
+       invalid-sequence-index,
+       invalid-slice-index,
+       unsupported-membership-test,
+       unsubscriptable-object,
+       unsupported-assignment-operation,
+       unsupported-delete-operation,
+       unsupported-iteration-type,
+       logging-unsupported-format,
+       logging-format-truncated,
+       logging-too-many-args,
+       logging-too-few-args,
+       bad-format-string,
+       bad-format-string-key,
+       bad-str-strip-call,
+       yield-inside-async-function,
+       not-async-context-manager,
+       fatal
+
+[FORMAT]
+max-line-length=100
