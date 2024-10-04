@@ -59,6 +59,9 @@ df_input_filt <- df_input %>%
 
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
+  print(nrow(df_input))
+  print(class(study_start_date))
+  print(class(study_end_date))
   df_input_filt <- df_input_filt %>%
     mutate(
       date = map2(study_start_date_sens, study_end_date_sens, ~seq(.x, .y, by = 30.44))
