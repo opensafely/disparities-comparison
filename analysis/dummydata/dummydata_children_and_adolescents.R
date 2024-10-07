@@ -107,8 +107,7 @@ sim_list = lst(
   
   #index of multiple deprivation
   imd_rounded = bn_node(
-    ~ as.integer(round(runif(n = ..n, min = 0, max = 32844), digits = -2)),
-    missing_rate = ~ 0.05
+    ~ as.integer(round(runif(n = ..n, min = 0, max = 32844), digits = -2))
   ),
   
   #ethnicity (group 6)
