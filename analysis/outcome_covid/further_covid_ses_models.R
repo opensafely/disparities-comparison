@@ -39,7 +39,7 @@ df_input <- read_feather(
 
 # } else {
 
-if (study_start_date >= covid_season_min) {
+if (study_start_date >= covid_prior_vacc_min) {
   #covid primary by ses
   covid_mild_ses_further <- glm(covid_primary_inf ~ imd_quintile + 
                                   age_band + sex + rurality_classification + 
@@ -62,6 +62,30 @@ if (study_start_date >= covid_season_min) {
   covid_mortality_ses_further <- glm(covid_mortality ~ imd_quintile + 
                                        age_band + sex + rurality_classification + 
                                        time_since_last_covid_vaccination +
+                                       covid_vaccination +
+                                       offset(log(time_covid_mortality)),
+                                     data = df_input, family = poisson)
+  covid_mortality_ses_further_output <- tidy(covid_mortality_ses_further)
+} else {
+  #covid primary by ses
+  covid_mild_ses_further <- glm(covid_primary_inf ~ imd_quintile + 
+                                  age_band + sex + rurality_classification + 
+                                  covid_vaccination_mild +
+                                  offset(log(time_covid_primary)),
+                                data = df_input, family = poisson)
+  covid_mild_ses_further_output <- tidy(covid_mild_ses_further)
+  
+  #covid secondary by ses
+  covid_severe_ses_further <- glm(covid_secondary_inf ~ imd_quintile + 
+                                    age_band + sex + rurality_classification + 
+                                    covid_vaccination_severe +
+                                    offset(log(time_covid_secondary)),
+                                  data = df_input, family = poisson)
+  covid_severe_ses_further_output <- tidy(covid_severe_ses_further)
+  
+  #covid mortality by ses
+  covid_mortality_ses_further <- glm(covid_mortality ~ imd_quintile + 
+                                       age_band + sex + rurality_classification + 
                                        covid_vaccination +
                                        offset(log(time_covid_mortality)),
                                      data = df_input, family = poisson)

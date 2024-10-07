@@ -37,7 +37,7 @@ df_input <- read_feather(
 # #add models for infants subgroup
 # if (cohort == "infants_subgroup") {
 
-if (study_start_date >= covid_season_min) {
+if (study_start_date >= covid_prior_vacc_min) {
   #covid primary by ethnicity
   covid_mild_ethnicity_further <- glm(covid_primary_inf ~ latest_ethnicity_group +
                                         age_band + sex + rurality_classification +
@@ -64,6 +64,30 @@ if (study_start_date >= covid_season_min) {
                                              offset(log(time_covid_mortality)),
                                            data = df_input, family = poisson)
   covid_mortality_ethnicity_further_output <- tidy(covid_mortality_ethnicity_further)
+} else {
+  #covid primary by ethnicity
+  covid_mild_ethnicity_further <- glm(covid_primary_inf ~ latest_ethnicity_group +
+                                        age_band + sex + rurality_classification +
+                                        covid_vaccination_mild +
+                                        offset(log(time_covid_primary)),
+                                      data = df_input, family = poisson)
+  covid_mild_ethnicity_further_output <- tidy(covid_mild_ethnicity_further)
+  
+  #covid secondary by ethnicity
+  covid_severe_ethnicity_further <- glm(covid_secondary_inf ~ latest_ethnicity_group + 
+                                          age_band + sex + rurality_classification + 
+                                          covid_vaccination_severe +
+                                          offset(log(time_covid_secondary)),
+                                        data = df_input, family = poisson)
+  covid_severe_ethnicity_further_output <- tidy(covid_severe_ethnicity_further)
+  
+  #covid mortality by ethnicity
+  covid_mortality_ethnicity_further <- glm(covid_mortality ~ latest_ethnicity_group + 
+                                             age_band + sex + rurality_classification + 
+                                             covid_vaccination +
+                                             offset(log(time_covid_mortality)),
+                                           data = df_input, family = poisson)
+  covid_mortality_ethnicity_further_output <- tidy(covid_mortality_ethnicity_further)
 }
 # }
 
@@ -72,8 +96,9 @@ model_names <- c("Mild COVID-19 by Ethnicity", "Severe COVID-19 by Ethnicity",
                  "COVID-19 Mortality by Ethnicity")
 
 #create the model outputs list
-model_outputs_list <- list(covid_mild_ethnicity_output, covid_severe_ethnicity_output,
-                           covid_mortality_ethnicity_output)
+model_outputs_list <- list(covid_mild_ethnicity_further_output, 
+                           covid_severe_ethnicity_further_output,
+                           covid_mortality_ethnicity_further_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {

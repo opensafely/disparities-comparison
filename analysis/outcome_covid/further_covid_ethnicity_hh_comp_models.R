@@ -26,6 +26,8 @@ if (length(args) == 0) {
   investigation_type <- args[[5]]
 }
 covid_season_min <- as.Date("2019-09-01")
+covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
+covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
@@ -36,7 +38,7 @@ df_input <- read_feather(
 #} else if (cohort == "infants_subgroup") {
   
 #} else {
-  if (study_start_date >= covid_season_min) {
+  if (study_start_date >= covid_prior_vacc_min) {
     #covid primary by ethnicity and household composition
     covid_mild_ethnicity_hh_comp_further <- glm(covid_primary_inf ~ latest_ethnicity_group + 
                                                   composition_category + age_band +
@@ -62,6 +64,33 @@ df_input <- read_feather(
                                                        composition_category + age_band + 
                                                        sex + rurality_classification + 
                                                        time_since_last_covid_vaccination +
+                                                       covid_vaccination +
+                                                       offset(log(time_covid_mortality)),
+                                                     data = df_input, family = poisson)
+    covid_mortality_ethnicity_hh_comp_further_output <- tidy(covid_mortality_ethnicity_hh_comp_further)
+  } else {
+    #covid primary by ethnicity and household composition
+    covid_mild_ethnicity_hh_comp_further <- glm(covid_primary_inf ~ latest_ethnicity_group + 
+                                                  composition_category + age_band +
+                                                  sex + rurality_classification +
+                                                  covid_vaccination_mild +
+                                                  offset(log(time_covid_primary)),
+                                                data = df_input, family = poisson)
+    covid_mild_ethnicity_hh_comp_further_output <- tidy(covid_mild_ethnicity_hh_comp_futher)
+    
+    #covid secondary by ethnicity and household composition
+    covid_severe_ethnicity_hh_comp_further <- glm(covid_secondary_inf ~ latest_ethnicity_group + 
+                                                    composition_category + age_band + 
+                                                    sex + rurality_classification + 
+                                                    covid_vaccination_severe +
+                                                    offset(log(time_covid_secondary)),
+                                                  data = df_input, family = poisson)
+    covid_severe_ethnicity_hh_comp_further_output <- tidy(covid_severe_ethnicity_hh_comp_further)
+    
+    #covid mortality by ethnicity and household composition
+    covid_mortality_ethnicity_hh_comp_further <- glm(covid_mortality ~ latest_ethnicity_group + 
+                                                       composition_category + age_band + 
+                                                       sex + rurality_classification + 
                                                        covid_vaccination +
                                                        offset(log(time_covid_mortality)),
                                                      data = df_input, family = poisson)

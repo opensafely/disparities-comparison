@@ -31,10 +31,14 @@ if (cohort != "infants" | cohort != "infants_subgroup") {
   #run model files
   source(here("analysis", "outcome_covid", "further_covid_ethnicity_models.R"))
   source(here("analysis", "outcome_covid", "further_covid_ses_models.R"))
-  source(here("analysis", "outcome_covid", "further_covid_hh_comp_models.R"))
+  if (study_start_date == as.Date("2020-09-01")) {
+    source(here("analysis", "outcome_covid", "further_covid_hh_comp_models.R"))
+  }
   source(here("analysis", "outcome_covid", "further_covid_ethnicity_ses_models.R"))
+  if (study_start_date == as.Date("2020-09-01")) {
   source(here("analysis", "outcome_covid", "further_covid_ethnicity_hh_comp_models.R"))
   source(here("analysis", "outcome_covid", "further_covid_ses_hh_comp_models.R"))
   source(here("analysis", "outcome_covid", "further_covid_full_models.R"))
+  }
 }
   
