@@ -13,11 +13,11 @@ fs::dir_create(here("analysis", "outcome_flu"))
 source(here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- "2016-09-01"
-  study_end_date <- "2017-08-31"
-  cohort <- "infants"
+  study_start_date <- "2018-09-01"
+  study_end_date <- "2019-08-31"
+  cohort <- "adults"
   codelist_type <- "sensitive"
-  investigation_type <- "primary"
+  investigation_type <- "sensitivity"
 } else {
   study_start_date <- study_dates[[args[[2]]]]
   study_end_date <- study_dates[[args[[3]]]]
@@ -31,10 +31,14 @@ if (cohort != "infants" | cohort != "infants_subgroup") {
   #run model files
   source(here("analysis", "outcome_flu", "further_flu_ethnicity_models.R"))
   source(here("analysis", "outcome_flu", "further_flu_ses_models.R"))
-  source(here("analysis", "outcome_flu", "further_flu_hh_comp_models.R"))
+  if (study_start_date == as.Date("2020-09-01")) {
+    source(here("analysis", "outcome_flu", "further_flu_hh_comp_models.R"))
+  }
   source(here("analysis", "outcome_flu", "further_flu_ethnicity_ses_models.R"))
+  if (study_start_date == as.Date("2020-09-01")) {
   source(here("analysis", "outcome_flu", "further_flu_ethnicity_hh_comp_models.R"))
   source(here("analysis", "outcome_flu", "further_flu_ses_hh_comp_models.R"))
   source(here("analysis", "outcome_flu", "further_flu_full_models.R"))
+  }
 }
   
