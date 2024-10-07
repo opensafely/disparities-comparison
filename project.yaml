@@ -6987,7 +6987,7 @@ actions:
     - process_household_information_s2
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_older_adults_2017_2018_specific_secondary.arrow
+        cohort: output/data/cohort_processed_older_adults_2017_2018_specific_secondary.arrow
 
   describe_dataset_older_adults_s2_specific_secondary:
     run: r:latest analysis/secondary_analyses/report_sec.R older_adults season2_start_date
@@ -7024,7 +7024,7 @@ actions:
     - process_household_information_s3
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_older_adults_2018_2019_specific_secondary.arrow
+        cohort: output/data/cohort_processed_older_adults_2018_2019_specific_secondary.arrow
 
   describe_dataset_older_adults_s3_specific_secondary:
     run: r:latest analysis/secondary_analyses/report_sec.R older_adults season3_start_date
@@ -7120,7 +7120,7 @@ actions:
     - process_household_information_s2
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_adults_2017_2018_specific_secondary.arrow
+        cohort: output/data/cohort_processed_adults_2017_2018_specific_secondary.arrow
 
   describe_dataset_adults_s2_specific_secondary:
     run: r:latest analysis/secondary_analyses/report_sec.R adults season2_start_date
@@ -7157,7 +7157,7 @@ actions:
     - process_household_information_s3
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_adults_2018_2019_specific_secondary.arrow
+        cohort: output/data/cohort_processed_adults_2018_2019_specific_secondary.arrow
 
   describe_dataset_adults_s3_specific_secondary:
     run: r:latest analysis/secondary_analyses/report_sec.R adults season3_start_date
@@ -7254,7 +7254,7 @@ actions:
     - process_household_information_s2
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_children_and_adolescents_2017_2018_specific_secondary.arrow
+        cohort: output/data/cohort_processed_children_and_adolescents_2017_2018_specific_secondary.arrow
 
   describe_dataset_children_and_adolescents_s2_specific_secondary:
     run: r:latest analysis/secondary_analyses/report_sec.R children_and_adolescents
@@ -7291,7 +7291,7 @@ actions:
     - process_household_information_s3
     outputs:
       highly_sensitive:
-        cohort: output/data/input_processed_children_and_adolescents_2018_2019_specific_secondary.arrow
+        cohort: output/data/cohort_processed_children_and_adolescents_2018_2019_specific_secondary.arrow
 
   describe_dataset_children_and_adolescents_s3_specific_secondary:
     run: r:latest analysis/secondary_analyses/report_sec.R children_and_adolescents
