@@ -30,29 +30,9 @@ collated_model_outputs_rsv = rbind(
   %>% mutate(model_type = "ses", codelist_type = "specific", 
              investigation_type = "secondary", subset = "2017_18"),
   read_csv(here::here("output", "results", "models", "rsv_specific_secondary", 
-                      paste0("rsv_hh_comp_model_outputs_", 
-                             cohort, "_2017_2018_specific_secondary.csv")))
-  %>% mutate(model_type = "composition", codelist_type = "specific", 
-             investigation_type = "secondary", subset = "2017_18"),
-  read_csv(here::here("output", "results", "models", "rsv_specific_secondary", 
                       paste0("rsv_ethnicity_ses_model_outputs_", 
                              cohort, "_2017_2018_specific_secondary.csv"))) 
   %>% mutate(model_type = "ethnicity_ses", codelist_type = "specific", 
-             investigation_type = "secondary", subset = "2017_18"),
-  read_csv(here::here("output", "results", "models", "rsv_specific_secondary", 
-                      paste0("rsv_ethnicity_hh_comp_model_outputs_", 
-                             cohort, "_2017_2018_specific_secondary.csv"))) 
-  %>% mutate(model_type = "ethnicity_composition", codelist_type = "specific", 
-             investigation_type = "secondary", subset = "2016_17"),
-  read_csv(here::here("output", "results", "models", "rsv_specific_secondary", 
-                      paste0("rsv_ses_hh_comp_model_outputs_", 
-                             cohort, "_2017_2018_specific_secondary.csv"))) 
-  %>% mutate(model_type = "ses_composition", codelist_type = "specific", 
-             investigation_type = "secondary", subset = "2017_18"),
-  read_csv(here::here("output", "results", "models", "rsv_specific_secondary", 
-                      paste0("rsv_full_model_outputs_", 
-                             cohort, "_2017_2018_specific_secondary.csv"))) 
-  %>% mutate(model_type = "full", codelist_type = "specific", 
              investigation_type = "secondary", subset = "2017_18")
 )
 
