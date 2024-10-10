@@ -67,6 +67,11 @@ sim_list = lst(
     ~ as.integer(rnormTrunc(n = ..n, mean = 12, sd = 4, min = 0, max = 23))
   ),
   
+  #appropriate age for cohort
+  is_appropriate_age = bn_node(
+    ~ if_else(age >= 0 & age <= 23, TRUE, FALSE)
+  ),
+  
   #sustainability transformation partnership code (here a pseudocode just represented by a number)
   stp = bn_node(
     ~ factor(as.integer(runif(n = ..n, 1, 36)), levels = 1:36)

@@ -45,15 +45,9 @@ calculate_household_size <- function(household_pseudo_id) {
 #define a list which will contain all of the variables to be simulated
 sim_list = lst(
   
-  #whether the patient is registered with the practice
+  #babys registration status
   registered = bn_node(
     ~ rbernoulli(n = ..n, p = 0.99)
-  ),
-  
-  #date of deregistration
-  deregistration_day = bn_node(
-    ~ as.integer(runif(n = ..n, index_day, index_day + 365)),
-    missing_rate = ~ 0.99
   ),
   
   #sex of the patient
@@ -65,6 +59,11 @@ sim_list = lst(
   #age of the patient
   age = bn_node(
     ~ as.integer(rnormTrunc(n = ..n, mean = 12, sd = 4, min = 0, max = 23))
+  ),
+  
+  #appropriate age for cohort
+  is_appropriate_age = bn_node(
+    ~ if_else(age >= 0 & age <= 23, TRUE, FALSE)
   ),
   
   #sustainability transformation partnership code (here a pseudocode just represented by a number)
@@ -90,6 +89,14 @@ sim_list = lst(
   #practice ID
   practice_pseudo_id = bn_node(
     ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
+  ),
+  
+  #birth day - this will be the index date for maternal characteristics
+  #rely on age to generate this
+  birth_day = bn_node(
+    ~ pmin(index_day, as.integer(runif(n = ..n, 
+      min = index_day - age * 30.44 - 15, 
+      max = index_day - age * 30.44 + 15)))
   ),
   
   #day of death for patient (want most to be alive)
@@ -137,16 +144,22 @@ sim_list = lst(
     ~ calculate_household_size(household_pseudo_id)
   ),
   
-  #family ID for baby
-  baby_id = bn_node(
+  ##maternal characteristics
+  
+  #id used to link mother and baby
+  mother_id = bn_node(
     ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
   ),
   
-  ##maternal characteristics
+  #whether the mother is registered with the practice
+  mother_registered = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.99)
+  ),
   
-  #matching family ID for mother
-  mother_id = bn_node(
-    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
+  #date of deregistration
+  mother_deregistration_day = bn_node(
+    ~ as.integer(runif(n = ..n, index_day, index_day + 365)),
+    missing_rate = ~ 0.99
   ),
   
   #age 

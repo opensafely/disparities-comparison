@@ -67,6 +67,11 @@ sim_list = lst(
     missing_rate = ~ 0.001
   ),
   
+  #appropriate age for cohort
+  is_appropriate_age = bn_node(
+    ~ if_else(age >= 5 & age <= 17, TRUE, FALSE)
+  ),
+  
   #sustainability transformation partnership code (here a pseudocode just represented by a number)
   stp = bn_node(
     ~ factor(as.integer(runif(n = ..n, 1, 36)), levels = 1:36)
