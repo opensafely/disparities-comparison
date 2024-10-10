@@ -35,9 +35,6 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow")))
 
-## create output directories ----
-fs::dir_create(here("output", "models"))
-
 #calculate total person-time for each outcome type 
 if (study_start_date == as.Date("2017-09-01")) {
   survival <- df_input %>%
@@ -1227,9 +1224,6 @@ if (cohort == "children_and_adolescents" |
       )
   }
 }
-
-## create output directories ----
-fs::dir_create(here("output", "results"))
 
 #export
 
