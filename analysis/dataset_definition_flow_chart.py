@@ -2,6 +2,7 @@ import json, sys
 from pathlib import Path 
 
 from datetime import date, datetime
+from ehrql.tables import table_from_file, PatientFrame, Series
 from ehrql import Dataset, case, when, maximum_of, minimum_of, years, days
 from ehrql.tables.tpp import ( 
   patients, 
@@ -13,7 +14,8 @@ from ehrql.tables.tpp import (
   household_memberships_2020,
   vaccinations,
   apcs,
-  emergency_care_attendances
+  emergency_care_attendances,
+  parents
 )
 
 from variable_lib import (
@@ -43,10 +45,14 @@ args = sys.argv
 cohort = args[1]
 
 # Change these in ./analysis/design/study-dates.R if necessary
-study_start_date = study_dates[args[2]]
-study_end_date = study_dates[args[3]]
+study_start_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
+study_end_date = datetime.strptime(study_dates[args[3]], "%Y-%m-%d").date()
 index_date = study_start_date
 registration_date = index_date - years(1)
+
+#define dataset definition settings from command line arguments
+start_year = study_start_date.year
+end_year = study_end_date.year
 
 #define patients age
 age_at_start = patients.age_on(study_start_date)
@@ -210,10 +216,25 @@ dataset.registered = registered_patients
 dataset.sex = patients.sex
 
 #age
-if cohort == "infants" or cohort == "infants_subgroup" :
-  dataset.age = age_at_start_months
-else:
-  dataset.age = age_at_start
+dataset.is_appropriate_age = is_appropriate_age
 
 #get patients IMD rank
 dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
+
+if cohort == "infants_subgroup" :
+  
+  #maternal linkage available
+  dataset.mother_id_present = parents.mother_id.is_not_null()
+  
+  #tell ehrql to use patients from process file
+  @table_from_file(f"output/flow_chart/cohort_mothers_processed_{start_year}_{end_year}.arrow")
+  
+  #extract these patients where index date is the date of birth of the linked infant
+  class matched_patients(PatientFrame) :
+    mother_date = Series(datetime.date)
+  
+  #mothers registration for 1 year prior to index date
+  dataset.mother_registered = (
+    has_a_continuous_practice_registration_spanning(matched_patients
+    .mother_date - years(1), matched_patients.mother_date)
+  )

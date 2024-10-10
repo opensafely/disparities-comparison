@@ -18,29 +18,15 @@ if (length(args) == 0) {
   cohort <- args[[1]]
 }
 
-patients_df <- read_csv(
+patients_df <- read_feather(
   here::here("output", "flow_chart", paste0(cohort, "_", year(study_start_date), 
-             "_", year(study_end_date), "_flow_chart", ".csv")))
+             "_", year(study_end_date), "_flow_chart", ".arrow")))
 
 patients_df <- patients_df %>%
   mutate(
     has_imd = if_else(is.na(patients_df$imd_rounded), F, T),
     is_female_or_male = if_else(patients_df$sex == "female" | patients_df$sex == "male", T, F)
   ) 
-
-
-if (cohort == "infants" | cohort == "infants_subgroup") {
-  is_appropriate_age = if_else(patients_df$age >= 0 & patients_df$age <= 23, T, F)
-} else if (cohort == "children_and_adolescents") {
-  is_appropriate_age = if_else(patients_df$age >= 2 & patients_df$age <= 17, T, F)
-} else if (cohort == "adults") {
-  is_appropriate_age = if_else(patients_df$age >= 18 & patients_df$age <= 64, T, F)
-} else {
-  is_appropriate_age = if_else(patients_df$age >= 65, T, F)
-}
-
-patients_df <- patients_df %>%
-  mutate(is_appropriate_age = is_appropriate_age)
 
 # Define counts based on inclusion and exclusion criteria
 total <- nrow(patients_df)
@@ -57,7 +43,12 @@ not_age_count <- if (cohort == "infants" | cohort == "infants_subgroup") {
   registered_count - age_count
 }
 
-if (cohort == "infants" | cohort == "infants_subgroup") {
+if (cohort == "infants_subgroup") {
+  mother_linkage_available <- sum(patients_df$mother_id_present, na.rm = TRUE)
+  mother_registered_spanning <- sum(patients_df$mother_registered, na.rm = TRUE)
+}
+
+if (cohort == "infants") {
   included_count <- sum(!patients_df$severe_immunodeficiency
                         & patients_df$is_appropriate_age & patients_df$has_imd 
                         & patients_df$is_female_or_male & !patients_df$care_home
@@ -66,6 +57,16 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
                         |!patients_df$has_imd|patients_df$risk_group_infants
                         |patients_df$care_home |patients_df$severe_immunodeficiency,
                         na.rm = TRUE) 
+} else if (cohort == "infants_subgroup") {
+  included_count <- sum(!patients_df$severe_immunodeficiency
+                        & patients_df$is_appropriate_age & patients_df$has_imd 
+                        & patients_df$is_female_or_male & patients_df$mother_registered
+                        & !patients_df$care_home & !patients_df$risk_group_infants, 
+                        na.rm = TRUE)
+  excluded_count <- sum(!patients_df$is_female_or_male|!patients_df$is_appropriate_age
+                        |!patients_df$has_imd|!patients_df$mother_registered
+                        |patients_df$risk_group_infants|patients_df$care_home
+                        |patients_df$severe_immunodeficiency, na.rm = TRUE) 
 } else {
   included_count <- sum(patients_df$registered & patients_df$is_female_or_male 
                         & patients_df$is_appropriate_age & patients_df$has_imd 
@@ -81,6 +82,11 @@ fs::dir_create(here("output", "flow_chart"))
 #export flow chart numbers 
 table <- cbind(total, non_registered_count, registered_count,  
                not_age_count, age_count, excluded_count, included_count)
+
+if (cohort == "infants_subgroup") {
+  table <- cbind(table, mother_linkage_available, mother_registered_spanning)
+}
+
 table <- table %>%
   as.data.frame() %>%
   write_csv(path = paste0(here::here("output", "flow_chart"), "/", 

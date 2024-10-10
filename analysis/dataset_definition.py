@@ -13,7 +13,8 @@ from ehrql.tables.tpp import (
   household_memberships_2020,
   vaccinations,
   apcs,
-  emergency_care_attendances
+  emergency_care_attendances,
+  parents
 )
 
 from variable_lib import (
@@ -233,15 +234,31 @@ care_home_tpp = (
 care_home_code = (has_prior_event(codelists.carehome_codelist))
 care_home = care_home_tpp | care_home_code
 
+mother_id_present = parents.mother_id.is_not_null()
+
 ##define populations
+
 #infants
-if cohort == "infants" or cohort == "infants_subgroup" :
+if cohort == "infants" :
   dataset.define_population(
     was_alive
     & registered_patients
     & is_female_or_male
     & is_appropriate_age
     & has_imd
+    & (~severe_immunodeficiency)
+    & (~risk_group_infants)
+    & (~care_home)
+  )
+#infants linked to mothers
+elif cohort == "infants_subgroup" :
+  dataset.define_population(
+    was_alive
+    & registered_patients
+    & is_female_or_male
+    & is_appropriate_age
+    & has_imd
+    & mother_id_present
     & (~severe_immunodeficiency)
     & (~risk_group_infants)
     & (~care_home)
@@ -256,15 +273,6 @@ else :
     & has_imd
     & (~care_home)
   )
-# #adults or children
-# if cohort == "adults" or cohort == "children_and_adolescents" :
-#   dataset.define_population(
-#     was_alive
-#     & registered_patients
-#     & is_female_or_male
-#     & is_appropriate_age
-#     & has_imd
-#   )
 
 #extract registration and sex  
 dataset.registered = registered_patients
@@ -320,6 +328,11 @@ dataset.deregistration_date = (
   (practice_registrations
   .for_patient_on(index_date)).end_date
 )
+
+#extract mothers ID
+if cohort == "infants_subgroup" :
+  dataset.mother_id = parents.mother_id
+  dataset.birth_date = patients.date_of_birth
 
 ##define comorbidities
 
