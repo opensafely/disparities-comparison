@@ -35,9 +35,6 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_",
              codelist_type, "_", investigation_type, ".arrow")))
 
-## create output directories ----
-fs::dir_create(here("output", "models"))
-
 #calculate total person-time for each outcome type
 if (study_start_date >= covid_season_min) {
   survival <- df_input %>%
@@ -2002,9 +1999,6 @@ if (cohort == "children_and_adolescents" |
     )
 }
 
-## create output directories ----
-fs::dir_create(here("output", "results"))
-
 #export
 
 if (cohort == "infants") {
@@ -2044,6 +2038,11 @@ if (cohort == "infants") {
 
 ## create output directories ----
 fs::dir_create(here("output", "results", "rates"))
+
+#redact events less than or equal to 7, if there are <=7 events, redact rate
+final_results <- final_results %>%
+  mutate(Events = ifelse(Events <= 7, "<=7", Events),
+         Rate = ifelse(Events == "<=7", "Redacted", Rate))
 
 #export results table to csv
 if (length(args) == 0) {

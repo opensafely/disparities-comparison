@@ -15,10 +15,10 @@ source(here("analysis", "functions", "redaction.R"))
 source(here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- "2022-09-01"
-  study_end_date <- "2023-08-31"
+  study_start_date <- "2018-09-01"
+  study_end_date <- "2019-08-31"
   cohort <- "adults"
-  codelist_type <- "sensitive"
+  codelist_type <- "specific"
   investigation_type <- "secondary"
 } else {
   study_start_date <- study_dates[[args[[2]]]]
@@ -129,18 +129,33 @@ fs::dir_create(here("output", "table1"))
 #   gt::gtsave(filename = paste0("table1_", cohort, "_", year(study_start_date),
 #              "_", year(study_end_date), ".html"), 
 #              path = here::here("output", "table1"))
+theme_gtsummary_language("en", big.mark = "")
+stats <- c("N" = "{n}",
+           "%" = "{p}%")
 if (length(args) == 0) {
-  table %>%
-    tbl_summary() %>%
-    as_tibble() %>% 
-    write_csv(file = paste0(here::here("output", "table1"), "/", "table1_", 
-                            cohort, "_", year(study_start_date), "_",
-                            year(study_end_date),".csv"))
+  purrr::imap(
+    stats,
+    ~table %>%
+      tbl_summary(statistic = ~.x) %>%
+      modify_header(all_stat_cols() ~ stringr::str_glue("**{.y}**"))
+  ) %>%
+  tbl_merge(tab_spanner = FALSE) %>%
+  modify_footnote(~NA) %>%
+  as_tibble() %>%
+  write_csv(file = paste0(here::here("output", "table1"), "/", "table1_", 
+                          cohort, "_", year(study_start_date), "_",
+                          year(study_end_date),".csv"))
 } else {
-  table %>%
-    tbl_summary() %>%
-    as_tibble() %>%
-    write_csv(path = paste0(here::here("output", "table1"), "/", "table1_", 
-                            cohort, "_", year(study_start_date), "_",
-                            year(study_end_date),".csv"))
+  purrr::imap(
+    stats,
+    ~table %>%
+      tbl_summary(statistic = ~.x) %>%
+      modify_header(all_stat_cols() ~ stringr::str_glue("**{.y}**"))
+  ) %>%
+  tbl_merge(tab_spanner = FALSE) %>%
+  modify_footnote(~NA) %>%
+  as_tibble()  %>%
+  write_csv(path = paste0(here::here("output", "table1"), "/", "table1_", 
+                          cohort, "_", year(study_start_date), "_",
+                          year(study_end_date),".csv"))
 }
