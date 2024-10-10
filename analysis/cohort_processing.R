@@ -29,10 +29,13 @@ covid_season_min <- as.Date("2019-09-01")
 covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
 covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
+## create output directories ----
+fs::dir_create(here("output", "data"))
+
 df_input <- read_feather(
-  here::here("output", "data", paste0("input_", cohort, "_", 
-             year(study_start_date), "_", year(study_end_date), "_",
-             codelist_type, "_", investigation_type,".arrow")))
+  here::here("output", "data", paste0("input_", cohort, year(study_start_date), 
+                                      "_", year(study_end_date), codelist_type,
+                                      investigation_type, ".arrow")))
 
 df_household <- read_feather(
   here::here("output", "data", paste0("input_household_processed_", 
@@ -917,9 +920,6 @@ if (study_start_date < covid_season_min) {
                                  study_start_date - days(1), "weeks"), "years")
     )
 }
-
-## create output directories ----
-fs::dir_create(here("output", "data"))
 
 #write the new input file
 write_feather(df_input, here::here("output", "data", 
