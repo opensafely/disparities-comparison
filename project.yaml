@@ -12888,6 +12888,405 @@ actions:
       moderately_sensitive:
         csv: output/collated/sensitivity/infants_overall_and_all_cause_model_outputs_collated_sensitivity.csv
 
+  collate_flow_chart_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/flow_chart_table_collation.R infants_subgroup
+    needs:
+    - process_flow_chart_data_infants_subgroup_s1
+    - process_flow_chart_data_infants_subgroup_s2
+    - process_flow_chart_data_infants_subgroup_s3
+    - process_flow_chart_data_infants_subgroup_s4
+    - process_flow_chart_data_infants_subgroup_s5
+    - process_flow_chart_data_infants_subgroup_s6
+    - process_flow_chart_data_infants_subgroup_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_subgroup_flow_chart_collated.csv
+
+  collate_table1_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/table1_table_collation.R infants_subgroup
+    needs:
+    - describe_cohort_infants_subgroup_s1
+    - describe_cohort_infants_subgroup_s2
+    - describe_cohort_infants_subgroup_s3
+    - describe_cohort_infants_subgroup_s4
+    - describe_cohort_infants_subgroup_s5
+    - describe_cohort_infants_subgroup_s6
+    - describe_cohort_infants_subgroup_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_subgroup_table1_collated.csv
+
+  collate_rates_tables_specific_primary_infants_subgroup:
+    run: r:latest analysis/collation_code/rates_table_specific_primary_collation.R
+      infants_subgroup
+    needs:
+    - describe_dataset_infants_subgroup_s1_specific_primary
+    - describe_dataset_infants_subgroup_s2_specific_primary
+    - describe_dataset_infants_subgroup_s3_specific_primary
+    - describe_dataset_infants_subgroup_s4_specific_primary
+    - describe_dataset_infants_subgroup_s5_specific_primary
+    - describe_dataset_infants_subgroup_s6_specific_primary
+    - describe_dataset_infants_subgroup_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_subgroup_rates_specific_primary_collated.csv
+
+  collate_rates_tables_sensitive_primary_infants_subgroup:
+    run: r:latest analysis/collation_code/rates_table_sensitive_primary_collation.R
+      infants_subgroup
+    needs:
+    - describe_dataset_infants_subgroup_s1_sensitive_primary
+    - describe_dataset_infants_subgroup_s2_sensitive_primary
+    - describe_dataset_infants_subgroup_s3_sensitive_primary
+    - describe_dataset_infants_subgroup_s4_sensitive_primary
+    - describe_dataset_infants_subgroup_s5_sensitive_primary
+    - describe_dataset_infants_subgroup_s6_sensitive_primary
+    - describe_dataset_infants_subgroup_s7_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_subgroup_rates_sensitive_primary_collated.csv
+
+  collate_rates_tables_specific_secondary_infants_subgroup:
+    run: r:latest analysis/collation_code/rates_table_specific_secondary_collation.R
+      infants_subgroup
+    needs:
+    - describe_dataset_infants_subgroup_s2_specific_secondary
+    - describe_dataset_infants_subgroup_s3_specific_secondary
+    - describe_dataset_infants_subgroup_s5_specific_secondary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_subgroup_rates_specific_secondary_collated.csv
+
+  collate_rates_tables_specific_sensitivity_infants_subgroup:
+    run: r:latest analysis/collation_code/rates_table_specific_sensitivity_collation.R
+      infants_subgroup
+    needs:
+    - describe_dataset_infants_subgroup_s2_specific_sensitivity
+    - describe_dataset_infants_subgroup_s3_specific_sensitivity
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_subgroup_rates_specific_sensitivity_collated.csv
+
+  collate_rsv_model_outputs_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s1_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s2_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s3_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s4_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s5_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s6_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s7_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s1_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s2_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s3_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s4_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s5_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s6_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_hh_comp_s5_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s1_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s2_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s3_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s4_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s5_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s6_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_hh_comp_s5_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_hh_comp_s5_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_full_s5_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s1_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s2_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s3_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s4_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s6_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s1_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s2_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s3_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s4_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s6_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_hh_comp_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s1_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s2_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s3_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s4_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s6_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_hh_comp_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_hh_comp_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_full_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/analytic/infants_subgroup_rsv_model_outputs_collated.csv
+
+  collate_flu_model_outputs_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/flu_model_outputs_table_collation.R infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s1_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s2_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s3_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s4_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s5_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s6_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s7_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s1_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s2_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s3_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s4_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s5_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s6_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_flu_hh_comp_s5_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s1_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s2_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s3_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s4_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s5_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s6_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_hh_comp_s5_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ses_hh_comp_s5_specific_primary
+    - analyse_dataset_infants_subgroup_flu_full_s5_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s1_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s2_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s3_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s4_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s6_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s1_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s2_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s3_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s4_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s6_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_hh_comp_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s1_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s2_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s3_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s4_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s6_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_hh_comp_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ses_hh_comp_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_full_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        glue("output/collated/analytic/{cohort}_flu_model_outputs_collated.csv"): output/collated/analytic/infants_subgroup_flu_model_outputs_collated.csv
+
+  collate_covid_model_outputs_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/covid_model_outputs_table_collation.R infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_covid_ethnicity_s4_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_s5_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_s6_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_s7_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ses_s4_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ses_s5_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ses_s6_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_covid_hh_comp_s5_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s4_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s5_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s6_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_hh_comp_s5_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ses_hh_comp_s5_specific_primary
+    - analyse_dataset_infants_subgroup_covid_full_s5_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_s4_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_s6_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ses_s4_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ses_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ses_s6_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_hh_comp_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s4_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s6_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_hh_comp_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ses_hh_comp_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_full_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/analytic/infants_subgroup_covid_model_outputs_collated.csv
+
+  collate_overall_and_all_cause_model_outputs_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
+      infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s1_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s2_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s3_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s4_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s5_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s6_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s7_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s1_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s2_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s3_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s4_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s5_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s6_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_hh_comp_s5_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s1_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s2_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s3_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s4_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s5_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s6_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_hh_comp_s5_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_hh_comp_s5_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_full_s5_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s1_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s2_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s3_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s4_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s6_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s1_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s2_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s3_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s4_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s6_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_hh_comp_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s1_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s2_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s3_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s4_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s6_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_hh_comp_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_hh_comp_s5_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_full_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/analytic/infants_subgroup_overall_and_all_cause_model_outputs_collated.csv
+
+  collate_rsv_model_outputs_tables_infants_subgroup_secondary:
+    run: r:latest analysis/collation_code/rsv_model_outputs_table_collation_secondary.R
+      infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s2_specific_secondary
+    - analyse_dataset_infants_subgroup_rsv_ses_s2_specific_secondary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s2_specific_secondary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/analytic/infants_subgroup_rsv_model_outputs_secondary_collated.csv
+
+  collate_flu_model_outputs_tables_infants_subgroup_secondary:
+    run: r:latest analysis/collation_code/flu_model_outputs_table_collation_secondary.R
+      infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s3_specific_secondary
+    - analyse_dataset_infants_subgroup_flu_ses_s3_specific_secondary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s3_specific_secondary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/analytic/infants_subgroup_flu_model_outputs_secondary_collated.csv
+
+  collate_covid_model_outputs_tables_infants_subgroup_secondary:
+    run: r:latest analysis/collation_code/covid_model_outputs_table_collation_secondary.R
+      infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_covid_ethnicity_s5_specific_secondary
+    - analyse_dataset_infants_subgroup_covid_ses_s5_specific_secondary
+    - analyse_dataset_infants_subgroup_covid_hh_comp_s5_specific_secondary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s5_specific_secondary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_hh_comp_s5_specific_secondary
+    - analyse_dataset_infants_subgroup_covid_ses_hh_comp_s5_specific_secondary
+    - analyse_dataset_infants_subgroup_covid_full_s5_specific_secondary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/analytic/infants_subgroup_covid_model_outputs_secondary_collated.csv
+
+  collate_overall_and_all_cause_model_outputs_tables_infants_subgroup_secondary:
+    run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation_secondary.R
+      infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s2_specific_secondary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s2_specific_secondary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s2_specific_secondary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s3_specific_secondary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s3_specific_secondary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s3_specific_secondary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s5_specific_secondary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s5_specific_secondary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_hh_comp_s5_specific_secondary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s5_specific_secondary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_hh_comp_s5_specific_secondary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_hh_comp_s5_specific_secondary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_full_s5_specific_secondary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/analytic/infants_subgroup_overall_and_all_cause_model_outputs_secondary_collated.csv
+
+  collate_phenotype_sensitivity_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/phenotype_sensitivity_table_collation.R
+      infants_subgroup
+    needs:
+    - phenotype_sensitivity_infants_subgroup_s1
+    - phenotype_sensitivity_infants_subgroup_s2
+    - phenotype_sensitivity_infants_subgroup_s3
+    - phenotype_sensitivity_infants_subgroup_s4
+    - phenotype_sensitivity_infants_subgroup_s5
+    - phenotype_sensitivity_infants_subgroup_s6
+    - phenotype_sensitivity_infants_subgroup_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_subgroup_phenotype_sensitivity_collated.csv
+
+  collate_rsv_model_outputs_tables_infants_subgroup_sensitivity:
+    run: r:latest analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R
+      infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s2_specific_sensitivity
+    - analyse_dataset_infants_subgroup_rsv_ses_s2_specific_sensitivity
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s2_specific_sensitivity
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/sensitivity/infants_subgroup_rsv_model_outputs_collated_sensitivity.csv
+
+  collate_flu_model_outputs_tables_infants_subgroup_sensitivity:
+    run: r:latest analysis/collation_code/flu_model_outputs_table_collation_sensitivity.R
+      infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s3_specific_sensitivity
+    - analyse_dataset_infants_subgroup_flu_ses_s3_specific_sensitivity
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s3_specific_sensitivity
+    outputs:
+      moderately_sensitive:
+        glue("output/collated/sensitivity/{cohort}_flu_model_outputs_collated_sensitivity.csv"): output/collated/sensitivity/infants_subgroup_flu_model_outputs_collated_sensitivity.csv
+
+  collate_overall_and_all_cause_model_outputs_tables_infants_subgroup_sensitivity:
+    run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation_sensitivity.R
+      infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s2_specific_sensitivity
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s3_specific_sensitivity
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s2_specific_sensitivity
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s3_specific_sensitivity
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s2_specific_sensitivity
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s3_specific_sensitivity
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/sensitivity/infants_subgroup_overall_and_all_cause_model_outputs_collated_sensitivity.csv
+
   ## # # # # # # # # # # # # # # # # # # # 
   ## End 
   ## # # # # # # # # # # # # # # # # # # # 

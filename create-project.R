@@ -3989,6 +3989,7 @@ actions_list <- splice(
   action_finalise("adults"),
   action_finalise("children_and_adolescents"),
   action_finalise_infants("infants"),
+  action_finalise_infants("infants_subgroup"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "End", "# # # # # # # # # # # # # # # # # # #")
 
