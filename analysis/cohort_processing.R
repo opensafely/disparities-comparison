@@ -37,15 +37,19 @@ df_input <- read_feather(
                                       "_", year(study_end_date), "_", codelist_type,
                                       "_", investigation_type, ".arrow")))
 
-df_household <- read_feather(
-  here::here("output", "data", paste0("input_household_processed_", 
-             year(study_start_date), "_", year(study_end_date), ".arrow")))
-
-household_comp_vars <- tibble("patient_id" = df_household$patient_id,
-                              "num_generations"= df_household$num_generations, 
-                              "composition_category" = df_household$composition_category)
-
-df_input <- merge(df_input, household_comp_vars, by = "patient_id")
+if (study_start_date == as.Date("2020-09-01")) {
+  
+  df_household <- read_feather(
+    here::here("output", "data", paste0("input_household_processed_", 
+                                        year(study_start_date), "_", year(study_end_date), ".arrow")))
+  
+  household_comp_vars <- tibble("patient_id" = df_household$patient_id,
+                                "num_generations"= df_household$num_generations, 
+                                "composition_category" = df_household$composition_category)
+  
+  df_input <- merge(df_input, household_comp_vars, by = "patient_id")
+  
+}
 
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
