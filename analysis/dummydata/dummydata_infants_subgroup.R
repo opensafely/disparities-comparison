@@ -148,12 +148,13 @@ sim_list = lst(
   
   #id used to link mother and baby
   mother_id = bn_node(
-    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
+    ~ as.integer(c(1:99000, 1:1000) + 100000),
+    missing_rate = ~ 0.8
   ),
   
   #whether the mother is registered with the practice
   mother_registered = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.99)
+    ~ rbernoulli(n = ..n, p = 0.8)
   ),
   
   #date of deregistration
@@ -164,7 +165,7 @@ sim_list = lst(
   
   #age 
   maternal_age = bn_node(
-    ~ rnorm(n = ..n, mean = 30, sd = 5)
+    ~ as.integer(rnorm(n = ..n, mean = 30, sd = 5))
   ),
   
   #smoking status
@@ -189,12 +190,12 @@ sim_list = lst(
   
   #flu vaccination
   maternal_flu_vaccination = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.4) #vary over ethnicity
+    ~ rbernoulli(n = ..n, p = 0.4)
   ),
   
   #pertussis vaccination
   maternal_pertussis_vaccination = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.5) #vary over ethnicity
+    ~ rbernoulli(n = ..n, p = 0.5)
   ),
   
   ##outcomes 
@@ -561,6 +562,19 @@ dummydata$patient_end_day <- study_end_day
 dummydata_processed <- dummydata %>%
   mutate(across(ends_with("_day"), ~ as.Date(as.character(index_date + .)))) %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
+
+dummydata_processed <- dummydata_processed %>%
+  mutate(
+    mother_id_present = if_else(is.na(mother_id), FALSE, TRUE),
+    mother_registered = if_else(is.na(mother_id), NA, mother_registered),
+    mother_deregistration_date = if_else(is.na(mother_id), NA_Date_, mother_deregistration_date),
+    maternal_age = if_else(is.na(mother_id), NA_integer_, maternal_age),
+    maternal_smoking_code = if_else(is.na(mother_id), NA_character_, maternal_smoking_code),
+    maternal_drinking = if_else(is.na(mother_id), NA, maternal_drinking),
+    maternal_drug_usage = if_else(is.na(mother_id), NA, maternal_drug_usage),
+    maternal_flu_vaccination = if_else(is.na(mother_id), NA, maternal_flu_vaccination),
+    maternal_pertussis_vaccination = if_else(is.na(mother_id), NA, maternal_pertussis_vaccination)
+  )
 
 fs::dir_create(here("analysis", "dummydata"))
 write_feather(dummydata_processed, sink = here("analysis", "dummydata", 
