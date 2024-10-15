@@ -231,7 +231,7 @@ if cohort == "infants_subgroup" :
   
   #extract these patients where index date is the date of birth of the linked infant
   class matched_patients(PatientFrame) :
-    index_date = Series(datetime.date)
+    index_date = Series(date)
   
   #mothers registration for 1 year prior to index date
   dataset.mother_registered = (

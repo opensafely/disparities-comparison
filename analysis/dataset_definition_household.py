@@ -17,8 +17,8 @@ study_dates = json.loads(
 args = sys.argv
 
 #define dataset definition settings from command line arguments
-study_start_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
-study_end_date = datetime.strptime(study_dates[args[3]], "%Y-%m-%d").date()
+study_start_date = datetime.strptime(study_dates[args[1]], "%Y-%m-%d").date()
+study_end_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
 
 # Define the dataset
 dataset = Dataset()

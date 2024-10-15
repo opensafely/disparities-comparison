@@ -33,9 +33,9 @@ covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 fs::dir_create(here("output", "data"))
 
 df_input <- read_feather(
-  here::here("output", "data", paste0("input_", cohort, year(study_start_date), 
-                                      "_", year(study_end_date), codelist_type,
-                                      investigation_type, ".arrow")))
+  here::here("output", "data", paste0("input_", cohort, "_", year(study_start_date), 
+                                      "_", year(study_end_date), "_", codelist_type,
+                                      "_", investigation_type, ".arrow")))
 
 df_household <- read_feather(
   here::here("output", "data", paste0("input_household_processed_", 
