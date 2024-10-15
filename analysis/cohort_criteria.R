@@ -58,15 +58,16 @@ if (cohort == "infants") {
                         |patients_df$care_home |patients_df$severe_immunodeficiency,
                         na.rm = TRUE) 
 } else if (cohort == "infants_subgroup") {
-  included_count <- sum(!patients_df$severe_immunodeficiency
-                        & patients_df$is_appropriate_age & patients_df$has_imd 
-                        & patients_df$is_female_or_male & patients_df$mother_registered
+  included_count <- sum(!patients_df$severe_immunodeficiency & patients_df$is_appropriate_age
+                        & patients_df$has_imd & patients_df$is_female_or_male 
+                        & patients_df$mother_id_present & patients_df$mother_registered
                         & !patients_df$care_home & !patients_df$risk_group_infants, 
                         na.rm = TRUE)
   excluded_count <- sum(!patients_df$is_female_or_male|!patients_df$is_appropriate_age
-                        |!patients_df$has_imd|!patients_df$mother_registered
-                        |patients_df$risk_group_infants|patients_df$care_home
-                        |patients_df$severe_immunodeficiency, na.rm = TRUE) 
+                        |!patients_df$has_imd|!patients_df$mother_id_present
+                        |!patients_df$mother_registered|patients_df$risk_group_infants
+                        |patients_df$care_home|patients_df$severe_immunodeficiency,
+                        na.rm = TRUE) 
 } else {
   included_count <- sum(patients_df$registered & patients_df$is_female_or_male 
                         & patients_df$is_appropriate_age & patients_df$has_imd 
