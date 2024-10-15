@@ -50,10 +50,6 @@ if (study_start_date == as.Date("2020-09-01")) {
 
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
-  print(nrow(df_input))
-  print(nrow(df_household))
-  print(class(study_start_date))
-  print(class(study_end_date))
   df_input <- df_input %>%
     mutate(
       date = map2(study_start_date, study_end_date, ~seq(.x, .y, by = 30.44))
@@ -155,12 +151,6 @@ df_input <- df_input %>%
     rurality_code = recode(rural_urban_classification, "1" = "1", "2" = "2", 
                            "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
                            "7" = "5", "8" = "5", .missing = "Unknown"),
-    #define household size categories
-    household_size_cat = factor(case_when(
-      household_size >= 1 & household_size <= 2 ~ "1",
-      household_size >= 3 & household_size <= 5 ~ "2",
-      household_size >= 6 ~ "3",
-      TRUE ~ "Unknown")),
     #assign rurality classification
     rurality_classification = factor(case_when(
       rurality_code == "1" ~ "Urban Major Conurbation",
@@ -170,6 +160,22 @@ df_input <- df_input %>%
       rurality_code == "5" ~ "Rural Village and Dispersed",
       TRUE ~ "Unknown"), ordered = TRUE)
   )
+
+if (study_start_date == as.Date("2020-09-01")) {
+  df_input <- df_input %>%
+    mutate(
+      #define household size categories
+      household_size_cat = factor(case_when(
+        household_size >= 1 & household_size <= 2 ~ "1",
+        household_size >= 3 & household_size <= 5 ~ "2",
+        household_size >= 6 ~ "3",
+        TRUE ~ "Unknown")),
+      composition_category = fct_relevel(composition_category,
+                                         c("Multiple of the Same Generation", "Living Alone",
+                                           "One Other Generation", "Two Other Generations",
+                                           "Three Other Generations"))
+    ) %>% arrange(composition_category)
+}
 
 #flu vaccination
 if (cohort != "infants" & cohort != "infants_subgroup") {
@@ -267,13 +273,6 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
 #                               "Urban City and Town", "Rural Town and Fringe", 
 #                               "Rural Village and Dispersed", "Unknown"))
 #   ) %>% arrange(rurality_classification)
-df_input <- df_input %>%
-  mutate(
-    composition_category = fct_relevel(composition_category,
-                                       c("Multiple of the Same Generation", "Living Alone",
-                                         "One Other Generation", "Two Other Generations",
-                                         "Three Other Generations"))
-  ) %>% arrange(composition_category)
 
 #set covid date to missing if existing date occurs before March 1st 2020
 if (study_start_date >= covid_season_min) {
