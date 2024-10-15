@@ -49,7 +49,7 @@ end_year = study_end_date.year
 
 #extract these patients where index date is the date of birth of the linked infant
 class matched_patients(PatientFrame) :
-  index_date = Series(datetime.date)
+  index_date = Series(date)
 
 ##define populations
 
