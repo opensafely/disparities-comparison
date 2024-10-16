@@ -304,8 +304,9 @@ dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
 dataset.rural_urban_classification = addresses.for_patient_on(index_date).rural_urban_classification
 
 #extract patients household info
-dataset.household_pseudo_id = household_memberships_2020.household_pseudo_id
-dataset.household_size = household_memberships_2020.household_size
+if study_start_date == datetime.strptime("2020-09-01", "%Y-%m-%d").date() :
+  dataset.household_pseudo_id = household_memberships_2020.household_pseudo_id
+  dataset.household_size = household_memberships_2020.household_size
 
 #extract patients practice's pseudonymised identifier
 dataset.practice_pseudo_id = (
