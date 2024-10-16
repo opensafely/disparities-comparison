@@ -15,7 +15,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- as.Date("2022-09-01")
   study_end_date <- as.Date("2023-08-31")
-  cohort <- "adults"
+  cohort <- "infants_subgroup"
   codelist_type <- "specific"
   investigation_type <- "primary"
 } else {
@@ -46,6 +46,18 @@ if (study_start_date == as.Date("2020-09-01")) {
   
   df_input <- merge(df_input, household_comp_vars, by = "patient_id")
   
+}
+
+if (cohort == "infants_subgroup") {
+  df_input_mothers <- read_feather(here::here("output", "data", 
+                                   paste0("input_mothers_processed_",
+                                          year(study_start_date), "_",
+                                          year(study_end_date), "_",
+                                          codelist_type, "_", 
+                                          investigation_type,".arrow")))
+  df_input_mothers <- df_input_mothers %>%
+    mutate(mother_id = patient_id)
+  df_input <- merge(df_input, df_input_mothers, by = "mother_id")
 }
 
 #create time dependency
@@ -108,14 +120,14 @@ df_input <- df_input %>%
       latest_ethnicity_code == "3" ~ "Asian or Asian British",
       latest_ethnicity_code == "4" ~ "Black or Black British",
       latest_ethnicity_code == "5" ~ "Other Ethnic Groups",
-      TRUE ~ "Unknown"), ordered = TRUE),
+      TRUE ~ NA_character_), ordered = TRUE),
     #calculate IMD quintile
     imd_quintile = factor(case_when(
       imd_rounded >= 0 & imd_rounded < as.integer(32800 * 1 / 5) ~ "1 (most deprived)",
       imd_rounded < as.integer(32800 * 2 / 5) ~ "2",
       imd_rounded < as.integer(32800 * 3 / 5) ~ "3",
       imd_rounded < as.integer(32800 * 4 / 5) ~ "4",
-      imd_rounded < as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
+      imd_rounded <= as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
       TRUE ~ NA_character_)),
     #format sex
     sex = factor(case_when(
@@ -123,7 +135,7 @@ df_input <- df_input %>%
       sex == "male" ~ "Male",
       sex == "intersex" ~ "Intersex",
       sex == "unknown" ~ "Unknown",
-      TRUE ~ "Unknown"))
+      TRUE ~ NA_character_))
   )
 
 #identify columns with logical values, excluding specified columns

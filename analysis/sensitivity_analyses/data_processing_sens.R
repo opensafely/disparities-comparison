@@ -120,22 +120,22 @@ df_input_filt <- df_input_filt %>%
       latest_ethnicity_code == "3" ~ "Asian or Asian British",
       latest_ethnicity_code == "4" ~ "Black or Black British",
       latest_ethnicity_code == "5" ~ "Other Ethnic Groups",
-      TRUE ~ "Unknown"), ordered = TRUE),
+      TRUE ~ NA_character_), ordered = TRUE),
     #calculate IMD quintile
     imd_quintile = factor(case_when(
       imd_rounded >= 0 & imd_rounded < as.integer(32800 * 1 / 5) ~ "1 (most deprived)",
       imd_rounded < as.integer(32800 * 2 / 5) ~ "2",
       imd_rounded < as.integer(32800 * 3 / 5) ~ "3",
       imd_rounded < as.integer(32800 * 4 / 5) ~ "4",
-      imd_rounded < as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
-      TRUE ~ NA_character_)),
+      imd_rounded <= as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
+      TRUE ~ NA_character_), ordered = TRUE),
     #format sex
     sex = factor(case_when(
       sex == "female" ~ "Female",
       sex == "male" ~ "Male",
       sex == "intersex" ~ "Intersex",
       sex == "unknown" ~ "Unknown",
-      TRUE ~ "Unknown"))
+      TRUE ~ NA_character_))
   )
 
 #identify columns with logical values, excluding specified columns
@@ -162,13 +162,13 @@ df_input_filt <- df_input_filt %>%
     #recode rurality to 5 levels
     rurality_code = recode(rural_urban_classification, "1" = "1", "2" = "2", 
                            "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
-                           "7" = "5", "8" = "5", .missing = "Unknown"),
+                           "7" = "5", "8" = "5", .missing = NA_character_),
     #define household size categories
     household_size_cat = factor(case_when(
       household_size >= 1 & household_size <= 2 ~ "1",
       household_size >= 3 & household_size <= 5 ~ "2",
       household_size >= 6 ~ "3",
-      TRUE ~ "Unknown")),
+      TRUE ~ NA_character_), ordered = TRUE),
     #assign rurality classification
     rurality_classification = factor(case_when(
       rurality_code == "1" ~ "Urban Major Conurbation",
@@ -176,7 +176,7 @@ df_input_filt <- df_input_filt %>%
       rurality_code == "3" ~ "Urban City and Town",
       rurality_code == "4" ~ "Rural Town and Fringe",
       rurality_code == "5" ~ "Rural Village and Dispersed",
-      TRUE ~ "Unknown"), ordered = TRUE)
+      TRUE ~ NA_character_), ordered = TRUE)
   )
 
 #flu vaccination
@@ -227,7 +227,7 @@ if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "
                              units = "days"), "months") < 12 ~ "6-12m",
       time_length(difftime(study_start_date_sens, last_covid_vaccination_date,
                            units = "days"), "months") >= 12 ~ "12m+",
-        TRUE ~ "Unknown"))
+        TRUE ~ NA_character_), ordered = TRUE)
   )
 }
 if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {

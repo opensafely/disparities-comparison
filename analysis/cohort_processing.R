@@ -70,14 +70,14 @@ if(cohort == "older_adults") {
       age >= 65 & age <= 74 ~ "65-74y",
       age >= 75 & age <= 89 ~ "75-89y",
       age >= 90 ~ "90y+",
-      TRUE ~ NA_character_)
+      TRUE ~ "Unknown")
     )
 } else if(cohort == "adults") {
 df_input <- df_input %>%
   mutate(age_band = case_when(
     age >= 18 & age <= 39 ~ "18-29y",
     age >= 40 & age <= 64 ~ "40-64y",
-    TRUE ~ NA_character_)
+    TRUE ~ "Uknown")
   )
 } else if(cohort == "children_and_adolescents") {
   df_input <- df_input %>%
@@ -86,7 +86,7 @@ df_input <- df_input %>%
       age >= 6 & age <= 9 ~ "6-9y",
       age >= 10 & age <= 13 ~ "10-13y",
       age >= 14 & age <= 17 ~ "14-17y",
-      TRUE ~ NA_character_)
+      TRUE ~ "Unknown")
     )
 } else {
   df_input <- df_input %>%
@@ -95,7 +95,7 @@ df_input <- df_input %>%
       age >= 3 & age <= 5 ~ "3-5m",
       age >= 6 & age <= 11 ~ "6-11m",
       age >= 12 & age <= 23 ~ "12-23m",
-      TRUE ~ NA_character_)
+      TRUE ~ "Uknown")
     )
 }
 
@@ -118,8 +118,8 @@ df_input <- df_input %>%
       imd_rounded < as.integer(32800 * 2 / 5) ~ "2",
       imd_rounded < as.integer(32800 * 3 / 5) ~ "3",
       imd_rounded < as.integer(32800 * 4 / 5) ~ "4",
-      imd_rounded < as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
-      TRUE ~ NA_character_)),
+      imd_rounded <= as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
+      TRUE ~ "Out of Range"), ordered = TRUE),
     #format sex
     sex = factor(case_when(
       sex == "female" ~ "Female",
