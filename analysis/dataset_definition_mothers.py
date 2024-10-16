@@ -45,7 +45,7 @@ start_year = study_start_date.year
 end_year = study_end_date.year
 
 #tell ehrql to use patients from process file
-@table_from_file(f"output/data/input_mothers_processed_{cohort}_{start_year}_{end_year}_{codelist_type}_{investigation_type}.arrow")
+@table_from_file(f"output/data/input_mothers_processed_{start_year}_{end_year}_{codelist_type}_{investigation_type}.arrow")
 
 #extract these patients where index date is the date of birth of the linked infant
 class matched_patients(PatientFrame) :
@@ -61,7 +61,7 @@ registered_mothers = (
 
 #extract mothers whose patient id matches those who were extracted with infants
 dataset.define_population(
-  registered_mothers.where(matched_patients.exists_for_patient())
+  registered_mothers
 )
 
 ##define functions for queries
@@ -80,8 +80,8 @@ def has_prior_event(codelist, where = True):
         .exists_for_patient()
     )
 
-#maternal ID 
-dataset.maternal_id = matched_patients.patient_id
+def filter_codes_by_category(codelist, include):
+    return {k:v for k,v in codelist.items() if v in include}
 
 ##extract maternal info
 
@@ -89,7 +89,7 @@ dataset.maternal_id = matched_patients.patient_id
 #gestational_age = 
 
 #mothers age at birth of infant
-dataset.maternal_age = patients.age_as_of(matched_patients.index_date - years(1))
+dataset.maternal_age = patients.age_on(matched_patients.index_date - years(1))
 
 #mothers smoking status
 most_recent_smoking_code = (
@@ -140,6 +140,6 @@ dataset.maternal_pertussis_vaccination = (
 dataset.maternal_flu_vaccination = (
     vaccinations.where(vaccinations.target_disease.is_in(["Influenza"]))
     .sort_by(vaccinations.date).where(vaccinations.date
-    .is_on_or_between(cupture_date, matched_patients
-    .index_date)).exists_for_patient()
+    .is_on_or_between(matched_patients.index_date - years(1),
+    matched_patients.index_date)).exists_for_patient()
   )
