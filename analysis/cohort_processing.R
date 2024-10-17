@@ -15,7 +15,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- as.Date("2016-09-01")
   study_end_date <- as.Date("2017-08-31")
-  cohort <- "infants"
+  cohort <- "adults"
   codelist_type <- "specific"
   investigation_type <- "secondary"
 } else {
@@ -92,7 +92,7 @@ df_input <- df_input %>%
   mutate(age_band = case_when(
     age > 17 & age < 40 ~ "18-29y",
     age > 39 & age < 65 ~ "40-64y",
-    TRUE ~ "Uknown")
+    TRUE ~ "Unknown")
   )
 } else if(cohort == "children_and_adolescents") {
   df_input <- df_input %>%
