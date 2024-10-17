@@ -15,7 +15,7 @@ if (length(args) == 0) {
 fs::dir_create(here("output", "collated", "descriptive"))
 
 ##table 1
-tab_names <- c(Characteristic = "**Characteristic**", N = "**N**", "%" = "**%**")
+tab_names <- c(Characteristic = "**Characteristic**", N, "%")
 
 # import table 1 by cohort
 collated_table1 = rbind(
