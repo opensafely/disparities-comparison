@@ -106,9 +106,8 @@ if (study_start_date == as.Date("2020-09-01")) {
              "Prior Flu Vaccine" = prior_flu_vaccination)
     if (study_start_date >= covid_prior_vacc_min) {
       table <- table %>%
-        table <- table %>%
-          mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination) %>%
-          rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
+        mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination) %>%
+        rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
     }
    }
 } else {
@@ -149,9 +148,8 @@ if (study_start_date == as.Date("2020-09-01")) {
              "Prior Flu Vaccine" = prior_flu_vaccination)
     if (study_start_date >= covid_prior_vacc_min) {
       table <- table %>%
-        table <- table %>%
-          mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination)  %>%
-          rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
+        mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination)  %>%
+        rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
     }
   } else {
     table <- df_input %>%
@@ -179,9 +177,8 @@ if (study_start_date == as.Date("2020-09-01")) {
              "Prior Flu Vaccine" = prior_flu_vaccination)
     if (study_start_date >= covid_prior_vacc_min) {
       table <- table %>%
-        table <- table %>%
-          mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination) %>%
-          rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
+        mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination) %>%
+        rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
     }
   }
 }
