@@ -19,7 +19,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2016-09-01"
   study_end_date <- "2017-08-31"
-  cohort <- "adults"
+  cohort <- "infants"
   codelist_type <- "specific"
   investigation_type <- "secondary"
 } else {
@@ -75,21 +75,10 @@ if (study_start_date == as.Date("2020-09-01")) {
              Rurality = rurality_classification, "Reactive Airway" = Reactive_Airway,
              "Asthma or Reactive Airway" = has_asthma_reactive_airway,
              "Prior Flu Vaccine" = prior_flu_vaccination)
-    if (study_start_date >= covid_season_min) {
+    if (study_start_date >= covid_prior_vacc_min) {
       table <- table %>%
-        mutate(time_since_last_covid_vaccination = case_when(
-        time_length(difftime(study_start_date, table$last_covid_vaccination_date, 
-                             units = "days"), "months") >= 0 &
-          time_length(difftime(study_start_date, table$last_covid_vaccination_date, 
-                               units = "days"), "months") < 6 ~ "0-6m",
-        time_length(difftime(study_start_date, table$last_covid_vaccination_date,
-                             units = "days"), "months") >= 6 &
-          time_length(difftime(study_start_date, table$last_covid_vaccination_date,
-                               units = "days"), "months") < 12 ~ "6-12m",
-        time_length(difftime(study_start_date, table$last_covid_vaccination_date,
-                             units = "days"), "months") >= 12 ~ "12m+",
-        TRUE ~ "Unknown"))
-      rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
+        mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination) %>%
+        rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
     }
   } else {
     table <- df_input %>%
@@ -117,19 +106,9 @@ if (study_start_date == as.Date("2020-09-01")) {
              "Prior Flu Vaccine" = prior_flu_vaccination)
     if (study_start_date >= covid_prior_vacc_min) {
       table <- table %>%
-        mutate(time_since_last_covid_vaccination = case_when(
-          time_length(difftime(study_start_date, table$last_covid_vaccination_date, 
-                               units = "days"), "months") >= 0 &
-            time_length(difftime(study_start_date, table$last_covid_vaccination_date, 
-                                 units = "days"), "months") < 6 ~ "0-6m",
-          time_length(difftime(study_start_date, table$last_covid_vaccination_date,
-                               units = "days"), "months") >= 6 &
-            time_length(difftime(study_start_date, table$last_covid_vaccination_date,
-                                 units = "days"), "months") < 12 ~ "6-12m",
-          time_length(difftime(study_start_date, table$last_covid_vaccination_date,
-                               units = "days"), "months") >= 12 ~ "12m+",
-          TRUE ~ "Unknown"))
-      rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
+        table <- table %>%
+          mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination) %>%
+          rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
     }
    }
 } else {
@@ -138,8 +117,8 @@ if (study_start_date == as.Date("2020-09-01")) {
       mutate(Total = n_distinct(patient_id)) %>%
       select(Total, age_band, sex, latest_ethnicity_group, imd_quintile,
              rurality_classification) %>%
-      rename(age_band = "Age Group", sex = Sex, latest_ethnicity_group = Ethnicity,
-             imd_quintile = IMD, rurality_classification = Rurality)
+      rename("Age Group" = age_band, Sex = sex, Ethnicity = latest_ethnicity_group,
+             IMD = imd_quintile, Rurality = rurality_classification)
   } else if (cohort == "infants_subgroup") {
     table <- df_input %>%
       mutate(Total = n_distinct(patient_id)) %>%
@@ -168,21 +147,11 @@ if (study_start_date == as.Date("2020-09-01")) {
              "Reactive Airway" = Reactive_Airway,
              "Asthma or Reactive Airway" = has_asthma_reactive_airway,
              "Prior Flu Vaccine" = prior_flu_vaccination)
-    if (study_start_date >= covid_season_min) {
+    if (study_start_date >= covid_prior_vacc_min) {
       table <- table %>%
-        mutate(time_since_last_covid_vaccination = case_when(
-          time_length(difftime(study_start_date, table$last_covid_vaccination_date, 
-                               units = "days"), "months") >= 0 &
-            time_length(difftime(study_start_date, table$last_covid_vaccination_date, 
-                                 units = "days"), "months") < 6 ~ "0-6m",
-          time_length(difftime(study_start_date, table$last_covid_vaccination_date,
-                               units = "days"), "months") >= 6 &
-            time_length(difftime(study_start_date, table$last_covid_vaccination_date,
-                                 units = "days"), "months") < 12 ~ "6-12m",
-          time_length(difftime(study_start_date, table$last_covid_vaccination_date,
-                               units = "days"), "months") >= 12 ~ "12m+",
-          TRUE ~ "Unknown"))
-      rename(time_since_last_covid_vaccination = "Time Since Last Covid Vaccine")
+        table <- table %>%
+          mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination)  %>%
+          rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
     }
   } else {
     table <- df_input %>%
@@ -210,19 +179,9 @@ if (study_start_date == as.Date("2020-09-01")) {
              "Prior Flu Vaccine" = prior_flu_vaccination)
     if (study_start_date >= covid_prior_vacc_min) {
       table <- table %>%
-        mutate(time_since_last_covid_vaccination = case_when(
-          time_length(difftime(study_start_date, table$last_covid_vaccination_date, 
-                               units = "days"), "months") >= 0 &
-            time_length(difftime(study_start_date, table$last_covid_vaccination_date, 
-                                 units = "days"), "months") < 6 ~ "0-6m",
-          time_length(difftime(study_start_date, table$last_covid_vaccination_date,
-                               units = "days"), "months") >= 6 &
-            time_length(difftime(study_start_date, table$last_covid_vaccination_date,
-                                 units = "days"), "months") < 12 ~ "6-12m",
-          time_length(difftime(study_start_date, table$last_covid_vaccination_date,
-                               units = "days"), "months") >= 12 ~ "12m+",
-          TRUE ~ "Unknown"))
-      rename(time_since_last_covid_vaccination = "Time Since Last Covid Vaccine")
+        table <- table %>%
+          mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination) %>%
+          rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
     }
   }
 }
