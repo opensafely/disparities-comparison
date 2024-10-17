@@ -38,15 +38,32 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_",
              codelist_type, "_", investigation_type,".arrow")))
 
-df_household <- read_feather(
-  here::here("output", "data", paste0("input_household_processed_", 
-             year(study_start_date), "_", year(study_end_date), ".arrow")))
+if (study_start_date == as.Date("2020-09-01")) {
+  
+  df_household <- read_feather(
+    here::here("output", "data", paste0("input_household_processed_", 
+                                        year(study_start_date), "_", year(study_end_date), ".arrow")))
+  
+  household_comp_vars <- tibble("patient_id" = df_household$patient_id,
+                                "num_generations"= df_household$num_generations, 
+                                "composition_category" = df_household$composition_category)
+  
+  df_input <- merge(df_input, household_comp_vars, by = "patient_id")
+  
+}
 
-household_comp_vars <- tibble("patient_id" = df_household$patient_id,
-                              "num_generations"= df_household$num_generations, 
-                              "composition_category" = df_household$composition_category)
+if (cohort == "infants_subgroup") {
+  df_input_mothers <- read_feather(here::here("output", "data", 
+                                   paste0("input_mothers_processed_",
+                                   year(study_start_date), "_",
+                                   year(study_end_date), "_",
+                                   codelist_type, "_", 
+                                   investigation_type,".arrow")))
+  df_input_mothers <- df_input_mothers %>%
+    mutate(mother_id = patient_id)
+  df_input <- merge(df_input, df_input_mothers, by = "mother_id")
+}
 
-df_input <- merge(df_input, household_comp_vars, by = "patient_id")
 
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
@@ -64,35 +81,35 @@ if(cohort == "infants" | cohort == "infants_subgroup") {
 if(cohort == "older_adults") {
   df_input <- df_input %>%
     mutate(age_band = case_when(
-      age >= 65 & age <= 74 ~ "65-74y",
-      age >= 75 & age <= 89 ~ "75-89y",
-      age >= 90 ~ "90y+",
-      TRUE ~ NA_character_)
+      age > 64 & age < 75 ~ "65-74y",
+      age > 74 & age < 90 ~ "75-89y",
+      age > 89 ~ "90y+",
+      TRUE ~ "Unknown")
     )
 } else if(cohort == "adults") {
-df_input <- df_input %>%
-  mutate(age_band = case_when(
-    age >= 18 & age <= 39 ~ "18-29y",
-    age >= 40 & age <= 64 ~ "40-64y",
-    TRUE ~ NA_character_)
-  )
+  df_input <- df_input %>%
+    mutate(age_band = case_when(
+      age > 17 & age < 40 ~ "18-29y",
+      age > 39 & age < 65 ~ "40-64y",
+      TRUE ~ "Uknown")
+    )
 } else if(cohort == "children_and_adolescents") {
   df_input <- df_input %>%
     mutate(age_band = case_when(
-      age >= 2 & age <= 5 ~ "2-5y",
-      age >= 6 & age <= 9 ~ "6-9y",
-      age >= 10 & age <= 13 ~ "10-13y",
-      age >= 14 & age <= 17 ~ "14-17y",
-      TRUE ~ NA_character_)
+      age > 1 & age < 6 ~ "2-5y",
+      age > 5 & age < 10 ~ "6-9y",
+      age > 9 & age < 14 ~ "10-13y",
+      age > 13 & age < 18 ~ "14-17y",
+      TRUE ~ "Unknown")
     )
 } else {
   df_input <- df_input %>%
     mutate(age_band = case_when(
-      age >= 0 & age <= 2 ~ "0-2m",
-      age >= 3 & age <= 5 ~ "3-5m",
-      age >= 6 & age <= 11 ~ "6-11m",
-      age >= 12 & age <= 23 ~ "12-23m",
-      TRUE ~ NA_character_)
+      age >= 0 & age < 3 ~ "0-2m",
+      age > 2 & age < 6 ~ "3-5m",
+      age > 5 & age < 12 ~ "6-11m",
+      age > 11 & age < 24 ~ "12-23m",
+      TRUE ~ "Unknown")
     )
 }
 
@@ -151,12 +168,6 @@ df_input <- df_input %>%
     rurality_code = recode(rural_urban_classification, "1" = "1", "2" = "2", 
                            "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
                            "7" = "5", "8" = "5", .missing = NA_character_),
-    #define household size categories
-    household_size_cat = factor(case_when(
-      household_size >= 1 & household_size <= 2 ~ "1",
-      household_size >= 3 & household_size <= 5 ~ "2",
-      household_size >= 6 ~ "3",
-      TRUE ~ NA_character_)),
     #assign rurality classification
     rurality_classification = factor(case_when(
       rurality_code == "1" ~ "Urban Major Conurbation",
@@ -166,6 +177,23 @@ df_input <- df_input %>%
       rurality_code == "5" ~ "Rural Village and Dispersed",
       TRUE ~ NA_character_), ordered = TRUE)
   )
+
+#household variables for when they are included (2020-21)
+if (study_start_date == as.Date("2020-09-01")) {
+  df_input_filt <- df_input_filt %>%
+    mutate(
+      #define household size categories
+      household_size_cat = factor(case_when(
+        household_size >= 1 & household_size <= 2 ~ "1",
+        household_size >= 3 & household_size <= 5 ~ "2",
+        household_size >= 6 ~ "3",
+        TRUE ~ "Unknown")),
+      composition_category = fct_relevel(composition_category,
+                                         c("Multiple of the Same Generation", "Living Alone",
+                                           "One Other Generation", "Two Other Generations",
+                                           "Three Other Generations"))
+    ) %>% arrange(composition_category)
+}
 
 #flu vaccination
 if (cohort != "infants" & cohort != "infants_subgroup") {
@@ -248,28 +276,6 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
       ))
     )
 }
-
-#re-level factors so they have reference categories for the regression models
-# df_input <- df_input %>% 
-#   mutate(
-#     latest_ethnicity_group = fct_relevel(latest_ethnicity_group, 
-#                              c("White", "Mixed", "Asian or Asian British", 
-#                                "Black or Black British", "Other Ethnic Groups"))
-#   ) %>% arrange(latest_ethnicity_group)
-# df_input <- df_input %>% 
-#   mutate(
-#     rurality_classification = fct_relevel(rurality_classification, 
-#                               c("Urban Major Conurbation", "Urban Minor Conurbation", 
-#                               "Urban City and Town", "Rural Town and Fringe", 
-#                               "Rural Village and Dispersed", "Unknown"))
-#   ) %>% arrange(rurality_classification)
-df_input <- df_input %>% 
-  mutate(
-    composition_category = fct_relevel(composition_category, 
-                                       c("Multiple of the Same Generation", "Living Alone", 
-                                         "One Other Generation", "Two Other Generations", 
-                                         "Three Other Generations"))
-  ) %>% arrange(composition_category)
 
 if (study_start_date == as.Date("2017-09-01")) {
   df_input <- df_input %>%

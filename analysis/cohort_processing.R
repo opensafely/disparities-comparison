@@ -13,11 +13,11 @@ fs::dir_create(here("analysis"))
 source(here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- as.Date("2020-09-01")
-  study_end_date <- as.Date("2020-08-31")
-  cohort <- "adults"
+  study_start_date <- as.Date("2016-09-01")
+  study_end_date <- as.Date("2017-08-31")
+  cohort <- "infants"
   codelist_type <- "specific"
-  investigation_type <- "primary"
+  investigation_type <- "secondary"
 } else {
   study_start_date <- study_dates[[args[[2]]]]
   study_end_date <- study_dates[[args[[3]]]]
@@ -51,51 +51,66 @@ if (study_start_date == as.Date("2020-09-01")) {
   
 }
 
+if (cohort == "infants_subgroup") {
+  df_input_mothers <- read_feather(here::here("output", "data", 
+                                              paste0("input_maternal_infants_subgroup_",
+                                                     year(study_start_date), "_",
+                                                     year(study_end_date), "_",
+                                                     codelist_type, "_", 
+                                                     investigation_type,".arrow")))
+  df_input_mothers <- df_input_mothers %>%
+    mutate(mother_id = patient_id) %>%
+    select(-patient_id)
+  df_input <- merge(df_input, df_input_mothers, by = "mother_id", all = TRUE)
+}
+
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
   df_input <- df_input %>%
     mutate(
-      date = map2(study_start_date, study_end_date, ~seq(.x, .y, by = 30.44))
+      #ensure sequence ends at the earlier of death_date or study_end_date
+      end_date = pmin(death_date, study_end_date, na.rm = TRUE),
+      date = map2(study_start_date, end_date, ~seq(.x, .y, by = 30.44))
     ) %>%
     unnest(date) %>%
     mutate(
       age = age + as.numeric((date - study_start_date)/30.44)
     ) 
 }
-  
+
 #calculate age bands
 if(cohort == "older_adults") {
   df_input <- df_input %>%
     mutate(age_band = case_when(
-      age >= 65 & age <= 74 ~ "65-74y",
-      age >= 75 & age <= 89 ~ "75-89y",
-      age >= 90 ~ "90y+",
+      age > 64 & age < 75 ~ "65-74y",
+      age > 74 & age < 90 ~ "75-89y",
+      age > 89 ~ "90y+",
       TRUE ~ "Unknown")
     )
 } else if(cohort == "adults") {
 df_input <- df_input %>%
   mutate(age_band = case_when(
-    age >= 18 & age <= 39 ~ "18-29y",
-    age >= 40 & age <= 64 ~ "40-64y",
+    age > 17 & age < 40 ~ "18-29y",
+    age > 39 & age < 65 ~ "40-64y",
     TRUE ~ "Uknown")
   )
 } else if(cohort == "children_and_adolescents") {
   df_input <- df_input %>%
     mutate(age_band = case_when(
-      age >= 2 & age <= 5 ~ "2-5y",
-      age >= 6 & age <= 9 ~ "6-9y",
-      age >= 10 & age <= 13 ~ "10-13y",
-      age >= 14 & age <= 17 ~ "14-17y",
+      age > 1 & age < 6 ~ "2-5y",
+      age > 5 & age < 10 ~ "6-9y",
+      age > 9 & age < 14 ~ "10-13y",
+      age > 13 & age < 18 ~ "14-17y",
       TRUE ~ "Unknown")
     )
 } else {
   df_input <- df_input %>%
     mutate(age_band = case_when(
-      age >= 0 & age <= 2 ~ "0-2m",
-      age >= 3 & age <= 5 ~ "3-5m",
-      age >= 6 & age <= 11 ~ "6-11m",
-      age >= 12 & age <= 23 ~ "12-23m",
-      TRUE ~ "Uknown")
+      age >= 0 & age < 3 ~ "0-2m",
+      age > 2 & age < 6 ~ "3-5m",
+      age > 5 & age < 12 ~ "6-11m",
+      age > 11 & age < 24 ~ "12-23m",
+      TRUE ~ "Unknown")
     )
 }
 
@@ -261,21 +276,6 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
       ))
     )
 }
-
-# #re-level factors so they have reference categories for the regression models
-# df_input <- df_input %>% 
-#   mutate(
-#     latest_ethnicity_group = fct_relevel(latest_ethnicity_group, 
-#                              c("White", "Mixed", "Asian or Asian British", 
-#                                "Black or Black British", "Other Ethnic Groups"))
-#   ) %>% arrange(latest_ethnicity_group)
-# df_input <- df_input %>% 
-#   mutate(
-#     rurality_classification = fct_relevel(rurality_classification, 
-#                               c("Urban Major Conurbation", "Urban Minor Conurbation", 
-#                               "Urban City and Town", "Rural Town and Fringe", 
-#                               "Rural Village and Dispersed", "Unknown"))
-#   ) %>% arrange(rurality_classification)
 
 #set covid date to missing if existing date occurs before March 1st 2020
 if (study_start_date >= covid_season_min) {
