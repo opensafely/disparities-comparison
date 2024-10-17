@@ -74,7 +74,6 @@ if(cohort == "infants" | cohort == "infants_subgroup") {
 }
   
 #calculate age bands
-#calculate age bands
 if(cohort == "older_adults") {
   df_input <- df_input %>%
     mutate(age_band = case_when(
