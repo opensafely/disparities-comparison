@@ -107,7 +107,7 @@ ever_smoked = (
   .clear_smoking_codes, include = ["S", "E"])))
   .exists_for_patient()
 )
-maternal_smoking_code = (case(
+dataset.maternal_smoking_status = (case(
   when(most_recent_smoking_code == "S").then("Current"),
   when((most_recent_smoking_code == "E") 
   | ((most_recent_smoking_code == "N") 
