@@ -60,7 +60,7 @@ sim_list = lst(
   ),
   
   #smoking status
-  maternal_smoking_code = bn_node(
+  maternal_smoking_status = bn_node(
     ~ rfactor(n = ..n, levels = c(
       "Current", #smoker
       "Former", #ever-smoked
@@ -112,7 +112,7 @@ dummydata_processed <- dummydata_processed %>%
     mother_registered = if_else(is.na(patient_id), NA, mother_registered),
     mother_deregistration_date = if_else(is.na(patient_id), NA_Date_, mother_deregistration_date),
     maternal_age = if_else(is.na(patient_id), NA_integer_, maternal_age),
-    maternal_smoking_code = if_else(is.na(patient_id), NA_character_, maternal_smoking_code),
+    maternal_smoking_status = if_else(is.na(patient_id), NA_character_, maternal_smoking_status),
     maternal_drinking = if_else(is.na(patient_id), NA, maternal_drinking),
     maternal_drug_usage = if_else(is.na(patient_id), NA, maternal_drug_usage),
     maternal_flu_vaccination = if_else(is.na(patient_id), NA, maternal_flu_vaccination),
