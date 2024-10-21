@@ -856,7 +856,6 @@ actions:
       specific primary
     needs:
     - generate_dataset_older_adults_s1_specific_primary
-    - generate_dataset_older_adults_s1_specific_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_older_adults_2016_2017_specific_primary.arrow
@@ -920,7 +919,6 @@ actions:
     run: r:latest analysis/data_processing.R older_adults season2_start_date season2_end_date
       specific primary
     needs:
-    - generate_dataset_older_adults_s2_specific_primary
     - generate_dataset_older_adults_s2_specific_primary
     outputs:
       highly_sensitive:
@@ -986,7 +984,6 @@ actions:
       specific primary
     needs:
     - generate_dataset_older_adults_s3_specific_primary
-    - generate_dataset_older_adults_s3_specific_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_older_adults_2018_2019_specific_primary.arrow
@@ -1050,7 +1047,6 @@ actions:
     run: r:latest analysis/data_processing.R older_adults season4_start_date season4_end_date
       specific primary
     needs:
-    - generate_dataset_older_adults_s4_specific_primary
     - generate_dataset_older_adults_s4_specific_primary
     outputs:
       highly_sensitive:
@@ -1217,7 +1213,6 @@ actions:
       specific primary
     needs:
     - generate_dataset_older_adults_s6_specific_primary
-    - generate_dataset_older_adults_s6_specific_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_older_adults_2021_2022_specific_primary.arrow
@@ -1299,7 +1294,6 @@ actions:
     run: r:latest analysis/data_processing.R older_adults season7_start_date season7_end_date
       specific primary
     needs:
-    - generate_dataset_older_adults_s7_specific_primary
     - generate_dataset_older_adults_s7_specific_primary
     outputs:
       highly_sensitive:
@@ -1388,7 +1382,6 @@ actions:
       specific primary
     needs:
     - generate_dataset_adults_s1_specific_primary
-    - generate_dataset_adults_s1_specific_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_adults_2016_2017_specific_primary.arrow
@@ -1452,7 +1445,6 @@ actions:
     run: r:latest analysis/data_processing.R adults season2_start_date season2_end_date
       specific primary
     needs:
-    - generate_dataset_adults_s2_specific_primary
     - generate_dataset_adults_s2_specific_primary
     outputs:
       highly_sensitive:
@@ -1518,7 +1510,6 @@ actions:
       specific primary
     needs:
     - generate_dataset_adults_s3_specific_primary
-    - generate_dataset_adults_s3_specific_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_adults_2018_2019_specific_primary.arrow
@@ -1582,7 +1573,6 @@ actions:
     run: r:latest analysis/data_processing.R adults season4_start_date season4_end_date
       specific primary
     needs:
-    - generate_dataset_adults_s4_specific_primary
     - generate_dataset_adults_s4_specific_primary
     outputs:
       highly_sensitive:
@@ -1749,7 +1739,6 @@ actions:
       specific primary
     needs:
     - generate_dataset_adults_s6_specific_primary
-    - generate_dataset_adults_s6_specific_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_adults_2021_2022_specific_primary.arrow
@@ -1831,7 +1820,6 @@ actions:
     run: r:latest analysis/data_processing.R adults season7_start_date season7_end_date
       specific primary
     needs:
-    - generate_dataset_adults_s7_specific_primary
     - generate_dataset_adults_s7_specific_primary
     outputs:
       highly_sensitive:
@@ -1920,7 +1908,6 @@ actions:
       season1_end_date specific primary
     needs:
     - generate_dataset_children_and_adolescents_s1_specific_primary
-    - generate_dataset_children_and_adolescents_s1_specific_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_children_and_adolescents_2016_2017_specific_primary.arrow
@@ -1984,7 +1971,6 @@ actions:
     run: r:latest analysis/data_processing.R children_and_adolescents season2_start_date
       season2_end_date specific primary
     needs:
-    - generate_dataset_children_and_adolescents_s2_specific_primary
     - generate_dataset_children_and_adolescents_s2_specific_primary
     outputs:
       highly_sensitive:
@@ -2050,7 +2036,6 @@ actions:
       season3_end_date specific primary
     needs:
     - generate_dataset_children_and_adolescents_s3_specific_primary
-    - generate_dataset_children_and_adolescents_s3_specific_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_children_and_adolescents_2018_2019_specific_primary.arrow
@@ -2114,7 +2099,6 @@ actions:
     run: r:latest analysis/data_processing.R children_and_adolescents season4_start_date
       season4_end_date specific primary
     needs:
-    - generate_dataset_children_and_adolescents_s4_specific_primary
     - generate_dataset_children_and_adolescents_s4_specific_primary
     outputs:
       highly_sensitive:
@@ -2281,7 +2265,6 @@ actions:
       season6_end_date specific primary
     needs:
     - generate_dataset_children_and_adolescents_s6_specific_primary
-    - generate_dataset_children_and_adolescents_s6_specific_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_children_and_adolescents_2021_2022_specific_primary.arrow
@@ -2363,7 +2346,6 @@ actions:
     run: r:latest analysis/data_processing.R children_and_adolescents season7_start_date
       season7_end_date specific primary
     needs:
-    - generate_dataset_children_and_adolescents_s7_specific_primary
     - generate_dataset_children_and_adolescents_s7_specific_primary
     outputs:
       highly_sensitive:
@@ -4665,7 +4647,6 @@ actions:
       sensitive primary
     needs:
     - generate_dataset_older_adults_s1_sensitive_primary
-    - generate_dataset_older_adults_s1_sensitive_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_older_adults_2016_2017_sensitive_primary.arrow
@@ -4729,7 +4710,6 @@ actions:
     run: r:latest analysis/data_processing.R older_adults season2_start_date season2_end_date
       sensitive primary
     needs:
-    - generate_dataset_older_adults_s2_sensitive_primary
     - generate_dataset_older_adults_s2_sensitive_primary
     outputs:
       highly_sensitive:
@@ -4795,7 +4775,6 @@ actions:
       sensitive primary
     needs:
     - generate_dataset_older_adults_s3_sensitive_primary
-    - generate_dataset_older_adults_s3_sensitive_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_older_adults_2018_2019_sensitive_primary.arrow
@@ -4859,7 +4838,6 @@ actions:
     run: r:latest analysis/data_processing.R older_adults season4_start_date season4_end_date
       sensitive primary
     needs:
-    - generate_dataset_older_adults_s4_sensitive_primary
     - generate_dataset_older_adults_s4_sensitive_primary
     outputs:
       highly_sensitive:
@@ -5026,7 +5004,6 @@ actions:
       sensitive primary
     needs:
     - generate_dataset_older_adults_s6_sensitive_primary
-    - generate_dataset_older_adults_s6_sensitive_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_older_adults_2021_2022_sensitive_primary.arrow
@@ -5108,7 +5085,6 @@ actions:
     run: r:latest analysis/data_processing.R older_adults season7_start_date season7_end_date
       sensitive primary
     needs:
-    - generate_dataset_older_adults_s7_sensitive_primary
     - generate_dataset_older_adults_s7_sensitive_primary
     outputs:
       highly_sensitive:
@@ -5197,7 +5173,6 @@ actions:
       sensitive primary
     needs:
     - generate_dataset_adults_s1_sensitive_primary
-    - generate_dataset_adults_s1_sensitive_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_adults_2016_2017_sensitive_primary.arrow
@@ -5261,7 +5236,6 @@ actions:
     run: r:latest analysis/data_processing.R adults season2_start_date season2_end_date
       sensitive primary
     needs:
-    - generate_dataset_adults_s2_sensitive_primary
     - generate_dataset_adults_s2_sensitive_primary
     outputs:
       highly_sensitive:
@@ -5327,7 +5301,6 @@ actions:
       sensitive primary
     needs:
     - generate_dataset_adults_s3_sensitive_primary
-    - generate_dataset_adults_s3_sensitive_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_adults_2018_2019_sensitive_primary.arrow
@@ -5391,7 +5364,6 @@ actions:
     run: r:latest analysis/data_processing.R adults season4_start_date season4_end_date
       sensitive primary
     needs:
-    - generate_dataset_adults_s4_sensitive_primary
     - generate_dataset_adults_s4_sensitive_primary
     outputs:
       highly_sensitive:
@@ -5558,7 +5530,6 @@ actions:
       sensitive primary
     needs:
     - generate_dataset_adults_s6_sensitive_primary
-    - generate_dataset_adults_s6_sensitive_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_adults_2021_2022_sensitive_primary.arrow
@@ -5640,7 +5611,6 @@ actions:
     run: r:latest analysis/data_processing.R adults season7_start_date season7_end_date
       sensitive primary
     needs:
-    - generate_dataset_adults_s7_sensitive_primary
     - generate_dataset_adults_s7_sensitive_primary
     outputs:
       highly_sensitive:
@@ -5729,7 +5699,6 @@ actions:
       season1_end_date sensitive primary
     needs:
     - generate_dataset_children_and_adolescents_s1_sensitive_primary
-    - generate_dataset_children_and_adolescents_s1_sensitive_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_children_and_adolescents_2016_2017_sensitive_primary.arrow
@@ -5793,7 +5762,6 @@ actions:
     run: r:latest analysis/data_processing.R children_and_adolescents season2_start_date
       season2_end_date sensitive primary
     needs:
-    - generate_dataset_children_and_adolescents_s2_sensitive_primary
     - generate_dataset_children_and_adolescents_s2_sensitive_primary
     outputs:
       highly_sensitive:
@@ -5859,7 +5827,6 @@ actions:
       season3_end_date sensitive primary
     needs:
     - generate_dataset_children_and_adolescents_s3_sensitive_primary
-    - generate_dataset_children_and_adolescents_s3_sensitive_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_children_and_adolescents_2018_2019_sensitive_primary.arrow
@@ -5923,7 +5890,6 @@ actions:
     run: r:latest analysis/data_processing.R children_and_adolescents season4_start_date
       season4_end_date sensitive primary
     needs:
-    - generate_dataset_children_and_adolescents_s4_sensitive_primary
     - generate_dataset_children_and_adolescents_s4_sensitive_primary
     outputs:
       highly_sensitive:
@@ -6090,7 +6056,6 @@ actions:
       season6_end_date sensitive primary
     needs:
     - generate_dataset_children_and_adolescents_s6_sensitive_primary
-    - generate_dataset_children_and_adolescents_s6_sensitive_primary
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_children_and_adolescents_2021_2022_sensitive_primary.arrow
@@ -6172,7 +6137,6 @@ actions:
     run: r:latest analysis/data_processing.R children_and_adolescents season7_start_date
       season7_end_date sensitive primary
     needs:
-    - generate_dataset_children_and_adolescents_s7_sensitive_primary
     - generate_dataset_children_and_adolescents_s7_sensitive_primary
     outputs:
       highly_sensitive:
@@ -8473,7 +8437,6 @@ actions:
       specific secondary
     needs:
     - generate_dataset_older_adults_s1_specific_secondary
-    - generate_dataset_older_adults_s1_specific_secondary
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_older_adults_2016_2017_specific_secondary.arrow
@@ -8501,7 +8464,6 @@ actions:
     run: r:latest analysis/cohort_processing.R older_adults season2_start_date season2_end_date
       specific secondary
     needs:
-    - generate_dataset_older_adults_s2_specific_secondary
     - generate_dataset_older_adults_s2_specific_secondary
     outputs:
       highly_sensitive:
@@ -8531,7 +8493,6 @@ actions:
       specific secondary
     needs:
     - generate_dataset_older_adults_s3_specific_secondary
-    - generate_dataset_older_adults_s3_specific_secondary
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_older_adults_2018_2019_specific_secondary.arrow
@@ -8559,7 +8520,6 @@ actions:
     run: r:latest analysis/cohort_processing.R older_adults season4_start_date season4_end_date
       specific secondary
     needs:
-    - generate_dataset_older_adults_s4_specific_secondary
     - generate_dataset_older_adults_s4_specific_secondary
     outputs:
       highly_sensitive:
@@ -8618,7 +8578,6 @@ actions:
       specific secondary
     needs:
     - generate_dataset_older_adults_s6_specific_secondary
-    - generate_dataset_older_adults_s6_specific_secondary
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_older_adults_2021_2022_specific_secondary.arrow
@@ -8646,7 +8605,6 @@ actions:
     run: r:latest analysis/cohort_processing.R older_adults season7_start_date season7_end_date
       specific secondary
     needs:
-    - generate_dataset_older_adults_s7_specific_secondary
     - generate_dataset_older_adults_s7_specific_secondary
     outputs:
       highly_sensitive:
@@ -8680,7 +8638,6 @@ actions:
       specific secondary
     needs:
     - generate_dataset_adults_s1_specific_secondary
-    - generate_dataset_adults_s1_specific_secondary
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_adults_2016_2017_specific_secondary.arrow
@@ -8708,7 +8665,6 @@ actions:
     run: r:latest analysis/cohort_processing.R adults season2_start_date season2_end_date
       specific secondary
     needs:
-    - generate_dataset_adults_s2_specific_secondary
     - generate_dataset_adults_s2_specific_secondary
     outputs:
       highly_sensitive:
@@ -8738,7 +8694,6 @@ actions:
       specific secondary
     needs:
     - generate_dataset_adults_s3_specific_secondary
-    - generate_dataset_adults_s3_specific_secondary
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_adults_2018_2019_specific_secondary.arrow
@@ -8766,7 +8721,6 @@ actions:
     run: r:latest analysis/cohort_processing.R adults season4_start_date season4_end_date
       specific secondary
     needs:
-    - generate_dataset_adults_s4_specific_secondary
     - generate_dataset_adults_s4_specific_secondary
     outputs:
       highly_sensitive:
@@ -8825,7 +8779,6 @@ actions:
       specific secondary
     needs:
     - generate_dataset_adults_s6_specific_secondary
-    - generate_dataset_adults_s6_specific_secondary
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_adults_2021_2022_specific_secondary.arrow
@@ -8853,7 +8806,6 @@ actions:
     run: r:latest analysis/cohort_processing.R adults season7_start_date season7_end_date
       specific secondary
     needs:
-    - generate_dataset_adults_s7_specific_secondary
     - generate_dataset_adults_s7_specific_secondary
     outputs:
       highly_sensitive:
@@ -8887,7 +8839,6 @@ actions:
       season1_end_date specific secondary
     needs:
     - generate_dataset_children_and_adolescents_s1_specific_secondary
-    - generate_dataset_children_and_adolescents_s1_specific_secondary
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_children_and_adolescents_2016_2017_specific_secondary.arrow
@@ -8915,7 +8866,6 @@ actions:
     run: r:latest analysis/cohort_processing.R children_and_adolescents season2_start_date
       season2_end_date specific secondary
     needs:
-    - generate_dataset_children_and_adolescents_s2_specific_secondary
     - generate_dataset_children_and_adolescents_s2_specific_secondary
     outputs:
       highly_sensitive:
@@ -8945,7 +8895,6 @@ actions:
       season3_end_date specific secondary
     needs:
     - generate_dataset_children_and_adolescents_s3_specific_secondary
-    - generate_dataset_children_and_adolescents_s3_specific_secondary
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_children_and_adolescents_2018_2019_specific_secondary.arrow
@@ -8973,7 +8922,6 @@ actions:
     run: r:latest analysis/cohort_processing.R children_and_adolescents season4_start_date
       season4_end_date specific secondary
     needs:
-    - generate_dataset_children_and_adolescents_s4_specific_secondary
     - generate_dataset_children_and_adolescents_s4_specific_secondary
     outputs:
       highly_sensitive:
@@ -9032,7 +8980,6 @@ actions:
       season6_end_date specific secondary
     needs:
     - generate_dataset_children_and_adolescents_s6_specific_secondary
-    - generate_dataset_children_and_adolescents_s6_specific_secondary
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_children_and_adolescents_2021_2022_specific_secondary.arrow
@@ -9060,7 +9007,6 @@ actions:
     run: r:latest analysis/cohort_processing.R children_and_adolescents season7_start_date
       season7_end_date specific secondary
     needs:
-    - generate_dataset_children_and_adolescents_s7_specific_secondary
     - generate_dataset_children_and_adolescents_s7_specific_secondary
     outputs:
       highly_sensitive:
@@ -9094,7 +9040,6 @@ actions:
       specific secondary
     needs:
     - generate_dataset_infants_s1_specific_secondary
-    - generate_dataset_infants_s1_specific_secondary
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_infants_2016_2017_specific_secondary.arrow
@@ -9122,7 +9067,6 @@ actions:
     run: r:latest analysis/cohort_processing.R infants season2_start_date season2_end_date
       specific secondary
     needs:
-    - generate_dataset_infants_s2_specific_secondary
     - generate_dataset_infants_s2_specific_secondary
     outputs:
       highly_sensitive:
@@ -9152,7 +9096,6 @@ actions:
       specific secondary
     needs:
     - generate_dataset_infants_s3_specific_secondary
-    - generate_dataset_infants_s3_specific_secondary
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_infants_2018_2019_specific_secondary.arrow
@@ -9180,7 +9123,6 @@ actions:
     run: r:latest analysis/cohort_processing.R infants season4_start_date season4_end_date
       specific secondary
     needs:
-    - generate_dataset_infants_s4_specific_secondary
     - generate_dataset_infants_s4_specific_secondary
     outputs:
       highly_sensitive:
@@ -9239,7 +9181,6 @@ actions:
       specific secondary
     needs:
     - generate_dataset_infants_s6_specific_secondary
-    - generate_dataset_infants_s6_specific_secondary
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_infants_2021_2022_specific_secondary.arrow
@@ -9267,7 +9208,6 @@ actions:
     run: r:latest analysis/cohort_processing.R infants season7_start_date season7_end_date
       specific secondary
     needs:
-    - generate_dataset_infants_s7_specific_secondary
     - generate_dataset_infants_s7_specific_secondary
     outputs:
       highly_sensitive:
@@ -9533,6 +9473,7 @@ actions:
     - generate_dataset_infants_subgroup_s5_specific_secondary
     - process_mothers_s5_specific_secondary
     - generate_maternal_characteristics_s5_specific_secondary
+    - process_household_information_s5
     outputs:
       highly_sensitive:
         dataset: output/data/cohort_processed_infants_subgroup_2020_2021_specific_secondary.arrow

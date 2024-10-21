@@ -193,10 +193,10 @@ action_specified <- function(cohort, season, dates, codelist_type,
       run = glue("r:latest analysis/data_processing.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
       #               season_start_date, season_end_date),
-      needs = case_when(season == "s5" ~ list(
+      needs = case_when(season == "s5" ~ list(list(
               glue("generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
-              glue("process_household_information_{season}")), 
-              .default = list(glue("generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"))),
+              glue("process_household_information_{season}"))), 
+              .default = list(list(glue("generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"))))[[1]],
       highly_sensitive = lst(
         dataset = glue("output/data/input_processed_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow")
       )
@@ -1333,10 +1333,10 @@ action_descriptive <- function(cohort, season, dates, codelist_type,
       run = glue("r:latest analysis/cohort_processing.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
       #               season_start_date, season_end_date),
-      needs = case_when(season == "s5" ~ list(
+      needs = case_when(season == "s5" ~ list(list(
               glue("generate_dataset_{cohort}_{season}_specific_secondary"),
-              glue("process_household_information_{season}")), 
-              .default = list(glue("generate_dataset_{cohort}_{season}_specific_secondary"))),
+              glue("process_household_information_{season}"))), 
+              .default = list(list(glue("generate_dataset_{cohort}_{season}_specific_secondary"))))[[1]],
       highly_sensitive = lst(
         dataset = glue("output/data/cohort_processed_{cohort}_{dates}_specific_secondary.arrow")
       )
@@ -1405,9 +1405,15 @@ action_descriptive_infants_sub <- function(season, dates, codelist_type,
       run = glue("r:latest analysis/cohort_processing.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
       #               season_start_date, season_end_date),
-      needs = list(glue("generate_dataset_infants_subgroup_{season}_specific_secondary"),
-                   glue("process_mothers_{season}_specific_secondary"),
-                   glue("generate_maternal_characteristics_{season}_specific_secondary")),
+      needs = case_when(season == "s5" ~ list(list(
+              glue("generate_dataset_infants_subgroup_{season}_specific_secondary"),
+              glue("process_mothers_{season}_specific_secondary"),
+              glue("generate_maternal_characteristics_{season}_specific_secondary"),
+              glue("process_household_information_{season}"))), 
+              .default = list(list(
+                glue("generate_dataset_infants_subgroup_{season}_specific_secondary"),
+                glue("process_mothers_{season}_specific_secondary"),
+                glue("generate_maternal_characteristics_{season}_specific_secondary"))))[[1]],
       highly_sensitive = lst(
         dataset = glue("output/data/cohort_processed_infants_subgroup_{dates}_specific_secondary.arrow")
       )
