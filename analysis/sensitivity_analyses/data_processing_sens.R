@@ -90,7 +90,7 @@ if(cohort == "infants" | cohort == "infants_subgroup") {
 
 #calculate age bands
 if(cohort == "older_adults") {
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(age_band = case_when(
       age > 64 & age < 75 ~ "65-74y",
       age > 74 & age < 90 ~ "75-89y",
@@ -98,14 +98,14 @@ if(cohort == "older_adults") {
       TRUE ~ "Unknown")
     )
 } else if(cohort == "adults") {
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(age_band = case_when(
       age > 17 & age < 40 ~ "18-29y",
       age > 39 & age < 65 ~ "40-64y",
       TRUE ~ "Uknown")
     )
 } else if(cohort == "children_and_adolescents") {
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(age_band = case_when(
       age > 1 & age < 6 ~ "2-5y",
       age > 5 & age < 10 ~ "6-9y",
@@ -114,7 +114,7 @@ if(cohort == "older_adults") {
       TRUE ~ "Unknown")
     )
 } else {
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(age_band = case_when(
       age >= 0 & age < 3 ~ "0-2m",
       age > 2 & age < 6 ~ "3-5m",
@@ -124,7 +124,7 @@ if(cohort == "older_adults") {
     )
 }
 
-df_input$age_band <- factor(df_input$age_band)
+df_input_filt$age_band <- factor(df_input_filt$age_band)
 
 #data manipulation
 df_input_filt <- df_input_filt %>%
