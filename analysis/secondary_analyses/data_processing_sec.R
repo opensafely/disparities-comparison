@@ -54,13 +54,13 @@ if (study_start_date == as.Date("2020-09-01")) {
 
 if (cohort == "infants_subgroup") {
   df_input_mothers <- read_feather(here::here("output", "data", 
-                                   paste0("input_mothers_processed_",
+                                   paste0("input_maternal_infants_subgroup_",
                                    year(study_start_date), "_",
-                                   year(study_end_date), "_",
-                                   codelist_type, "_", 
-                                   investigation_type,".arrow")))
+                                   year(study_end_date), "_", codelist_type,
+                                   "_", investigation_type,".arrow")))
   df_input_mothers <- df_input_mothers %>%
-    mutate(mother_id = patient_id)
+    mutate(mother_id = patient_id) %>%
+    select(-patient_id)
   df_input <- merge(df_input, df_input_mothers, by = "mother_id")
 }
 
@@ -180,7 +180,7 @@ df_input <- df_input %>%
 
 #household variables for when they are included (2020-21)
 if (study_start_date == as.Date("2020-09-01")) {
-  df_input_filt <- df_input_filt %>%
+  df_input <- df_input %>%
     mutate(
       #define household size categories
       household_size_cat = factor(case_when(
