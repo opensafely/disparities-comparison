@@ -1459,7 +1459,7 @@ action_secondary_rsv <- function(cohort, season, dates, codelist_type,
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_s2_specific_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_{cohort}_s2_specific_secondary.csv")
+        csv = glue("output/results/rates/rates_{cohort}_{dates}_specific_secondary.csv")
       )
     ),
     
@@ -1501,7 +1501,7 @@ action_secondary_flu <- function(cohort, season, dates, codelist_type,
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_s3_specific_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_{cohort}_s3_specific_secondary.csv")
+        csv = glue("output/results/rates/rates_{cohort}_{dates}_specific_secondary.csv")
       )
     ),
     
@@ -1553,7 +1553,7 @@ action_secondary_covid <- function(cohort, season, dates, codelist_type,
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_s5_specific_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_{cohort}_s5_specific_secondary.csv")
+        csv = glue("output/results/rates/rates_{cohort}_{dates}_specific_secondary.csv")
       )
     ),
     
@@ -1605,7 +1605,7 @@ action_secondary_rsv_infants <- function(cohort, season, dates, codelist_type,
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_s2_specific_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_{cohort}_s2_specific_secondary.csv")
+        csv = glue("output/results/rates/rates_{cohort}_{dates}_specific_secondary.csv")
       )
     ),
     
@@ -1669,7 +1669,7 @@ action_secondary_rsv_infants_sub <- function(season, dates, codelist_type,
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_infants_subgroup_s2_specific_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_infants_subgroup_s2_specific_secondary.csv")
+        csv = glue("output/results/rates/rates_infants_subgroup_{dates}_specific_secondary.csv")
       )
     ),
     
@@ -1731,7 +1731,7 @@ action_secondary_flu_infants <- function(cohort, season, dates, codelist_type,
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_s3_specific_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_{cohort}_s3_specific_secondary.csv")
+        csv = glue("output/results/rates/rates_{cohort}_{dates}_specific_secondary.csv")
       )
     ),
     
@@ -1795,7 +1795,7 @@ action_secondary_flu_infants_sub <- function(season, dates, codelist_type,
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_infants_subgroup_s3_specific_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_infants_subgroup_s3_specific_secondary.csv")
+        csv = glue("output/results/rates/rates_infants_subgroup_{dates}_specific_secondary.csv")
       )
     ),
     
@@ -1858,7 +1858,7 @@ action_secondary_covid_infants <- function(cohort, season, dates, codelist_type,
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_s5_specific_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_{cohort}_s5_specific_secondary.csv")
+        csv = glue("output/results/rates/rates_{cohort}_{dates}_specific_secondary.csv")
       )
     ),
     
@@ -1963,7 +1963,7 @@ action_secondary_covid_infants_sub <- function(season, dates, codelist_type,
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_infants_subgroup_s5_specific_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_infants_subgroup_s5_specific_secondary.csv")
+        csv = glue("output/results/rates/rates_infants_subgroup_{dates}_specific_secondary.csv")
       )
     ),
     
@@ -2248,7 +2248,7 @@ action_sensitivity_flu <- function(cohort, season, dates, season_start_date,
     
     action(
       name = glue("describe_dataset_{cohort}_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/sensitivity_analyses/repor_sens.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/sensitivity_analyses/report_sens.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),

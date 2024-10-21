@@ -9615,7 +9615,7 @@ actions:
     - process_dataset_older_adults_s2_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_older_adults_s2_specific_secondary.csv
+        csv: output/results/rates/rates_older_adults_2017_2018_specific_secondary.csv
 
   analyse_dataset_older_adults_rsv_s2_specific_secondary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season2_start_date
@@ -9642,7 +9642,7 @@ actions:
     - process_dataset_older_adults_s3_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_older_adults_s3_specific_secondary.csv
+        csv: output/results/rates/rates_older_adults_2018_2019_specific_secondary.csv
 
   analyse_dataset_older_adults_flu_s3_specific_secondary:
     run: r:latest analysis/outcome_flu/flu_models_master.R older_adults season3_start_date
@@ -9679,7 +9679,7 @@ actions:
     - process_dataset_older_adults_s5_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_older_adults_s5_specific_secondary.csv
+        csv: output/results/rates/rates_older_adults_2020_2021_specific_secondary.csv
 
   analyse_dataset_older_adults_covid_s5_specific_secondary:
     run: r:latest analysis/outcome_covid/covid_models_master.R older_adults season5_start_date
@@ -9720,7 +9720,7 @@ actions:
     - process_dataset_adults_s2_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_adults_s2_specific_secondary.csv
+        csv: output/results/rates/rates_adults_2017_2018_specific_secondary.csv
 
   analyse_dataset_adults_rsv_s2_specific_secondary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season2_start_date
@@ -9747,7 +9747,7 @@ actions:
     - process_dataset_adults_s3_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_adults_s3_specific_secondary.csv
+        csv: output/results/rates/rates_adults_2018_2019_specific_secondary.csv
 
   analyse_dataset_adults_flu_s3_specific_secondary:
     run: r:latest analysis/outcome_flu/flu_models_master.R adults season3_start_date
@@ -9784,7 +9784,7 @@ actions:
     - process_dataset_adults_s5_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_adults_s5_specific_secondary.csv
+        csv: output/results/rates/rates_adults_2020_2021_specific_secondary.csv
 
   analyse_dataset_adults_covid_s5_specific_secondary:
     run: r:latest analysis/outcome_covid/covid_models_master.R adults season5_start_date
@@ -9825,7 +9825,7 @@ actions:
     - process_dataset_children_and_adolescents_s2_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_children_and_adolescents_s2_specific_secondary.csv
+        csv: output/results/rates/rates_children_and_adolescents_2017_2018_specific_secondary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s2_specific_secondary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
@@ -9852,7 +9852,7 @@ actions:
     - process_dataset_children_and_adolescents_s3_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_children_and_adolescents_s3_specific_secondary.csv
+        csv: output/results/rates/rates_children_and_adolescents_2018_2019_specific_secondary.csv
 
   analyse_dataset_children_and_adolescents_flu_s3_specific_secondary:
     run: r:latest analysis/outcome_flu/flu_models_master.R children_and_adolescents
@@ -9889,7 +9889,7 @@ actions:
     - process_dataset_children_and_adolescents_s5_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_children_and_adolescents_s5_specific_secondary.csv
+        csv: output/results/rates/rates_children_and_adolescents_2020_2021_specific_secondary.csv
 
   analyse_dataset_children_and_adolescents_covid_s5_specific_secondary:
     run: r:latest analysis/outcome_covid/covid_models_master.R children_and_adolescents
@@ -9930,7 +9930,7 @@ actions:
     - process_dataset_infants_s2_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_infants_s2_specific_secondary.csv
+        csv: output/results/rates/rates_infants_2017_2018_specific_secondary.csv
 
   analyse_dataset_infants_rsv_ethnicity_s2_specific_secondary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season2_start_date
@@ -9975,7 +9975,7 @@ actions:
     - process_dataset_infants_s3_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_infants_s3_specific_secondary.csv
+        csv: output/results/rates/rates_infants_2018_2019_specific_secondary.csv
 
   analyse_dataset_infants_flu_ethnicity_s3_specific_secondary:
     run: r:latest analysis/outcome_flu/flu_ethnicity_models.R infants season3_start_date
@@ -10021,7 +10021,7 @@ actions:
     - process_dataset_infants_s5_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_infants_s5_specific_secondary.csv
+        csv: output/results/rates/rates_infants_2020_2021_specific_secondary.csv
 
   analyse_dataset_infants_covid_ethnicity_s5_specific_secondary:
     run: r:latest analysis/outcome_covid/covid_ethnicity_models.R infants season5_start_date
@@ -10109,7 +10109,7 @@ actions:
     - process_dataset_infants_subgroup_s2_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_infants_subgroup_s2_specific_secondary.csv
+        csv: output/results/rates/rates_infants_subgroup_2017_2018_specific_secondary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s2_specific_secondary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season2_start_date
@@ -10156,7 +10156,7 @@ actions:
     - process_dataset_infants_subgroup_s3_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_infants_subgroup_s3_specific_secondary.csv
+        csv: output/results/rates/rates_infants_subgroup_2018_2019_specific_secondary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_s3_specific_secondary:
     run: r:latest analysis/outcome_flu/flu_ethnicity_models.R infants_subgroup season3_start_date
@@ -10204,7 +10204,7 @@ actions:
     - process_dataset_infants_subgroup_s5_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/rates/rates_infants_subgroup_s5_specific_secondary.csv
+        csv: output/results/rates/rates_infants_subgroup_2020_2021_specific_secondary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s5_specific_secondary:
     run: r:latest analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
@@ -10687,7 +10687,7 @@ actions:
         csv: output/data/input_processed_older_adults_2018_2019_specific_sensitivity.arrow
 
   describe_dataset_older_adults_s3_specific_sensitivity:
-    run: r:latest analysis/sensitivity_analyses/repor_sens.R older_adults season3_start_date
+    run: r:latest analysis/sensitivity_analyses/report_sens.R older_adults season3_start_date
       season3_end_date specific sensitivity
     needs:
     - process_dataset_older_adults_s3_specific_sensitivity
@@ -10755,7 +10755,7 @@ actions:
         csv: output/data/input_processed_adults_2018_2019_specific_sensitivity.arrow
 
   describe_dataset_adults_s3_specific_sensitivity:
-    run: r:latest analysis/sensitivity_analyses/repor_sens.R adults season3_start_date
+    run: r:latest analysis/sensitivity_analyses/report_sens.R adults season3_start_date
       season3_end_date specific sensitivity
     needs:
     - process_dataset_adults_s3_specific_sensitivity
@@ -10823,7 +10823,7 @@ actions:
         csv: output/data/input_processed_children_and_adolescents_2018_2019_specific_sensitivity.arrow
 
   describe_dataset_children_and_adolescents_s3_specific_sensitivity:
-    run: r:latest analysis/sensitivity_analyses/repor_sens.R children_and_adolescents
+    run: r:latest analysis/sensitivity_analyses/report_sens.R children_and_adolescents
       season3_start_date season3_end_date specific sensitivity
     needs:
     - process_dataset_children_and_adolescents_s3_specific_sensitivity
