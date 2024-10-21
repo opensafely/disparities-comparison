@@ -15,7 +15,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- as.Date("2017-09-01")
   study_end_date <- as.Date("2018-08-31")
-  cohort <- "adults"
+  cohort <- "infants_subgroup"
   codelist_type <- "specific"
   investigation_type <- "secondary"
 } else {
@@ -278,8 +278,13 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
 }
 
 if (study_start_date == as.Date("2017-09-01")) {
-  df_input <- df_input %>%
-    select(-contains("flu_"))
+  if (cohort == "infants_subgroup") {
+    df_input <- df_input %>%
+      select(-contains("flu_"), maternal_flu_vaccination)
+  } else {
+    df_input <- df_input %>%
+      select(-contains("flu_"))
+  }
   #infer outcomes from event dates 
   df_input <- df_input %>%
     mutate(
