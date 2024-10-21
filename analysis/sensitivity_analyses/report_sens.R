@@ -13,11 +13,11 @@ fs::dir_create(here("analysis", "secondary_analyses"))
 source(here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- "2022-09-01"
-  study_end_date <- "2023-08-31"
+  study_start_date <- "2017-09-01"
+  study_end_date <- "2018-08-31"
   cohort <- "adults"
   codelist_type <- "specific"
-  investigation_type <- "primary"
+  investigation_type <- "sensitivity"
 } else {
   study_start_date <- study_dates[[args[[2]]]]
   study_end_date <- study_dates[[args[[3]]]]
@@ -25,10 +25,6 @@ if (length(args) == 0) {
   codelist_type <- args[[4]]
   investigation_type <- args[[5]]
 }
-
-covid_season_min <- as.Date("2019-09-01")
-covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
-covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
@@ -50,14 +46,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_severe = sum(time_flu_secondary, na.rm = T),
       flu_mortality = sum(time_flu_mortality, na.rm = T)
     )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  survival <- df_input %>%
-    transmute(
-      covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T),
-      covid_mortality = sum(time_covid_mortality, na.rm = T)
-    )
-}
+} 
 
 #get unique rows
 survival <- unique(survival)
@@ -85,14 +74,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_severe = sum(flu_secondary_inf, na.rm = T),
       flu_mortality = sum(flu_mortality_inf, na.rm = T)
     )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  events <- df_input %>%
-    transmute(
-      covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T),
-      covid_mortality = sum(covid_mortality_inf, na.rm = T)
-    )
-}
+} 
 
 #get unique rows
 events <- unique(events)
@@ -117,9 +99,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   row_order <- c("rsv_mild", "rsv_severe", "rsv_mortality")
 } else if (study_start_date == as.Date("2018-09-01")) {
   row_order <- c("flu_mild", "flu_severe", "flu_mortality")
-} else if (study_start_date == as.Date("2020-09-01")) {
-  row_order <- c("covid_mild", "covid_severe", "covid_mortality")
-}
+} 
 
 #reorder rows
 results <- results %>%
@@ -144,16 +124,7 @@ if (study_start_date == as.Date("2017-09-01")) {
     Characteristic = rep("Total", 3),
     Group = rep("All", 3)
   )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  final_results <- data.frame(
-    Outcome = c("COVID mild", "COVID mortality", "COVID severe"),
-    PYears = results$person_years,
-    Events = results$events,
-    Rate = results$incidence_rate,
-    Characteristic = rep("Total", 3),
-    Group = rep("All", 3)
-  )
-}
+} 
 
 ##now do the same by risk groups
 
@@ -174,15 +145,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_severe = sum(time_flu_secondary, na.rm = T),
       flu_mortality = sum(time_flu_mortality, na.rm = T)
     )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  survival_age <- df_input %>%
-    group_by(age_band) %>%
-    transmute(
-      covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T),
-      covid_mortality = sum(time_covid_mortality, na.rm = T)
-    )
-}
+} 
 
 #get unique rows
 survival_age <- unique(survival_age)
@@ -212,15 +175,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_severe = sum(flu_secondary_inf, na.rm = T),
       flu_mortality = sum(flu_mortality_inf, na.rm = T)
     )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  events_age <- df_input %>%
-    group_by(age_band) %>%
-    transmute(
-      covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T),
-      covid_mortality = sum(covid_mortality_inf, na.rm = T)
-    )
-}
+} 
 
 #get unique rows
 events_age <- unique(events_age)
@@ -271,19 +226,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       Characteristic = rep("Age Group", 3 * age_bands),
       Group = results_age$age_band)
   )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  final_results <- rbind(
-    final_results,
-    data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe", "COVID Mortality"),
-                      age_bands),
-      PYears = results_age$person_years,
-      Events = results_age$events,
-      Rate = results_age$incidence_rate,
-      Characteristic = rep("Age Group", 3 * age_bands),
-      Group = results_age$age_band)
-  )
-}
+} 
 
 #calculate total person-time for each outcome type by sex
 if (study_start_date == as.Date("2017-09-01")) {
@@ -301,14 +244,6 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_mild = sum(time_flu_primary, na.rm = T),
       flu_severe = sum(time_flu_secondary, na.rm = T),
       flu_mortality = sum(time_flu_mortality, na.rm = T)
-    )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  survival_sex <- df_input %>%
-    group_by(sex) %>%
-    transmute(
-      covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T),
-      covid_mortality = sum(time_covid_mortality, na.rm = T)
     )
 }
 
@@ -340,15 +275,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_severe = sum(flu_secondary_inf, na.rm = T),
       flu_mortality = sum(flu_mortality_inf, na.rm = T)
     )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  events_sex <- df_input %>%
-    group_by(sex) %>%
-    transmute(
-      covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T),
-      covid_mortality = sum(covid_mortality_inf, na.rm = T)
-    )
-}
+} 
 
 #get unique rows
 events_sex <- unique(events_sex)
@@ -396,18 +323,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       Characteristic = rep("Sex", 6),
       Group = results_sex$sex)
   )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  final_results <- rbind(
-    final_results,
-    data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe", "COVID Mortality"), 2),
-      PYears = results_sex$person_years,
-      Events = results_sex$events,
-      Rate = results_sex$incidence_rate,
-      Characteristic = rep("Sex", 6),
-      Group = results_sex$sex)
-  )
-}
+} 
 
 #calculate total person-time for each outcome type by ethnicity
 if (study_start_date == as.Date("2017-09-01")) {
@@ -426,15 +342,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_severe = sum(time_flu_secondary, na.rm = T),
       flu_mortality = sum(time_flu_mortality, na.rm = T)
     )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  survival_ethnicity <- df_input %>%
-    group_by(ethnicity) %>%
-    transmute(
-      covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T),
-      covid_mortality = sum(time_covid_mortality, na.rm = T)
-    )
-}
+} 
 
 #get unique rows
 survival_ethnicity <- unique(survival_ethnicity)
@@ -463,14 +371,6 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_mild = sum(flu_primary_inf, na.rm = T),
       flu_severe = sum(flu_secondary_inf, na.rm = T),
       flu_mortality = sum(flu_mortality_inf, na.rm = T)
-    )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  events_ethnicity <- df_input %>%
-    group_by(ethnicity) %>%
-    transmute(
-      covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T),
-      covid_mortality = sum(covid_mortality_inf, na.rm = T)
     )
 }
 
@@ -526,19 +426,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       Characteristic = rep("Ethicity", 3 * ethnicity_groups),
       Group = results_ethnicity$latest_ethnicity_group)
   )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  final_results <- rbind(
-    final_results,
-    data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe", "COVID Mortality"),
-                    ethnicity_groups),
-      PYears = results_ethnicity$person_years,
-      Events = results_ethnicity$events,
-      Rate = results_ethnicity$incidence_rate,
-      Characteristic = rep("Ethnicity", 3 * ethnicity_groups),
-      Group = results_ethnicity$latest_ethnicity_group)
-  )
-}
+} 
   
 
 #calculate total person-time for each outcome type by socioeconomic status
@@ -558,15 +446,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_severe = sum(time_flu_secondary, na.rm = T),
       flu_mortality = sum(time_flu_mortality, na.rm = T)
     )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  survival_ses <- df_input %>%
-    group_by(imd_quintile) %>%
-    transmute(
-      covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T),
-      covid_mortality = sum(time_covid_mortality, na.rm = T)
-    )
-}
+} 
 
 #get unique rows
 survival_ses <- unique(survival_ses)
@@ -596,15 +476,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_severe = sum(flu_secondary_inf, na.rm = T),
       flu_mortality = sum(flu_mortality_inf, na.rm = T)
     )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  events_ses <- df_input %>%
-    group_by(imd_quintile) %>%
-    transmute(
-      covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T),
-      covid_mortality = sum(covid_mortality_inf, na.rm = T)
-    )
-}
+} 
 
 #get unique rows
 events_ses <- unique(events_ses)
@@ -655,19 +527,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       Characteristic = rep("IMD Quintile", 3 * ses_groups),
       Group = results_ses$imd_quintile)
   )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  final_results <- rbind(
-    final_results,
-    data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe", "COVID Mortality"),
-                    ses_groups),
-      PYears = results_ses$person_years,
-      Events = results_ses$events,
-      Rate = results_ses$incidence_rate,
-      Characteristic = rep("IMD Quintile", 3 * ses_groups),
-      Group = results_ses$imd_quintile)
-  )
-}
+} 
 
 #calculate total person-time for each outcome type by household composition type
 if (study_start_date == as.Date("2017-09-01")) {
@@ -686,15 +546,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_severe = sum(time_flu_secondary, na.rm = T),
       flu_mortality = sum(time_flu_mortality, na.rm = T)
     )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  survival_hh_comp <- df_input %>%
-    group_by(composition_category) %>%
-    transmute(
-      covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T),
-      covid_mortality = sum(time_covid_mortality, na.rm = T)
-    )
-}
+} 
 
 #get unique rows
 survival_hh_comp <- unique(survival_hh_comp)
@@ -724,15 +576,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_severe = sum(flu_secondary_inf, na.rm = T),
       flu_mortality = sum(flu_mortality_inf, na.rm = T)
     )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  events_hh_comp <- df_input %>%
-    group_by(composition_category) %>%
-    transmute(
-      covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T),
-      covid_mortality = sum(covid_mortality_inf, na.rm = T)
-    )
-}
+} 
 
 #get unique rows
 events_hh_comp <- unique(events_hh_comp)
@@ -786,19 +630,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       Characteristic = rep("Household Composition", 3 * hh_comp_groups),
       Group = results_hh_comp$composition_category)
   )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  final_results <- rbind(
-    final_results,
-    data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe", "COVID Mortality"),
-                    hh_comp_groups),
-      PYears = results_hh_comp$person_years,
-      Events = results_hh_comp$events,
-      Rate = results_hh_comp$incidence_rate,
-      Characteristic = rep("Household Composition", 3 * hh_comp_groups),
-      Group = results_hh_comp$composition_category)
-  )
-}
+} 
 
 #calculate total person-time for each outcome type by rurality classification
 if (study_start_date == as.Date("2017-09-01")) {
@@ -817,15 +649,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_severe = sum(time_flu_secondary, na.rm = T),
       flu_mortality = sum(time_flu_mortality, na.rm = T)
     )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  survival_rurality <- df_input %>%
-    group_by(rurality_classification) %>%
-    transmute(
-      covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T),
-      covid_mortality = sum(time_covid_mortality, na.rm = T)
-    )
-}
+} 
 
 #get unique rows
 survival_rurality <- unique(survival_rurality)
@@ -855,15 +679,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_severe = sum(flu_secondary_inf, na.rm = T),
       flu_mortality = sum(flu_mortality_inf, na.rm = T)
     )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  events_rurality <- df_input %>%
-    group_by(rurality_classification) %>%
-    transmute(
-      covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T),
-      covid_mortality = sum(covid_mortality_inf, na.rm = T)
-    )
-}
+} 
 
 #get unique rows
 events_rurality <- unique(events_rurality)
@@ -917,312 +733,810 @@ if (study_start_date == as.Date("2017-09-01")) {
       Characteristic = rep("Rurality Classification", 3 * rurality_groups),
       Group = results_rurality$rurality_classification)
   )
-} else if (study_start_date == as.Date("2020-09-01")) {
-  final_results <- rbind(
-    final_results,
-    data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe", "COVID Mortality"),
-                    rurality_groups),
-      PYears = results_rurality$person_years,
-      Events = results_rurality$events,
-      Rate = results_rurality$incidence_rate,
-      Characteristic = rep("Rurality Classification", 3 * rurality_groups),
-      Group = results_rurality$rurality_classification)
-  )
-}
+} 
 
-##insert section for rates for infant subgroup
-
-#gestational age
-
-#maternal age
-
-#maternal smoking status
-
-#maternal drinking
-
-#maternal drug usage
-
-#maternal pertussis vaccination status
-
-#maternal influenza vaccination status
-
-##children/adolescents, adult and older adult cohort specific characteristics
-
-if (cohort == "children_and_adolescents" |
-  cohort == "adults" | cohort == "older_adults") {
-  if (study_start_date == as.Date("2018-09-01")) {
-    #calculate total person-time for each outcome type by flu vaccination status
-    survival_prior_flu_vacc <- df_input %>%
-      group_by(prior_flu_vaccination) %>%
+##infants subgroup characteristics
+if (cohort == "infants_subgroup") {
+  #calculate total person-time for each outcome type
+  #for average maternal age (grouped by outcome)
+  if (study_start_date == as.Date("2017-09-01")) {
+    survival_maternal_age <- df_input %>%
+      pivot_longer(
+        cols = c(time_rsv_primary, time_rsv_secondary, time_rsv_mortality),
+        names_to = "outcome",
+        names_pattern = "time_(.*)",
+        values_to = "person_years"
+      ) %>%
+      mutate(outcome = str_replace_all(outcome, c("primary" = "mild",
+                                                  "secondary" = "severe"))) %>%
+      group_by(outcome) %>%
+      summarise(
+        avg_maternal_age = mean(maternal_age, na.rm = TRUE),
+        person_years = sum(person_years, na.rm = TRUE)
+      )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    survival_maternal_age <- df_input %>%
+      pivot_longer(
+        cols = c(time_flu_primary, time_flu_secondary, time_flu_mortality),
+        names_to = "outcome",
+        names_pattern = "time_(.*)",
+        values_to = "person_years"
+      ) %>%
+      mutate(outcome = str_replace_all(outcome, c("primary" = "mild",
+                                                  "secondary" = "severe"))) %>%
+      group_by(outcome) %>%
+      summarise(
+        avg_maternal_age = mean(maternal_age, na.rm = TRUE),
+        person_years = sum(person_years, na.rm = TRUE)
+      )
+  } 
+  
+  #calculate total number of events for each outcome type
+  #for average maternal age (grouped by outcome)
+  if (study_start_date == as.Date("2017-09-01")) {
+    events_maternal_age <- df_input %>%
+      pivot_longer(
+        cols = c(rsv_primary_inf, rsv_secondary_inf, rsv_mortality_inf),
+        names_to = "outcome",
+        names_pattern = "(.*)_inf",
+        values_to = "events"
+      ) %>%
+      mutate(outcome = str_replace_all(outcome, c("primary" = "mild",
+                                                  "secondary" = "severe"))) %>%
+      group_by(outcome) %>%
+      summarise(
+        avg_maternal_age = mean(maternal_age, na.rm = TRUE),
+        events = sum(events, na.rm = TRUE)
+      )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    events_maternal_age <- df_input %>%
+      pivot_longer(
+        cols = c(flu_primary_inf, flu_secondary_inf, flu_mortality_inf),
+        names_to = "outcome",
+        names_pattern = "(.*)_inf",
+        values_to = "events"
+      ) %>%
+      mutate(outcome = str_replace_all(outcome, c("primary" = "mild",
+                                                  "secondary" = "severe"))) %>%
+      group_by(outcome) %>%
+      summarise(
+        avg_maternal_age = mean(maternal_age, na.rm = TRUE),
+        events = sum(events, na.rm = TRUE)
+      )
+  } 
+  
+  #merge survival and events data
+  results_maternal_age <- merge(survival_maternal_age, events_maternal_age)
+  
+  #calculate incidence rate per 1000 person-years
+  results_maternal_age <- results_maternal_age %>%
+    mutate(incidence_rate = events / person_years * 1000)
+  
+  #reorder rows
+  results_maternal_age <- results_maternal_age %>%
+    slice(match(row_order, results_maternal_age$outcome))
+  
+  #add this to final results with 'Group' as maternal age
+  if (study_start_date == as.Date("2017-09-01")) {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = c("RSV Mild", "RSV Severe", "RSV Mortality"),
+        PYears = results_maternal_age$person_years,
+        Events = results_maternal_age$events,
+        Rate = results_maternal_age$incidence_rate,
+        Characteristic = rep("Average Maternal Age", 3),
+        Group = results_maternal_age$avg_maternal_age)
+    )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = c("Flu Mild", "Flu Severe", "Flu Mortality"),
+        PYears = results_maternal_age$person_years,
+        Events = results_maternal_age$events,
+        Rate = results_maternal_age$incidence_rate,
+        Characteristic = rep("Average Maternal Age", 3),
+        Group = results_maternal_age$avg_maternal_age)
+    )
+  } 
+  
+  #calculate total person-time for each outcome type by maternal smoking status
+  if (study_start_date == as.Date("2017-09-01")) {
+    survival_maternal_smoking <- df_input %>%
+      group_by(maternal_smoking_status) %>%
+      transmute(
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    survival_maternal_smoking <- df_input %>%
+      group_by(maternal_smoking_status) %>%
       transmute(
         flu_mild = sum(time_flu_primary, na.rm = T),
         flu_severe = sum(time_flu_secondary, na.rm = T),
         flu_mortality = sum(time_flu_mortality, na.rm = T)
       )
-    #get unique rows
-    survival_prior_flu_vacc <- unique(survival_prior_flu_vacc)
-    #reshape
-    survival_prior_flu_vacc <- survival_prior_flu_vacc %>%
-      pivot_longer(
-        cols = !prior_flu_vaccination,
-        names_to = "outcome",
-        values_to = "person_years"
+  } 
+  
+  #get unique rows
+  survival_maternal_smoking <- unique(survival_maternal_smoking)
+  
+  #reshape
+  survival_maternal_smoking <- survival_maternal_smoking %>%
+    pivot_longer(
+      cols = !maternal_smoking_status,
+      names_to = "outcome",
+      values_to = "person_years"
+    )
+  
+  #calculate total number of events for each outcome type by maternal smoking status
+  if (study_start_date == as.Date("2017-09-01")) {
+    events_maternal_smoking <- df_input %>%
+      group_by(maternal_smoking_status) %>%
+      transmute(
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
       )
-    #calculate total number of events for each outcome type by
-    #flu_vacc classification
-    events_prior_flu_vacc <- df_input %>%
-      group_by(prior_flu_vaccination) %>%
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    events_maternal_smoking <- df_input %>%
+      group_by(maternal_smoking_status) %>%
       transmute(
         flu_mild = sum(flu_primary_inf, na.rm = T),
         flu_severe = sum(flu_secondary_inf, na.rm = T),
         flu_mortality = sum(flu_mortality_inf, na.rm = T)
       )
-    #get unique rows
-    events_prior_flu_vacc <- unique(events_prior_flu_vacc)
-    #reshape
-    events_prior_flu_vacc <- events_prior_flu_vacc %>%
-      pivot_longer(
-        cols = !prior_flu_vaccination,
-        names_to = "outcome",
-        values_to = "events"
-      )
-    #overall results
-    results_prior_flu_vacc <- merge(survival_prior_flu_vacc,
-                                    events_prior_flu_vacc)
-    #calculate incidence rate per 1000 person-years
-    results_prior_flu_vacc <- results_prior_flu_vacc %>%
-      mutate(incidence_rate = events / person_years * 1000)
-    
-    #reorder rows
-    results_prior_flu_vacc <- results_prior_flu_vacc %>%
-      group_by(prior_flu_vaccination) %>%
-      slice(match(row_order, results_prior_flu_vacc$outcome))
-    #add this to final results with 'Group' as prior flu vaccination status
+  } 
+  
+  #get unique rows
+  events_maternal_smoking <- unique(events_maternal_smoking)
+  
+  #reshape
+  events_maternal_smoking <- events_maternal_smoking %>%
+    pivot_longer(
+      cols = !maternal_smoking_status,
+      names_to = "outcome",
+      values_to = "events"
+    )
+  
+  #overall results
+  results_maternal_smoking <- merge(survival_maternal_smoking,
+                                    events_maternal_smoking)
+  
+  #calculate incidence rate per 1000 person-years
+  results_maternal_smoking <- results_maternal_smoking %>%
+    mutate(incidence_rate = events / person_years * 1000)
+  
+  #get number of groups
+  maternal_smoking_groups <- as.numeric(length(unique(
+    results_maternal_smoking$maternal_smoking_status)))
+  
+  #reorder rows
+  results_maternal_smoking <- results_maternal_smoking %>%
+    group_by(maternal_smoking_status) %>%
+    slice(match(row_order, results_maternal_smoking$outcome))
+  
+  #add this to final results with 'Group' as maternal smoking status
+  if (study_start_date == as.Date("2017-09-01")) {
     final_results <- rbind(
       final_results,
       data.frame(
-        Outcome = c(rep(c("Flu mild", "Flu mortality", "Flu severe"), 2)),
-        PYears = results_prior_flu_vacc$person_years,
-        Events = results_prior_flu_vacc$events,
-        Rate = results_prior_flu_vacc$incidence_rate,
-        Characteristic = rep("Vaccinated against influenza in previous season",
-                             6),
-        Group = results_prior_flu_vacc$prior_flu_vaccination)
+        Outcome = rep(c("RSV Mild", "RSV Severe", "RSV Mortality"),
+                      maternal_smoking_groups),
+        PYears = results_maternal_smoking$person_years,
+        Events = results_maternal_smoking$events,
+        Rate = results_maternal_smoking$incidence_rate,
+        Characteristic = rep("Maternal Smoking Status", 3 * maternal_smoking_groups),
+        Group = results_maternal_smoking$maternal_smoking_status)
     )
-    #calculate total person-time for each outcome type by flu vaccination status
-    survival_flu_vacc_mild <- df_input %>%
-      group_by(flu_vaccination = flu_vaccination_mild) %>%
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = rep(c("Flu Mild", "Flu Severe", "Flu Mortality"),
+                      maternal_smoking_groups),
+        PYears = results_maternal_smoking$person_years,
+        Events = results_maternal_smoking$events,
+        Rate = results_maternal_smoking$incidence_rate,
+        Characteristic = rep("Maternal Smoking Status", 3 * maternal_smoking_groups),
+        Group = results_maternal_smoking$maternal_smoking_status)
+    )
+  } 
+  
+  #calculate total person-time for each outcome type by maternal drinking status
+  if (study_start_date == as.Date("2017-09-01")) {
+    survival_maternal_drinking <- df_input %>%
+      group_by(maternal_drinking) %>%
       transmute(
-        flu_mild = sum(time_flu_primary, na.rm = T)
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T)
       )
-    survival_flu_vacc_severe <- df_input %>%
-      group_by(flu_vaccination = flu_vaccination_severe) %>%
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    survival_maternal_drinking <- df_input %>%
+      group_by(maternal_drinking) %>%
       transmute(
-        flu_severe = sum(time_flu_secondary, na.rm = T)
-      )
-    survival_flu_vacc_mortality <- df_input %>%
-      group_by(flu_vaccination) %>%
-      transmute(
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
         flu_mortality = sum(time_flu_mortality, na.rm = T)
       )
-    #get unique rows
-    survival_flu_vacc_mild <- unique(survival_flu_vacc_mild)
-    survival_flu_vacc_severe <- unique(survival_flu_vacc_severe)
-    survival_flu_vacc_mortality <- unique(survival_flu_vacc_mortality)
-    #wide to long
-    survival_flu_vacc_mild <- survival_flu_vacc_mild %>%
-      pivot_longer(
-        cols = !flu_vaccination,
-        names_to = "outcome",
-        values_to = "person_years"
-      )
-    survival_flu_vacc_severe <- survival_flu_vacc_severe %>%
-      pivot_longer(
-        cols = !flu_vaccination,
-        names_to = "outcome",
-        values_to = "person_years"
-      )
-    survival_flu_vacc_mortality <- survival_flu_vacc_mortality %>%
-      pivot_longer(
-        cols = !flu_vaccination,
-        names_to = "outcome",
-        values_to = "person_years"
-      )
-    #join the groups
-    survival_flu_vacc <- rbind(survival_flu_vacc_mild,
-                               survival_flu_vacc_severe,
-                               survival_flu_vacc_mortality)
-    #calculate total number of events for each outcome type by
-    #flu vaccination status
-    events_flu_vacc_mild <- df_input %>%
-      group_by(flu_vaccination = flu_vaccination_mild) %>%
+  } 
+  
+  #get unique rows
+  survival_maternal_drinking <- unique(survival_maternal_drinking)
+  
+  #reshape
+  survival_maternal_drinking <- survival_maternal_drinking %>%
+    pivot_longer(
+      cols = !maternal_drinking,
+      names_to = "outcome",
+      values_to = "person_years"
+    )
+  
+  #calculate total number of events for each outcome type by maternal drinking status
+  if (study_start_date == as.Date("2017-09-01")) {
+    events_maternal_drinking <- df_input %>%
+      group_by(maternal_drinking) %>%
       transmute(
-        flu_mild = sum(flu_primary_inf, na.rm = T)
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
       )
-    events_flu_vacc_severe <- df_input %>%
-      group_by(flu_vaccination = flu_vaccination_severe) %>%
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    events_maternal_drinking <- df_input %>%
+      group_by(maternal_drinking) %>%
       transmute(
-        flu_severe = sum(flu_secondary_inf, na.rm = T)
-      )
-    events_flu_vacc_mortality <- df_input %>%
-      group_by(flu_vaccination) %>%
-      transmute(
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
         flu_mortality = sum(flu_mortality_inf, na.rm = T)
       )
-    #get unique rows
-    events_flu_vacc_mild <- unique(events_flu_vacc_mild)
-    events_flu_vacc_severe <- unique(events_flu_vacc_severe)
-    events_flu_vacc_mortality <- unique(events_flu_vacc_mortality)
-    #wide to long
-    events_flu_vacc_mild <- events_flu_vacc_mild %>%
-      pivot_longer(
-        cols = !flu_vaccination,
-        names_to = "outcome",
-        values_to = "events"
-      )
-    events_flu_vacc_severe <- events_flu_vacc_severe %>%
-      pivot_longer(
-        cols = !flu_vaccination,
-        names_to = "outcome",
-        values_to = "events"
-      )
-    events_flu_vacc_mortality <- events_flu_vacc_mortality %>%
-      pivot_longer(
-        cols = !flu_vaccination,
-        names_to = "outcome",
-        values_to = "events"
-      )
-    #join the groups
-    events_flu_vacc <- rbind(events_flu_vacc_mild,
-                             events_flu_vacc_severe,
-                             events_flu_vacc_mortality)
-    #overall results
-    results_flu_vacc <- merge(survival_flu_vacc, events_flu_vacc)
-    #calculate incidence rate per 1000 person-years
-    results_flu_vacc <- results_flu_vacc %>%
-      mutate(incidence_rate = events / person_years * 1000)
-    #add this to final results with 'Group' as prior flu vaccination status
-    final_results <- rbind(
-      final_results,
-      data.frame(
-        Outcome = c(rep(c("Flu mild", "Flu mortality", "Flu severe"), 2)),
-        PYears = results_flu_vacc$person_years,
-        Events = results_flu_vacc$events,
-        Rate = results_flu_vacc$incidence_rate,
-        Characteristic = rep("Vaccinated against influenza in current season",
-                             6),
-        Group = results_flu_vacc$flu_vaccination)
+  }
+  
+  #get unique rows
+  events_maternal_drinking <- unique(events_maternal_drinking)
+  
+  #reshape
+  events_maternal_drinking <- events_maternal_drinking %>%
+    pivot_longer(
+      cols = !maternal_drinking,
+      names_to = "outcome",
+      values_to = "events"
     )
-  }
-  if (study_start_date == as.Date("2020-09-01")) {
-    #calculate total person-time for each outcome type by
-    #current season covid vaccine
-    survival_cov_vaccines_mild <- df_input %>%
-      group_by(covid_vaccination = covid_vaccination_mild) %>%
-      transmute(
-        covid_mild = sum(time_covid_primary, na.rm = T)
-      )
-    survival_cov_vaccines_severe <- df_input %>%
-      group_by(covid_vaccination = covid_vaccination_severe) %>%
-      transmute(
-        covid_severe = sum(time_covid_secondary, na.rm = T)
-      )
-    survival_cov_vaccines_mortality <- df_input %>%
-      group_by(covid_vaccination) %>%
-      transmute(
-        covid_mortality = sum(time_covid_mortality, na.rm = T)
-      )
-    #get unique rows
-    survival_cov_vaccines_mild <- unique(survival_cov_vaccines_mild)
-    survival_cov_vaccines_severe <- unique(survival_cov_vaccines_severe)
-    survival_cov_vaccines_mortality <- unique(survival_cov_vaccines_mortality)
-    #wide to long
-    survival_cov_vaccines_mild <- survival_cov_vaccines_mild %>%
-      pivot_longer(
-        cols = !covid_vaccination,
-        names_to = "outcome",
-        values_to = "person_years"
-      )
-    survival_cov_vaccines_severe <- survival_cov_vaccines_severe %>%
-      pivot_longer(
-        cols = !covid_vaccination,
-        names_to = "outcome",
-        values_to = "person_years"
-      )
-    survival_cov_vaccines_mortality <- survival_cov_vaccines_mortality %>%
-      pivot_longer(
-        cols = !covid_vaccination,
-        names_to = "outcome",
-        values_to = "person_years"
-      )
-    #join the groups
-    survival_cov_vaccines <- rbind(survival_cov_vaccines_mild,
-                                   survival_cov_vaccines_severe,
-                                   survival_cov_vaccines_mortality)
-    #calculate total number of events for each outcome type by
-    #time since last covid vaccine
-    events_cov_vaccines_mild <- df_input %>%
-      group_by(covid_vaccination = covid_vaccination_mild) %>%
-      transmute(
-        covid_mild = sum(covid_primary_inf, na.rm = T)
-      )
-    events_cov_vaccines_severe <- df_input %>%
-      group_by(covid_vaccination = covid_vaccination_severe) %>%
-      transmute(
-        covid_severe = sum(covid_secondary_inf, na.rm = T)
-      )
-    events_cov_vaccines_mortality <- df_input %>%
-      group_by(covid_vaccination) %>%
-      transmute(
-        covid_mortality = sum(covid_mortality_inf, na.rm = T)
-      )
-    #get unique rows
-    events_cov_vaccines_mild <- unique(events_cov_vaccines_mild)
-    events_cov_vaccines_severe <- unique(events_cov_vaccines_severe)
-    events_cov_vaccines_mortality <- unique(events_cov_vaccines_mortality)
-    #wide to long
-    events_cov_vaccines_mild <- events_cov_vaccines_mild %>%
-      pivot_longer(
-        cols = !covid_vaccination,
-        names_to = "outcome",
-        values_to = "events"
-      )
-    events_cov_vaccines_severe <- events_cov_vaccines_severe %>%
-      pivot_longer(
-        cols = !covid_vaccination,
-        names_to = "outcome",
-        values_to = "events"
-      )
-    events_cov_vaccines_mortality <- events_cov_vaccines_mortality %>%
-      pivot_longer(
-        cols = !covid_vaccination,
-        names_to = "outcome",
-        values_to = "events"
-      )
-    #join the groups
-    events_cov_vaccines <- rbind(events_cov_vaccines_mild,
-                                 events_cov_vaccines_severe,
-                                 events_cov_vaccines_mortality)
-    #overall results
-    results_cov_vaccines <- merge(survival_cov_vaccines, events_cov_vaccines)
-    #calculate incidence rate per 1000 person-years
-    results_cov_vaccines <- results_cov_vaccines %>%
-      mutate(incidence_rate = events / person_years * 1000)
-    #add this to final results with 'Group' as covid vaccination status
+  
+  #overall results
+  results_maternal_drinking <- merge(survival_maternal_drinking,
+                                     events_maternal_drinking)
+  
+  #calculate incidence rate per 1000 person-years
+  results_maternal_drinking <- results_maternal_drinking %>%
+    mutate(incidence_rate = events / person_years * 1000)
+  
+  #get number of groups
+  maternal_drinking_groups <- as.numeric(length(unique(
+    results_maternal_drinking$maternal_drinking)))
+  
+  #reorder rows
+  results_maternal_drinking <- results_maternal_drinking %>%
+    group_by(maternal_drinking) %>%
+    slice(match(row_order, results_maternal_drinking$outcome))
+  
+  #add this to final results with 'Group' as maternal drinking status
+  if (study_start_date == as.Date("2017-09-01")) {
     final_results <- rbind(
       final_results,
       data.frame(
-        Outcome = c(rep(c("COVID mild", "COVID mortality",
-                          "COVID severe"), 2)),
-        PYears = results_cov_vaccines$person_years,
-        Events = results_cov_vaccines$events,
-        Rate = results_cov_vaccines$incidence_rate,
-        Characteristic = c(rep("Vaccinated against COVID-19 in current season",
-                               6)),
-        Group = results_cov_vaccines$covid_vaccination)
+        Outcome = rep(c("RSV Mild", "RSV Severe", "RSV Mortality"),
+                      maternal_drinking_groups),
+        PYears = results_maternal_drinking$person_years,
+        Events = results_maternal_drinking$events,
+        Rate = results_maternal_drinking$incidence_rate,
+        Characteristic = rep("Maternal Drinking Status", 3 * maternal_drinking_groups),
+        Group = results_maternal_drinking$maternal_drinking)
+    )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = rep(c("Flu Mild", "Flu Severe", "Flu Mortality"),
+                      maternal_drinking_groups),
+        PYears = results_maternal_drinking$person_years,
+        Events = results_maternal_drinking$events,
+        Rate = results_maternal_drinking$incidence_rate,
+        Characteristic = rep("Maternal Drinking Status", 3 * maternal_drinking_groups),
+        Group = results_maternal_drinking$maternal_drinking)
+    )
+  } 
+  
+  #calculate total person-time for each outcome type by maternal drug usage status
+  if (study_start_date == as.Date("2017-09-01")) {
+    survival_maternal_drug_usage <- df_input %>%
+      group_by(maternal_drug_usage) %>%
+      transmute(
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    survival_maternal_drug_usage <- df_input %>%
+      group_by(maternal_drug_usage) %>%
+      transmute(
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        flu_mortality = sum(time_flu_mortality, na.rm = T)
+      )
+  } 
+  
+  #get unique rows
+  survival_maternal_drug_usage <- unique(survival_maternal_drug_usage)
+  
+  #reshape
+  survival_maternal_drug_usage <- survival_maternal_drug_usage %>%
+    pivot_longer(
+      cols = !maternal_drug_usage,
+      names_to = "outcome",
+      values_to = "person_years"
+    )
+  
+  #calculate total number of events for each outcome type by maternal drug usage status
+  if (study_start_date == as.Date("2017-09-01")) {
+    events_maternal_drug_usage <- df_input %>%
+      group_by(maternal_drug_usage) %>%
+      transmute(
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    events_maternal_drug_usage <- df_input %>%
+      group_by(maternal_drug_usage) %>%
+      transmute(
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      )
+  } 
+  
+  #get unique rows
+  events_maternal_drug_usage <- unique(events_maternal_drug_usage)
+  
+  #reshape
+  events_maternal_drug_usage <- events_maternal_drug_usage %>%
+    pivot_longer(
+      cols = !maternal_drug_usage,
+      names_to = "outcome",
+      values_to = "events"
+    )
+  
+  #overall results
+  results_maternal_drug_usage <- merge(survival_maternal_drug_usage,
+                                       events_maternal_drug_usage)
+  
+  #calculate incidence rate per 1000 person-years
+  results_maternal_drug_usage <- results_maternal_drug_usage %>%
+    mutate(incidence_rate = events / person_years * 1000)
+  
+  #get number of groups
+  maternal_drug_usage_groups <- as.numeric(length(unique(
+    results_maternal_drug_usage$maternal_drug_usage)))
+  
+  #reorder rows
+  results_maternal_drug_usage <- results_maternal_drug_usage %>%
+    group_by(maternal_drug_usage) %>%
+    slice(match(row_order, results_maternal_drug_usage$outcome))
+  
+  #add this to final results with 'Group' as maternal drug usage status
+  if (study_start_date == as.Date("2017-09-01")) {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = rep(c("RSV Mild", "RSV Severe", "RSV Mortality"),
+                      maternal_drug_usage_groups),
+        PYears = results_maternal_drug_usage$person_years,
+        Events = results_maternal_drug_usage$events,
+        Rate = results_maternal_drug_usage$incidence_rate,
+        Characteristic = rep("Maternal Drug Usage Status", 3 * maternal_drug_usage_groups),
+        Group = results_maternal_drug_usage$maternal_drug_usage)
+    )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = rep(c("Flu Mild", "Flu Severe", "Flu Mortality"),
+                      maternal_drug_usage_groups),
+        PYears = results_maternal_drug_usage$person_years,
+        Events = results_maternal_drug_usage$events,
+        Rate = results_maternal_drug_usage$incidence_rate,
+        Characteristic = rep("Maternal Drug Usage Status", 3 * maternal_drug_usage_groups),
+        Group = results_maternal_drug_usage$maternal_drug_usage)
+    )
+  } 
+  
+  #calculate total person-time for each outcome type
+  #by maternal pertussis vaccination status
+  if (study_start_date == as.Date("2017-09-01")) {
+    survival_maternal_pertussis_vacc <- df_input %>%
+      group_by(maternal_pertussis_vaccination) %>%
+      transmute(
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    survival_maternal_pertussis_vacc <- df_input %>%
+      group_by(maternal_pertussis_vaccination) %>%
+      transmute(
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        flu_mortality = sum(time_flu_mortality, na.rm = T)
+      )
+  } 
+  
+  #get unique rows
+  survival_maternal_pertussis_vacc <- unique(survival_maternal_pertussis_vacc)
+  
+  #reshape
+  survival_maternal_pertussis_vacc <- survival_maternal_pertussis_vacc %>%
+    pivot_longer(
+      cols = !maternal_pertussis_vaccination,
+      names_to = "outcome",
+      values_to = "person_years"
+    )
+  
+  #calculate total number of events for each outcome type
+  #by maternal pertussis vaccination status
+  if (study_start_date == as.Date("2017-09-01")) {
+    events_maternal_pertussis_vacc <- df_input %>%
+      group_by(maternal_pertussis_vaccination) %>%
+      transmute(
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    events_maternal_pertussis_vacc <- df_input %>%
+      group_by(maternal_pertussis_vaccination) %>%
+      transmute(
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      )
+  } 
+  
+  #get unique rows
+  events_maternal_pertussis_vacc <- unique(events_maternal_pertussis_vacc)
+  
+  #reshape
+  events_maternal_pertussis_vacc <- events_maternal_pertussis_vacc %>%
+    pivot_longer(
+      cols = !maternal_pertussis_vaccination,
+      names_to = "outcome",
+      values_to = "events"
+    )
+  
+  #overall results
+  results_maternal_pertussis_vacc <- merge(survival_maternal_pertussis_vacc,
+                                           events_maternal_pertussis_vacc)
+  
+  #calculate incidence rate per 1000 person-years
+  results_maternal_pertussis_vacc <- results_maternal_pertussis_vacc %>%
+    mutate(incidence_rate = events / person_years * 1000)
+  
+  #get number of groups
+  maternal_pertussis_vacc_groups <- as.numeric(length(unique(
+    results_maternal_pertussis_vacc$maternal_pertussis_vaccination)))
+  
+  #reorder rows
+  results_maternal_pertussis_vacc <- results_maternal_pertussis_vacc %>%
+    group_by(maternal_pertussis_vaccination) %>%
+    slice(match(row_order, results_maternal_pertussis_vacc$outcome))
+  
+  #add this to final results with 'Group' as maternal pertussis vaccination status
+  if (study_start_date == as.Date("2017-09-01")) {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = rep(c("RSV Mild", "RSV Severe", "RSV Mortality"),
+                      maternal_pertussis_vacc_groups),
+        PYears = results_maternal_pertussis_vacc$person_years,
+        Events = results_maternal_pertussis_vacc$events,
+        Rate = results_maternal_pertussis_vacc$incidence_rate,
+        Characteristic = rep("Maternal Pertussis Vaccination Status",
+                             3 * maternal_pertussis_vacc_groups),
+        Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
+    )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = rep(c("Flu Mild", "Flu Severe", "Flu Mortality"),
+                      maternal_pertussis_vacc_groups),
+        PYears = results_maternal_pertussis_vacc$person_years,
+        Events = results_maternal_pertussis_vacc$events,
+        Rate = results_maternal_pertussis_vacc$incidence_rate,
+        Characteristic = rep("Maternal Pertussis Vaccination Status",
+                             3 * maternal_pertussis_vacc_groups),
+        Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
+    )
+  } 
+  
+  #calculate total person-time for each outcome
+  #type by maternal influenza vaccination status
+  if (study_start_date == as.Date("2017-09-01")) {
+    survival_maternal_influenza_vacc <- df_input %>%
+      group_by(maternal_influenza_vaccination) %>%
+      transmute(
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    survival_maternal_influenza_vacc <- df_input %>%
+      group_by(maternal_influenza_vaccination) %>%
+      transmute(
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        flu_mortality = sum(time_flu_mortality, na.rm = T)
       )
   }
+  
+  #get unique rows
+  survival_maternal_influenza_vacc <- unique(survival_maternal_influenza_vacc)
+  
+  #reshape
+  survival_maternal_influenza_vacc <- survival_maternal_influenza_vacc %>%
+    pivot_longer(
+      cols = !maternal_influenza_vaccination,
+      names_to = "outcome",
+      values_to = "person_years"
+    )
+  
+  #calculate total number of events for each outcome type
+  #by maternal influenza vaccination status
+  if (study_start_date == as.Date("2017-09-01")) {
+    events_maternal_influenza_vacc <- df_input %>%
+      group_by(maternal_influenza_vaccination) %>%
+      transmute(
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    events_maternal_influenza_vacc <- df_input %>%
+      group_by(maternal_influenza_vaccination) %>%
+      transmute(
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      )
+  } 
+  
+  #get unique rows
+  events_maternal_influenza_vacc <- unique(events_maternal_influenza_vacc)
+  
+  #reshape
+  events_maternal_influenza_vacc <- events_maternal_influenza_vacc %>%
+    pivot_longer(
+      cols = !maternal_influenza_vaccination,
+      names_to = "outcome",
+      values_to = "events"
+    )
+  
+  #overall results
+  results_maternal_influenza_vacc <- merge(survival_maternal_influenza_vacc,
+                                           events_maternal_influenza_vacc)
+  
+  #calculate incidence rate per 1000 person-years
+  results_maternal_influenza_vacc <- results_maternal_influenza_vacc %>%
+    mutate(incidence_rate = events / person_years * 1000)
+  
+  #get number of groups
+  maternal_influenza_vacc_groups <- as.numeric(length(unique(
+    results_maternal_influenza_vacc$maternal_influenza_vaccination)))
+  
+  #reorder rows
+  results_maternal_influenza_vacc <- results_maternal_influenza_vacc %>%
+    group_by(maternal_influenza_vaccination) %>%
+    slice(match(row_order, results_maternal_influenza_vacc$outcome))
+  
+  #add this to final results with 'Group' as maternal influenza vaccination status
+  if (study_start_date == as.Date("2017-09-01")) {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = rep(c("RSV Mild", "RSV Severe", "RSV Mortality"),
+                      maternal_influenza_vacc_groups),
+        PYears = results_maternal_influenza_vacc$person_years,
+        Events = results_maternal_influenza_vacc$events,
+        Rate = results_maternal_influenza_vacc$incidence_rate,
+        Characteristic = rep("Maternal Influenza Vaccination Status",
+                             3 * maternal_influenza_vacc_groups),
+        Group = results_maternal_influenza_vacc$maternal_influenza_vaccination)
+    )
+  } else if (study_start_date == as.Date("2018-09-01")) {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = rep(c("Flu Mild", "Flu Severe", "Flu Mortality"),
+                      maternal_influenza_vacc_groups),
+        PYears = results_maternal_influenza_vacc$person_years,
+        Events = results_maternal_influenza_vacc$events,
+        Rate = results_maternal_influenza_vacc$incidence_rate,
+        Characteristic = rep("Maternal Influenza Vaccination Status",
+                             3 * maternal_influenza_vacc_groups),
+        Group = results_maternal_influenza_vacc$maternal_influenza_vaccination)
+    )
+  } 
+}
+
+##children/adolescents, adult and older adult cohort specific characteristics
+
+if (cohort == "children_and_adolescents" |
+  cohort == "adults" | cohort == "older_adults" &
+  study_start_date == as.Date("2018-09-01")) {
+    
+  #calculate total person-time for each outcome type by flu vaccination status
+  survival_prior_flu_vacc <- df_input %>%
+    group_by(prior_flu_vaccination) %>%
+    transmute(
+      flu_mild = sum(time_flu_primary, na.rm = T),
+      flu_severe = sum(time_flu_secondary, na.rm = T),
+      flu_mortality = sum(time_flu_mortality, na.rm = T)
+    )
+  #get unique rows
+  survival_prior_flu_vacc <- unique(survival_prior_flu_vacc)
+  #reshape
+  survival_prior_flu_vacc <- survival_prior_flu_vacc %>%
+    pivot_longer(
+      cols = !prior_flu_vaccination,
+      names_to = "outcome",
+      values_to = "person_years"
+    )
+  #calculate total number of events for each outcome type by
+  #flu_vacc classification
+  events_prior_flu_vacc <- df_input %>%
+    group_by(prior_flu_vaccination) %>%
+    transmute(
+      flu_mild = sum(flu_primary_inf, na.rm = T),
+      flu_severe = sum(flu_secondary_inf, na.rm = T),
+      flu_mortality = sum(flu_mortality_inf, na.rm = T)
+    )
+  #get unique rows
+  events_prior_flu_vacc <- unique(events_prior_flu_vacc)
+  #reshape
+  events_prior_flu_vacc <- events_prior_flu_vacc %>%
+    pivot_longer(
+      cols = !prior_flu_vaccination,
+      names_to = "outcome",
+      values_to = "events"
+    )
+  #overall results
+  results_prior_flu_vacc <- merge(survival_prior_flu_vacc,
+                                  events_prior_flu_vacc)
+  #calculate incidence rate per 1000 person-years
+  results_prior_flu_vacc <- results_prior_flu_vacc %>%
+    mutate(incidence_rate = events / person_years * 1000)
+  #reorder rows
+  results_prior_flu_vacc <- results_prior_flu_vacc %>%
+    group_by(prior_flu_vaccination) %>%
+    slice(match(row_order, results_prior_flu_vacc$outcome))
+  #add this to final results with 'Group' as prior flu vaccination status
+  final_results <- rbind(
+    final_results,
+    data.frame(
+      Outcome = c(rep(c("Flu mild", "Flu mortality", "Flu severe"), 2)),
+      PYears = results_prior_flu_vacc$person_years,
+      Events = results_prior_flu_vacc$events,
+      Rate = results_prior_flu_vacc$incidence_rate,
+      Characteristic = rep("Vaccinated against influenza in previous season",
+                           6),
+      Group = results_prior_flu_vacc$prior_flu_vaccination)
+  )
+  #calculate total person-time for each outcome type by flu vaccination status
+  survival_flu_vacc_mild <- df_input %>%
+    group_by(flu_vaccination = flu_vaccination_mild) %>%
+    transmute(
+      flu_mild = sum(time_flu_primary, na.rm = T)
+    )
+  survival_flu_vacc_severe <- df_input %>%
+    group_by(flu_vaccination = flu_vaccination_severe) %>%
+    transmute(
+      flu_severe = sum(time_flu_secondary, na.rm = T)
+    )
+  survival_flu_vacc_mortality <- df_input %>%
+    group_by(flu_vaccination) %>%
+    transmute(
+      flu_mortality = sum(time_flu_mortality, na.rm = T)
+      )
+  #get unique rows
+  survival_flu_vacc_mild <- unique(survival_flu_vacc_mild)
+  survival_flu_vacc_severe <- unique(survival_flu_vacc_severe)
+  survival_flu_vacc_mortality <- unique(survival_flu_vacc_mortality)
+  #wide to long
+  survival_flu_vacc_mild <- survival_flu_vacc_mild %>%
+    pivot_longer(
+      cols = !flu_vaccination,
+      names_to = "outcome",
+      values_to = "person_years"
+    )
+  survival_flu_vacc_severe <- survival_flu_vacc_severe %>%
+    pivot_longer(
+      cols = !flu_vaccination,
+      names_to = "outcome",
+      values_to = "person_years"
+    )
+  survival_flu_vacc_mortality <- survival_flu_vacc_mortality %>%
+    pivot_longer(
+      cols = !flu_vaccination,
+      names_to = "outcome",
+      values_to = "person_years"
+    )
+  #join the groups
+  survival_flu_vacc <- rbind(survival_flu_vacc_mild,
+                             survival_flu_vacc_severe,
+                             survival_flu_vacc_mortality)
+  #calculate total number of events for each outcome type by
+  #flu vaccination status
+  events_flu_vacc_mild <- df_input %>%
+    group_by(flu_vaccination = flu_vaccination_mild) %>%
+    transmute(
+      flu_mild = sum(flu_primary_inf, na.rm = T)
+    )
+  events_flu_vacc_severe <- df_input %>%
+    group_by(flu_vaccination = flu_vaccination_severe) %>%
+    transmute(
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
+    )
+  events_flu_vacc_mortality <- df_input %>%
+    group_by(flu_vaccination) %>%
+    transmute(
+      flu_mortality = sum(flu_mortality_inf, na.rm = T)
+    )
+  #get unique rows
+  events_flu_vacc_mild <- unique(events_flu_vacc_mild)
+  events_flu_vacc_severe <- unique(events_flu_vacc_severe)
+  events_flu_vacc_mortality <- unique(events_flu_vacc_mortality)
+  #wide to long
+  events_flu_vacc_mild <- events_flu_vacc_mild %>%
+    pivot_longer(
+      cols = !flu_vaccination,
+      names_to = "outcome",
+      values_to = "events"
+    )
+  events_flu_vacc_severe <- events_flu_vacc_severe %>%
+    pivot_longer(
+      cols = !flu_vaccination,
+      names_to = "outcome",
+      values_to = "events"
+    )
+  events_flu_vacc_mortality <- events_flu_vacc_mortality %>%
+    pivot_longer(
+      cols = !flu_vaccination,
+      names_to = "outcome",
+      values_to = "events"
+    )
+  #join the groups
+  events_flu_vacc <- rbind(events_flu_vacc_mild,
+                           events_flu_vacc_severe,
+                           events_flu_vacc_mortality)
+  #overall results
+  results_flu_vacc <- merge(survival_flu_vacc, events_flu_vacc)
+  #calculate incidence rate per 1000 person-years
+  results_flu_vacc <- results_flu_vacc %>%
+    mutate(incidence_rate = events / person_years * 1000)
+  #add this to final results with 'Group' as prior flu vaccination status
+  final_results <- rbind(
+    final_results,
+    data.frame(
+      Outcome = c(rep(c("Flu mild", "Flu mortality", "Flu severe"), 2)),
+      PYears = results_flu_vacc$person_years,
+      Events = results_flu_vacc$events,
+      Rate = results_flu_vacc$incidence_rate,
+      Characteristic = rep("Vaccinated against influenza in current season",
+                           6),
+      Group = results_flu_vacc$flu_vaccination)
+  )
 }
 
 #export
@@ -1244,11 +1558,6 @@ if (cohort == "infants") {
                      "Household Composition Category",
                      "Vaccinated against influenza in previous season",
                      "Vaccinated against influenza in current season")
-  } else if (study_start_date == as.Date("2020-09-01")) {
-    table_groups <- c("Total", "Age Group", "Sex", "Ethnicity",
-                      "IMD Quintile", "Rurality Classification",
-                     "Household Composition Category",
-                     "Vaccinated against COVID-19 in current season")
   } else {
     table_groups <- c("Total", "Age Group", "Sex", "Ethnicity",
                       "IMD Quintile", "Rurality Classification",
