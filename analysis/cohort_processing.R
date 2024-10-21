@@ -15,7 +15,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- as.Date("2016-09-01")
   study_end_date <- as.Date("2017-08-31")
-  cohort <- "adults"
+  cohort <- "infants_subgroup"
   codelist_type <- "specific"
   investigation_type <- "secondary"
 } else {

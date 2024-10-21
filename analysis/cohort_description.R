@@ -19,7 +19,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2016-09-01"
   study_end_date <- "2017-08-31"
-  cohort <- "infants"
+  cohort <- "infants_subgroup"
   codelist_type <- "specific"
   investigation_type <- "secondary"
 } else {
@@ -58,7 +58,7 @@ if (study_start_date == as.Date("2020-09-01")) {
              IMD = imd_quintile, "Household Composition" = composition_category,
              Rurality = rurality_classification, "Maternal Age" = maternal_age,
              "Maternal Smoking Status" = maternal_smoking_status,
-             "Maternal Drinking" = maternal_dringking,
+             "Maternal Drinking" = maternal_drinking,
              "Maternal Drug Usage" = maternal_drug_usage,
              "Maternal Flu Vaccination" = maternal_flu_vaccination,
              "Maternal Pertussis Vaccination" = maternal_pertussis_vaccination)
@@ -129,7 +129,7 @@ if (study_start_date == as.Date("2020-09-01")) {
              IMD = imd_quintile, Rurality = rurality_classification,
              "Maternal Age" = maternal_age,
              "Maternal Smoking Status" = maternal_smoking_status,
-             "Maternal Drinking" = maternal_dringking,
+             "Maternal Drinking" = maternal_drinking,
              "Maternal Drug Usage" = maternal_drug_usage,
              "Maternal Flu Vaccination" = maternal_flu_vaccination,
              "Maternal Pertussis Vaccination" = maternal_pertussis_vaccination)
