@@ -39,7 +39,7 @@ sim_list = lst(
   
   #id used to link mother and baby
   mother_id = bn_node(
-    ~ as.integer(c(1:99000, 1:1000) + 100000),
+    ~ as.integer(1:100000 + 100000),
     missing_rate = ~ 0.8
   ),
   

@@ -125,13 +125,13 @@ sim_list = lst(
   #ethnicity (group 6)
   latest_ethnicity_code = bn_node(
     ~ rfactor(n = ..n, levels = c(
-      "1",
-      "2",
-      "3",
-      "4",
       "5",
-      "6"
-    ), p = c(0.81, 0.03, 0.1, 0.04, 0.02, 0.05))
+      "4",
+      "3",
+      "2",
+      "1"
+    ), p = c(0.02, 0.04, 0.1, 0.03, 0.81)),
+    missing_rate = ~ 0.05
   ),
   
   #household ID (to determine composition)
