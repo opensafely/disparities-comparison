@@ -14,3 +14,4 @@ venv/
 /IMG/*
 filtered_actions.txt
 .devcontainer/ehrql-main/
+/example-data/*
