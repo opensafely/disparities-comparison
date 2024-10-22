@@ -45,6 +45,13 @@ calculate_household_size <- function(household_pseudo_id) {
 #define a list which will contain all of the variables to be simulated
 sim_list = lst(
   
+  #patient specific index date
+  patient_index_day = bn_node(
+    ~ as.integer(if_else(runif(n = ..n) < 0.02,  
+                         as.integer(runif(n = ..n, index_day + 1, index_day + 365)), 
+                         index_day))
+  ),
+  
   #whether the patient is registered with the practice
   registered = bn_node(
     ~ rbernoulli(n = ..n, p = 0.99)
