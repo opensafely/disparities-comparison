@@ -51,7 +51,20 @@ investigation_type = args[5]
 # Change these in ./analysis/design/study-dates.R if necessary
 study_start_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
 study_end_date = datetime.strptime(study_dates[args[3]], "%Y-%m-%d").date()
-index_date = study_start_date
+
+#get date patient ages into cohort 
+if cohort == "infants" or cohort == "infants_subgroup" :
+  age_date = patients.date_of_birth 
+elif cohort == "children_and_adolescents" :
+  age_date = patients.date_of_birth + years(2) 
+elif cohort == "adults" :
+  age_date = patients.date_of_birth + years(18)
+else :
+  age_date = patients.date_of_birth + years(65)
+
+#set index date (and registration date) as last date of either start date or age date
+#so that patients are the correct age for the cohort when looking at records
+index_date = maximum_of(study_start_date, age_date)
 registration_date = index_date - years(1)
 
 #define patients status: alive/dead
@@ -294,7 +307,7 @@ dataset.latest_ethnicity_code = (
   .where(clinical_events.date.is_on_or_before(index_date))
   .sort_by(clinical_events.date)
   .last_for_patient().snomedct_code
-  .to_catgory(codelists.ethnicity_codes)
+  .to_category(codelists.ethnicity_codes)
 )
 
 #extract patients IMD rank
