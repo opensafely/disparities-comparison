@@ -248,7 +248,8 @@ care_home_tpp = (
 care_home_code = (has_prior_event(codelists.carehome_codelist))
 care_home = care_home_tpp | care_home_code
 
-mother_id_present = parents.mother_id.is_not_null()
+if cohort "infants_subgroup" :
+  mother_id_present = parents.mother_id.is_not_null()
 
 ##define populations
 
