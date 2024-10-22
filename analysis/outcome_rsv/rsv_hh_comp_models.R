@@ -35,103 +35,70 @@ df_input <- read_feather(
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
 
-if (cohort == "infants") {
+if (cohort == "infants_subgroup") {
+  
   #rsv primary by household composition
   rsv_mild_hh_comp <- glm(rsv_primary_inf ~ composition_category + 
-                            age + sex + 
-                            rurality_classification + 
+                            age_band + sex + rurality_classification +
+                            maternal_age + maternal_smoking_status +
+                            maternal_drinking + maternal_drug_usage + 
+                            maternal_flu_vaccination + 
+                            maternal_pertussis_vaccination +
                             offset(log(time_rsv_primary)), 
                           data = df_input, family = poisson)
   rsv_mild_hh_comp_output <- tidy(rsv_mild_hh_comp)
   
   #rsv secondary by household composition
   rsv_severe_hh_comp <- glm(rsv_secondary_inf ~ composition_category +
-                              age + sex + 
-                              rurality_classification + 
+                              age_band + sex + rurality_classification + 
+                              maternal_age + maternal_smoking_status +
+                              maternal_drinking + maternal_drug_usage + 
+                              maternal_flu_vaccination + 
+                              maternal_pertussis_vaccination +
                               offset(log(time_rsv_secondary)),
                             data = df_input, family = poisson)
   rsv_severe_hh_comp_output <- tidy(rsv_severe_hh_comp)
   
   #rsv mortality by household composition
   rsv_mortality_hh_comp <- glm(rsv_mortality ~ composition_category + 
-                                 age + sex + 
-                                 rurality_classification + 
+                                 age_band + sex + rurality_classification + 
+                                 maternal_age + maternal_smoking_status +
+                                 maternal_drinking + maternal_drug_usage + 
+                                 maternal_flu_vaccination + 
+                                 maternal_pertussis_vaccination +
                                  offset(log(time_rsv_mortality)),
                                data = df_input, family = poisson)
   rsv_mortality_hh_comp_output <- tidy(rsv_mortality_hh_comp)
   
-  #add models for infants subgroup
-  #} else if (cohort == "infants_subgroup") {
-  
 } else {
+  
   #rsv primary by household composition
   rsv_mild_hh_comp <- glm(rsv_primary_inf ~ composition_category + 
-                            age_band + sex + 
-                            rurality_classification + 
+                            age_band + sex + rurality_classification + 
                             offset(log(time_rsv_primary)),
                           data = df_input, family = poisson)
   rsv_mild_hh_comp_output <- tidy(rsv_mild_hh_comp)
   
   #rsv secondary by household composition
   rsv_severe_hh_comp <- glm(rsv_secondary_inf ~ composition_category + 
-                              age_band + sex + 
-                              rurality_classification + 
+                              age_band + sex + rurality_classification + 
                               offset(log(time_rsv_secondary)),
                             data = df_input, family = poisson)
   rsv_severe_hh_comp_output <- tidy(rsv_severe_hh_comp)
   
   #rsv mortality by household composition
   rsv_mortality_hh_comp <- glm(rsv_mortality ~ composition_category + 
-                                 age_band + sex + 
-                                 rurality_classification + 
+                                 age_band + sex + rurality_classification + 
                                  offset(log(time_rsv_mortality)),
                                data = df_input, family = poisson)
   rsv_mortality_hh_comp_output <- tidy(rsv_mortality_hh_comp)
   
-  if (study_start_date >= covid_season_min) {
-    #rsv primary by household composition
-    rsv_mild_hh_comp <- glm(rsv_primary_inf ~ composition_category + 
-                              age_band + sex + 
-                              rurality_classification + 
-                              offset(log(time_rsv_primary)),
-                            data = df_input, family = poisson)
-    rsv_mild_hh_comp_output <- tidy(rsv_mild_hh_comp)
-    
-    #rsv secondary by household composition
-    rsv_severe_hh_comp <- glm(rsv_secondary_inf ~ composition_category + 
-                                age_band + sex + 
-                                rurality_classification +
-                                offset(log(time_rsv_secondary)),
-                              data = df_input, family = poisson)
-    rsv_severe_hh_comp_output <- tidy(rsv_severe_hh_comp)
-    
-    #rsv mortality by household composition
-    rsv_mortality_hh_comp <- glm(rsv_mortality ~ composition_category + 
-                                   age_band + sex + 
-                                   rurality_classification + 
-                                   offset(log(time_rsv_mortality)),
-                                 data = df_input, family = poisson)
-    rsv_severe_hh_comp_output <- tidy(rsv_mortality_hh_comp)
-  
-  }
 }
 
 #define a vector of names for the model outputs
-if (study_start_date < covid_season_min) {
-  model_names <- c("Mild RSV by Household Composition", "Severe RSV by Household Composition",
-                   "RSV Mortality by Household Composition")
-} else if (codelist_type == "sensitive") {
-  model_names <- c("Mild RSV by Household Composition", 
-                   "Severe RSV by Household Composition", 
-                   "RSV Mortality by Household Composition")
-} else if (study_start_date >= covid_season_min) {
-  model_names <- c("Mild RSV by Household Composition", "Severe RSV by Household Composition",
-                   "RSV Mortality by Household Composition")
-} else {
-  model_names <- c("Mild RSV by Household Composition", 
-                   "Severe RSV by Household Composition", 
-                   "RSV Mortality by Household Composition")
-}
+model_names <- c("Mild RSV by Household Composition",
+                 "Severe RSV by Household Composition",
+                 "RSV Mortality by Household Composition")
 
 #create the model outputs list
 model_outputs_list <- list(rsv_mild_hh_comp_output, rsv_severe_hh_comp_output,

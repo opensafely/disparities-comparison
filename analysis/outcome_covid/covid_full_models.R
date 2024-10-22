@@ -35,62 +35,70 @@ df_input <- read_feather(
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
 
-if (cohort == "infants") {
-  if (study_start_date >= covid_season_min) {
-    #covid primary by ethnicity and socioeconomic status
-    covid_mild_full <- glm(covid_primary_inf ~ latest_ethnicity_group + 
-                             imd_quintile + composition_category +
-                             age + sex + rurality_classification + 
-                             offset(log(time_covid_primary)),
-                           data = df_input, family = poisson)
-    covid_mild_full_output <- tidy(covid_mild_full)
-    
-    #covid secondary by ethnicity and socioeconomic status
-    covid_severe_full <- glm(covid_secondary_inf ~ latest_ethnicity_group + 
-                               imd_quintile + composition_category + 
-                               age + sex + rurality_classification + 
-                               offset(log(time_covid_secondary)),
-                             data = df_input, family = poisson)
-    covid_severe_full_output <- tidy(covid_severe_full)
-    
-    #covid mortality by ethnicity and socioeconomic status
-    covid_mortality_full <- glm(covid_mortality ~ latest_ethnicity_group + 
-                                  imd_quintile + composition_category + 
-                                  age + sex + rurality_classification + 
-                                  offset(log(time_covid_mortality)),
-                                data = df_input, family = poisson)
-    covid_mortality_full_output <- tidy(covid_mortality_full)
-  }
+if (cohort == "infants_subgroup") {
   
-  #add models for infants subgroup
-  #} else if (cohort == "infants_subgroup") {
+  #covid primary by ethnicity and socioeconomic status
+  covid_mild_full <- glm(covid_primary_inf ~ latest_ethnicity_group +
+                           imd_quintile + composition_category +
+                           age_band + sex + rurality_classification +
+                           maternal_age + maternal_smoking_status +
+                           maternal_drinking + maternal_drug_usage + 
+                           maternal_flu_vaccination + 
+                           maternal_pertussis_vaccination +
+                           offset(log(time_covid_primary)),
+                         data = df_input, family = poisson)
+  covid_mild_full_output <- tidy(covid_mild_full)
   
-} else {
-  if (study_start_date >= covid_season_min) {
-    #covid primary by ethnicity and socioeconomic status
-    covid_mild_full <- glm(covid_primary_inf ~ latest_ethnicity_group + 
+  #covid secondary by ethnicity and socioeconomic status
+  covid_severe_full <- glm(covid_secondary_inf ~ latest_ethnicity_group +
                              imd_quintile + composition_category +
                              age_band + sex + rurality_classification +
-                             offset(log(time_covid_primary)),
+                             maternal_age + maternal_smoking_status +
+                             maternal_drinking + maternal_drug_usage + 
+                             maternal_flu_vaccination + 
+                             maternal_pertussis_vaccination +
+                             offset(log(time_covid_secondary)),
                            data = df_input, family = poisson)
-    covid_mild_full_output <- tidy(covid_mild_full)
-    
-    #covid secondary by ethnicity and socioeconomic status
-    covid_severe_full <- glm(covid_secondary_inf ~ latest_ethnicity_group + 
-                               imd_quintile + composition_category +
-                               age_band + sex + rurality_classification + 
-                               offset(log(time_covid_secondary)),
-                             data = df_input, family = poisson)
-    covid_severe_full_output <- tidy(covid_severe_full)
-    
-    #covid mortality by ethnicity and socioeconomic status
-    covid_mortality_full <- glm(covid_mortality ~ latest_ethnicity_group + 
-                                           imd_quintile + age_band + sex + 
-                                           rurality_classification + 
-                                           offset(log(time_covid_mortality)),
-                                         data = df_input, family = poisson)
-    covid_mortality_full_output <- tidy(covid_mortality_full)
-  }
+  covid_severe_full_output <- tidy(covid_severe_full)
+  
+  #covid mortality by ethnicity and socioeconomic status
+  covid_mortality_full <- glm(covid_mortality ~ latest_ethnicity_group +
+                                imd_quintile + composition_category +
+                                age_band + sex + rurality_classification +
+                                maternal_age + maternal_smoking_status +
+                                maternal_drinking + maternal_drug_usage + 
+                                maternal_flu_vaccination + 
+                                maternal_pertussis_vaccination +
+                                offset(log(time_covid_mortality)),
+                              data = df_input, family = poisson)
+  covid_mortality_full_output <- tidy(covid_mortality_full)
+  
+} else {
+  
+  #covid primary by ethnicity and socioeconomic status
+  covid_mild_full <- glm(covid_primary_inf ~ latest_ethnicity_group +
+                           imd_quintile + composition_category +
+                           age_band + sex + rurality_classification +
+                           offset(log(time_covid_primary)),
+                         data = df_input, family = poisson)
+  covid_mild_full_output <- tidy(covid_mild_full)
+  
+  #covid secondary by ethnicity and socioeconomic status
+  covid_severe_full <- glm(covid_secondary_inf ~ latest_ethnicity_group +
+                             imd_quintile + composition_category +
+                             age_band + sex + rurality_classification +
+                             offset(log(time_covid_secondary)),
+                           data = df_input, family = poisson)
+  covid_severe_full_output <- tidy(covid_severe_full)
+  
+  #covid mortality by ethnicity and socioeconomic status
+  covid_mortality_full <- glm(covid_mortality ~ latest_ethnicity_group +
+                                imd_quintile + composition_category +
+                                age_band + sex + rurality_classification +
+                                offset(log(time_covid_mortality)),
+                              data = df_input, family = poisson)
+  covid_mortality_full_output <- tidy(covid_mortality_full)
+  
 }
 
 #define a vector of names for the model outputs

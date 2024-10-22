@@ -35,104 +35,77 @@ df_input <- read_feather(
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
 
-if (cohort == "infants") {
+if (cohort == "infants_subgroup") {
+  
   #flu primary by socioeconomic status and household composition
   flu_mild_ses_hh_comp <- glm(flu_primary_inf ~ imd_quintile + 
-                                composition_category + age + sex + 
-                                rurality_classification + 
+                                composition_category + age_band +
+                                sex + rurality_classification + 
+                                maternal_age + maternal_smoking_status +
+                                maternal_drinking + maternal_drug_usage + 
+                                maternal_flu_vaccination + 
+                                maternal_pertussis_vaccination +
                                 offset(log(time_flu_primary)), 
                               data = df_input, family = poisson)
   flu_mild_ses_hh_comp_output <- tidy(flu_mild_ses_hh_comp)
   
   #flu secondary by socioeconomic status and household composition
   flu_severe_ses_hh_comp <- glm(flu_secondary_inf ~ imd_quintile +
-                                  composition_category + age + sex + 
-                                  rurality_classification + 
+                                  composition_category + age_band +
+                                  sex + rurality_classification + 
+                                  maternal_age + maternal_smoking_status +
+                                  maternal_drinking + maternal_drug_usage + 
+                                  maternal_flu_vaccination + 
+                                  maternal_pertussis_vaccination +
                                   offset(log(time_flu_secondary)),
                                 data = df_input, family = poisson)
   flu_severe_ses_hh_comp_output <- tidy(flu_severe_ses_hh_comp)
   
   #flu mortality by socioeconomic status and household composition
   flu_mortality_ses_hh_comp <- glm(flu_mortality ~ imd_quintile + 
-                                     composition_category + age + sex + 
-                                     rurality_classification + 
+                                     composition_category + age_band +
+                                     sex + rurality_classification + 
+                                     maternal_age + maternal_smoking_status +
+                                     maternal_drinking + maternal_drug_usage + 
+                                     maternal_flu_vaccination + 
+                                     maternal_pertussis_vaccination +
                                      offset(log(time_flu_mortality)),
                                    data = df_input, family = poisson)
   flu_mortality_ses_hh_comp_output <- tidy(flu_mortality_ses_hh_comp)
-  
-  #add models for infants subgroup
-  #} else if (cohort == "infants_subgroup") {
   
 } else {
+  
   #flu primary by socioeconomic status and household composition
   flu_mild_ses_hh_comp <- glm(flu_primary_inf ~ imd_quintile +
-                                composition_category + age_band + sex + 
-                                rurality_classification + 
+                                composition_category + age_band +
+                                sex + rurality_classification + 
                                 offset(log(time_flu_primary)), 
                               data = df_input, family = poisson)
   flu_mild_ses_hh_comp_output <- tidy(flu_mild_ses_hh_comp)
   
   #flu secondary by socioeconomic status and household composition
   flu_severe_ses_hh_comp <- glm(flu_secondary_inf ~ imd_quintile +
-                                  composition_category + age_band + sex + 
-                                  rurality_classification + 
+                                  composition_category + age_band +
+                                  sex + rurality_classification + 
                                   offset(log(time_flu_secondary)),
                                 data = df_input, family = poisson)
   flu_severe_ses_hh_comp_output <- tidy(flu_severe_ses_hh_comp)
   
   #flu mortality by socioeconomic status and household composition
   flu_mortality_ses_hh_comp <- glm(flu_mortality ~ imd_quintile + 
-                                     composition_category + age_band + sex + 
-                                     rurality_classification + 
+                                     composition_category + age_band +
+                                     sex + rurality_classification + 
                                      offset(log(time_flu_mortality)),
                                    data = df_input, family = poisson)
   flu_mortality_ses_hh_comp_output <- tidy(flu_mortality_ses_hh_comp)
-  
-  if (study_start_date >= covid_season_min) {
-    #flu primary by socioeconomic status and household composition
-    flu_mild_ses_hh_comp <- glm(flu_primary_inf ~ imd_quintile +
-                                  composition_category + age_band + sex + 
-                                  rurality_classification + 
-                                  offset(log(time_flu_primary)), 
-                                data = df_input, family = poisson)
-    flu_mild_ses_hh_comp_output <- tidy(flu_mild_ses_hh_comp)
-    
-    #flu secondary by socioeconomic status and household composition
-    flu_severe_ses_hh_comp <- glm(flu_secondary_inf ~ imd_quintile +
-                                    composition_category + age_band + sex + 
-                                    rurality_classification + 
-                                    offset(log(time_flu_secondary)),
-                                  data = df_input, family = poisson)
-    flu_severe_ses_hh_comp_output <- tidy(flu_severe_ses_hh_comp)
-    
-    #flu mortality by socioeconomic status and household composition
-    flu_mortality_ses_hh_comp <- glm(flu_mortality ~ imd_quintile +
-                                       composition_category + age_band + sex + 
-                                       rurality_classification + 
-                                       offset(log(time_flu_mortality)),
-                                     data = df_input, family = poisson)
-    flu_mortality_ses_hh_comp_output <- tidy(flu_mortality_ses_hh_comp)
-  }
+ 
 }
 
 #define a vector of names for the model outputs
-if (study_start_date < covid_season_min) {
-  model_names <- c("Mild Influenza by IMD Quintile and Household Composition", 
-                   "Severe Influenza by IMD Quintile and Household Composition",
-                   "Influenza Mortality By IMD Quintile and Household Composition")
-} else if (codelist_type == "sensitive") {
-  model_names <- c("Mild Influenza by IMD Quintile and Household Composition", 
-                   "Severe Influenza by IMD Quintile and Household Composition",
-                   "Influenza Mortality By IMD Quintile and Household Composition")
-} else if (study_start_date >= covid_season_min) {
-  model_names <- c("Mild Influenza by IMD Quintile and Household Composition", 
-                   "Severe Influenza by IMD Quintile and Household Composition",
-                   "Influenza Mortality By IMD Quintile and Household Composition")
-} else {
-  model_names <- c("Mild Influenza by IMD Quintile and Household Composition",
-                   "Severe Influenza by IMD Quintile and Household Composition",
-                   "Influenza Mortality By IMD Quintile and Household Composition")
-}
+model_names <- c("Mild Influenza by IMD Quintile and Household Composition", 
+                 "Severe Influenza by IMD Quintile and Household Composition",
+                 "Influenza Mortality By IMD Quintile and Household Composition")
+
 
 #create the model outputs list
 model_outputs_list <- list(flu_mild_ses_hh_comp_output, 

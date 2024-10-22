@@ -35,44 +35,60 @@ df_input <- read_feather(
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
 
-if (cohort == "infants") {
+if (cohort == "infants_subgroup") {
   
   if (codelist_type == "sensitive") {
+    
     #overall_resp primary by socioeconomic status
-    overall_resp_mild_ses <- glm(overall_resp_primary_inf ~ imd_quintile + 
-                                   age + sex + rurality_classification + 
+    overall_resp_mild_ses <- glm(overall_resp_primary_inf ~ imd_quintile +
+                                   age_band + sex + rurality_classification +
+                                   maternal_age + maternal_smoking_status +
+                                   maternal_drinking + maternal_drug_usage +
+                                   maternal_flu_vaccination +
+                                   maternal_pertussis_vaccination +
                                    offset(log(time_overall_resp_primary)),
                                  data = df_input, family = poisson)
     overall_resp_mild_ses_output <- tidy(overall_resp_mild_ses)
     
     #overall_resp secondary by socioeconomic status
-    overall_resp_severe_ses <- glm(overall_resp_secondary_inf ~ imd_quintile + 
-                                     age + sex + rurality_classification + 
+    overall_resp_severe_ses <- glm(overall_resp_secondary_inf ~ imd_quintile +
+                                     age_band + sex + rurality_classification +
+                                     maternal_age + maternal_smoking_status +
+                                     maternal_drinking + maternal_drug_usage +
+                                     maternal_flu_vaccination +
+                                     maternal_pertussis_vaccination +
                                      offset(log(time_overall_resp_secondary)),
                                    data = df_input, family = poisson)
     overall_resp_severe_ses_output <- tidy(overall_resp_severe_ses)
     
     #overall_resp mortality by socioeconomic status
     overall_resp_mortality_ses <- glm(overall_resp_mortality ~ imd_quintile +
-                                        age + sex + rurality_classification + 
+                                        age_band + sex + rurality_classification +
+                                        maternal_age + maternal_smoking_status +
+                                        maternal_drinking + maternal_drug_usage +
+                                        maternal_flu_vaccination +
+                                        maternal_pertussis_vaccination +
                                         offset(log(time_overall_resp_mortality)),
                                       data = df_input, family = poisson)
     overall_resp_mortality_ses_output <- tidy(overall_resp_mortality_ses)
+    
   }
   
   #all cause mortality by socioeconomic status
-  all_cause_mortality_ses <- glm(all_cause_mortality ~ imd_quintile + 
-                                   age + sex + rurality_classification + 
+  all_cause_mortality_ses <- glm(all_cause_mortality ~ imd_quintile +
+                                   age_band + sex + rurality_classification +
+                                   maternal_age + maternal_smoking_status +
+                                   maternal_drinking + maternal_drug_usage +
+                                   maternal_flu_vaccination +
+                                   maternal_pertussis_vaccination +
                                    offset(log(time_all_cause_mortality)),
                                  data = df_input, family = poisson)
   all_cause_mortality_ses_output <- tidy(all_cause_mortality_ses)
   
-  #add models for infants subgroup
-  #} else if (cohort == "infants_subgroup") {
-  
 } else {
   
   if (codelist_type == "sensitive") {
+  
     #overall_resp primary by socioeconomic status
     overall_resp_mild_ses <- glm(overall_resp_primary_inf ~ imd_quintile + 
                                    age_band + sex + rurality_classification + 
@@ -93,6 +109,7 @@ if (cohort == "infants") {
                                         offset(log(time_overall_resp_mortality)),
                                       data = df_input, family = poisson)
     overall_resp_mortality_ses_output <- tidy(overall_resp_mortality_ses)
+  
   }
   
   #all cause mortality by socioeconomic status
@@ -101,39 +118,7 @@ if (cohort == "infants") {
                                    offset(log(time_all_cause_mortality)),
                                  data = df_input, family = poisson)
   all_cause_mortality_ses_output <- tidy(all_cause_mortality_ses)
-  
-  if (study_start_date >= covid_season_min) {
 
-    if (codelist_type == "sensitive") {
-      #overall_resp primary by socioeconomic status
-      overall_resp_mild_ses <- glm(overall_resp_primary_inf ~ imd_quintile + 
-                                     age_band + sex + rurality_classification +
-                                     offset(log(time_overall_resp_primary)),
-                                   data = df_input, family = poisson)
-      overall_resp_mild_ses_output <- tidy(overall_resp_mild_ses)
-      
-      #overall_resp secondary by socioeconomic status
-      overall_resp_severe_ses <- glm(overall_resp_secondary_inf ~ imd_quintile + 
-                                       age_band + sex + rurality_classification + 
-                                       offset(log(time_overall_resp_secondary)),
-                                     data = df_input, family = poisson)
-      overall_resp_severe_ses_output <- tidy(overall_resp_severe_ses)
-      
-      #overall_resp mortality by socioeconomic status
-      overall_resp_mortality_ses <- glm(overall_resp_mortality ~ imd_quintile + 
-                                          age_band + sex + rurality_classification + 
-                                          offset(log(time_overall_resp_mortality)),
-                                        data = df_input, family = poisson)
-      overall_resp_mortality_ses_output <- tidy(overall_resp_mortality_ses)
-    }
-    
-    #all cause mortality by socioeconomic status
-    all_cause_mortality_ses <- glm(all_cause_mortality ~ imd_quintile + 
-                                     age_band + sex + rurality_classification + 
-                                     offset(log(time_all_cause_mortality)),
-                                   data = df_input, family = poisson)
-    all_cause_mortality_ses_output <- tidy(all_cause_mortality_ses)
-  }
 }
 
 #define a vector of names for the model outputs

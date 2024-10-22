@@ -37,69 +37,68 @@ df_input <- read_feather(
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
 
-#add models for infants subgroup
-#} else if (cohort == "infants_subgroup") {
+if (study_start_date >= covid_prior_vacc_min) {
   
-#} else {
-  if (study_start_date >= covid_prior_vacc_min) {
-    #covid primary by socioeconomic status and household composition
-    covid_mild_ses_hh_comp_further <- glm(covid_primary_inf ~ imd_quintile + 
-                                            composition_category + age_band + 
+  #covid primary by socioeconomic status and household composition
+  covid_mild_ses_hh_comp_further <- glm(covid_primary_inf ~ imd_quintile +
+                                          composition_category + age_band +
+                                          sex + rurality_classification +
+                                          time_since_last_covid_vaccination +
+                                          covid_vaccination_mild +
+                                          offset(log(time_covid_primary)),
+                                        data = df_input, family = poisson)
+  covid_mild_ses_hh_comp_further_output <- tidy(covid_mild_ses_hh_comp_further)
+  
+  #covid secondary by socioeconomic status and household composition
+  covid_severe_ses_hh_comp_further <- glm(covid_secondary_inf ~ imd_quintile +
+                                            composition_category + age_band +
                                             sex + rurality_classification +
                                             time_since_last_covid_vaccination +
-                                            covid_vaccination_mild +
-                                            offset(log(time_covid_primary)),
+                                            covid_vaccination_severe +
+                                            offset(log(time_covid_secondary)),
                                           data = df_input, family = poisson)
-    covid_mild_ses_hh_comp_further_output <- tidy(covid_mild_ses_hh_comp_further)
-    
-    #covid secondary by socioeconomic status and household composition
-    covid_severe_ses_hh_comp_further <- glm(covid_secondary_inf ~ imd_quintile + 
-                                              composition_category + age_band + 
-                                              sex + rurality_classification + 
-                                              time_since_last_covid_vaccination +
-                                              covid_vaccination_severe +
-                                              offset(log(time_covid_secondary)),
-                                            data = df_input, family = poisson)
-    covid_severe_ses_hh_comp_further_output <- tidy(covid_severe_ses_hh_comp_further)
-    
-    #covid mortality by socioeconomic status and household composition
-    covid_mortality_ses_hh_comp_further <- glm(covid_mortality ~ imd_quintile + 
-                                                 composition_category + age_band + 
-                                                 sex + rurality_classification +
-                                                 time_since_last_covid_vaccination +
-                                                 covid_vaccination +
-                                                 offset(log(time_covid_mortality)),
-                                               data = df_input, family = poisson)
-    covid_mortality_ses_hh_comp_further_output <- tidy(covid_mortality_ses_hh_comp_further)
-  } else {
-    #covid primary by socioeconomic status and household composition
-    covid_mild_ses_hh_comp_further <- glm(covid_primary_inf ~ imd_quintile + 
-                                            composition_category + age_band + 
+  covid_severe_ses_hh_comp_further_output <- tidy(covid_severe_ses_hh_comp_further)
+  
+  #covid mortality by socioeconomic status and household composition
+  covid_mortality_ses_hh_comp_further <- glm(covid_mortality ~ imd_quintile +
+                                               composition_category + age_band +
+                                               sex + rurality_classification +
+                                               time_since_last_covid_vaccination +
+                                               covid_vaccination +
+                                               offset(log(time_covid_mortality)),
+                                             data = df_input, family = poisson)
+  covid_mortality_ses_hh_comp_further_output <- tidy(covid_mortality_ses_hh_comp_further)
+  
+} else {
+  
+  #covid primary by socioeconomic status and household composition
+  covid_mild_ses_hh_comp_further <- glm(covid_primary_inf ~ imd_quintile +
+                                          composition_category + age_band +
+                                          sex + rurality_classification +
+                                          covid_vaccination_mild +
+                                          offset(log(time_covid_primary)),
+                                        data = df_input, family = poisson)
+  covid_mild_ses_hh_comp_further_output <- tidy(covid_mild_ses_hh_comp_further)
+  
+  #covid secondary by socioeconomic status and household composition
+  covid_severe_ses_hh_comp_further <- glm(covid_secondary_inf ~ imd_quintile +
+                                            composition_category + age_band +
                                             sex + rurality_classification +
-                                            covid_vaccination_mild +
-                                            offset(log(time_covid_primary)),
+                                            covid_vaccination_severe +
+                                            offset(log(time_covid_secondary)),
                                           data = df_input, family = poisson)
-    covid_mild_ses_hh_comp_further_output <- tidy(covid_mild_ses_hh_comp_further)
-    
-    #covid secondary by socioeconomic status and household composition
-    covid_severe_ses_hh_comp_further <- glm(covid_secondary_inf ~ imd_quintile + 
-                                              composition_category + age_band + 
-                                              sex + rurality_classification + 
-                                              covid_vaccination_severe +
-                                              offset(log(time_covid_secondary)),
-                                            data = df_input, family = poisson)
-    covid_severe_ses_hh_comp_further_output <- tidy(covid_severe_ses_hh_comp_further)
-    
-    #covid mortality by socioeconomic status and household composition
-    covid_mortality_ses_hh_comp_further <- glm(covid_mortality ~ imd_quintile + 
-                                                 composition_category + age_band + 
-                                                 sex + rurality_classification +
-                                                 covid_vaccination +
-                                                 offset(log(time_covid_mortality)),
-                                               data = df_input, family = poisson)
-    covid_mortality_ses_hh_comp_further_output <- tidy(covid_mortality_ses_hh_comp_further)
-  }
-#}
+  covid_severe_ses_hh_comp_further_output <- tidy(covid_severe_ses_hh_comp_further)
+  
+  #covid mortality by socioeconomic status and household composition
+  covid_mortality_ses_hh_comp_further <- glm(covid_mortality ~ imd_quintile +
+                                               composition_category + age_band +
+                                               sex + rurality_classification +
+                                               covid_vaccination +
+                                               offset(log(time_covid_mortality)),
+                                             data = df_input, family = poisson)
+  covid_mortality_ses_hh_comp_further_output <- tidy(covid_mortality_ses_hh_comp_further)
+
+}
 
 #define a vector of names for the model outputs
 model_names <- c("Mild COVID-19 by IMD Quintile and Household Composition", 

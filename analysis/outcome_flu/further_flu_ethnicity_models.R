@@ -37,10 +37,6 @@ df_input <- read_feather(
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
 
-# #add models for infants subgroup
-# if (cohort == "infants_subgroup") {
-
-# } else {
 #flu primary by ethnicity
 flu_mild_ethnicity_further <- glm(flu_primary_inf ~ latest_ethnicity_group + 
                                     age_band + sex + rurality_classification + 
@@ -62,11 +58,11 @@ flu_severe_ethnicity_further_output <- tidy(flu_severe_ethnicity_further)
 #flu mortality by ethnicity
 flu_mortality_ethnicity_further <- glm(flu_mortality ~ latest_ethnicity_group + 
                                          age_band + sex + rurality_classification + 
-                                         prior_flu_vaccination + flu_vaccination +
+                                         prior_flu_vaccination +
+                                         flu_vaccination +
                                          offset(log(time_flu_mortality)),
                                        data = df_input, family = poisson)
 flu_mortality_ethnicity_further_output <- tidy(flu_mortality_ethnicity_further)
-# }
 
 #define a vector of names for the model outputs
 model_names <- c("Mild Influenza by Ethnicity", "Severe Influenza by Ethnicity", 

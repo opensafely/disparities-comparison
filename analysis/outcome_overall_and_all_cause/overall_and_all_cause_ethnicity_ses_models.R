@@ -35,48 +35,73 @@ df_input <- read_feather(
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
 
-if (cohort == "infants") {
+if (cohort == "infants_subgroup") {
   
   if (codelist_type == "sensitive") {
+    
     #overall_resp primary by ethnicity and socioeconomic status
-    overall_resp_mild_ethnicity_ses <- glm(overall_resp_primary_inf ~ latest_ethnicity_group + 
-                                             imd_quintile + age + sex + 
-                                             rurality_classification + 
+    overall_resp_mild_ethnicity_ses <- glm(overall_resp_primary_inf ~ latest_ethnicity_group +
+                                             imd_quintile + age_band + sex + 
+                                             rurality_classification +
+                                             maternal_age +
+                                             maternal_smoking_status +
+                                             maternal_drinking +
+                                             maternal_drug_usage +
+                                             maternal_flu_vaccination +
+                                             maternal_pertussis_vaccination +
                                              offset(log(time_overall_resp_primary)),
                                            data = df_input, family = poisson)
     overall_resp_mild_ethnicity_ses_output <- tidy(overall_resp_mild_ethnicity_ses)
     
     #overall_resp secondary by ethnicity and socioeconomic status
     overall_resp_severe_ethnicity_ses <- glm(overall_resp_secondary_inf ~ latest_ethnicity_group +
-                                               imd_quintile + age + sex + 
-                                               rurality_classification + 
+                                               imd_quintile + age_band + sex + 
+                                               rurality_classification +
+                                               maternal_age +
+                                               maternal_smoking_status +
+                                               maternal_drinking +
+                                               maternal_drug_usage +
+                                               maternal_flu_vaccination +
+                                               maternal_pertussis_vaccination +
                                                offset(log(time_overall_resp_secondary)),
                                              data = df_input, family = poisson)
     overall_resp_severe_ethnicity_ses_output <- tidy(overall_resp_severe_ethnicity_ses)
     
     #overall_resp mortality by ethnicity and socioeconomic status
-    overall_resp_mortality_ethnicity_ses <- glm(overall_resp_mortality ~ latest_ethnicity_group + 
-                                                  imd_quintile + age + sex + 
-                                                  rurality_classification + 
+    overall_resp_mortality_ethnicity_ses <- glm(overall_resp_mortality ~ latest_ethnicity_group +
+                                                  imd_quintile + age_band + sex +
+                                                  rurality_classification +
+                                                  maternal_age +
+                                                  maternal_smoking_status +
+                                                  maternal_drinking +
+                                                  maternal_drug_usage +
+                                                  maternal_flu_vaccination +
+                                                  maternal_pertussis_vaccination +
                                                   offset(log(time_overall_resp_mortality)),
                                                 data = df_input, family = poisson)
     overall_resp_mortality_ethnicity_ses_output <- tidy(overall_resp_mortality_ethnicity_ses)
+    
   }
   
   #all cause mortality by ethnicity and socioeconomic status
-  all_cause_mortality_ethnicity_ses <- glm(all_cause_mortality ~ latest_ethnicity_group + 
-                                             imd_quintile + age + sex + 
-                                             rurality_classification + 
+  all_cause_mortality_ethnicity_ses <- glm(all_cause_mortality ~ latest_ethnicity_group +
+                                             imd_quintile + age_band + sex +
+                                             rurality_classification +
+                                             maternal_age +
+                                             maternal_smoking_status +
+                                             maternal_drinking +
+                                             maternal_drug_usage +
+                                             maternal_flu_vaccination +
+                                             maternal_pertussis_vaccination +
                                              offset(log(time_all_cause_mortality)),
                                            data = df_input, family = poisson)
   all_cause_mortality_ethnicity_ses_output <- tidy(all_cause_mortality_ethnicity_ses)
   
-  #add models for infants subgroup
-  #} else if (cohort == "infants_subgroup") {
   
 } else {
   
   if (codelist_type == "sensitive") {
+ 
     #overall_resp primary by ethnicity and socioeconomic status
     overall_resp_mild_ethnicity_ses <- glm(overall_resp_primary_inf ~ latest_ethnicity_group +
                                              imd_quintile + age_band + sex + 
@@ -100,6 +125,7 @@ if (cohort == "infants") {
                                                   offset(log(time_overall_resp_mortality)),
                                                 data = df_input, family = poisson)
     overall_resp_mortality_ethnicity_ses_output <- tidy(overall_resp_mortality_ethnicity_ses)
+ 
   }
   
   #all cause mortality by ethnicity and socioeconomic status
@@ -109,43 +135,7 @@ if (cohort == "infants") {
                                              offset(log(time_all_cause_mortality)),
                                            data = df_input, family = poisson)
   all_cause_mortality_ethnicity_ses_output <- tidy(all_cause_mortality_ethnicity_ses)
-  
-  if (study_start_date >= covid_season_min) {
 
-    if (codelist_type == "sensitive") {
-      #overall_resp primary by ethnicity and socioeconomic status
-      overall_resp_mild_ethnicity_ses <- glm(overall_resp_primary_inf ~ latest_ethnicity_group +
-                                               imd_quintile + age_band + sex + 
-                                               rurality_classification +
-                                               offset(log(time_overall_resp_primary)),
-                                             data = df_input, family = poisson)
-      overall_resp_mild_ethnicity_ses_output <- tidy(overall_resp_mild_ethnicity_ses)
-      
-      #overall_resp secondary by ethnicity and socioeconomic status
-      overall_resp_severe_ethnicity_ses <- glm(overall_resp_secondary_inf ~ latest_ethnicity_group +
-                                                 imd_quintile + age_band + sex + 
-                                                 rurality_classification + 
-                                                 offset(log(time_overall_resp_secondary)),
-                                               data = df_input, family = poisson)
-      overall_resp_severe_ethnicity_ses_output <- tidy(overall_resp_severe_ethnicity_ses)
-      
-      #overall_resp mortality by ethnicity and socioeconomic status
-      overall_resp_mortality_ethnicity_ses <- glm(overall_resp_mortality ~ latest_ethnicity_group +
-                                                    imd_quintile + age_band + sex + 
-                                                    rurality_classification + 
-                                                    offset(log(time_overall_resp_mortality)),
-                                                  data = df_input, family = poisson)
-      overall_resp_mortality_ethnicity_ses_output <- tidy(overall_resp_mortality_ethnicity_ses)
-    }
-    
-    #all cause mortality by ethnicity and socioeconomic status
-    all_cause_mortality_ethnicity_ses <- glm(all_cause_mortality ~ latest_ethnicity_group +
-                                               imd_quintile + age_band + sex + 
-                                               rurality_classification + 
-                                               offset(log(time_all_cause_mortality)),
-                                             data = df_input, family = poisson)
-    all_cause_mortality_ethnicity_ses_output <- tidy(all_cause_mortality_ethnicity_ses)
-  }
 }
 
 #define a vector of names for the model outputs

@@ -37,12 +37,8 @@ df_input <- read_feather(
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
 
-# #add models for infants subgroup
-# if (cohort == "infants_subgroup") {
-
-# } else {
-
 if (study_start_date >= covid_prior_vacc_min) {
+  
   #covid primary by household composition
   covid_mild_hh_comp_further <- glm(covid_primary_inf ~ composition_category + 
                                       age_band + sex + rurality_classification + 
@@ -69,7 +65,9 @@ if (study_start_date >= covid_prior_vacc_min) {
                                            offset(log(time_covid_mortality)),
                                          data = df_input, family = poisson)
   covid_mortality_hh_comp_further_output <- tidy(covid_mortality_hh_comp_further)
+
 } else {
+  
   #covid primary by household composition
   covid_mild_hh_comp_further <- glm(covid_primary_inf ~ composition_category + 
                                       age_band + sex + rurality_classification + 
@@ -93,8 +91,8 @@ if (study_start_date >= covid_prior_vacc_min) {
                                            offset(log(time_covid_mortality)),
                                          data = df_input, family = poisson)
   covid_mortality_hh_comp_further_output <- tidy(covid_mortality_hh_comp_further)
+
 }
-# }
 
 #define a vector of names for the model outputs
 model_names <- c("Mild COVID-19 by Household Composition", 

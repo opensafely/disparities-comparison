@@ -35,114 +35,69 @@ df_input <- read_feather(
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
 
-if (cohort == "infants") {
-  ##Use Poisson regression for outcomes looking first at ethnicity 
+if (cohort == "infants_subgroup") {
   
   #rsv primary by ethnicity
   rsv_mild_ethnicity <- glm(rsv_primary_inf ~ latest_ethnicity_group + 
-                              age + sex + 
-                              rurality_classification + 
+                              age_band + sex + rurality_classification + 
+                              maternal_age + maternal_smoking_status +
+                              maternal_drinking + maternal_drug_usage + 
+                              maternal_flu_vaccination + 
+                              maternal_pertussis_vaccination +
                               offset(log(time_rsv_primary)), 
                             data = df_input, family = poisson)
   rsv_mild_ethnicity_output <- tidy(rsv_mild_ethnicity)
   
   #rsv secondary by ethnicity
   rsv_severe_ethnicity <- glm(rsv_secondary_inf ~ latest_ethnicity_group +
-                                age + sex + 
-                                rurality_classification + 
+                                age_band + sex + rurality_classification + 
+                                maternal_age + maternal_smoking_status +
+                                maternal_drinking + maternal_drug_usage + 
+                                maternal_flu_vaccination + 
+                                maternal_pertussis_vaccination +
                                 offset(log(time_rsv_secondary)),
                               data = df_input, family = poisson)
   rsv_severe_ethnicity_output <- tidy(rsv_severe_ethnicity)
   
   #rsv mortality by ethnicity
   rsv_mortality_ethnicity <- glm(rsv_mortality ~ latest_ethnicity_group + 
-                                   age + sex + 
-                                   rurality_classification + 
+                                   age_band + sex + rurality_classification + 
+                                   maternal_age + maternal_smoking_status +
+                                   maternal_drinking + maternal_drug_usage + 
+                                   maternal_flu_vaccination + 
+                                   maternal_pertussis_vaccination +
                                    offset(log(time_rsv_mortality)),
                                  data = df_input, family = poisson)
   rsv_mortality_ethnicity_output <- tidy(rsv_mortality_ethnicity)
-
-#add models for infants subgroup
-#} else if (cohort == "infants_subgroup") {
   
 } else {
-  ##Use Poisson regression for outcomes looking first at ethnicity 
+
   #rsv primary by ethnicity
   rsv_mild_ethnicity <- glm(rsv_primary_inf ~ latest_ethnicity_group + 
-                              age_band + sex + 
-                              rurality_classification + 
-                              #prior_flu_vaccination +
+                              age_band + sex + rurality_classification + 
                               offset(log(time_rsv_primary)), 
                             data = df_input, family = poisson)
   rsv_mild_ethnicity_output <- tidy(rsv_mild_ethnicity)
   
   #rsv secondary by ethnicity
   rsv_severe_ethnicity <- glm(rsv_secondary_inf ~ latest_ethnicity_group +
-                                age_band + sex + 
-                                rurality_classification + 
-                                #prior_flu_vaccination +
+                                age_band + sex + rurality_classification + 
                                 offset(log(time_rsv_secondary)),
                               data = df_input, family = poisson)
   rsv_severe_ethnicity_output <- tidy(rsv_severe_ethnicity)
   
   #rsv mortality by ethnicity
   rsv_mortality_ethnicity <- glm(rsv_mortality ~ latest_ethnicity_group + 
-                                   age_band + sex + 
-                                   rurality_classification + 
-                                   #prior_flu_vaccination +
+                                   age_band + sex + rurality_classification + 
                                    offset(log(time_rsv_mortality)),
                                  data = df_input, family = poisson)
   rsv_mortality_ethnicity_output <- tidy(rsv_mortality_ethnicity)
-
-  if (study_start_date >= covid_season_min) {
-    ##Use Poisson regression for outcomes looking first at ethnicity 
-    
-    #rsv primary by ethnicity
-    rsv_mild_ethnicity <- glm(rsv_primary_inf ~ latest_ethnicity_group +
-                                age_band + sex + 
-                                rurality_classification + 
-                                #prior_flu_vaccination +
-                                #time_since_last_covid_vaccination +
-                                offset(log(time_rsv_primary)), 
-                              data = df_input, family = poisson)
-    rsv_mild_ethnicity_output <- tidy(rsv_mild_ethnicity)
-    
-    #rsv secondary by ethnicity
-    rsv_severe_ethnicity <- glm(rsv_secondary_inf ~ latest_ethnicity_group +
-                                  age_band + sex + 
-                                  rurality_classification + 
-                                  #prior_flu_vaccination +
-                                  #time_since_last_covid_vaccination +
-                                  offset(log(time_rsv_secondary)),
-                                data = df_input, family = poisson)
-    rsv_severe_ethnicity_output <- tidy(rsv_severe_ethnicity)
-    
-    #rsv mortality by ethnicity
-    rsv_mortality_ethnicity <- glm(rsv_mortality ~ latest_ethnicity_group + 
-                                     age_band + sex + 
-                                     rurality_classification + 
-                                     #prior_flu_vaccination +
-                                     #time_since_last_covid_vaccination +
-                                     offset(log(time_rsv_mortality)),
-                                   data = df_input, family = poisson)
-    rsv_mortality_ethnicity_output <- tidy(rsv_mortality_ethnicity)
-  }
+  
 }
 
 #define a vector of names for the model outputs
-if (study_start_date < covid_season_min) {
-  model_names <- c("Mild RSV by Ethnicity", "Severe RSV by Ethnicity",
-                   "RSV Mortality By Ethnicity")
-} else if (codelist_type == "sensitive") {
-  model_names <- c("Mild RSV by Ethnicity", "Severe RSV by Ethnicity",
-                   "RSV Mortality By Ethnicity")
-} else if (study_start_date >= covid_season_min) {
-  model_names <- c("Mild RSV by Ethnicity", "Severe RSV by Ethnicity",
-                   "RSV Mortality By Ethnicity")
-} else {
-  model_names <- c("Mild RSV by Ethnicity", "Severe RSV by Ethnicity",
-                   "RSV Mortality By Ethnicity")
-}
+model_names <- c("Mild RSV by Ethnicity", "Severe RSV by Ethnicity",
+                 "RSV Mortality By Ethnicity")
 
 #create the model outputs list
 model_outputs_list <- list(rsv_mild_ethnicity_output, rsv_severe_ethnicity_output,

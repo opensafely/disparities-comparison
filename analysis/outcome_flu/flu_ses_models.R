@@ -35,113 +35,70 @@ df_input <- read_feather(
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
 
-if (cohort == "infants") {
+if (cohort == "infants_subgroup") {
   
   #flu primary by ses
   flu_mild_ses <- glm(flu_primary_inf ~ imd_quintile + 
-                        age + sex + 
-                        rurality_classification + 
+                        age_band + sex + rurality_classification + 
+                        maternal_age + maternal_smoking_status +
+                        maternal_drinking + maternal_drug_usage + 
+                        maternal_flu_vaccination + 
+                        maternal_pertussis_vaccination +
                         offset(log(time_flu_primary)),
                       data = df_input, family = poisson)
   flu_mild_ses_output <- tidy(flu_mild_ses)
   
   #flu secondary by ses
   flu_severe_ses <- glm(flu_secondary_inf ~ imd_quintile + 
-                          age + sex + 
-                          rurality_classification + 
+                          age_band + sex + rurality_classification + 
+                          maternal_age + maternal_smoking_status +
+                          maternal_drinking + maternal_drug_usage + 
+                          maternal_flu_vaccination + 
+                          maternal_pertussis_vaccination +
                           offset(log(time_flu_secondary)),
                         data = df_input, family = poisson)
   flu_severe_ses_output <- tidy(flu_severe_ses)
   
   #flu mortality by ses
   flu_mortality_ses <- glm(flu_mortality ~ imd_quintile + 
-                             age + sex + 
-                             rurality_classification + 
+                             age_band + sex + rurality_classification + 
+                             maternal_age + maternal_smoking_status +
+                             maternal_drinking + maternal_drug_usage + 
+                             maternal_flu_vaccination + 
+                             maternal_pertussis_vaccination +
                              offset(log(time_flu_mortality)),
                            data = df_input, family = poisson)
   flu_mortality_ses_output <- tidy(flu_mortality_ses)
-  
-  #add models for infants subgroup
-  #} else if (cohort == "infants_subgroup") {
   
 } else {
   
   #flu primary by ses
   flu_mild_ses <- glm(flu_primary_inf ~ imd_quintile + 
-                        age_band + sex + 
-                        rurality_classification + 
-                        #prior_flu_vaccination +
+                        age_band + sex + rurality_classification + 
                         offset(log(time_flu_primary)),
                       data = df_input, family = poisson)
   flu_mild_ses_output <- tidy(flu_mild_ses)
   
   #flu secondary by ses
   flu_severe_ses <- glm(flu_secondary_inf ~ imd_quintile + 
-                          age_band + sex + 
-                          rurality_classification + 
-                          #prior_flu_vaccination +
+                          age_band + sex + rurality_classification + 
                           offset(log(time_flu_secondary)),
                         data = df_input, family = poisson)
   flu_severe_ses_output <- tidy(flu_severe_ses)
   
   #flu mortality by ses
   flu_mortality_ses <- glm(flu_mortality ~ imd_quintile + 
-                             age_band + sex + 
-                             rurality_classification + 
-                             #prior_flu_vaccination +
+                             age_band + sex + rurality_classification + 
                              offset(log(time_flu_mortality)),
                            data = df_input, family = poisson)
   flu_mortality_ses_output <- tidy(flu_mortality_ses)
-  
-  if (study_start_date >= covid_season_min) {
-   
-    #flu primary by ses
-    flu_mild_ses <- glm(flu_primary_inf ~ imd_quintile + 
-                          age_band + sex + 
-                          rurality_classification + 
-                          #prior_flu_vaccination +
-                          #time_since_last_covid_vaccination +
-                          offset(log(time_flu_primary)),
-                        data = df_input, family = poisson)
-    flu_mild_ses_output <- tidy(flu_mild_ses)
-    
-    #flu secondary by ses
-    flu_severe_ses <- glm(flu_secondary_inf ~ imd_quintile + 
-                            age_band + sex + 
-                            rurality_classification + 
-                            #prior_flu_vaccination +
-                            #time_since_last_covid_vaccination +
-                            offset(log(time_flu_secondary)),
-                          data = df_input, family = poisson)
-    flu_severe_ses_output <- tidy(flu_severe_ses)
-    
-    #flu mortality by ses
-    flu_mortality_ses <- glm(flu_mortality ~ imd_quintile + 
-                               age_band + sex + 
-                               rurality_classification + 
-                               #prior_flu_vaccination +
-                               #time_since_last_covid_vaccination +
-                               offset(log(time_flu_mortality)),
-                             data = df_input, family = poisson)
-    flu_severe_mild_ses_output <- tidy(flu_mortality_ses)
 
-  }
 }
 
 #define a vector of names for the model outputs
-if (study_start_date < covid_season_min) {
-  model_names <- c("Mild Influenza by IMD Quintile", "Severe Influenza by IMD Quintile",
-                   "Influenza Mortality by IMD Quintile")
-} else if (codelist_type == "sensitive") {
-  model_names <- c("Mild Influenza by IMD Quintile", "Severe Influenza by IMD Quintile",
-                   "Influenza Mortality by IMD Quintile")
-} else if (study_start_date >= covid_season_min) {
-  model_names <- c("Mild Influenza by IMD Quintile", "Severe Influenza by IMD Quintile", 
-                   "Influenza Mortality by IMD Quintile")
-} else {
-  model_names <- c("Mild Influenza by IMD Quintile", "Severe Influenza by IMD Quintile", 
-                   "Influenza Mortality by IMD Quintile")
-}
+model_names <- c("Mild Influenza by IMD Quintile", "Severe Influenza by IMD Quintile",
+                 "Influenza Mortality by IMD Quintile")
+
 
 #create the model outputs list
 model_outputs_list <- list(flu_mild_ses_output, flu_severe_ses_output, 

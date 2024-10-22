@@ -35,101 +35,76 @@ df_input <- read_feather(
                                       year(study_start_date), "_", year(study_end_date), "_", 
                                       codelist_type, "_", investigation_type,".arrow"))) 
 
-if (cohort == "infants") {
+if (cohort == "infants_subgroup") {
+  
   #rsv primary by ethnicity, socioeconomic status and household composition
   rsv_mild_full <- glm(rsv_primary_inf ~ latest_ethnicity_group + 
-                         imd_quintile + composition_category + age + sex + 
-                         rurality_classification + offset(log(time_rsv_primary)), 
-                       data = df_input, family = poisson)
-  rsv_mild_full_output <- tidy(rsv_mild_full)
-  
-  #rsv secondary by ethnicity, socioeconomic status and household composition
-  rsv_severe_full <- glm(rsv_secondary_inf ~ latest_ethnicity_group + 
-                           imd_quintile + composition_category + age + sex + 
-                           rurality_classification + offset(log(time_rsv_secondary)),
-                         data = df_input, family = poisson)
-  rsv_severe_full_output <- tidy(rsv_severe_full)
-  
-  #rsv mortality by ethnicity, socioeconomic status and household composition
-  rsv_mortality_full <- glm(rsv_mortality ~ latest_ethnicity_group + 
-                              imd_quintile + composition_category + age + sex + 
-                              rurality_classification + offset(log(time_rsv_mortality)),
-                            data = df_input, family = poisson)
-  rsv_mortality_full_output <- tidy(rsv_mortality_full)
-  
-  #add models for infants subgroup
-  #} else if (cohort == "infants_subgroup") {
-  
-} else {
-  #rsv primary by ethnicity, socioeconomic status and household composition
-  rsv_mild_full <- glm(rsv_primary_inf ~ latest_ethnicity_group + imd_quintile +
-                         composition_category + age_band + sex + 
-                         rurality_classification + 
+                         imd_quintile + composition_category + age_band +
+                         sex + rurality_classification +
+                         maternal_age + maternal_smoking_status +
+                         maternal_drinking + maternal_drug_usage + 
+                         maternal_flu_vaccination + 
+                         maternal_pertussis_vaccination +
                          offset(log(time_rsv_primary)), 
                        data = df_input, family = poisson)
   rsv_mild_full_output <- tidy(rsv_mild_full)
   
   #rsv secondary by ethnicity, socioeconomic status and household composition
   rsv_severe_full <- glm(rsv_secondary_inf ~ latest_ethnicity_group + 
-                           imd_quintile + composition_category + 
-                           age_band + sex + rurality_classification + 
+                           imd_quintile + composition_category + age_band +
+                           sex + rurality_classification +
+                           maternal_age + maternal_smoking_status +
+                           maternal_drinking + maternal_drug_usage + 
+                           maternal_flu_vaccination + 
+                           maternal_pertussis_vaccination +
+                           offset(log(time_rsv_secondary)),
+                         data = df_input, family = poisson)
+  rsv_severe_full_output <- tidy(rsv_severe_full)
+  
+  #rsv mortality by ethnicity, socioeconomic status and household composition
+  rsv_mortality_full <- glm(rsv_mortality ~ latest_ethnicity_group + 
+                              imd_quintile + composition_category + age_band +
+                              sex + rurality_classification +
+                              maternal_age + maternal_smoking_status +
+                              maternal_drinking + maternal_drug_usage + 
+                              maternal_flu_vaccination + 
+                              maternal_pertussis_vaccination +
+                              offset(log(time_rsv_mortality)),
+                            data = df_input, family = poisson)
+  rsv_mortality_full_output <- tidy(rsv_mortality_full)
+  
+} else {
+  
+  #rsv primary by ethnicity, socioeconomic status and household composition
+  rsv_mild_full <- glm(rsv_primary_inf ~ latest_ethnicity_group +
+                         imd_quintile + composition_category + age_band +
+                         sex + rurality_classification + 
+                         offset(log(time_rsv_primary)), 
+                       data = df_input, family = poisson)
+  rsv_mild_full_output <- tidy(rsv_mild_full)
+  
+  #rsv secondary by ethnicity, socioeconomic status and household composition
+  rsv_severe_full <- glm(rsv_secondary_inf ~ latest_ethnicity_group + 
+                           imd_quintile + composition_category + age_band +
+                           sex + rurality_classification + 
                            offset(log(time_rsv_secondary)),
                          data = df_input, family = poisson)
   rsv_severe_full_output <- tidy(rsv_severe_full)
   
   #rsv mortality by ethnicity, socioeconomic status and household composition
   rsv_mortality_full <- glm(rsv_mortality ~ latest_ethnicity_group +
-                              imd_quintile + composition_category + 
-                              age_band + sex + rurality_classification + 
+                              imd_quintile + composition_category + age_band +
+                              sex + rurality_classification + 
                               offset(log(time_rsv_mortality)),
                             data = df_input, family = poisson)
   rsv_mortality_full_output <- tidy(rsv_mortality_full)
-  
-  if (study_start_date >= covid_season_min) {
-    #rsv primary by ethnicity, socioeconomic status and household composition
-    rsv_mild_full <- glm(rsv_primary_inf ~ latest_ethnicity_group + 
-                           imd_quintile + composition_category + age_band + 
-                           sex + rurality_classification + 
-                           offset(log(time_rsv_primary)), 
-                         data = df_input, family = poisson)
-    rsv_mild_full_output <- tidy(rsv_mild_full)
-    
-    #rsv secondary by ethnicity, socioeconomic status and household composition
-    rsv_severe_full <- glm(rsv_secondary_inf ~ latest_ethnicity_group +
-                             imd_quintile + composition_category + age_band + 
-                             sex + rurality_classification + 
-                             offset(log(time_rsv_secondary)),
-                           data = df_input, family = poisson)
-    rsv_severe_full_output <- tidy(rsv_severe_full)
-    
-    #rsv mortality by ethnicity, socioeconomic status and household composition
-    rsv_mortality_full <- glm(rsv_mortality ~ latest_ethnicity_group + 
-                                imd_quintile + composition_category + age_band +
-                                sex + rurality_classification + 
-                                offset(log(time_rsv_mortality)),
-                              data = df_input, family = poisson)
-    rsv_mortality_full_output <- tidy(rsv_mortality_full)
-  }
+ 
 }
 
 #define a vector of names for the model outputs
-if (study_start_date < covid_season_min) {
-  model_names <- c("Mild RSV by Ethnicity, IMD Quintile and Household Composition", 
-                   "Severe RSV by Ethnicity, IMD Quintile and Household Composition",
-                   "RSV Mortality By Ethnicity, IMD Quintile and Household Composition")
-} else if (codelist_type == "sensitive") {
-  model_names <- c("Mild RSV by Ethnicity, IMD Quintile and Household Composition", 
-                   "Severe RSV by Ethnicity, IMD Quintile and Household Composition",
-                   "RSV Mortality By Ethnicity, IMD Quintile and Household Composition")
-} else if (study_start_date >= covid_season_min) {
-  model_names <- c("Mild RSV by Ethnicity, IMD Quintile and Household Composition", 
-                   "Severe RSV by Ethnicity, IMD Quintile and Household Composition",
-                   "RSV Mortality By Ethnicity, IMD Quintile and Household Composition")
-} else {
-  model_names <- c("Mild RSV by Ethnicity, IMD Quintile and Household Composition",
-                   "Severe RSV by Ethnicity, IMD Quintile and Household Composition",
-                   "RSV Mortality By Ethnicity, IMD Quintile and Household Composition")
-}
+model_names <- c("Mild RSV by Ethnicity, IMD Quintile and Household Composition", 
+                 "Severe RSV by Ethnicity, IMD Quintile and Household Composition",
+                 "RSV Mortality By Ethnicity, IMD Quintile and Household Composition")
 
 #create the model outputs list
 model_outputs_list <- list(rsv_mild_full_output, 
