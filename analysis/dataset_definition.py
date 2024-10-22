@@ -293,8 +293,8 @@ dataset.latest_ethnicity_code = (
   .snomedct_code.is_in(codelists.ethnicity_codes))
   .where(clinical_events.date.is_on_or_before(index_date))
   .sort_by(clinical_events.date)
-  .last_for_patient()
-  .snomedct_code
+  .last_for_patient().snomedct_code
+  .to_catgory(codelists.ethnicity_codes)
 )
 
 #extract patients IMD rank
