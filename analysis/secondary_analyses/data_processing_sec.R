@@ -29,10 +29,6 @@ covid_season_min <- as.Date("2019-09-01")
 covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
 covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
-#set the new start and end dates
-study_start_date_sens <- as.Date(paste0(year(study_start_date), "-10-01"))
-study_end_date_sens <- as.Date(paste0(year(study_end_date), "-03-31"))
-
 df_input <- read_feather(
   here::here("output", "data", paste0("input_", cohort, "_", 
              year(study_start_date), "_", year(study_end_date), "_",
@@ -68,13 +64,15 @@ if (cohort == "infants_subgroup") {
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
   df_input <- df_input %>%
+    rowwise() %>%
     mutate(
-      date = map2(study_start_date_sens, study_end_date_sens, ~seq(.x, .y, by = 30.44))
+      date = map2(patient_index_date, study_end_date, ~seq(.x, .y, by = 30.44))
     ) %>%
     unnest(date) %>%
     mutate(
-      age = age + as.numeric((date - study_start_date_sens)/30.44)
-    ) 
+      age = age + as.numeric((date - patient_index_date)/30.44)
+    ) %>%
+    ungroup()
 }
   
 #calculate age bands
@@ -233,15 +231,15 @@ if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "
   df_input <- df_input %>%
     mutate(
       time_since_last_covid_vaccination = factor(case_when(
-      time_length(difftime(study_start_date_sens, last_covid_vaccination_date, 
+      time_length(difftime(patient_index_date, last_covid_vaccination_date, 
                              units = "days"), "months") >= 0 &
-        time_length(difftime(study_start_date_sens, last_covid_vaccination_date,
+        time_length(difftime(patient_index_date, last_covid_vaccination_date,
                              units = "days"), "months") < 6 ~ "0-6m",
-      time_length(difftime(study_start_date_sens, last_covid_vaccination_date,
+      time_length(difftime(patient_index_date, last_covid_vaccination_date,
                            units = "days"), "months") >= 6 &
-        time_length(difftime(study_start_date_sens, last_covid_vaccination_date, 
+        time_length(difftime(patient_index_date, last_covid_vaccination_date, 
                              units = "days"), "months") < 12 ~ "6-12m",
-      time_length(difftime(study_start_date_sens, last_covid_vaccination_date,
+      time_length(difftime(patient_index_date, last_covid_vaccination_date,
                            units = "days"), "months") >= 12 ~ "12m+",
         TRUE ~ NA_character_))
   )
@@ -479,39 +477,39 @@ if (study_start_date == as.Date("2017-09-01")) {
     mutate(
       #time until mild rsv outcome
       time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
-                         study_start_date - days(1), "weeks"), "years"),
+                         patient_index_date - days(1), "weeks"), "years"),
       #time until severe rsv outcome
       time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
-                           study_start_date - days(1), "weeks"), "years"),
+                           patient_index_date - days(1), "weeks"), "years"),
       #time until rsv mortality
       time_rsv_mortality = time_length(difftime(rsv_mortality_inf_date, 
-                          study_start_date - days(1), "weeks"), "years")
+                          patient_index_date - days(1), "weeks"), "years")
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   df_input <- df_input %>%
     mutate(
       #time until mild flu outcome
       time_flu_primary = time_length(difftime(flu_primary_inf_date, 
-                                              study_start_date - days(1), "weeks"), "years"),
+                         patient_index_date - days(1), "weeks"), "years"),
       #time until severe flu outcome
       time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
-                                                study_start_date - days(1), "weeks"), "years"),
+                           patient_index_date - days(1), "weeks"), "years"),
       #time until flu mortality
       time_flu_mortality = time_length(difftime(flu_mortality_inf_date, 
-                                                study_start_date - days(1), "weeks"), "years")
+                           patient_index_date - days(1), "weeks"), "years")
   )
 } else if (study_start_date == as.Date("2020-09-01")) {
     df_input <- df_input %>%
       mutate(
         #time until mild covid outcome
         time_covid_primary = time_length(difftime(covid_primary_inf_date, 
-                                                 study_start_date - days(1), "weeks"), "years"),
+                             patient_index_date - days(1), "weeks"), "years"),
         #time until severe covid outcome
         time_covid_secondary = time_length(difftime(covid_secondary_inf_date, 
-                                                   study_start_date - days(1), "weeks"), "years"),
+                               patient_index_date - days(1), "weeks"), "years"),
         #time until covid mortality
         time_covid_mortality = time_length(difftime(covid_mortality_inf_date, 
-                                                   study_start_date - days(1), "weeks"), "years")
+                               patient_index_date - days(1), "weeks"), "years")
     )
 }
 
@@ -519,7 +517,7 @@ df_input <- df_input %>%
   mutate(
     #time until all cause mortality
     time_all_cause_mortality = time_length(difftime(all_cause_mortality_inf_date, 
-                               study_start_date - days(1), "weeks"), "years")
+                               patient_index_date - days(1), "weeks"), "years")
   )
 
 ## create output directories ----

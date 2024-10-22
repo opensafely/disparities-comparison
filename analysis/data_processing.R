@@ -58,19 +58,21 @@ if (cohort == "infants_subgroup") {
   df_input_mothers <- df_input_mothers %>%
     mutate(mother_id = patient_id) %>%
     select(-patient_id)
-  df_input <- merge(df_input, df_input_mothers, by = "mother_id", all = TRUE)
+  df_input <- merge(df_input, df_input_mothers, by = "mother_id")
 }
 
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
   df_input <- df_input %>%
+    rowwise() %>%
     mutate(
       date = map2(patient_index_date, study_end_date, ~seq(.x, .y, by = 30.44))
     ) %>%
     unnest(date) %>%
     mutate(
       age = age + as.numeric((date - patient_index_date)/30.44)
-    ) 
+    ) %>%
+    ungroup()
 }
   
 #calculate age bands
