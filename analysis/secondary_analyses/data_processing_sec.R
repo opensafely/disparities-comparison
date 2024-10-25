@@ -89,7 +89,7 @@ if(cohort == "older_adults") {
     mutate(age_band = case_when(
       age > 17 & age < 40 ~ "18-29y",
       age > 39 & age < 65 ~ "40-64y",
-      TRUE ~ "Uknown")
+      TRUE ~ "Unknown")
     )
 } else if(cohort == "children_and_adolescents") {
   df_input <- df_input %>%
