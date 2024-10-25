@@ -1462,7 +1462,6 @@ if (cohort == "infants") {
 fs::dir_create(here("output", "results", "rates"))
 
 #export results table to csv
-#export results table to csv
 if (length(args) == 0) {
   results_table <- final_results %>%
     mutate_if(is.numeric, round, digits = 4) %>%

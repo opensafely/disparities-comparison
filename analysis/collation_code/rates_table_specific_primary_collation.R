@@ -48,6 +48,11 @@ collated_rates_specific_primary = rbind(
              subset = "2022_23")
 )
 
+#redact events less than or equal to 7, if there are <=7 events, redact rate
+collated_rates_specific_primary <- collated_rates_specific_primary %>%
+  mutate(Events = ifelse(Events <= 7, "<=7", Events),
+         Rate = ifelse(Events == "<=7", "Redacted", Rate))
+
 #save as csv
 write_csv(collated_rates_specific_primary, paste0(here::here("output", "collated", "descriptive"), 
           "/", cohort, "_rates_specific_primary_collated.csv"))

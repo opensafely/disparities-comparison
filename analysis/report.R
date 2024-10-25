@@ -3384,11 +3384,6 @@ if (study_start_date == as.Date("2020-09-01")) {
 ## create output directories ----
 fs::dir_create(here("output", "results", "rates"))
 
-#redact events less than or equal to 7, if there are <=7 events, redact rate
-final_results <- final_results %>%
-  mutate(Events = ifelse(Events <= 7, "<=7", Events),
-         Rate = ifelse(Events == "<=7", "Redacted", Rate))
-
 #export results table to csv
 if (length(args) == 0) {
   results_table <- final_results %>%
