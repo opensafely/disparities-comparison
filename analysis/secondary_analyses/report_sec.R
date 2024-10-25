@@ -1016,7 +1016,7 @@ if (cohort == "infants_subgroup") {
         PYears = results_maternal_age$person_years,
         Events = results_maternal_age$events,
         Rate = results_maternal_age$incidence_rate,
-        Characteristic = rep("Average Maternal Age", 13),
+        Characteristic = rep("Average Maternal Age", 3),
         Group = results_maternal_age$avg_maternal_age)
     )
   }
