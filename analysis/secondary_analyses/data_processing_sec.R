@@ -13,8 +13,8 @@ fs::dir_create(here("analysis", "secondary_analyses"))
 source(here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- as.Date("2017-09-01")
-  study_end_date <- as.Date("2018-08-31")
+  study_start_date <- as.Date("2020-09-01")
+  study_end_date <- as.Date("2021-08-31")
   cohort <- "infants_subgroup"
   codelist_type <- "specific"
   investigation_type <- "secondary"
@@ -393,8 +393,13 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_mortality_inf = if_else(flu_mortality_censor == 0, 1, 0)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
-  df_input <- df_input %>%
-    select(-contains(c("rsv_", "flu_")))
+  if (cohort == "infants_subgroup") {
+    df_input <- df_input %>%
+      select(-contains(c("rsv_", "flu_")), maternal_flu_vaccination)
+  } else {
+    df_input <- df_input %>%
+      select(-contains(c("rsv_", "flu_")))
+  }
   df_input <- df_input %>%
     mutate(
       #infer presence of mild covid
