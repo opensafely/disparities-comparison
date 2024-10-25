@@ -25,11 +25,7 @@ read_csv(here::here("output", "results", "rates", paste0("rates_", cohort,
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
            "_2018_2019_specific_sensitivity.csv"))) 
   %>% mutate(codelist_type = "specific", investigation_type = "sensitivity",
-             subset = "2018_19"),
-  read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
-           "_2020_2021_specific_sensitivity.csv"))) 
-  %>% mutate(codelist_type = "specific", investigation_type = "sensitivity",
-             subset = "2020_21")
+             subset = "2018_19")
 )
 
 #save as csv
