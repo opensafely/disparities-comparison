@@ -16,7 +16,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2020-09-01"
   study_end_date <- "2021-08-31"
-  cohort <- "infants"
+  cohort <- "children_and_adolescents"
   codelist_type <- "specific"
   investigation_type <- "secondary"
 } else {
@@ -2002,9 +2002,7 @@ if (cohort == "infants") {
     table_groups <- c("Total", "Age Group", "Sex", "Ethnicity",
                       "IMD Quintile", "Household Composition Category",
                       "Rurality Classification",
-                      "Vaccinated against COVID-19 in current season",
-                      "Vaccinated against influenza in previous season",
-                      "Vaccinated against influenza in current season")
+                      "Vaccinated against COVID-19 in current season")
   } else {
     table_groups <- c("Total", "Age Group", "Sex", "Ethnicity",
                       "IMD Quintile", "Rurality Classification")
