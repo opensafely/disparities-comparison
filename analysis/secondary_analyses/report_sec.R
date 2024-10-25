@@ -14,9 +14,9 @@ fs::dir_create(here("analysis", "secondary_analyses"))
 source(here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- "2018-09-01"
-  study_end_date <- "2019-08-31"
-  cohort <- "infants_subgroup"
+  study_start_date <- "2020-09-01"
+  study_end_date <- "2021-08-31"
+  cohort <- "infants"
   codelist_type <- "specific"
   investigation_type <- "secondary"
 } else {
@@ -738,7 +738,7 @@ if (study_start_date == as.Date("2020-09-01")) {
       PYears = results_hh_comp$person_years,
       Events = results_hh_comp$events,
       Rate = results_hh_comp$incidence_rate,
-      Characteristic = rep("Household Composition", 3 * hh_comp_groups),
+      Characteristic = rep("Household Composition Category", 3 * hh_comp_groups),
       Group = results_hh_comp$composition_category)
     )
 }
