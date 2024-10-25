@@ -9673,7 +9673,7 @@ actions:
         dataset: output/data/input_processed_older_adults_2020_2021_specific_secondary.arrow
 
   describe_dataset_older_adults_s5_specific_secondary:
-    run: r:latest analysis/secondary_analyses/report.R older_adults season5_start_date
+    run: r:latest analysis/secondary_analyses/report_sec.R older_adults season5_start_date
       season5_end_date specific secondary
     needs:
     - process_dataset_older_adults_s5_specific_secondary
@@ -9778,8 +9778,8 @@ actions:
         dataset: output/data/input_processed_adults_2020_2021_specific_secondary.arrow
 
   describe_dataset_adults_s5_specific_secondary:
-    run: r:latest analysis/secondary_analyses/report.R adults season5_start_date season5_end_date
-      specific secondary
+    run: r:latest analysis/secondary_analyses/report_sec.R adults season5_start_date
+      season5_end_date specific secondary
     needs:
     - process_dataset_adults_s5_specific_secondary
     outputs:
@@ -9883,8 +9883,8 @@ actions:
         dataset: output/data/input_processed_children_and_adolescents_2020_2021_specific_secondary.arrow
 
   describe_dataset_children_and_adolescents_s5_specific_secondary:
-    run: r:latest analysis/secondary_analyses/report.R children_and_adolescents season5_start_date
-      season5_end_date specific secondary
+    run: r:latest analysis/secondary_analyses/report_sec.R children_and_adolescents
+      season5_start_date season5_end_date specific secondary
     needs:
     - process_dataset_children_and_adolescents_s5_specific_secondary
     outputs:

@@ -1548,7 +1548,7 @@ action_secondary_covid <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("describe_dataset_{cohort}_s5_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/report.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/secondary_analyses/report_sec.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_s5_specific_secondary")),
