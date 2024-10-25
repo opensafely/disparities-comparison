@@ -15,7 +15,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- as.Date("2017-09-01")
   study_end_date <- as.Date("2018-08-31")
-  cohort <- "infants_subgroup"
+  cohort <- "infants"
   codelist_type <- "specific"
   investigation_type_data <- "primary"
   investigation_type <- "sensitivity"
@@ -58,7 +58,7 @@ col_names <- colnames(df_input[, cols])
 #remove vaccination dates from the list of columns
 col_names <- col_names[!col_names %in% c(paste0(colnames(df_input[, str_detect(names(df_input), "vaccination")])))]
 #remove birth date from list of columns
-col_names <- col_names[!col_names %in% c("birth_date")]
+col_names <- col_names[!col_names %in% c("birth_date", "patient_index_date")]
 df_input_filt <- df_input %>%
   mutate(across(all_of(col_names), ~if_else(.x >= study_start_date_sens & .x <= study_end_date_sens, .x, NA_Date_)))
 
