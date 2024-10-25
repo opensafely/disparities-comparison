@@ -8,7 +8,7 @@ library(readr)
 library(stringr)
 
 ## create output directories ----
-fs::dir_create(here("analysis", "secondary_analyses"))
+fs::dir_create(here("analysis", "sensitivity_analyses"))
 
 #define study start date and study end date
 source(here("analysis", "design", "design.R"))
@@ -1270,10 +1270,9 @@ if (cohort == "infants_subgroup") {
 
 ##children/adolescents, adult and older adult cohort specific characteristics
 
-if (cohort == "children_and_adolescents" |
-  cohort == "adults" | cohort == "older_adults" &
-  study_start_date == as.Date("2018-09-01")) {
-    
+if ((cohort == "children_and_adolescents"|cohort == "adults"|cohort == "older_adults") &
+    study_start_date == as.Date("2018-09-01")) {
+  
   #calculate total person-time for each outcome type by flu vaccination status
   survival_prior_flu_vacc <- df_input %>%
     group_by(prior_flu_vaccination) %>%

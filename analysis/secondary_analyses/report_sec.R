@@ -1694,8 +1694,7 @@ if (cohort == "infants_subgroup") {
 
 ##children/adolescents, adult and older adult cohort specific characteristics
 
-if (cohort == "children_and_adolescents" |
-  cohort == "adults" | cohort == "older_adults") {
+if (cohort == "children_and_adolescents"|cohort == "adults"|cohort == "older_adults") {
   if (study_start_date == as.Date("2018-09-01")) {
     #calculate total person-time for each outcome type by flu vaccination status
     survival_prior_flu_vacc <- df_input %>%
@@ -1971,14 +1970,28 @@ if (cohort == "children_and_adolescents" |
 
 #export
 if (cohort == "infants") {
-  table_groups <- c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
-                    "Household Composition Category", "Rurality Classification")
+  if (study_start_date == as.Date("2020-09-01")) {
+    table_groups <- c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
+                      "Household Composition Category", "Rurality Classification")    
+  } else {
+    table_groups <- c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
+                      "Rurality Classification")
+  }
 } else if (cohort == "infants_subgroup") {
-  table_groups <- c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
-                    "Rurality Classification", "Average Maternal Age",
-                    "Maternal Smoking Status", "Maternal Drinking",
-                    "Maternal Drug Usage", "Maternal Pertussis Vaccination Status",
-                    "Maternal Influenza Vaccination Status")
+  if (study_start_date == as.Date("2020-09-01")) {
+    table_groups <- c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
+                      "Household Composition Category", "Rurality Classification",
+                      "Average Maternal Age", "Maternal Smoking Status",
+                      "Maternal Drinking", "Maternal Drug Usage",
+                      "Maternal Pertussis Vaccination Status",
+                      "Maternal Influenza Vaccination Status")    
+  } else {
+    table_groups <- c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
+                      "Rurality Classification", "Average Maternal Age",
+                      "Maternal Smoking Status", "Maternal Drinking",
+                      "Maternal Drug Usage", "Maternal Pertussis Vaccination Status",
+                      "Maternal Influenza Vaccination Status")
+  }
 } else {
   if (study_start_date == as.Date("2018-09-01")) {
     table_groups <- c("Total", "Age Group", "Sex", "Ethnicity",
@@ -1987,7 +2000,8 @@ if (cohort == "infants") {
                       "Vaccinated against influenza in current season")
   } else if (study_start_date == as.Date("2020-09-01")) {
     table_groups <- c("Total", "Age Group", "Sex", "Ethnicity",
-                      "IMD Quintile", "Rurality Classification",
+                      "IMD Quintile", "Household Composition Category",
+                      "Rurality Classification",
                       "Vaccinated against COVID-19 in current season",
                       "Vaccinated against influenza in previous season",
                       "Vaccinated against influenza in current season")
