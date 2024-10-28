@@ -303,7 +303,7 @@ else:
 dataset.death_date = ons_deaths.date 
 
 #extract latest ethnicity code for patient
-dataset.latest_ethnicity_code = (
+dataset.latest_ethnicity_group = (
   clinical_events.where(clinical_events
   .snomedct_code.is_in(codelists.ethnicity_codes))
   .where(clinical_events.date.is_on_or_before(index_date))
