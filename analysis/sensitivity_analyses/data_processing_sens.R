@@ -62,12 +62,20 @@ col_names <- col_names[!col_names %in% c("birth_date", "patient_index_date")]
 df_input_filt <- df_input %>%
   mutate(across(all_of(col_names), ~if_else(.x >= study_start_date_sens & .x <= study_end_date_sens, .x, NA_Date_)))
 
+#edit patient specific index date
+df_input_filt <- df_input_filt %>%
+  mutate(patient_index_date = case_when(
+    patient_index_date < study_start_date_sens ~ study_start_date_sens,
+    patient_index_date > study_end_date_sens ~ study_end_date_sens,
+    TRUE ~ patient_index_date
+  ))
+
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
   df_input_filt <- df_input_filt %>%
     rowwise() %>%
     mutate(
-      date = map2(patient_index_date, study_end_date, ~seq(.x, .y, by = 30.44))
+      date = map2(patient_index_date, study_end_date_sens, ~seq(.x, .y, by = 30.44))
     ) %>%
     unnest(date) %>%
     mutate(
