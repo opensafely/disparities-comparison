@@ -123,7 +123,7 @@ sim_list = lst(
   ),
   
   #ethnicity (group 6)
-  latest_ethnicity_code = bn_node(
+  latest_ethnicity_group = bn_node(
     ~ rfactor(n = ..n, levels = c(
       "5",
       "4",
