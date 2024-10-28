@@ -82,14 +82,14 @@ if(cohort == "older_adults") {
       age > 64 & age < 75 ~ "65-74y",
       age > 74 & age < 90 ~ "75-89y",
       age > 89 ~ "90y+",
-      TRUE ~ "Unknown")
+      TRUE ~ NA_character_)
     )
 } else if(cohort == "adults") {
   df_input <- df_input %>%
     mutate(age_band = case_when(
       age > 17 & age < 40 ~ "18-29y",
       age > 39 & age < 65 ~ "40-64y",
-      TRUE ~ "Unknown")
+      TRUE ~ NA_character_)
     )
 } else if(cohort == "children_and_adolescents") {
   df_input <- df_input %>%
@@ -98,7 +98,7 @@ if(cohort == "older_adults") {
       age > 5 & age < 10 ~ "6-9y",
       age > 9 & age < 14 ~ "10-13y",
       age > 13 & age < 18 ~ "14-17y",
-      TRUE ~ "Unknown")
+      TRUE ~ NA_character_)
     )
 } else {
   df_input <- df_input %>%
@@ -107,7 +107,7 @@ if(cohort == "older_adults") {
       age > 2 & age < 6 ~ "3-5m",
       age > 5 & age < 12 ~ "6-11m",
       age > 11 & age < 24 ~ "12-23m",
-      TRUE ~ "Unknown")
+      TRUE ~ NA_character_)
     )
 }
 
@@ -117,13 +117,8 @@ df_input$age_band <- factor(df_input$age_band)
 df_input <- df_input %>%
   mutate(
     #assign ethnicity group
-    latest_ethnicity_group = factor(case_when(
-      latest_ethnicity_code == "1" ~ "White",
-      latest_ethnicity_code == "2" ~ "Mixed",
-      latest_ethnicity_code == "3" ~ "Asian or Asian British",
-      latest_ethnicity_code == "4" ~ "Black or Black British",
-      latest_ethnicity_code == "5" ~ "Other Ethnic Groups",
-      TRUE ~ NA_character_), ordered = TRUE),
+    latest_ethnicity_group = fct_relevel(latest_ethnicity_group,
+                                         c("1", "2", "3", "4", "5")),
     #calculate IMD quintile
     imd_quintile = factor(case_when(
       imd_rounded >= 0 & imd_rounded < as.integer(32800 * 1 / 5) ~ "1 (most deprived)",
@@ -158,6 +153,11 @@ df_input <- df_input %>%
 #more data manipulation
 df_input <- df_input %>%
   mutate(
+    #add labels to ethnicity
+    latest_ethnicity_group = factor(latest_ethnicity_group,
+                                    labels = c("White", "Mixed", "Asian or Asian British",
+                                               "Black or Black British",
+                                               "Other Ethnic Groups")),
     #recode imd quintile 
     imd_quintile = recode(imd_quintile, "1 (most deprived)" = "5 (most deprived)",
                           "2" = "4", "3" = "3", "4" = "2",
@@ -185,7 +185,7 @@ if (study_start_date == as.Date("2020-09-01")) {
         household_size >= 1 & household_size <= 2 ~ "1",
         household_size >= 3 & household_size <= 5 ~ "2",
         household_size >= 6 ~ "3",
-        TRUE ~ "Unknown")),
+        TRUE ~ NA_character_), ordered = TRUE),
       composition_category = fct_relevel(composition_category,
                                          c("Multiple of the Same Generation", "Living Alone",
                                            "One Other Generation", "Two Other Generations",
@@ -241,7 +241,7 @@ if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "
                              units = "days"), "months") < 12 ~ "6-12m",
       time_length(difftime(patient_index_date, last_covid_vaccination_date,
                            units = "days"), "months") >= 12 ~ "12m+",
-        TRUE ~ NA_character_))
+        TRUE ~ "12m+"))
   )
 }
 if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
@@ -474,7 +474,6 @@ df_input <- df_input %>%
     #infer all cause mortality outcome
     all_cause_mortality_inf = if_else(all_cause_mortality_censor == 0, 1, 0)
   )
-
 
 #calculate time to event
 if (study_start_date == as.Date("2017-09-01")) {
