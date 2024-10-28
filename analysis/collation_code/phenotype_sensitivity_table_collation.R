@@ -34,9 +34,13 @@ collated_phenotype_sensitivity = rbind(
            cohort, "_2022_2023.csv"))) %>% mutate(subset = "2022_23")
 )
 
-#redact values 7 or below 
+#perform redaction and rounding 
 collated_phenotype_sensitivity <- collated_phenotype_sensitivity %>% 
-  mutate_at(vars(contains("n")), ~ifelse(. <= 7, "<=7", .))
+  mutate_at(vars(contains("n")), ~round_any(as.numeric(.), 5)) %>% 
+  mutate_at(vars(contains("n")), ~ifelse(. <= 10, "<=10", .))
+
+#rename n column
+colnames(collated_phenotype_sensitivity)[colnames(collated_phenotype_sensitivity) == "n"] <- "n (rounded)"
 
 #save as csv
 write_csv(collated_phenotype_sensitivity, paste0(here::here("output", "collated", "descriptive"), 

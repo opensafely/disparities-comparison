@@ -34,9 +34,10 @@ collated_flow_chart = rbind(
                       cohort, "_2022_2023.csv"))) %>% mutate(subset = "2022_23")
 )
 
-#redact counts 7 and below
+#perform redaction and rounding
 collated_flow_chart <- collated_flow_chart %>% 
-  mutate_at(vars(ends_with("count")), ~ ifelse(. <= 7, "<=7", .))
+  mutate_at(vars(contains("count")), ~round_any(as.numeric(.), 5)) %>% 
+  mutate_at(vars(ends_with("count")), ~ ifelse(. <= 10, "<=10", .))
 
 #save as csv
 write_csv(collated_flow_chart, paste0(here::here("output", "collated", "descriptive"),

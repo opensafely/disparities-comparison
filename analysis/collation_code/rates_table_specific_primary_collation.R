@@ -12,7 +12,7 @@ if (length(args) == 0) {
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "collated", "descriptive"))
+fs::dir_create(here::here("output", "collated", "descriptive"))
 
 ##rates
 
@@ -48,10 +48,14 @@ collated_rates_specific_primary = rbind(
              subset = "2022_23")
 )
 
-#redact events less than or equal to 7, if there are <=7 events, redact rate
-collated_rates_specific_primary <- collated_rates_specific_primary %>%
-  mutate(Events = ifelse(Events <= 7, "<=7", Events),
-         Rate = ifelse(Events == "<=7", "Redacted", Rate))
+#perform rounding and redaction
+collated_rates_specific_secondary <- collated_rates_specific_secondary %>%
+  mutate(Events = round_any(Events, 5)) %>%
+  mutate(Events = ifelse(Events <= 10, "<=10", Events),
+         Rate = ifelse(Events == "<=10", "Redacted", Rate))
+
+#rename events column
+colnames(collated_rates_specific_secondary)[colnames(collated_rates_specific_secondary) == "Events"] <- "Events (rounded)"
 
 #save as csv
 write_csv(collated_rates_specific_primary, paste0(here::here("output", "collated", "descriptive"), 

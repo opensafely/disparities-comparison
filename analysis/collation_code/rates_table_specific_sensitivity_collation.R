@@ -2,6 +2,7 @@ library(tidyverse)
 library(here)
 library(arrow)
 library(ggplot2)
+library(plyr)
 
 #define cohort
 args <- commandArgs(trailingOnly = TRUE)
@@ -12,7 +13,7 @@ if (length(args) == 0) {
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "collated", "descriptive"))
+fs::dir_create(here::here("output", "collated", "descriptive"))
 
 ##rates
 
@@ -28,10 +29,14 @@ read_csv(here::here("output", "results", "rates", paste0("rates_", cohort,
              subset = "2018_19")
 )
 
-#redact events less than or equal to 7, if there are <=7 events, redact rate
+#perform rounding and redaction
 collated_rates_specific_sensitivity <- collated_rates_specific_sensitivity %>%
-  mutate(Events = ifelse(Events <= 7, "<=7", Events),
-         Rate = ifelse(Events == "<=7", "Redacted", Rate))
+  mutate(Events = round_any(Events, 5)) %>%
+  mutate(Events = ifelse(Events <= 10, "<=10", Events),
+         Rate = ifelse(Events == "<=10", "Redacted", Rate))
+
+#rename events column
+colnames(collated_rates_specific_sensitivity)[colnames(collated_rates_specific_sensitivity) == "Events"] <- "Events (rounded)"
 
 #save as csv
 write_csv(collated_rates_specific_sensitivity, paste0(here::here("output", "collated", "descriptive"), 
