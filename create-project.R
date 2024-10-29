@@ -1237,6 +1237,25 @@ action_specified_infants_sub_2020 <- function(season, dates, codelist_type,
 
 ##covid actions
 
+action_covid_2019 <- function(cohort, season, dates, codelist_type,
+                         investigation_type, season_start_date, season_end_date) {
+  
+  splice(
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_covid_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/outcome_covid/covid_models_master.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+      #               season_start_date, season_end_date),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/covid_{investigation_type}/*_{cohort}_{dates}_{codelist_type}_*.csv"))
+    )
+    
+  )
+  
+}
+
 action_covid <- function(cohort, season, dates, codelist_type,
                          investigation_type, season_start_date, season_end_date) {
   
@@ -1249,7 +1268,7 @@ action_covid <- function(cohort, season, dates, codelist_type,
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_model_outputs_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv"))
+        csv = glue("output/results/models/covid_{investigation_type}/*_{cohort}_{dates}_{codelist_type}_*.csv"))
     ),
     
     action(
@@ -1259,7 +1278,7 @@ action_covid <- function(cohort, season, dates, codelist_type,
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        csv = glue("output/results/models/further_covid_model_outputs_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv"))
+        csv = glue("output/results/models/covid_{investigation_type}/further_*_{cohort}_{dates}_{codelist_type}_*.csv"))
     )
     
   )
@@ -2585,14 +2604,12 @@ action_finalise <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_further_covid_model_outputs_table_{cohort}"),
+      name = glue("collate_further_covid_model_outputs_tables_{cohort}"),
       run = glue("r:latest analysis/collation_code/further_covid_model_outputs_table_collation.R {cohort}"),
       # arguments = c(cohort),
-      needs = list(glue("analyse_dataset_{cohort}_covid_further_s4_specific_primary"),
-                   glue("analyse_dataset_{cohort}_covid_further_s5_specific_primary"),
+      needs = list(glue("analyse_dataset_{cohort}_covid_further_s5_specific_primary"),
                    glue("analyse_dataset_{cohort}_covid_further_s6_specific_primary"),
                    glue("analyse_dataset_{cohort}_covid_further_s7_specific_primary"),
-                   glue("analyse_dataset_{cohort}_covid_further_s4_sensitive_primary"),
                    glue("analyse_dataset_{cohort}_covid_further_s5_sensitive_primary"),
                    glue("analyse_dataset_{cohort}_covid_further_s6_sensitive_primary"),
                    glue("analyse_dataset_{cohort}_covid_further_s7_sensitive_primary")),
@@ -3227,7 +3244,7 @@ actions_list <- splice(
   action_specified("older_adults", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
   action_specified("older_adults", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
   action_specified("older_adults", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
-  action_covid("older_adults", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_covid_2019("older_adults", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
   action_specified("older_adults", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
   action_covid("older_adults", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
   action_specified("older_adults", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
@@ -3243,7 +3260,7 @@ actions_list <- splice(
   action_specified("adults", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
   action_specified("adults", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
   action_specified("adults", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
-  action_covid("adults", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_covid_2019("adults", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
   action_specified("adults", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
   action_covid("adults", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
   action_specified("adults", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
@@ -3259,7 +3276,7 @@ actions_list <- splice(
   action_specified("children_and_adolescents", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
   action_specified("children_and_adolescents", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
   action_specified("children_and_adolescents", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
-  action_covid("children_and_adolescents", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_covid_2019("children_and_adolescents", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
   action_specified("children_and_adolescents", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
   action_covid("children_and_adolescents", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
   action_specified("children_and_adolescents", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
@@ -3307,7 +3324,7 @@ actions_list <- splice(
   action_specified("older_adults", "s2", "2017_2018", "sensitive", "primary", "season2_start_date", "season2_end_date"),
   action_specified("older_adults", "s3", "2018_2019", "sensitive", "primary", "season3_start_date", "season3_end_date"),
   action_specified("older_adults", "s4", "2019_2020", "sensitive", "primary", "season4_start_date", "season4_end_date"),
-  action_covid("older_adults", "s4", "2019_2020", "sensitive", "primary", "season4_start_date", "season4_end_date"),
+  action_covid_2019("older_adults", "s4", "2019_2020", "sensitive", "primary", "season4_start_date", "season4_end_date"),
   action_specified("older_adults", "s5", "2020_2021", "sensitive", "primary", "season5_start_date", "season5_end_date"),
   action_covid("older_adults", "s5", "2020_2021", "sensitive", "primary", "season5_start_date", "season5_end_date"),
   action_specified("older_adults", "s6", "2021_2022", "sensitive", "primary", "season6_start_date", "season6_end_date"),
@@ -3323,7 +3340,7 @@ actions_list <- splice(
   action_specified("adults", "s2", "2017_2018", "sensitive", "primary", "season2_start_date", "season2_end_date"),
   action_specified("adults", "s3", "2018_2019", "sensitive", "primary", "season3_start_date", "season3_end_date"),
   action_specified("adults", "s4", "2019_2020", "sensitive", "primary", "season4_start_date", "season4_end_date"),
-  action_covid("adults", "s4", "2019_2020", "sensitive", "primary", "season4_start_date", "season4_end_date"),
+  action_covid_2019("adults", "s4", "2019_2020", "sensitive", "primary", "season4_start_date", "season4_end_date"),
   action_specified("adults", "s5", "2020_2021", "sensitive", "primary", "season5_start_date", "season5_end_date"),
   action_covid("adults", "s5", "2020_2021", "sensitive", "primary", "season5_start_date", "season5_end_date"),
   action_specified("adults", "s6", "2021_2022", "sensitive", "primary", "season6_start_date", "season6_end_date"),
@@ -3339,7 +3356,7 @@ actions_list <- splice(
   action_specified("children_and_adolescents", "s2", "2017_2018", "sensitive", "primary", "season2_start_date", "season2_end_date"),
   action_specified("children_and_adolescents", "s3", "2018_2019", "sensitive", "primary", "season3_start_date", "season3_end_date"),
   action_specified("children_and_adolescents", "s4", "2019_2020", "sensitive", "primary", "season4_start_date", "season4_end_date"),
-  action_covid("children_and_adolescents", "s4", "2019_2020", "sensitive", "primary", "season4_start_date", "season4_end_date"),
+  action_covid_2019("children_and_adolescents", "s4", "2019_2020", "sensitive", "primary", "season4_start_date", "season4_end_date"),
   action_specified("children_and_adolescents", "s5", "2020_2021", "sensitive", "primary", "season5_start_date", "season5_end_date"),
   action_covid("children_and_adolescents", "s5", "2020_2021", "sensitive", "primary", "season5_start_date", "season5_end_date"),
   action_specified("children_and_adolescents", "s6", "2021_2022", "sensitive", "primary", "season6_start_date", "season6_end_date"),

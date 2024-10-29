@@ -1215,16 +1215,7 @@ actions:
     - process_dataset_older_adults_s4_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_older_adults_2019_2020_specific_primary.csv
-
-  analyse_dataset_older_adults_covid_further_s4_specific_primary:
-    run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults
-      season4_start_date season4_end_date specific primary
-    needs:
-    - process_dataset_older_adults_s4_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_older_adults_2019_2020_specific_primary.csv
+        csv: output/results/models/covid_primary/*_older_adults_2019_2020_specific_*.csv
 
   generate_dataset_older_adults_s5_specific_primary:
     run: |-
@@ -1298,7 +1289,7 @@ actions:
     - process_dataset_older_adults_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_older_adults_2020_2021_specific_primary.csv
+        csv: output/results/models/covid_primary/*_older_adults_2020_2021_specific_*.csv
 
   analyse_dataset_older_adults_covid_further_s5_specific_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults
@@ -1307,7 +1298,7 @@ actions:
     - process_dataset_older_adults_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_older_adults_2020_2021_specific_primary.csv
+        csv: output/results/models/covid_primary/further_*_older_adults_2020_2021_specific_*.csv
 
   generate_dataset_older_adults_s6_specific_primary:
     run: |-
@@ -1380,7 +1371,7 @@ actions:
     - process_dataset_older_adults_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_older_adults_2021_2022_specific_primary.csv
+        csv: output/results/models/covid_primary/*_older_adults_2021_2022_specific_*.csv
 
   analyse_dataset_older_adults_covid_further_s6_specific_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults
@@ -1389,7 +1380,7 @@ actions:
     - process_dataset_older_adults_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_older_adults_2021_2022_specific_primary.csv
+        csv: output/results/models/covid_primary/further_*_older_adults_2021_2022_specific_*.csv
 
   generate_dataset_older_adults_s7_specific_primary:
     run: |-
@@ -1462,7 +1453,7 @@ actions:
     - process_dataset_older_adults_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_older_adults_2022_2023_specific_primary.csv
+        csv: output/results/models/covid_primary/*_older_adults_2022_2023_specific_*.csv
 
   analyse_dataset_older_adults_covid_further_s7_specific_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults
@@ -1471,7 +1462,7 @@ actions:
     - process_dataset_older_adults_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_older_adults_2022_2023_specific_primary.csv
+        csv: output/results/models/covid_primary/further_*_older_adults_2022_2023_specific_*.csv
 
   generate_dataset_older_adults_s8_specific_primary:
     run: |-
@@ -1544,7 +1535,7 @@ actions:
     - process_dataset_older_adults_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_older_adults_2023_2024_specific_primary.csv
+        csv: output/results/models/covid_primary/*_older_adults_2023_2024_specific_*.csv
 
   analyse_dataset_older_adults_covid_further_s8_specific_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults
@@ -1553,7 +1544,7 @@ actions:
     - process_dataset_older_adults_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_older_adults_2023_2024_specific_primary.csv
+        csv: output/results/models/covid_primary/further_*_older_adults_2023_2024_specific_*.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Adults, Season: Codelist Type: Specific, 
@@ -1823,16 +1814,7 @@ actions:
     - process_dataset_adults_s4_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_adults_2019_2020_specific_primary.csv
-
-  analyse_dataset_adults_covid_further_s4_specific_primary:
-    run: r:latest analysis/outcome_covid/further_covid_models_master.R adults season4_start_date
-      season4_end_date specific primary
-    needs:
-    - process_dataset_adults_s4_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_adults_2019_2020_specific_primary.csv
+        csv: output/results/models/covid_primary/*_adults_2019_2020_specific_*.csv
 
   generate_dataset_adults_s5_specific_primary:
     run: |-
@@ -1906,7 +1888,7 @@ actions:
     - process_dataset_adults_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_adults_2020_2021_specific_primary.csv
+        csv: output/results/models/covid_primary/*_adults_2020_2021_specific_*.csv
 
   analyse_dataset_adults_covid_further_s5_specific_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R adults season5_start_date
@@ -1915,7 +1897,7 @@ actions:
     - process_dataset_adults_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_adults_2020_2021_specific_primary.csv
+        csv: output/results/models/covid_primary/further_*_adults_2020_2021_specific_*.csv
 
   generate_dataset_adults_s6_specific_primary:
     run: |-
@@ -1988,7 +1970,7 @@ actions:
     - process_dataset_adults_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_adults_2021_2022_specific_primary.csv
+        csv: output/results/models/covid_primary/*_adults_2021_2022_specific_*.csv
 
   analyse_dataset_adults_covid_further_s6_specific_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R adults season6_start_date
@@ -1997,7 +1979,7 @@ actions:
     - process_dataset_adults_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_adults_2021_2022_specific_primary.csv
+        csv: output/results/models/covid_primary/further_*_adults_2021_2022_specific_*.csv
 
   generate_dataset_adults_s7_specific_primary:
     run: |-
@@ -2070,7 +2052,7 @@ actions:
     - process_dataset_adults_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_adults_2022_2023_specific_primary.csv
+        csv: output/results/models/covid_primary/*_adults_2022_2023_specific_*.csv
 
   analyse_dataset_adults_covid_further_s7_specific_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R adults season7_start_date
@@ -2079,7 +2061,7 @@ actions:
     - process_dataset_adults_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_adults_2022_2023_specific_primary.csv
+        csv: output/results/models/covid_primary/further_*_adults_2022_2023_specific_*.csv
 
   generate_dataset_adults_s8_specific_primary:
     run: |-
@@ -2152,7 +2134,7 @@ actions:
     - process_dataset_adults_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_adults_2023_2024_specific_primary.csv
+        csv: output/results/models/covid_primary/*_adults_2023_2024_specific_*.csv
 
   analyse_dataset_adults_covid_further_s8_specific_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R adults season8_start_date
@@ -2161,7 +2143,7 @@ actions:
     - process_dataset_adults_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_adults_2023_2024_specific_primary.csv
+        csv: output/results/models/covid_primary/further_*_adults_2023_2024_specific_*.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Children and Adolescents, Codelist Type: Specific, 
@@ -2431,16 +2413,7 @@ actions:
     - process_dataset_children_and_adolescents_s4_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_children_and_adolescents_2019_2020_specific_primary.csv
-
-  analyse_dataset_children_and_adolescents_covid_further_s4_specific_primary:
-    run: r:latest analysis/outcome_covid/further_covid_models_master.R children_and_adolescents
-      season4_start_date season4_end_date specific primary
-    needs:
-    - process_dataset_children_and_adolescents_s4_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_children_and_adolescents_2019_2020_specific_primary.csv
+        csv: output/results/models/covid_primary/*_children_and_adolescents_2019_2020_specific_*.csv
 
   generate_dataset_children_and_adolescents_s5_specific_primary:
     run: |-
@@ -2514,7 +2487,7 @@ actions:
     - process_dataset_children_and_adolescents_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_children_and_adolescents_2020_2021_specific_primary.csv
+        csv: output/results/models/covid_primary/*_children_and_adolescents_2020_2021_specific_*.csv
 
   analyse_dataset_children_and_adolescents_covid_further_s5_specific_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R children_and_adolescents
@@ -2523,7 +2496,7 @@ actions:
     - process_dataset_children_and_adolescents_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_children_and_adolescents_2020_2021_specific_primary.csv
+        csv: output/results/models/covid_primary/further_*_children_and_adolescents_2020_2021_specific_*.csv
 
   generate_dataset_children_and_adolescents_s6_specific_primary:
     run: |-
@@ -2596,7 +2569,7 @@ actions:
     - process_dataset_children_and_adolescents_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_children_and_adolescents_2021_2022_specific_primary.csv
+        csv: output/results/models/covid_primary/*_children_and_adolescents_2021_2022_specific_*.csv
 
   analyse_dataset_children_and_adolescents_covid_further_s6_specific_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R children_and_adolescents
@@ -2605,7 +2578,7 @@ actions:
     - process_dataset_children_and_adolescents_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_children_and_adolescents_2021_2022_specific_primary.csv
+        csv: output/results/models/covid_primary/further_*_children_and_adolescents_2021_2022_specific_*.csv
 
   generate_dataset_children_and_adolescents_s7_specific_primary:
     run: |-
@@ -2678,7 +2651,7 @@ actions:
     - process_dataset_children_and_adolescents_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_children_and_adolescents_2022_2023_specific_primary.csv
+        csv: output/results/models/covid_primary/*_children_and_adolescents_2022_2023_specific_*.csv
 
   analyse_dataset_children_and_adolescents_covid_further_s7_specific_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R children_and_adolescents
@@ -2687,7 +2660,7 @@ actions:
     - process_dataset_children_and_adolescents_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_children_and_adolescents_2022_2023_specific_primary.csv
+        csv: output/results/models/covid_primary/further_*_children_and_adolescents_2022_2023_specific_*.csv
 
   generate_dataset_children_and_adolescents_s8_specific_primary:
     run: |-
@@ -2760,7 +2733,7 @@ actions:
     - process_dataset_children_and_adolescents_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_children_and_adolescents_2023_2024_specific_primary.csv
+        csv: output/results/models/covid_primary/*_children_and_adolescents_2023_2024_specific_*.csv
 
   analyse_dataset_children_and_adolescents_covid_further_s8_specific_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R children_and_adolescents
@@ -2769,7 +2742,7 @@ actions:
     - process_dataset_children_and_adolescents_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_children_and_adolescents_2023_2024_specific_primary.csv
+        csv: output/results/models/covid_primary/further_*_children_and_adolescents_2023_2024_specific_*.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Infants, Codelist Type: Specific, 
@@ -5548,16 +5521,7 @@ actions:
     - process_dataset_older_adults_s4_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_older_adults_2019_2020_sensitive_primary.csv
-
-  analyse_dataset_older_adults_covid_further_s4_sensitive_primary:
-    run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults
-      season4_start_date season4_end_date sensitive primary
-    needs:
-    - process_dataset_older_adults_s4_sensitive_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_older_adults_2019_2020_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_older_adults_2019_2020_sensitive_*.csv
 
   generate_dataset_older_adults_s5_sensitive_primary:
     run: |-
@@ -5631,7 +5595,7 @@ actions:
     - process_dataset_older_adults_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_older_adults_2020_2021_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_older_adults_2020_2021_sensitive_*.csv
 
   analyse_dataset_older_adults_covid_further_s5_sensitive_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults
@@ -5640,7 +5604,7 @@ actions:
     - process_dataset_older_adults_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_older_adults_2020_2021_sensitive_primary.csv
+        csv: output/results/models/covid_primary/further_*_older_adults_2020_2021_sensitive_*.csv
 
   generate_dataset_older_adults_s6_sensitive_primary:
     run: |-
@@ -5713,7 +5677,7 @@ actions:
     - process_dataset_older_adults_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_older_adults_2021_2022_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_older_adults_2021_2022_sensitive_*.csv
 
   analyse_dataset_older_adults_covid_further_s6_sensitive_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults
@@ -5722,7 +5686,7 @@ actions:
     - process_dataset_older_adults_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_older_adults_2021_2022_sensitive_primary.csv
+        csv: output/results/models/covid_primary/further_*_older_adults_2021_2022_sensitive_*.csv
 
   generate_dataset_older_adults_s7_sensitive_primary:
     run: |-
@@ -5795,7 +5759,7 @@ actions:
     - process_dataset_older_adults_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_older_adults_2022_2023_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_older_adults_2022_2023_sensitive_*.csv
 
   analyse_dataset_older_adults_covid_further_s7_sensitive_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults
@@ -5804,7 +5768,7 @@ actions:
     - process_dataset_older_adults_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_older_adults_2022_2023_sensitive_primary.csv
+        csv: output/results/models/covid_primary/further_*_older_adults_2022_2023_sensitive_*.csv
 
   generate_dataset_older_adults_s8_sensitive_primary:
     run: |-
@@ -5877,7 +5841,7 @@ actions:
     - process_dataset_older_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_older_adults_2023_2024_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_older_adults_2023_2024_sensitive_*.csv
 
   analyse_dataset_older_adults_covid_further_s8_sensitive_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults
@@ -5886,7 +5850,7 @@ actions:
     - process_dataset_older_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_older_adults_2023_2024_sensitive_primary.csv
+        csv: output/results/models/covid_primary/further_*_older_adults_2023_2024_sensitive_*.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Adults, Codelist Type: Sensitive, 
@@ -6156,16 +6120,7 @@ actions:
     - process_dataset_adults_s4_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_adults_2019_2020_sensitive_primary.csv
-
-  analyse_dataset_adults_covid_further_s4_sensitive_primary:
-    run: r:latest analysis/outcome_covid/further_covid_models_master.R adults season4_start_date
-      season4_end_date sensitive primary
-    needs:
-    - process_dataset_adults_s4_sensitive_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_adults_2019_2020_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_adults_2019_2020_sensitive_*.csv
 
   generate_dataset_adults_s5_sensitive_primary:
     run: |-
@@ -6239,7 +6194,7 @@ actions:
     - process_dataset_adults_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_adults_2020_2021_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_adults_2020_2021_sensitive_*.csv
 
   analyse_dataset_adults_covid_further_s5_sensitive_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R adults season5_start_date
@@ -6248,7 +6203,7 @@ actions:
     - process_dataset_adults_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_adults_2020_2021_sensitive_primary.csv
+        csv: output/results/models/covid_primary/further_*_adults_2020_2021_sensitive_*.csv
 
   generate_dataset_adults_s6_sensitive_primary:
     run: |-
@@ -6321,7 +6276,7 @@ actions:
     - process_dataset_adults_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_adults_2021_2022_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_adults_2021_2022_sensitive_*.csv
 
   analyse_dataset_adults_covid_further_s6_sensitive_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R adults season6_start_date
@@ -6330,7 +6285,7 @@ actions:
     - process_dataset_adults_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_adults_2021_2022_sensitive_primary.csv
+        csv: output/results/models/covid_primary/further_*_adults_2021_2022_sensitive_*.csv
 
   generate_dataset_adults_s7_sensitive_primary:
     run: |-
@@ -6403,7 +6358,7 @@ actions:
     - process_dataset_adults_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_adults_2022_2023_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_adults_2022_2023_sensitive_*.csv
 
   analyse_dataset_adults_covid_further_s7_sensitive_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R adults season7_start_date
@@ -6412,7 +6367,7 @@ actions:
     - process_dataset_adults_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_adults_2022_2023_sensitive_primary.csv
+        csv: output/results/models/covid_primary/further_*_adults_2022_2023_sensitive_*.csv
 
   generate_dataset_adults_s8_sensitive_primary:
     run: |-
@@ -6485,7 +6440,7 @@ actions:
     - process_dataset_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_adults_2023_2024_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_adults_2023_2024_sensitive_*.csv
 
   analyse_dataset_adults_covid_further_s8_sensitive_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R adults season8_start_date
@@ -6494,7 +6449,7 @@ actions:
     - process_dataset_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_adults_2023_2024_sensitive_primary.csv
+        csv: output/results/models/covid_primary/further_*_adults_2023_2024_sensitive_*.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Children and Adolescents, Codelist Type: Sensitive, 
@@ -6764,16 +6719,7 @@ actions:
     - process_dataset_children_and_adolescents_s4_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_children_and_adolescents_2019_2020_sensitive_primary.csv
-
-  analyse_dataset_children_and_adolescents_covid_further_s4_sensitive_primary:
-    run: r:latest analysis/outcome_covid/further_covid_models_master.R children_and_adolescents
-      season4_start_date season4_end_date sensitive primary
-    needs:
-    - process_dataset_children_and_adolescents_s4_sensitive_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_children_and_adolescents_2019_2020_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_children_and_adolescents_2019_2020_sensitive_*.csv
 
   generate_dataset_children_and_adolescents_s5_sensitive_primary:
     run: |-
@@ -6847,7 +6793,7 @@ actions:
     - process_dataset_children_and_adolescents_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_children_and_adolescents_2020_2021_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_children_and_adolescents_2020_2021_sensitive_*.csv
 
   analyse_dataset_children_and_adolescents_covid_further_s5_sensitive_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R children_and_adolescents
@@ -6856,7 +6802,7 @@ actions:
     - process_dataset_children_and_adolescents_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_children_and_adolescents_2020_2021_sensitive_primary.csv
+        csv: output/results/models/covid_primary/further_*_children_and_adolescents_2020_2021_sensitive_*.csv
 
   generate_dataset_children_and_adolescents_s6_sensitive_primary:
     run: |-
@@ -6929,7 +6875,7 @@ actions:
     - process_dataset_children_and_adolescents_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_children_and_adolescents_2021_2022_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_children_and_adolescents_2021_2022_sensitive_*.csv
 
   analyse_dataset_children_and_adolescents_covid_further_s6_sensitive_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R children_and_adolescents
@@ -6938,7 +6884,7 @@ actions:
     - process_dataset_children_and_adolescents_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_children_and_adolescents_2021_2022_sensitive_primary.csv
+        csv: output/results/models/covid_primary/further_*_children_and_adolescents_2021_2022_sensitive_*.csv
 
   generate_dataset_children_and_adolescents_s7_sensitive_primary:
     run: |-
@@ -7011,7 +6957,7 @@ actions:
     - process_dataset_children_and_adolescents_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_children_and_adolescents_2022_2023_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_children_and_adolescents_2022_2023_sensitive_*.csv
 
   analyse_dataset_children_and_adolescents_covid_further_s7_sensitive_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R children_and_adolescents
@@ -7020,7 +6966,7 @@ actions:
     - process_dataset_children_and_adolescents_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_children_and_adolescents_2022_2023_sensitive_primary.csv
+        csv: output/results/models/covid_primary/further_*_children_and_adolescents_2022_2023_sensitive_*.csv
 
   generate_dataset_children_and_adolescents_s8_sensitive_primary:
     run: |-
@@ -7093,7 +7039,7 @@ actions:
     - process_dataset_children_and_adolescents_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_primary/covid_model_outputs_children_and_adolescents_2023_2024_sensitive_primary.csv
+        csv: output/results/models/covid_primary/*_children_and_adolescents_2023_2024_sensitive_*.csv
 
   analyse_dataset_children_and_adolescents_covid_further_s8_sensitive_primary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R children_and_adolescents
@@ -7102,7 +7048,7 @@ actions:
     - process_dataset_children_and_adolescents_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/further_covid_model_outputs_children_and_adolescents_2023_2024_sensitive_primary.csv
+        csv: output/results/models/covid_primary/further_*_children_and_adolescents_2023_2024_sensitive_*.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Infants, Codelist Type: Sensitive, 
@@ -12623,15 +12569,13 @@ actions:
       moderately_sensitive:
         csv: output/collated/analytic/older_adults_covid_model_outputs_collated.csv
 
-  collate_further_covid_model_outputs_table_older_adults:
+  collate_further_covid_model_outputs_tables_older_adults:
     run: r:latest analysis/collation_code/further_covid_model_outputs_table_collation.R
       older_adults
     needs:
-    - analyse_dataset_older_adults_covid_further_s4_specific_primary
     - analyse_dataset_older_adults_covid_further_s5_specific_primary
     - analyse_dataset_older_adults_covid_further_s6_specific_primary
     - analyse_dataset_older_adults_covid_further_s7_specific_primary
-    - analyse_dataset_older_adults_covid_further_s4_sensitive_primary
     - analyse_dataset_older_adults_covid_further_s5_sensitive_primary
     - analyse_dataset_older_adults_covid_further_s6_sensitive_primary
     - analyse_dataset_older_adults_covid_further_s7_sensitive_primary
@@ -12906,15 +12850,13 @@ actions:
       moderately_sensitive:
         csv: output/collated/analytic/adults_covid_model_outputs_collated.csv
 
-  collate_further_covid_model_outputs_table_adults:
+  collate_further_covid_model_outputs_tables_adults:
     run: r:latest analysis/collation_code/further_covid_model_outputs_table_collation.R
       adults
     needs:
-    - analyse_dataset_adults_covid_further_s4_specific_primary
     - analyse_dataset_adults_covid_further_s5_specific_primary
     - analyse_dataset_adults_covid_further_s6_specific_primary
     - analyse_dataset_adults_covid_further_s7_specific_primary
-    - analyse_dataset_adults_covid_further_s4_sensitive_primary
     - analyse_dataset_adults_covid_further_s5_sensitive_primary
     - analyse_dataset_adults_covid_further_s6_sensitive_primary
     - analyse_dataset_adults_covid_further_s7_sensitive_primary
@@ -13189,15 +13131,13 @@ actions:
       moderately_sensitive:
         csv: output/collated/analytic/children_and_adolescents_covid_model_outputs_collated.csv
 
-  collate_further_covid_model_outputs_table_children_and_adolescents:
+  collate_further_covid_model_outputs_tables_children_and_adolescents:
     run: r:latest analysis/collation_code/further_covid_model_outputs_table_collation.R
       children_and_adolescents
     needs:
-    - analyse_dataset_children_and_adolescents_covid_further_s4_specific_primary
     - analyse_dataset_children_and_adolescents_covid_further_s5_specific_primary
     - analyse_dataset_children_and_adolescents_covid_further_s6_specific_primary
     - analyse_dataset_children_and_adolescents_covid_further_s7_specific_primary
-    - analyse_dataset_children_and_adolescents_covid_further_s4_sensitive_primary
     - analyse_dataset_children_and_adolescents_covid_further_s5_sensitive_primary
     - analyse_dataset_children_and_adolescents_covid_further_s6_sensitive_primary
     - analyse_dataset_children_and_adolescents_covid_further_s7_sensitive_primary
