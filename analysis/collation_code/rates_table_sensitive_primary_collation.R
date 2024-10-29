@@ -2,6 +2,7 @@ library(tidyverse)
 library(here)
 library(arrow)
 library(ggplot2)
+library(plyr)
 
 #define cohort
 args <- commandArgs(trailingOnly = TRUE)
