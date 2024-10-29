@@ -47,9 +47,7 @@ sim_list = lst(
   
   #patient specific index date
   patient_index_day = bn_node(
-    ~ as.integer(if_else(runif(n = ..n) < 0.02,  
-                         as.integer(runif(n = ..n, index_day + 1, index_day + 365)), 
-                         index_day))
+    ~ index_day
   ),
   
   #babys registration status
