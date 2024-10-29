@@ -2075,6 +2075,15 @@ action_exploratory <- function(cohort, season, dates, season_start_date,
                    glue("process_dataset_{cohort}_{season}_sensitive_primary")),
       moderately_sensitive = lst(
         csv = glue("output/exploratory/phenotype_sensitivity_{cohort}_{dates}.csv"))
+    ),
+    
+    action(
+      name = glue("multiple_outcomes_{cohort}_{season}"),
+      run = glue("r:latest analysis/exploratory_analyses/multiple_outcomes.R {cohort} {season_start_date} {season_end_date}"),
+      # arguments = c(cohort, season, dates, season_start_date, season_end_date),
+      needs = list(glue("process_dataset_{cohort}_{season}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/exploratory/multiple_outcomes_{cohort}_{dates}.csv"))
     )
     
   )
