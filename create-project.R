@@ -3091,6 +3091,21 @@ action_finalise_infants <- function(cohort) {
     ),
     
     action(
+      name = glue("collate_multiple_outcomes_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/multiple_outcomes_table_collation.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("multiple_outcomes_{cohort}_s1"),
+                   glue("multiple_outcomes_{cohort}_s2"),
+                   glue("multiple_outcomes_{cohort}_s3"),
+                   glue("multiple_outcomes_{cohort}_s4"),
+                   glue("multiple_outcomes_{cohort}_s5"),
+                   glue("multiple_outcomes_{cohort}_s6"),
+                   glue("multiple_outcomes_{cohort}_s7")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_multiple_outcomes_collated.csv"))
+    ),
+    
+    action(
       name = glue("collate_rsv_model_outputs_tables_{cohort}_sensitivity"),
       run = glue("r:latest analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R {cohort}"),
       # arguments = c(cohort),

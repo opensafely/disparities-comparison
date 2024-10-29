@@ -13956,6 +13956,20 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_phenotype_sensitivity_collated.csv
 
+  collate_multiple_outcomes_tables_infants:
+    run: r:latest analysis/collation_code/multiple_outcomes_table_collation.R infants
+    needs:
+    - multiple_outcomes_infants_s1
+    - multiple_outcomes_infants_s2
+    - multiple_outcomes_infants_s3
+    - multiple_outcomes_infants_s4
+    - multiple_outcomes_infants_s5
+    - multiple_outcomes_infants_s6
+    - multiple_outcomes_infants_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_multiple_outcomes_collated.csv
+
   collate_rsv_model_outputs_tables_infants_sensitivity:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R
       infants
@@ -14319,6 +14333,20 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_subgroup_phenotype_sensitivity_collated.csv
+
+  collate_multiple_outcomes_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/multiple_outcomes_table_collation.R infants_subgroup
+    needs:
+    - multiple_outcomes_infants_subgroup_s1
+    - multiple_outcomes_infants_subgroup_s2
+    - multiple_outcomes_infants_subgroup_s3
+    - multiple_outcomes_infants_subgroup_s4
+    - multiple_outcomes_infants_subgroup_s5
+    - multiple_outcomes_infants_subgroup_s6
+    - multiple_outcomes_infants_subgroup_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_subgroup_multiple_outcomes_collated.csv
 
   collate_rsv_model_outputs_tables_infants_subgroup_sensitivity:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R
