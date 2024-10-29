@@ -13025,6 +13025,20 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/older_adults_phenotype_sensitivity_collated.csv
 
+  collate_multiple_outcomes_tables_older_adults:
+    run: r:latest analysis/collation_code/multiple_outcomes_table_collation.R older_adults
+    needs:
+    - multiple_outcomes_older_adults_s1
+    - multiple_outcomes_older_adults_s2
+    - multiple_outcomes_older_adults_s3
+    - multiple_outcomes_older_adults_s4
+    - multiple_outcomes_older_adults_s5
+    - multiple_outcomes_older_adults_s6
+    - multiple_outcomes_older_adults_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/older_adults_multiple_outcomes_collated.csv
+
   collate_rsv_outputs_tables_older_adults_sensitivity:
     run: r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R
       older_adults
@@ -13306,6 +13320,20 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/adults_phenotype_sensitivity_collated.csv
 
+  collate_multiple_outcomes_tables_adults:
+    run: r:latest analysis/collation_code/multiple_outcomes_table_collation.R adults
+    needs:
+    - multiple_outcomes_adults_s1
+    - multiple_outcomes_adults_s2
+    - multiple_outcomes_adults_s3
+    - multiple_outcomes_adults_s4
+    - multiple_outcomes_adults_s5
+    - multiple_outcomes_adults_s6
+    - multiple_outcomes_adults_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/adults_multiple_outcomes_collated.csv
+
   collate_rsv_outputs_tables_adults_sensitivity:
     run: r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R
       adults
@@ -13586,6 +13614,20 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/children_and_adolescents_phenotype_sensitivity_collated.csv
+
+  collate_multiple_outcomes_tables_children_and_adolescents:
+    run: r:latest analysis/collation_code/multiple_outcomes_table_collation.R children_and_adolescents
+    needs:
+    - multiple_outcomes_children_and_adolescents_s1
+    - multiple_outcomes_children_and_adolescents_s2
+    - multiple_outcomes_children_and_adolescents_s3
+    - multiple_outcomes_children_and_adolescents_s4
+    - multiple_outcomes_children_and_adolescents_s5
+    - multiple_outcomes_children_and_adolescents_s6
+    - multiple_outcomes_children_and_adolescents_s7
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/children_and_adolescents_multiple_outcomes_collated.csv
 
   collate_rsv_outputs_tables_children_and_adolescents_sensitivity:
     run: r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R
