@@ -15,9 +15,9 @@ is_being_sourced <- sys.nframe() > 0
 if (is_being_sourced == FALSE) {
   args <- commandArgs(trailingOnly = TRUE)
   if (length(args) == 0) {
-    study_start_date <- "2016-09-01"
-    study_end_date <- "2017-08-31"
-    cohort <- "infants"
+    study_start_date <- "2021-09-01"
+    study_end_date <- "2022-08-31"
+    cohort <- "older_adults"
     codelist_type <- "sensitive"
     investigation_type <- "primary"
   } else {
@@ -66,7 +66,7 @@ if (study_start_date >= covid_prior_vacc_min) {
                                            data = df_input, family = poisson)
   covid_mortality_ethnicity_further_output <- tidy(covid_mortality_ethnicity_further)
 
-} else {
+} else if (study_start_date == covid_current_vacc_min) {
   
   #covid primary by ethnicity
   covid_mild_ethnicity_further <- glm(covid_primary_inf ~ latest_ethnicity_group +
@@ -109,7 +109,7 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
 }))
 
 ## create output directories ----
-fs::dir_create(here("output", "results", "models"))
+fs::dir_create(here("output", "results", "models", paste0("covid_", investigation_type)))
 
 #save model output 
 if (length(args) == 0) {

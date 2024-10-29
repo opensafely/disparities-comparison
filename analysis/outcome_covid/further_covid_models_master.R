@@ -13,9 +13,9 @@ fs::dir_create(here("analysis", "outcome_covid"))
 source(here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- "2016-09-01"
-  study_end_date <- "2017-08-31"
-  cohort <- "adults"
+  study_start_date <- "2021-09-01"
+  study_end_date <- "2022-08-31"
+  cohort <- "older_adults"
   codelist_type <- "sensitive"
   investigation_type <- "primary"
 } else {
@@ -26,6 +26,8 @@ if (length(args) == 0) {
   investigation_type <- args[[5]]
 }
 covid_season_min <- as.Date("2019-09-01")
+covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
+covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
 if (cohort != "infants" | cohort != "infants_subgroup") {
   #run model files
@@ -41,4 +43,3 @@ if (cohort != "infants" | cohort != "infants_subgroup") {
     source(here("analysis", "outcome_covid", "further_covid_full_models.R"))
   }
 }
-  

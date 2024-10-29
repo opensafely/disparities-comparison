@@ -109,7 +109,7 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
 }))
 
 ## create output directories ----
-fs::dir_create(here("output", "results", "models"))
+fs::dir_create(here("output", "results", "models", paste0("rsv_", investigation_type)))
 
 #save model output 
 if (length(args) == 0) {

@@ -40,7 +40,7 @@ df_input <- read_feather(
 if (study_start_date >= covid_prior_vacc_min) {
   
   #covid primary by ethnicity and socioeconomic status
-  covid_mild_ethnicity_ses_furter <- glm(covid_primary_inf ~ latest_ethnicity_group +
+  covid_mild_ethnicity_ses_further <- glm(covid_primary_inf ~ latest_ethnicity_group +
                                            imd_quintile + age_band + sex +
                                            rurality_classification +
                                            time_since_last_covid_vaccination +
@@ -69,7 +69,7 @@ if (study_start_date >= covid_prior_vacc_min) {
                                                data = df_input, family = poisson)
   covid_mortality_ethnicity_ses_further_output <- tidy(covid_mortality_ethnicity_ses_further)
   
-} else {
+} else if (study_start_date == covid_current_vacc_min) {
   
   #covid primary by ethnicity and socioeconomic status
   covid_mild_ethnicity_ses_furter <- glm(covid_primary_inf ~ latest_ethnicity_group +
@@ -116,7 +116,7 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
 }))
   
 ## create output directories ----
-fs::dir_create(here("output", "results", "models"))
+fs::dir_create(here("output", "results", "models", paste0("covid_", investigation_type)))
   
 #save model output 
 if (length(args) == 0) {
