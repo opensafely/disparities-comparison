@@ -300,7 +300,7 @@ dataset.sex = patients.sex
 if cohort == "infants" or cohort == "infants_subgroup" :
   dataset.age = age_at_start_months
 else:
-  dataset.age = age_at_start
+  dataset.age = patients.age_on(index_date) #gets the patients age on their specific index date
 
 #extract date of death
 dataset.death_date = ons_deaths.date 
