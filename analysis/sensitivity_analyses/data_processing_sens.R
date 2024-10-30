@@ -162,6 +162,7 @@ df_input_filt <- df_input_filt %>%
   mutate(
     #add labels to ethnicity
     latest_ethnicity_group = factor(latest_ethnicity_group,
+                                    levels = c("1", "2", "3", "4", "5"),
                                     labels = c("White", "Mixed", "Asian or Asian British",
                                                "Black or Black British",
                                                "Other Ethnic Groups")),
