@@ -13141,6 +13141,7 @@ actions:
     - process_flow_chart_data_older_adults_s5
     - process_flow_chart_data_older_adults_s6
     - process_flow_chart_data_older_adults_s7
+    - process_flow_chart_data_older_adults_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/older_adults_flow_chart_collated.csv
@@ -13155,6 +13156,7 @@ actions:
     - describe_cohort_older_adults_s5
     - describe_cohort_older_adults_s6
     - describe_cohort_older_adults_s7
+    - describe_cohort_older_adults_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/older_adults_table1_collated.csv
@@ -13170,6 +13172,7 @@ actions:
     - describe_dataset_older_adults_s5_specific_primary
     - describe_dataset_older_adults_s6_specific_primary
     - describe_dataset_older_adults_s7_specific_primary
+    - describe_dataset_older_adults_s8_specific_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/older_adults_rates_specific_primary_collated.csv
@@ -13185,6 +13188,7 @@ actions:
     - describe_dataset_older_adults_s5_sensitive_primary
     - describe_dataset_older_adults_s6_sensitive_primary
     - describe_dataset_older_adults_s7_sensitive_primary
+    - describe_dataset_older_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/older_adults_rates_sensitive_primary_collated.csv
@@ -13220,6 +13224,7 @@ actions:
     - analyse_dataset_older_adults_rsv_s5_specific_primary
     - analyse_dataset_older_adults_rsv_s6_specific_primary
     - analyse_dataset_older_adults_rsv_s7_specific_primary
+    - analyse_dataset_older_adults_rsv_s8_specific_primary
     - analyse_dataset_older_adults_rsv_s1_sensitive_primary
     - analyse_dataset_older_adults_rsv_s2_sensitive_primary
     - analyse_dataset_older_adults_rsv_s3_sensitive_primary
@@ -13227,6 +13232,7 @@ actions:
     - analyse_dataset_older_adults_rsv_s5_sensitive_primary
     - analyse_dataset_older_adults_rsv_s6_sensitive_primary
     - analyse_dataset_older_adults_rsv_s7_sensitive_primary
+    - analyse_dataset_older_adults_rsv_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/older_adults_rsv_model_outputs_collated.csv
@@ -13241,6 +13247,7 @@ actions:
     - analyse_dataset_older_adults_flu_s5_specific_primary
     - analyse_dataset_older_adults_flu_s6_specific_primary
     - analyse_dataset_older_adults_flu_s7_specific_primary
+    - analyse_dataset_older_adults_flu_s8_specific_primary
     - analyse_dataset_older_adults_flu_s1_sensitive_primary
     - analyse_dataset_older_adults_flu_s2_sensitive_primary
     - analyse_dataset_older_adults_flu_s3_sensitive_primary
@@ -13248,6 +13255,7 @@ actions:
     - analyse_dataset_older_adults_flu_s5_sensitive_primary
     - analyse_dataset_older_adults_flu_s6_sensitive_primary
     - analyse_dataset_older_adults_flu_s7_sensitive_primary
+    - analyse_dataset_older_adults_flu_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/older_adults_flu_model_outputs_collated.csv
@@ -13263,6 +13271,7 @@ actions:
     - analyse_dataset_older_adults_flu_further_s5_specific_primary
     - analyse_dataset_older_adults_flu_further_s6_specific_primary
     - analyse_dataset_older_adults_flu_further_s7_specific_primary
+    - analyse_dataset_older_adults_flu_further_s8_specific_primary
     - analyse_dataset_older_adults_flu_further_s1_sensitive_primary
     - analyse_dataset_older_adults_flu_further_s2_sensitive_primary
     - analyse_dataset_older_adults_flu_further_s3_sensitive_primary
@@ -13270,6 +13279,7 @@ actions:
     - analyse_dataset_older_adults_flu_further_s5_sensitive_primary
     - analyse_dataset_older_adults_flu_further_s6_sensitive_primary
     - analyse_dataset_older_adults_flu_further_s7_sensitive_primary
+    - analyse_dataset_older_adults_flu_further_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/older_adults_further_flu_model_outputs_collated.csv
@@ -13285,6 +13295,7 @@ actions:
     - analyse_dataset_older_adults_covid_s5_sensitive_primary
     - analyse_dataset_older_adults_covid_s6_sensitive_primary
     - analyse_dataset_older_adults_covid_s7_sensitive_primary
+    - analyse_dataset_older_adults_covid_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/older_adults_covid_model_outputs_collated.csv
@@ -13299,6 +13310,7 @@ actions:
     - analyse_dataset_older_adults_covid_further_s5_sensitive_primary
     - analyse_dataset_older_adults_covid_further_s6_sensitive_primary
     - analyse_dataset_older_adults_covid_further_s7_sensitive_primary
+    - analyse_dataset_older_adults_covid_further_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/older_adults_further_covid_model_outputs_collated.csv
@@ -13314,6 +13326,7 @@ actions:
     - analyse_dataset_older_adults_overall_and_all_cause_s5_specific_primary
     - analyse_dataset_older_adults_overall_and_all_cause_s6_specific_primary
     - analyse_dataset_older_adults_overall_and_all_cause_s7_specific_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s8_specific_primary
     - analyse_dataset_older_adults_overall_and_all_cause_s1_sensitive_primary
     - analyse_dataset_older_adults_overall_and_all_cause_s2_sensitive_primary
     - analyse_dataset_older_adults_overall_and_all_cause_s3_sensitive_primary
@@ -13321,6 +13334,7 @@ actions:
     - analyse_dataset_older_adults_overall_and_all_cause_s5_sensitive_primary
     - analyse_dataset_older_adults_overall_and_all_cause_s6_sensitive_primary
     - analyse_dataset_older_adults_overall_and_all_cause_s7_sensitive_primary
+    - analyse_dataset_older_adults_overall_and_all_cause_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/older_adults_overall_and_all_cause_model_outputs_collated.csv
@@ -13381,6 +13395,7 @@ actions:
     - phenotype_sensitivity_older_adults_s5
     - phenotype_sensitivity_older_adults_s6
     - phenotype_sensitivity_older_adults_s7
+    - phenotype_sensitivity_older_adults_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/older_adults_phenotype_sensitivity_collated.csv
@@ -13395,6 +13410,7 @@ actions:
     - multiple_episodes_older_adults_s5
     - multiple_episodes_older_adults_s6
     - multiple_episodes_older_adults_s7
+    - multiple_episodes_older_adults_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/older_adults_multiple_episodes_collated.csv
@@ -13436,6 +13452,7 @@ actions:
     - process_flow_chart_data_adults_s5
     - process_flow_chart_data_adults_s6
     - process_flow_chart_data_adults_s7
+    - process_flow_chart_data_adults_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/adults_flow_chart_collated.csv
@@ -13450,6 +13467,7 @@ actions:
     - describe_cohort_adults_s5
     - describe_cohort_adults_s6
     - describe_cohort_adults_s7
+    - describe_cohort_adults_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/adults_table1_collated.csv
@@ -13465,6 +13483,7 @@ actions:
     - describe_dataset_adults_s5_specific_primary
     - describe_dataset_adults_s6_specific_primary
     - describe_dataset_adults_s7_specific_primary
+    - describe_dataset_adults_s8_specific_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/adults_rates_specific_primary_collated.csv
@@ -13480,6 +13499,7 @@ actions:
     - describe_dataset_adults_s5_sensitive_primary
     - describe_dataset_adults_s6_sensitive_primary
     - describe_dataset_adults_s7_sensitive_primary
+    - describe_dataset_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/adults_rates_sensitive_primary_collated.csv
@@ -13515,6 +13535,7 @@ actions:
     - analyse_dataset_adults_rsv_s5_specific_primary
     - analyse_dataset_adults_rsv_s6_specific_primary
     - analyse_dataset_adults_rsv_s7_specific_primary
+    - analyse_dataset_adults_rsv_s8_specific_primary
     - analyse_dataset_adults_rsv_s1_sensitive_primary
     - analyse_dataset_adults_rsv_s2_sensitive_primary
     - analyse_dataset_adults_rsv_s3_sensitive_primary
@@ -13522,6 +13543,7 @@ actions:
     - analyse_dataset_adults_rsv_s5_sensitive_primary
     - analyse_dataset_adults_rsv_s6_sensitive_primary
     - analyse_dataset_adults_rsv_s7_sensitive_primary
+    - analyse_dataset_adults_rsv_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/adults_rsv_model_outputs_collated.csv
@@ -13536,6 +13558,7 @@ actions:
     - analyse_dataset_adults_flu_s5_specific_primary
     - analyse_dataset_adults_flu_s6_specific_primary
     - analyse_dataset_adults_flu_s7_specific_primary
+    - analyse_dataset_adults_flu_s8_specific_primary
     - analyse_dataset_adults_flu_s1_sensitive_primary
     - analyse_dataset_adults_flu_s2_sensitive_primary
     - analyse_dataset_adults_flu_s3_sensitive_primary
@@ -13543,6 +13566,7 @@ actions:
     - analyse_dataset_adults_flu_s5_sensitive_primary
     - analyse_dataset_adults_flu_s6_sensitive_primary
     - analyse_dataset_adults_flu_s7_sensitive_primary
+    - analyse_dataset_adults_flu_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/adults_flu_model_outputs_collated.csv
@@ -13558,6 +13582,7 @@ actions:
     - analyse_dataset_adults_flu_further_s5_specific_primary
     - analyse_dataset_adults_flu_further_s6_specific_primary
     - analyse_dataset_adults_flu_further_s7_specific_primary
+    - analyse_dataset_adults_flu_further_s8_specific_primary
     - analyse_dataset_adults_flu_further_s1_sensitive_primary
     - analyse_dataset_adults_flu_further_s2_sensitive_primary
     - analyse_dataset_adults_flu_further_s3_sensitive_primary
@@ -13565,6 +13590,7 @@ actions:
     - analyse_dataset_adults_flu_further_s5_sensitive_primary
     - analyse_dataset_adults_flu_further_s6_sensitive_primary
     - analyse_dataset_adults_flu_further_s7_sensitive_primary
+    - analyse_dataset_adults_flu_further_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/adults_further_flu_model_outputs_collated.csv
@@ -13580,6 +13606,7 @@ actions:
     - analyse_dataset_adults_covid_s5_sensitive_primary
     - analyse_dataset_adults_covid_s6_sensitive_primary
     - analyse_dataset_adults_covid_s7_sensitive_primary
+    - analyse_dataset_adults_covid_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/adults_covid_model_outputs_collated.csv
@@ -13594,6 +13621,7 @@ actions:
     - analyse_dataset_adults_covid_further_s5_sensitive_primary
     - analyse_dataset_adults_covid_further_s6_sensitive_primary
     - analyse_dataset_adults_covid_further_s7_sensitive_primary
+    - analyse_dataset_adults_covid_further_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/adults_further_covid_model_outputs_collated.csv
@@ -13609,6 +13637,7 @@ actions:
     - analyse_dataset_adults_overall_and_all_cause_s5_specific_primary
     - analyse_dataset_adults_overall_and_all_cause_s6_specific_primary
     - analyse_dataset_adults_overall_and_all_cause_s7_specific_primary
+    - analyse_dataset_adults_overall_and_all_cause_s8_specific_primary
     - analyse_dataset_adults_overall_and_all_cause_s1_sensitive_primary
     - analyse_dataset_adults_overall_and_all_cause_s2_sensitive_primary
     - analyse_dataset_adults_overall_and_all_cause_s3_sensitive_primary
@@ -13616,6 +13645,7 @@ actions:
     - analyse_dataset_adults_overall_and_all_cause_s5_sensitive_primary
     - analyse_dataset_adults_overall_and_all_cause_s6_sensitive_primary
     - analyse_dataset_adults_overall_and_all_cause_s7_sensitive_primary
+    - analyse_dataset_adults_overall_and_all_cause_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/adults_overall_and_all_cause_model_outputs_collated.csv
@@ -13676,6 +13706,7 @@ actions:
     - phenotype_sensitivity_adults_s5
     - phenotype_sensitivity_adults_s6
     - phenotype_sensitivity_adults_s7
+    - phenotype_sensitivity_adults_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/adults_phenotype_sensitivity_collated.csv
@@ -13690,6 +13721,7 @@ actions:
     - multiple_episodes_adults_s5
     - multiple_episodes_adults_s6
     - multiple_episodes_adults_s7
+    - multiple_episodes_adults_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/adults_multiple_episodes_collated.csv
@@ -13731,6 +13763,7 @@ actions:
     - process_flow_chart_data_children_and_adolescents_s5
     - process_flow_chart_data_children_and_adolescents_s6
     - process_flow_chart_data_children_and_adolescents_s7
+    - process_flow_chart_data_children_and_adolescents_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/children_and_adolescents_flow_chart_collated.csv
@@ -13745,6 +13778,7 @@ actions:
     - describe_cohort_children_and_adolescents_s5
     - describe_cohort_children_and_adolescents_s6
     - describe_cohort_children_and_adolescents_s7
+    - describe_cohort_children_and_adolescents_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/children_and_adolescents_table1_collated.csv
@@ -13760,6 +13794,7 @@ actions:
     - describe_dataset_children_and_adolescents_s5_specific_primary
     - describe_dataset_children_and_adolescents_s6_specific_primary
     - describe_dataset_children_and_adolescents_s7_specific_primary
+    - describe_dataset_children_and_adolescents_s8_specific_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/children_and_adolescents_rates_specific_primary_collated.csv
@@ -13775,6 +13810,7 @@ actions:
     - describe_dataset_children_and_adolescents_s5_sensitive_primary
     - describe_dataset_children_and_adolescents_s6_sensitive_primary
     - describe_dataset_children_and_adolescents_s7_sensitive_primary
+    - describe_dataset_children_and_adolescents_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/children_and_adolescents_rates_sensitive_primary_collated.csv
@@ -13810,6 +13846,7 @@ actions:
     - analyse_dataset_children_and_adolescents_rsv_s5_specific_primary
     - analyse_dataset_children_and_adolescents_rsv_s6_specific_primary
     - analyse_dataset_children_and_adolescents_rsv_s7_specific_primary
+    - analyse_dataset_children_and_adolescents_rsv_s8_specific_primary
     - analyse_dataset_children_and_adolescents_rsv_s1_sensitive_primary
     - analyse_dataset_children_and_adolescents_rsv_s2_sensitive_primary
     - analyse_dataset_children_and_adolescents_rsv_s3_sensitive_primary
@@ -13817,6 +13854,7 @@ actions:
     - analyse_dataset_children_and_adolescents_rsv_s5_sensitive_primary
     - analyse_dataset_children_and_adolescents_rsv_s6_sensitive_primary
     - analyse_dataset_children_and_adolescents_rsv_s7_sensitive_primary
+    - analyse_dataset_children_and_adolescents_rsv_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/children_and_adolescents_rsv_model_outputs_collated.csv
@@ -13831,6 +13869,7 @@ actions:
     - analyse_dataset_children_and_adolescents_flu_s5_specific_primary
     - analyse_dataset_children_and_adolescents_flu_s6_specific_primary
     - analyse_dataset_children_and_adolescents_flu_s7_specific_primary
+    - analyse_dataset_children_and_adolescents_flu_s8_specific_primary
     - analyse_dataset_children_and_adolescents_flu_s1_sensitive_primary
     - analyse_dataset_children_and_adolescents_flu_s2_sensitive_primary
     - analyse_dataset_children_and_adolescents_flu_s3_sensitive_primary
@@ -13838,6 +13877,7 @@ actions:
     - analyse_dataset_children_and_adolescents_flu_s5_sensitive_primary
     - analyse_dataset_children_and_adolescents_flu_s6_sensitive_primary
     - analyse_dataset_children_and_adolescents_flu_s7_sensitive_primary
+    - analyse_dataset_children_and_adolescents_flu_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/children_and_adolescents_flu_model_outputs_collated.csv
@@ -13853,6 +13893,7 @@ actions:
     - analyse_dataset_children_and_adolescents_flu_further_s5_specific_primary
     - analyse_dataset_children_and_adolescents_flu_further_s6_specific_primary
     - analyse_dataset_children_and_adolescents_flu_further_s7_specific_primary
+    - analyse_dataset_children_and_adolescents_flu_further_s8_specific_primary
     - analyse_dataset_children_and_adolescents_flu_further_s1_sensitive_primary
     - analyse_dataset_children_and_adolescents_flu_further_s2_sensitive_primary
     - analyse_dataset_children_and_adolescents_flu_further_s3_sensitive_primary
@@ -13860,6 +13901,7 @@ actions:
     - analyse_dataset_children_and_adolescents_flu_further_s5_sensitive_primary
     - analyse_dataset_children_and_adolescents_flu_further_s6_sensitive_primary
     - analyse_dataset_children_and_adolescents_flu_further_s7_sensitive_primary
+    - analyse_dataset_children_and_adolescents_flu_further_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/children_and_adolescents_further_flu_model_outputs_collated.csv
@@ -13875,6 +13917,7 @@ actions:
     - analyse_dataset_children_and_adolescents_covid_s5_sensitive_primary
     - analyse_dataset_children_and_adolescents_covid_s6_sensitive_primary
     - analyse_dataset_children_and_adolescents_covid_s7_sensitive_primary
+    - analyse_dataset_children_and_adolescents_covid_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/children_and_adolescents_covid_model_outputs_collated.csv
@@ -13889,6 +13932,7 @@ actions:
     - analyse_dataset_children_and_adolescents_covid_further_s5_sensitive_primary
     - analyse_dataset_children_and_adolescents_covid_further_s6_sensitive_primary
     - analyse_dataset_children_and_adolescents_covid_further_s7_sensitive_primary
+    - analyse_dataset_children_and_adolescents_covid_further_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/children_and_adolescents_further_covid_model_outputs_collated.csv
@@ -13904,6 +13948,7 @@ actions:
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_s5_specific_primary
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_s6_specific_primary
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_s7_specific_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s8_specific_primary
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_s1_sensitive_primary
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_s2_sensitive_primary
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_s3_sensitive_primary
@@ -13911,6 +13956,7 @@ actions:
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_s5_sensitive_primary
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_s6_sensitive_primary
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_s7_sensitive_primary
+    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/children_and_adolescents_overall_and_all_cause_model_outputs_collated.csv
@@ -13971,6 +14017,7 @@ actions:
     - phenotype_sensitivity_children_and_adolescents_s5
     - phenotype_sensitivity_children_and_adolescents_s6
     - phenotype_sensitivity_children_and_adolescents_s7
+    - phenotype_sensitivity_children_and_adolescents_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/children_and_adolescents_phenotype_sensitivity_collated.csv
@@ -13985,6 +14032,7 @@ actions:
     - multiple_episodes_children_and_adolescents_s5
     - multiple_episodes_children_and_adolescents_s6
     - multiple_episodes_children_and_adolescents_s7
+    - multiple_episodes_children_and_adolescents_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/children_and_adolescents_multiple_episodes_collated.csv
@@ -14026,6 +14074,7 @@ actions:
     - process_flow_chart_data_infants_s5
     - process_flow_chart_data_infants_s6
     - process_flow_chart_data_infants_s7
+    - process_flow_chart_data_infants_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_flow_chart_collated.csv
@@ -14040,6 +14089,7 @@ actions:
     - describe_cohort_infants_s5
     - describe_cohort_infants_s6
     - describe_cohort_infants_s7
+    - describe_cohort_infants_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_table1_collated.csv
@@ -14055,6 +14105,7 @@ actions:
     - describe_dataset_infants_s5_specific_primary
     - describe_dataset_infants_s6_specific_primary
     - describe_dataset_infants_s7_specific_primary
+    - describe_dataset_infants_s8_specific_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_rates_specific_primary_collated.csv
@@ -14070,6 +14121,7 @@ actions:
     - describe_dataset_infants_s5_sensitive_primary
     - describe_dataset_infants_s6_sensitive_primary
     - describe_dataset_infants_s7_sensitive_primary
+    - describe_dataset_infants_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_rates_sensitive_primary_collated.csv
@@ -14105,6 +14157,7 @@ actions:
     - analyse_dataset_infants_rsv_ethnicity_s5_specific_primary
     - analyse_dataset_infants_rsv_ethnicity_s6_specific_primary
     - analyse_dataset_infants_rsv_ethnicity_s7_specific_primary
+    - analyse_dataset_infants_rsv_ethnicity_s8_specific_primary
     - analyse_dataset_infants_rsv_ses_s1_specific_primary
     - analyse_dataset_infants_rsv_ses_s2_specific_primary
     - analyse_dataset_infants_rsv_ses_s3_specific_primary
@@ -14112,6 +14165,7 @@ actions:
     - analyse_dataset_infants_rsv_ses_s5_specific_primary
     - analyse_dataset_infants_rsv_ses_s6_specific_primary
     - analyse_dataset_infants_rsv_ses_s7_specific_primary
+    - analyse_dataset_infants_rsv_ses_s8_specific_primary
     - analyse_dataset_infants_rsv_hh_comp_s5_specific_primary
     - analyse_dataset_infants_rsv_ethnicity_ses_s1_specific_primary
     - analyse_dataset_infants_rsv_ethnicity_ses_s2_specific_primary
@@ -14120,6 +14174,7 @@ actions:
     - analyse_dataset_infants_rsv_ethnicity_ses_s5_specific_primary
     - analyse_dataset_infants_rsv_ethnicity_ses_s6_specific_primary
     - analyse_dataset_infants_rsv_ethnicity_ses_s7_specific_primary
+    - analyse_dataset_infants_rsv_ethnicity_ses_s8_specific_primary
     - analyse_dataset_infants_rsv_ethnicity_hh_comp_s5_specific_primary
     - analyse_dataset_infants_rsv_ses_hh_comp_s5_specific_primary
     - analyse_dataset_infants_rsv_full_s5_specific_primary
@@ -14130,6 +14185,7 @@ actions:
     - analyse_dataset_infants_rsv_ethnicity_s5_sensitive_primary
     - analyse_dataset_infants_rsv_ethnicity_s6_sensitive_primary
     - analyse_dataset_infants_rsv_ethnicity_s7_sensitive_primary
+    - analyse_dataset_infants_rsv_ethnicity_s8_sensitive_primary
     - analyse_dataset_infants_rsv_ses_s1_sensitive_primary
     - analyse_dataset_infants_rsv_ses_s2_sensitive_primary
     - analyse_dataset_infants_rsv_ses_s3_sensitive_primary
@@ -14137,6 +14193,7 @@ actions:
     - analyse_dataset_infants_rsv_ses_s5_sensitive_primary
     - analyse_dataset_infants_rsv_ses_s6_sensitive_primary
     - analyse_dataset_infants_rsv_ses_s7_sensitive_primary
+    - analyse_dataset_infants_rsv_ses_s8_sensitive_primary
     - analyse_dataset_infants_rsv_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_rsv_ethnicity_ses_s1_sensitive_primary
     - analyse_dataset_infants_rsv_ethnicity_ses_s2_sensitive_primary
@@ -14145,6 +14202,7 @@ actions:
     - analyse_dataset_infants_rsv_ethnicity_ses_s5_sensitive_primary
     - analyse_dataset_infants_rsv_ethnicity_ses_s6_sensitive_primary
     - analyse_dataset_infants_rsv_ethnicity_ses_s7_sensitive_primary
+    - analyse_dataset_infants_rsv_ethnicity_ses_s8_sensitive_primary
     - analyse_dataset_infants_rsv_ethnicity_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_rsv_ses_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_rsv_full_s5_sensitive_primary
@@ -14162,6 +14220,7 @@ actions:
     - analyse_dataset_infants_flu_ethnicity_s5_specific_primary
     - analyse_dataset_infants_flu_ethnicity_s6_specific_primary
     - analyse_dataset_infants_flu_ethnicity_s7_specific_primary
+    - analyse_dataset_infants_flu_ethnicity_s8_specific_primary
     - analyse_dataset_infants_flu_ses_s1_specific_primary
     - analyse_dataset_infants_flu_ses_s2_specific_primary
     - analyse_dataset_infants_flu_ses_s3_specific_primary
@@ -14169,6 +14228,7 @@ actions:
     - analyse_dataset_infants_flu_ses_s5_specific_primary
     - analyse_dataset_infants_flu_ses_s6_specific_primary
     - analyse_dataset_infants_flu_ses_s7_specific_primary
+    - analyse_dataset_infants_flu_ses_s8_specific_primary
     - analyse_dataset_infants_flu_hh_comp_s5_specific_primary
     - analyse_dataset_infants_flu_ethnicity_ses_s1_specific_primary
     - analyse_dataset_infants_flu_ethnicity_ses_s2_specific_primary
@@ -14177,6 +14237,7 @@ actions:
     - analyse_dataset_infants_flu_ethnicity_ses_s5_specific_primary
     - analyse_dataset_infants_flu_ethnicity_ses_s6_specific_primary
     - analyse_dataset_infants_flu_ethnicity_ses_s7_specific_primary
+    - analyse_dataset_infants_flu_ethnicity_ses_s8_specific_primary
     - analyse_dataset_infants_flu_ethnicity_hh_comp_s5_specific_primary
     - analyse_dataset_infants_flu_ses_hh_comp_s5_specific_primary
     - analyse_dataset_infants_flu_full_s5_specific_primary
@@ -14187,6 +14248,7 @@ actions:
     - analyse_dataset_infants_flu_ethnicity_s5_sensitive_primary
     - analyse_dataset_infants_flu_ethnicity_s6_sensitive_primary
     - analyse_dataset_infants_flu_ethnicity_s7_sensitive_primary
+    - analyse_dataset_infants_flu_ethnicity_s8_sensitive_primary
     - analyse_dataset_infants_flu_ses_s1_sensitive_primary
     - analyse_dataset_infants_flu_ses_s2_sensitive_primary
     - analyse_dataset_infants_flu_ses_s3_sensitive_primary
@@ -14194,6 +14256,7 @@ actions:
     - analyse_dataset_infants_flu_ses_s5_sensitive_primary
     - analyse_dataset_infants_flu_ses_s6_sensitive_primary
     - analyse_dataset_infants_flu_ses_s7_sensitive_primary
+    - analyse_dataset_infants_flu_ses_s8_sensitive_primary
     - analyse_dataset_infants_flu_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_flu_ethnicity_ses_s1_sensitive_primary
     - analyse_dataset_infants_flu_ethnicity_ses_s2_sensitive_primary
@@ -14202,6 +14265,7 @@ actions:
     - analyse_dataset_infants_flu_ethnicity_ses_s5_sensitive_primary
     - analyse_dataset_infants_flu_ethnicity_ses_s6_sensitive_primary
     - analyse_dataset_infants_flu_ethnicity_ses_s7_sensitive_primary
+    - analyse_dataset_infants_flu_ethnicity_ses_s8_sensitive_primary
     - analyse_dataset_infants_flu_ethnicity_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_flu_ses_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_flu_full_s5_sensitive_primary
@@ -14216,15 +14280,18 @@ actions:
     - analyse_dataset_infants_covid_ethnicity_s5_specific_primary
     - analyse_dataset_infants_covid_ethnicity_s6_specific_primary
     - analyse_dataset_infants_covid_ethnicity_s7_specific_primary
+    - analyse_dataset_infants_covid_ethnicity_s8_specific_primary
     - analyse_dataset_infants_covid_ses_s4_specific_primary
     - analyse_dataset_infants_covid_ses_s5_specific_primary
     - analyse_dataset_infants_covid_ses_s6_specific_primary
     - analyse_dataset_infants_covid_ses_s7_specific_primary
+    - analyse_dataset_infants_covid_ses_s8_specific_primary
     - analyse_dataset_infants_covid_hh_comp_s5_specific_primary
     - analyse_dataset_infants_covid_ethnicity_ses_s4_specific_primary
     - analyse_dataset_infants_covid_ethnicity_ses_s5_specific_primary
     - analyse_dataset_infants_covid_ethnicity_ses_s6_specific_primary
     - analyse_dataset_infants_covid_ethnicity_ses_s7_specific_primary
+    - analyse_dataset_infants_covid_ethnicity_ses_s8_specific_primary
     - analyse_dataset_infants_covid_ethnicity_hh_comp_s5_specific_primary
     - analyse_dataset_infants_covid_ses_hh_comp_s5_specific_primary
     - analyse_dataset_infants_covid_full_s5_specific_primary
@@ -14232,15 +14299,18 @@ actions:
     - analyse_dataset_infants_covid_ethnicity_s5_sensitive_primary
     - analyse_dataset_infants_covid_ethnicity_s6_sensitive_primary
     - analyse_dataset_infants_covid_ethnicity_s7_sensitive_primary
+    - analyse_dataset_infants_covid_ethnicity_s8_sensitive_primary
     - analyse_dataset_infants_covid_ses_s4_sensitive_primary
     - analyse_dataset_infants_covid_ses_s5_sensitive_primary
     - analyse_dataset_infants_covid_ses_s6_sensitive_primary
     - analyse_dataset_infants_covid_ses_s7_sensitive_primary
+    - analyse_dataset_infants_covid_ses_s8_sensitive_primary
     - analyse_dataset_infants_covid_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_covid_ethnicity_ses_s4_sensitive_primary
     - analyse_dataset_infants_covid_ethnicity_ses_s5_sensitive_primary
     - analyse_dataset_infants_covid_ethnicity_ses_s6_sensitive_primary
     - analyse_dataset_infants_covid_ethnicity_ses_s7_sensitive_primary
+    - analyse_dataset_infants_covid_ethnicity_ses_s8_sensitive_primary
     - analyse_dataset_infants_covid_ethnicity_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_covid_ses_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_covid_full_s5_sensitive_primary
@@ -14259,6 +14329,7 @@ actions:
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_s5_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_s6_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_s7_specific_primary
+    - analyse_dataset_infants_overall_and_all_cause_ethnicity_s8_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ses_s1_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ses_s2_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ses_s3_specific_primary
@@ -14266,6 +14337,7 @@ actions:
     - analyse_dataset_infants_overall_and_all_cause_ses_s5_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ses_s6_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ses_s7_specific_primary
+    - analyse_dataset_infants_overall_and_all_cause_ses_s8_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_hh_comp_s5_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s1_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s2_specific_primary
@@ -14274,6 +14346,7 @@ actions:
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s5_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s6_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s7_specific_primary
+    - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s8_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_hh_comp_s5_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ses_hh_comp_s5_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_full_s5_specific_primary
@@ -14284,6 +14357,7 @@ actions:
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_s5_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_s6_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_s7_sensitive_primary
+    - analyse_dataset_infants_overall_and_all_cause_ethnicity_s8_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ses_s1_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ses_s2_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ses_s3_sensitive_primary
@@ -14291,6 +14365,7 @@ actions:
     - analyse_dataset_infants_overall_and_all_cause_ses_s5_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ses_s6_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ses_s7_sensitive_primary
+    - analyse_dataset_infants_overall_and_all_cause_ses_s8_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s1_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s2_sensitive_primary
@@ -14299,6 +14374,7 @@ actions:
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s5_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s6_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s7_sensitive_primary
+    - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s8_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ses_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_full_s5_sensitive_primary
@@ -14354,6 +14430,7 @@ actions:
     - phenotype_sensitivity_infants_s5
     - phenotype_sensitivity_infants_s6
     - phenotype_sensitivity_infants_s7
+    - phenotype_sensitivity_infants_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_phenotype_sensitivity_collated.csv
@@ -14368,6 +14445,7 @@ actions:
     - multiple_episodes_infants_s5
     - multiple_episodes_infants_s6
     - multiple_episodes_infants_s7
+    - multiple_episodes_infants_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_multiple_episodes_collated.csv
@@ -14404,6 +14482,7 @@ actions:
     - process_flow_chart_data_infants_subgroup_s5
     - process_flow_chart_data_infants_subgroup_s6
     - process_flow_chart_data_infants_subgroup_s7
+    - process_flow_chart_data_infants_subgroup_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_subgroup_flow_chart_collated.csv
@@ -14418,6 +14497,7 @@ actions:
     - describe_cohort_infants_subgroup_s5
     - describe_cohort_infants_subgroup_s6
     - describe_cohort_infants_subgroup_s7
+    - describe_cohort_infants_subgroup_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_subgroup_table1_collated.csv
@@ -14433,6 +14513,7 @@ actions:
     - describe_dataset_infants_subgroup_s5_specific_primary
     - describe_dataset_infants_subgroup_s6_specific_primary
     - describe_dataset_infants_subgroup_s7_specific_primary
+    - describe_dataset_infants_subgroup_s8_specific_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_subgroup_rates_specific_primary_collated.csv
@@ -14448,6 +14529,7 @@ actions:
     - describe_dataset_infants_subgroup_s5_sensitive_primary
     - describe_dataset_infants_subgroup_s6_sensitive_primary
     - describe_dataset_infants_subgroup_s7_sensitive_primary
+    - describe_dataset_infants_subgroup_s8_sensitive_primary
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_subgroup_rates_sensitive_primary_collated.csv
@@ -14483,6 +14565,7 @@ actions:
     - analyse_dataset_infants_subgroup_rsv_ethnicity_s5_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_s6_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_s7_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s8_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ses_s1_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ses_s2_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ses_s3_specific_primary
@@ -14490,6 +14573,7 @@ actions:
     - analyse_dataset_infants_subgroup_rsv_ses_s5_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ses_s6_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s8_specific_primary
     - analyse_dataset_infants_subgroup_rsv_hh_comp_s5_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s1_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s2_specific_primary
@@ -14498,6 +14582,7 @@ actions:
     - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s5_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s6_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s8_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_hh_comp_s5_specific_primary
     - analyse_dataset_infants_subgroup_rsv_ses_hh_comp_s5_specific_primary
     - analyse_dataset_infants_subgroup_rsv_full_s5_specific_primary
@@ -14508,6 +14593,7 @@ actions:
     - analyse_dataset_infants_subgroup_rsv_ethnicity_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_s6_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_s8_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ses_s1_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ses_s2_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ses_s3_sensitive_primary
@@ -14515,6 +14601,7 @@ actions:
     - analyse_dataset_infants_subgroup_rsv_ses_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ses_s6_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_s8_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s1_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s2_sensitive_primary
@@ -14523,6 +14610,7 @@ actions:
     - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s6_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s8_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ethnicity_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_ses_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_rsv_full_s5_sensitive_primary
@@ -14540,6 +14628,7 @@ actions:
     - analyse_dataset_infants_subgroup_flu_ethnicity_s5_specific_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_s6_specific_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_s7_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s8_specific_primary
     - analyse_dataset_infants_subgroup_flu_ses_s1_specific_primary
     - analyse_dataset_infants_subgroup_flu_ses_s2_specific_primary
     - analyse_dataset_infants_subgroup_flu_ses_s3_specific_primary
@@ -14547,6 +14636,7 @@ actions:
     - analyse_dataset_infants_subgroup_flu_ses_s5_specific_primary
     - analyse_dataset_infants_subgroup_flu_ses_s6_specific_primary
     - analyse_dataset_infants_subgroup_flu_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s8_specific_primary
     - analyse_dataset_infants_subgroup_flu_hh_comp_s5_specific_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s1_specific_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s2_specific_primary
@@ -14555,6 +14645,7 @@ actions:
     - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s5_specific_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s6_specific_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s8_specific_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_hh_comp_s5_specific_primary
     - analyse_dataset_infants_subgroup_flu_ses_hh_comp_s5_specific_primary
     - analyse_dataset_infants_subgroup_flu_full_s5_specific_primary
@@ -14565,6 +14656,7 @@ actions:
     - analyse_dataset_infants_subgroup_flu_ethnicity_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_s6_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_s8_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ses_s1_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ses_s2_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ses_s3_sensitive_primary
@@ -14572,6 +14664,7 @@ actions:
     - analyse_dataset_infants_subgroup_flu_ses_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ses_s6_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ses_s8_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s1_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s2_sensitive_primary
@@ -14580,6 +14673,7 @@ actions:
     - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s6_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s8_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ethnicity_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_ses_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_flu_full_s5_sensitive_primary
@@ -14594,15 +14688,18 @@ actions:
     - analyse_dataset_infants_subgroup_covid_ethnicity_s5_specific_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_s6_specific_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_s7_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_s8_specific_primary
     - analyse_dataset_infants_subgroup_covid_ses_s4_specific_primary
     - analyse_dataset_infants_subgroup_covid_ses_s5_specific_primary
     - analyse_dataset_infants_subgroup_covid_ses_s6_specific_primary
     - analyse_dataset_infants_subgroup_covid_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ses_s8_specific_primary
     - analyse_dataset_infants_subgroup_covid_hh_comp_s5_specific_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s4_specific_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s5_specific_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s6_specific_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s8_specific_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_hh_comp_s5_specific_primary
     - analyse_dataset_infants_subgroup_covid_ses_hh_comp_s5_specific_primary
     - analyse_dataset_infants_subgroup_covid_full_s5_specific_primary
@@ -14610,15 +14707,18 @@ actions:
     - analyse_dataset_infants_subgroup_covid_ethnicity_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_s6_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_s8_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_ses_s4_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_ses_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_ses_s6_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ses_s8_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s4_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s6_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_ses_s8_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_ethnicity_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_ses_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_covid_full_s5_sensitive_primary
@@ -14637,6 +14737,7 @@ actions:
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s5_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s6_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s7_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s8_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s1_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s2_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s3_specific_primary
@@ -14644,6 +14745,7 @@ actions:
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s5_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s6_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s8_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_hh_comp_s5_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s1_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s2_specific_primary
@@ -14652,6 +14754,7 @@ actions:
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s5_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s6_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s7_specific_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s8_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_hh_comp_s5_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_hh_comp_s5_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_full_s5_specific_primary
@@ -14662,6 +14765,7 @@ actions:
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s6_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s8_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s1_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s2_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s3_sensitive_primary
@@ -14669,6 +14773,7 @@ actions:
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s6_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s8_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s1_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s2_sensitive_primary
@@ -14677,6 +14782,7 @@ actions:
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s6_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s7_sensitive_primary
+    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s8_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_hh_comp_s5_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_full_s5_sensitive_primary
@@ -14732,6 +14838,7 @@ actions:
     - phenotype_sensitivity_infants_subgroup_s5
     - phenotype_sensitivity_infants_subgroup_s6
     - phenotype_sensitivity_infants_subgroup_s7
+    - phenotype_sensitivity_infants_subgroup_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_subgroup_phenotype_sensitivity_collated.csv
@@ -14746,6 +14853,7 @@ actions:
     - multiple_episodes_infants_subgroup_s5
     - multiple_episodes_infants_subgroup_s6
     - multiple_episodes_infants_subgroup_s7
+    - multiple_episodes_infants_subgroup_s8
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_subgroup_multiple_episodes_collated.csv
