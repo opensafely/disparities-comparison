@@ -19,17 +19,17 @@ fs::dir_create(here("output", "collated", "sensitivity"))
 #import flu results table by cohort 
 #(sensitivity investigation, specific phenotypes)
 collated_model_outputs_flu = rbind(
-  read_csv(here::here("output", "results", "models", "flu_specific_sensitivity", 
+  read_csv(here::here("output", "results", "models", "flu_sensitivity", 
                       paste0("flu_ethnicity_model_outputs_", 
                              cohort, "_2018_2019_specific_sensitivity.csv"))) 
   %>% mutate(model_type = "ethnicity", codelist_type = "specific", 
              investigation_type = "sensitivity", subset = "2018_19"),
-  read_csv(here::here("output", "results", "models", "flu_specific_sensitivity", 
+  read_csv(here::here("output", "results", "models", "flu_sensitivity", 
                       paste0("flu_ses_model_outputs_", 
                              cohort, "_2018_2019_specific_sensitivity.csv"))) 
   %>% mutate(model_type = "ses", codelist_type = "specific", 
              investigation_type = "sensitivity", subset = "2018_19"),
-  read_csv(here::here("output", "results", "models", "flu_specific_sensitivity", 
+  read_csv(here::here("output", "results", "models", "flu_sensitivity", 
                       paste0("flu_ethnicity_ses_model_outputs_", 
                              cohort, "_2018_2019_specific_sensitivity.csv"))) 
   %>% mutate(model_type = "ethnicity_ses", codelist_type = "specific", 

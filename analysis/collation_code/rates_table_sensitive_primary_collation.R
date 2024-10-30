@@ -46,7 +46,11 @@ collated_rates_sensitive_primary = rbind(
   read_csv(here::here("output", "results", "rates", paste0("rates_", cohort, 
            "_2022_2023_sensitive_primary.csv")))
   %>% mutate(codelist_type = "sensitive", investigation_type = "primary",
-             subset = "2022_23")
+             subset = "2022_23"),
+  read_csv(here::here("output", "results", "rates", paste0("rates_", cohort,
+           "_2023_2024_sensitive_primary.csv"))) 
+  %>% mutate(codelist_type = "sensitive", investigation_type = "primary",
+             subset = "2023_24")
 )
 
 #perform rounding and redaction

@@ -32,7 +32,9 @@ collated_phenotype_sensitivity = rbind(
   read_csv(here::here("output", "exploratory", paste0("phenotype_sensitivity_", 
            cohort, "_2021_2022.csv"))) %>% mutate(subset = "2021_22"),
   read_csv(here::here("output", "exploratory", paste0("phenotype_sensitivity_", 
-           cohort, "_2022_2023.csv"))) %>% mutate(subset = "2022_23")
+           cohort, "_2022_2023.csv"))) %>% mutate(subset = "2022_23"),
+  read_csv(here::here("output", "exploratory", paste0("phenotype_sensitivity_",
+           cohort, "_2023_2024.csv"))) %>% mutate(subset = "2023_24")
 )
 
 #perform redaction and rounding 
