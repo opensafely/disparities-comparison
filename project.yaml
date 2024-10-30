@@ -11591,14 +11591,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2016_2017.csv
 
-  multiple_outcomes_older_adults_s1:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R older_adults season1_start_date
+  multiple_episodes_older_adults_s1:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R older_adults season1_start_date
       season1_end_date
     needs:
     - process_dataset_older_adults_s1_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_older_adults_2016_2017.csv
+        csv: output/exploratory/multiple_episodes_older_adults_2016_2017.csv
+
+  reinfections_older_adults_s1:
+    run: r:latest analysis/exploratory_analyses/reinfections.R older_adults season1_start_date
+      season1_end_date
+    needs:
+    - process_dataset_older_adults_s1_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_older_adults_2016_2017.csv
 
   phenotype_sensitivity_older_adults_s2:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
@@ -11610,14 +11619,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2017_2018.csv
 
-  multiple_outcomes_older_adults_s2:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R older_adults season2_start_date
+  multiple_episodes_older_adults_s2:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R older_adults season2_start_date
       season2_end_date
     needs:
     - process_dataset_older_adults_s2_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_older_adults_2017_2018.csv
+        csv: output/exploratory/multiple_episodes_older_adults_2017_2018.csv
+
+  reinfections_older_adults_s2:
+    run: r:latest analysis/exploratory_analyses/reinfections.R older_adults season2_start_date
+      season2_end_date
+    needs:
+    - process_dataset_older_adults_s2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_older_adults_2017_2018.csv
 
   phenotype_sensitivity_older_adults_s3:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
@@ -11629,14 +11647,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2018_2019.csv
 
-  multiple_outcomes_older_adults_s3:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R older_adults season3_start_date
+  multiple_episodes_older_adults_s3:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R older_adults season3_start_date
       season3_end_date
     needs:
     - process_dataset_older_adults_s3_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_older_adults_2018_2019.csv
+        csv: output/exploratory/multiple_episodes_older_adults_2018_2019.csv
+
+  reinfections_older_adults_s3:
+    run: r:latest analysis/exploratory_analyses/reinfections.R older_adults season3_start_date
+      season3_end_date
+    needs:
+    - process_dataset_older_adults_s3_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_older_adults_2018_2019.csv
 
   phenotype_sensitivity_older_adults_s4:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
@@ -11648,14 +11675,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2019_2020.csv
 
-  multiple_outcomes_older_adults_s4:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R older_adults season4_start_date
+  multiple_episodes_older_adults_s4:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R older_adults season4_start_date
       season4_end_date
     needs:
     - process_dataset_older_adults_s4_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_older_adults_2019_2020.csv
+        csv: output/exploratory/multiple_episodes_older_adults_2019_2020.csv
+
+  reinfections_older_adults_s4:
+    run: r:latest analysis/exploratory_analyses/reinfections.R older_adults season4_start_date
+      season4_end_date
+    needs:
+    - process_dataset_older_adults_s4_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_older_adults_2019_2020.csv
 
   phenotype_sensitivity_older_adults_s5:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
@@ -11667,14 +11703,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2020_2021.csv
 
-  multiple_outcomes_older_adults_s5:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R older_adults season5_start_date
+  multiple_episodes_older_adults_s5:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R older_adults season5_start_date
       season5_end_date
     needs:
     - process_dataset_older_adults_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_older_adults_2020_2021.csv
+        csv: output/exploratory/multiple_episodes_older_adults_2020_2021.csv
+
+  reinfections_older_adults_s5:
+    run: r:latest analysis/exploratory_analyses/reinfections.R older_adults season5_start_date
+      season5_end_date
+    needs:
+    - process_dataset_older_adults_s5_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_older_adults_2020_2021.csv
 
   phenotype_sensitivity_older_adults_s6:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
@@ -11686,14 +11731,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2021_2022.csv
 
-  multiple_outcomes_older_adults_s6:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R older_adults season6_start_date
+  multiple_episodes_older_adults_s6:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R older_adults season6_start_date
       season6_end_date
     needs:
     - process_dataset_older_adults_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_older_adults_2021_2022.csv
+        csv: output/exploratory/multiple_episodes_older_adults_2021_2022.csv
+
+  reinfections_older_adults_s6:
+    run: r:latest analysis/exploratory_analyses/reinfections.R older_adults season6_start_date
+      season6_end_date
+    needs:
+    - process_dataset_older_adults_s6_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_older_adults_2021_2022.csv
 
   phenotype_sensitivity_older_adults_s7:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
@@ -11705,14 +11759,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2022_2023.csv
 
-  multiple_outcomes_older_adults_s7:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R older_adults season7_start_date
+  multiple_episodes_older_adults_s7:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R older_adults season7_start_date
       season7_end_date
     needs:
     - process_dataset_older_adults_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_older_adults_2022_2023.csv
+        csv: output/exploratory/multiple_episodes_older_adults_2022_2023.csv
+
+  reinfections_older_adults_s7:
+    run: r:latest analysis/exploratory_analyses/reinfections.R older_adults season7_start_date
+      season7_end_date
+    needs:
+    - process_dataset_older_adults_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_older_adults_2022_2023.csv
 
   phenotype_sensitivity_older_adults_s8:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
@@ -11724,14 +11787,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_older_adults_2023_2024.csv
 
-  multiple_outcomes_older_adults_s8:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R older_adults season8_start_date
+  multiple_episodes_older_adults_s8:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R older_adults season8_start_date
       season8_end_date
     needs:
     - process_dataset_older_adults_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_older_adults_2023_2024.csv
+        csv: output/exploratory/multiple_episodes_older_adults_2023_2024.csv
+
+  reinfections_older_adults_s8:
+    run: r:latest analysis/exploratory_analyses/reinfections.R older_adults season8_start_date
+      season8_end_date
+    needs:
+    - process_dataset_older_adults_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_older_adults_2023_2024.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Adults 
@@ -11747,14 +11819,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_adults_2016_2017.csv
 
-  multiple_outcomes_adults_s1:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R adults season1_start_date
+  multiple_episodes_adults_s1:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R adults season1_start_date
       season1_end_date
     needs:
     - process_dataset_adults_s1_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_adults_2016_2017.csv
+        csv: output/exploratory/multiple_episodes_adults_2016_2017.csv
+
+  reinfections_adults_s1:
+    run: r:latest analysis/exploratory_analyses/reinfections.R adults season1_start_date
+      season1_end_date
+    needs:
+    - process_dataset_adults_s1_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_adults_2016_2017.csv
 
   phenotype_sensitivity_adults_s2:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season2_start_date
@@ -11766,14 +11847,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_adults_2017_2018.csv
 
-  multiple_outcomes_adults_s2:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R adults season2_start_date
+  multiple_episodes_adults_s2:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R adults season2_start_date
       season2_end_date
     needs:
     - process_dataset_adults_s2_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_adults_2017_2018.csv
+        csv: output/exploratory/multiple_episodes_adults_2017_2018.csv
+
+  reinfections_adults_s2:
+    run: r:latest analysis/exploratory_analyses/reinfections.R adults season2_start_date
+      season2_end_date
+    needs:
+    - process_dataset_adults_s2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_adults_2017_2018.csv
 
   phenotype_sensitivity_adults_s3:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season3_start_date
@@ -11785,14 +11875,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_adults_2018_2019.csv
 
-  multiple_outcomes_adults_s3:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R adults season3_start_date
+  multiple_episodes_adults_s3:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R adults season3_start_date
       season3_end_date
     needs:
     - process_dataset_adults_s3_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_adults_2018_2019.csv
+        csv: output/exploratory/multiple_episodes_adults_2018_2019.csv
+
+  reinfections_adults_s3:
+    run: r:latest analysis/exploratory_analyses/reinfections.R adults season3_start_date
+      season3_end_date
+    needs:
+    - process_dataset_adults_s3_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_adults_2018_2019.csv
 
   phenotype_sensitivity_adults_s4:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season4_start_date
@@ -11804,14 +11903,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_adults_2019_2020.csv
 
-  multiple_outcomes_adults_s4:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R adults season4_start_date
+  multiple_episodes_adults_s4:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R adults season4_start_date
       season4_end_date
     needs:
     - process_dataset_adults_s4_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_adults_2019_2020.csv
+        csv: output/exploratory/multiple_episodes_adults_2019_2020.csv
+
+  reinfections_adults_s4:
+    run: r:latest analysis/exploratory_analyses/reinfections.R adults season4_start_date
+      season4_end_date
+    needs:
+    - process_dataset_adults_s4_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_adults_2019_2020.csv
 
   phenotype_sensitivity_adults_s5:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season5_start_date
@@ -11823,14 +11931,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_adults_2020_2021.csv
 
-  multiple_outcomes_adults_s5:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R adults season5_start_date
+  multiple_episodes_adults_s5:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R adults season5_start_date
       season5_end_date
     needs:
     - process_dataset_adults_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_adults_2020_2021.csv
+        csv: output/exploratory/multiple_episodes_adults_2020_2021.csv
+
+  reinfections_adults_s5:
+    run: r:latest analysis/exploratory_analyses/reinfections.R adults season5_start_date
+      season5_end_date
+    needs:
+    - process_dataset_adults_s5_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_adults_2020_2021.csv
 
   phenotype_sensitivity_adults_s6:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season6_start_date
@@ -11842,14 +11959,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_adults_2021_2022.csv
 
-  multiple_outcomes_adults_s6:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R adults season6_start_date
+  multiple_episodes_adults_s6:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R adults season6_start_date
       season6_end_date
     needs:
     - process_dataset_adults_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_adults_2021_2022.csv
+        csv: output/exploratory/multiple_episodes_adults_2021_2022.csv
+
+  reinfections_adults_s6:
+    run: r:latest analysis/exploratory_analyses/reinfections.R adults season6_start_date
+      season6_end_date
+    needs:
+    - process_dataset_adults_s6_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_adults_2021_2022.csv
 
   phenotype_sensitivity_adults_s7:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season7_start_date
@@ -11861,14 +11987,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_adults_2022_2023.csv
 
-  multiple_outcomes_adults_s7:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R adults season7_start_date
+  multiple_episodes_adults_s7:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R adults season7_start_date
       season7_end_date
     needs:
     - process_dataset_adults_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_adults_2022_2023.csv
+        csv: output/exploratory/multiple_episodes_adults_2022_2023.csv
+
+  reinfections_adults_s7:
+    run: r:latest analysis/exploratory_analyses/reinfections.R adults season7_start_date
+      season7_end_date
+    needs:
+    - process_dataset_adults_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_adults_2022_2023.csv
 
   phenotype_sensitivity_adults_s8:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R adults season8_start_date
@@ -11880,14 +12015,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_adults_2023_2024.csv
 
-  multiple_outcomes_adults_s8:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R adults season8_start_date
+  multiple_episodes_adults_s8:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R adults season8_start_date
       season8_end_date
     needs:
     - process_dataset_adults_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_adults_2023_2024.csv
+        csv: output/exploratory/multiple_episodes_adults_2023_2024.csv
+
+  reinfections_adults_s8:
+    run: r:latest analysis/exploratory_analyses/reinfections.R adults season8_start_date
+      season8_end_date
+    needs:
+    - process_dataset_adults_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_adults_2023_2024.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Children and Adolescents 
@@ -11903,14 +12047,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2016_2017.csv
 
-  multiple_outcomes_children_and_adolescents_s1:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R children_and_adolescents
+  multiple_episodes_children_and_adolescents_s1:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R children_and_adolescents
       season1_start_date season1_end_date
     needs:
     - process_dataset_children_and_adolescents_s1_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_children_and_adolescents_2016_2017.csv
+        csv: output/exploratory/multiple_episodes_children_and_adolescents_2016_2017.csv
+
+  reinfections_children_and_adolescents_s1:
+    run: r:latest analysis/exploratory_analyses/reinfections.R children_and_adolescents
+      season1_start_date season1_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s1_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_children_and_adolescents_2016_2017.csv
 
   phenotype_sensitivity_children_and_adolescents_s2:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -11922,14 +12075,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2017_2018.csv
 
-  multiple_outcomes_children_and_adolescents_s2:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R children_and_adolescents
+  multiple_episodes_children_and_adolescents_s2:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R children_and_adolescents
       season2_start_date season2_end_date
     needs:
     - process_dataset_children_and_adolescents_s2_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_children_and_adolescents_2017_2018.csv
+        csv: output/exploratory/multiple_episodes_children_and_adolescents_2017_2018.csv
+
+  reinfections_children_and_adolescents_s2:
+    run: r:latest analysis/exploratory_analyses/reinfections.R children_and_adolescents
+      season2_start_date season2_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_children_and_adolescents_2017_2018.csv
 
   phenotype_sensitivity_children_and_adolescents_s3:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -11941,14 +12103,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2018_2019.csv
 
-  multiple_outcomes_children_and_adolescents_s3:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R children_and_adolescents
+  multiple_episodes_children_and_adolescents_s3:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R children_and_adolescents
       season3_start_date season3_end_date
     needs:
     - process_dataset_children_and_adolescents_s3_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_children_and_adolescents_2018_2019.csv
+        csv: output/exploratory/multiple_episodes_children_and_adolescents_2018_2019.csv
+
+  reinfections_children_and_adolescents_s3:
+    run: r:latest analysis/exploratory_analyses/reinfections.R children_and_adolescents
+      season3_start_date season3_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s3_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_children_and_adolescents_2018_2019.csv
 
   phenotype_sensitivity_children_and_adolescents_s4:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -11960,14 +12131,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2019_2020.csv
 
-  multiple_outcomes_children_and_adolescents_s4:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R children_and_adolescents
+  multiple_episodes_children_and_adolescents_s4:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R children_and_adolescents
       season4_start_date season4_end_date
     needs:
     - process_dataset_children_and_adolescents_s4_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_children_and_adolescents_2019_2020.csv
+        csv: output/exploratory/multiple_episodes_children_and_adolescents_2019_2020.csv
+
+  reinfections_children_and_adolescents_s4:
+    run: r:latest analysis/exploratory_analyses/reinfections.R children_and_adolescents
+      season4_start_date season4_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s4_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_children_and_adolescents_2019_2020.csv
 
   phenotype_sensitivity_children_and_adolescents_s5:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -11979,14 +12159,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2020_2021.csv
 
-  multiple_outcomes_children_and_adolescents_s5:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R children_and_adolescents
+  multiple_episodes_children_and_adolescents_s5:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R children_and_adolescents
       season5_start_date season5_end_date
     needs:
     - process_dataset_children_and_adolescents_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_children_and_adolescents_2020_2021.csv
+        csv: output/exploratory/multiple_episodes_children_and_adolescents_2020_2021.csv
+
+  reinfections_children_and_adolescents_s5:
+    run: r:latest analysis/exploratory_analyses/reinfections.R children_and_adolescents
+      season5_start_date season5_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s5_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_children_and_adolescents_2020_2021.csv
 
   phenotype_sensitivity_children_and_adolescents_s6:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -11998,14 +12187,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2021_2022.csv
 
-  multiple_outcomes_children_and_adolescents_s6:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R children_and_adolescents
+  multiple_episodes_children_and_adolescents_s6:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R children_and_adolescents
       season6_start_date season6_end_date
     needs:
     - process_dataset_children_and_adolescents_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_children_and_adolescents_2021_2022.csv
+        csv: output/exploratory/multiple_episodes_children_and_adolescents_2021_2022.csv
+
+  reinfections_children_and_adolescents_s6:
+    run: r:latest analysis/exploratory_analyses/reinfections.R children_and_adolescents
+      season6_start_date season6_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s6_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_children_and_adolescents_2021_2022.csv
 
   phenotype_sensitivity_children_and_adolescents_s7:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -12017,14 +12215,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2022_2023.csv
 
-  multiple_outcomes_children_and_adolescents_s7:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R children_and_adolescents
+  multiple_episodes_children_and_adolescents_s7:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R children_and_adolescents
       season7_start_date season7_end_date
     needs:
     - process_dataset_children_and_adolescents_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_children_and_adolescents_2022_2023.csv
+        csv: output/exploratory/multiple_episodes_children_and_adolescents_2022_2023.csv
+
+  reinfections_children_and_adolescents_s7:
+    run: r:latest analysis/exploratory_analyses/reinfections.R children_and_adolescents
+      season7_start_date season7_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_children_and_adolescents_2022_2023.csv
 
   phenotype_sensitivity_children_and_adolescents_s8:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -12036,14 +12243,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_children_and_adolescents_2023_2024.csv
 
-  multiple_outcomes_children_and_adolescents_s8:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R children_and_adolescents
+  multiple_episodes_children_and_adolescents_s8:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R children_and_adolescents
       season8_start_date season8_end_date
     needs:
     - process_dataset_children_and_adolescents_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_children_and_adolescents_2023_2024.csv
+        csv: output/exploratory/multiple_episodes_children_and_adolescents_2023_2024.csv
+
+  reinfections_children_and_adolescents_s8:
+    run: r:latest analysis/exploratory_analyses/reinfections.R children_and_adolescents
+      season8_start_date season8_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_children_and_adolescents_2023_2024.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Infants 
@@ -12059,14 +12275,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_2016_2017.csv
 
-  multiple_outcomes_infants_s1:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants season1_start_date
+  multiple_episodes_infants_s1:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants season1_start_date
       season1_end_date
     needs:
     - process_dataset_infants_s1_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_2016_2017.csv
+        csv: output/exploratory/multiple_episodes_infants_2016_2017.csv
+
+  reinfections_infants_s1:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants season1_start_date
+      season1_end_date
+    needs:
+    - process_dataset_infants_s1_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_2016_2017.csv
 
   phenotype_sensitivity_infants_s2:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season2_start_date
@@ -12078,14 +12303,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_2017_2018.csv
 
-  multiple_outcomes_infants_s2:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants season2_start_date
+  multiple_episodes_infants_s2:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants season2_start_date
       season2_end_date
     needs:
     - process_dataset_infants_s2_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_2017_2018.csv
+        csv: output/exploratory/multiple_episodes_infants_2017_2018.csv
+
+  reinfections_infants_s2:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants season2_start_date
+      season2_end_date
+    needs:
+    - process_dataset_infants_s2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_2017_2018.csv
 
   phenotype_sensitivity_infants_s3:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season3_start_date
@@ -12097,14 +12331,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_2018_2019.csv
 
-  multiple_outcomes_infants_s3:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants season3_start_date
+  multiple_episodes_infants_s3:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants season3_start_date
       season3_end_date
     needs:
     - process_dataset_infants_s3_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_2018_2019.csv
+        csv: output/exploratory/multiple_episodes_infants_2018_2019.csv
+
+  reinfections_infants_s3:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants season3_start_date
+      season3_end_date
+    needs:
+    - process_dataset_infants_s3_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_2018_2019.csv
 
   phenotype_sensitivity_infants_s4:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season4_start_date
@@ -12116,14 +12359,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_2019_2020.csv
 
-  multiple_outcomes_infants_s4:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants season4_start_date
+  multiple_episodes_infants_s4:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants season4_start_date
       season4_end_date
     needs:
     - process_dataset_infants_s4_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_2019_2020.csv
+        csv: output/exploratory/multiple_episodes_infants_2019_2020.csv
+
+  reinfections_infants_s4:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants season4_start_date
+      season4_end_date
+    needs:
+    - process_dataset_infants_s4_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_2019_2020.csv
 
   phenotype_sensitivity_infants_s5:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season5_start_date
@@ -12135,14 +12387,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_2020_2021.csv
 
-  multiple_outcomes_infants_s5:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants season5_start_date
+  multiple_episodes_infants_s5:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants season5_start_date
       season5_end_date
     needs:
     - process_dataset_infants_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_2020_2021.csv
+        csv: output/exploratory/multiple_episodes_infants_2020_2021.csv
+
+  reinfections_infants_s5:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants season5_start_date
+      season5_end_date
+    needs:
+    - process_dataset_infants_s5_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_2020_2021.csv
 
   phenotype_sensitivity_infants_s6:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season6_start_date
@@ -12154,14 +12415,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_2021_2022.csv
 
-  multiple_outcomes_infants_s6:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants season6_start_date
+  multiple_episodes_infants_s6:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants season6_start_date
       season6_end_date
     needs:
     - process_dataset_infants_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_2021_2022.csv
+        csv: output/exploratory/multiple_episodes_infants_2021_2022.csv
+
+  reinfections_infants_s6:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants season6_start_date
+      season6_end_date
+    needs:
+    - process_dataset_infants_s6_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_2021_2022.csv
 
   phenotype_sensitivity_infants_s7:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season7_start_date
@@ -12173,14 +12443,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_2022_2023.csv
 
-  multiple_outcomes_infants_s7:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants season7_start_date
+  multiple_episodes_infants_s7:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants season7_start_date
       season7_end_date
     needs:
     - process_dataset_infants_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_2022_2023.csv
+        csv: output/exploratory/multiple_episodes_infants_2022_2023.csv
+
+  reinfections_infants_s7:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants season7_start_date
+      season7_end_date
+    needs:
+    - process_dataset_infants_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_2022_2023.csv
 
   phenotype_sensitivity_infants_s8:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season8_start_date
@@ -12192,14 +12471,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_2023_2024.csv
 
-  multiple_outcomes_infants_s8:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants season8_start_date
+  multiple_episodes_infants_s8:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants season8_start_date
       season8_end_date
     needs:
     - process_dataset_infants_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_2023_2024.csv
+        csv: output/exploratory/multiple_episodes_infants_2023_2024.csv
+
+  reinfections_infants_s8:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants season8_start_date
+      season8_end_date
+    needs:
+    - process_dataset_infants_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_2023_2024.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Infants Subgroup 
@@ -12215,14 +12503,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2016_2017.csv
 
-  multiple_outcomes_infants_subgroup_s1:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants_subgroup
+  multiple_episodes_infants_subgroup_s1:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
       season1_start_date season1_end_date
     needs:
     - process_dataset_infants_subgroup_s1_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_subgroup_2016_2017.csv
+        csv: output/exploratory/multiple_episodes_infants_subgroup_2016_2017.csv
+
+  reinfections_infants_subgroup_s1:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants_subgroup season1_start_date
+      season1_end_date
+    needs:
+    - process_dataset_infants_subgroup_s1_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_subgroup_2016_2017.csv
 
   phenotype_sensitivity_infants_subgroup_s2:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -12234,14 +12531,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2017_2018.csv
 
-  multiple_outcomes_infants_subgroup_s2:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants_subgroup
+  multiple_episodes_infants_subgroup_s2:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
       season2_start_date season2_end_date
     needs:
     - process_dataset_infants_subgroup_s2_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_subgroup_2017_2018.csv
+        csv: output/exploratory/multiple_episodes_infants_subgroup_2017_2018.csv
+
+  reinfections_infants_subgroup_s2:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants_subgroup season2_start_date
+      season2_end_date
+    needs:
+    - process_dataset_infants_subgroup_s2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_subgroup_2017_2018.csv
 
   phenotype_sensitivity_infants_subgroup_s3:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -12253,14 +12559,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2018_2019.csv
 
-  multiple_outcomes_infants_subgroup_s3:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants_subgroup
+  multiple_episodes_infants_subgroup_s3:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
       season3_start_date season3_end_date
     needs:
     - process_dataset_infants_subgroup_s3_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_subgroup_2018_2019.csv
+        csv: output/exploratory/multiple_episodes_infants_subgroup_2018_2019.csv
+
+  reinfections_infants_subgroup_s3:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants_subgroup season3_start_date
+      season3_end_date
+    needs:
+    - process_dataset_infants_subgroup_s3_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_subgroup_2018_2019.csv
 
   phenotype_sensitivity_infants_subgroup_s4:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -12272,14 +12587,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2019_2020.csv
 
-  multiple_outcomes_infants_subgroup_s4:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants_subgroup
+  multiple_episodes_infants_subgroup_s4:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
       season4_start_date season4_end_date
     needs:
     - process_dataset_infants_subgroup_s4_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_subgroup_2019_2020.csv
+        csv: output/exploratory/multiple_episodes_infants_subgroup_2019_2020.csv
+
+  reinfections_infants_subgroup_s4:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants_subgroup season4_start_date
+      season4_end_date
+    needs:
+    - process_dataset_infants_subgroup_s4_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_subgroup_2019_2020.csv
 
   phenotype_sensitivity_infants_subgroup_s5:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -12291,14 +12615,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2020_2021.csv
 
-  multiple_outcomes_infants_subgroup_s5:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants_subgroup
+  multiple_episodes_infants_subgroup_s5:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
       season5_start_date season5_end_date
     needs:
     - process_dataset_infants_subgroup_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_subgroup_2020_2021.csv
+        csv: output/exploratory/multiple_episodes_infants_subgroup_2020_2021.csv
+
+  reinfections_infants_subgroup_s5:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants_subgroup season5_start_date
+      season5_end_date
+    needs:
+    - process_dataset_infants_subgroup_s5_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_subgroup_2020_2021.csv
 
   phenotype_sensitivity_infants_subgroup_s6:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -12310,14 +12643,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2021_2022.csv
 
-  multiple_outcomes_infants_subgroup_s6:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants_subgroup
+  multiple_episodes_infants_subgroup_s6:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
       season6_start_date season6_end_date
     needs:
     - process_dataset_infants_subgroup_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_subgroup_2021_2022.csv
+        csv: output/exploratory/multiple_episodes_infants_subgroup_2021_2022.csv
+
+  reinfections_infants_subgroup_s6:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants_subgroup season6_start_date
+      season6_end_date
+    needs:
+    - process_dataset_infants_subgroup_s6_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_subgroup_2021_2022.csv
 
   phenotype_sensitivity_infants_subgroup_s7:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -12329,14 +12671,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2022_2023.csv
 
-  multiple_outcomes_infants_subgroup_s7:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants_subgroup
+  multiple_episodes_infants_subgroup_s7:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
       season7_start_date season7_end_date
     needs:
     - process_dataset_infants_subgroup_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_subgroup_2022_2023.csv
+        csv: output/exploratory/multiple_episodes_infants_subgroup_2022_2023.csv
+
+  reinfections_infants_subgroup_s7:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants_subgroup season7_start_date
+      season7_end_date
+    needs:
+    - process_dataset_infants_subgroup_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_subgroup_2022_2023.csv
 
   phenotype_sensitivity_infants_subgroup_s8:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -12348,14 +12699,23 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2023_2024.csv
 
-  multiple_outcomes_infants_subgroup_s8:
-    run: r:latest analysis/exploratory_analyses/multiple_outcomes.R infants_subgroup
+  multiple_episodes_infants_subgroup_s8:
+    run: r:latest analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
       season8_start_date season8_end_date
     needs:
     - process_dataset_infants_subgroup_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/multiple_outcomes_infants_subgroup_2023_2024.csv
+        csv: output/exploratory/multiple_episodes_infants_subgroup_2023_2024.csv
+
+  reinfections_infants_subgroup_s8:
+    run: r:latest analysis/exploratory_analyses/reinfections.R infants_subgroup season8_start_date
+      season8_end_date
+    needs:
+    - process_dataset_infants_subgroup_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/reinfections_infants_subgroup_2023_2024.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## SENSITIVITY ANALYSES: REDUCED SEASONS 
@@ -13025,19 +13385,19 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/older_adults_phenotype_sensitivity_collated.csv
 
-  collate_multiple_outcomes_tables_older_adults:
-    run: r:latest analysis/collation_code/multiple_outcomes_table_collation.R older_adults
+  collate_multiple_episodes_tables_older_adults:
+    run: r:latest analysis/collation_code/multiple_episodes_table_collation.R older_adults
     needs:
-    - multiple_outcomes_older_adults_s1
-    - multiple_outcomes_older_adults_s2
-    - multiple_outcomes_older_adults_s3
-    - multiple_outcomes_older_adults_s4
-    - multiple_outcomes_older_adults_s5
-    - multiple_outcomes_older_adults_s6
-    - multiple_outcomes_older_adults_s7
+    - multiple_episodes_older_adults_s1
+    - multiple_episodes_older_adults_s2
+    - multiple_episodes_older_adults_s3
+    - multiple_episodes_older_adults_s4
+    - multiple_episodes_older_adults_s5
+    - multiple_episodes_older_adults_s6
+    - multiple_episodes_older_adults_s7
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/older_adults_multiple_outcomes_collated.csv
+        csv: output/collated/descriptive/older_adults_multiple_episodes_collated.csv
 
   collate_rsv_outputs_tables_older_adults_sensitivity:
     run: r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R
@@ -13320,19 +13680,19 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/adults_phenotype_sensitivity_collated.csv
 
-  collate_multiple_outcomes_tables_adults:
-    run: r:latest analysis/collation_code/multiple_outcomes_table_collation.R adults
+  collate_multiple_episodes_tables_adults:
+    run: r:latest analysis/collation_code/multiple_episodes_table_collation.R adults
     needs:
-    - multiple_outcomes_adults_s1
-    - multiple_outcomes_adults_s2
-    - multiple_outcomes_adults_s3
-    - multiple_outcomes_adults_s4
-    - multiple_outcomes_adults_s5
-    - multiple_outcomes_adults_s6
-    - multiple_outcomes_adults_s7
+    - multiple_episodes_adults_s1
+    - multiple_episodes_adults_s2
+    - multiple_episodes_adults_s3
+    - multiple_episodes_adults_s4
+    - multiple_episodes_adults_s5
+    - multiple_episodes_adults_s6
+    - multiple_episodes_adults_s7
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/adults_multiple_outcomes_collated.csv
+        csv: output/collated/descriptive/adults_multiple_episodes_collated.csv
 
   collate_rsv_outputs_tables_adults_sensitivity:
     run: r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R
@@ -13615,19 +13975,19 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/children_and_adolescents_phenotype_sensitivity_collated.csv
 
-  collate_multiple_outcomes_tables_children_and_adolescents:
-    run: r:latest analysis/collation_code/multiple_outcomes_table_collation.R children_and_adolescents
+  collate_multiple_episodes_tables_children_and_adolescents:
+    run: r:latest analysis/collation_code/multiple_episodes_table_collation.R children_and_adolescents
     needs:
-    - multiple_outcomes_children_and_adolescents_s1
-    - multiple_outcomes_children_and_adolescents_s2
-    - multiple_outcomes_children_and_adolescents_s3
-    - multiple_outcomes_children_and_adolescents_s4
-    - multiple_outcomes_children_and_adolescents_s5
-    - multiple_outcomes_children_and_adolescents_s6
-    - multiple_outcomes_children_and_adolescents_s7
+    - multiple_episodes_children_and_adolescents_s1
+    - multiple_episodes_children_and_adolescents_s2
+    - multiple_episodes_children_and_adolescents_s3
+    - multiple_episodes_children_and_adolescents_s4
+    - multiple_episodes_children_and_adolescents_s5
+    - multiple_episodes_children_and_adolescents_s6
+    - multiple_episodes_children_and_adolescents_s7
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/children_and_adolescents_multiple_outcomes_collated.csv
+        csv: output/collated/descriptive/children_and_adolescents_multiple_episodes_collated.csv
 
   collate_rsv_outputs_tables_children_and_adolescents_sensitivity:
     run: r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R
@@ -13998,19 +14358,19 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_phenotype_sensitivity_collated.csv
 
-  collate_multiple_outcomes_tables_infants:
-    run: r:latest analysis/collation_code/multiple_outcomes_table_collation.R infants
+  collate_multiple_episodes_tables_infants:
+    run: r:latest analysis/collation_code/multiple_episodes_table_collation.R infants
     needs:
-    - multiple_outcomes_infants_s1
-    - multiple_outcomes_infants_s2
-    - multiple_outcomes_infants_s3
-    - multiple_outcomes_infants_s4
-    - multiple_outcomes_infants_s5
-    - multiple_outcomes_infants_s6
-    - multiple_outcomes_infants_s7
+    - multiple_episodes_infants_s1
+    - multiple_episodes_infants_s2
+    - multiple_episodes_infants_s3
+    - multiple_episodes_infants_s4
+    - multiple_episodes_infants_s5
+    - multiple_episodes_infants_s6
+    - multiple_episodes_infants_s7
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/infants_multiple_outcomes_collated.csv
+        csv: output/collated/descriptive/infants_multiple_episodes_collated.csv
 
   collate_rsv_model_outputs_tables_infants_sensitivity:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R
@@ -14376,19 +14736,19 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_subgroup_phenotype_sensitivity_collated.csv
 
-  collate_multiple_outcomes_tables_infants_subgroup:
-    run: r:latest analysis/collation_code/multiple_outcomes_table_collation.R infants_subgroup
+  collate_multiple_episodes_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/multiple_episodes_table_collation.R infants_subgroup
     needs:
-    - multiple_outcomes_infants_subgroup_s1
-    - multiple_outcomes_infants_subgroup_s2
-    - multiple_outcomes_infants_subgroup_s3
-    - multiple_outcomes_infants_subgroup_s4
-    - multiple_outcomes_infants_subgroup_s5
-    - multiple_outcomes_infants_subgroup_s6
-    - multiple_outcomes_infants_subgroup_s7
+    - multiple_episodes_infants_subgroup_s1
+    - multiple_episodes_infants_subgroup_s2
+    - multiple_episodes_infants_subgroup_s3
+    - multiple_episodes_infants_subgroup_s4
+    - multiple_episodes_infants_subgroup_s5
+    - multiple_episodes_infants_subgroup_s6
+    - multiple_episodes_infants_subgroup_s7
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/infants_subgroup_multiple_outcomes_collated.csv
+        csv: output/collated/descriptive/infants_subgroup_multiple_episodes_collated.csv
 
   collate_rsv_model_outputs_tables_infants_subgroup_sensitivity:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R

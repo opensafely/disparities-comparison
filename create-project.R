@@ -2078,12 +2078,21 @@ action_exploratory <- function(cohort, season, dates, season_start_date,
     ),
     
     action(
-      name = glue("multiple_outcomes_{cohort}_{season}"),
-      run = glue("r:latest analysis/exploratory_analyses/multiple_outcomes.R {cohort} {season_start_date} {season_end_date}"),
+      name = glue("multiple_episodes_{cohort}_{season}"),
+      run = glue("r:latest analysis/exploratory_analyses/multiple_episodes.R {cohort} {season_start_date} {season_end_date}"),
       # arguments = c(cohort, season, dates, season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_specific_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/exploratory/multiple_outcomes_{cohort}_{dates}.csv"))
+        csv = glue("output/exploratory/multiple_episodes_{cohort}_{dates}.csv"))
+    ),
+    
+    action(
+      name = glue("reinfections_{cohort}_{season}"),
+      run = glue("r:latest analysis/exploratory_analyses/reinfections.R {cohort} {season_start_date} {season_end_date}"),
+      # arguments = c(cohort, season, dates, season_start_date, season_end_date),
+      needs = list(glue("process_dataset_{cohort}_{season}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/exploratory/reinfections_{cohort}_{dates}.csv"))
     )
     
   )
@@ -2709,18 +2718,18 @@ action_finalise <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_multiple_outcomes_tables_{cohort}"),
-      run = glue("r:latest analysis/collation_code/multiple_outcomes_table_collation.R {cohort}"),
+      name = glue("collate_multiple_episodes_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/multiple_episodes_table_collation.R {cohort}"),
       # arguments = c(cohort),
-      needs = list(glue("multiple_outcomes_{cohort}_s1"),
-                   glue("multiple_outcomes_{cohort}_s2"),
-                   glue("multiple_outcomes_{cohort}_s3"),
-                   glue("multiple_outcomes_{cohort}_s4"),
-                   glue("multiple_outcomes_{cohort}_s5"),
-                   glue("multiple_outcomes_{cohort}_s6"),
-                   glue("multiple_outcomes_{cohort}_s7")),
+      needs = list(glue("multiple_episodes_{cohort}_s1"),
+                   glue("multiple_episodes_{cohort}_s2"),
+                   glue("multiple_episodes_{cohort}_s3"),
+                   glue("multiple_episodes_{cohort}_s4"),
+                   glue("multiple_episodes_{cohort}_s5"),
+                   glue("multiple_episodes_{cohort}_s6"),
+                   glue("multiple_episodes_{cohort}_s7")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/{cohort}_multiple_outcomes_collated.csv"))
+        csv = glue("output/collated/descriptive/{cohort}_multiple_episodes_collated.csv"))
     ),
     
     action(
@@ -3106,18 +3115,18 @@ action_finalise_infants <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_multiple_outcomes_tables_{cohort}"),
-      run = glue("r:latest analysis/collation_code/multiple_outcomes_table_collation.R {cohort}"),
+      name = glue("collate_multiple_episodes_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/multiple_episodes_table_collation.R {cohort}"),
       # arguments = c(cohort),
-      needs = list(glue("multiple_outcomes_{cohort}_s1"),
-                   glue("multiple_outcomes_{cohort}_s2"),
-                   glue("multiple_outcomes_{cohort}_s3"),
-                   glue("multiple_outcomes_{cohort}_s4"),
-                   glue("multiple_outcomes_{cohort}_s5"),
-                   glue("multiple_outcomes_{cohort}_s6"),
-                   glue("multiple_outcomes_{cohort}_s7")),
+      needs = list(glue("multiple_episodes_{cohort}_s1"),
+                   glue("multiple_episodes_{cohort}_s2"),
+                   glue("multiple_episodes_{cohort}_s3"),
+                   glue("multiple_episodes_{cohort}_s4"),
+                   glue("multiple_episodes_{cohort}_s5"),
+                   glue("multiple_episodes_{cohort}_s6"),
+                   glue("multiple_episodes_{cohort}_s7")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/{cohort}_multiple_outcomes_collated.csv"))
+        csv = glue("output/collated/descriptive/{cohort}_multiple_episodes_collated.csv"))
     ),
     
     action(
