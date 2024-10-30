@@ -33,15 +33,16 @@ covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 fs::dir_create(here("output", "data"))
 
 df_input <- read_feather(
-  here::here("output", "data", paste0("input_", cohort, "_", year(study_start_date), 
-                                      "_", year(study_end_date), "_", codelist_type,
-                                      "_", investigation_type, ".arrow")))
+  here::here("output", "data", paste0("input_", cohort, "_",
+             year(study_start_date), "_", year(study_end_date), "_",
+             codelist_type, "_", investigation_type,".arrow")))
 
 if (study_start_date == as.Date("2020-09-01")) {
   
   df_household <- read_feather(
     here::here("output", "data", paste0("input_household_processed_", 
-                                        year(study_start_date), "_", year(study_end_date), ".arrow")))
+                                        year(study_start_date), "_",
+                                        year(study_end_date), ".arrow")))
   
   household_comp_vars <- tibble("patient_id" = df_household$patient_id,
                                 "num_generations"= df_household$num_generations, 
@@ -53,15 +54,15 @@ if (study_start_date == as.Date("2020-09-01")) {
 
 if (cohort == "infants_subgroup") {
   df_input_mothers <- read_feather(here::here("output", "data", 
-                                              paste0("input_maternal_infants_subgroup_",
-                                                     year(study_start_date), "_",
-                                                     year(study_end_date), "_",
-                                                     codelist_type, "_", 
-                                                     investigation_type,".arrow")))
+                                   paste0("input_maternal_infants_subgroup_",
+                                          year(study_start_date), "_",
+                                          year(study_end_date), "_",
+                                          codelist_type, "_",
+                                          investigation_type,".arrow")))
   df_input_mothers <- df_input_mothers %>%
     mutate(mother_id = patient_id) %>%
     select(-patient_id)
-  df_input <- merge(df_input, df_input_mothers, by = "mother_id", all = TRUE)
+  df_input <- merge(df_input, df_input_mothers, by = "mother_id")
 }
 
 #create time dependency
