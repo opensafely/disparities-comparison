@@ -2749,6 +2749,22 @@ action_finalise <- function(cohort) {
     ),
     
     action(
+      name = glue("collate_reinfections_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/reinfections_table_collation.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("reinfections_{cohort}_s1"),
+                   glue("reinfections_{cohort}_s2"),
+                   glue("reinfections_{cohort}_s3"),
+                   glue("reinfections_{cohort}_s4"),
+                   glue("reinfections_{cohort}_s5"),
+                   glue("reinfections_{cohort}_s6"),
+                   glue("reinfections_{cohort}_s7"),
+                   glue("reinfections_{cohort}_s8")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_reinfections_collated.csv"))
+    ),
+    
+    action(
       name = glue("collate_rsv_outputs_tables_{cohort}_sensitivity"),
       run = glue("r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R {cohort}"),
       # arguments = c(cohort),
@@ -3173,6 +3189,22 @@ action_finalise_infants <- function(cohort) {
                    glue("multiple_episodes_{cohort}_s8")),
       moderately_sensitive = lst(
         csv = glue("output/collated/descriptive/{cohort}_multiple_episodes_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_reinfections_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/reinfections_table_collation.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("reinfections_{cohort}_s1"),
+                   glue("reinfections_{cohort}_s2"),
+                   glue("reinfections_{cohort}_s3"),
+                   glue("reinfections_{cohort}_s4"),
+                   glue("reinfections_{cohort}_s5"),
+                   glue("reinfections_{cohort}_s6"),
+                   glue("reinfections_{cohort}_s7"),
+                   glue("reinfections_{cohort}_s8")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_reinfections_collated.csv"))
     ),
     
     action(

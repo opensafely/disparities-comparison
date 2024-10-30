@@ -13415,6 +13415,21 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/older_adults_multiple_episodes_collated.csv
 
+  collate_reinfections_tables_older_adults:
+    run: r:latest analysis/collation_code/reinfections_table_collation.R older_adults
+    needs:
+    - reinfections_older_adults_s1
+    - reinfections_older_adults_s2
+    - reinfections_older_adults_s3
+    - reinfections_older_adults_s4
+    - reinfections_older_adults_s5
+    - reinfections_older_adults_s6
+    - reinfections_older_adults_s7
+    - reinfections_older_adults_s8
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/older_adults_reinfections_collated.csv
+
   collate_rsv_outputs_tables_older_adults_sensitivity:
     run: r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R
       older_adults
@@ -13726,6 +13741,21 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/adults_multiple_episodes_collated.csv
 
+  collate_reinfections_tables_adults:
+    run: r:latest analysis/collation_code/reinfections_table_collation.R adults
+    needs:
+    - reinfections_adults_s1
+    - reinfections_adults_s2
+    - reinfections_adults_s3
+    - reinfections_adults_s4
+    - reinfections_adults_s5
+    - reinfections_adults_s6
+    - reinfections_adults_s7
+    - reinfections_adults_s8
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/adults_reinfections_collated.csv
+
   collate_rsv_outputs_tables_adults_sensitivity:
     run: r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R
       adults
@@ -14036,6 +14066,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/children_and_adolescents_multiple_episodes_collated.csv
+
+  collate_reinfections_tables_children_and_adolescents:
+    run: r:latest analysis/collation_code/reinfections_table_collation.R children_and_adolescents
+    needs:
+    - reinfections_children_and_adolescents_s1
+    - reinfections_children_and_adolescents_s2
+    - reinfections_children_and_adolescents_s3
+    - reinfections_children_and_adolescents_s4
+    - reinfections_children_and_adolescents_s5
+    - reinfections_children_and_adolescents_s6
+    - reinfections_children_and_adolescents_s7
+    - reinfections_children_and_adolescents_s8
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/children_and_adolescents_reinfections_collated.csv
 
   collate_rsv_outputs_tables_children_and_adolescents_sensitivity:
     run: r:latest analysis/collation_code/rsv_outputs_table_collation_sensitivity.R
@@ -14450,6 +14495,21 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_multiple_episodes_collated.csv
 
+  collate_reinfections_tables_infants:
+    run: r:latest analysis/collation_code/reinfections_table_collation.R infants
+    needs:
+    - reinfections_infants_s1
+    - reinfections_infants_s2
+    - reinfections_infants_s3
+    - reinfections_infants_s4
+    - reinfections_infants_s5
+    - reinfections_infants_s6
+    - reinfections_infants_s7
+    - reinfections_infants_s8
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_reinfections_collated.csv
+
   collate_rsv_model_outputs_tables_infants_sensitivity:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R
       infants
@@ -14857,6 +14917,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_subgroup_multiple_episodes_collated.csv
+
+  collate_reinfections_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/reinfections_table_collation.R infants_subgroup
+    needs:
+    - reinfections_infants_subgroup_s1
+    - reinfections_infants_subgroup_s2
+    - reinfections_infants_subgroup_s3
+    - reinfections_infants_subgroup_s4
+    - reinfections_infants_subgroup_s5
+    - reinfections_infants_subgroup_s6
+    - reinfections_infants_subgroup_s7
+    - reinfections_infants_subgroup_s8
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_subgroup_reinfections_collated.csv
 
   collate_rsv_model_outputs_tables_infants_subgroup_sensitivity:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R
