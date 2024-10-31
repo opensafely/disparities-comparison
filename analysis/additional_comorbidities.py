@@ -47,13 +47,32 @@ investigation_type = args[5]
 study_start_date = study_dates[args[2]]
 study_end_date = study_dates[args[3]]
 index_date = study_start_date
-registration_date = index_date - years(1)
 
 #define patients age
 age_at_start = patients.age_on(study_start_date)
 age_at_end = patients.age_on(study_end_date)
 age_months = (index_date - patients.date_of_birth).months
 age_at_start_months = (study_start_date - patients.date_of_birth).months
+
+#get date patient ages into cohort 
+if cohort == "infants" or cohort == "infants_subgroup" :
+  age_date = patients.date_of_birth
+elif cohort == "children_and_adolescents" :
+  age_date = patients.date_of_birth + years(2) 
+elif cohort == "adults" :
+  age_date = patients.date_of_birth + years(18)
+else :
+  age_date = patients.date_of_birth + years(65)
+
+#set index date (and registration date) as last date of either start date or age date
+#so that patients are the correct age for the cohort when looking at records
+if cohort == "infants" or cohort == "infants_subgroup" :
+  index_date = maximum_of(study_start_date, study_start_date)
+else : 
+  index_date = maximum_of(study_start_date, age_date)
+
+registration_date = index_date - years(1)
+
 
 #events occurring before index date
 prior_events = clinical_events.where(clinical_events.date.is_on_or_before(index_date))
