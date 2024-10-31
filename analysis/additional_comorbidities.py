@@ -174,14 +174,15 @@ has_asthma = (
 )
   
 #copd diagnosis
-has_copd = (
-  (has_prior_event(codelists.copd_codelist))
+has_copd = (case(
+  when((has_prior_event(codelists.copd_codelist))
   & (has_prior_meds(codelists.copd_medications))
   & (last_prior_event(codelists.copd_codelist).date
   .is_on_or_after(last_prior_event(codelists
-  .copd_resolved_codelist).date))
+  .copd_resolved_codelist).date))).then(True),
+  otherwise = False)
 )
-
+  
 #cystic fibrosis diagnosis
 has_cystic_fibrosis = (
   clinical_events.where(clinical_events.ctv3_code.
@@ -199,9 +200,10 @@ has_pulmonary_fibrosis = (
 has_crd = has_prior_event(codelists.crd_codelist)
 
 #other chronic respiratory disease
-has_other_resp = (
-  (has_pulmonary_fibrosis | has_crd) & 
-  (~has_asthma & ~ has_copd & ~ has_cystic_fibrosis)
+has_other_resp = (case(
+  when((has_pulmonary_fibrosis | has_crd) & 
+  (~has_asthma & ~ has_copd & ~ has_cystic_fibrosis)).then(True),
+  otherwise = False)
 )
 
 #diabetes diagnosis
