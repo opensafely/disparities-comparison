@@ -19,7 +19,7 @@ cohort <- "older_adults"
 
 #import collated flow chart data
 df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs  
-                                paste0("/", cohort, "_flow_chart_collated.csv")))
+                                paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
 
 #pre-allocate vectors and lists outside the loop
@@ -129,7 +129,7 @@ cohort <- "adults"
 
 #import collated flow chart data
 df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs
-                                paste0("/", cohort, "_flow_chart_collated.csv")))
+                                paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
 
 #pre-allocate vectors and lists outside the loop
@@ -239,7 +239,7 @@ cohort <- "children_and_adolescents"
 
 #import collated flow chart data
 df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs 
-                                paste0("/", cohort, "_flow_chart_collated.csv")))
+                                paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
 
 #pre-allocate vectors and lists outside the loop
@@ -349,7 +349,7 @@ cohort <- "infants"
 
 #import collated flow chart data
 df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs 
-                                paste0("/", cohort, "_flow_chart_collated.csv")))
+                                paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
 
 #pre-allocate vectors and lists outside the loop
@@ -445,7 +445,7 @@ cohort <- "infants_subgroup"
 
 #import collated flow chart data
 df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs 
-                                paste0("/", cohort, "_flow_chart_collated.csv")))
+                                paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
 
 #pre-allocate vectors and lists outside the loop

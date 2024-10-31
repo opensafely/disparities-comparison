@@ -170,7 +170,7 @@ cohort <- "older_adults"
 
 #import collated phenotype sensitivity data
 df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs 
-                     paste0("/", cohort, "_phenotype_sensitivity_collated.csv")))
+                     paste0(cohort, "_phenotype_sensitivity_collated.csv")))
 
 #remove when using real data
 df_input <- df_input %>% 
@@ -189,7 +189,7 @@ cohort <- "adults"
 
 #import collated phenotype sensitivity data
 df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs  
-                     paste0("/", cohort, "_phenotype_sensitivity_collated.csv")))
+                     paste0(cohort, "_phenotype_sensitivity_collated.csv")))
 
 #remove when using real data
 df_input <- df_input %>% 
@@ -208,7 +208,7 @@ cohort <- "children_and_adolescents"
 
 #import collated phenotype sensitivity data
 df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs 
-                     paste0("/", cohort, "_phenotype_sensitivity_collated.csv")))
+                     paste0(cohort, "_phenotype_sensitivity_collated.csv")))
 
 #remove when using real data
 df_input <- df_input %>% 
@@ -227,7 +227,7 @@ cohort <- "infants"
 
 #import collated phenotype sensitivity data
 df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs 
-                     paste0("/", cohort, "_phenotype_sensitivity_collated.csv")))
+                     paste0(cohort, "_phenotype_sensitivity_collated.csv")))
 
 #remove when using real data
 df_input <- df_input %>% 
