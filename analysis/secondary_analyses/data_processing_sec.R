@@ -66,7 +66,7 @@ if(cohort == "infants" | cohort == "infants_subgroup") {
   df_input <- df_input %>%
     rowwise() %>%
     mutate(
-      date = map2(patient_index_date, study_end_date, ~seq(.x, .y, by = 30.44))
+      date = map2(patient_index_date, patient_end_date, ~seq(.x, .y, by = 30.44))
     ) %>%
     unnest(date) %>%
     mutate(
@@ -108,7 +108,8 @@ if(cohort == "older_adults") {
       age > 5 & age < 12 ~ "6-11m",
       age > 11 & age < 24 ~ "12-23m",
       TRUE ~ NA_character_)
-    )
+    ) %>%
+    filter(!is.na(age_band))
 }
 
 df_input$age_band <- factor(df_input$age_band)
@@ -307,7 +308,7 @@ if (study_start_date == as.Date("2017-09-01")) {
     mutate(
       #infer mild case date for rsv 
       rsv_primary_inf_date = case_when(
-        is.na(rsv_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ study_end_date,
+        is.na(rsv_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
         is.na(rsv_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
         is.na(rsv_primary_date) & !is.na(deregistration_date) ~ deregistration_date,
         is.na(rsv_primary_date) & !is.na(rsv_secondary_date) ~ rsv_secondary_date,
@@ -318,7 +319,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
       #infer severe case date for rsv
       rsv_secondary_inf_date = case_when(
-        is.na(rsv_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ study_end_date,
+        is.na(rsv_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
         is.na(rsv_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
         is.na(rsv_secondary_date) & !is.na(deregistration_date) ~ deregistration_date,
         TRUE ~ rsv_secondary_date),
@@ -328,7 +329,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
       #infer rsv mortality outcome 
       rsv_mortality_inf_date = case_when(
-        is.na(rsv_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ study_end_date,
+        is.na(rsv_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
         is.na(rsv_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
         is.na(rsv_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
         TRUE ~ rsv_mortality_date),
@@ -363,7 +364,7 @@ if (study_start_date == as.Date("2017-09-01")) {
     mutate(
       #infer mild case date for flu 
       flu_primary_inf_date = case_when(
-        is.na(flu_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ study_end_date,
+        is.na(flu_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
         is.na(flu_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
         is.na(flu_primary_date) & !is.na(deregistration_date) ~ deregistration_date,
         is.na(flu_primary_date) & !is.na(flu_secondary_date) ~ flu_secondary_date,
@@ -374,7 +375,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
       #infer severe case date for flu
       flu_secondary_inf_date = case_when(
-        is.na(flu_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ study_end_date,
+        is.na(flu_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
         is.na(flu_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
         is.na(flu_secondary_date) & !is.na(deregistration_date) ~ deregistration_date,
         TRUE ~ flu_secondary_date),
@@ -384,7 +385,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0),
       #infer flu mortality outcome 
       flu_mortality_inf_date = case_when(
-        is.na(flu_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ study_end_date,
+        is.na(flu_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
         is.na(flu_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
         is.na(flu_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
         TRUE ~ flu_mortality_date),
@@ -423,7 +424,7 @@ if (study_start_date == as.Date("2017-09-01")) {
     mutate(
       #infer mild case date for covid 
       covid_primary_inf_date = case_when(
-        is.na(covid_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ study_end_date,
+        is.na(covid_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
         is.na(covid_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
         is.na(covid_primary_date) & !is.na(deregistration_date) ~ deregistration_date,
         is.na(covid_primary_date) & !is.na(covid_secondary_date) ~ covid_secondary_date,
@@ -434,7 +435,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       covid_primary_inf = if_else(covid_primary_censor == 0, 1, 0),
       #infer severe case date for covid
       covid_secondary_inf_date = case_when(
-        is.na(covid_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ study_end_date,
+        is.na(covid_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
         is.na(covid_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
         is.na(covid_secondary_date) & !is.na(deregistration_date) ~ deregistration_date,
         TRUE ~ covid_secondary_date),
@@ -444,7 +445,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       covid_secondary_inf = if_else(covid_secondary_censor == 0, 1, 0),
       #infer covid mortality outcome 
       covid_mortality_inf_date = case_when(
-        is.na(covid_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ study_end_date,
+        is.na(covid_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
         is.na(covid_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
         is.na(covid_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
         TRUE ~ covid_mortality_date),
@@ -466,7 +467,7 @@ df_input <- df_input %>%
   mutate(
     #infer all cause mortality outcome
     all_cause_mortality_inf_date = case_when(
-      is.na(all_cause_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ study_end_date,
+      is.na(all_cause_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
       is.na(all_cause_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
       is.na(all_cause_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
       TRUE ~ all_cause_mortality_date),
