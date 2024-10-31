@@ -59,7 +59,7 @@ age_at_start = patients.age_on(study_start_date)
 age_at_end = patients.age_on(study_end_date)
 age_months = (index_date - patients.date_of_birth).months
 age_at_start_months = (study_start_date - patients.date_of_birth).months
-#age_at_end_months = (study_end_date - patients.date_of_birth).months
+age_at_end_months = (study_end_date - patients.date_of_birth).months
 
 #get patients who are registered, have sex, age, and imd info
 if cohort == "infants" or cohort == "infants_subgroup" :
@@ -70,7 +70,7 @@ else :
 is_female_or_male = patients.sex.is_in(["female", "male"])
 
 if cohort == "infants" or cohort == "infants_subgroup" :
-  is_appropriate_age = (age_at_start_months <= 23) & (age_at_start_months >= 0)
+  is_appropriate_age = (age_at_start_months <= 23) & (age_at_end_months >= 0)
 elif cohort == "children_and_adolescents" :
   is_appropriate_age = (age_at_start <= 17) & (age_at_end >= 2)
 elif cohort == "adults" :
