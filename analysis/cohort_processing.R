@@ -168,7 +168,7 @@ df_input <- df_input %>%
     #recode rurality to 5 levels
     rurality_code = recode(rural_urban_classification, "1" = "1", "2" = "2", 
                            "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
-                           "7" = "5", "8" = "5", .missing = "Unknown"),
+                           "7" = "5", "8" = "5", .missing = NA_character_),
     #assign rurality classification
     rurality_classification = factor(case_when(
       rurality_code == "1" ~ "Urban Major Conurbation",
