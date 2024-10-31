@@ -50,6 +50,13 @@ sim_list = lst(
     ~ index_day
   ),
   
+  #patient specific end date
+  patient_end_day = bn_node(
+    ~ as.integer(if_else(runif(n = ..n) < 0.02, 
+                 as.integer(runif(n = ..n, index_day + 1, index_day + 365)), 
+                 index_day + 365))
+  ),
+  
   #whether the patient is registered with the practice
   registered = bn_node(
     ~ rbernoulli(n = ..n, p = 0.99)
