@@ -256,7 +256,8 @@ if (study_start_date == as.Date("2017-09-01")) {
       #infer mild case date for rsv 
       rsv_primary_inf_date = case_when(
         is.na(rsv_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(rsv_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
+        is.na(rsv_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
+          if_else(death_date <= patient_end_date, death_date, patient_end_date),
         is.na(rsv_primary_date) & !is.na(deregistration_date) ~ deregistration_date,
         is.na(rsv_primary_date) & !is.na(rsv_secondary_date) ~ rsv_secondary_date,
         TRUE ~ rsv_primary_date),
@@ -267,7 +268,8 @@ if (study_start_date == as.Date("2017-09-01")) {
       #infer severe case date for rsv
       rsv_secondary_inf_date = case_when(
         is.na(rsv_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(rsv_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
+        is.na(rsv_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
+          if_else(death_date <= patient_end_date, death_date, patient_end_date),
         is.na(rsv_secondary_date) & !is.na(deregistration_date) ~ deregistration_date,
         TRUE ~ rsv_secondary_date),
       #assign censoring indicator
@@ -277,7 +279,8 @@ if (study_start_date == as.Date("2017-09-01")) {
       #infer rsv mortality outcome 
       rsv_mortality_inf_date = case_when(
         is.na(rsv_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(rsv_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
+        is.na(rsv_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
+          if_else(death_date <= patient_end_date, death_date, patient_end_date),
         is.na(rsv_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
         TRUE ~ rsv_mortality_date),
       #assign censoring indicator
@@ -312,7 +315,8 @@ if (study_start_date == as.Date("2017-09-01")) {
       #infer mild case date for flu 
       flu_primary_inf_date = case_when(
         is.na(flu_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(flu_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
+        is.na(flu_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
+          if_else(death_date <= patient_end_date, death_date, patient_end_date),
         is.na(flu_primary_date) & !is.na(deregistration_date) ~ deregistration_date,
         is.na(flu_primary_date) & !is.na(flu_secondary_date) ~ flu_secondary_date,
         TRUE ~ flu_primary_date),
@@ -323,7 +327,8 @@ if (study_start_date == as.Date("2017-09-01")) {
       #infer severe case date for flu
       flu_secondary_inf_date = case_when(
         is.na(flu_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(flu_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
+        is.na(flu_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
+          if_else(death_date <= patient_end_date, death_date, patient_end_date),
         is.na(flu_secondary_date) & !is.na(deregistration_date) ~ deregistration_date,
         TRUE ~ flu_secondary_date),
       #assign censoring indicator
@@ -333,7 +338,8 @@ if (study_start_date == as.Date("2017-09-01")) {
       #infer flu mortality outcome 
       flu_mortality_inf_date = case_when(
         is.na(flu_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(flu_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
+        is.na(flu_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
+          if_else(death_date <= patient_end_date, death_date, patient_end_date),
         is.na(flu_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
         TRUE ~ flu_mortality_date),
       #assign censoring indicator
@@ -341,11 +347,12 @@ if (study_start_date == as.Date("2017-09-01")) {
       #infer flu mortality outcome
       flu_mortality_inf = if_else(flu_mortality_censor == 0, 1, 0)
     )
+}
 
 df_input_filt <- df_input_filt %>%
   mutate(
     #infer presence of all cause mortality
-    all_cause_mortality_date = death_date,
+    all_cause_mortality_date = if_else(death_date <= patient_end_date, death_date, NA_Date_),
     all_cause_mortality = if_else(
       !is.na(all_cause_mortality_date), TRUE, FALSE)
   )
@@ -354,7 +361,8 @@ df_input_filt <- df_input_filt %>%
     #infer all cause mortality outcome
     all_cause_mortality_inf_date = case_when(
       is.na(all_cause_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-      is.na(all_cause_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ death_date,
+      is.na(all_cause_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
+        if_else(death_date <= patient_end_date, death_date, patient_end_date),
       is.na(all_cause_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
       TRUE ~ all_cause_mortality_date),
     #assign censoring indicator
