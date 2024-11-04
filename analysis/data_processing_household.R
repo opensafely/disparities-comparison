@@ -29,7 +29,7 @@ df_input <- df_input %>%
     #recode rurality to 5 levels
     rurality_code = recode(rural_urban_classification, "1" = "1", "2" = "2", 
                            "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
-                           "7" = "5", "8" = "5", .missing = "Unknown"),
+                           "7" = "5", "8" = "5", .missing = NA_character_),
     #assign rurality classification
     rurality_classification = factor(case_when(
       rurality_code == "1" ~ "Urban Major Conurbation",
@@ -37,7 +37,7 @@ df_input <- df_input %>%
       rurality_code == "3" ~ "Urban City and Town",
       rurality_code == "4" ~ "Rural Town and Fringe",
       rurality_code == "5" ~ "Rural Village and Dispersed",
-      TRUE ~ "Unknown")),
+      TRUE ~ NA_character_)),
     #assign generation
     generation = factor(case_when(
       age < 18 ~ "Child", 
@@ -61,7 +61,8 @@ df_input <- df_input %>%
       num_generations == 1 ~ "Multiple of the Same Generation",
       num_generations == 2 ~ "One Other Generation",
       num_generations == 3 ~ "Two Other Generations",
-      num_generations == 4 ~ "Three Other Generations"
+      num_generations == 4 ~ "Three Other Generations",
+      TRUE ~ NA_character_
     ))
   ) %>%
   ungroup()

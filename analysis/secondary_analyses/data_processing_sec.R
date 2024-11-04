@@ -132,8 +132,6 @@ df_input <- df_input %>%
     sex = factor(case_when(
       sex == "female" ~ "Female",
       sex == "male" ~ "Male",
-      sex == "intersex" ~ "Intersex",
-      sex == "unknown" ~ "Unknown",
       TRUE ~ NA_character_))
   )
 

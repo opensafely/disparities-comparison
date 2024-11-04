@@ -114,7 +114,7 @@ dataset.maternal_smoking_status = (case(
   & (ever_smoked == True))).then("Former"),
   when((most_recent_smoking_code == "N") 
   & (ever_smoked == False)).then("Never"),
-  otherwise = "Unknown")
+  otherwise = None)
 )
 
 #mothers drinking 
