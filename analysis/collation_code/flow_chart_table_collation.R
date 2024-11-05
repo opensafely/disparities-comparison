@@ -12,6 +12,11 @@ if (length(args) == 0) {
   cohort <- args[[1]]
 }
 
+roundmid_any <- function(x, to=10){
+  # like round_any, but centers on (integer) midpoint of the rounding points
+  ceiling(x/to)*to - (floor(to/2)*(x!=0))
+}
+
 ## create output directories ----
 fs::dir_create(here("output", "collated", "descriptive"))
 
@@ -39,8 +44,7 @@ collated_flow_chart = rbind(
 
 #perform redaction and rounding
 collated_flow_chart <- collated_flow_chart %>% 
-  mutate_at(vars(contains("count")), ~round_any(as.numeric(.), 5)) %>% 
-  mutate_at(vars(ends_with("count")), ~ ifelse(. <= 10, "<=10", .))
+  mutate_at(vars(contains("count")), ~roundmid_any(as.numeric(.))) 
 
 #save as csv
 write_csv(collated_flow_chart, paste0(here::here("output", "collated", "descriptive"),

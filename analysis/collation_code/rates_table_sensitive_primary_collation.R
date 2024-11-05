@@ -53,14 +53,14 @@ collated_rates_sensitive_primary = rbind(
              subset = "2023_24")
 )
 
-#perform rounding and redaction
-collated_rates_specific_secondary <- collated_rates_specific_secondary %>%
-  mutate(Events = round_any(Events, 5)) %>%
-  mutate(Events = ifelse(Events <= 10, "<=10", Events),
-         Rate = ifelse(Events == "<=10", "Redacted", Rate))
+# #perform rounding and redaction
+# collated_rates_specific_secondary <- collated_rates_specific_secondary %>%
+#   mutate(Events = round_any(Events, 5)) %>%
+#   mutate(Events = ifelse(Events <= 10, "<=10", Events),
+#          Rate = ifelse(Events == "<=10", "Redacted", Rate))
 
-#rename events column
-colnames(collated_rates_specific_secondary)[colnames(collated_rates_specific_secondary) == "Events"] <- "Events (rounded)"
+# #rename events column
+# colnames(collated_rates_specific_secondary)[colnames(collated_rates_specific_secondary) == "Events"] <- "Events (rounded)"
 
 #save as csv
 write_csv(collated_rates_sensitive_primary, paste0(here::here("output", "collated", "descriptive"), 

@@ -12,6 +12,11 @@ if (length(args) == 0) {
   cohort <- args[[1]]
 }
 
+roundmid_any <- function(x, to=10){
+  # like round_any, but centers on (integer) midpoint of the rounding points
+  ceiling(x/to)*to - (floor(to/2)*(x!=0))
+}
+
 ## create output directories ----
 fs::dir_create(here("output", "collated", "descriptive"))
 
@@ -39,11 +44,10 @@ collated_multiple_episodes = rbind(
 
 #perform redaction and rounding 
 collated_multiple_episodes <- collated_multiple_episodes %>% 
-  mutate_at(vars(contains("n")), ~round_any(as.numeric(.), 5)) %>% 
-  mutate_at(vars(contains("n")), ~ifelse(. <= 10, "<=10", .))
+  mutate_at(vars(contains("n")), ~roundmid_any(as.numeric(.)))
 
 #rename n column
-colnames(collated_multiple_episodes)[colnames(collated_multiple_episodes) == "n"] <- "n (rounded)"
+colnames(collated_multiple_episodes)[colnames(collated_multiple_episodes) == "n"] <- "n (midpoint 6 rounded)"
 
 #save as csv
 write_csv(collated_multiple_episodes, paste0(here::here("output", "collated", "descriptive"), 
