@@ -32,104 +32,105 @@ covid_season_min <- as.Date("2019-09-01")
 covid_current_vacc_min <- as.Date("2020-09-01", "%Y-%m-%d")
 covid_prior_vacc_min <- as.Date("2021-09-01", "%Y-%m-%d")
 
+roundmid_any <- function(x, to=10){
+  # like round_any, but centers on (integer) midpoint of the rounding points
+  ceiling(x/to)*to - (floor(to/2)*(x!=0))
+}
+
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_",
-                                      year(study_start_date), "_", year(study_end_date), "_",
-                                      codelist_type, "_", investigation_type, ".arrow")))
+             year(study_start_date), "_", year(study_end_date), "_",
+             codelist_type, "_", investigation_type, ".arrow")))
 
-#format data from wide to long 
+#set all NA categories to "Unknown"
+df_input <- df_input %>% mutate_if(is.factor,
+                                   forcats::fct_explicit_na,
+                                   na_level = "Unknown")
+
 if (study_start_date == as.Date("2020-09-01")) {
-  df_long_date <- df_input %>%
-    pivot_longer(
-      cols = ends_with("_date") & contains(c("primary", "secondary", "mortality")) &
-        !contains(c("_second_", "_inf_", "patient_")),
-      names_to = "outcome_type",
-      values_to = "outcome_date",
-      values_drop_na = FALSE
-    ) %>%
+  df_input <- df_input %>%
     select(patient_id, patient_index_date, patient_end_date, age_band, sex,
            latest_ethnicity_group, imd_quintile, composition_category,
-           rurality_classification, outcome_type, outcome_date)
+           rurality_classification, ((ends_with("_date")) & (contains(c("primary",
+           "secondary", "mortality"))) & (!contains(c("_second_", "_inf_",
+           "patient_")))))
 } else {
-  df_long_date <- df_input %>%
-    pivot_longer(
-      cols = ends_with("_date") & contains(c("primary", "secondary", "mortality")) &
-        !contains(c("_second_", "_inf_", "patient_")),
-      names_to = "outcome_type",
-      values_to = "outcome_date",
-      values_drop_na = FALSE
-    ) %>%
+  df_input <- df_input %>%
     select(patient_id, patient_index_date, patient_end_date, age_band, sex,
            latest_ethnicity_group, imd_quintile, rurality_classification,
-           outcome_type, outcome_date)
+           (ends_with("_date")) & (contains(c("primary", "secondary",
+           "mortality"))) & (!contains(c("_second_", "_inf_", "patient_"))))
 }
-
-#create function to clean up outcome_type column 
-clean_outcome_type <- function(df) {
-  df %>%
-    mutate(outcome_type = str_remove(outcome_type, "_date")) %>%
-    mutate(outcome_type = str_remove(outcome_type, "time_")) %>%
-    group_by(patient_id) %>%
-    distinct()
-}
-
-#clean
-df_long_date <- clean_outcome_type(df_long_date)
-
-#define month intervals to split the data into
-interval_length <- "month"
-
-# Generate the fixed sequence of interval start dates
-intervals <- as.Date(seq(study_start_date, study_end_date, by = interval_length))
-intervals <- tibble(start_date = intervals, end_date = intervals %m+% months(1) - 1)
 
 #add a column to df_long to indicate the interval based on which interval the outcome date falls in
-df_long <- df_long_date %>%
+df_wide <- df_input%>%
   mutate(
-    event_flag = if_else(is.na(outcome_date), 0, 1)
-  ) %>%
-  cross_join(intervals) %>%
-  filter((end_date <= outcome_date|(outcome_date >= start_date &
-         outcome_date <= end_date)) & event_flag == 1 | event_flag == 0) %>%
-  filter(patient_index_date <= start_date | patient_end_date <= end_date) %>%
-  mutate(
-    event_flag = case_when(
-      is.na(outcome_date) ~ 0,
-      outcome_date >= start_date & outcome_date <= end_date ~ 1,
-      TRUE ~ 0)
-  ) %>%
-  mutate(
-    survival_time = as.numeric(if_else(event_flag == 0,
-                    time_length(difftime(end_date, start_date), "years"),
-                    time_length(difftime(end_date, outcome_date), "years"))),
-    interval = start_date + (end_date - start_date) / 2
+    across(ends_with("_date"), ~ if_else(is.na(.), 0, 1), .names = "{.col}_event_flag")
   ) 
 
-#create a function to calculate rate per 1000 person years in each interval
-#with respect to different outcomes and characteristics
-rates_over_time <- function(df, outcome, characteristic) {
-  df %>% 
-    filter(outcome_type == !!outcome, characteristic == !!characteristic) %>%
-    group_by(interval, group = as.character(.data[[characteristic]])) %>%
-    summarise(
-      events = sum(event_flag, na.rm = TRUE),
-      total_person_years = sum(survival_time, na.rm = TRUE),
-      rate_per_1000_pys = (events / total_person_years) * 1000
-    ) %>%
-    ungroup()
-}
-
-#create helper function to calculate rates for different outcomes and characteristics
+# Define the function to calculate rates per 1000 person-years
 calculate_rates <- function(df, outcomes, characteristics) {
   bind_rows(lapply(outcomes, function(outcome) {
+    
+    # Define the relevant columns for this outcome and characteristic
+    outcome_date_col <- paste0(outcome, "_date")
+    event_flag_col <- paste0(outcome, "_date_event_flag")
+    
+    # Create intervals based on study dates and interval length
+    interval_length <- "week"
+    intervals <- tibble(start_date = seq(study_start_date, study_end_date, by = interval_length)) %>%
+      mutate(end_date = lead(start_date, default = study_end_date)) %>%
+      filter(start_date < study_end_date)
+    
+    # Calculate rates over time by joining with interval table
+    rates <- df %>%
+      cross_join(intervals) %>%
+      filter(
+        patient_index_date <= end_date & 
+          patient_end_date >= start_date
+      ) %>%
+      mutate(
+        # Calculate survival time within the interval for each patient
+        interval_start = pmax(start_date, patient_index_date),
+        interval_end = pmin(end_date, patient_end_date),
+        survival_time = as.numeric(time_length(difftime(interval_end, interval_start), "years")),
+        event_flag = if_else(
+          !is.na(.data[[outcome_date_col]]) & 
+            .data[[outcome_date_col]] >= interval_start & 
+            .data[[outcome_date_col]] <= interval_end, 
+          1, 0
+        )
+      )
+    
     bind_rows(lapply(characteristics, function(char) {
-      rates_over_time(df, outcome, char) %>%
+      
+      rates <- rates %>%
+        group_by(interval = start_date, group = as.character(.data[[char]])) %>%
+        summarise(
+          events_midpoint6 = roundmid_any(sum(event_flag, na.rm = TRUE)),
+          total_person_years = sum(survival_time, na.rm = TRUE),
+          #num_people = n_distinct(patient_id), # Count unique individuals contributing to the interval
+          .groups = 'drop'
+        ) %>%
+        right_join(intervals %>% select(start_date), by = c("interval" = "start_date")) %>%
+        mutate(
+          events_midpoint6 = replace_na(events_midpoint6, 0),
+          total_person_years = replace_na(total_person_years, 0),
+          #num_people = replace_na(num_people, 0), # Fill missing counts with 0
+          rate_midpoint6_derived = ifelse(total_person_years > 0,
+                                   (events_midpoint6 / total_person_years) * 1000,
+                                   NA_real_)
+        ) %>%
         mutate(outcome = outcome, characteristic = char) %>%
-        select(interval, outcome, characteristic, group, events,
-               total_person_years, rate_per_1000_pys) 
+        select(interval, outcome, characteristic, group, events_midpoint6,
+               total_person_years, rate_midpoint6_derived)
+      
+      return(rates)
+      
     }))
   }))
 }
+
 
 #define characteristics
 characteristics <- c("age_band", "sex", "latest_ethnicity_group", "imd_quintile",
@@ -154,40 +155,30 @@ outcomes <- case_when(
            "overall_resp_secondary", "rsv_mortality", "flu_mortality",
            "overall_resp_mortality", "all_cause_mortality")),
   TRUE ~ list(c("rsv_primary", "flu_primary", "rsv_secondary", "flu_secondary",
-           "rsv_mortality", "flu_mortality", "all_cause_mortality"))
+                "rsv_mortality", "flu_mortality", "all_cause_mortality"))
 )[[1]]
 
 #calculate the rates for all outcomes
-rates_over_time <- calculate_rates(df_long, outcomes, characteristics)
-
-#plot for different characteristics
-plot_rates <- function(df, outcome, characteristic) {
-  df %>%
-    filter(outcome == !!outcome, characteristic == !!characteristic) %>%
-    ggplot(aes(x = interval, y = rate_per_1000_pys, group = group, col = group)) +
-    geom_line(stat = "identity") +
-    theme_minimal() +
-    # theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    labs(x = "Month", y = "Rate per 1000 person-years", col = "Group")
-}
+rates_over_time <- calculate_rates(df_wide, outcomes, characteristics)
 
 #helper function to create and save plots
-create_plots <- function(df, outcomes, characteristics) {
-  plots <- expand.grid(outcome = outcomes, characteristic = characteristics) %>%
+create_summaries <- function(df, outcomes, characteristics) {
+  summaries <- expand.grid(outcome = outcomes, characteristic = characteristics) %>%
     pmap(function(outcome, characteristic) {
-      plot <- plot_rates(df, outcome, characteristic) +
-        ggtitle(paste("Rate of", str_to_title(gsub("_", " ", outcome)), "by",
-                      str_to_title(gsub("_", " ", characteristic))))
-      print(plot)  # Print or save each plot
+      sum <- df %>%
+        filter(outcome == !!outcome, characteristic == !!characteristic) 
+      print(sum)  # Print or save each plot
       ## create output directories ----
-      fs::dir_create(here("output", "collated", "plots", paste0(characteristic)))
-      ggsave(paste0(here("output", "collated", "plots"), "/", "crude_rates_",
-                    year(study_start_date), "_", year(study_end_date),
-                    "_", cohort, "_", codelist_type, "_", investigation_type, 
-                    "_", characteristic, ".png"), plot)
+      fs::dir_create(here("output", "results", "rates", "weekly",
+                          paste0(characteristic)))
+      write_csv(sum, path = paste0(here("output", "results", "rates",
+                "weekly", paste0(characteristic)), "/", "weekly_rates_",
+                year(study_start_date), "_", year(study_end_date), "_", cohort,
+                "_", codelist_type, "_", investigation_type, "_", characteristic,
+                ".csv"))
     })
-  return(plots)
+  return(summaries)
 }
 
 #run function to create and save plots
-create_plots(rates_over_time, outcomes, characteristics)
+create_summaries(rates_over_time, outcomes, characteristics)

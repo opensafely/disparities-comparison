@@ -7,6 +7,7 @@ library(gt)
 library(readr)
 library(stringr)
 library(gtsummary)
+library(ggplot2)
 
 ## create output directories ----
 fs::dir_create(here("analysis"))
@@ -68,21 +69,22 @@ df_wide <- df_input%>%
     across(ends_with("_date"), ~ if_else(is.na(.), 0, 1), .names = "{.col}_event_flag")
   ) 
 
-# Define the function to calculate rates per 1000 person-years
-calculate_rates <- function(df, outcomes, characteristics) {
+# Define the function to calculate 30-day rolling rates per 1000 person-years
+calculate_rolling_rates <- function(df, outcomes, characteristics) {
+  
   bind_rows(lapply(outcomes, function(outcome) {
     
     # Define the relevant columns for this outcome and characteristic
     outcome_date_col <- paste0(outcome, "_date")
     event_flag_col <- paste0(outcome, "_date_event_flag")
     
-    # Create intervals based on study dates and interval length
-    interval_length <- "day"
-    intervals <- tibble(start_date = seq(study_start_date, study_end_date, by = interval_length)) %>%
-      mutate(end_date = lead(start_date, default = study_end_date)) %>%
-      filter(start_date < study_end_date)
+    # Create 30-day rolling intervals
+    interval_length <- 30
+    intervals <- tibble(start_date = seq(study_start_date, study_end_date - interval_length + 1, by = "day")) %>%
+      mutate(end_date = start_date + interval_length - 1) %>%
+      filter(end_date <= study_end_date)
     
-    # Calculate rates over time by joining with interval table
+    # Calculate rolling rates over time by joining with interval table
     rates <- df %>%
       cross_join(intervals) %>%
       filter(
@@ -104,7 +106,7 @@ calculate_rates <- function(df, outcomes, characteristics) {
     
     bind_rows(lapply(characteristics, function(char) {
       
-      rates <- rates %>%
+      rates <- rates %>% 
         group_by(interval = start_date, group = as.character(.data[[char]])) %>%
         summarise(
           events_midpoint6 = roundmid_any(sum(event_flag, na.rm = TRUE)),
@@ -129,7 +131,6 @@ calculate_rates <- function(df, outcomes, characteristics) {
     }))
   }))
 }
-
 
 #define characteristics
 characteristics <- c("age_band", "sex", "latest_ethnicity_group", "imd_quintile",
@@ -157,37 +158,35 @@ outcomes <- case_when(
                 "rsv_mortality", "flu_mortality", "all_cause_mortality"))
 )[[1]]
 
-#calculate the rates for all outcomes
-rates_over_time <- calculate_rates(df_wide, outcomes, characteristics)
+# Calculate rolling rates for each outcome and characteristic
+rates_over_time <- calculate_rolling_rates(df_wide, outcomes, characteristics)
 
-#plot for different characteristics
-plot_rates <- function(df, outcome, characteristic) {
+# Updated plotting function to use 30-day rolling rates without smoothing
+plot_rolling_rates <- function(df, outcome, characteristic) {
   df %>%
-    filter(outcome == !!outcome, characteristic == !!characteristic, !is.na(group)) %>%
+    filter(outcome == !!outcome, characteristic == !!characteristic) %>%
     ggplot(aes(x = interval, y = rate_midpoint6_derived, group = group, col = group)) +
-    geom_smooth(method = "loess", span = 0.2, aes(group = group), se = FALSE) +
+    geom_line() +
     theme_minimal() +
-    # theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    labs(x = "Month", y = "Rate per 1000 person-years\n(Midpoint 6 Derived)", col = "Group")
+    labs(x = "Date", y = "Rate per 1000 person-years\n(Midpoint 6 Derived)", col = "Group")
 }
 
-#helper function to create and save plots
-create_plots <- function(df, outcomes, characteristics) {
+# Define the updated function to create and save plots
+create_rolling_plots <- function(df, outcomes, characteristics) {
   plots <- expand.grid(outcome = outcomes, characteristic = characteristics) %>%
     pmap(function(outcome, characteristic) {
-      plot <- plot_rates(df, outcome, characteristic) +
-        ggtitle(paste("Rate of", str_to_title(gsub("_", " ", outcome)), "by",
-                      str_to_title(gsub("_", " ", characteristic))))
+      plot <- plot_rolling_rates(df, outcome, characteristic) +
+        ggtitle(paste("30-Day Rolling Rate of", str_to_title(gsub("_", " ",
+                outcome)), "by", str_to_title(gsub("_", " ", characteristic))))
       print(plot)  # Print or save each plot
-      ## create output directories ----
       fs::dir_create(here("output", "collated", "plots", paste0(characteristic)))
       ggsave(paste0(here("output", "collated", "plots", paste0(characteristic)),
-                    "/", "crude_rates_", year(study_start_date), "_",
-                    year(study_end_date), "_", cohort, "_", codelist_type, "_",
-                    investigation_type, "_", characteristic, ".png"), plot)
+             "/", "rolling_rates_", year(study_start_date), "_",
+             year(study_end_date), "_", cohort, "_", codelist_type, "_",
+             investigation_type, "_", characteristic, ".png"), plot)
     })
   return(plots)
 }
 
 #run function to create and save plots
-create_plots(rates_over_time, outcomes, characteristics)
+create_rolling_plots(rates_over_time, outcomes, characteristics)
