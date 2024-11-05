@@ -31,10 +31,20 @@ covid_season_min <- as.Date("2019-09-01")
 covid_current_vacc_min <- as.Date("2020-09-01", "%Y-%m-%d")
 covid_prior_vacc_min <- as.Date("2021-09-01", "%Y-%m-%d")
 
+roundmid_any <- function(x, to=10){
+  # like roundmid_any, but centers on (integer) midpoint of the rounding points
+  ceiling(x/to)*to - (floor(to/2)*(x!=0))
+}
+
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_",
              year(study_start_date), "_", year(study_end_date), "_",
              codelist_type, "_", investigation_type, ".arrow")))
+
+#set all NA categories to "Unknown"
+df_input <- df_input %>% mutate_if(is.factor,
+                                   forcats::fct_explicit_na,
+                                   na_level = "Unknown")
 
 #calculate total person-time for each outcome type
 if (study_start_date >= covid_season_min) {
@@ -183,6 +193,7 @@ results <- merge(survival, events, by = "outcome")
 
 #calculate incidence rate per 1000 person-years
 results <- results %>%
+  mutate(events = roundmid_any(events)) %>%
   mutate(incidence_rate = events / person_years * 1000)
 
 #define row order desired
@@ -219,8 +230,8 @@ if (study_start_date >= covid_season_min) {
                 "Flu Severe", "Flu Mortality", "COVID Mild", "COVID Severe",
                 "COVID Mortality", "All-Cause Mortality"),
     PYears = results$person_years,
-    Events = results$events,
-    Rate = results$incidence_rate,
+    Events_Midpoint6 = results$events,
+    Rate_Midpoint6_Derived = results$incidence_rate,
     Characteristic = rep("Total", 10),
     Group = rep("All", 10)
   )
@@ -231,8 +242,8 @@ if (study_start_date >= covid_season_min) {
                 "Overall Respiratory Severe", "Overall Respiratory Mortality",
                 "All-Cause Mortality"),
     PYears = results$person_years,
-    Events = results$events,
-    Rate = results$incidence_rate,
+    Events_Midpoint6 = results$events,
+    Rate_Midpoint6_Derived = results$incidence_rate,
     Characteristic = rep("Total", 10),
     Group = rep("All", 10)
   )
@@ -245,8 +256,8 @@ if (study_start_date >= covid_season_min) {
                 "Overall Respiratory Severe", "Overall Respiratory Mortality",
                 "All-Cause Mortality"),
     PYears = results$person_years,
-    Events = results$events,
-    Rate = results$incidence_rate,
+    Events_Midpoint6 = results$events,
+    Rate_Midpoint6_Derived = results$incidence_rate,
     Characteristic = rep("Total", 13),
     Group = rep("All", 13)
   )
@@ -255,8 +266,8 @@ if (study_start_date >= covid_season_min) {
     Outcome = c("RSV Mild", "RSV Severe", "RSV Mortality", "Flu Mild",
                 "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
     PYears = results$person_years,
-    Events = results$events,
-    Rate = results$incidence_rate,
+    Events_Midpoint6 = results$events,
+    Rate_Midpoint6_Derived = results$incidence_rate,
     Characteristic = c(rep("Total", 7)),
     Group = rep("All", 7)
   )
@@ -419,6 +430,7 @@ results_age <- merge(survival_age, events_age)
 
 #calculate incidence rate per 1000 person-years
 results_age <- results_age %>%
+  mutate(events = roundmid_any(events)) %>%
   mutate(incidence_rate = events / person_years * 1000)
 
 #get number of groups
@@ -439,8 +451,8 @@ if (study_start_date >= covid_season_min) {
                       "COVID Severe", "COVID Mortality", "All-Cause Mortality"),
                     age_bands),
       PYears = results_age$person_years,
-      Events = results_age$events,
-      Rate = results_age$incidence_rate,
+      Events_Midpoint6 = results_age$events,
+      Rate_Midpoint6_Derived = results_age$incidence_rate,
       Characteristic = rep("Age Group", 10 * age_bands),
       Group = results_age$age_band)
   )
@@ -453,8 +465,8 @@ if (study_start_date >= covid_season_min) {
                       "Overall Respiratory Severe", "Overall Respiratory Mild",
                       "All-Cause Mortality"), age_bands),
       PYears = results_age$person_years,
-      Events = results_age$events,
-      Rate = results_age$incidence_rate,
+      Events_Midpoint6 = results_age$events,
+      Rate_Midpoint6_Derived = results_age$incidence_rate,
       Characteristic = rep("Age Group", 10 * age_bands),
       Group = results_age$age_band)
   )
@@ -469,8 +481,8 @@ if (study_start_date >= covid_season_min) {
                       "Overall Respiratory Severe", "Overall Respiratory Mortality",
                       "All-Cause Mortality"), age_bands),
       PYears = results_age$person_years,
-      Events = results_age$events,
-      Rate = results_age$incidence_rate,
+      Events_Midpoint6 = results_age$events,
+      Rate_Midpoint6_Derived = results_age$incidence_rate,
       Characteristic = rep("Age Group", 13 * age_bands),
       Group = results_age$age_band)
   )
@@ -482,8 +494,8 @@ if (study_start_date >= covid_season_min) {
                       "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
                     age_bands),
       PYears = results_age$person_years,
-      Events = results_age$events,
-      Rate = results_age$incidence_rate,
+      Events_Midpoint6 = results_age$events,
+      Rate_Midpoint6_Derived = results_age$incidence_rate,
       Characteristic = rep("Age Group", 7 * age_bands),
       Group = results_age$age_band)
   )
@@ -644,6 +656,7 @@ results_sex <- merge(survival_sex, events_sex)
 
 #calculate incidence rate per 1000 person-years
 results_sex <- results_sex %>%
+  mutate(events = roundmid_any(events)) %>%
   mutate(incidence_rate = events / person_years * 1000)
 
 #reorder rows
@@ -661,8 +674,8 @@ if (study_start_date >= covid_season_min) {
                       "Flu Severe", "Flu Mortality", "COVID Mild", "COVID Severe",
                       "COVID Mortality", "All-Cause Mortality"), sex_groups),
       PYears = results_sex$person_years,
-      Events = results_sex$events,
-      Rate = results_sex$incidence_rate,
+      Events_Midpoint6 = results_sex$events,
+      Rate_Midpoint6_Derived = results_sex$incidence_rate,
       Characteristic = rep("Sex", 10 * sex_groups),
       Group = results_sex$sex)
   )
@@ -675,8 +688,8 @@ if (study_start_date >= covid_season_min) {
                       "Overall Respiratory Severe", "Overall Respiratory Mortality",
                       "All-Cause Mortality"), sex_groups),
       PYears = results_sex$person_years,
-      Events = results_sex$events,
-      Rate = results_sex$incidence_rate,
+      Events_Midpoint6 = results_sex$events,
+      Rate_Midpoint6_Derived = results_sex$incidence_rate,
       Characteristic = rep("Sex", 10 * sex_groups),
       Group = results_sex$sex)
   )
@@ -691,8 +704,8 @@ if (study_start_date >= covid_season_min) {
                       "Overall Respiratory Severe", "Overall Respiratory Mortality",
                       "All-Cause Mortality"), sex_groups),
       PYears = results_sex$person_years,
-      Events = results_sex$events,
-      Rate = results_sex$incidence_rate,
+      Events_Midpoint6 = results_sex$events,
+      Rate_Midpoint6_Derived = results_sex$incidence_rate,
       Characteristic = rep("Sex", 13 * sex_groups),
       Group = results_sex$sex)
   )
@@ -704,8 +717,8 @@ if (study_start_date >= covid_season_min) {
                       "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
                     sex_groups),
       PYears = results_sex$person_years,
-      Events = results_sex$events,
-      Rate = results_sex$incidence_rate,
+      Events_Midpoint6 = results_sex$events,
+      Rate_Midpoint6_Derived = results_sex$incidence_rate,
       Characteristic = rep("Sex", 7 * sex_groups),
       Group = results_sex$sex)
   )
@@ -866,6 +879,7 @@ results_ethnicity <- merge(survival_ethnicity, events_ethnicity)
 
 #calculate incidence rate per 1000 person-years
 results_ethnicity <- results_ethnicity %>%
+  mutate(events = roundmid_any(events)) %>%
   mutate(incidence_rate = events / person_years * 1000)
 
 #get number of groups
@@ -886,8 +900,8 @@ if (study_start_date >= covid_season_min) {
                       "Flu Severe", "Flu Mortality", "COVID Mild", "COVID Severe",
                       "COVID Mortality", "All-Cause Mortality"), ethnicity_groups),
       PYears = results_ethnicity$person_years,
-      Events = results_ethnicity$events,
-      Rate = results_ethnicity$incidence_rate,
+      Events_Midpoint6 = results_ethnicity$events,
+      Rate_Midpoint6_Derived = results_ethnicity$incidence_rate,
       Characteristic = rep("Ethnicity", 10 * ethnicity_groups),
       Group = results_ethnicity$latest_ethnicity_group)
   )
@@ -900,8 +914,8 @@ if (study_start_date >= covid_season_min) {
                       "Overall Respiratory Severe", "Overall Respiratory Mortality",
                       "All-Cause Mortality"), ethnicity_groups),
       PYears = results_ethnicity$person_years,
-      Events = results_ethnicity$events,
-      Rate = results_ethnicity$incidence_rate,
+      Events_Midpoint6 = results_ethnicity$events,
+      Rate_Midpoint6_Derived = results_ethnicity$incidence_rate,
       Characteristic = rep("Ethnicity", 10 * ethnicity_groups),
       Group = results_ethnicity$latest_ethnicity_group)
   )
@@ -916,8 +930,8 @@ if (study_start_date >= covid_season_min) {
                       "Overall Respiratory Severe", "Overall Respiratory Mortality",
                       "All-Cause Mortality"), ethnicity_groups),
       PYears = results_ethnicity$person_years,
-      Events = results_ethnicity$events,
-      Rate = results_ethnicity$incidence_rate,
+      Events_Midpoint6 = results_ethnicity$events,
+      Rate_Midpoint6_Derived = results_ethnicity$incidence_rate,
       Characteristic = rep("Ethnicity", 13 * ethnicity_groups),
       Group = results_ethnicity$latest_ethnicity_group)
   )
@@ -929,8 +943,8 @@ if (study_start_date >= covid_season_min) {
                       "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
                     ethnicity_groups),
       PYears = results_ethnicity$person_years,
-      Events = results_ethnicity$events,
-      Rate = results_ethnicity$incidence_rate,
+      Events_Midpoint6 = results_ethnicity$events,
+      Rate_Midpoint6_Derived = results_ethnicity$incidence_rate,
       Characteristic = rep("Ethnicity", 7 * ethnicity_groups),
       Group = results_ethnicity$latest_ethnicity_group)
   )
@@ -1091,6 +1105,7 @@ results_ses <- merge(survival_ses, events_ses)
 
 #calculate incidence rate per 1000 person-years
 results_ses <- results_ses %>%
+  mutate(events = roundmid_any(events)) %>%
   mutate(incidence_rate = events / person_years * 1000)
 
 #get number of groups
@@ -1110,8 +1125,8 @@ if (study_start_date >= covid_season_min) {
                       "Flu Severe", "Flu Mortality", "COVID Mild", "COVID Severe",
                       "COVID Mortality", "All-Cause Mortality"), ses_groups),
       PYears = results_ses$person_years,
-      Events = results_ses$events,
-      Rate = results_ses$incidence_rate,
+      Events_Midpoint6 = results_ses$events,
+      Rate_Midpoint6_Derived = results_ses$incidence_rate,
       Characteristic = rep("IMD Quintile", 10 * ses_groups),
       Group = results_ses$imd_quintile)
   )
@@ -1124,8 +1139,8 @@ if (study_start_date >= covid_season_min) {
                       "Overall Respiratory Severe", "Overall Respiratory Mortality",
                       "All-Cause Mortality"), ses_groups),
       PYears = results_ses$person_years,
-      Events = results_ses$events,
-      Rate = results_ses$incidence_rate,
+      Events_Midpoint6 = results_ses$events,
+      Rate_Midpoint6_Derived = results_ses$incidence_rate,
       Characteristic = rep("IMD Quintile", 10 * ses_groups),
       Group = results_ses$imd_quintile)
   )
@@ -1140,8 +1155,8 @@ if (study_start_date >= covid_season_min) {
                       "Overall Respiratory Severe", "Overall Respiratory Mortality",
                       "All-Cause Mortality"), ses_groups),
       PYears = results_ses$person_years,
-      Events = results_ses$events,
-      Rate = results_ses$incidence_rate,
+      Events_Midpoint6 = results_ses$events,
+      Rate_Midpoint6_Derived = results_ses$incidence_rate,
       Characteristic = rep("IMD Quintile", 13 * ses_groups),
       Group = results_ses$imd_quintile)
   )
@@ -1153,8 +1168,8 @@ if (study_start_date >= covid_season_min) {
                       "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
                     ses_groups),
       PYears = results_ses$person_years,
-      Events = results_ses$events,
-      Rate = results_ses$incidence_rate,
+      Events_Midpoint6 = results_ses$events,
+      Rate_Midpoint6_Derived = results_ses$incidence_rate,
       Characteristic = rep("IMD Quintile", 7 * ses_groups),
       Group = results_ses$imd_quintile)
   )
@@ -1317,6 +1332,7 @@ if (study_start_date == as.Date("2020-09-01")) {
   
   #calculate incidence rate per 1000 person-years
   results_hh_comp <- results_hh_comp %>%
+    mutate(events = roundmid_any(events)) %>%
     mutate(incidence_rate = events / person_years * 1000)
   
   #get number of groups
@@ -1337,8 +1353,8 @@ if (study_start_date == as.Date("2020-09-01")) {
                         "Flu Severe", "Flu Mortality", "COVID Mild", "COVID Severe",
                         "COVID Mortality", "All-Cause Mortality"), hh_comp_groups),
         PYears = results_hh_comp$person_years,
-        Events = results_hh_comp$events,
-        Rate = results_hh_comp$incidence_rate,
+        Events_Midpoint6 = results_hh_comp$events,
+        Rate_Midpoint6_Derived = results_hh_comp$incidence_rate,
         Characteristic = rep("Household Composition Category",
                              10 * hh_comp_groups),
         Group = results_hh_comp$composition_category)
@@ -1352,8 +1368,8 @@ if (study_start_date == as.Date("2020-09-01")) {
                         "Overall Respiratory Severe", "Overall Respiratory Mortality",
                         "All-Cause Mortality"), hh_comp_groups),
         PYears = results_hh_comp$person_years,
-        Events = results_hh_comp$events,
-        Rate = results_hh_comp$incidence_rate,
+        Events_Midpoint6 = results_hh_comp$events,
+        Rate_Midpoint6_Derived = results_hh_comp$incidence_rate,
         Characteristic = rep("Household Composition Category",
                              10 * hh_comp_groups),
         Group = results_hh_comp$composition_category)
@@ -1369,8 +1385,8 @@ if (study_start_date == as.Date("2020-09-01")) {
                         "Overall Respiratory Severe", "Overall Respiratory Mortality",
                         "All-Cause Mortality"), hh_comp_groups),
         PYears = results_hh_comp$person_years,
-        Events = results_hh_comp$events,
-        Rate = results_hh_comp$incidence_rate,
+        Events_Midpoint6 = results_hh_comp$events,
+        Rate_Midpoint6_Derived = results_hh_comp$incidence_rate,
         Characteristic = rep("Household Composition Category",
                              13 * hh_comp_groups),
         Group = results_hh_comp$composition_category)
@@ -1383,8 +1399,8 @@ if (study_start_date == as.Date("2020-09-01")) {
                         "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
                       hh_comp_groups),
         PYears = results_hh_comp$person_years,
-        Events = results_hh_comp$events,
-        Rate = results_hh_comp$incidence_rate,
+        Events_Midpoint6 = results_hh_comp$events,
+        Rate_Midpoint6_Derived = results_hh_comp$incidence_rate,
         Characteristic = rep("Household Composition Category",
                              7 * hh_comp_groups),
         Group = results_hh_comp$composition_category)
@@ -1547,6 +1563,7 @@ results_rurality <- merge(survival_rurality, events_rurality)
 
 #calculate incidence rate per 1000 person-years
 results_rurality <- results_rurality %>%
+  mutate(events = roundmid_any(events)) %>%
   mutate(incidence_rate = events / person_years * 1000)
 
 #get number of groups
@@ -1567,8 +1584,8 @@ if (study_start_date >= covid_season_min) {
                       "Flu Severe", "Flu Mortality", "COVID Mild", "COVID Severe",
                       "COVID Mortality", "All-Cause Mortality"), rurality_groups),
       PYears = results_rurality$person_years,
-      Events = results_rurality$events,
-      Rate = results_rurality$incidence_rate,
+      Events_Midpoint6 = results_rurality$events,
+      Rate_Midpoint6_Derived = results_rurality$incidence_rate,
       Characteristic = rep("Rurality Classification", 10 * rurality_groups),
       Group = results_rurality$rurality_classification)
   )
@@ -1581,8 +1598,8 @@ if (study_start_date >= covid_season_min) {
                       "Overall Respiratory Severe", "Overall Respiratory Mortality",
                       "All-Cause Mortality"), rurality_groups),
       PYears = results_rurality$person_years,
-      Events = results_rurality$events,
-      Rate = results_rurality$incidence_rate,
+      Events_Midpoint6 = results_rurality$events,
+      Rate_Midpoint6_Derived = results_rurality$incidence_rate,
       Characteristic = rep("Rurality Classification", 10 * rurality_groups),
       Group = results_rurality$rurality_classification)
   )
@@ -1597,8 +1614,8 @@ if (study_start_date >= covid_season_min) {
                       "Overall Respiratory Severe", "Overall Respiratory Mortality",
                       "All-Cause Mortality"), rurality_groups),
       PYears = results_rurality$person_years,
-      Events = results_rurality$events,
-      Rate = results_rurality$incidence_rate,
+      Events_Midpoint6 = results_rurality$events,
+      Rate_Midpoint6_Derived = results_rurality$incidence_rate,
       Characteristic = rep("Rurality Classification", 13 * rurality_groups),
       Group = results_rurality$rurality_classification)
   )
@@ -1610,8 +1627,8 @@ if (study_start_date >= covid_season_min) {
                       "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
                     rurality_groups),
       PYears = results_rurality$person_years,
-      Events = results_rurality$events,
-      Rate = results_rurality$incidence_rate,
+      Events_Midpoint6 = results_rurality$events,
+      Rate_Midpoint6_Derived = results_rurality$incidence_rate,
       Characteristic = rep("Rurality Classification", 7 * rurality_groups),
       Group = results_rurality$rurality_classification)
   )
@@ -1776,6 +1793,7 @@ if (cohort == "infants_subgroup") {
   
   #calculate incidence rate per 1000 person-years
   results_maternal_age <- results_maternal_age %>%
+    mutate(events = roundmid_any(events)) %>%
     mutate(incidence_rate = events / person_years * 1000)
   
   #reorder rows
@@ -1791,8 +1809,8 @@ if (cohort == "infants_subgroup") {
                     "Flu Severe", "Flu Mortality", "COVID Mild", "COVID Severe",
                     "COVID Mortality", "All-Cause Mortality"),
         PYears = results_maternal_age$person_years,
-        Events = results_maternal_age$events,
-        Rate = results_maternal_age$incidence_rate,
+        Events_Midpoint6 = results_maternal_age$events,
+        Rate_Midpoint6_Derived = results_maternal_age$incidence_rate,
         Characteristic = rep("Average Maternal Age", 10),
         Group = results_maternal_age$avg_maternal_age)
     )
@@ -1805,8 +1823,8 @@ if (cohort == "infants_subgroup") {
                     "Overall Respiratory Severe", "Overall Respiratory Mortality",
                     "All-Cause Mortality"),
         PYears = results_maternal_age$person_years,
-        Events = results_maternal_age$events,
-        Rate = results_maternal_age$incidence_rate,
+        Events_Midpoint6 = results_maternal_age$events,
+        Rate_Midpoint6_Derived = results_maternal_age$incidence_rate,
         Characteristic = rep("Average Maternal Age", 10),
         Group = results_maternal_age$avg_maternal_age)
     )
@@ -1821,8 +1839,8 @@ if (cohort == "infants_subgroup") {
                     "Overall Respiratory Severe", "Overall Respiratory Mortality",
                     "All-Cause Mortality"),
         PYears = results_maternal_age$person_years,
-        Events = results_maternal_age$events,
-        Rate = results_maternal_age$incidence_rate,
+        Events_Midpoint6 = results_maternal_age$events,
+        Rate_Midpoint6_Derived = results_maternal_age$incidence_rate,
         Characteristic = rep("Average Maternal Age", 13),
         Group = results_maternal_age$avg_maternal_age)
     )
@@ -1833,8 +1851,8 @@ if (cohort == "infants_subgroup") {
         Outcome = c("RSV Mild", "RSV Severe", "RSV Mortality", "Flu Mild",
                     "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
         PYears = results_maternal_age$person_years,
-        Events = results_maternal_age$events,
-        Rate = results_maternal_age$incidence_rate,
+        Events_Midpoint6 = results_maternal_age$events,
+        Rate_Midpoint6_Derived = results_maternal_age$incidence_rate,
         Characteristic = rep("Average Maternal Age", 7),
         Group = results_maternal_age$avg_maternal_age)
     )
@@ -1994,6 +2012,7 @@ if (cohort == "infants_subgroup") {
   
   #calculate incidence rate per 1000 person-years
   results_maternal_smoking <- results_maternal_smoking %>%
+    mutate(events = roundmid_any(events)) %>%
     mutate(incidence_rate = events / person_years * 1000)
   
   #get number of groups
@@ -2015,8 +2034,8 @@ if (cohort == "infants_subgroup") {
                         "COVID Severe", "COVID Mortality", "All-Cause Mortality"),
                       maternal_smoking_groups),
         PYears = results_maternal_smoking$person_years,
-        Events = results_maternal_smoking$events,
-        Rate = results_maternal_smoking$incidence_rate,
+        Events_Midpoint6 = results_maternal_smoking$events,
+        Rate_Midpoint6_Derived = results_maternal_smoking$incidence_rate,
         Characteristic = rep("Maternal Smoking Status", 10 * maternal_smoking_groups),
         Group = results_maternal_smoking$maternal_smoking_status)
     )
@@ -2029,8 +2048,8 @@ if (cohort == "infants_subgroup") {
                         "Overall Respiratory Severe", "Overall Respiratory Mortality",
                         "All-Cause Mortality"), maternal_smoking_groups),
         PYears = results_maternal_smoking$person_years,
-        Events = results_maternal_smoking$events,
-        Rate = results_maternal_smoking$incidence_rate,
+        Events_Midpoint6 = results_maternal_smoking$events,
+        Rate_Midpoint6_Derived = results_maternal_smoking$incidence_rate,
         Characteristic = rep("Maternal Smoking Status", 10 * maternal_smoking_groups),
         Group = results_maternal_smoking$maternal_smoking_status)
     )
@@ -2044,8 +2063,8 @@ if (cohort == "infants_subgroup") {
                         "Overall Respiratory Severe", "Overall Respiratory Mortality",
                         "All-Cause Mortality"), maternal_smoking_groups),
         PYears = results_maternal_smoking$person_years,
-        Events = results_maternal_smoking$events,
-        Rate = results_maternal_smoking$incidence_rate,
+        Events_Midpoint6 = results_maternal_smoking$events,
+        Rate_Midpoint6_Derived = results_maternal_smoking$incidence_rate,
         Characteristic = rep("Maternal Smoking Status", 13 * maternal_smoking_groups),
         Group = results_maternal_smoking$maternal_smoking_status)
     )
@@ -2057,8 +2076,8 @@ if (cohort == "infants_subgroup") {
                         "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
                       maternal_smoking_groups),
         PYears = results_maternal_smoking$person_years,
-        Events = results_maternal_smoking$events,
-        Rate = results_maternal_smoking$incidence_rate,
+        Events_Midpoint6 = results_maternal_smoking$events,
+        Rate_Midpoint6_Derived = results_maternal_smoking$incidence_rate,
         Characteristic = rep("Maternal Smoking Status", 7 * maternal_smoking_groups),
         Group = results_maternal_smoking$maternal_smoking_status)
     )
@@ -2218,6 +2237,7 @@ if (cohort == "infants_subgroup") {
   
   #calculate incidence rate per 1000 person-years
   results_maternal_drinking <- results_maternal_drinking %>%
+    mutate(events = roundmid_any(events)) %>%
     mutate(incidence_rate = events / person_years * 1000)
   
   #get number of groups
@@ -2239,8 +2259,8 @@ if (cohort == "infants_subgroup") {
                         "COVID Severe", "COVID Mortality", "All-Cause Mortality"),
                       maternal_drinking_groups),
         PYears = results_maternal_drinking$person_years,
-        Events = results_maternal_drinking$events,
-        Rate = results_maternal_drinking$incidence_rate,
+        Events_Midpoint6 = results_maternal_drinking$events,
+        Rate_Midpoint6_Derived = results_maternal_drinking$incidence_rate,
         Characteristic = rep("Maternal Drinking", 10 * maternal_drinking_groups),
         Group = results_maternal_drinking$maternal_drinking)
     )
@@ -2253,8 +2273,8 @@ if (cohort == "infants_subgroup") {
                         "Overall Respiratory Severe", "Overall Respiratory Mortality",
                         "All-Cause Mortality"), maternal_drinking_groups),
         PYears = results_maternal_drinking$person_years,
-        Events = results_maternal_drinking$events,
-        Rate = results_maternal_drinking$incidence_rate,
+        Events_Midpoint6 = results_maternal_drinking$events,
+        Rate_Midpoint6_Derived = results_maternal_drinking$incidence_rate,
         Characteristic = rep("Maternal Drinking", 10 * maternal_drinking_groups),
         Group = results_maternal_drinking$maternal_drinking)
     )
@@ -2268,8 +2288,8 @@ if (cohort == "infants_subgroup") {
                         "Overall Respiratory Severe", "Overall Respiratory Mortality",
                         "All-Cause Mortality"), maternal_drinking_groups),
         PYears = results_maternal_drinking$person_years,
-        Events = results_maternal_drinking$events,
-        Rate = results_maternal_drinking$incidence_rate,
+        Events_Midpoint6 = results_maternal_drinking$events,
+        Rate_Midpoint6_Derived = results_maternal_drinking$incidence_rate,
         Characteristic = rep("Maternal Drinking", 13 * maternal_drinking_groups),
         Group = results_maternal_drinking$maternal_drinking)
     )
@@ -2281,8 +2301,8 @@ if (cohort == "infants_subgroup") {
                         "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
                       maternal_drinking_groups),
         PYears = results_maternal_drinking$person_years,
-        Events = results_maternal_drinking$events,
-        Rate = results_maternal_drinking$incidence_rate,
+        Events_Midpoint6 = results_maternal_drinking$events,
+        Rate_Midpoint6_Derived = results_maternal_drinking$incidence_rate,
         Characteristic = rep("Maternal Drinking", 7 * maternal_drinking_groups),
         Group = results_maternal_drinking$maternal_drinking)
     )
@@ -2442,6 +2462,7 @@ if (cohort == "infants_subgroup") {
   
   #calculate incidence rate per 1000 person-years
   results_maternal_drug_usage <- results_maternal_drug_usage %>%
+    mutate(events = roundmid_any(events)) %>%
     mutate(incidence_rate = events / person_years * 1000)
   
   #get number of groups
@@ -2463,8 +2484,8 @@ if (cohort == "infants_subgroup") {
                         "COVID Mortality", "All-Cause Mortality"), 
                       maternal_drug_usage_groups),
         PYears = results_maternal_drug_usage$person_years,
-        Events = results_maternal_drug_usage$events,
-        Rate = results_maternal_drug_usage$incidence_rate,
+        Events_Midpoint6 = results_maternal_drug_usage$events,
+        Rate_Midpoint6_Derived = results_maternal_drug_usage$incidence_rate,
         Characteristic = rep("Maternal Drug Usage", 10 * maternal_drug_usage_groups),
         Group = results_maternal_drug_usage$maternal_drug_usage)
     )
@@ -2477,8 +2498,8 @@ if (cohort == "infants_subgroup") {
                         "Overall Respiratory Severe", "Overall Respiratory Mortality",
                         "All-Cause Mortality"), maternal_drug_usage_groups),
         PYears = results_maternal_drug_usage$person_years,
-        Events = results_maternal_drug_usage$events,
-        Rate = results_maternal_drug_usage$incidence_rate,
+        Events_Midpoint6 = results_maternal_drug_usage$events,
+        Rate_Midpoint6_Derived = results_maternal_drug_usage$incidence_rate,
         Characteristic = rep("Maternal Drug Usage", 10 * maternal_drug_usage_groups),
         Group = results_maternal_drug_usage$maternal_drug_usage)
     )
@@ -2492,8 +2513,8 @@ if (cohort == "infants_subgroup") {
                         "Overall Respiratory Severe", "Overall Respiratory Mortality",
                         "All-Cause Mortality"), maternal_drug_usage_groups),
         PYears = results_maternal_drug_usage$person_years,
-        Events = results_maternal_drug_usage$events,
-        Rate = results_maternal_drug_usage$incidence_rate,
+        Events_Midpoint6 = results_maternal_drug_usage$events,
+        Rate_Midpoint6_Derived = results_maternal_drug_usage$incidence_rate,
         Characteristic = rep("Maternal Drug Usage", 13 * maternal_drug_usage_groups),
         Group = results_maternal_drug_usage$maternal_drug_usage)
     )
@@ -2505,8 +2526,8 @@ if (cohort == "infants_subgroup") {
                         "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
                       maternal_drug_usage_groups),
         PYears = results_maternal_drug_usage$person_years,
-        Events = results_maternal_drug_usage$events,
-        Rate = results_maternal_drug_usage$incidence_rate,
+        Events_Midpoint6 = results_maternal_drug_usage$events,
+        Rate_Midpoint6_Derived = results_maternal_drug_usage$incidence_rate,
         Characteristic = rep("Maternal Drug Usage", 7 * maternal_drug_usage_groups),
         Group = results_maternal_drug_usage$maternal_drug_usage)
     )
@@ -2668,6 +2689,7 @@ if (cohort == "infants_subgroup") {
   
   #calculate incidence rate per 1000 person-years
   results_maternal_pertussis_vacc <- results_maternal_pertussis_vacc %>%
+    mutate(events = roundmid_any(events)) %>%
     mutate(incidence_rate = events / person_years * 1000)
   
   #get number of groups
@@ -2689,8 +2711,8 @@ if (cohort == "infants_subgroup") {
                         "COVID Mortality", "All-Cause Mortality"),
                       maternal_pertussis_vacc_groups),
         PYears = results_maternal_pertussis_vacc$person_years,
-        Events = results_maternal_pertussis_vacc$events,
-        Rate = results_maternal_pertussis_vacc$incidence_rate,
+        Events_Midpoint6 = results_maternal_pertussis_vacc$events,
+        Rate_Midpoint6_Derived = results_maternal_pertussis_vacc$incidence_rate,
         Characteristic = rep("Maternal Pertussis Vaccination Status",
                              10 * maternal_pertussis_vacc_groups),
         Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
@@ -2704,8 +2726,8 @@ if (cohort == "infants_subgroup") {
                         "Overall Respiratory Severe", "Overall Respiratory Mortality",
                         "All-Cause Mortality"), maternal_pertussis_vacc_groups),
         PYears = results_maternal_pertussis_vacc$person_years,
-        Events = results_maternal_pertussis_vacc$events,
-        Rate = results_maternal_pertussis_vacc$incidence_rate,
+        Events_Midpoint6 = results_maternal_pertussis_vacc$events,
+        Rate_Midpoint6_Derived = results_maternal_pertussis_vacc$incidence_rate,
         Characteristic = rep("Maternal Pertussis Vaccination Status",
                              10 * maternal_pertussis_vacc_groups),
         Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
@@ -2720,8 +2742,8 @@ if (cohort == "infants_subgroup") {
                         "Overall Respiratory Severe", "Overall Respiratory Mortality",
                         "All-Cause Mortality"), maternal_pertussis_vacc_groups),
         PYears = results_maternal_pertussis_vacc$person_years,
-        Events = results_maternal_pertussis_vacc$events,
-        Rate = results_maternal_pertussis_vacc$incidence_rate,
+        Events_Midpoint6 = results_maternal_pertussis_vacc$events,
+        Rate_Midpoint6_Derived = results_maternal_pertussis_vacc$incidence_rate,
         Characteristic = rep("Maternal Pertussis Vaccination Status",
                              13 * maternal_pertussis_vacc_groups),
         Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
@@ -2734,8 +2756,8 @@ if (cohort == "infants_subgroup") {
                         "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
                       maternal_pertussis_vacc_groups),
         PYears = results_maternal_pertussis_vacc$person_years,
-        Events = results_maternal_pertussis_vacc$events,
-        Rate = results_maternal_pertussis_vacc$incidence_rate,
+        Events_Midpoint6 = results_maternal_pertussis_vacc$events,
+        Rate_Midpoint6_Derived = results_maternal_pertussis_vacc$incidence_rate,
         Characteristic = rep("Maternal Pertussis Vaccination Status",
                              7 * maternal_pertussis_vacc_groups),
         Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
@@ -2898,6 +2920,7 @@ if (cohort == "infants_subgroup") {
   
   #calculate incidence rate per 1000 person-years
   results_maternal_flu_vacc <- results_maternal_flu_vacc %>%
+    mutate(events = roundmid_any(events)) %>%
     mutate(incidence_rate = events / person_years * 1000)
   
   #get number of groups
@@ -2919,8 +2942,8 @@ if (cohort == "infants_subgroup") {
                         "COVID Mortality", "All-Cause Mortality"),
                       maternal_flu_vacc_groups),
         PYears = results_maternal_flu_vacc$person_years,
-        Events = results_maternal_flu_vacc$events,
-        Rate = results_maternal_flu_vacc$incidence_rate,
+        Events_Midpoint6 = results_maternal_flu_vacc$events,
+        Rate_Midpoint6_Derived = results_maternal_flu_vacc$incidence_rate,
         Characteristic = rep("Maternal Influenza Vaccination Status",
                              10 * maternal_flu_vacc_groups),
         Group = results_maternal_flu_vacc$maternal_flu_vaccination)
@@ -2934,8 +2957,8 @@ if (cohort == "infants_subgroup") {
                         "Overall Respiratory Severe", "Overall Respiratory Mortality",
                         "All-Cause Mortality"), maternal_flu_vacc_groups),
         PYears = results_maternal_flu_vacc$person_years,
-        Events = results_maternal_flu_vacc$events,
-        Rate = results_maternal_flu_vacc$incidence_rate,
+        Events_Midpoint6 = results_maternal_flu_vacc$events,
+        Rate_Midpoint6_Derived = results_maternal_flu_vacc$incidence_rate,
         Characteristic = rep("Maternal Influenza Vaccination Status",
                              10 * maternal_flu_vacc_groups),
         Group = results_maternal_flu_vacc$maternal_flu_vaccination)
@@ -2950,8 +2973,8 @@ if (cohort == "infants_subgroup") {
                         "Overall Respiratory Severe", "Overall Respiratory Mortality",
                         "All-Cause Mortality"), maternal_flu_vacc_groups),
         PYears = results_maternal_flu_vacc$person_years,
-        Events = results_maternal_flu_vacc$events,
-        Rate = results_maternal_flu_vacc$incidence_rate,
+        Events_Midpoint6 = results_maternal_flu_vacc$events,
+        Rate_Midpoint6_Derived = results_maternal_flu_vacc$incidence_rate,
         Characteristic = rep("Maternal Influenza Vaccination Status",
                              13 * maternal_flu_vacc_groups),
         Group = results_maternal_flu_vacc$maternal_flu_vaccination)
@@ -2964,8 +2987,8 @@ if (cohort == "infants_subgroup") {
                         "Flu Severe", "Flu Mortality", "All-Cause Mortality"),
                       maternal_flu_vacc_groups),
         PYears = results_maternal_flu_vacc$person_years,
-        Events = results_maternal_flu_vacc$events,
-        Rate = results_maternal_flu_vacc$incidence_rate,
+        Events_Midpoint6 = results_maternal_flu_vacc$events,
+        Rate_Midpoint6_Derived = results_maternal_flu_vacc$incidence_rate,
         Characteristic = rep("Maternal Influenza Vaccination Status",
                              7 * maternal_flu_vacc_groups),
         Group = results_maternal_flu_vacc$maternal_flu_vaccination)
@@ -3020,6 +3043,7 @@ if (cohort == "children_and_adolescents" |
                                            events_time_since_cov_vacc)
       #calculate incidence rate per 1000 person-years
       results_time_since_cov_vacc <- results_time_since_cov_vacc %>%
+        mutate(events = roundmid_any(events)) %>%
         mutate(incidence_rate = events / person_years * 1000)
       #get number of groups
       cov_vaccines_groups <- as.numeric(length(unique(
@@ -3035,8 +3059,8 @@ if (cohort == "children_and_adolescents" |
           Outcome = c(rep(c("COVID Mild", "COVID Severe", "COVID Mortality"),
                           cov_vaccines_groups)),
           PYears = results_time_since_cov_vacc$person_years,
-          Events = results_time_since_cov_vacc$events,
-          Rate = results_time_since_cov_vacc$incidence_rate,
+          Events_Midpoint6 = results_time_since_cov_vacc$events,
+          Rate_Midpoint6_Derived = results_time_since_cov_vacc$incidence_rate,
           Characteristic = c(rep("Time Since Last COVID-19 Vaccination",
                                  3 * cov_vaccines_groups)),
           Group = results_time_since_cov_vacc$
@@ -3135,6 +3159,7 @@ if (cohort == "children_and_adolescents" |
     results_cov_vaccines <- merge(survival_cov_vaccines, events_cov_vaccines)
     #calculate incidence rate per 1000 person-years
     results_cov_vaccines <- results_cov_vaccines %>%
+      mutate(events = roundmid_any(events)) %>%
       mutate(incidence_rate = events / person_years * 1000)
     #add this to final results with 'Group' as covid vaccination status
     final_results <- rbind(
@@ -3142,8 +3167,8 @@ if (cohort == "children_and_adolescents" |
       data.frame(
         Outcome = rep(c("COVID Mild", "COVID Severe", "COVID Mortality"), 2),
         PYears = results_cov_vaccines$person_years,
-        Events = results_cov_vaccines$events,
-        Rate = results_cov_vaccines$incidence_rate,
+        Events_Midpoint6 = results_cov_vaccines$events,
+        Rate_Midpoint6_Derived = results_cov_vaccines$incidence_rate,
         Characteristic = c(rep("Vaccinated against COVID-19 in current season",
                                6)),
         Group = results_cov_vaccines$covid_vaccination)
@@ -3188,7 +3213,8 @@ if (cohort == "children_and_adolescents" |
   results_prior_flu_vacc <- merge(survival_prior_flu_vacc,
                                   events_prior_flu_vacc)
   #calculate incidence rate per 1000 person-years
-  results_prior_flu_vacc <- results_prior_flu_vacc %>%
+  results_prior_flu_vacc <- results_prior_flu_vac %>%
+    mutate(events = roundmid_any(events)) %>%
     mutate(incidence_rate = events / person_years * 1000)
 
   #reorder rows
@@ -3201,8 +3227,8 @@ if (cohort == "children_and_adolescents" |
     data.frame(
       Outcome = rep(c("Flu Mild", "Flu Severe", "Flu Mortality"), 2),
         PYears = results_prior_flu_vacc$person_years,
-        Events = results_prior_flu_vacc$events,
-        Rate = results_prior_flu_vacc$incidence_rate,
+        Events_Midpoint6 = results_prior_flu_vacc$events,
+        Rate_Midpoint6_Derived = results_prior_flu_vacc$incidence_rate,
         Characteristic = rep("Vaccinated against influenza in previous season",
                              6),
         Group = results_prior_flu_vacc$prior_flu_vaccination)
@@ -3298,6 +3324,7 @@ if (cohort == "children_and_adolescents" |
   results_flu_vacc <- merge(survival_flu_vacc, events_flu_vacc)
   #calculate incidence rate per 1000 person-years
   results_flu_vacc <- results_flu_vacc %>%
+    mutate(events = roundmid_any(events)) %>%
     mutate(incidence_rate = events / person_years * 1000)
   #add this to final results with 'Group' as prior flu vaccination status
   final_results <- rbind(
@@ -3305,8 +3332,8 @@ if (cohort == "children_and_adolescents" |
     data.frame(
       Outcome = rep(c("Flu Mild", "Flu Severe", "Flu Mortality"), 2),
       PYears = results_flu_vacc$person_years,
-      Events = results_flu_vacc$events,
-      Rate = results_flu_vacc$incidence_rate,
+      Events_Midpoint6 = results_flu_vacc$events,
+      Rate_Midpoint6_Derived = results_flu_vacc$incidence_rate,
       Characteristic = rep("Vaccinated against influenza in current season", 6),
       Group = results_flu_vacc$flu_vaccination)
     )
@@ -3388,7 +3415,7 @@ fs::dir_create(here("output", "results", "rates"))
 if (length(args) == 0) {
   results_table <- final_results %>%
     mutate_if(is.numeric, round, digits = 4) %>%
-    select(Outcome, Group, Characteristic, Events, Rate) %>%
+    select(Outcome, Group, Characteristic, Events_Midpoint6, Rate_Midpoint6_Derived) %>%
     group_by(Characteristic) %>%
     gt(groupname_col = "Characteristic") %>%
     row_group_order(groups = c(table_groups)) %>%
@@ -3404,7 +3431,7 @@ if (length(args) == 0) {
 } else {
   results_table <- final_results %>%
     mutate_if(is.numeric, round, digits = 4) %>%
-    select(Outcome, Group, Characteristic, Events, Rate) %>%
+    select(Outcome, Group, Characteristic, Events_Midpoint6, Rate_Midpoint6_Derived) %>%
     group_by(Characteristic) %>%
     gt(groupname_col = "Characteristic") %>%
     row_group_order(groups = c(table_groups)) %>%
