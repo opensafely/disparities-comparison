@@ -34,8 +34,27 @@ covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
-                                      year(study_start_date), "_", year(study_end_date), "_", 
-                                      codelist_type, "_", investigation_type,".arrow"))) 
+             year(study_start_date), "_", year(study_end_date), "_", 
+             codelist_type, "_", investigation_type,".arrow")))
+
+#remove rows with missing values in any of the variables using in models
+if (study_start_date >= covid_prior_vacc_min) {
+  df_input <- df_input %>% 
+    filter(!is.na(covid_primary_inf), !is.na(covid_secondary_inf), 
+           !is.na(covid_mortality), !is.na(latest_ethnicity_group),
+           !is.na(composition_category), !is.na(age_band),
+           !is.na(sex), !is.na(rurality_classification),
+           !is.na(covid_vaccination_mild), !is.na(covid_vaccination_severe),
+           !is.na(covid_vaccination), !is.na(time_since_last_covid_vaccination))
+} else {
+  df_input <- df_input %>% 
+    filter(!is.na(covid_primary_inf), !is.na(covid_secondary_inf), 
+           !is.na(covid_mortality), !is.na(latest_ethnicity_group),
+           !is.na(composition_category), !is.na(age_band),
+           !is.na(sex), !is.na(rurality_classification),
+           !is.na(covid_vaccination_mild), !is.na(covid_vaccination_severe),
+           !is.na(covid_vaccination), !is.na(time_since_last_covid_vaccination))
+}
   
 if (study_start_date >= covid_prior_vacc_min) {
   

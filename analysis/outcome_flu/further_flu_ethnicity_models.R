@@ -34,8 +34,16 @@ covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
-                                      year(study_start_date), "_", year(study_end_date), "_", 
-                                      codelist_type, "_", investigation_type,".arrow"))) 
+             year(study_start_date), "_", year(study_end_date), "_", 
+             codelist_type, "_", investigation_type,".arrow"))) 
+
+#remove rows with missing values in any of the variables using in models
+df_input <- df_input %>% 
+  filter(!is.na(flu_primary_inf), !is.na(flu_secondary_inf), 
+         !is.na(flu_mortality), !is.na(latest_ethnicity_group),
+         !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
+         !is.na(prior_flu_vaccination), !is.na(flu_vaccination_mild),
+         !is.na(flu_vaccination_severe), !is.na(flu_vaccination))
 
 #flu primary by ethnicity
 flu_mild_ethnicity_further <- glm(flu_primary_inf ~ latest_ethnicity_group + 

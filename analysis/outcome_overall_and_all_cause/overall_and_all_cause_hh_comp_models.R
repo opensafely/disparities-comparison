@@ -32,8 +32,28 @@ covid_season_min <- as.Date("2019-09-01")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
-                                      year(study_start_date), "_", year(study_end_date), "_", 
-                                      codelist_type, "_", investigation_type,".arrow"))) 
+             year(study_start_date), "_", year(study_end_date), "_", 
+             codelist_type, "_", investigation_type,".arrow")))
+
+#remove rows with missing values in any of the variables using in models
+if (cohort == "infants_subgroup") {
+  df_input <- df_input %>% 
+    filter(!is.na(overall_and_all_cause_primary_inf),
+           !is.na(overall_and_all_cause_secondary_inf), 
+           !is.na(overall_and_all_cause_mortality),
+           !is.na(composition_category), !is.na(age_band),
+           !is.na(sex), !is.na(rurality_classification),
+           !is.na(maternal_age), !is.na(maternal_smoking_status),
+           !is.na(maternal_drinking), !is.na(maternal_drug_usage),
+           !is.na(maternal_flu_vaccination))
+} else {
+  df_input <- df_input %>% 
+    filter(!is.na(overall_and_all_cause_primary_inf),
+           !is.na(overall_and_all_cause_secondary_inf), 
+           !is.na(overall_and_all_cause_mortality),
+           !is.na(composition_category), !is.na(age_band),
+           !is.na(sex), !is.na(rurality_classification))
+}
 
 if (cohort == "infants_subgroup") {
   
