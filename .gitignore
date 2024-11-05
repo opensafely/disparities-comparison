@@ -17,3 +17,4 @@ venv/
 filtered_actions.txt
 .devcontainer/ehrql-main/
 /example-data/*
+/old_model_files/*
