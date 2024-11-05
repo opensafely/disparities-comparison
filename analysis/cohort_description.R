@@ -38,6 +38,11 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow")))
 
+#set all NA categories to "Unknown"
+df_input <- df_input %>% mutate_if(is.factor,
+                                   forcats::fct_explicit_na,
+                                   na_level = "Unknown")
+
 if (study_start_date == as.Date("2020-09-01")) {
   if (cohort == "infants") {
     table <- df_input %>%
