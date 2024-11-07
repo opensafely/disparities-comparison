@@ -44,9 +44,8 @@ codelist_type = args[4]
 investigation_type = args[5]
 
 # Change these in ./analysis/design/study-dates.R if necessary
-study_start_date = study_dates[args[2]]
-study_end_date = study_dates[args[3]]
-index_date = study_start_date
+study_start_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
+study_end_date = datetime.strptime(study_dates[args[3]], "%Y-%m-%d").date()
 
 #define patients age
 age_at_start = patients.age_on(study_start_date)
