@@ -158,9 +158,9 @@ sim_list = lst(
     ~ rfactor(n = ..n, levels = c(
       "Current", #smoker
       "Former", #ever-smoked
-      "Never", #never smoked
-      "Unknown" #missing
-    ), p = c(0.1, 0.2, 0.7, 0))
+      "Never" #never smoked
+    ), p = c(0.1, 0.2, 0.7)),
+    missing_rate = ~ 0.1
   ),
   
   #drinking 
