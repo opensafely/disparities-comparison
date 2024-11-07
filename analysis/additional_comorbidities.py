@@ -47,11 +47,10 @@ investigation_type = args[5]
 study_start_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
 study_end_date = datetime.strptime(study_dates[args[3]], "%Y-%m-%d").date()
 
-#define patients age
-age_at_start = patients.age_on(study_start_date)
-age_at_end = patients.age_on(study_end_date)
-age_months = (index_date - patients.date_of_birth).months
-age_at_start_months = (study_start_date - patients.date_of_birth).months
+# #define patients age
+# age_at_start = patients.age_on(study_start_date)
+# age_at_end = patients.age_on(study_end_date)
+# age_at_start_months = (study_start_date - patients.date_of_birth).months
 
 #get date patient ages into cohort 
 if cohort == "infants" or cohort == "infants_subgroup" :
