@@ -18,3 +18,4 @@ filtered_actions.txt
 .devcontainer/ehrql-main/
 /example-data/*
 analysis/old_model_files/*
+analysis/dummydata/*.arrow
