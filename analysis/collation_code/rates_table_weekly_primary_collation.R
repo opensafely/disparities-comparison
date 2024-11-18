@@ -72,8 +72,8 @@ collate_rates <- function(season) {
             rates_over_time_collated[[pathogen]],
             read_csv(file_path) %>%
               mutate(
-                interval_beginning = as.Date(interval_beginning,
-                                             origin = "1970-01-01"),
+                week_beginning = as.Date(week_beginning,
+                                         origin = "1970-01-01"),
                 codelist_type = codelist_type,
                 investigation_type = "primary",
                 subset = subset,
