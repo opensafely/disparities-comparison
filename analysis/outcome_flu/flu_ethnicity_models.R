@@ -51,7 +51,7 @@ if (cohort == "infants_subgroup") {
   df_input <- df_input %>% 
     filter(!is.na(flu_primary_inf), !is.na(flu_secondary_inf), 
            !is.na(flu_mortality), !is.na(latest_ethnicity_group),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification)
+           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
            !is.na(has_asthma), !is.na(has_copd), !is.na(has_cystic_fibrosis),
            !is.na(has_other_resp), !is.na(has_diabetes), !is.na(has_addisons),
            !is.na(severe_obesity), !is.na(has_chd), !is.na(has_ckd),
