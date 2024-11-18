@@ -7,10 +7,10 @@ library(lubridate)
 library(magrittr)
 
 ## create output directories ----
-fs::dir_create(here("analysis", "sensitivity_analyses"))
+fs::dir_create(here::here("analysis", "sensitivity_analyses"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- as.Date("2017-09-01")
@@ -408,7 +408,7 @@ df_input_filt <- df_input_filt %>%
   )
 
 ## create output directories ----
-fs::dir_create(here("output", "data"))
+fs::dir_create(here::here("output", "data"))
 
 #write the new input file
 write_feather(df_input_filt, here::here("output", "data",

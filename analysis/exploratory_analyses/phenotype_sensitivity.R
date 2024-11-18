@@ -4,10 +4,10 @@ library(arrow)
 library(lubridate)
 
 ## create output directories ----
-fs::dir_create(here("analysis", "exploratory_analyses"))
+fs::dir_create(here::here("analysis", "exploratory_analyses"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2017-09-01"
@@ -760,7 +760,7 @@ patients_combined <- patients_specific %>%
   full_join(patients_sensitive_overall)
 
 ## create output directories ----
-fs::dir_create(here("output", "exploratory"))
+fs::dir_create(here::here("output", "exploratory"))
 
 #write to file
 write_csv(patients_combined, paste0(here::here("output", "exploratory"),

@@ -7,10 +7,10 @@ library(lubridate)
 library(magrittr)
 
 ## create output directories ----
-fs::dir_create(here("analysis", "secondary_analyses"))
+fs::dir_create(here::here("analysis", "secondary_analyses"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- as.Date("2020-09-01")
@@ -38,7 +38,7 @@ if (study_start_date == as.Date("2020-09-01")) {
   
   df_household <- read_feather(
     here::here("output", "data", paste0("input_household_processed_", 
-                                        year(study_start_date), "_", year(study_end_date), ".arrow")))
+               year(study_start_date), "_", year(study_end_date), ".arrow")))
   
   household_comp_vars <- tibble("patient_id" = df_household$patient_id,
                                 "num_generations"= df_household$num_generations, 
@@ -535,7 +535,7 @@ df_input <- df_input %>%
   )
 
 ## create output directories ----
-fs::dir_create(here("output", "data"))
+fs::dir_create(here::here("output", "data"))
 
 #write the new input file
 write_feather(df_input, here::here("output", "data", 

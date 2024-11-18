@@ -7,7 +7,7 @@ library(lubridate)
 fs::dir_create(here::here("analysis", "exploratory_analyses"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2017-09-01"
@@ -522,7 +522,7 @@ patients_specific <- rbind(patients_specific_age,
                            patients_specific_severe_rurality)
 
 ## create output directories ----
-fs::dir_create(here("output", "exploratory"))
+fs::dir_create(here::here("output", "exploratory"))
 
 #write to file
 write_csv(patients_specific, paste0(here::here("output", "exploratory"),
