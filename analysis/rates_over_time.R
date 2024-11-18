@@ -7,10 +7,10 @@ library(readr)
 library(stringr)
 
 ## create output directories ----
-fs::dir_create(here("analysis"))
+fs::dir_create(here::here("analysis"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- as.Date("2016-09-01")
@@ -185,7 +185,7 @@ for (i in 1:length(pathogens)) {
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "results", "rates", "weekly"))
+fs::dir_create(here::here("output", "results", "rates", "weekly"))
 
 #first look at RSV related outcomes 
 for (i in 1:length(characteristics)) {
@@ -208,7 +208,7 @@ for (i in 1:length(characteristics)) {
   
   #write the rates to a feather file
   write_csv(get(paste0("rates_over_time_rsv_", char)),
-            path = here("output", "results", "rates", "weekly",
+            path = here::here("output", "results", "rates", "weekly",
                    paste0("rates_over_time_weekly_rsv_", char, "_",
                           cohort, "_", year(study_start_date), "_",
                           year(study_end_date), "_", codelist_type, "_",
@@ -239,7 +239,7 @@ for (i in 1:length(characteristics)) {
   
   #write the rates to a feather file
   write_csv(get(paste0("rates_over_time_flu_", char)),
-            path = here("output", "results", "rates", "weekly",
+            path = here::here("output", "results", "rates", "weekly",
                    paste0("rates_over_time_weekly_flu_", char, "_",
                    cohort, "_", year(study_start_date), "_",
                    year(study_end_date), "_", codelist_type, "_",
@@ -276,7 +276,7 @@ if (study_start_date >= covid_season_min) {
     
     #write the rates to a feather file
     write_csv(get(paste0("rates_over_time_covid_", char)),
-              path = here("output", "results", "rates", "weekly",
+              path = here::here("output", "results", "rates", "weekly",
                      paste0("rates_over_time_weekly_covid_", char, "_",
                      cohort, "_", year(study_start_date), "_",
                      year(study_end_date), "_", codelist_type, "_",
@@ -311,7 +311,7 @@ if (codelist_type == "sensitive") {
     
     #write the rates to a feather file
     write_csv(get(paste0("rates_over_time_overall_resp_", char)),
-              path = here("output", "results", "rates", "weekly",
+              path = here::here("output", "results", "rates", "weekly",
                      paste0("rates_over_time_weekly_overall_resp_", char, "_",
                      cohort, "_", year(study_start_date), "_",
                      year(study_end_date), "_", codelist_type, "_",
@@ -344,7 +344,7 @@ for (i in 1:length(characteristics)) {
   
   #write the rates to a feather file
   write_csv(get(paste0("rates_over_time_all_cause_", char)),
-            path = here("output", "results", "rates", "weekly",
+            path = here::here("output", "results", "rates", "weekly",
                    paste0("rates_over_time_weekly_all_cause_", char, "_",
                    cohort, "_", year(study_start_date), "_",
                    year(study_end_date), "_", codelist_type, "_",

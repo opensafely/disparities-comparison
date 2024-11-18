@@ -6,7 +6,7 @@ library(data.table)
 library(gtsummary)
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2016-09-01"
@@ -78,7 +78,7 @@ if (cohort == "infants") {
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "flow_chart"))
+fs::dir_create(here::here("output", "flow_chart"))
 
 #export flow chart numbers 
 table <- cbind(total, non_registered_count, registered_count,  

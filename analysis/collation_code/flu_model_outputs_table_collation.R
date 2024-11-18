@@ -12,7 +12,7 @@ if (length(args) == 0) {
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "collated", "analytic"))
+fs::dir_create(here::here("output", "collated", "analytic"))
 
 ##model outputs
 

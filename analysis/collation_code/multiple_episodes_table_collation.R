@@ -18,7 +18,7 @@ roundmid_any <- function(x, to=10){
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "collated", "descriptive"))
+fs::dir_create(here::here("output", "collated", "descriptive"))
 
 ##multiple outcomes
 
@@ -47,7 +47,7 @@ collated_multiple_episodes <- collated_multiple_episodes %>%
   mutate_at(vars(contains("n")), ~roundmid_any(as.numeric(.)))
 
 #rename n column
-colnames(collated_multiple_episodes)[colnames(collated_multiple_episodes) == "n"] <- "n (midpoint 6 rounded)"
+colnames(collated_multiple_episodes)[colnames(collated_multiple_episodes) == "n"] <- "n (midpoint 10 rounded)"
 
 #save as csv
 write_csv(collated_multiple_episodes, paste0(here::here("output", "collated", "descriptive"), 

@@ -8,13 +8,13 @@ library(stringr)
 library(purrr)
 
 ## create output directories ----
-fs::dir_create(here("analysis"))
+fs::dir_create(here::here("analysis"))
 
 #import redaction functions
-source(here("analysis", "functions", "redaction.R"))
+source(here::here("analysis", "functions", "redaction.R"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2016-09-01"
@@ -189,7 +189,7 @@ if (study_start_date == as.Date("2020-09-01")) {
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "table1"))
+fs::dir_create(here::here("output", "table1"))
 
 #export
 # table %>%

@@ -7,10 +7,10 @@ library(lubridate)
 library(magrittr)
 
 ## create output directories ----
-fs::dir_create(here("analysis"))
+fs::dir_create(here::here("analysis"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- as.Date("2022-09-01")
@@ -22,7 +22,7 @@ if (length(args) == 0) {
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "flow_chart"))
+fs::dir_create(here::here("output", "flow_chart"))
 
 #import data
 df_input <- read_feather(
@@ -39,9 +39,9 @@ df_input <- df_input %>%
   ungroup()
 
 ## create output directories ----
-fs::dir_create(here("output", "flow_chart"))
+fs::dir_create(here::here("output", "flow_chart"))
 
 #write the new input file
-write_feather(df_input, here::here("output", "flow_chart", paste0("cohort_mothers_processed_", 
-                                   year(study_start_date), "_", year(study_end_date),
-                                   ".arrow")))
+write_feather(df_input, here::here("output", "flow_chart",
+              paste0("cohort_mothers_processed_", year(study_start_date), "_",
+                     year(study_end_date), ".arrow")))

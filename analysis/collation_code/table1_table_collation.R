@@ -18,7 +18,7 @@ roundmid_any <- function(x, to=10){
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "collated", "descriptive"))
+fs::dir_create(here::here("output", "collated", "descriptive"))
 
 ##table 1
 tab_names <- c(Characteristic = "**Characteristic**", N = "N", "%" = "%")

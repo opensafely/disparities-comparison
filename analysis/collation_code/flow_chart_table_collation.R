@@ -7,7 +7,7 @@ library(ggplot2)
 #define cohort
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  cohort <- "adults"
+  cohort <- "older_adults"
 } else {
   cohort <- args[[1]]
 }
@@ -18,7 +18,7 @@ roundmid_any <- function(x, to=10){
 }
 
 ## create output directories ----
-fs::dir_create(here("output", "collated", "descriptive"))
+fs::dir_create(here::here("output", "collated", "descriptive"))
 
 ##flowchart
 
@@ -45,6 +45,13 @@ collated_flow_chart = rbind(
 #perform redaction and rounding
 collated_flow_chart <- collated_flow_chart %>% 
   mutate_at(vars(contains("count")), ~roundmid_any(as.numeric(.))) 
+
+#rename count column
+collated_flow_chart <- collated_flow_chart %>%
+  rename_with(
+    ~sub("count", "n (midpoint 10 rounded)", .),
+    contains("count")
+  )
 
 #save as csv
 write_csv(collated_flow_chart, paste0(here::here("output", "collated", "descriptive"),

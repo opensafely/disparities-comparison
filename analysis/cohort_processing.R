@@ -7,10 +7,10 @@ library(lubridate)
 library(magrittr)
 
 ## create output directories ----
-fs::dir_create(here("analysis"))
+fs::dir_create(here::here("analysis"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- as.Date("2016-09-01")
@@ -30,7 +30,7 @@ covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
 covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
 ## create output directories ----
-fs::dir_create(here("output", "data"))
+fs::dir_create(here::here("output", "data"))
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_", cohort, "_",
