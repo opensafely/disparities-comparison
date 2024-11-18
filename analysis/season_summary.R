@@ -31,10 +31,7 @@ covid_season_min <- as.Date("2019-09-01")
 covid_current_vacc_min <- as.Date("2020-09-01", "%Y-%m-%d")
 covid_prior_vacc_min <- as.Date("2021-09-01", "%Y-%m-%d")
 
-roundmid_any <- function(x, to=10){
-  # like roundmid_any, but centers on (integer) midpoint of the rounding points
-  ceiling(x/to)*to - (floor(to/2)*(x!=0))
-}
+source(here::here("analysis", "functions", "redaction.R"))
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_",

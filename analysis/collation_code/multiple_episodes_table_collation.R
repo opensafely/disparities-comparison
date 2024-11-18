@@ -12,10 +12,7 @@ if (length(args) == 0) {
   cohort <- args[[1]]
 }
 
-roundmid_any <- function(x, to=10){
-  # like round_any, but centers on (integer) midpoint of the rounding points
-  ceiling(x/to)*to - (floor(to/2)*(x!=0))
-}
+source(here::here("analysis", "functions", "redaction.R"))
 
 ## create output directories ----
 fs::dir_create(here::here("output", "collated", "descriptive"))
