@@ -10,15 +10,15 @@ library(EnvStats)
 library(dd4d)
 
 ## create output directories ----
-fs::dir_create(here("analysis", "dummydata"))
+fs::dir_create(here::here("analysis", "dummydata"))
 
 #define population size for dummy data
 population_size <- 100000
 
 #define index date and study start date
-source(here("analysis", "design", "design.R"))
-study_start_date <- as.Date(study_dates$season1_start_date)
-study_end_date <- as.Date(study_dates$season1_end_date)
+source(here::here("analysis", "design", "design.R"))
+study_start_date <- as.Date(study_dates$season1_start_date) #change depending on season you want data for
+study_end_date <- as.Date(study_dates$season1_end_date) #change depending on season you want data for
 index_date <- study_start_date
 
 #define index day and study start day
@@ -534,6 +534,6 @@ dummydata_processed <- dummydata %>%
   mutate(across(ends_with("_day"), ~ as.Date(as.character(index_date + .)))) %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
 
-fs::dir_create(here("analysis", "dummydata"))
-write_feather(dummydata_processed, sink = here("analysis", "dummydata", 
+fs::dir_create(here::here("analysis", "dummydata"))
+write_feather(dummydata_processed, sink = here::here("analysis", "dummydata", 
   paste0("dummyextract_children_and_adolescents_", year(study_start_date), "_", year(study_end_date), ".arrow")))
