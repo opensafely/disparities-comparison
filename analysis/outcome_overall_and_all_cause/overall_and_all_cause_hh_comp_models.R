@@ -7,10 +7,10 @@ library(broom)
 library(readr)
 
 ## create output directories ----
-fs::dir_create(here("analysis", "outcome_overall_and_all_cause"))
+fs::dir_create(here::here("analysis", "outcome_overall_and_all_cause"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 is_being_sourced <- sys.nframe() > 0
 if (is_being_sourced == FALSE) {
   args <- commandArgs(trailingOnly = TRUE)
@@ -37,6 +37,7 @@ df_input <- read_feather(
 
 #remove rows with missing values in any of the variables using in models
 if (cohort == "infants_subgroup") {
+  
   df_input <- df_input %>% 
     filter(!is.na(overall_and_all_cause_primary_inf),
            !is.na(overall_and_all_cause_secondary_inf), 
@@ -46,13 +47,16 @@ if (cohort == "infants_subgroup") {
            !is.na(maternal_age), !is.na(maternal_smoking_status),
            !is.na(maternal_drinking), !is.na(maternal_drug_usage),
            !is.na(maternal_flu_vaccination))
+  
 } else {
+  
   df_input <- df_input %>% 
     filter(!is.na(overall_and_all_cause_primary_inf),
            !is.na(overall_and_all_cause_secondary_inf), 
            !is.na(overall_and_all_cause_mortality),
            !is.na(composition_category), !is.na(age_band),
            !is.na(sex), !is.na(rurality_classification))
+  
 }
 
 if (cohort == "infants_subgroup") {
@@ -174,21 +178,28 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
 }))
 
 ## create output directories ----
-fs::dir_create(here("output", "results", "models", paste0("overall_and_all_cause_", investigation_type)))
+fs::dir_create(here::here("output", "results", "models",
+                          paste0("overall_and_all_cause_", investigation_type)))
 
 #save model output 
 if (length(args) == 0) {
+  
   model_outputs %>%
     write_csv(file = paste0(here::here("output", "results", "models",
-                            paste0("overall_and_all_cause_", investigation_type)), "/", 
-                            "overall_and_all_cause_hh_comp_model_outputs_", cohort, "_", year(study_start_date), 
-                            "_", year(study_end_date), "_", codelist_type,
+                            paste0("overall_and_all_cause_", investigation_type)),
+                            "/", "overall_and_all_cause_hh_comp_model_outputs_",
+                            cohort, "_", year(study_start_date), "_",
+                            year(study_end_date), "_", codelist_type,
                             "_", investigation_type, ".csv"))
-}  else{
+  
+} else {
+  
   model_outputs %>%
     write_csv(path = paste0(here::here("output", "results", "models",
-                            paste0("overall_and_all_cause_", investigation_type)), "/", 
-                            "overall_and_all_cause_hh_comp_model_outputs_", cohort, "_", year(study_start_date),
-                            "_", year(study_end_date), "_", codelist_type,
+                            paste0("overall_and_all_cause_", investigation_type)),
+                            "/", "overall_and_all_cause_hh_comp_model_outputs_",
+                            cohort, "_", year(study_start_date), "_",
+                            year(study_end_date), "_", codelist_type,
                             "_", investigation_type, ".csv"))
+  
 }

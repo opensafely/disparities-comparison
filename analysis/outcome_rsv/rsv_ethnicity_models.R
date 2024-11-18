@@ -7,10 +7,10 @@ library(broom)
 library(readr)
 
 ## create output directories ----
-fs::dir_create(here("analysis", "outcome_rsv"))
+fs::dir_create(here::here("analysis", "outcome_rsv"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 is_being_sourced <- sys.nframe() > 0
 if (is_being_sourced == FALSE) {
   args <- commandArgs(trailingOnly = TRUE)
@@ -37,6 +37,7 @@ df_input <- read_feather(
 
 #remove rows with missing values in any of the variables using in models
 if (cohort == "infants_subgroup") {
+  
   df_input <- df_input %>% 
     filter(!is.na(rsv_primary_inf), !is.na(rsv_secondary_inf), 
            !is.na(rsv_mortality), !is.na(latest_ethnicity_group), 
@@ -44,11 +45,28 @@ if (cohort == "infants_subgroup") {
            !is.na(maternal_age), !is.na(maternal_smoking_status),
            !is.na(maternal_drinking), !is.na(maternal_drug_usage),
            !is.na(maternal_flu_vaccination))
+  
+} else if (cohort == "older_adults" & investigation_type == "secondary") {
+    
+  df_input <- df_input %>% 
+    filter(!is.na(rsv_primary_inf), !is.na(rsv_secondary_inf), 
+           !is.na(rsv_mortality), !is.na(latest_ethnicity_group),
+           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
+           !is.na(has_asthma), !is.na(has_copd), !is.na(has_cystic_fibrosis),
+           !is.na(has_other_resp), !is.na(has_diabetes), !is.na(has_addisons),
+           !is.na(severe_obesity), !is.na(has_chd), !is.na(has_ckd),
+           !is.na(has_cld), !is.na(has_cnd), !is.na(has_cancer),
+           !is.na(immunosuppressed), !is.na(has_sickle_cell),
+           !is.na(smoking_status), !is.na(hazardous_drinking),
+           !is.na(drug_usage))
+  
 } else {
+  
   df_input <- df_input %>% 
     filter(!is.na(rsv_primary_inf), !is.na(rsv_secondary_inf), 
            !is.na(rsv_mortality), !is.na(latest_ethnicity_group),
            !is.na(age_band), !is.na(sex), !is.na(rurality_classification))
+  
 }
 
 if (cohort == "infants_subgroup") {
@@ -86,10 +104,54 @@ if (cohort == "infants_subgroup") {
                                  data = df_input, family = poisson)
   rsv_mortality_ethnicity_output <- tidy(rsv_mortality_ethnicity)
   
+} else if (cohort == "older_adults" & investigation_type == "secondary") {
+ 
+  #rsv primary by ethnicity
+  rsv_mild_ethnicity <- glm(rsv_primary_inf ~ latest_ethnicity_group + 
+                              age_band + sex + rurality_classification +
+                              has_asthma + has_copd + has_cystic_fibrosis +
+                              has_other_resp + has_diabetes +
+                              has_addisons + severe_obesity +
+                              has_chd + has_ckd + has_cld + has_cnd +
+                              has_cancer + immunosuppressed +
+                              has_sickle_cell + smoking_status +
+                              hazardous_drinking + drug_usage +
+                              offset(log(time_rsv_primary)), 
+                            data = df_input, family = poisson)
+  rsv_mild_ethnicity_output <- tidy(rsv_mild_ethnicity)
+  
+  #rsv secondary by ethnicity
+  rsv_severe_ethnicity <- glm(rsv_secondary_inf ~ latest_ethnicity_group +
+                                age_band + sex + rurality_classification +
+                                has_asthma + has_copd + has_cystic_fibrosis +
+                                has_other_resp + has_diabetes +
+                                has_addisons + severe_obesity +
+                                has_chd + has_ckd + has_cld + has_cnd +
+                                has_cancer + immunosuppressed +
+                                has_sickle_cell + smoking_status +
+                                hazardous_drinking + drug_usage +
+                                offset(log(time_rsv_secondary)),
+                              data = df_input, family = poisson)
+  rsv_severe_ethnicity_output <- tidy(rsv_severe_ethnicity)
+  
+  #rsv mortality by ethnicity
+  rsv_mortality_ethnicity <- glm(rsv_mortality ~ latest_ethnicity_group + 
+                                   age_band + sex + rurality_classification +
+                                   has_asthma + has_copd + has_cystic_fibrosis +
+                                   has_other_resp + has_diabetes +
+                                   has_addisons + severe_obesity +
+                                   has_chd + has_ckd + has_cld + has_cnd +
+                                   has_cancer + immunosuppressed +
+                                   has_sickle_cell + smoking_status +
+                                   hazardous_drinking + drug_usage +
+                                   offset(log(time_rsv_mortality)),
+                                 data = df_input, family = poisson)
+  rsv_mortality_ethnicity_output <- tidy(rsv_mortality_ethnicity)
+ 
 } else {
 
   #rsv primary by ethnicity
-  rsv_mild_ethnicity <- glm(rsv_primary_inf ~ latest_ethnicity_group + 
+  rsv_mild_ethnicity <- glm(rsv_primary_inf ~ latest_ethnicity_group +
                               age_band + sex + rurality_classification + 
                               offset(log(time_rsv_primary)), 
                             data = df_input, family = poisson)
@@ -125,21 +187,26 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
 }))
 
 ## create output directories ----
-fs::dir_create(here("output", "results", "models", paste0("rsv_", investigation_type)))
+fs::dir_create(here::here("output", "results", "models",
+                          paste0("rsv_", investigation_type)))
 
 #save model output 
 if (length(args) == 0) {
+  
   model_outputs %>%
     write_csv(file = paste0(here::here("output", "results", "models",
                             paste0("rsv_", investigation_type)), "/", 
                             "rsv_ethnicity_model_outputs_", cohort, "_", year(study_start_date), 
                             "_", year(study_end_date), "_", codelist_type,
                             "_", investigation_type, ".csv"))
-}  else{
+  
+} else {
+  
   model_outputs %>%
     write_csv(path = paste0(here::here("output", "results", "models",
                             paste0("rsv_", investigation_type)), "/", 
                             "rsv_ethnicity_model_outputs_", cohort, "_", year(study_start_date),
                             "_", year(study_end_date), "_", codelist_type, 
                             "_", investigation_type, ".csv"))
+  
 }

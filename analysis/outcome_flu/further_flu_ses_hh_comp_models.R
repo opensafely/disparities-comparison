@@ -7,10 +7,10 @@ library(broom)
 library(readr)
 
 ## create output directories ----
-fs::dir_create(here("analysis", "outcome_flu"))
+fs::dir_create(here::here("analysis", "outcome_flu"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 is_being_sourced <- sys.nframe() > 0
 if (is_being_sourced == FALSE) {
   args <- commandArgs(trailingOnly = TRUE)
@@ -90,21 +90,28 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
 }))
 
 ## create output directories ----
-fs::dir_create(here("output", "results", "models", paste0("flu_", investigation_type)))
+fs::dir_create(here::here("output", "results", "models",
+                          paste0("flu_", investigation_type)))
 
 #save model output 
 if (length(args) == 0) {
+  
   model_outputs %>%
     write_csv(file = paste0(here::here("output", "results", "models",
                             paste0("flu_", investigation_type)), "/", 
-                            "further_flu_ses_hh_comp_model_outputs_", cohort, "_", 
-                            year(study_start_date), "_", year(study_end_date), 
-                            "_", codelist_type, "_", investigation_type, ".csv"))
-}  else{
+                            "further_flu_ses_hh_comp_model_outputs_", cohort,
+                            "_", year(study_start_date), "_",
+                            year(study_end_date), "_", codelist_type,
+                            "_", investigation_type, ".csv"))
+  
+} else {
+  
   model_outputs %>%
     write_csv(path = paste0(here::here("output", "results", "models",
                             paste0("flu_", investigation_type)), "/", 
-                            "further_flu_ses_hh_comp_model_outputs_", cohort, "_", 
-                            year(study_start_date), "_", year(study_end_date), 
-                            "_", codelist_type, "_", investigation_type, ".csv"))
+                            "further_flu_ses_hh_comp_model_outputs_", cohort,
+                            "_", year(study_start_date), "_",
+                            year(study_end_date), "_", codelist_type,
+                            "_", investigation_type, ".csv"))
+  
 }

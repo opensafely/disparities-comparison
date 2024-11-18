@@ -7,10 +7,10 @@ library(broom)
 library(readr)
 
 ## create output directories ----
-fs::dir_create(here("analysis", "outcome_covid"))
+fs::dir_create(here::here("analysis", "outcome_covid"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 is_being_sourced <- sys.nframe() > 0
 if (is_being_sourced == FALSE) {
   args <- commandArgs(trailingOnly = TRUE)
@@ -39,19 +39,23 @@ df_input <- read_feather(
 
 #remove rows with missing values in any of the variables using in models
 if (study_start_date >= covid_prior_vacc_min) {
+  
   df_input <- df_input %>% 
     filter(!is.na(covid_primary_inf), !is.na(covid_secondary_inf), 
            !is.na(covid_mortality), !is.na(imd_quintile),
            !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
            !is.na(covid_vaccination_mild), !is.na(covid_vaccination_severe),
            !is.na(covid_vaccination), !is.na(time_since_last_covid_vaccination))
+  
 } else {
+  
   df_input <- df_input %>% 
     filter(!is.na(covid_primary_inf), !is.na(covid_secondary_inf), 
            !is.na(covid_mortality), !is.na(imd_quintile),
            !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
            !is.na(covid_vaccination_mild), !is.na(covid_vaccination_severe),
            !is.na(covid_vaccination), !is.na(time_since_last_covid_vaccination))
+  
 }
 
 if (study_start_date >= covid_prior_vacc_min) {
@@ -126,21 +130,25 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
 }))
 
 ## create output directories ----
-fs::dir_create(here("output", "results", "models", paste0("covid_", investigation_type)))
+fs::dir_create(here::here("output", "results", "models",
+                          paste0("covid_", investigation_type)))
 
 #save model output 
 if (length(args) == 0) {
+  
   model_outputs %>%
     write_csv(file = paste0(here::here("output", "results", "models", 
                             paste0("covid_", investigation_type)), "/", 
-                            "further_covid_ses_model_outputs_", cohort, "_", year(study_start_date), 
-                            "_", year(study_end_date), "_", codelist_type, 
-                            "_", investigation_type, ".csv"))
-}  else{
+                            "further_covid_ses_model_outputs_", cohort, "_",
+                            year(study_start_date), "_", year(study_end_date),
+                            "_", codelist_type, "_", investigation_type, ".csv"))
+  
+} else {
   model_outputs %>%
     write_csv(path = paste0(here::here("output", "results", "models", 
                             paste0("covid_", investigation_type)), "/", 
-                            "further_covid_ses_model_outputs_", cohort, "_", year(study_start_date),
-                            "_", year(study_end_date), "_", codelist_type, 
-                            "_", investigation_type, ".csv"))
+                            "further_covid_ses_model_outputs_", cohort, "_",
+                            year(study_start_date), "_", year(study_end_date),
+                            "_", codelist_type, "_", investigation_type, ".csv"))
+  
 }

@@ -7,10 +7,10 @@ library(broom)
 library(readr)
 
 ## create output directories ----
-fs::dir_create(here("analysis", "outcome_rsv"))
+fs::dir_create(here::here("analysis", "outcome_rsv"))
 
 #define study start date and study end date
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2016-09-01"
@@ -28,17 +28,19 @@ if (length(args) == 0) {
 covid_season_min <- as.Date("2019-09-01")
 
 if (cohort != "infants" | cohort != "infants_subgroup") {
+  
   #run model files
-  source(here("analysis", "outcome_rsv", "rsv_ethnicity_models.R"))
-  source(here("analysis", "outcome_rsv", "rsv_ses_models.R"))
+  source(here::here("analysis", "outcome_rsv", "rsv_ethnicity_models.R"))
+  source(here::here("analysis", "outcome_rsv", "rsv_ses_models.R"))
   if (study_start_date == as.Date("2020-09-01")) {
-    source(here("analysis", "outcome_rsv", "rsv_hh_comp_models.R"))
+    source(here::here("analysis", "outcome_rsv", "rsv_hh_comp_models.R"))
   }
-  source(here("analysis", "outcome_rsv", "rsv_ethnicity_ses_models.R"))
+  source(here::here("analysis", "outcome_rsv", "rsv_ethnicity_ses_models.R"))
   if (study_start_date == as.Date("2020-09-01")) {
-    source(here("analysis", "outcome_rsv", "rsv_ethnicity_hh_comp_models.R"))
-    source(here("analysis", "outcome_rsv", "rsv_ses_hh_comp_models.R"))
-    source(here("analysis", "outcome_rsv", "rsv_full_models.R"))
+    source(here::here("analysis", "outcome_rsv", "rsv_ethnicity_hh_comp_models.R"))
+    source(here::here("analysis", "outcome_rsv", "rsv_ses_hh_comp_models.R"))
+    source(here::here("analysis", "outcome_rsv", "rsv_full_models.R"))
   }
+  
 }
   
