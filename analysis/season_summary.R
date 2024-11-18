@@ -3213,7 +3213,7 @@ if (cohort == "children_and_adolescents" |
   results_prior_flu_vacc <- merge(survival_prior_flu_vacc,
                                   events_prior_flu_vacc)
   #calculate incidence rate per 1000 person-years
-  results_prior_flu_vacc <- results_prior_flu_vac %>%
+  results_prior_flu_vacc <- results_prior_flu_vacc %>%
     mutate(events = roundmid_any(events)) %>%
     mutate(incidence_rate = events / person_years * 1000)
 
