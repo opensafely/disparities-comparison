@@ -100,7 +100,7 @@ collated_table1 = rbind(
 )
 
 #rename N column
-colnames(collated_table1)[colnames(collated_table1) == "N"] <- "N (midpoint 6 rounded)"
+colnames(collated_table1)[colnames(collated_table1) == "N"] <- "N (midpoint 10 rounded)"
 
 #save as csv
 write_csv(collated_table1, paste0(here::here("output", "collated", "descriptive"), 
