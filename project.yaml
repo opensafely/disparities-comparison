@@ -12433,7 +12433,7 @@ actions:
     - process_dataset_older_adults_s5_specific_secondary
     outputs:
       moderately_sensitive:
-        csv: output/results/models/covid_secondary/covid_model_outputs_older_adults_2020_2021_specific_secondary.csv
+        csv: output/results/models/covid_secondary/*_older_adults_2020_2021_specific_secondary.csv
 
   analyse_dataset_older_adults_covid_further_s5_specific_secondary:
     run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults

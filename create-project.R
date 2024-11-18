@@ -1694,7 +1694,7 @@ action_secondary_covid <- function(cohort, season, dates, codelist_type,
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
+        csv = glue("output/results/models/covid_{investigation_type}/*_{cohort}_{dates}_specific_secondary.csv"))
     ),
     
     action(
