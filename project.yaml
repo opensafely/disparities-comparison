@@ -14094,7 +14094,7 @@ actions:
     - calculate_rates_weekly_older_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/*_older_adults_rates_weekly_primary_collated_*.csv
+        csv: output/collated/descriptive/over_time/*_older_adults_rates_weekly_primary_collated_*.csv
 
   collate_rates_tables_rolling_primary_older_adults:
     run: r:latest analysis/collation_code/rates_table_rolling_primary_collation.R
@@ -14446,7 +14446,7 @@ actions:
     - calculate_rates_weekly_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/*_adults_rates_weekly_primary_collated_*.csv
+        csv: output/collated/descriptive/over_time/*_adults_rates_weekly_primary_collated_*.csv
 
   collate_rates_tables_rolling_primary_adults:
     run: r:latest analysis/collation_code/rates_table_rolling_primary_collation.R
@@ -14753,7 +14753,7 @@ actions:
     - calculate_rates_weekly_children_and_adolescents_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/*_children_and_adolescents_rates_weekly_primary_collated_*.csv
+        csv: output/collated/descriptive/over_time/*_children_and_adolescents_rates_weekly_primary_collated_*.csv
 
   collate_rates_tables_rolling_primary_children_and_adolescents:
     run: r:latest analysis/collation_code/rates_table_rolling_primary_collation.R
@@ -15060,7 +15060,7 @@ actions:
     - calculate_rates_weekly_infants_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/*_infants_rates_weekly_primary_collated_*.csv
+        csv: output/collated/descriptive/over_time/*_infants_rates_weekly_primary_collated_*.csv
 
   collate_rates_tables_rolling_primary_infants:
     run: r:latest analysis/collation_code/rates_table_rolling_primary_collation.R
@@ -15472,7 +15472,7 @@ actions:
     - calculate_rates_weekly_infants_subgroup_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/*_infants_subgroup_rates_weekly_primary_collated_*.csv
+        csv: output/collated/descriptive/over_time/*_infants_subgroup_rates_weekly_primary_collated_*.csv
 
   collate_rates_tables_rolling_primary_infants_subgroup:
     run: r:latest analysis/collation_code/rates_table_rolling_primary_collation.R

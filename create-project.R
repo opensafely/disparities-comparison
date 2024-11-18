@@ -2659,7 +2659,7 @@ action_finalise <- function(cohort) {
                    glue("calculate_rates_weekly_{cohort}_s7_sensitive_primary"),
                    glue("calculate_rates_weekly_{cohort}_s8_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/*_{cohort}_rates_weekly_primary_collated_*.csv"))
+        csv = glue("output/collated/descriptive/over_time/*_{cohort}_rates_weekly_primary_collated_*.csv"))
     ),
 
     action(
@@ -2997,7 +2997,7 @@ action_finalise_older_adults <- function(cohort) {
                    glue("calculate_rates_weekly_{cohort}_s7_sensitive_primary"),
                    glue("calculate_rates_weekly_{cohort}_s8_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/*_{cohort}_rates_weekly_primary_collated_*.csv"))
+        csv = glue("output/collated/descriptive/over_time/*_{cohort}_rates_weekly_primary_collated_*.csv"))
     ),
     
     action(
@@ -3370,7 +3370,7 @@ action_finalise_infants <- function(cohort) {
                    glue("calculate_rates_weekly_{cohort}_s7_sensitive_primary"),
                    glue("calculate_rates_weekly_{cohort}_s8_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/*_{cohort}_rates_weekly_primary_collated_*.csv"))
+        csv = glue("output/collated/descriptive/over_time/*_{cohort}_rates_weekly_primary_collated_*.csv"))
     ),
     
     action(
