@@ -5,6 +5,7 @@ library(ggplot2)
 library(data.table)
 library(lubridate)
 library(magrittr)
+library(purrr)
 
 ## create output directories ----
 fs::dir_create(here::here("analysis", "sensitivity_analyses"))
@@ -58,7 +59,7 @@ col_names <- colnames(df_input[, cols])
 #remove vaccination dates from the list of columns
 col_names <- col_names[!col_names %in% c(paste0(colnames(df_input[, str_detect(names(df_input), "vaccination")])))]
 #remove birth date from list of columns
-col_names <- col_names[!col_names %in% c("birth_date", "patient_index_date")]
+col_names <- col_names[!col_names %in% c("birth_date", "patient_index_date", "patient_end_date")]
 df_input_filt <- df_input %>%
   mutate(across(all_of(col_names), ~if_else(.x >= study_start_date_sens & .x <= study_end_date_sens, .x, NA_Date_)))
 
@@ -74,7 +75,7 @@ df_input_filt <- df_input_filt %>%
     patient_end_date < study_start_date_sens ~ NA_Date_,
     TRUE ~ patient_end_date)
   ) %>%
-  filter(!is.na(patient_index_date))
+  filter(!is.na(patient_index_date) & !is.na(patient_end_date))
 
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
