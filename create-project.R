@@ -1,7 +1,7 @@
-library("tidyverse")
-library("yaml")
-library("here")
-library("glue")
+library(tidyverse)
+library(yaml)
+library(here)
+library(glue)
 
 # create action functions ----
 
@@ -2793,7 +2793,7 @@ action_finalise <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_overall_and_all_cause_outputs_tables_{cohort}"),
+      name = glue("collate_overall_and_all_cause_model_outputs_tables_{cohort}"),
       run = glue("r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_overall_and_all_cause_s1_specific_primary"),
@@ -2865,7 +2865,7 @@ action_finalise <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_rsv_outputs_tables_{cohort}_sensitivity"),
+      name = glue("collate_rsv_model_outputs_tables_{cohort}_sensitivity"),
       run = glue("r:latest analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_rsv_s2_specific_sensitivity")),
@@ -2874,7 +2874,7 @@ action_finalise <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_flu_outputs_tables_{cohort}_sensitivity"),
+      name = glue("collate_flu_model_outputs_tables_{cohort}_sensitivity"),
       run = glue("r:latest analysis/collation_code/flu_model_outputs_table_collation_sensitivity.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_flu_s3_specific_sensitivity")),
@@ -2883,7 +2883,7 @@ action_finalise <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_further_flu_outputs_tables_{cohort}_sensitivity"),
+      name = glue("collate_further_flu_model_outputs_tables_{cohort}_sensitivity"),
       run = glue("r:latest analysis/collation_code/further_flu_model_outputs_table_collation_sensitivity.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_flu_further_s3_specific_sensitivity")),
@@ -3131,7 +3131,7 @@ action_finalise_older_adults <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_overall_and_all_cause_outputs_tables_{cohort}"),
+      name = glue("collate_overall_and_all_cause_model_outputs_tables_{cohort}"),
       run = glue("r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_overall_and_all_cause_s1_specific_primary"),
@@ -3155,7 +3155,7 @@ action_finalise_older_adults <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_rsv_outputs_tables_{cohort}_secondary"),
+      name = glue("collate_rsv_model_outputs_tables_{cohort}_secondary"),
       run = glue("r:latest analysis/collation_code/rsv_model_outputs_table_collation_secondary.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_rsv_s2_specific_secondary")),
@@ -3164,7 +3164,7 @@ action_finalise_older_adults <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_flu_outputs_tables_{cohort}_secondary"),
+      name = glue("collate_flu_model_outputs_tables_{cohort}_secondary"),
       run = glue("r:latest analysis/collation_code/flu_model_outputs_table_collation_secondary.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_flu_s3_specific_secondary")),
@@ -3173,7 +3173,7 @@ action_finalise_older_adults <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_further_flu_outputs_tables_{cohort}_secondary"),
+      name = glue("collate_further_flu_model_outputs_tables_{cohort}_secondary"),
       run = glue("r:latest analysis/collation_code/further_flu_model_outputs_table_collation_secondary.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_flu_further_s3_specific_secondary")),
@@ -3182,7 +3182,7 @@ action_finalise_older_adults <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_covid_outputs_tables_{cohort}_secondary"),
+      name = glue("collate_covid_model_outputs_tables_{cohort}_secondary"),
       run = glue("r:latest analysis/collation_code/covid_model_outputs_table_collation_secondary.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_covid_s5_specific_secondary")),
@@ -3191,7 +3191,7 @@ action_finalise_older_adults <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_further_covid_outputs_tables_{cohort}_secondary"),
+      name = glue("collate_further_covid_model_outputs_tables_{cohort}_secondary"),
       run = glue("r:latest analysis/collation_code/further_covid_model_outputs_table_collation_secondary.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_covid_further_s5_specific_secondary")),
@@ -3248,7 +3248,7 @@ action_finalise_older_adults <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_rsv_outputs_tables_{cohort}_sensitivity"),
+      name = glue("collate_rsv_model_outputs_tables_{cohort}_sensitivity"),
       run = glue("r:latest analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_rsv_s2_specific_sensitivity")),
@@ -3257,7 +3257,7 @@ action_finalise_older_adults <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_flu_outputs_tables_{cohort}_sensitivity"),
+      name = glue("collate_flu_model_outputs_tables_{cohort}_sensitivity"),
       run = glue("r:latest analysis/collation_code/flu_model_outputs_table_collation_sensitivity.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_flu_s3_specific_sensitivity")),
@@ -3266,7 +3266,7 @@ action_finalise_older_adults <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_further_flu_outputs_tables_{cohort}_sensitivity"),
+      name = glue("collate_further_flu_model_outputs_tables_{cohort}_sensitivity"),
       run = glue("r:latest analysis/collation_code/further_flu_model_outputs_table_collation_sensitivity.R {cohort}"),
       # arguments = c(cohort),
       needs = list(glue("analyse_dataset_{cohort}_flu_further_s3_specific_sensitivity")),
