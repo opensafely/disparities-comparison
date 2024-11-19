@@ -1,111 +1,94 @@
-Cohort,Season,Season Start Date,Season End Date,Investigation Type,Codelist Type,Pathogen
-Older Adults,1,2016-09-01,2017-08-31,Primary,Specific,All
-Older Adults,2,2017-09-01,2018-08-31,Primary,Specific,All
-Older Adults,3,2018-09-01,2019-08-31,Primary,Specific,All
-Older Adults,4,2019-09-01,2020-08-31,Primary,Specific,All
-Older Adults,5,2020-09-01,2021-08-31,Primary,Specific,All
-Older Adults,6,2021-09-01,2022-08-31,Primary,Specific,All
-Older Adults,7,2022-09-01,2023-08-31,Primary,Specific,All
-Older Adults,8,2023-09-01,2024-08-31,Primary,Specific,All
-Older Adults,1,2016-09-01,2017-08-31,Primary,Sensitive,All
-Older Adults,2,2017-09-01,2018-08-31,Primary,Sensitive,All
-Older Adults,3,2018-09-01,2019-08-31,Primary,Sensitive,All
-Older Adults,4,2019-09-01,2020-08-31,Primary,Sensitive,All
-Older Adults,5,2020-09-01,2021-08-31,Primary,Sensitive,All
-Older Adults,6,2021-09-01,2022-08-31,Primary,Sensitive,All
-Older Adults,7,2022-09-01,2023-08-31,Primary,Sensitive,All
-Older Adults,8,2023-09-01,2024-08-31,Primary,Sensitive,All
-Older Adults,2,2017-09-01,2018-08-31,Secondary,Specific,RSV
-Older Adults,3,2018-09-01,2019-08-31,Secondary,Specific,Flu
-Older Adults,5,2020-09-01,2021-08-31,Secondary,Specific,COVID
-Older Adults,2,2017-09-01,2018-08-31,Sensitivity,Specific,RSV
-Older Adults,3,2018-09-01,2019-08-31,Sensitivity,Specific,Flu
-Older Adults,5,2020-09-01,2021-08-31,Sensitivity,Specific,COVID
-Adults,1,2016-09-01,2017-08-31,Primary,Specific,All
-Adults,2,2017-09-01,2018-08-31,Primary,Specific,All
-Adults,3,2018-09-01,2019-08-31,Primary,Specific,All
-Adults,4,2019-09-01,2020-08-31,Primary,Specific,All
-Adults,5,2020-09-01,2021-08-31,Primary,Specific,All
-Adults,6,2021-09-01,2022-08-31,Primary,Specific,All
-Adults,7,2022-09-01,2023-08-31,Primary,Specific,All
-Adults,8,2023-09-01,2024-08-31,Primary,Specific,All
-Adults,1,2016-09-01,2017-08-31,Primary,Sensitive,All
-Adults,2,2017-09-01,2018-08-31,Primary,Sensitive,All
-Adults,3,2018-09-01,2019-08-31,Primary,Sensitive,All
-Adults,4,2019-09-01,2020-08-31,Primary,Sensitive,All
-Adults,5,2020-09-01,2021-08-31,Primary,Sensitive,All
-Adults,6,2021-09-01,2022-08-31,Primary,Sensitive,All
-Adults,7,2022-09-01,2023-08-31,Primary,Sensitive,All
-Adults,8,2023-09-01,2024-08-31,Primary,Sensitive,All
-Adults,2,2017-09-01,2018-08-31,Secondary,Specific,RSV
-Adults,3,2018-09-01,2019-08-31,Secondary,Specific,Flu
-Adults,5,2020-09-01,2021-08-31,Secondary,Specific,COVID
-Adults,2,2017-09-01,2018-08-31,Sensitivity,Specific,RSV
-Adults,3,2018-09-01,2019-08-31,Sensitivity,Specific,Flu
-Adults,5,2020-09-01,2021-08-31,Sensitivity,Specific,COVID
-Children and Adolescents,1,2016-09-01,2017-08-31,Primary,Specific,All
-Children and Adolescents,2,2017-09-01,2018-08-31,Primary,Specific,All
-Children and Adolescents,3,2018-09-01,2019-08-31,Primary,Specific,All
-Children and Adolescents,4,2019-09-01,2020-08-31,Primary,Specific,All
-Children and Adolescents,5,2020-09-01,2021-08-31,Primary,Specific,All
-Children and Adolescents,6,2021-09-01,2022-08-31,Primary,Specific,All
-Children and Adolescents,7,2022-09-01,2023-08-31,Primary,Specific,All
-Children and Adolescents,8,2023-09-01,2024-08-31,Primary,Specific,All
-Children and Adolescents,1,2016-09-01,2017-08-31,Primary,Sensitive,All
-Children and Adolescents,2,2017-09-01,2018-08-31,Primary,Sensitive,All
-Children and Adolescents,3,2018-09-01,2019-08-31,Primary,Sensitive,All
-Children and Adolescents,4,2019-09-01,2020-08-31,Primary,Sensitive,All
-Children and Adolescents,5,2020-09-01,2021-08-31,Primary,Sensitive,All
-Children and Adolescents,6,2021-09-01,2022-08-31,Primary,Sensitive,All
-Children and Adolescents,7,2022-09-01,2023-08-31,Primary,Sensitive,All
-Children and Adolescents,8,2023-09-01,2024-08-31,Primary,Sensitive,All
-Children and Adolescents,2,2017-09-01,2018-08-31,Secondary,Specific,RSV
-Children and Adolescents,3,2018-09-01,2019-08-31,Secondary,Specific,Flu
-Children and Adolescents,5,2020-09-01,2021-08-31,Secondary,Specific,COVID
-Children and Adolescents,2,2017-09-01,2018-08-31,Sensitivity,Specific,RSV
-Children and Adolescents,3,2018-09-01,2019-08-31,Sensitivity,Specific,Flu
-Children and Adolescents,5,2020-09-01,2021-08-31,Sensitivity,Specific,COVID
-Infants,1,2016-09-01,2017-08-31,Primary,Specific,All
-Infants,2,2017-09-01,2018-08-31,Primary,Specific,All
-Infants,3,2018-09-01,2019-08-31,Primary,Specific,All
-Infants,4,2019-09-01,2020-08-31,Primary,Specific,All
-Infants,5,2020-09-01,2021-08-31,Primary,Specific,All
-Infants,6,2021-09-01,2022-08-31,Primary,Specific,All
-Infants,7,2022-09-01,2023-08-31,Primary,Specific,All
-Infants,8,2023-09-01,2024-08-31,Primary,Specific,All
-Infants,1,2016-09-01,2017-08-31,Primary,Sensitive,All
-Infants,2,2017-09-01,2018-08-31,Primary,Sensitive,All
-Infants,3,2018-09-01,2019-08-31,Primary,Sensitive,All
-Infants,4,2019-09-01,2020-08-31,Primary,Sensitive,All
-Infants,5,2020-09-01,2021-08-31,Primary,Sensitive,All
-Infants,6,2021-09-01,2022-08-31,Primary,Sensitive,All
-Infants,7,2022-09-01,2023-08-31,Primary,Sensitive,All
-Infants,8,2023-09-01,2024-08-31,Primary,Sensitive,All
-Infants,2,2017-09-01,2018-08-31,Secondary,Specific,RSV
-Infants,3,2018-09-01,2019-08-31,Secondary,Specific,Flu
-Infants,5,2020-09-01,2021-08-31,Secondary,Specific,COVID
-Infants,2,2017-09-01,2018-08-31,Sensitivity,Specific,RSV
-Infants,3,2018-09-01,2019-08-31,Sensitivity,Specific,Flu
-Infants,5,2020-09-01,2021-08-31,Sensitivity,Specific,COVID
-Infants Subgroup,1,2016-09-01,2017-08-31,Primary,Specific,All
-Infants Subgroup,2,2017-09-01,2018-08-31,Primary,Specific,All
-Infants Subgroup,3,2018-09-01,2019-08-31,Primary,Specific,All
-Infants Subgroup,4,2019-09-01,2020-08-31,Primary,Specific,All
-Infants Subgroup,5,2020-09-01,2021-08-31,Primary,Specific,All
-Infants Subgroup,6,2021-09-01,2022-08-31,Primary,Specific,All
-Infants Subgroup,7,2022-09-01,2023-08-31,Primary,Specific,All
-Infants Subgroup,8,2023-09-01,2024-08-31,Primary,Specific,All
-Infants Subgroup,1,2016-09-01,2017-08-31,Primary,Sensitive,All
-Infants Subgroup,2,2017-09-01,2018-08-31,Primary,Sensitive,All
-Infants Subgroup,3,2018-09-01,2019-08-31,Primary,Sensitive,All
-Infants Subgroup,4,2019-09-01,2020-08-31,Primary,Sensitive,All
-Infants Subgroup,5,2020-09-01,2021-08-31,Primary,Sensitive,All
-Infants Subgroup,6,2021-09-01,2022-08-31,Primary,Sensitive,All
-Infants Subgroup,7,2022-09-01,2023-08-31,Primary,Sensitive,All
-Infants Subgroup,8,2023-09-01,2024-08-31,Primary,Sensitive,All
-Infants Subgroup,2,2017-09-01,2018-08-31,Secondary,Specific,RSV
-Infants Subgroup,3,2018-09-01,2019-08-31,Secondary,Specific,Flu
-Infants Subgroup,5,2020-09-01,2021-08-31,Secondary,Specific,COVID
-Infants Subgroup,2,2017-09-01,2018-08-31,Sensitivity,Specific,RSV
-Infants Subgroup,3,2018-09-01,2019-08-31,Sensitivity,Specific,Flu
-Infants Subgroup,5,2020-09-01,2021-08-31,Sensitivity,Specific,COVID
+Cohort,Season,Season Start Date,Season End Date,Investigation Type,Codelist Type,Pathogen,Include in Publication 1,Include in Publication 2
+Older Adults,1,2016-09-01,2017-08-31,Primary,Specific,All,No,No
+Older Adults,2,2017-09-01,2018-08-31,Primary,Specific,All,Yes,Yes
+Older Adults,3,2018-09-01,2019-08-31,Primary,Specific,All,Yes,Yes
+Older Adults,4,2019-09-01,2020-08-31,Primary,Specific,All,Supplement,Supplement
+Older Adults,5,2020-09-01,2021-08-31,Primary,Specific,All,Yes,Yes
+Older Adults,6,2021-09-01,2022-08-31,Primary,Specific,All,No,No
+Older Adults,7,2022-09-01,2023-08-31,Primary,Specific,All,No,No
+Older Adults,8,2023-09-01,2024-08-31,Primary,Specific,All,Yes,Supplement
+Older Adults,1,2016-09-01,2017-08-31,Primary,Sensitive,All,No,No
+Older Adults,2,2017-09-01,2018-08-31,Primary,Sensitive,All,Yes,Supplement
+Older Adults,3,2018-09-01,2019-08-31,Primary,Sensitive,All,Yes,Supplement
+Older Adults,4,2019-09-01,2020-08-31,Primary,Sensitive,All,Supplement,No
+Older Adults,5,2020-09-01,2021-08-31,Primary,Sensitive,All,Yes,Supplement
+Older Adults,6,2021-09-01,2022-08-31,Primary,Sensitive,All,No,No
+Older Adults,7,2022-09-01,2023-08-31,Primary,Sensitive,All,No,No
+Older Adults,8,2023-09-01,2024-08-31,Primary,Sensitive,All,Yes,No
+Older Adults,2,2017-09-01,2018-08-31,Secondary,Specific,RSV,No,Supplement
+Older Adults,3,2018-09-01,2019-08-31,Secondary,Specific,Flu,No,Supplement
+Older Adults,5,2020-09-01,2021-08-31,Secondary,Specific,COVID,No,Supplement
+Older Adults,2,2017-09-01,2018-08-31,Sensitivity,Specific,RSV,No,Yes
+Older Adults,3,2018-09-01,2019-08-31,Sensitivity,Specific,Flu,No,Yes
+Adults,1,2016-09-01,2017-08-31,Primary,Specific,All,No,No
+Adults,2,2017-09-01,2018-08-31,Primary,Specific,All,Supplement,Supplement
+Adults,3,2018-09-01,2019-08-31,Primary,Specific,All,Supplement,Supplement
+Adults,4,2019-09-01,2020-08-31,Primary,Specific,All,No,No
+Adults,5,2020-09-01,2021-08-31,Primary,Specific,All,Supplement,Supplement
+Adults,6,2021-09-01,2022-08-31,Primary,Specific,All,No,No
+Adults,7,2022-09-01,2023-08-31,Primary,Specific,All,No,No
+Adults,8,2023-09-01,2024-08-31,Primary,Specific,All,No,No
+Adults,1,2016-09-01,2017-08-31,Primary,Sensitive,All,No,No
+Adults,2,2017-09-01,2018-08-31,Primary,Sensitive,All,Supplement,No
+Adults,3,2018-09-01,2019-08-31,Primary,Sensitive,All,Supplement,No
+Adults,4,2019-09-01,2020-08-31,Primary,Sensitive,All,No,No
+Adults,5,2020-09-01,2021-08-31,Primary,Sensitive,All,Supplement,No
+Adults,6,2021-09-01,2022-08-31,Primary,Sensitive,All,No,No
+Adults,7,2022-09-01,2023-08-31,Primary,Sensitive,All,No,No
+Adults,8,2023-09-01,2024-08-31,Primary,Sensitive,All,No,No
+Adults,2,2017-09-01,2018-08-31,Sensitivity,Specific,RSV,No,No
+Adults,3,2018-09-01,2019-08-31,Sensitivity,Specific,Flu,No,No
+Children and Adolescents,1,2016-09-01,2017-08-31,Primary,Specific,All,No,No
+Children and Adolescents,2,2017-09-01,2018-08-31,Primary,Specific,All,Supplement,Supplement
+Children and Adolescents,3,2018-09-01,2019-08-31,Primary,Specific,All,Supplement,Supplement
+Children and Adolescents,4,2019-09-01,2020-08-31,Primary,Specific,All,No,No
+Children and Adolescents,5,2020-09-01,2021-08-31,Primary,Specific,All,Supplement,Supplement
+Children and Adolescents,6,2021-09-01,2022-08-31,Primary,Specific,All,No,No
+Children and Adolescents,7,2022-09-01,2023-08-31,Primary,Specific,All,No,No
+Children and Adolescents,8,2023-09-01,2024-08-31,Primary,Specific,All,No,No
+Children and Adolescents,1,2016-09-01,2017-08-31,Primary,Sensitive,All,No,No
+Children and Adolescents,2,2017-09-01,2018-08-31,Primary,Sensitive,All,Supplement,No
+Children and Adolescents,3,2018-09-01,2019-08-31,Primary,Sensitive,All,Supplement,No
+Children and Adolescents,4,2019-09-01,2020-08-31,Primary,Sensitive,All,No,No
+Children and Adolescents,5,2020-09-01,2021-08-31,Primary,Sensitive,All,Supplement,No
+Children and Adolescents,6,2021-09-01,2022-08-31,Primary,Sensitive,All,No,No
+Children and Adolescents,7,2022-09-01,2023-08-31,Primary,Sensitive,All,No,No
+Children and Adolescents,8,2023-09-01,2024-08-31,Primary,Sensitive,All,No,No
+Children and Adolescents,2,2017-09-01,2018-08-31,Sensitivity,Specific,RSV,No,No
+Children and Adolescents,3,2018-09-01,2019-08-31,Sensitivity,Specific,Flu,No,No
+Infants,1,2016-09-01,2017-08-31,Primary,Specific,All,No,No
+Infants,2,2017-09-01,2018-08-31,Primary,Specific,All,Yes,Supplement
+Infants,3,2018-09-01,2019-08-31,Primary,Specific,All,Yes,Supplement
+Infants,4,2019-09-01,2020-08-31,Primary,Specific,All,Supplement,No
+Infants,5,2020-09-01,2021-08-31,Primary,Specific,All,Yes,Supplement
+Infants,6,2021-09-01,2022-08-31,Primary,Specific,All,No,No
+Infants,7,2022-09-01,2023-08-31,Primary,Specific,All,No,No
+Infants,8,2023-09-01,2024-08-31,Primary,Specific,All,Yes,No
+Infants,1,2016-09-01,2017-08-31,Primary,Sensitive,All,No,No
+Infants,2,2017-09-01,2018-08-31,Primary,Sensitive,All,Yes,Supplement
+Infants,3,2018-09-01,2019-08-31,Primary,Sensitive,All,Yes,Supplement
+Infants,4,2019-09-01,2020-08-31,Primary,Sensitive,All,Supplement,No
+Infants,5,2020-09-01,2021-08-31,Primary,Sensitive,All,Yes,Supplement
+Infants,6,2021-09-01,2022-08-31,Primary,Sensitive,All,No,No
+Infants,7,2022-09-01,2023-08-31,Primary,Sensitive,All,No,No
+Infants,8,2023-09-01,2024-08-31,Primary,Sensitive,All,Yes,No
+Infants,2,2017-09-01,2018-08-31,Sensitivity,Specific,RSV,No,Yes
+Infants,3,2018-09-01,2019-08-31,Sensitivity,Specific,Flu,No,Yes
+Infants Subgroup,1,2016-09-01,2017-08-31,Primary,Specific,All,No,No
+Infants Subgroup,2,2017-09-01,2018-08-31,Primary,Specific,All,Yes,Yes
+Infants Subgroup,3,2018-09-01,2019-08-31,Primary,Specific,All,Yes,Yes
+Infants Subgroup,4,2019-09-01,2020-08-31,Primary,Specific,All,Supplement,Supplement
+Infants Subgroup,5,2020-09-01,2021-08-31,Primary,Specific,All,Yes,Yes
+Infants Subgroup,6,2021-09-01,2022-08-31,Primary,Specific,All,No,No
+Infants Subgroup,7,2022-09-01,2023-08-31,Primary,Specific,All,No,No
+Infants Subgroup,8,2023-09-01,2024-08-31,Primary,Specific,All,Supplement,Supplement
+Infants Subgroup,1,2016-09-01,2017-08-31,Primary,Sensitive,All,No,No
+Infants Subgroup,2,2017-09-01,2018-08-31,Primary,Sensitive,All,Yes,Supplement
+Infants Subgroup,3,2018-09-01,2019-08-31,Primary,Sensitive,All,Yes,Supplement
+Infants Subgroup,4,2019-09-01,2020-08-31,Primary,Sensitive,All,Supplement,No
+Infants Subgroup,5,2020-09-01,2021-08-31,Primary,Sensitive,All,Yes,Supplement
+Infants Subgroup,6,2021-09-01,2022-08-31,Primary,Sensitive,All,No,No
+Infants Subgroup,7,2022-09-01,2023-08-31,Primary,Sensitive,All,No,No
+Infants Subgroup,8,2023-09-01,2024-08-31,Primary,Sensitive,All,Yes,No
+Infants Subgroup,2,2017-09-01,2018-08-31,Sensitivity,Specific,RSV,No,Supplement
+Infants Subgroup,3,2018-09-01,2019-08-31,Sensitivity,Specific,Flu,No,Supplement
