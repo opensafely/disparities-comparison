@@ -37,13 +37,13 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow"))) 
 
-#remove rows with missing values in any of the variables using in models
+#remove rows with missing values in any of the variables used in models
+#outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 df_input <- df_input %>% 
-  filter(!is.na(flu_primary_inf), !is.na(flu_secondary_inf), 
-         !is.na(flu_mortality), !is.na(composition_category),
-         !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
-         !is.na(prior_flu_vaccination), !is.na(flu_vaccination_mild),
-         !is.na(flu_vaccination_severe), !is.na(flu_vaccination))
+  filter(!is.na(composition_category), !is.na(age_band), !is.na(sex),
+         !is.na(rurality_classification), !is.na(prior_flu_vaccination),
+         !is.na(flu_vaccination_mild), !is.na(flu_vaccination_severe),
+         !is.na(flu_vaccination))
 
 #flu primary by household composition
 flu_mild_hh_comp_further <- glm(flu_primary_inf ~ composition_category + 
@@ -62,7 +62,7 @@ flu_severe_hh_comp_further <- glm(flu_secondary_inf ~ composition_category +
 flu_severe_hh_comp_further_output <- tidy(flu_severe_hh_comp_further)
   
 #flu mortality by household composition
-flu_mortality_hh_comp_further <- glm(flu_mortality ~ composition_category + 
+flu_mortality_hh_comp_further <- glm(flu_mortality_inf ~ composition_category + 
                                        age_band + sex + rurality_classification + 
                                        prior_flu_vaccination + flu_vaccination +
                                        offset(log(time_flu_mortality)),

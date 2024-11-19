@@ -35,20 +35,18 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow"))) 
 
-#remove rows with missing values in any of the variables using in models
+#remove rows with missing values in any of the variables used in models
+#outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 if (cohort == "infants_subgroup") {
   df_input <- df_input %>% 
-    filter(!is.na(flu_primary_inf), !is.na(flu_secondary_inf), 
-           !is.na(flu_mortality), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
-           !is.na(maternal_age), !is.na(maternal_smoking_status),
-           !is.na(maternal_drinking), !is.na(maternal_drug_usage),
-           !is.na(maternal_flu_vaccination))
+    filter(!is.na(composition_category), !is.na(age_band), !is.na(sex),
+           !is.na(rurality_classification), !is.na(maternal_age),
+           !is.na(maternal_smoking_status), !is.na(maternal_drinking),
+           !is.na(maternal_drug_usage), !is.na(maternal_flu_vaccination))
 } else {
   df_input <- df_input %>% 
-    filter(!is.na(flu_primary_inf), !is.na(flu_secondary_inf), 
-           !is.na(flu_mortality), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification))
+    filter(!is.na(composition_category), !is.na(age_band),
+           !is.na(sex), !is.na(rurality_classification))
 }
 
 if (cohort == "infants_subgroup") {
@@ -76,7 +74,7 @@ if (cohort == "infants_subgroup") {
   flu_severe_hh_comp_output <- tidy(flu_severe_hh_comp)
   
   #flu mortality by household composition
-  flu_mortality_hh_comp <- glm(flu_mortality ~ composition_category + 
+  flu_mortality_hh_comp <- glm(flu_mortality_inf ~ composition_category + 
                                  age_band + sex + rurality_classification + 
                                  maternal_age + maternal_smoking_status +
                                  maternal_drinking + maternal_drug_usage + 
@@ -103,7 +101,7 @@ if (cohort == "infants_subgroup") {
   flu_severe_hh_comp_output <- tidy(flu_severe_hh_comp)
   
   #flu mortality by household composition
-  flu_mortality_hh_comp <- glm(flu_mortality ~ composition_category + 
+  flu_mortality_hh_comp <- glm(flu_mortality_inf ~ composition_category + 
                                  age_band + sex + rurality_classification + 
                                  offset(log(time_flu_mortality)),
                                data = df_input, family = poisson)

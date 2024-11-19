@@ -37,13 +37,13 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow"))) 
 
-#remove rows with missing values in any of the variables using in models
+#remove rows with missing values in any of the variables used in models
+#outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 df_input <- df_input %>% 
-  filter(!is.na(flu_primary_inf), !is.na(flu_secondary_inf), 
-         !is.na(flu_mortality), !is.na(imd_quintile),
-         !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
-         !is.na(prior_flu_vaccination), !is.na(flu_vaccination_mild),
-         !is.na(flu_vaccination_severe), !is.na(flu_vaccination))
+  filter(!is.na(imd_quintile), !is.na(age_band), !is.na(sex),
+         !is.na(rurality_classification), !is.na(prior_flu_vaccination),
+         !is.na(flu_vaccination_mild), !is.na(flu_vaccination_severe),
+         !is.na(flu_vaccination))
 
 #flu primary by ses
 flu_mild_ses_further <- glm(flu_primary_inf ~ imd_quintile + age_band +
@@ -62,7 +62,7 @@ flu_severe_ses_further <- glm(flu_secondary_inf ~ imd_quintile + age_band +
 flu_severe_ses_further_output <- tidy(flu_severe_ses_further)
   
 #flu mortality by ses
-flu_mortality_ses_further <- glm(flu_mortality ~ imd_quintile + age_band +
+flu_mortality_ses_further <- glm(flu_mortality_inf ~ imd_quintile + age_band +
                                    sex + rurality_classification +
                                    prior_flu_vaccination + flu_vaccination +
                                    offset(log(time_flu_mortality)),

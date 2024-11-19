@@ -37,26 +37,25 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow")))
 
-#remove rows with missing values in any of the variables using in models
+#remove rows with missing values in any of the variables used in models
+#outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 if (study_start_date >= covid_prior_vacc_min) {
   
   df_input <- df_input %>% 
-    filter(!is.na(covid_primary_inf), !is.na(covid_secondary_inf), 
-           !is.na(covid_mortality), !is.na(latest_ethnicity_group),
-           !is.na(imd_quintile), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
-           !is.na(covid_vaccination_mild), !is.na(covid_vaccination_severe),
-           !is.na(covid_vaccination), !is.na(time_since_last_covid_vaccination))
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(composition_category), !is.na(age_band), !is.na(sex),
+           !is.na(rurality_classification), !is.na(covid_vaccination_mild),
+           !is.na(covid_vaccination_severe), !is.na(covid_vaccination),
+           !is.na(time_since_last_covid_vaccination))
   
 } else {
   
   df_input <- df_input %>% 
-    filter(!is.na(covid_primary_inf), !is.na(covid_secondary_inf), 
-           !is.na(covid_mortality), !is.na(latest_ethnicity_group),
-           !is.na(imd_quintile), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
-           !is.na(covid_vaccination_mild), !is.na(covid_vaccination_severe),
-           !is.na(covid_vaccination), !is.na(time_since_last_covid_vaccination))
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(composition_category), !is.na(age_band), !is.na(sex),
+           !is.na(rurality_classification), !is.na(covid_vaccination_mild),
+           !is.na(covid_vaccination_severe), !is.na(covid_vaccination),
+           !is.na(time_since_last_covid_vaccination))
   
 }
 
@@ -113,7 +112,7 @@ if (study_start_date >= covid_prior_vacc_min) {
   covid_severe_full_further_output <- tidy(covid_severe_full_further)
   
   #covid mortality by ethnicity and socioeconomic status
-  covid_mortality_full_further <- glm(covid_mortality ~ latest_ethnicity_group +
+  covid_mortality_full_further <- glm(covid_mortality_inf ~ latest_ethnicity_group +
                                         imd_quintile + age_band + sex +
                                         rurality_classification +
                                         covid_vaccination +

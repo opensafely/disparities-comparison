@@ -35,14 +35,14 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow"))) 
 
-#remove rows with missing values in any of the variables using in models
+#remove rows with missing values in any of the variables used in models
+#outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 df_input <- df_input %>% 
-  filter(!is.na(flu_primary_inf), !is.na(flu_secondary_inf), 
-         !is.na(flu_mortality), !is.na(latest_ethnicity_group),
-         !is.na(imd_quintile), !is.na(composition_category),
-         !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
-         !is.na(prior_flu_vaccination), !is.na(flu_vaccination_mild),
-         !is.na(flu_vaccination_severe), !is.na(flu_vaccination))
+  filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+         !is.na(composition_category), !is.na(age_band), !is.na(sex),
+         !is.na(rurality_classification), !is.na(prior_flu_vaccination),
+         !is.na(flu_vaccination_mild), !is.na(flu_vaccination_severe),
+         !is.na(flu_vaccination))
   
 #flu primary by ethnicity, socioeconomic status and household composition
 flu_mild_full_further <- glm(flu_primary_inf ~ latest_ethnicity_group + 
@@ -63,7 +63,7 @@ flu_severe_full_further <- glm(flu_secondary_inf ~ latest_ethnicity_group +
 flu_severe_full_further_output <- tidy(flu_severe_full_further)
   
 #flu mortality by ethnicity, socioeconomic status and household composition
-flu_mortality_full_further <- glm(flu_mortality ~ latest_ethnicity_group +
+flu_mortality_full_further <- glm(flu_mortality_inf ~ latest_ethnicity_group +
                                     imd_quintile + composition_category + 
                                     age_band + sex + rurality_classification +
                                     prior_flu_vaccination + flu_vaccination +

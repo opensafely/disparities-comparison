@@ -35,31 +35,26 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow")))
 
-#remove rows with missing values in any of the variables using in models
+#remove rows with missing values in any of the variables used in models
+#outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 if (cohort == "infants_subgroup") {
   
   df_input <- df_input %>% 
-    filter(!is.na(overall_and_all_cause_primary_inf),
-           !is.na(overall_and_all_cause_secondary_inf), 
-           !is.na(overall_and_all_cause_mortality),
-           !is.na(latest_ethnicity_group), !is.na(imd_quintile),
-           !is.na(composition_category), !is.na(age_band),
-           !is.na(sex), !is.na(rurality_classification),
-           !is.na(maternal_age), !is.na(maternal_smoking_status),
-           !is.na(maternal_drinking), !is.na(maternal_drug_usage),
-           !is.na(maternal_flu_vaccination))
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(composition_category), !is.na(age_band), !is.na(sex),
+           !is.na(rurality_classification), !is.na(maternal_age),
+           !is.na(maternal_smoking_status), !is.na(maternal_drinking),
+           !is.na(maternal_drug_usage), !is.na(maternal_flu_vaccination))
   
 } else {
   
   df_input <- df_input %>% 
-    filter(!is.na(overall_and_all_cause_primary_inf),
-           !is.na(overall_and_all_cause_secondary_inf), 
-           !is.na(overall_and_all_cause_mortality),
-           !is.na(latest_ethnicity_group), !is.na(imd_quintile),
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
            !is.na(composition_category), !is.na(age_band),
            !is.na(sex), !is.na(rurality_classification))
   
 }
+
 
 if (cohort == "infants_subgroup") {
   
@@ -90,7 +85,7 @@ if (cohort == "infants_subgroup") {
     overall_resp_severe_full_output <- tidy(overall_resp_severe_full)
     
     #overall_resp mortality by ethnicity, socioeconomic status and household composition
-    overall_resp_mortality_full <- glm(overall_resp_mortality ~ latest_ethnicity_group +
+    overall_resp_mortality_full <- glm(overall_resp_mortality_inf ~ latest_ethnicity_group +
                                          imd_quintile + composition_category +
                                          age_band + sex + rurality_classification +
                                          maternal_age + maternal_smoking_status +
@@ -104,7 +99,7 @@ if (cohort == "infants_subgroup") {
   }
   
   #all cause mortality by ethnicity, socioeconomic status and household composition
-  all_cause_mortality_full <- glm(all_cause_mortality ~ latest_ethnicity_group +
+  all_cause_mortality_full <- glm(all_cause_mortality_inf ~ latest_ethnicity_group +
                                     imd_quintile + composition_category +
                                     age_band + sex + rurality_classification +
                                     maternal_age + maternal_smoking_status +
@@ -136,7 +131,7 @@ if (cohort == "infants_subgroup") {
     overall_resp_severe_full_output <- tidy(overall_resp_severe_full)
     
     #overall_resp mortality by ethnicity, socioeconomic status and household composition
-    overall_resp_mortality_full <- glm(overall_resp_mortality ~ latest_ethnicity_group + 
+    overall_resp_mortality_full <- glm(overall_resp_mortality_inf ~ latest_ethnicity_group + 
                                          imd_quintile + composition_category +
                                          age_band + sex + rurality_classification + 
                                          offset(log(time_overall_resp_mortality)),
@@ -146,7 +141,7 @@ if (cohort == "infants_subgroup") {
   }
   
   #all cause mortality by ethnicity, socioeconomic status and household composition
-  all_cause_mortality_full <- glm(all_cause_mortality ~ latest_ethnicity_group +
+  all_cause_mortality_full <- glm(all_cause_mortality_inf ~ latest_ethnicity_group +
                                     imd_quintile + composition_category +
                                     age_band + sex + rurality_classification + 
                                     offset(log(time_all_cause_mortality)),

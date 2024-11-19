@@ -35,25 +35,22 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow")))
 
-#remove rows with missing values in any of the variables using in models
+#remove rows with missing values in any of the variables used in models
+#outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 if (cohort == "infants_subgroup") {
   
   df_input <- df_input %>% 
-    filter(!is.na(covid_primary_inf), !is.na(covid_secondary_inf), 
-           !is.na(covid_mortality), !is.na(latest_ethnicity_group), 
-           !is.na(composition_category), !is.na(age_band),
-           !is.na(sex), !is.na(rurality_classification),
+    filter(!is.na(latest_ethnicity_group), !is.na(composition_category),
+           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
            !is.na(maternal_age), !is.na(maternal_smoking_status),
            !is.na(maternal_drinking), !is.na(maternal_drug_usage),
            !is.na(maternal_flu_vaccination))
-  
+
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
   df_input <- df_input %>% 
-    filter(!is.na(covid_primary_inf), !is.na(covid_secondary_inf), 
-           !is.na(covid_mortality), !is.na(latest_ethnicity_group),
-           !is.na(composition_category), !is.na(age_band),
-           !is.na(sex), !is.na(rurality_classification),
+    filter(!is.na(latest_ethnicity_group), !is.na(composition_category),
+           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
            !is.na(has_asthma), !is.na(has_copd), !is.na(has_cystic_fibrosis),
            !is.na(has_other_resp), !is.na(has_diabetes), !is.na(has_addisons),
            !is.na(severe_obesity), !is.na(has_chd), !is.na(has_ckd),
@@ -65,10 +62,8 @@ if (cohort == "infants_subgroup") {
 } else {
   
   df_input <- df_input %>% 
-    filter(!is.na(covid_primary_inf), !is.na(covid_secondary_inf), 
-           !is.na(covid_mortality), !is.na(latest_ethnicity_group),
-           !is.na(composition_category), !is.na(age_band),
-           !is.na(sex), !is.na(rurality_classification))
+    filter(!is.na(latest_ethnicity_group), !is.na(composition_category),
+           !is.na(age_band), !is.na(sex), !is.na(rurality_classification))
   
 }
 
@@ -99,7 +94,7 @@ if (cohort == "infants_subgroup") {
   covid_severe_ethnicity_hh_comp_output <- tidy(covid_severe_ethnicity_hh_comp)
   
   #covid mortality by ethnicity and household composition
-  covid_mortality_ethnicity_hh_comp <- glm(covid_mortality ~ latest_ethnicity_group +
+  covid_mortality_ethnicity_hh_comp <- glm(covid_mortality_inf ~ latest_ethnicity_group +
                                              composition_category + age_band +
                                              sex + rurality_classification +
                                              maternal_age + maternal_smoking_status +
@@ -119,12 +114,11 @@ if (cohort == "infants_subgroup") {
                                         has_asthma + has_copd +
                                         has_cystic_fibrosis + has_other_resp +
                                         has_diabetes + has_addisons +
-                                        severe_obesity + has_chd +
-                                        has_ckd + has_cld + has_cnd +
-                                        has_cancer + immunosuppressed +
-                                        has_sickle_cell + smoking_status +
-                                        hazardous_drinking + drug_usage +
-                                        offset(log(time_covid_primary)),
+                                        severe_obesity + has_chd + has_ckd +
+                                        has_cld + has_cnd + has_cancer +
+                                        immunosuppressed + has_sickle_cell +
+                                        smoking_status + hazardous_drinking +
+                                        drug_usage + offset(log(time_covid_primary)),
                                       data = df_input, family = poisson)
   covid_mild_ethnicity_hh_comp_output <- tidy(covid_mild_ethnicity_hh_comp)
   
@@ -132,34 +126,34 @@ if (cohort == "infants_subgroup") {
   covid_severe_ethnicity_hh_comp <- glm(covid_secondary_inf ~ latest_ethnicity_group +
                                           composition_category + age_band +
                                           sex + rurality_classification +
+                                          sex + rurality_classification +
                                           has_asthma + has_copd +
                                           has_cystic_fibrosis + has_other_resp +
                                           has_diabetes + has_addisons +
-                                          severe_obesity + has_chd +
-                                          has_ckd + has_cld + has_cnd +
-                                          has_cancer + immunosuppressed +
-                                          has_sickle_cell + smoking_status +
-                                          hazardous_drinking + drug_usage +
-                                          offset(log(time_covid_secondary)),
+                                          severe_obesity + has_chd + has_ckd +
+                                          has_cld + has_cnd + has_cancer +
+                                          immunosuppressed + has_sickle_cell +
+                                          smoking_status + hazardous_drinking +
+                                          drug_usage + offset(log(time_covid_primary)),
                                         data = df_input, family = poisson)
   covid_severe_ethnicity_hh_comp_output <- tidy(covid_severe_ethnicity_hh_comp)
   
   #covid mortality by ethnicity and household composition
-  covid_mortality_ethnicity_hh_comp <- glm(covid_mortality ~ latest_ethnicity_group +
+  covid_mortality_ethnicity_hh_comp <- glm(covid_mortality_inf ~ latest_ethnicity_group +
                                              composition_category + age_band +
+                                             sex + rurality_classification +
                                              sex + rurality_classification +
                                              has_asthma + has_copd +
                                              has_cystic_fibrosis + has_other_resp +
                                              has_diabetes + has_addisons +
-                                             severe_obesity + has_chd +
-                                             has_ckd + has_cld + has_cnd +
-                                             has_cancer + immunosuppressed +
-                                             has_sickle_cell + smoking_status +
-                                             hazardous_drinking + drug_usage +
-                                             offset(log(time_covid_mortality)),
+                                             severe_obesity + has_chd + has_ckd +
+                                             has_cld + has_cnd + has_cancer +
+                                             immunosuppressed + has_sickle_cell +
+                                             smoking_status + hazardous_drinking +
+                                             drug_usage + offset(log(time_covid_primary)),
                                            data = df_input, family = poisson)
   covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp)
-  
+
 } else {
   
   #covid primary by ethnicity and household composition
@@ -179,7 +173,7 @@ if (cohort == "infants_subgroup") {
   covid_severe_ethnicity_hh_comp_output <- tidy(covid_severe_ethnicity_hh_comp)
   
   #covid mortality by ethnicity and household composition
-  covid_mortality_ethnicity_hh_comp <- glm(covid_mortality ~ latest_ethnicity_group +
+  covid_mortality_ethnicity_hh_comp <- glm(covid_mortality_inf ~ latest_ethnicity_group +
                                              composition_category + age_band +
                                              sex + rurality_classification +
                                              offset(log(time_covid_mortality)),

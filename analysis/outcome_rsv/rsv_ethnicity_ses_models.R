@@ -35,14 +35,13 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow"))) 
 
-#remove rows with missing values in any of the variables using in models
+#remove rows with missing values in any of the variables used in models
+#outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 if (cohort == "infants_subgroup") {
   
   df_input <- df_input %>% 
-    filter(!is.na(rsv_primary_inf), !is.na(rsv_secondary_inf), 
-           !is.na(rsv_mortality), !is.na(latest_ethnicity_group), 
-           !is.na(imd_quintile), !is.na(age_band),
-           !is.na(sex), !is.na(rurality_classification),
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
            !is.na(maternal_age), !is.na(maternal_smoking_status),
            !is.na(maternal_drinking), !is.na(maternal_drug_usage),
            !is.na(maternal_flu_vaccination))
@@ -50,11 +49,9 @@ if (cohort == "infants_subgroup") {
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
  
   df_input <- df_input %>% 
-    filter(!is.na(rsv_primary_inf), !is.na(rsv_secondary_inf), 
-           !is.na(rsv_mortality), !is.na(latest_ethnicity_group),
-           !is.na(imd_quintile), !is.na(age_band), !is.na(sex),
-           !is.na(rurality_classification), !is.na(has_asthma),
-           !is.na(has_copd), !is.na(has_cystic_fibrosis),
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
+           !is.na(has_asthma), !is.na(has_copd), !is.na(has_cystic_fibrosis),
            !is.na(has_other_resp), !is.na(has_diabetes), !is.na(has_addisons),
            !is.na(severe_obesity), !is.na(has_chd), !is.na(has_ckd),
            !is.na(has_cld), !is.na(has_cnd), !is.na(has_cancer),
@@ -65,10 +62,8 @@ if (cohort == "infants_subgroup") {
 } else {
   
   df_input <- df_input %>% 
-    filter(!is.na(rsv_primary_inf), !is.na(rsv_secondary_inf), 
-           !is.na(rsv_mortality), !is.na(latest_ethnicity_group),
-           !is.na(imd_quintile), !is.na(age_band),
-           !is.na(sex), !is.na(rurality_classification))
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(age_band), !is.na(sex), !is.na(rurality_classification))
   
 }
 
@@ -99,7 +94,7 @@ if (cohort == "infants_subgroup") {
   rsv_severe_ethnicity_ses_output <- tidy(rsv_severe_ethnicity_ses)
   
   #rsv mortality by ethnicity and socioeconomic status
-  rsv_mortality_ethnicity_ses <- glm(rsv_mortality ~ latest_ethnicity_group + 
+  rsv_mortality_ethnicity_ses <- glm(rsv_mortality_inf ~ latest_ethnicity_group + 
                                        imd_quintile + age_band + sex + 
                                        rurality_classification + 
                                        maternal_age + maternal_smoking_status +
@@ -143,7 +138,7 @@ if (cohort == "infants_subgroup") {
   rsv_severe_ethnicity_ses_output <- tidy(rsv_severe_ethnicity_ses)
   
   #rsv mortality by ethnicity and socioeconomic status
-  rsv_mortality_ethnicity_ses <- glm(rsv_mortality ~ latest_ethnicity_group + 
+  rsv_mortality_ethnicity_ses <- glm(rsv_mortality_inf ~ latest_ethnicity_group + 
                                        imd_quintile + age_band + sex + 
                                        rurality_classification + has_asthma +
                                        has_copd + has_cystic_fibrosis +
@@ -176,7 +171,7 @@ if (cohort == "infants_subgroup") {
   rsv_severe_ethnicity_ses_output <- tidy(rsv_severe_ethnicity_ses)
   
   #rsv mortality by ethnicity and socioeconomic status
-  rsv_mortality_ethnicity_ses <- glm(rsv_mortality ~ latest_ethnicity_group + 
+  rsv_mortality_ethnicity_ses <- glm(rsv_mortality_inf ~ latest_ethnicity_group + 
                                        imd_quintile + age_band + sex + 
                                        rurality_classification + 
                                        offset(log(time_rsv_mortality)),

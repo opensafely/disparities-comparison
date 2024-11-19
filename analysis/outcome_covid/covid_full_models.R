@@ -35,14 +35,14 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow")))
 
-#remove rows with missing values in any of the variables using in models
+#remove rows with missing values in any of the variables used in models
+#outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 if (cohort == "infants_subgroup") {
   
   df_input <- df_input %>% 
-    filter(!is.na(covid_primary_inf), !is.na(covid_secondary_inf), 
-           !is.na(covid_mortality), !is.na(latest_ethnicity_group), 
-           !is.na(imd_quintile), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(composition_category), !is.na(age_band),
+           !is.na(sex), !is.na(rurality_classification),
            !is.na(maternal_age), !is.na(maternal_smoking_status),
            !is.na(maternal_drinking), !is.na(maternal_drug_usage),
            !is.na(maternal_flu_vaccination))
@@ -50,25 +50,23 @@ if (cohort == "infants_subgroup") {
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
   df_input <- df_input %>% 
-    filter(!is.na(covid_primary_inf), !is.na(covid_secondary_inf), 
-           !is.na(covid_mortality), !is.na(latest_ethnicity_group),
-           !is.na(imd_quintile), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(composition_category), !is.na(age_band),
+           !is.na(sex), !is.na(rurality_classification),
            !is.na(has_asthma), !is.na(has_copd), !is.na(has_cystic_fibrosis),
            !is.na(has_other_resp), !is.na(has_diabetes), !is.na(has_addisons),
            !is.na(severe_obesity), !is.na(has_chd), !is.na(has_ckd),
            !is.na(has_cld), !is.na(has_cnd), !is.na(has_cancer),
            !is.na(immunosuppressed), !is.na(has_sickle_cell),
            !is.na(smoking_status), !is.na(hazardous_drinking),
-           !is.na(drug_usage))
+           !is.na(drug_usage)) 
   
 } else {
   
   df_input <- df_input %>% 
-    filter(!is.na(covid_primary_inf), !is.na(covid_secondary_inf), 
-           !is.na(covid_mortality), !is.na(latest_ethnicity_group),
-           !is.na(imd_quintile), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification))
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(composition_category), !is.na(age_band),
+           !is.na(sex), !is.na(rurality_classification))
   
 }
 
@@ -99,7 +97,7 @@ if (cohort == "infants_subgroup") {
   covid_severe_full_output <- tidy(covid_severe_full)
   
   #covid mortality by ethnicity and socioeconomic status
-  covid_mortality_full <- glm(covid_mortality ~ latest_ethnicity_group +
+  covid_mortality_full <- glm(covid_mortality_inf ~ latest_ethnicity_group +
                                 imd_quintile + composition_category +
                                 age_band + sex + rurality_classification +
                                 maternal_age + maternal_smoking_status +
@@ -141,7 +139,7 @@ if (cohort == "infants_subgroup") {
   covid_severe_full_output <- tidy(covid_severe_full)
   
   #covid mortality by ethnicity and socioeconomic status
-  covid_mortality_full <- glm(covid_mortality ~ latest_ethnicity_group +
+  covid_mortality_full <- glm(covid_mortality_inf ~ latest_ethnicity_group +
                                 imd_quintile + composition_category +
                                 age_band + sex + rurality_classification +
                                 has_asthma + has_copd + has_cystic_fibrosis +
@@ -173,7 +171,7 @@ if (cohort == "infants_subgroup") {
   covid_severe_full_output <- tidy(covid_severe_full)
   
   #covid mortality by ethnicity and socioeconomic status
-  covid_mortality_full <- glm(covid_mortality ~ latest_ethnicity_group +
+  covid_mortality_full <- glm(covid_mortality_inf ~ latest_ethnicity_group +
                                 imd_quintile + composition_category +
                                 age_band + sex + rurality_classification +
                                 offset(log(time_covid_mortality)),

@@ -35,40 +35,23 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow"))) 
 
-#remove rows with missing values in any of the variables using in models
+#remove rows with missing values in any of the variables used in models
+#outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 if (cohort == "infants_subgroup") {
   
   df_input <- df_input %>% 
-    filter(!is.na(flu_primary_inf), !is.na(flu_secondary_inf), 
-           !is.na(flu_mortality), !is.na(latest_ethnicity_group),
-           !is.na(imd_quintile), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
-           !is.na(maternal_age), !is.na(maternal_smoking_status),
-           !is.na(maternal_drinking), !is.na(maternal_drug_usage),
-           !is.na(maternal_flu_vaccination))
-  
-} else if (cohort == "older_adults" & investigation_type == "secondary") {
-  
-  df_input <- df_input %>% 
-    filter(!is.na(flu_primary_inf), !is.na(flu_secondary_inf), 
-           !is.na(flu_mortality), !is.na(latest_ethnicity_group),
-           !is.na(imd_quintile), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
-           !is.na(has_asthma), !is.na(has_copd), !is.na(has_cystic_fibrosis),
-           !is.na(has_other_resp), !is.na(has_diabetes), !is.na(has_addisons),
-           !is.na(severe_obesity), !is.na(has_chd), !is.na(has_ckd),
-           !is.na(has_cld), !is.na(has_cnd), !is.na(has_cancer),
-           !is.na(immunosuppressed), !is.na(has_sickle_cell),
-           !is.na(smoking_status), !is.na(hazardous_drinking),
-           !is.na(drug_usage))
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(composition_category), !is.na(age_band), !is.na(sex),
+           !is.na(rurality_classification), !is.na(maternal_age),
+           !is.na(maternal_smoking_status), !is.na(maternal_drinking),
+           !is.na(maternal_drug_usage), !is.na(maternal_flu_vaccination))
   
 } else {
   
   df_input <- df_input %>% 
-    filter(!is.na(flu_primary_inf), !is.na(flu_secondary_inf), 
-           !is.na(flu_mortality), !is.na(latest_ethnicity_group),
-           !is.na(imd_quintile), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification))
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(composition_category), !is.na(age_band),
+           !is.na(sex), !is.na(rurality_classification))
   
 }
 
@@ -99,57 +82,13 @@ if (cohort == "infants_subgroup") {
   flu_severe_full_output <- tidy(flu_severe_full)
   
   #flu mortality by ethnicity, socioeconomic status and household composition
-  flu_mortality_full <- glm(flu_mortality ~ latest_ethnicity_group + 
+  flu_mortality_full <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
                               imd_quintile + composition_category +
                               age_band + sex + rurality_classification +
                               maternal_age + maternal_smoking_status +
                               maternal_drinking + maternal_drug_usage + 
                               maternal_flu_vaccination + 
                               maternal_pertussis_vaccination +
-                              offset(log(time_flu_mortality)),
-                            data = df_input, family = poisson)
-  flu_mortality_full_output <- tidy(flu_mortality_full)
-  
-} else if (cohort == "older_adults" & investigation_type == "secondary") {
-  
-  #flu primary by ethnicity, socioeconomic status and household composition
-  flu_mild_full <- glm(flu_primary_inf ~ latest_ethnicity_group +
-                         imd_quintile + composition_category +
-                         age_band + sex + rurality_classification +
-                         has_asthma + has_copd + has_cystic_fibrosis +
-                         has_other_resp + has_diabetes + has_addisons +
-                         severe_obesity + has_chd + has_ckd + has_cld +
-                         has_cnd + has_cancer + immunosuppressed +
-                         has_sickle_cell + smoking_status +
-                         hazardous_drinking + drug_usage +
-                         offset(log(time_flu_primary)), 
-                       data = df_input, family = poisson)
-  flu_mild_full_output <- tidy(flu_mild_full)
-  
-  #flu secondary by ethnicity, socioeconomic status and household composition
-  flu_severe_full <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
-                           imd_quintile + composition_category + 
-                           age_band + sex + rurality_classification +
-                           has_asthma + has_copd + has_cystic_fibrosis +
-                           has_other_resp + has_diabetes + has_addisons +
-                           severe_obesity + has_chd + has_ckd + has_cld +
-                           has_cnd + has_cancer + immunosuppressed +
-                           has_sickle_cell + smoking_status +
-                           hazardous_drinking + drug_usage +
-                           offset(log(time_flu_secondary)),
-                         data = df_input, family = poisson)
-  flu_severe_full_output <- tidy(flu_severe_full)
-  
-  #flu mortality by ethnicity, socioeconomic status and household composition
-  flu_mortality_full <- glm(flu_mortality ~ latest_ethnicity_group +
-                              imd_quintile + composition_category + 
-                              age_band + sex + rurality_classification +
-                              has_asthma + has_copd + has_cystic_fibrosis +
-                              has_other_resp + has_diabetes + has_addisons +
-                              severe_obesity + has_chd + has_ckd + has_cld +
-                              has_cnd + has_cancer + immunosuppressed +
-                              has_sickle_cell + smoking_status +
-                              hazardous_drinking + drug_usage +
                               offset(log(time_flu_mortality)),
                             data = df_input, family = poisson)
   flu_mortality_full_output <- tidy(flu_mortality_full)
@@ -173,7 +112,7 @@ if (cohort == "infants_subgroup") {
   flu_severe_full_output <- tidy(flu_severe_full)
   
   #flu mortality by ethnicity, socioeconomic status and household composition
-  flu_mortality_full <- glm(flu_mortality ~ latest_ethnicity_group +
+  flu_mortality_full <- glm(flu_mortality_inf ~ latest_ethnicity_group +
                               imd_quintile + composition_category + 
                               age_band + sex + rurality_classification + 
                               offset(log(time_flu_mortality)),
