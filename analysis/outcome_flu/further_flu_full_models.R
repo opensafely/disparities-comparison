@@ -37,12 +37,11 @@ df_input <- read_feather(
 
 #remove rows with missing values in any of the variables used in models
 #outcome will never be NA (as part of processing pipeline) so does not need to be filtered
+#vaccination status will also never be NA as part of processing pipeline
 df_input <- df_input %>% 
   filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
          !is.na(composition_category), !is.na(age_band), !is.na(sex),
-         !is.na(rurality_classification), !is.na(prior_flu_vaccination),
-         !is.na(flu_vaccination_mild), !is.na(flu_vaccination_severe),
-         !is.na(flu_vaccination))
+         !is.na(rurality_classification))
   
 #flu primary by ethnicity, socioeconomic status and household composition
 flu_mild_full_further <- glm(flu_primary_inf ~ latest_ethnicity_group + 

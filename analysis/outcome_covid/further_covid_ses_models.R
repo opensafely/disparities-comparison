@@ -39,25 +39,39 @@ df_input <- read_feather(
 
 #remove rows with missing values in any of the variables used in models
 #outcome will never be NA (as part of processing pipeline) so does not need to be filtered
-if (study_start_date >= covid_prior_vacc_min) {
+#vaccination will also never be NA as part of processing pipeline
+
+df_input <- df_input %>% 
+  filter(!is.na(imd_quintile), !is.na(age_band), !is.na(sex),
+         !is.na(rurality_classification))
+
+if (study_start_date == covid_current_vacc_min) {
   
-  df_input <- df_input %>% 
-    filter(!is.na(imd_quintile), !is.na(age_band), !is.na(sex),
-           !is.na(rurality_classification), !is.na(covid_vaccination_mild),
-           !is.na(covid_vaccination_severe), !is.na(covid_vaccination),
-           !is.na(time_since_last_covid_vaccination))
+  #covid primary by ses
+  covid_mild_ses_further <- glm(covid_primary_inf ~ imd_quintile + 
+                                  age_band + sex + rurality_classification + 
+                                  covid_vaccination_mild +
+                                  offset(log(time_covid_primary)),
+                                data = df_input, family = poisson)
+  covid_mild_ses_further_output <- tidy(covid_mild_ses_further)
+  
+  #covid secondary by ses
+  covid_severe_ses_further <- glm(covid_secondary_inf ~ imd_quintile + 
+                                    age_band + sex + rurality_classification + 
+                                    covid_vaccination_severe +
+                                    offset(log(time_covid_secondary)),
+                                  data = df_input, family = poisson)
+  covid_severe_ses_further_output <- tidy(covid_severe_ses_further)
+  
+  #covid mortality by ses
+  covid_mortality_ses_further <- glm(covid_mortality_inf ~ imd_quintile + 
+                                       age_band + sex + rurality_classification + 
+                                       covid_vaccination +
+                                       offset(log(time_covid_mortality)),
+                                     data = df_input, family = poisson)
+  covid_mortality_ses_further_output <- tidy(covid_mortality_ses_further)
   
 } else {
-  
-  df_input <- df_input %>% 
-    filter(!is.na(imd_quintile), !is.na(age_band), !is.na(sex),
-           !is.na(rurality_classification), !is.na(covid_vaccination_mild),
-           !is.na(covid_vaccination_severe), !is.na(covid_vaccination),
-           !is.na(time_since_last_covid_vaccination))
-  
-}
-
-if (study_start_date >= covid_prior_vacc_min) {
   
   #covid primary by ses
   covid_mild_ses_further <- glm(covid_primary_inf ~ imd_quintile + 
@@ -81,32 +95,6 @@ if (study_start_date >= covid_prior_vacc_min) {
   covid_mortality_ses_further <- glm(covid_mortality_inf ~ imd_quintile + 
                                        age_band + sex + rurality_classification + 
                                        time_since_last_covid_vaccination +
-                                       covid_vaccination +
-                                       offset(log(time_covid_mortality)),
-                                     data = df_input, family = poisson)
-  covid_mortality_ses_further_output <- tidy(covid_mortality_ses_further)
-
-} else if (study_start_date == covid_current_vacc_min) {
-  
-  #covid primary by ses
-  covid_mild_ses_further <- glm(covid_primary_inf ~ imd_quintile + 
-                                  age_band + sex + rurality_classification + 
-                                  covid_vaccination_mild +
-                                  offset(log(time_covid_primary)),
-                                data = df_input, family = poisson)
-  covid_mild_ses_further_output <- tidy(covid_mild_ses_further)
-  
-  #covid secondary by ses
-  covid_severe_ses_further <- glm(covid_secondary_inf ~ imd_quintile + 
-                                    age_band + sex + rurality_classification + 
-                                    covid_vaccination_severe +
-                                    offset(log(time_covid_secondary)),
-                                  data = df_input, family = poisson)
-  covid_severe_ses_further_output <- tidy(covid_severe_ses_further)
-  
-  #covid mortality by ses
-  covid_mortality_ses_further <- glm(covid_mortality_inf ~ imd_quintile + 
-                                       age_band + sex + rurality_classification + 
                                        covid_vaccination +
                                        offset(log(time_covid_mortality)),
                                      data = df_input, family = poisson)

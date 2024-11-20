@@ -39,51 +39,35 @@ df_input <- read_feather(
 
 #remove rows with missing values in any of the variables used in models
 #outcome will never be NA (as part of processing pipeline) so does not need to be filtered
-if (study_start_date >= covid_prior_vacc_min) {
-  
-  df_input <- df_input %>% 
-    filter(!is.na(composition_category), !is.na(age_band), !is.na(sex),
-           !is.na(rurality_classification), !is.na(covid_vaccination_mild),
-           !is.na(covid_vaccination_severe), !is.na(covid_vaccination),
-           !is.na(time_since_last_covid_vaccination))
-  
-} else {
-  
-  df_input <- df_input %>% 
-    filter(!is.na(composition_category), !is.na(age_band), !is.na(sex),
-           !is.na(rurality_classification), !is.na(covid_vaccination_mild),
-           !is.na(covid_vaccination_severe), !is.na(covid_vaccination),
-           !is.na(time_since_last_covid_vaccination))
-  
-}
+#vaccination will also never be NA as part of processing pipeline
 
-if (study_start_date == as.Date("2020-09-01")) {
+df_input <- df_input %>% 
+    filter(!is.na(composition_category), !is.na(age_band), !is.na(sex),
+           !is.na(rurality_classification))
   
-  #covid primary by household composition
-  covid_mild_hh_comp_further <- glm(covid_primary_inf ~ composition_category + 
+#covid primary by household composition
+covid_mild_hh_comp_further <- glm(covid_primary_inf ~ composition_category + 
+                                    age_band + sex + rurality_classification + 
+                                    covid_vaccination_mild + 
+                                    offset(log(time_covid_primary)),
+                                  data = df_input, family = poisson)
+covid_mild_hh_comp_further_output <- tidy(covid_mild_hh_comp_further)
+
+#covid secondary by household composition
+covid_severe_hh_comp_further <- glm(covid_secondary_inf ~ composition_category + 
                                       age_band + sex + rurality_classification + 
-                                      covid_vaccination_mild + 
-                                      offset(log(time_covid_primary)),
+                                      covid_vaccination_severe +
+                                      offset(log(time_covid_secondary)),
                                     data = df_input, family = poisson)
-  covid_mild_hh_comp_further_output <- tidy(covid_mild_hh_comp_further)
-  
-  #covid secondary by household composition
-  covid_severe_hh_comp_further <- glm(covid_secondary_inf ~ composition_category + 
-                                        age_band + sex + rurality_classification + 
-                                        covid_vaccination_severe +
-                                        offset(log(time_covid_secondary)),
-                                      data = df_input, family = poisson)
-  covid_severe_hh_comp_further_output <- tidy(covid_severe_hh_comp_further)
-  
-  #covid mortality by household composition
-  covid_mortality_hh_comp_further <- glm(covid_mortality_inf ~ composition_category +
-                                           age_band + sex + rurality_classification + 
-                                           covid_vaccination +
-                                           offset(log(time_covid_mortality)),
-                                         data = df_input, family = poisson)
-  covid_mortality_hh_comp_further_output <- tidy(covid_mortality_hh_comp_further)
+covid_severe_hh_comp_further_output <- tidy(covid_severe_hh_comp_further)
 
-} 
+#covid mortality by household composition
+covid_mortality_hh_comp_further <- glm(covid_mortality_inf ~ composition_category +
+                                         age_band + sex + rurality_classification + 
+                                         covid_vaccination +
+                                         offset(log(time_covid_mortality)),
+                                       data = df_input, family = poisson)
+covid_mortality_hh_comp_further_output <- tidy(covid_mortality_hh_comp_further)
 
 #define a vector of names for the model outputs
 model_names <- c("Mild COVID-19 by Household Composition", 
