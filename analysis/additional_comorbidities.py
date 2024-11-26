@@ -191,12 +191,17 @@ has_asthma = (
 )
   
 #copd diagnosis
+copd_res = (case(
+  when(last_prior_event(codelists.copd_resolved_codelist).date
+  .is_on_or_after(last_prior_event(codelists.copd_codelist).date))
+  .then(True), otherwise = False)
+)
 has_copd = (case(
   when(last_prior_event(codelists.copd_resolved_codelist).date
   .is_on_or_after(last_prior_event(codelists.copd_codelist).date))
   .then(False), when((has_prior_event(codelists.copd_codelist)) 
   & (has_prior_meds(codelists.copd_medications))
-  & (~dataset.copd_res)).then(True), otherwise = False)
+  & (~copd_res)).then(True), otherwise = False)
 )
   
 #cystic fibrosis diagnosis
