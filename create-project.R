@@ -1437,125 +1437,20 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
 
 ##descriptive actions
 
-action_descriptive <- function(cohort, season, dates, codelist_type, 
-                               investigation_type, season_start_date, 
+action_descriptive <- function(cohort, season, dates, codelist_type,
+                               investigation_type, season_start_date,
                                season_end_date) {
   
   splice(
     
     action(
-      name = glue("generate_dataset_{cohort}_{season}_specific_secondary"),
-      run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
-      --output output/data/input_{cohort}_{dates}_specific_secondary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
-      -- {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = NULL,
-      highly_sensitive = lst(
-        dataset = glue("output/data/input_{cohort}_{dates}_specific_secondary.arrow")
-      )
-    ),
-    
-    action(
-      name = glue("process_cohort_{cohort}_{season}_specific_secondary"),
-      run = glue("r:latest analysis/cohort_processing.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = case_when(season == "s5" ~ list(list(
-              glue("generate_dataset_{cohort}_{season}_specific_secondary"),
-              glue("process_household_information_{season}"))), 
-              .default = list(list(glue("generate_dataset_{cohort}_{season}_specific_secondary"))))[[1]],
-      highly_sensitive = lst(
-        dataset = glue("output/data/cohort_processed_{cohort}_{dates}_specific_secondary.arrow")
-      )
-    ),
-    
-    action(
       name = glue("describe_cohort_{cohort}_{season}"),
-      run = glue("r:latest analysis/cohort_description.R {cohort} {season_start_date} {season_end_date} specific secondary"),
+      run = glue("r:latest analysis/cohort_description.R {cohort} {season_start_date} {season_end_date} specific primary"),
       # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
       #               season_start_date, season_end_date),
-      needs = list(glue("process_cohort_{cohort}_{season}_specific_secondary")),
+      needs = list(glue("process_dataset_{cohort}_{season}_specific_primary")),
       moderately_sensitive = lst(
         csv = glue("output/table1/table1_{cohort}_{dates}.csv"))
-    )
-    
-  )
-  
-}
-
-action_descriptive_infants_sub <- function(season, dates, codelist_type, 
-                                           investigation_type, season_start_date, 
-                                           season_end_date) {
-  
-  splice(
-    
-    action(
-      name = glue("generate_dataset_infants_subgroup_{season}_specific_secondary"),
-      run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
-      --output output/data/input_infants_subgroup_{dates}_specific_secondary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_{dates}.arrow
-      -- infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = NULL,
-      highly_sensitive = lst(
-        dataset = glue("output/data/input_infants_subgroup_{dates}_specific_secondary.arrow")
-      )
-    ),
-    
-    action(
-      name = glue("process_mothers_{season}_specific_secondary"),
-      run = glue("r:latest analysis/data_processing_mothers.R {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(season, dates, codelist_type, investigation_type,
-      #               season_start_date, season_end_date),
-      needs = list(glue("generate_dataset_infants_subgroup_{season}_specific_secondary")),
-      highly_sensitive = lst(
-        dataset = glue("output/data/input_mothers_processed_{dates}_specific_secondary.arrow"))
-    ),
-    
-    action(
-      name = glue("generate_maternal_characteristics_{season}_specific_secondary"),
-      run = glue("ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
-          --output output/data/input_maternal_infants_subgroup_{dates}_specific_secondary.arrow
-          --dummy-data-file analysis/dummydata/dummyextract_maternal_{dates}.arrow
-          -- infants_subroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(season, dates, codelist_type, investigation_type,
-      #               season_start_date, season_end_date),
-      needs = list(glue("generate_dataset_infants_subgroup_{season}_specific_secondary"),
-                   glue("process_mothers_{season}_specific_secondary")),
-      highly_sensitive = lst(
-        dataset = glue("output/data/input_maternal_infants_subgroup_{dates}_specific_secondary.arrow"))
-    ),
-    
-    action(
-      name = glue("process_cohort_infants_subgroup_{season}_specific_secondary"),
-      run = glue("r:latest analysis/cohort_processing.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = case_when(season == "s5" ~ list(list(
-              glue("generate_dataset_infants_subgroup_{season}_specific_secondary"),
-              glue("process_mothers_{season}_specific_secondary"),
-              glue("generate_maternal_characteristics_{season}_specific_secondary"),
-              glue("process_household_information_{season}"))), 
-              .default = list(list(
-                glue("generate_dataset_infants_subgroup_{season}_specific_secondary"),
-                glue("process_mothers_{season}_specific_secondary"),
-                glue("generate_maternal_characteristics_{season}_specific_secondary"))))[[1]],
-      highly_sensitive = lst(
-        dataset = glue("output/data/cohort_processed_infants_subgroup_{dates}_specific_secondary.arrow")
-      )
-    ),
-    
-    action(
-      name = glue("describe_cohort_infants_subgroup_{season}"),
-      run = glue("r:latest analysis/cohort_description.R infants_subgroup {season_start_date} {season_end_date} specific secondary"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_cohort_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/table1/table1_infants_subgroup_{dates}.csv"))
     )
     
   )
@@ -1569,6 +1464,20 @@ action_secondary_rsv <- function(cohort, season, dates, codelist_type,
                                  season_end_date) {
   
   splice(
+    
+    action(
+      name = glue("generate_dataset_{cohort}_s2_specific_secondary"),
+      run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
+      --output output/data/input_{cohort}_{dates}_specific_secondary.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      -- {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+      #               season_start_date, season_end_date),
+      needs = NULL,
+      highly_sensitive = lst(
+        dataset = glue("output/data/input_{cohort}_{dates}_specific_secondary.arrow")
+      )
+    ),
     
     action(
       name = glue("process_dataset_{cohort}_s2_specific_secondary"),
@@ -1611,6 +1520,20 @@ action_secondary_flu <- function(cohort, season, dates, codelist_type,
                                  season_end_date) {
   
   splice(
+    
+    action(
+      name = glue("generate_dataset_{cohort}_s3_specific_secondary"),
+      run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
+      --output output/data/input_{cohort}_{dates}_specific_secondary.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      -- {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+      #               season_start_date, season_end_date),
+      needs = NULL,
+      highly_sensitive = lst(
+        dataset = glue("output/data/input_{cohort}_{dates}_specific_secondary.arrow")
+      )
+    ),
     
     action(
       name = glue("process_dataset_{cohort}_s3_specific_secondary"),
@@ -1665,6 +1588,20 @@ action_secondary_covid <- function(cohort, season, dates, codelist_type,
   splice(
     
     action(
+      name = glue("generate_dataset_{cohort}_s5_specific_secondary"),
+      run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
+      --output output/data/input_{cohort}_{dates}_specific_secondary.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      -- {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
+      #               season_start_date, season_end_date),
+      needs = NULL,
+      highly_sensitive = lst(
+        dataset = glue("output/data/input_{cohort}_{dates}_specific_secondary.arrow")
+      )
+    ),
+    
+    action(
       name = glue("process_dataset_{cohort}_s5_specific_secondary"),
       run = glue("r:latest analysis/secondary_analyses/data_processing_sec.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
@@ -1711,460 +1648,20 @@ action_secondary_covid <- function(cohort, season, dates, codelist_type,
   
 }
 
-action_secondary_rsv_infants <- function(cohort, season, dates, codelist_type,
+action_descriptive_secondary <- function(cohort, season, dates, codelist_type,
                                          investigation_type, season_start_date,
                                          season_end_date) {
   
   splice(
     
     action(
-      name = glue("process_dataset_{cohort}_s2_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/data_processing_sec.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("generate_dataset_{cohort}_s2_specific_secondary")),
-      highly_sensitive = lst(
-        dataset = glue("output/data/input_processed_{cohort}_{dates}_specific_secondary.arrow")
-      )
-    ),
-    
-    action(
-      name = glue("describe_dataset_{cohort}_s2_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/season_summary_sec.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_s2_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_{cohort}_{dates}_specific_secondary.csv")
-      )
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_rsv_ethnicity_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_rsv/rsv_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      name = glue("describe_cohort_secondary_{cohort}_{season}"),
+      run = glue("r:latest analysis/cohort_description.R {cohort} {season_start_date} {season_end_date} specific secondary"),
       # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
       moderately_sensitive = lst(
-        csv = glue("output/results/models/rsv_{investigation_type}/rsv_ethnicity_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_rsv_ses_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_rsv/rsv_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/rsv_{investigation_type}/rsv_ses_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/rsv_{investigation_type}/rsv_ethnicity_ses_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    )
-    
-  )
-  
-}
-
-action_secondary_rsv_infants_sub <- function(season, dates, codelist_type,
-                                             investigation_type, season_start_date,
-                                             season_end_date) {
-  
-  splice(
-    
-    action(
-      name = glue("process_dataset_infants_subgroup_s2_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/data_processing_sec.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("generate_dataset_infants_subgroup_s2_specific_secondary"),
-                   glue("process_mothers_s2_specific_secondary"),
-                   glue("generate_maternal_characteristics_s2_specific_secondary")),
-      highly_sensitive = lst(
-        dataset = glue("output/data/input_processed_infants_subgroup_{dates}_specific_secondary.arrow")
-      )
-    ),
-    
-    action(
-      name = glue("describe_dataset_infants_subgroup_s2_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/season_summary_sec.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_s2_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_infants_subgroup_{dates}_specific_secondary.csv")
-      )
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_rsv_ethnicity_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/rsv_{investigation_type}/rsv_ethnicity_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_rsv_ses_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_rsv/rsv_ses_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/rsv_{investigation_type}/rsv_ses_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_rsv_ethnicity_ses_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/rsv_{investigation_type}/rsv_ethnicity_ses_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
-    )
-    
-  )
-  
-}
-
-action_secondary_flu_infants <- function(cohort, season, dates, codelist_type,
-                                         investigation_type, season_start_date,
-                                         season_end_date) {
-  
-  splice(
-    
-    action(
-      name = glue("process_dataset_{cohort}_s3_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/data_processing_sec.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("generate_dataset_{cohort}_s3_specific_secondary")),
-      highly_sensitive = lst(
-        dataset = glue("output/data/input_processed_{cohort}_{dates}_specific_secondary.arrow")
-      )
-    ),
-    
-    action(
-      name = glue("describe_dataset_{cohort}_s3_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/season_summary_sec.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_s3_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_{cohort}_{dates}_specific_secondary.csv")
-      )
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_flu_ethnicity_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_flu/flu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/flu_{investigation_type}/flu_ethnicity_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_flu_ses_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_flu/flu_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/flu_{investigation_type}/flu_ses_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_flu_ethnicity_ses_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_flu/flu_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #              season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/flu_{investigation_type}/flu_ethnicity_ses_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    )
-    
-  )
-  
-}
-
-action_secondary_flu_infants_sub <- function(season, dates, codelist_type,
-                                             investigation_type, season_start_date,
-                                             season_end_date) {
-  
-  splice(
-    
-    action(
-      name = glue("process_dataset_infants_subgroup_s3_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/data_processing_sec.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("generate_dataset_infants_subgroup_s3_specific_secondary"),
-                   glue("process_mothers_s3_specific_secondary"),
-                   glue("generate_maternal_characteristics_s3_specific_secondary")),
-      highly_sensitive = lst(
-        dataset = glue("output/data/input_processed_infants_subgroup_{dates}_specific_secondary.arrow")
-      )
-    ),
-    
-    action(
-      name = glue("describe_dataset_infants_subgroup_s3_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/season_summary_sec.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_s3_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_infants_subgroup_{dates}_specific_secondary.csv")
-      )
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_flu_ethnicity_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_flu/flu_ethnicity_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/flu_{investigation_type}/flu_ethnicity_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_flu_ses_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_flu/flu_ses_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/flu_{investigation_type}/flu_ses_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_flu_ethnicity_ses_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #              season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/flu_{investigation_type}/flu_ethnicity_ses_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
-    )
-    
-  )
-  
-}
-
-action_secondary_covid_infants <- function(cohort, season, dates, codelist_type,
-                                           investigation_type, season_start_date,
-                                           season_end_date) {
-  
-  splice(
-    
-    action(
-      name = glue("process_dataset_{cohort}_s5_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/data_processing_sec.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("generate_dataset_{cohort}_s5_specific_secondary"),
-                   glue("process_household_information_s5")),
-      highly_sensitive = lst(
-        dataset = glue("output/data/input_processed_{cohort}_{dates}_specific_secondary.arrow")
-      )
-    ),
-    
-    action(
-      name = glue("describe_dataset_{cohort}_s5_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/season_summary_sec.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_s5_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_{cohort}_{dates}_specific_secondary.csv")
-      )
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_covid_ethnicity_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_ethnicity_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_covid_ses_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_ses_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_covid_hh_comp_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_hh_comp_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_covid_ethnicity_ses_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_ethnicity_ses_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_ethnicity_ses_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_covid_ethnicity_hh_comp_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_ethnicity_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_ethnicity_hh_comp_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_covid_ses_hh_comp_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_ses_hh_comp_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_ses_hh_comp_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_covid_full_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_full_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_{cohort}_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_full_model_outputs_{cohort}_{dates}_specific_secondary.csv"))
-    )
-    
-  )
-  
-}
-
-action_secondary_covid_infants_sub <- function(season, dates, codelist_type,
-                                               investigation_type, season_start_date,
-                                               season_end_date) {
-  
-  splice(
-
-    action(
-      name = glue("process_dataset_infants_subgroup_s5_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/data_processing_sec.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("generate_dataset_infants_subgroup_s5_specific_secondary"),
-                   glue("process_mothers_s5_specific_secondary"),
-                   glue("generate_maternal_characteristics_s5_specific_secondary"),
-                   glue("process_household_information_s5")),
-      highly_sensitive = lst(
-        dataset = glue("output/data/input_processed_infants_subgroup_{dates}_specific_secondary.arrow")
-      )
-    ),
-    
-    action(
-      name = glue("describe_dataset_infants_subgroup_s5_specific_secondary"),
-      run = glue("r:latest analysis/secondary_analyses/season_summary_sec.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_s5_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/rates/rates_infants_subgroup_{dates}_specific_secondary.csv")
-      )
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_covid_ethnicity_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_ethnicity_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_covid_ses_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_ses_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_ses_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_covid_hh_comp_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_hh_comp_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_hh_comp_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_covid_ethnicity_ses_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_ethnicity_ses_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_ethnicity_ses_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_covid_ethnicity_hh_comp_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_ethnicity_hh_comp_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_ethnicity_hh_comp_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_covid_ses_hh_comp_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_ses_hh_comp_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_ses_hh_comp_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_infants_subgroup_covid_full_{season}_specific_secondary"),
-      run = glue("r:latest analysis/outcome_covid/covid_full_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
-      #               season_start_date, season_end_date),
-      needs = list(glue("process_dataset_infants_subgroup_{season}_specific_secondary")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/covid_full_model_outputs_infants_subgroup_{dates}_specific_secondary.csv"))
+        csv = glue("output/table1/secondary_table1_{cohort}_{dates}.csv"))
     )
     
   )
@@ -2930,6 +2427,17 @@ action_finalise_older_adults <- function(cohort) {
       moderately_sensitive = lst(
         csv = glue("output/collated/descriptive/{cohort}_table1_collated.csv"))
     ),
+    
+    action(
+      name = glue("collate_secondary_table1_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/secondary_table1_table_collation.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("describe_cohort_secondary_{cohort}_s2"),
+                   glue("describe_cohort_secondary_{cohort}_s3"),
+                   glue("describe_cohort_secondary_{cohort}_s5")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_secondary_table1_collated.csv"))
+    ),  
     
     action(
       name = glue("collate_rates_tables_primary_{cohort}"),
@@ -4002,66 +3510,69 @@ actions_list <- splice(
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults", "# # # # # # # # # # # # # # # # # # #"),
   
-  action_descriptive("older_adults", "s1", "2016_2017", "specific", "secondary", "season1_start_date", "season1_end_date"),
-  action_descriptive("older_adults", "s2", "2017_2018", "specific", "secondary", "season2_start_date", "season2_end_date"),
-  action_descriptive("older_adults", "s3", "2018_2019", "specific", "secondary", "season3_start_date", "season3_end_date"),
-  action_descriptive("older_adults", "s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
-  action_descriptive("older_adults", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
-  action_descriptive("older_adults", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
-  action_descriptive("older_adults", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
-  action_descriptive("older_adults", "s8", "2023_2024", "specific", "secondary", "season8_start_date", "season8_end_date"),
+  action_descriptive("older_adults", "s1", "2016_2017", "specific", "primary", "season1_start_date", "season1_end_date"),
+  action_descriptive("older_adults", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
+  action_descriptive("older_adults", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
+  action_descriptive("older_adults", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_descriptive("older_adults", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
+  action_descriptive("older_adults", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
+  action_descriptive("older_adults", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
+  action_descriptive("older_adults", "s8", "2023_2024", "specific", "primary", "season8_start_date", "season8_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Adults", "# # # # # # # # # # # # # # # # # # #"),
   
-  action_descriptive("adults", "s1", "2016_2017", "specific", "secondary", "season1_start_date", "season1_end_date"),
-  action_descriptive("adults", "s2", "2017_2018", "specific", "secondary", "season2_start_date", "season2_end_date"),
-  action_descriptive("adults", "s3", "2018_2019", "specific", "secondary", "season3_start_date", "season3_end_date"),
-  action_descriptive("adults", "s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
-  action_descriptive("adults", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
-  action_descriptive("adults", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
-  action_descriptive("adults", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
-  action_descriptive("adults", "s8", "2023_2024", "specific", "secondary", "season8_start_date", "season8_end_date"),
+  action_descriptive("adults", "s1", "2016_2017", "specific", "primary", "season1_start_date", "season1_end_date"),
+  action_descriptive("adults", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
+  action_descriptive("adults", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
+  action_descriptive("adults", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_descriptive("adults", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
+  action_descriptive("adults", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
+  action_descriptive("adults", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
+  action_descriptive("adults", "s8", "2023_2024", "specific", "primary", "season8_start_date", "season8_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Children and Adolescents", "# # # # # # # # # # # # # # # # # # #"),
   
-  action_descriptive("children_and_adolescents", "s1", "2016_2017", "specific", "secondary", "season1_start_date", "season1_end_date"),
-  action_descriptive("children_and_adolescents", "s2", "2017_2018", "specific", "secondary", "season2_start_date", "season2_end_date"),
-  action_descriptive("children_and_adolescents", "s3", "2018_2019", "specific", "secondary", "season3_start_date", "season3_end_date"),
-  action_descriptive("children_and_adolescents", "s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
-  action_descriptive("children_and_adolescents", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
-  action_descriptive("children_and_adolescents", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
-  action_descriptive("children_and_adolescents", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
-  action_descriptive("children_and_adolescents", "s8", "2023_2024", "specific", "secondary", "season8_start_date", "season8_end_date"),
+  action_descriptive("children_and_adolescents", "s1", "2016_2017", "specific", "primary", "season1_start_date", "season1_end_date"),
+  action_descriptive("children_and_adolescents", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
+  action_descriptive("children_and_adolescents", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
+  action_descriptive("children_and_adolescents", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_descriptive("children_and_adolescents", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
+  action_descriptive("children_and_adolescents", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
+  action_descriptive("children_and_adolescents", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
+  action_descriptive("children_and_adolescents", "s8", "2023_2024", "specific", "primary", "season8_start_date", "season8_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants", "# # # # # # # # # # # # # # # # # # #"),
   
-  action_descriptive("infants", "s1", "2016_2017", "specific", "secondary", "season1_start_date", "season1_end_date"),
-  action_descriptive("infants", "s2", "2017_2018", "specific", "secondary", "season2_start_date", "season2_end_date"),
-  action_descriptive("infants", "s3", "2018_2019", "specific", "secondary", "season3_start_date", "season3_end_date"),
-  action_descriptive("infants", "s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
-  action_descriptive("infants", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
-  action_descriptive("infants", "s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
-  action_descriptive("infants", "s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
-  action_descriptive("infants", "s8", "2023_2024", "specific", "secondary", "season8_start_date", "season8_end_date"),
+  action_descriptive("infants", "s1", "2016_2017", "specific", "primary", "season1_start_date", "season1_end_date"),
+  action_descriptive("infants", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
+  action_descriptive("infants", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
+  action_descriptive("infants", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_descriptive("infants", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
+  action_descriptive("infants", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
+  action_descriptive("infants", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
+  action_descriptive("infants", "s8", "2023_2024", "specific", "primary", "season8_start_date", "season8_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants Subgroup", "# # # # # # # # # # # # # # # # # # #"),
   
-  action_descriptive_infants_sub("s1", "2016_2017", "specific", "secondary", "season1_start_date", "season1_end_date"),
-  action_descriptive_infants_sub("s2", "2017_2018", "specific", "secondary", "season2_start_date", "season2_end_date"),
-  action_descriptive_infants_sub("s3", "2018_2019", "specific", "secondary", "season3_start_date", "season3_end_date"),
-  action_descriptive_infants_sub("s4", "2019_2020", "specific", "secondary", "season4_start_date", "season4_end_date"),
-  action_descriptive_infants_sub("s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
-  action_descriptive_infants_sub("s6", "2021_2022", "specific", "secondary", "season6_start_date", "season6_end_date"),
-  action_descriptive_infants_sub("s7", "2022_2023", "specific", "secondary", "season7_start_date", "season7_end_date"),
-  action_descriptive_infants_sub("s8", "2023_2024", "specific", "secondary", "season8_start_date", "season8_end_date"),
+  action_descriptive("infants_subgroup", "s1", "2016_2017", "specific", "primary", "season1_start_date", "season1_end_date"),
+  action_descriptive("infants_subgroup", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
+  action_descriptive("infants_subgroup", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
+  action_descriptive("infants_subgroup", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_descriptive("infants_subgroup", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
+  action_descriptive("infants_subgroup", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
+  action_descriptive("infants_subgroup", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
+  action_descriptive("infants_subgroup", "s8", "2023_2024", "specific", "primary", "season8_start_date", "season8_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "SECONDARY ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Specific,","Investigation Type: Secondary", "# # # # # # # # # # # # # # # # # # #"),
-
+  
   action_secondary_rsv("older_adults", "s2", "2017_2018", "specific", "secondary", "season2_start_date", "season2_end_date"),
+  action_descriptive_secondary("older_adults", "s2", "2017_2018", "specific", "secondary", "season2_start_date", "season2_end_date"),
   action_secondary_flu("older_adults", "s3", "2018_2019", "specific", "secondary", "season3_start_date", "season3_end_date"),
+  action_descriptive_secondary("older_adults", "s3", "2018_2019", "specific", "secondary", "season3_start_date", "season3_end_date"),
   action_secondary_covid("older_adults", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
+  action_descriptive_secondary("older_adults", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "EXPLORATORY ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
   
