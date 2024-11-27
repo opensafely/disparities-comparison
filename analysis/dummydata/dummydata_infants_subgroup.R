@@ -170,6 +170,11 @@ sim_list = lst(
     missing_rate = ~ 0.8
   ),
   
+  #mothers registration
+  mother_registered = bn_node(
+    ~ if_else(!is.na(mother_id), rbernoulli(n = ..n, p = 0.8), NA_real_)
+  ),
+  
   ##outcomes 
   
   #rsv primary care
