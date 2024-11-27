@@ -172,7 +172,7 @@ sim_list = lst(
   
   #mothers registration
   mother_registered = bn_node(
-    ~ if_else(!is.na(mother_id), rbernoulli(n = ..n, p = 0.8), NA_real_)
+    ~ if_else(!is.na(mother_id), rbernoulli(n = ..n, p = 0.8), NA)
   ),
   
   ##outcomes 
