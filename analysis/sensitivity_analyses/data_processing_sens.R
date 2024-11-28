@@ -57,11 +57,14 @@ if (cohort == "infants_subgroup") {
 cols <- str_detect(names(df_input), "date")
 col_names <- colnames(df_input[, cols])
 #remove vaccination dates from the list of columns
-col_names <- col_names[!col_names %in% c(paste0(colnames(df_input[, str_detect(names(df_input), "vaccination")])))]
+col_names <- col_names[!col_names %in% c(paste0(colnames(df_input[,
+                       str_detect(names(df_input), "vaccination")])))]
 #remove birth date from list of columns
-col_names <- col_names[!col_names %in% c("birth_date", "patient_index_date", "patient_end_date")]
+col_names <- col_names[!col_names %in% c("birth_date", "patient_index_date",
+                                         "patient_end_date")]
 df_input_filt <- df_input %>%
-  mutate(across(all_of(col_names), ~if_else(.x >= study_start_date_sens & .x <= study_end_date_sens, .x, NA_Date_)))
+  mutate(across(all_of(col_names), ~if_else(.x >= study_start_date_sens &
+         .x <= study_end_date_sens, .x, NA_Date_)))
 
 #edit patient specific index date
 df_input_filt <- df_input_filt %>%
@@ -152,7 +155,9 @@ df_input_filt <- df_input_filt %>%
   )
 
 #identify columns with logical values, excluding specified columns
-logical_cols <- which(sapply(df_input_filt, is.logical) & !grepl("primary|secondary|mortality|registered", names(df_input_filt)))
+logical_cols <- which(sapply(df_input_filt, is.logical) &
+                      !grepl("primary|secondary|mortality|registered",
+                             names(df_input_filt)))
 
 #apply mutation to convert logical columns to factors
 df_input_filt <- df_input_filt %>%
@@ -171,7 +176,8 @@ df_input_filt <- df_input_filt %>%
     #add labels to ethnicity
     latest_ethnicity_group = factor(latest_ethnicity_group,
                                     levels = c("1", "2", "3", "4", "5"),
-                                    labels = c("White", "Mixed", "Asian or Asian British",
+                                    labels = c("White", "Mixed",
+                                               "Asian or Asian British",
                                                "Black or Black British",
                                                "Other Ethnic Groups")),
     #recode imd quintile
@@ -256,21 +262,24 @@ if (study_start_date == as.Date("2017-09-01")) {
                                   deregistration_date, death_date,
                                   patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      rsv_primary_censor = if_else(is.na(rsv_primary_date), 1, 0),
+      rsv_primary_censor = if_else(rsv_primary_inf_date < rsv_primary_date,
+                                   1, 0),
       #infer mild rsv outcome 
       rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
       #infer severe case date for rsv
       rsv_secondary_inf_date = pmin(rsv_secondary_date, deregistration_date,
                                     death_date, patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      rsv_secondary_censor = if_else(is.na(rsv_secondary_date), 1, 0),
+      rsv_secondary_censor = if_else(rsv_secondary_inf_date < rsv_secondary_date,
+                                     1, 0),
       #infer severe rsv outcome
       rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
       #infer rsv mortality outcome 
       rsv_mortality_inf_date = pmin(rsv_mortality_date, deregistration_date,
                                     death_date, patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      rsv_mortality_censor = if_else(is.na(rsv_mortality_date), 1, 0),
+      rsv_mortality_censor = if_else(rsv_mortality_inf_date < rsv_mortality_date,
+                                     1, 0),
       #infer rsv mortality outcome
       rsv_mortality_inf = if_else(rsv_mortality_censor == 0, 1, 0)
     )
@@ -300,21 +309,24 @@ if (study_start_date == as.Date("2017-09-01")) {
                                   deregistration_date, death_date,
                                   patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      flu_primary_censor = if_else(is.na(flu_primary_date), 1, 0),
+      flu_primary_censor = if_else(flu_primary_inf_date < flu_primary_date,
+                                   1, 0),
       #infer mild flu outcome 
       flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
       #infer severe case date for flu
       flu_secondary_inf_date = pmin(flu_secondary_date, deregistration_date,
                                     death_date, patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      flu_secondary_censor = if_else(is.na(flu_secondary_date), 1, 0),
+      flu_secondary_censor = if_else(flu_secondary_inf_date < flu_secondary_date,
+                                     1, 0),
       #infer severe flu outcome
       flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0),
       #infer flu mortality outcome 
       flu_mortality_inf_date = pmin(flu_mortality_date, deregistration_date,
                                     death_date, patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      flu_mortality_censor = if_else(is.na(flu_mortality_date), 1, 0),
+      flu_mortality_censor = if_else(flu_mortality_inf_date < flu_mortality_date,
+                                     1, 0),
       #infer flu mortality outcome
       flu_mortality_inf = if_else(flu_mortality_censor == 0, 1, 0)
     )
@@ -332,7 +344,8 @@ df_input_filt <- df_input_filt %>%
                                         deregistration_date, patient_end_date,
                                         na.rm = TRUE),
     #assign censoring indicator
-    all_cause_mortality_censor = if_else(is.na(all_cause_mortality_date), 1, 0),
+    all_cause_mortality_censor = if_else(all_cause_mortality_inf_date <
+                                         all_cause_mortality_date, 1, 0),
     #infer all cause mortality outcome
     all_cause_mortality_inf = if_else(all_cause_mortality_censor == 0, 1, 0)
   )
