@@ -555,7 +555,7 @@ if (study_start_date < covid_season_min) {
   df_input <- df_input %>%
     mutate(
       #infer all cause mortality outcome
-      all_cause_mortality_inf_date = cpmin(all_cause_mortality_date,
+      all_cause_mortality_inf_date = pmin(all_cause_mortality_date,
        deregistration_date, death_date, patient_end_date, na.rm=TRUE),
       #assign censoring indicator
       all_cause_mortality_censor = if_else(is.na(all_cause_mortality_date), 1, 0),
