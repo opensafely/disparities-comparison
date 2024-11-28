@@ -398,11 +398,11 @@ if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_ado
   if study_start_date >= covid_prior_vacc_min :
     if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
       dataset.last_covid_vaccination_date = (
-      vaccinations.where(vaccinations.target_disease.is_in(["SARS-COV-2"]))
-      .sort_by(vaccinations.date)
-      .where(vaccinations.date.is_on_or_between(prior_vaccination_date, index_date))
-      .last_for_patient().date
-    )
+        vaccinations.where(vaccinations.target_disease.is_in(["SARS-COV-2"]))
+        .sort_by(vaccinations.date)
+        .where(vaccinations.date.is_on_or_before(index_date))
+        .last_for_patient().date
+      )
   
   #extract covid vaccination in current season if applicable
   if study_start_date >= covid_current_vacc_min :

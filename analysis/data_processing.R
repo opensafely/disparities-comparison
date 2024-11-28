@@ -377,69 +377,43 @@ if (study_start_date < covid_season_min) {
   df_input <- df_input %>%
     mutate(
       #infer mild case date for rsv 
-      rsv_primary_inf_date = case_when(
-        is.na(rsv_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(rsv_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(rsv_primary_date) & !is.na(deregistration_date) ~ deregistration_date,
-        is.na(rsv_primary_date) & !is.na(rsv_secondary_date) ~ rsv_secondary_date,
-        TRUE ~ rsv_primary_date),
+      rsv_primary_inf_date = pmin(rsv_primary_date, rsv_secondary_date,
+       deregistration_date, death_date, patient_end_date, na.rm=TRUE),
       #assign censoring indicator
       rsv_primary_censor = if_else(is.na(rsv_primary_date), 1, 0),
       #infer mild rsv outcome 
       rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
       #infer severe case date for rsv
-      rsv_secondary_inf_date = case_when(
-        is.na(rsv_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(rsv_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(rsv_secondary_date) & !is.na(deregistration_date) ~ deregistration_date,
-        TRUE ~ rsv_secondary_date),
+      rsv_secondary_inf_date = pmin(rsv_secondary_date, deregistration_date,
+       death_date, patient_end_date, na.rm=TRUE),
       #assign censoring indicator
       rsv_secondary_censor = if_else(is.na(rsv_secondary_date), 1, 0),
       #infer severe rsv outcome
       rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
       #infer rsv mortality outcome 
-      rsv_mortality_inf_date = case_when(
-        is.na(rsv_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(rsv_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(rsv_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
-        TRUE ~ rsv_mortality_date),
+      rsv_mortality_inf_date = pmin(rsv_mortality_date, deregistration_date,
+       death_date, patient_end_date, na.rm=TRUE),
       #assign censoring indicator
       rsv_mortality_censor = if_else(is.na(rsv_mortality_date), 1, 0),
       #infer rsv mortality outcome
       rsv_mortality_inf = if_else(rsv_mortality_censor == 0, 1, 0),
       #infer mild case date for flu
-      flu_primary_inf_date = case_when(
-        is.na(flu_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(flu_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(flu_primary_date) & !is.na(deregistration_date) ~ deregistration_date,
-        is.na(flu_primary_date) & !is.na(flu_secondary_date) ~ flu_secondary_date,
-        TRUE ~ flu_primary_date),
+      flu_primary_inf_date = pmin(flu_primary_date, flu_secondary_date,
+       deregistration_date, death_date, patient_end_date, na.rm=TRUE),
       #assign censoring indicator
       flu_primary_censor = if_else(is.na(flu_primary_date), 1, 0),
       #infer mild flu outcome
       flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
       #infer severe case date for flu
-      flu_secondary_inf_date = case_when(
-        is.na(flu_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(flu_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(flu_secondary_date) & !is.na(deregistration_date) ~ deregistration_date,
-        TRUE ~ flu_secondary_date),
+      flu_secondary_inf_date = pmin(flu_secondary_date, deregistration_date,
+       death_date, patient_end_date, na.rm=TRUE),
       #assign censoring indicator
       flu_secondary_censor = if_else(is.na(flu_secondary_date), 1, 0),
       #infer severe flu outcome
       flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0),
       #infer flu mortality outcome
-      flu_mortality_inf_date = case_when(
-        is.na(flu_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(flu_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(flu_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
-        TRUE ~ flu_mortality_date),
+      flu_mortality_inf_date = pmin(flu_mortality_date, deregistration_date,
+       death_date, patient_end_date, na.rm=TRUE),
       #assign censoring indicator
       flu_mortality_censor = if_else(is.na(flu_mortality_date), 1, 0),
       #infer flu mortality outcome
@@ -450,35 +424,23 @@ if (study_start_date < covid_season_min) {
     df_input <- df_input %>%
       mutate(
         #infer mild case date for overall respiratory
-        overall_resp_primary_inf_date = case_when(
-          is.na(overall_resp_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-          is.na(overall_resp_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-            if_else(death_date <= patient_end_date, death_date, patient_end_date),
-          is.na(overall_resp_primary_date) & !is.na(deregistration_date) ~ deregistration_date,
-          is.na(overall_resp_primary_date) & !is.na(overall_resp_secondary_date) ~ overall_resp_secondary_date,
-          TRUE ~ overall_resp_primary_date),
+        overall_resp_primary_inf_date = pmin(overall_resp_primary_date,
+        overall_resp_secondary_date, deregistration_date, death_date,
+         patient_end_date, na.rm=TRUE),
         #assign censoring indicator
         overall_resp_primary_censor = if_else(is.na(overall_resp_primary_date), 1, 0),
         #infer mild overall respiratory outcome
         overall_resp_primary_inf = if_else(overall_resp_primary_censor == 0, 1, 0),
         #infer severe case date for overall respiratory
-        overall_resp_secondary_inf_date = case_when(
-          is.na(overall_resp_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-          is.na(overall_resp_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-            if_else(death_date <= patient_end_date, death_date, patient_end_date),
-          is.na(overall_resp_secondary_date) & !is.na(deregistration_date) ~ deregistration_date,
-          TRUE ~ overall_resp_secondary_date),
+        overall_resp_secondary_inf_date = pmin(overall_resp_secondary_date,
+         deregistration_date, death_date, patient_end_date, na.rm=TRUE),
         #assign censoring indicator
         overall_resp_secondary_censor = if_else(is.na(overall_resp_secondary_date), 1, 0),
         #infer severe overall respiratory outcome
         overall_resp_secondary_inf = if_else(overall_resp_secondary_censor == 0, 1, 0),
         #infer overall respiratory mortality outcome
-        overall_resp_mortality_inf_date = case_when(
-          is.na(overall_resp_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-          is.na(overall_resp_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-            if_else(death_date <= patient_end_date, death_date, patient_end_date),
-          is.na(overall_resp_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
-          TRUE ~ overall_resp_mortality_date),
+        overall_resp_mortality_inf_date = pmin(overall_resp_mortality_date,
+         deregistration_date, death_date, patient_end_date, na.rm=TRUE),
         #assign censoring indicator
         overall_resp_mortality_censor = if_else(is.na(overall_resp_mortality_date), 1, 0),
         #infer overall respiratory mortality outcome
@@ -488,12 +450,8 @@ if (study_start_date < covid_season_min) {
   df_input <- df_input %>%
     mutate(
       #infer all cause mortality outcome
-      all_cause_mortality_inf_date = case_when(
-        is.na(all_cause_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(all_cause_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(all_cause_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
-        TRUE ~ all_cause_mortality_date),
+      all_cause_mortality_inf_date = pmin(all_cause_mortality_date,
+       deregistration_date, patient_end_date, na.rm=TRUE),
       #assign censoring indicator
       all_cause_mortality_censor = if_else(is.na(all_cause_mortality_date), 1, 0),
       #infer all cause mortality outcome
@@ -503,24 +461,15 @@ if (study_start_date < covid_season_min) {
   df_input <- df_input %>%
     mutate(
       #infer mild case date for rsv
-      rsv_primary_inf_date = case_when(
-        is.na(rsv_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(rsv_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(rsv_primary_date) & !is.na(deregistration_date) ~ deregistration_date,
-        is.na(rsv_primary_date) & !is.na(rsv_secondary_date) ~ rsv_secondary_date,
-        TRUE ~ rsv_primary_date),
+      rsv_primary_inf_date = pmin(rsv_primary_date, rsv_secondary_date,
+       deregistration_date, death_date, patient_end_date, na.rm=TRUE),
       #assign censoring indicator
       rsv_primary_censor = if_else(is.na(rsv_primary_date), 1, 0),
       #infer mild rsv outcome 
       rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
       #infer severe case date for rsv
-      rsv_secondary_inf_date = case_when(
-        is.na(rsv_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(rsv_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(rsv_secondary_date) & !is.na(deregistration_date) ~ deregistration_date,
-        TRUE ~ rsv_secondary_date),
+      rsv_secondary_inf_date = pmin(rsv_secondary_date, deregistration_date,
+       death_date, patient_end_date, na.rm=TRUE),
       #assign censoring indicator
       rsv_secondary_censor = if_else(is.na(rsv_secondary_date), 1, 0),
       #infer severe rsv outcome
