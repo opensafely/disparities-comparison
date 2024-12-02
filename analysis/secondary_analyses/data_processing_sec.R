@@ -136,7 +136,9 @@ df_input <- df_input %>%
   )
 
 #identify columns with logical values, excluding specified columns
-logical_cols <- which(sapply(df_input, is.logical) & !grepl("primary|secondary|mortality|registered", names(df_input)))
+logical_cols <- which(sapply(df_input, is.logical) &
+                      !grepl("primary|secondary|mortality|registered",
+                             names(df_input)))
 
 #apply mutation to convert logical columns to factors
 df_input <- df_input %>%
@@ -155,7 +157,8 @@ df_input <- df_input %>%
     #add labels to ethnicity
     latest_ethnicity_group = factor(latest_ethnicity_group,
                                     levels = c("1", "2", "3", "4", "5"),
-                                    labels = c("White", "Mixed", "Asian or Asian British",
+                                    labels = c("White", "Mixed",
+                                               "Asian or Asian British",
                                                "Black or Black British",
                                                "Other Ethnic Groups")),
     #recode imd quintile 
@@ -187,8 +190,9 @@ if (study_start_date == as.Date("2020-09-01")) {
         household_size >= 6 ~ "3",
         TRUE ~ NA_character_), ordered = TRUE),
       composition_category = fct_relevel(composition_category,
-                                         c("Multiple of the Same Generation", "Living Alone",
-                                           "One Other Generation", "Two Other Generations",
+                                         c("Multiple of the Same Generation",
+                                           "Living Alone", "One Other Generation",
+                                           "Two Other Generations",
                                            "Three Other Generations"))
     ) %>% arrange(composition_category)
 }
@@ -300,42 +304,30 @@ if (study_start_date == as.Date("2017-09-01")) {
         !is.na(rsv_secondary_second_date), TRUE, FALSE),
       #infer presence of rsv mortality
       rsv_mortality = if_else(
-        !is.na(rsv_mortality_date), TRUE, FALSE)
-    )
-  df_input <- df_input %>%
-    mutate(
+        !is.na(rsv_mortality_date), TRUE, FALSE),
       #infer mild case date for rsv 
-      rsv_primary_inf_date = case_when(
-        is.na(rsv_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(rsv_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(rsv_primary_date) & !is.na(deregistration_date) ~ deregistration_date,
-        is.na(rsv_primary_date) & !is.na(rsv_secondary_date) ~ rsv_secondary_date,
-        TRUE ~ rsv_primary_date),
+      rsv_primary_inf_date = pmin(rsv_primary_date, rsv_secondary_date,
+                                  deregistration_date, death_date,
+                                  patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      rsv_primary_censor = if_else(is.na(rsv_primary_date), 1, 0),
+      rsv_primary_censor = if_else(rsv_primary_inf_date < rsv_primary_date,
+                                   1, 0),
       #infer mild rsv outcome 
       rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
       #infer severe case date for rsv
-      rsv_secondary_inf_date = case_when(
-        is.na(rsv_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(rsv_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(rsv_secondary_date) & !is.na(deregistration_date) ~ deregistration_date,
-        TRUE ~ rsv_secondary_date),
+      rsv_secondary_inf_date = pmin(rsv_secondary_date, deregistration_date,
+                                    death_date, patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      rsv_secondary_censor = if_else(is.na(rsv_secondary_date), 1, 0),
+      rsv_secondary_censor = if_else(rsv_secondary_inf_date < rsv_secondary_date,
+                                     1, 0),
       #infer severe rsv outcome
       rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
       #infer rsv mortality outcome 
-      rsv_mortality_inf_date = case_when(
-        is.na(rsv_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(rsv_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(rsv_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
-        TRUE ~ rsv_mortality_date),
+      rsv_mortality_inf_date = pmin(rsv_mortality_date, deregistration_date,
+                                    death_date, patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      rsv_mortality_censor = if_else(is.na(rsv_mortality_date), 1, 0),
+      rsv_mortality_censor = if_else(rsv_mortality_inf_date < rsv_mortality_date,
+                                     1, 0),
       #infer rsv mortality outcome
       rsv_mortality_inf = if_else(rsv_mortality_censor == 0, 1, 0)
     )
@@ -359,42 +351,30 @@ if (study_start_date == as.Date("2017-09-01")) {
         !is.na(flu_secondary_second_date), TRUE, FALSE),
       #infer presence of flu mortality
       flu_mortality = if_else(
-        !is.na(flu_mortality_date), TRUE, FALSE)
-    )
-  df_input <- df_input %>%
-    mutate(
+        !is.na(flu_mortality_date), TRUE, FALSE),
       #infer mild case date for flu 
-      flu_primary_inf_date = case_when(
-        is.na(flu_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(flu_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(flu_primary_date) & !is.na(deregistration_date) ~ deregistration_date,
-        is.na(flu_primary_date) & !is.na(flu_secondary_date) ~ flu_secondary_date,
-        TRUE ~ flu_primary_date),
+      flu_primary_inf_date = pmin(flu_primary_date, flu_secondary_date,
+                                  deregistration_date, death_date,
+                                  patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      flu_primary_censor = if_else(is.na(flu_primary_date), 1, 0),
+      flu_primary_censor = if_else(flu_primary_inf_date < flu_primary_date,
+                                   1, 0),
       #infer mild flu outcome 
       flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
       #infer severe case date for flu
-      flu_secondary_inf_date = case_when(
-        is.na(flu_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(flu_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(flu_secondary_date) & !is.na(deregistration_date) ~ deregistration_date,
-        TRUE ~ flu_secondary_date),
+      flu_secondary_inf_date = pmin(flu_secondary_date, deregistration_date,
+                                    death_date, patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      flu_secondary_censor = if_else(is.na(flu_secondary_date), 1, 0),
+      flu_secondary_censor = if_else(flu_secondary_inf_date < flu_secondary_date,
+                                     1, 0),
       #infer severe flu outcome
       flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0),
       #infer flu mortality outcome 
-      flu_mortality_inf_date = case_when(
-        is.na(flu_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(flu_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(flu_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
-        TRUE ~ flu_mortality_date),
+      flu_mortality_inf_date = pmin(flu_mortality_date, deregistration_date,
+                                    death_date, patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      flu_mortality_censor = if_else(is.na(flu_mortality_date), 1, 0),
+      flu_mortality_censor = if_else(flu_mortality_inf_date < flu_mortality_date,
+                                     1, 0),
       #infer flu mortality outcome
       flu_mortality_inf = if_else(flu_mortality_censor == 0, 1, 0)
     )
@@ -422,42 +402,30 @@ if (study_start_date == as.Date("2017-09-01")) {
         !is.na(covid_secondary_second_date), TRUE, FALSE),
       #infer presence of covid mortality
       covid_mortality = if_else(
-        !is.na(covid_mortality_date), TRUE, FALSE)
-    )
-  df_input <- df_input %>%
-    mutate(
+        !is.na(covid_mortality_date), TRUE, FALSE),
       #infer mild case date for covid 
-      covid_primary_inf_date = case_when(
-        is.na(covid_primary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(covid_primary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(covid_primary_date) & !is.na(deregistration_date) ~ deregistration_date,
-        is.na(covid_primary_date) & !is.na(covid_secondary_date) ~ covid_secondary_date,
-        TRUE ~ covid_primary_date),
+      covid_primary_inf_date = pmin(covid_primary_date, covid_secondary_date,
+                                    deregistration_date, death_date,
+                                    patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      covid_primary_censor = if_else(is.na(covid_primary_date), 1, 0),
+      covid_primary_censor = if_else(covid_primary_inf_date < covid_primary_date,
+                                     1, 0),
       #infer mild covid outcome 
       covid_primary_inf = if_else(covid_primary_censor == 0, 1, 0),
       #infer severe case date for covid
-      covid_secondary_inf_date = case_when(
-        is.na(covid_secondary_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(covid_secondary_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(covid_secondary_date) & !is.na(deregistration_date) ~ deregistration_date,
-        TRUE ~ covid_secondary_date),
+      covid_secondary_inf_date = pmin(covid_secondary_date, deregistration_date,
+                                      death_date, patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      covid_secondary_censor = if_else(is.na(covid_secondary_date), 1, 0),
+      covid_secondary_censor = if_else(covid_secondary_inf_date <
+                                       covid_secondary_date, 1, 0),
       #infer severe covid outcome
       covid_secondary_inf = if_else(covid_secondary_censor == 0, 1, 0),
       #infer covid mortality outcome 
-      covid_mortality_inf_date = case_when(
-        is.na(covid_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-        is.na(covid_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-          if_else(death_date <= patient_end_date, death_date, patient_end_date),
-        is.na(covid_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
-        TRUE ~ covid_mortality_date),
+      covid_mortality_inf_date = pmin(covid_mortality_date, deregistration_date,
+                                      death_date, patient_end_date, na.rm = TRUE),
       #assign censoring indicator
-      covid_mortality_censor = if_else(is.na(covid_mortality_date), 1, 0),
+      covid_mortality_censor = if_else(covid_mortality_inf_date <
+                                       covid_mortality_date, 1, 0),
       #infer covid mortality outcome
       covid_mortality_inf = if_else(covid_mortality_censor == 0, 1, 0)
     )
@@ -466,21 +434,17 @@ if (study_start_date == as.Date("2017-09-01")) {
 df_input <- df_input %>%
   mutate(
     #infer presence of all cause mortality
-    all_cause_mortality_date = if_else(death_date <= patient_end_date, death_date, NA_Date_),
+    all_cause_mortality_date = if_else(death_date <= patient_end_date,
+                                       death_date, NA_Date_),
     all_cause_mortality = if_else(
-      !is.na(all_cause_mortality_date), TRUE, FALSE)
-  )
-df_input <- df_input %>% 
-  mutate(
+      !is.na(all_cause_mortality_date), TRUE, FALSE),
     #infer all cause mortality outcome
-    all_cause_mortality_inf_date = case_when(
-      is.na(all_cause_mortality_date) & is.na(deregistration_date) & is.na(death_date) ~ patient_end_date,
-      is.na(all_cause_mortality_date) & is.na(deregistration_date) & !is.na(death_date) ~ 
-        if_else(death_date <= patient_end_date, death_date, patient_end_date),
-      is.na(all_cause_mortality_date) & !is.na(deregistration_date) ~ deregistration_date,
-      TRUE ~ all_cause_mortality_date),
+    all_cause_mortality_inf_date = pmin(all_cause_mortality_date,
+                                        deregistration_date, death_date,
+                                        patient_end_date, na.rm = TRUE),
     #assign censoring indicator
-    all_cause_mortality_censor = if_else(is.na(all_cause_mortality_date), 1, 0),
+    all_cause_mortality_censor = if_else(all_cause_mortality_inf_date <
+                                         all_cause_mortality_date, 1, 0),
     #infer all cause mortality outcome
     all_cause_mortality_inf = if_else(all_cause_mortality_censor == 0, 1, 0)
   )
