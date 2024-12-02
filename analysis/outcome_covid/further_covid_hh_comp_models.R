@@ -75,8 +75,9 @@ model_names <- c("Mild COVID-19 by Household Composition",
                  "COVID-19 Mortality by Household Composition")
 
 #create the model outputs list
-model_outputs_list <- list(covid_mild_hh_comp_output, covid_severe_hh_comp_output,
-                           covid_mortality_hh_comp_output)
+model_outputs_list <- list(covid_mild_hh_comp_output_further,
+                           covid_severe_hh_comp_output_further,
+                           covid_mortality_hh_comp_output_further)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {
