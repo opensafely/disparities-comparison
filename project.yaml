@@ -968,7 +968,7 @@ actions:
       - generate_dataset_older_adults_s1_specific_primary
       outputs:
         moderately_sensitive:
-          outputs: output/data/*.txt
+          outputs: output/data/generate_*.txt
  
   process_dataset_older_adults_s1_specific_primary:
     run: r:latest analysis/data_processing.R older_adults season1_start_date season1_end_date
@@ -985,7 +985,7 @@ actions:
       - process_dataset_older_adults_s1_specific_primary
       outputs:
         moderately_sensitive:
-          outputs: output/data/*.txt
+          outputs: output/data/process_*.txt
 
   describe_dataset_older_adults_s1_specific_primary:
     run: r:latest analysis/season_summary.R older_adults season1_start_date season1_end_date
