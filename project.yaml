@@ -962,6 +962,14 @@ actions:
       highly_sensitive:
         dataset: output/data/input_older_adults_2016_2017_specific_primary.arrow
 
+  data_skim_generate:
+      run: r:latest analysis/data_skim.R input_older_adults_2016_2017_specific_primary.arrow  output/data/
+      needs:
+      - generate_dataset_older_adults_s1_specific_primary
+      outputs:
+        moderately_sensitive:
+          outputs: output/data/*.txt
+ 
   process_dataset_older_adults_s1_specific_primary:
     run: r:latest analysis/data_processing.R older_adults season1_start_date season1_end_date
       specific primary
@@ -970,6 +978,14 @@ actions:
     outputs:
       highly_sensitive:
         dataset: output/data/input_processed_older_adults_2016_2017_specific_primary.arrow
+
+  data_skim_process:
+      run: r:latest analysis/data_skim.R input_processed_older_adults_2016_2017_specific_primary.arrow  output/data/
+      needs:
+      - process_dataset_older_adults_s1_specific_primary
+      outputs:
+        moderately_sensitive:
+          outputs: output/data/*.txt
 
   describe_dataset_older_adults_s1_specific_primary:
     run: r:latest analysis/season_summary.R older_adults season1_start_date season1_end_date
