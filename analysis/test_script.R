@@ -98,17 +98,6 @@ calculate_rolling_rates <- function(df, pathogen, group) {
     filter(!is.na(date)) %>%
     mutate(date = as_datetime(date))
 
-  # for (i in 1:length(intervals_list)) {
-  #   interval <- intervals_list[[i]]
-  #   num <- i
-  #   df_long <- df_long %>%
-  #     rowwise() %>%
-  #     mutate(
-  #       interval = NA_integer_,
-  #       interval = if_else(date %within% !!interval, num, interval)
-  #       )
-  # }
-  
   return(df_long)
   
 }
@@ -128,15 +117,53 @@ df_long <- df_long %>%
     interval_num = list(integer(0))
   )
 
-for (i in 1:length(intervals_list)) {
+# Initialize an empty data frame to store results
+df_long_expanded <- tibble()
+
+# Iterate through each interval to expand rows for each patient and interval
+for (i in seq_along(intervals_list)) {
   interval <- intervals_list[[i]]
-  print(interval)
-  df_long <- df_long %>%
-    mutate(
-      interval_num = if_else(
-        date %within% interval,
-        list(c(interval_num[[1]], i)), # Append the interval number
-        interval_num # Keep existing
-      )
-    )
+  num <- i
+  
+  # Filter rows where the date falls within the interval
+  matching_rows <- df_long %>%
+    filter(date %within% interval | is.na(date)) %>% # Include patients without events
+    mutate(interval_num = num, interval_start = int_start(interval),
+           interval_end = int_end(interval)) # Add interval details
+  
+  # Append these rows to the expanded data frame
+  df_long_expanded <- bind_rows(df_long_expanded, matching_rows)
 }
+
+# # Join interval details to the expanded dataset
+# df_long_expanded <- df_long_expanded %>%
+#   left_join(intervals %>% rename(interval_start = start_date, interval_end = end_date),
+#             by = c("interval_num" = "interval"))
+
+# Add total survival time for each patient
+df_long_expanded <- df_long_expanded %>%
+  group_by(patient_id) %>%
+  mutate(
+    total_survival_time = as.numeric(difftime(interval_end, study_start_date, units = "days")) / 365.25
+  ) %>%
+  ungroup()
+
+# Deduct survival time for intervals with outcomes
+df_long_expanded <- df_long_expanded %>%
+  mutate(
+    interval_survival_time = if_else(
+      is.na(date) | date > interval_end, # No outcome in this interval
+      as.numeric(difftime(interval_end, study_start_date, units = "days")) / 365.25,
+      as.numeric(difftime(date, study_start_date, unit = "days")) / 365.25 # Event occurred, so survival time for this interval is 0
+    )
+  )
+
+# Summarize by outcome type and interval
+df_rates <- df_long_expanded %>%
+  group_by(interval_num, interval_start, interval_end, event) %>%
+  summarize(
+    total_survival_time = sum(interval_survival_time, na.rm = TRUE), # Remaining survival time
+    total_events = sum(!is.na(date) & date %within% interval(interval_start, interval_end)), # Count of events
+    rate_per_1000_py = (total_events / total_survival_time) * 1000, # Rate per 1000 person-years
+    .groups = "drop"
+  )
