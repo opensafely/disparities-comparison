@@ -164,7 +164,8 @@ sim_list = lst(
   
   #day of current flu vaccination
   flu_vaccination_day = bn_node(
-    ~as.integer(runif(n = ..n, patient_index_day, index_day + 365))
+    ~as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+    missing_rate = ~ 0.3
   ),
   
   #day of last covid vaccination
