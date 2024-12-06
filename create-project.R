@@ -1435,6 +1435,35 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
   
 }
 
+##data skimming actions
+
+action_skimming <- function(cohort, season, dates, season_start_date, 
+                            season_end_date, codelist_type, investigation_type) {
+  
+  splice(
+    
+    action(
+      name = glue("skim_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r: latest analysis/data_skim.R input_{cohort}_{dates}{codelist_type}_{investigation_type}.arrow"),
+      # arguments = c(cohort, season, dates, codelist_type, investigation_type),
+      needs = list(glue("generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        txt = glue("output/data/*.txt"))
+    ),
+    
+    action(
+      name = glue("skim_processed_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r: latest analysis/data_skim.R input_processed_{cohort}_{dates}{codelist_type}_{investigation_type}.arrow"),
+      # arguments = c(cohort, season, dates, codelist_type, investigation_type),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        txt = glue("output/data/*processed*.txt"))
+    )
+    
+  )
+  
+}
+
 ##descriptive actions
 
 action_descriptive <- function(cohort, season, dates, codelist_type,
@@ -3505,6 +3534,63 @@ actions_list <- splice(
   action_covid_infants("infants_subgroup", "s7", "2022_2023", "sensitive", "primary", "season7_start_date", "season7_end_date"),
   action_specified_infants_sub("s8", "2023_2024", "sensitive", "primary", "season8_start_date", "season8_end_date"),
   action_covid_infants("infants_subgroup", "s8", "2023_2024", "sensitive", "primary", "season8_start_date", "season8_end_date"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "DATA SKIMMING", "# # # # # # # # # # # # # # # # # # #"),
+
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_skimming("older_adults", "s1", "2016_2017", "specific", "primary", "season1_start_date", "season1_end_date"),
+  action_skimming("older_adults", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
+  action_skimming("older_adults", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
+  action_skimming("older_adults", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_skimming("older_adults", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
+  action_skimming("older_adults", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
+  action_skimming("older_adults", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
+  action_skimming("older_adults", "s8", "2023_2024", "specific", "primary", "season8_start_date", "season8_end_date"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Adults", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_skimming("adults", "s1", "2016_2017", "specific", "primary", "season1_start_date", "season1_end_date"),
+  action_skimming("adults", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
+  action_skimming("adults", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
+  action_skimming("adults", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_skimming("adults", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
+  action_skimming("adults", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
+  action_skimming("adults", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
+  action_skimming("adults", "s8", "2023_2024", "specific", "primary", "season8_start_date", "season8_end_date"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Children and Adolescents", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_skimming("children_and_adolescents", "s1", "2016_2017", "specific", "primary", "season1_start_date", "season1_end_date"),
+  action_skimming("children_and_adolescents", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
+  action_skimming("children_and_adolescents", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
+  action_skimming("children_and_adolescents", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_skimming("children_and_adolescents", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
+  action_skimming("children_and_adolescents", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
+  action_skimming("children_and_adolescents", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
+  action_skimming("children_and_adolescents", "s8", "2023_2024", "specific", "primary", "season8_start_date", "season8_end_date"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_skimming("infants", "s1", "2016_2017", "specific", "primary", "season1_start_date", "season1_end_date"),
+  action_skimming("infants", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
+  action_skimming("infants", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
+  action_skimming("infants", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_skimming("infants", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
+  action_skimming("infants", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
+  action_skimming("infants", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
+  action_skimming("infants", "s8", "2023_2024", "specific", "primary", "season8_start_date", "season8_end_date"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants Subgroup", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_skimming("infants_subgroup", "s1", "2016_2017", "specific", "primary", "season1_start_date", "season1_end_date"),
+  action_skimming("infants_subgroup", "s2", "2017_2018", "specific", "primary", "season2_start_date", "season2_end_date"),
+  action_skimming("infants_subgroup", "s3", "2018_2019", "specific", "primary", "season3_start_date", "season3_end_date"),
+  action_skimming("infants_subgroup", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
+  action_skimming("infants_subgroup", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
+  action_skimming("infants_subgroup", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
+  action_skimming("infants_subgroup", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
+  action_skimming("infants_subgroup", "s8", "2023_2024", "specific", "primary", "season8_start_date", "season8_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "DESCRIPTIVE ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
   
