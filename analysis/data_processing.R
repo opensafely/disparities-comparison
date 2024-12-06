@@ -368,14 +368,10 @@ if (codelist_type == "sensitive") {
 }
 
 df_input <- df_input %>%
-  rowwise() %>%
   mutate(
     #infer presence of all cause mortality
     all_cause_mortality_date = if_else(death_date <= patient_end_date,
-                                       death_date, NA_Date_)
-  ) %>%
-  ungroup() %>%
-  mutate(
+                                       death_date, NA_Date_),
     all_cause_mortality = if_else(
       !is.na(all_cause_mortality_date), TRUE, FALSE)
   )
