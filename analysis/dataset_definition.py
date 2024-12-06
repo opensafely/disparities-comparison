@@ -87,6 +87,8 @@ dataset.patient_end_date = followup_end_date
 was_alive = (
   (ons_deaths.date.is_after(index_date))
   |(ons_deaths.date.is_null())
+  |(patients.date_of_date.is_after(index_date))
+  |(patients.date_of_death.is_null())
 )
 
 #define patients age
