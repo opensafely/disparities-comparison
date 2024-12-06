@@ -60,23 +60,23 @@ flu_severe_ses_further <- glm(flu_secondary_inf ~ imd_quintile + age_band +
                               data = df_input, family = poisson)
 flu_severe_ses_further_output <- tidy(flu_severe_ses_further)
   
-#flu mortality by ses
-flu_mortality_ses_further <- glm(flu_mortality_inf ~ imd_quintile + age_band +
-                                   sex + rurality_classification +
-                                   prior_flu_vaccination + flu_vaccination +
-                                   offset(log(time_flu_mortality)),
-                                 data = df_input, family = poisson)
-flu_mortality_ses_further_output <- tidy(flu_mortality_ses_further)
+# #flu mortality by ses
+# flu_mortality_ses_further <- glm(flu_mortality_inf ~ imd_quintile + age_band +
+#                                    sex + rurality_classification +
+#                                    prior_flu_vaccination + flu_vaccination +
+#                                    offset(log(time_flu_mortality)),
+#                                  data = df_input, family = poisson)
+# flu_mortality_ses_further_output <- tidy(flu_mortality_ses_further)
 
 #define a vector of names for the model outputs
 model_names <- c("Mild Influenza by IMD Quintile", 
-                 "Severe Influenza by IMD Quintile",
-                 "Influenza Mortality by IMD Quintile")
+                 "Severe Influenza by IMD Quintile")#,
+                 # "Influenza Mortality by IMD Quintile")
 
 #create the model outputs list
 model_outputs_list <- list(flu_mild_ses_further_output, 
-                           flu_severe_ses_further_output, 
-                           flu_mortality_ses_further_output)
+                           flu_severe_ses_further_output)#, 
+                           # flu_mortality_ses_further_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {

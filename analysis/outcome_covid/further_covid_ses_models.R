@@ -63,13 +63,14 @@ if (study_start_date == covid_current_vacc_min) {
                                   data = df_input, family = poisson)
   covid_severe_ses_further_output <- tidy(covid_severe_ses_further)
   
-  #covid mortality by ses
-  covid_mortality_ses_further <- glm(covid_mortality_inf ~ imd_quintile + 
-                                       age_band + sex + rurality_classification + 
-                                       covid_vaccination +
-                                       offset(log(time_covid_mortality)),
-                                     data = df_input, family = poisson)
-  covid_mortality_ses_further_output <- tidy(covid_mortality_ses_further)
+  # #covid mortality by ses
+  # covid_mortality_ses_further <- glm(covid_mortality_inf ~ imd_quintile + 
+  #                                      age_band + sex +
+  #                                      rurality_classification + 
+  #                                      covid_vaccination +
+  #                                      offset(log(time_covid_mortality)),
+  #                                    data = df_input, family = poisson)
+  # covid_mortality_ses_further_output <- tidy(covid_mortality_ses_further)
   
 } else {
   
@@ -91,25 +92,27 @@ if (study_start_date == covid_current_vacc_min) {
                                   data = df_input, family = poisson)
   covid_severe_ses_further_output <- tidy(covid_severe_ses_further)
   
-  #covid mortality by ses
-  covid_mortality_ses_further <- glm(covid_mortality_inf ~ imd_quintile + 
-                                       age_band + sex + rurality_classification + 
-                                       time_since_last_covid_vaccination +
-                                       covid_vaccination +
-                                       offset(log(time_covid_mortality)),
-                                     data = df_input, family = poisson)
-  covid_mortality_ses_further_output <- tidy(covid_mortality_ses_further)
+  # #covid mortality by ses
+  # covid_mortality_ses_further <- glm(covid_mortality_inf ~ imd_quintile + 
+  #                                      age_band + sex +
+  #                                      rurality_classification + 
+  #                                      time_since_last_covid_vaccination +
+  #                                      covid_vaccination +
+  #                                      offset(log(time_covid_mortality)),
+  #                                    data = df_input, family = poisson)
+  # covid_mortality_ses_further_output <- tidy(covid_mortality_ses_further)
 
 }
 
 #define a vector of names for the model outputs
-model_names <- c("Mild COVID-19 by IMD Quintile", "Severe COVID-19 by IMD Quintile",
-                 "COVID-19 Mortality by IMD Quintile")
+model_names <- c("Mild COVID-19 by IMD Quintile",
+                 "Severe COVID-19 by IMD Quintile")#,
+                 # "COVID-19 Mortality by IMD Quintile")
 
 #create the model outputs list
 model_outputs_list <- list(covid_mild_ses_further_output,
-                           covid_severe_ses_further_output,
-                           covid_mortality_ses_further_output)
+                           covid_severe_ses_further_output)#,
+                           # covid_mortality_ses_further_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {
