@@ -1448,7 +1448,7 @@ action_skimming <- function(cohort, season, dates, season_start_date,
       # arguments = c(cohort, season, dates, codelist_type, investigation_type),
       needs = list(glue("generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        txt = glue("output/data/*.txt"))
+        txt = glue("output/data/*{cohort}_{dates}*.txt"))
     ),
     
     action(
@@ -1457,7 +1457,7 @@ action_skimming <- function(cohort, season, dates, season_start_date,
       # arguments = c(cohort, season, dates, codelist_type, investigation_type),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        txt = glue("output/data/*processed*.txt"))
+        txt = glue("output/data/*processed*{cohort}_{dates}*.txt"))
     )
     
   )
