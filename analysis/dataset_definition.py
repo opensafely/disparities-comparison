@@ -316,8 +316,8 @@ if cohort == "infants" or cohort == "infants_subgroup" :
 else:
   dataset.age = patients.age_on(index_date) #gets the patients age on their specific index date
 
-#extract date of death
-dataset.death_date = ons_deaths.date 
+# #extract date of death
+# dataset.death_date = ons_deaths.date 
 
 #extract latest ethnicity code for patient
 dataset.latest_ethnicity_group = (
@@ -2247,60 +2247,70 @@ if codelist_type == "sensitive" :
         overall_resp_secondary_discharge_second)
       ) 
 
-## extract mortality outcomes
-
-#rsv mortality date
-dataset.rsv_mortality_date = (case(
-  when(cause_of_death_matches(codelists
-  .rsv_secondary_codelist))
-  .then(dataset.death_date))
-)
-
-#rsv mortality date
-dataset.flu_mortality_date = (case(
-  when(cause_of_death_matches(codelists
-  .flu_secondary_codelist))
-  .then(dataset.death_date))
-)
-
-if study_start_date >= covid_season_min :
-  
-  #covid mortality date
-  dataset.covid_mortality_date = (case(
-    when(cause_of_death_matches(codelists
-    .covid_secondary_codelist))
-    .then(dataset.death_date))
-  )
-
-#overall mortality
-if codelist_type == "sensitive" :
-  if study_start_date >= covid_season_min :
-    
-    #overall mortality date
-    dataset.overall_resp_mortality_date = (case(
-      when(cause_of_death_matches(codelists
-      .rsv_secondary_codelist)).then(dataset.death_date),
-      when(cause_of_death_matches(codelists
-      .flu_secondary_codelist)).then(dataset.death_date),
-      when(cause_of_death_matches(codelists
-      .covid_secondary_codelist)).then(dataset.death_date),
-      when(cause_of_death_matches(codelists
-      .respiratory_virus_secondary_codelist))
-      .then(dataset.death_date), otherwise = None)
-    )
-  
-  else:
-  
-    #overall mortality date
-    dataset.overall_resp_mortality_date = (case(
-      when(cause_of_death_matches(codelists
-      .rsv_secondary_codelist)).then(dataset.death_date),
-      when(cause_of_death_matches(codelists
-      .flu_secondary_codelist)).then(dataset.death_date),
-      when(cause_of_death_matches(codelists
-      .respiratory_virus_secondary_codelist))
-      .then(dataset.death_date), otherwise = None)
-    )
+# ## extract mortality outcomes
+# 
+# #rsv mortality date
+# dataset.rsv_mortality_date = (case(
+#   when((cause_of_death_matches(codelists
+#   .rsv_secondary_codelist)) & (dataset.death_date
+#   .is_on_or_between(index_date, followup_end_date)))
+#   .then(dataset.death_date))
+# )
+# 
+# #rsv mortality date
+# dataset.flu_mortality_date = (case(
+#   when((cause_of_death_matches(codelists
+#   .flu_secondary_codelist)) & (dataset.death_date
+#   .is_on_or_between(index_date, followup_end_date)))
+#   .then(dataset.death_date))
+# )
+# 
+# if study_start_date >= covid_season_min :
+#   
+#   #covid mortality date
+#   dataset.covid_mortality_date = (case(
+#     when((cause_of_death_matches(codelists
+#     .covid_secondary_codelist)) & (dataset.death_date
+#     .is_on_or_between(index_date, followup_end_date)))
+#     .then(dataset.death_date))
+#   )
+# 
+# #overall mortality
+# if codelist_type == "sensitive" :
+#   if study_start_date >= covid_season_min :
+#     
+#     #overall mortality date
+#     dataset.overall_resp_mortality_date = (case(
+#       when((cause_of_death_matches(codelists
+#       .rsv_secondary_codelist)) & (dataset.death_date
+#       .is_on_or_between(index_date, followup_end_date)))
+#       .then(dataset.death_date), when((cause_of_death_matches(
+#       codelists.flu_secondary_codelist)) & (dataset.death_date
+#       .is_on_or_between(index_date, followup_end_date)))
+#       .then(dataset.death_date), when((cause_of_death_matches(
+#       codelists.covid_secondary_codelist)) & (dataset.death_date
+#       .is_on_or_between(index_date, followup_end_date)))
+#       .then(dataset.death_date), when((cause_of_death_matches(
+#       codelists.respiratory_virus_secondary_codelist)) & (dataset
+#       .death_date.is_on_or_between(index_date, followup_end_date)))
+#       .then(dataset.death_date), otherwise = None)
+#     )
+#   
+#   else:
+#   
+#     #overall mortality date
+#     dataset.overall_resp_mortality_date = (case(
+#       when((cause_of_death_matches(codelists
+#       .rsv_secondary_codelist)) & (dataset.death_date
+#       .is_on_or_between(index_date, followup_end_date)))
+#       .then(dataset.death_date), when((cause_of_death_matches(
+#       codelists.flu_secondary_codelist)) & (dataset.death_date
+#       .is_on_or_between(index_date, followup_end_date)))
+#       .then(dataset.death_date), when((cause_of_death_matches(
+#       codelists.respiratory_virus_secondary_codelist)) & (dataset
+#       .death_date.is_on_or_between(index_date, followup_end_date)))
+#       .then(dataset.death_date), otherwise = None)
+#     )
 
 ## comorbidities for secondary investigation 
 
