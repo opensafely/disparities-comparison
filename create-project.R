@@ -1445,7 +1445,7 @@ action_skimming <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("skim_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/data_skim.R input_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow output/data/"),
+      run = glue("r:latest analysis/data_skim.R output/data/input_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow output/data/"),
       # arguments = c(cohort, season, dates, codelist_type, investigation_type),
       needs = list(glue("generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
@@ -1454,7 +1454,7 @@ action_skimming <- function(cohort, season, dates, codelist_type,
     
     action(
       name = glue("skim_processed_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/data_skim.R input_processed_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow output/data/"),
+      run = glue("r:latest analysis/data_skim.R output/data/input_processed_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow output/data/"),
       # arguments = c(cohort, season, dates, codelist_type, investigation_type),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
