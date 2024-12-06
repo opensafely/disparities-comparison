@@ -1437,8 +1437,9 @@ action_covid_infants <- function(cohort, season, dates, codelist_type,
 
 ##data skimming actions
 
-action_skimming <- function(cohort, season, dates, season_start_date, 
-                            season_end_date, codelist_type, investigation_type) {
+action_skimming <- function(cohort, season, dates, codelist_type,
+                            investigation_type, season_start_date,
+                            season_end_date) {
   
   splice(
     
