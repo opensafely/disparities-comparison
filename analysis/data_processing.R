@@ -15,8 +15,8 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- as.Date("2016-09-01")
   study_end_date <- as.Date("2017-08-31")
-  cohort <- "infants_subgroup"
-  codelist_type <- "sensitive"
+  cohort <- "older_adults"
+  codelist_type <- "specific"
   investigation_type <- "primary"
 } else {
   study_start_date <- study_dates[[args[[2]]]]
@@ -205,7 +205,7 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
       #current flu vaccination status including a lag time
       flu_vaccination = factor(if_else(
         is.na(flu_vaccination_immunity_date), "No", "Yes"
-      ))
+      ), ordered = TRUE)
     )
 }
 
@@ -218,14 +218,12 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
       flu_vaccination_mild = factor(case_when(
         flu_vaccination_immunity_date > flu_primary_date ~ "No",
         is.na(flu_vaccination_immunity_date) ~ "No",
-        TRUE ~ "Yes"
-      )),
+        TRUE ~ "Yes"), ordered = TRUE),
       #define flu_vaccination severe 
       flu_vaccination_severe = factor(case_when(
         flu_vaccination_immunity_date > flu_secondary_date ~ "No",
         is.na(flu_vaccination_immunity_date) ~ "No",
-        TRUE ~ "Yes"
-      ))
+        TRUE ~ "Yes"), ordered = TRUE)
     )
 }
 
@@ -244,7 +242,7 @@ if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "
                                units = "days"), "months") < 12 ~ "6-12m",
         time_length(difftime(patient_index_date, last_covid_vaccination_date,
                              units = "days"), "months") >= 12 ~ "12m+",
-        TRUE ~ "12m+"))
+        TRUE ~ "12m+"), ordered = TRUE)
     )
 }
 if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
@@ -253,8 +251,7 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
       covid_vaccination_immunity_date = covid_vaccination_date + days(10),
       #current covid vaccination status including a lag time
       covid_vaccination = factor(if_else(
-        is.na(covid_vaccination_immunity_date), "No", "Yes"
-      ))
+        is.na(covid_vaccination_immunity_date), "No", "Yes"), ordered = TRUE)
     )
 }
 
@@ -264,17 +261,15 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
   df_input <- df_input %>%
     mutate(
       #define covid_vaccination_mild
-      covid_vaccination_mild = fct_rev(factor(case_when(
+      covid_vaccination_mild = factor(case_when(
         covid_vaccination_immunity_date > covid_primary_date ~ "No",
         is.na(covid_vaccination_immunity_date) ~ "No",
-        TRUE ~ "Yes")
-      )),
+        TRUE ~ "Yes"), ordered = TRUE),
       #define covid_vaccination severe 
       covid_vaccination_severe = factor(case_when(
         covid_vaccination_immunity_date > covid_secondary_date ~ "No",
         is.na(covid_vaccination_immunity_date) ~ "No",
-        TRUE ~ "Yes"
-      ))
+        TRUE ~ "Yes"), ordered = TRUE)
     )
 }
 
@@ -373,10 +368,14 @@ if (codelist_type == "sensitive") {
 }
 
 df_input <- df_input %>%
+  rowwise() %>%
   mutate(
     #infer presence of all cause mortality
     all_cause_mortality_date = if_else(death_date <= patient_end_date,
-                                       death_date, NA_Date_),
+                                       death_date, NA_Date_)
+  ) %>%
+  ungroup() %>%
+  mutate(
     all_cause_mortality = if_else(
       !is.na(all_cause_mortality_date), TRUE, FALSE)
   )
