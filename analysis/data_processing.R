@@ -382,7 +382,7 @@ if (study_start_date < covid_season_min) {
     mutate(
       #infer mild case date for rsv 
       rsv_primary_inf_date = pmin(rsv_primary_date, rsv_secondary_date,
-                                  deregistration_date, death_date,
+                                  deregistration_date, #death_date,
                                   patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       rsv_primary_censor = if_else(rsv_primary_inf_date < rsv_primary_date,
@@ -391,7 +391,8 @@ if (study_start_date < covid_season_min) {
       rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
       #infer severe case date for rsv
       rsv_secondary_inf_date = pmin(rsv_secondary_date, deregistration_date,
-                                    death_date, patient_end_date, na.rm = TRUE),
+                                    #death_date,
+                                    patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       rsv_secondary_censor = if_else(rsv_secondary_inf_date < rsv_secondary_date,
                                      1, 0),
@@ -407,7 +408,7 @@ if (study_start_date < covid_season_min) {
       # rsv_mortality_inf = if_else(rsv_mortality_censor == 0, 1, 0),
       #infer mild case date for flu
       flu_primary_inf_date = pmin(flu_primary_date, flu_secondary_date,
-                                  deregistration_date, death_date,
+                                  deregistration_date, #death_date,
                                   patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       flu_primary_censor = if_else(flu_primary_inf_date < flu_primary_date,
@@ -416,7 +417,8 @@ if (study_start_date < covid_season_min) {
       flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
       #infer severe case date for flu
       flu_secondary_inf_date = pmin(flu_secondary_date, deregistration_date,
-                                    death_date, patient_end_date, na.rm = TRUE),
+                                    #death_date,
+                                    patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       flu_secondary_censor = if_else(flu_secondary_inf_date < flu_secondary_date,
                                      1, 0),
@@ -438,7 +440,7 @@ if (study_start_date < covid_season_min) {
         #infer mild case date for overall respiratory
         overall_resp_primary_inf_date = pmin(overall_resp_primary_date,
                                              overall_resp_secondary_date,
-                                             deregistration_date, death_date,
+                                             deregistration_date, #death_date,
                                              patient_end_date, na.rm = TRUE),
         #assign censoring indicator
         overall_resp_primary_censor = if_else(overall_resp_primary_inf_date <
@@ -448,7 +450,7 @@ if (study_start_date < covid_season_min) {
                                            1, 0),
         #infer severe case date for overall respiratory
         overall_resp_secondary_inf_date = pmin(overall_resp_secondary_date,
-                                               deregistration_date, death_date,
+                                               deregistration_date, #death_date,
                                                patient_end_date, na.rm = TRUE),
         #assign censoring indicator
         overall_resp_secondary_censor = if_else(overall_resp_secondary_inf_date <
@@ -486,7 +488,7 @@ if (study_start_date < covid_season_min) {
     mutate(
       #infer mild case date for rsv
       rsv_primary_inf_date = pmin(rsv_primary_date, rsv_secondary_date,
-                                  deregistration_date, death_date,
+                                  deregistration_date, #death_date,
                                   patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       rsv_primary_censor = if_else(rsv_primary_inf_date < rsv_primary_date,
@@ -495,7 +497,8 @@ if (study_start_date < covid_season_min) {
       rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
       #infer severe case date for rsv
       rsv_secondary_inf_date = pmin(rsv_secondary_date, deregistration_date,
-                                    death_date, patient_end_date, na.rm = TRUE),
+                                    #death_date,
+                                    patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       rsv_secondary_censor = if_else(rsv_secondary_inf_date < rsv_secondary_date,
                                      1, 0),
@@ -511,7 +514,7 @@ if (study_start_date < covid_season_min) {
       # rsv_mortality_inf = if_else(rsv_mortality_censor == 0, 1, 0),
       #infer mild case date for flu
       flu_primary_inf_date = pmin(flu_primary_date, flu_secondary_date,
-                                  deregistration_date, death_date,
+                                  deregistration_date, #death_date,
                                   patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       flu_primary_censor = if_else(flu_primary_inf_date < flu_primary_date,
@@ -520,7 +523,8 @@ if (study_start_date < covid_season_min) {
       flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
       #infer severe case date for flu
       flu_secondary_inf_date = pmin(flu_secondary_date, deregistration_date,
-                                    death_date, patient_end_date, na.rm = TRUE),
+                                    #death_date,
+                                    patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       flu_secondary_censor = if_else(flu_secondary_inf_date < flu_secondary_date,
                                      1, 0),
@@ -536,7 +540,7 @@ if (study_start_date < covid_season_min) {
       # flu_mortality_inf = if_else(flu_mortality_censor == 0, 1, 0),
       #infer mild case date for covid
       covid_primary_inf_date = pmin(covid_primary_date, covid_secondary_date,
-                                    deregistration_date, death_date,
+                                    deregistration_date, #death_date,
                                     patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       covid_primary_censor = if_else(covid_primary_inf_date < covid_primary_date,
@@ -545,8 +549,8 @@ if (study_start_date < covid_season_min) {
       covid_primary_inf = if_else(covid_primary_censor == 0, 1, 0),
       #infer severe case date for covid
       covid_secondary_inf_date = pmin(covid_secondary_date, deregistration_date,
-                                      death_date, patient_end_date,
-                                      na.rm = TRUE),
+                                      #death_date,
+                                      patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       covid_secondary_censor = if_else(covid_secondary_inf_date <
                                        covid_secondary_date, 1, 0),
@@ -569,7 +573,7 @@ if (study_start_date < covid_season_min) {
         #infer mild case date for overall respiratory
         overall_resp_primary_inf_date = pmin(overall_resp_primary_date,
                                              overall_resp_secondary_date,
-                                             deregistration_date, death_date,
+                                             deregistration_date, #death_date,
                                              patient_end_date, na.rm = TRUE),
         #assign censoring indicator
         overall_resp_primary_censor = if_else(overall_resp_primary_inf_date <
@@ -579,7 +583,7 @@ if (study_start_date < covid_season_min) {
                                            1, 0),
         #infer severe case date for overall respiratory
         overall_resp_secondary_inf_date = pmin(overall_resp_secondary_date,
-                                               deregistration_date, death_date,
+                                               deregistration_date, #death_date,
                                                patient_end_date, na.rm = TRUE),
         #assign censoring indicator
         overall_resp_secondary_censor = if_else(overall_resp_secondary_inf_date <
