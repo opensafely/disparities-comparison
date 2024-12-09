@@ -55,22 +55,6 @@ df_input <- df_input %>% mutate_if(is.factor,
                                    forcats::fct_explicit_na,
                                    na_level = "Unknown")
 
-#create function which filters the data and then reshapes it 
-df_format <- function(df, pathogen, characteristic) {
-  
-  columns_needed <- c("patient_id", "patient_index_date", "patient_end_date")
-  
-  df <- df %>%
-    select(all_of(columns_needed), all_of(characteristic),
-           starts_with(pathogen) & ends_with("_date")) #%>%
-    # mutate(across(ends_with("_date") & !contains("patient"),
-    #        ~ as.integer(!is.na(.)), .names = "{.col}_event_flag")) %>%
-    # mutate(across(ends_with("_date"), ~ as.numeric(.)))
-  
-  return(df)
-  
-}
-
 # Create 30-day rolling intervals
 interval_length <- 30
 intervals <- tibble(start_date = seq(study_start_date,
@@ -86,36 +70,39 @@ intervals <- intervals %>%
   )
 intervals_list <- interval(intervals$start_date, intervals$end_date)
 
-#create a function to calculate rolling rates 
-calculate_rolling_rates <- function(df, pathogen, group) {
-  
+#calculate total number of patients
+total_patients <- as.numeric(nrow(df_input))
+
+#create a function to calculate rolling rates
+df_format <- function(df, pathogen, characteristic) {
+
+  columns_needed <- c("patient_id", "patient_index_date", "patient_end_date")
+
+  df <- df %>%
+    select(all_of(columns_needed), all_of(characteristic),
+           starts_with(pathogen) & ends_with("_date"))
+
   df_long <- df %>%
     pivot_longer(cols = starts_with(pathogen) & ends_with("date"),
                  names_to = "event", values_to = "date") %>%
-    select(contains("patient"), all_of(group), event, date)
-  
+    select(contains("patient"), group = all_of(characteristic), event, date)
+
   df_long <- df_long %>%
     filter(!is.na(date)) %>%
     mutate(date = as_datetime(date))
 
   return(df_long)
-  
+
 }
 
-#define characteristics
-characteristics <- c("age_band", "sex", "latest_ethnicity_group", "imd_quintile",
-                     "rurality_classification")
-if (study_start_date == as.Date("2020-09-01")) {
-  characteristics <- c(characteristics, "composition_category")
-}
+# #define characteristics
+# characteristics <- c("age_band", "sex", "latest_ethnicity_group", "imd_quintile",
+#                      "rurality_classification")
+# if (study_start_date == as.Date("2020-09-01")) {
+#   characteristics <- c(characteristics, "composition_category")
+# }
 
-df <- df_format(df_input, "rsv", characteristics)
-df_long <- calculate_rolling_rates(df, "rsv", "sex")
-
-df_long <- df_long %>%
-  mutate(
-    interval_num = list(integer(0))
-  )
+df_long <- df_format(df_input, "rsv", "sex")
 
 # Initialize an empty data frame to store results
 df_long_expanded <- tibble()
@@ -124,46 +111,141 @@ df_long_expanded <- tibble()
 for (i in seq_along(intervals_list)) {
   interval <- intervals_list[[i]]
   num <- i
-  
+
   # Filter rows where the date falls within the interval
   matching_rows <- df_long %>%
-    filter(date %within% interval | is.na(date)) %>% # Include patients without events
+    filter(date %within% interval) %>%
     mutate(interval_num = num, interval_start = int_start(interval),
            interval_end = int_end(interval)) # Add interval details
-  
+
   # Append these rows to the expanded data frame
   df_long_expanded <- bind_rows(df_long_expanded, matching_rows)
 }
 
-# # Join interval details to the expanded dataset
-# df_long_expanded <- df_long_expanded %>%
-#   left_join(intervals %>% rename(interval_start = start_date, interval_end = end_date),
-#             by = c("interval_num" = "interval"))
-
-# Add total survival time for each patient
+# Add total survival time for each interval
 df_long_expanded <- df_long_expanded %>%
-  group_by(patient_id) %>%
+  group_by(interval_num) %>%
   mutate(
-    total_survival_time = as.numeric(difftime(interval_end, study_start_date, units = "days")) / 365.25
+    interval_survival_time = as.numeric(difftime(interval_end, study_start_date, units = "days")) / 365.25
   ) %>%
   ungroup()
 
 # Deduct survival time for intervals with outcomes
 df_long_expanded <- df_long_expanded %>%
   mutate(
-    interval_survival_time = if_else(
-      is.na(date) | date > interval_end, # No outcome in this interval
-      as.numeric(difftime(interval_end, study_start_date, units = "days")) / 365.25,
-      as.numeric(difftime(date, study_start_date, unit = "days")) / 365.25 # Event occurred, so survival time for this interval is 0
-    )
+    patient_survival_time = as.numeric(difftime(date,
+                            study_start_date, unit = "days")) / 365.25,
+    total_patients = total_patients
   )
 
-# Summarize by outcome type and interval
-df_rates <- df_long_expanded %>%
-  group_by(interval_num, interval_start, interval_end, event) %>%
+df_long_expanded_test <- df_long_expanded %>%
+  arrange(patient_id, date) %>%
+  group_by(patient_id, event) %>%
+  mutate(
+    first_event_interval = min(interval_num[date < interval_end])
+  ) %>%
+  ungroup() %>%
+  group_by(interval_num, event) %>%
+  mutate(
+    events_so_far = sum(first_event_interval <= interval_num),
+    patients_remaining = total_patients - events_so_far
+  ) %>%
+  ungroup()
+
+df_rates <- df_long_expanded_test %>%
+  group_by(interval_num, event, group) %>%
   summarize(
-    total_survival_time = sum(interval_survival_time, na.rm = TRUE), # Remaining survival time
-    total_events = sum(!is.na(date) & date %within% interval(interval_start, interval_end)), # Count of events
-    rate_per_1000_py = (total_events / total_survival_time) * 1000, # Rate per 1000 person-years
-    .groups = "drop"
-  )
+    total_survival_time = sum(interval_survival_time * patients_remaining),
+    total_events = n(),
+    rate_per_1000_py = (total_events / total_survival_time) * 1000
+  ) %>%
+  ungroup()
+
+# calculate_rolling_rates <- function(df_input, pathogen, characteristic, 
+#                                     start_date = study_start_date,
+#                                     end_date = study_end_date, 
+#                                     interval_length = 30,
+#                                     interval_step = "week") {
+#   # Create intervals
+#   intervals <- tibble(
+#     start_date = seq(start_date, end_date - interval_length + 1,
+#                      by = interval_step)) %>%
+#     mutate(end_date = start_date + interval_length - 1) %>%
+#     filter(end_date <= end_date) %>%
+#     mutate(
+#       interval = row_number()
+#     )
+#   intervals_list <- interval(intervals$start_date, intervals$end_date)
+#   
+#   # Total patients
+#   total_patients <- as.numeric(nrow(df_input))
+#   
+#   # Format data
+#   df_long <- df_input %>%
+#     select(patient_id, patient_index_date, patient_end_date, 
+#            all_of(characteristic),
+#            starts_with(pathogen) & ends_with("_date")) %>%
+#     pivot_longer(cols = starts_with(pathogen) & ends_with("date"),
+#                  names_to = "event", values_to = "date") %>%
+#     filter(!is.na(date)) %>%
+#     mutate(
+#       date = as_datetime(date),
+#       group = !!sym(characteristic)
+#     ) %>%
+#     select(patient_id, group, event, date)
+#   
+#   # Expand data across intervals
+#   df_long_expanded <- tibble()
+#   for (i in seq_along(intervals_list)) {
+#     interval <- intervals_list[[i]]
+#     matching_rows <- df_long %>%
+#       filter(date %within% interval) %>%
+#       mutate(
+#         interval_num = i, 
+#         interval_start = int_start(interval),
+#         interval_end = int_end(interval)
+#       )
+#     df_long_expanded <- bind_rows(df_long_expanded, matching_rows)
+#   }
+#   
+#   # Calculate survival times
+#   df_long_expanded <- df_long_expanded %>%
+#     mutate(
+#       interval_survival_time = as.numeric(difftime(interval_end, start_date, units = "days")) / 365.25,
+#       patient_survival_time = as.numeric(difftime(date, start_date, unit = "days")) / 365.25,
+#       total_patients = total_patients
+#     )
+#   
+#   # Calculate events and remaining patients
+#   df_long_expanded_test <- df_long_expanded %>%
+#     arrange(patient_id, date) %>%
+#     group_by(patient_id, event, group) %>%
+#     mutate(
+#       first_event_interval = min(interval_num)
+#     ) %>%
+#     ungroup() %>%
+#     group_by(interval_num, event, group) %>%
+#     mutate(
+#       events_so_far = sum(first_event_interval <= interval_num),
+#       patients_remaining = total_patients - events_so_far
+#     ) %>%
+#     ungroup()
+#   
+#   # Calculate rates
+#   df_rates <- df_long_expanded_test %>%
+#     group_by(interval_num, event, group) %>%
+#     summarize(
+#       total_survival_time = sum(interval_survival_time * patients_remaining),
+#       total_events = n(),
+#       rate_per_1000_py = (total_events / total_survival_time) * 1000
+#     ) %>%
+#     ungroup()
+#   
+#   return(df_rates)
+# }
+# 
+# df_rates_rsv <- calculate_rolling_rates(
+#   df_input, 
+#   pathogen = "rsv", 
+#   characteristic = "sex"
+# )

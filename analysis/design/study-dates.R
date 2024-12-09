@@ -15,7 +15,7 @@ fs::dir_create(here::here("analysis", "design"))
 
 study_dates <- tibble::lst(
   study_start_date = ymd("2016-03-01"), # first possible study entry date
-  study_end_date = ymd("2024-01-28"), # last study entry dates
+  study_end_date = ymd("2024-08-31"), # last study entry dates
   season1_start_date = ymd("2016-09-01"), #start of first season
   season1_end_date = ymd("2017-08-31"), #end of first season
   season2_start_date = ymd("2017-09-01"), #start of second season
@@ -31,7 +31,7 @@ study_dates <- tibble::lst(
   season7_start_date = ymd("2022-09-01"), #start of seventh season
   season7_end_date = ymd("2023-08-31"), #end of seventh season
   season8_start_date = ymd("2023-09-01"), #start of eighth season
-  season8_end_date = ymd("2024-01-28") #end of eighth season
+  season8_end_date = ymd("2024-03-31") #end of eighth season
 )
 
 jsonlite::write_json(study_dates, path = here::here("analysis",
