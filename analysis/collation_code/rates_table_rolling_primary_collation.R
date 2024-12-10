@@ -39,7 +39,7 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
     
     df_sens <- read_csv(here::here("output", "results", "rates", "weekly",
                         paste0("rates_over_time_", pathogen, "_", cohort, "_",
-                               season, "_specific_primary.csv")))
+                               season, "_sensitive_primary.csv")))
     
     df_characteristic_sens <- df_sens %>%
       filter(group == characteristic) %>%
@@ -84,7 +84,11 @@ collate_rates_characteristic <- function(characteristics, pathogens) {
       
     }
     
-    collate_rates_season(seasons, pathogen, "composition_category")
+    if (pathogen == "covid") {
+      collate_rates_season(seasons_covid, pathogen, "composition_category")
+    } else {
+      collate_rates_season(seasons, pathogen, "composition_category")
+    }
     
   }
   
