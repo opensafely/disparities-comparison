@@ -61,7 +61,7 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
   
   write_csv(df_group, here::here("output", "collated", "descriptive",
             "over_time", paste0(cohort, "_rates_over_time_", pathogen, "_",
-                                season, "_collated.csv")))
+                                characteristic, "_collated.csv")))
   
 }
 
