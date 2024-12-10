@@ -96,13 +96,13 @@ df_format <- function(df, pathogen, characteristic) {
   
 }
 
-df_long <- df_format(df_input, "rsv", "sex")
+df_long <- df_format(df_input, "covid", "sex")
 
 df_intervals <- tibble()
 
 for (i in seq_along(intervals_list)) {
   
-  interval <- intervals_list[[i]]
+  interval <- intervals_list[[1]]
   #num <- i
   
   # Filter rows where the date falls within the interval
