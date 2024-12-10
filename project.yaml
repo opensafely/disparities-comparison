@@ -1025,15 +1025,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_older_adults_2016_2017_specific_*.csv
 
-  analyse_dataset_older_adults_overall_and_all_cause_s1_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      older_adults season1_start_date season1_end_date specific primary
-    needs:
-    - process_dataset_older_adults_s1_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_older_adults_2016_2017_specific_*.csv
-
   generate_dataset_older_adults_s2_specific_primary:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -1106,15 +1097,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_older_adults_2017_2018_specific_*.csv
-
-  analyse_dataset_older_adults_overall_and_all_cause_s2_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      older_adults season2_start_date season2_end_date specific primary
-    needs:
-    - process_dataset_older_adults_s2_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_older_adults_2017_2018_specific_*.csv
 
   generate_dataset_older_adults_s3_specific_primary:
     run: |-
@@ -1189,15 +1171,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_older_adults_2018_2019_specific_*.csv
 
-  analyse_dataset_older_adults_overall_and_all_cause_s3_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      older_adults season3_start_date season3_end_date specific primary
-    needs:
-    - process_dataset_older_adults_s3_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_older_adults_2018_2019_specific_*.csv
-
   generate_dataset_older_adults_s4_specific_primary:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -1270,15 +1243,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_older_adults_2019_2020_specific_*.csv
-
-  analyse_dataset_older_adults_overall_and_all_cause_s4_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      older_adults season4_start_date season4_end_date specific primary
-    needs:
-    - process_dataset_older_adults_s4_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_older_adults_2019_2020_specific_*.csv
 
   analyse_dataset_older_adults_covid_s4_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R older_adults season4_start_date
@@ -1362,15 +1326,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_older_adults_2020_2021_specific_*.csv
-
-  analyse_dataset_older_adults_overall_and_all_cause_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      older_adults season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_older_adults_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_older_adults_2020_2021_specific_*.csv
 
   analyse_dataset_older_adults_covid_s5_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R older_adults season5_start_date
@@ -1463,15 +1418,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_older_adults_2021_2022_specific_*.csv
 
-  analyse_dataset_older_adults_overall_and_all_cause_s6_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      older_adults season6_start_date season6_end_date specific primary
-    needs:
-    - process_dataset_older_adults_s6_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_older_adults_2021_2022_specific_*.csv
-
   analyse_dataset_older_adults_covid_s6_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R older_adults season6_start_date
       season6_end_date specific primary
@@ -1563,15 +1509,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_older_adults_2022_2023_specific_*.csv
 
-  analyse_dataset_older_adults_overall_and_all_cause_s7_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      older_adults season7_start_date season7_end_date specific primary
-    needs:
-    - process_dataset_older_adults_s7_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_older_adults_2022_2023_specific_*.csv
-
   analyse_dataset_older_adults_covid_s7_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R older_adults season7_start_date
       season7_end_date specific primary
@@ -1662,15 +1599,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_older_adults_2023_2024_specific_*.csv
-
-  analyse_dataset_older_adults_overall_and_all_cause_s8_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      older_adults season8_start_date season8_end_date specific primary
-    needs:
-    - process_dataset_older_adults_s8_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_older_adults_2023_2024_specific_*.csv
 
   analyse_dataset_older_adults_covid_s8_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R older_adults season8_start_date
@@ -1768,15 +1696,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_adults_2016_2017_specific_*.csv
 
-  analyse_dataset_adults_overall_and_all_cause_s1_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      adults season1_start_date season1_end_date specific primary
-    needs:
-    - process_dataset_adults_s1_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_adults_2016_2017_specific_*.csv
-
   generate_dataset_adults_s2_specific_primary:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -1849,15 +1768,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_adults_2017_2018_specific_*.csv
-
-  analyse_dataset_adults_overall_and_all_cause_s2_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      adults season2_start_date season2_end_date specific primary
-    needs:
-    - process_dataset_adults_s2_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_adults_2017_2018_specific_*.csv
 
   generate_dataset_adults_s3_specific_primary:
     run: |-
@@ -1932,15 +1842,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_adults_2018_2019_specific_*.csv
 
-  analyse_dataset_adults_overall_and_all_cause_s3_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      adults season3_start_date season3_end_date specific primary
-    needs:
-    - process_dataset_adults_s3_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_adults_2018_2019_specific_*.csv
-
   generate_dataset_adults_s4_specific_primary:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -2013,15 +1914,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_adults_2019_2020_specific_*.csv
-
-  analyse_dataset_adults_overall_and_all_cause_s4_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      adults season4_start_date season4_end_date specific primary
-    needs:
-    - process_dataset_adults_s4_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_adults_2019_2020_specific_*.csv
 
   analyse_dataset_adults_covid_s4_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R adults season4_start_date
@@ -2105,15 +1997,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_adults_2020_2021_specific_*.csv
-
-  analyse_dataset_adults_overall_and_all_cause_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      adults season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_adults_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_adults_2020_2021_specific_*.csv
 
   analyse_dataset_adults_covid_s5_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R adults season5_start_date
@@ -2206,15 +2089,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_adults_2021_2022_specific_*.csv
 
-  analyse_dataset_adults_overall_and_all_cause_s6_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      adults season6_start_date season6_end_date specific primary
-    needs:
-    - process_dataset_adults_s6_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_adults_2021_2022_specific_*.csv
-
   analyse_dataset_adults_covid_s6_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R adults season6_start_date
       season6_end_date specific primary
@@ -2306,15 +2180,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_adults_2022_2023_specific_*.csv
 
-  analyse_dataset_adults_overall_and_all_cause_s7_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      adults season7_start_date season7_end_date specific primary
-    needs:
-    - process_dataset_adults_s7_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_adults_2022_2023_specific_*.csv
-
   analyse_dataset_adults_covid_s7_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R adults season7_start_date
       season7_end_date specific primary
@@ -2405,15 +2270,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_adults_2023_2024_specific_*.csv
-
-  analyse_dataset_adults_overall_and_all_cause_s8_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      adults season8_start_date season8_end_date specific primary
-    needs:
-    - process_dataset_adults_s8_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_adults_2023_2024_specific_*.csv
 
   analyse_dataset_adults_covid_s8_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R adults season8_start_date
@@ -2511,15 +2367,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_children_and_adolescents_2016_2017_specific_*.csv
 
-  analyse_dataset_children_and_adolescents_overall_and_all_cause_s1_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      children_and_adolescents season1_start_date season1_end_date specific primary
-    needs:
-    - process_dataset_children_and_adolescents_s1_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_children_and_adolescents_2016_2017_specific_*.csv
-
   generate_dataset_children_and_adolescents_s2_specific_primary:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -2592,15 +2439,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_children_and_adolescents_2017_2018_specific_*.csv
-
-  analyse_dataset_children_and_adolescents_overall_and_all_cause_s2_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      children_and_adolescents season2_start_date season2_end_date specific primary
-    needs:
-    - process_dataset_children_and_adolescents_s2_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_children_and_adolescents_2017_2018_specific_*.csv
 
   generate_dataset_children_and_adolescents_s3_specific_primary:
     run: |-
@@ -2675,15 +2513,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_children_and_adolescents_2018_2019_specific_*.csv
 
-  analyse_dataset_children_and_adolescents_overall_and_all_cause_s3_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      children_and_adolescents season3_start_date season3_end_date specific primary
-    needs:
-    - process_dataset_children_and_adolescents_s3_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_children_and_adolescents_2018_2019_specific_*.csv
-
   generate_dataset_children_and_adolescents_s4_specific_primary:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -2756,15 +2585,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_children_and_adolescents_2019_2020_specific_*.csv
-
-  analyse_dataset_children_and_adolescents_overall_and_all_cause_s4_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      children_and_adolescents season4_start_date season4_end_date specific primary
-    needs:
-    - process_dataset_children_and_adolescents_s4_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_children_and_adolescents_2019_2020_specific_*.csv
 
   analyse_dataset_children_and_adolescents_covid_s4_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R children_and_adolescents
@@ -2848,15 +2668,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_children_and_adolescents_2020_2021_specific_*.csv
-
-  analyse_dataset_children_and_adolescents_overall_and_all_cause_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      children_and_adolescents season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_children_and_adolescents_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_children_and_adolescents_2020_2021_specific_*.csv
 
   analyse_dataset_children_and_adolescents_covid_s5_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R children_and_adolescents
@@ -2949,15 +2760,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_children_and_adolescents_2021_2022_specific_*.csv
 
-  analyse_dataset_children_and_adolescents_overall_and_all_cause_s6_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      children_and_adolescents season6_start_date season6_end_date specific primary
-    needs:
-    - process_dataset_children_and_adolescents_s6_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_children_and_adolescents_2021_2022_specific_*.csv
-
   analyse_dataset_children_and_adolescents_covid_s6_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R children_and_adolescents
       season6_start_date season6_end_date specific primary
@@ -3048,15 +2850,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_children_and_adolescents_2022_2023_specific_*.csv
-
-  analyse_dataset_children_and_adolescents_overall_and_all_cause_s7_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      children_and_adolescents season7_start_date season7_end_date specific primary
-    needs:
-    - process_dataset_children_and_adolescents_s7_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_children_and_adolescents_2022_2023_specific_*.csv
 
   analyse_dataset_children_and_adolescents_covid_s7_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R children_and_adolescents
@@ -3149,15 +2942,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/further_*_children_and_adolescents_2023_2024_specific_*.csv
 
-  analyse_dataset_children_and_adolescents_overall_and_all_cause_s8_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_models_master.R
-      children_and_adolescents season8_start_date season8_end_date specific primary
-    needs:
-    - process_dataset_children_and_adolescents_s8_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/*_children_and_adolescents_2023_2024_specific_*.csv
-
   analyse_dataset_children_and_adolescents_covid_s8_specific_primary:
     run: r:latest analysis/outcome_covid/covid_models_master.R children_and_adolescents
       season8_start_date season8_end_date specific primary
@@ -3245,15 +3029,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2016_2017_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_s1_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants season1_start_date season1_end_date specific primary
-    needs:
-    - process_dataset_infants_s1_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2016_2017_specific_primary.csv
-
   analyse_dataset_infants_rsv_ses_s1_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants season1_start_date
       season1_end_date specific primary
@@ -3272,15 +3047,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_2016_2017_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ses_s1_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants season1_start_date season1_end_date specific primary
-    needs:
-    - process_dataset_infants_s1_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_2016_2017_specific_primary.csv
-
   analyse_dataset_infants_rsv_ethnicity_ses_s1_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants season1_start_date
       season1_end_date specific primary
@@ -3298,15 +3064,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_2016_2017_specific_primary.csv
-
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s1_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants season1_start_date season1_end_date specific primary
-    needs:
-    - process_dataset_infants_s1_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_2016_2017_specific_primary.csv
 
   generate_dataset_infants_s2_specific_primary:
     run: |-
@@ -3372,15 +3129,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2017_2018_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_s2_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants season2_start_date season2_end_date specific primary
-    needs:
-    - process_dataset_infants_s2_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2017_2018_specific_primary.csv
-
   analyse_dataset_infants_rsv_ses_s2_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants season2_start_date
       season2_end_date specific primary
@@ -3399,15 +3147,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_2017_2018_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ses_s2_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants season2_start_date season2_end_date specific primary
-    needs:
-    - process_dataset_infants_s2_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_2017_2018_specific_primary.csv
-
   analyse_dataset_infants_rsv_ethnicity_ses_s2_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants season2_start_date
       season2_end_date specific primary
@@ -3425,15 +3164,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_2017_2018_specific_primary.csv
-
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s2_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants season2_start_date season2_end_date specific primary
-    needs:
-    - process_dataset_infants_s2_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_2017_2018_specific_primary.csv
 
   generate_dataset_infants_s3_specific_primary:
     run: |-
@@ -3499,15 +3229,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2018_2019_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_s3_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants season3_start_date season3_end_date specific primary
-    needs:
-    - process_dataset_infants_s3_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2018_2019_specific_primary.csv
-
   analyse_dataset_infants_rsv_ses_s3_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants season3_start_date
       season3_end_date specific primary
@@ -3526,15 +3247,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_2018_2019_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ses_s3_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants season3_start_date season3_end_date specific primary
-    needs:
-    - process_dataset_infants_s3_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_2018_2019_specific_primary.csv
-
   analyse_dataset_infants_rsv_ethnicity_ses_s3_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants season3_start_date
       season3_end_date specific primary
@@ -3552,15 +3264,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_2018_2019_specific_primary.csv
-
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s3_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants season3_start_date season3_end_date specific primary
-    needs:
-    - process_dataset_infants_s3_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_2018_2019_specific_primary.csv
 
   generate_dataset_infants_s4_specific_primary:
     run: |-
@@ -3626,15 +3329,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2019_2020_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_s4_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants season4_start_date season4_end_date specific primary
-    needs:
-    - process_dataset_infants_s4_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2019_2020_specific_primary.csv
-
   analyse_dataset_infants_rsv_ses_s4_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants season4_start_date
       season4_end_date specific primary
@@ -3653,15 +3347,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_2019_2020_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ses_s4_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants season4_start_date season4_end_date specific primary
-    needs:
-    - process_dataset_infants_s4_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_2019_2020_specific_primary.csv
-
   analyse_dataset_infants_rsv_ethnicity_ses_s4_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants season4_start_date
       season4_end_date specific primary
@@ -3679,15 +3364,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_2019_2020_specific_primary.csv
-
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s4_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants season4_start_date season4_end_date specific primary
-    needs:
-    - process_dataset_infants_s4_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_s4_specific_primary:
     run: r:latest analysis/outcome_covid/covid_ethnicity_models.R infants season4_start_date
@@ -3781,15 +3457,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2020_2021_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2020_2021_specific_primary.csv
-
   analyse_dataset_infants_rsv_ses_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants season5_start_date
       season5_end_date specific primary
@@ -3807,15 +3474,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_2020_2021_specific_primary.csv
-
-  analyse_dataset_infants_overall_and_all_cause_ses_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_rsv_hh_comp_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_hh_comp_models.R infants season5_start_date
@@ -3835,15 +3493,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_hh_comp_model_outputs_infants_2020_2021_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_hh_comp_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_hh_comp_models.R
-      infants season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_hh_comp_model_outputs_infants_2020_2021_specific_primary.csv
-
   analyse_dataset_infants_rsv_ethnicity_ses_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants season5_start_date
       season5_end_date specific primary
@@ -3861,15 +3510,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_2020_2021_specific_primary.csv
-
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_hh_comp_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_hh_comp_models.R infants season5_start_date
@@ -3889,15 +3529,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_hh_comp_model_outputs_infants_2020_2021_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_hh_comp_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_hh_comp_models.R
-      infants season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_hh_comp_model_outputs_infants_2020_2021_specific_primary.csv
-
   analyse_dataset_infants_rsv_ses_hh_comp_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_hh_comp_models.R infants season5_start_date
       season5_end_date specific primary
@@ -3916,15 +3547,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_hh_comp_model_outputs_infants_2020_2021_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ses_hh_comp_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_hh_comp_models.R
-      infants season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_hh_comp_model_outputs_infants_2020_2021_specific_primary.csv
-
   analyse_dataset_infants_rsv_full_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_full_models.R infants season5_start_date
       season5_end_date specific primary
@@ -3942,15 +3564,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_full_model_outputs_infants_2020_2021_specific_primary.csv
-
-  analyse_dataset_infants_overall_and_all_cause_full_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_full_models.R
-      infants season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_full_model_outputs_infants_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_s5_specific_primary:
     run: r:latest analysis/outcome_covid/covid_ethnicity_models.R infants season5_start_date
@@ -4079,15 +3692,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2021_2022_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_s6_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants season6_start_date season6_end_date specific primary
-    needs:
-    - process_dataset_infants_s6_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2021_2022_specific_primary.csv
-
   analyse_dataset_infants_rsv_ses_s6_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants season6_start_date
       season6_end_date specific primary
@@ -4106,15 +3710,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_2021_2022_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ses_s6_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants season6_start_date season6_end_date specific primary
-    needs:
-    - process_dataset_infants_s6_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_2021_2022_specific_primary.csv
-
   analyse_dataset_infants_rsv_ethnicity_ses_s6_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants season6_start_date
       season6_end_date specific primary
@@ -4132,15 +3727,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_2021_2022_specific_primary.csv
-
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s6_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants season6_start_date season6_end_date specific primary
-    needs:
-    - process_dataset_infants_s6_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_s6_specific_primary:
     run: r:latest analysis/outcome_covid/covid_ethnicity_models.R infants season6_start_date
@@ -4233,15 +3819,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2022_2023_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_s7_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants season7_start_date season7_end_date specific primary
-    needs:
-    - process_dataset_infants_s7_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2022_2023_specific_primary.csv
-
   analyse_dataset_infants_rsv_ses_s7_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants season7_start_date
       season7_end_date specific primary
@@ -4260,15 +3837,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_2022_2023_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ses_s7_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants season7_start_date season7_end_date specific primary
-    needs:
-    - process_dataset_infants_s7_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_2022_2023_specific_primary.csv
-
   analyse_dataset_infants_rsv_ethnicity_ses_s7_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants season7_start_date
       season7_end_date specific primary
@@ -4286,15 +3854,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_2022_2023_specific_primary.csv
-
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s7_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants season7_start_date season7_end_date specific primary
-    needs:
-    - process_dataset_infants_s7_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_s7_specific_primary:
     run: r:latest analysis/outcome_covid/covid_ethnicity_models.R infants season7_start_date
@@ -4387,15 +3946,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2023_2024_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_s8_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants season8_start_date season8_end_date specific primary
-    needs:
-    - process_dataset_infants_s8_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2023_2024_specific_primary.csv
-
   analyse_dataset_infants_rsv_ses_s8_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants season8_start_date
       season8_end_date specific primary
@@ -4414,15 +3964,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_2023_2024_specific_primary.csv
 
-  analyse_dataset_infants_overall_and_all_cause_ses_s8_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants season8_start_date season8_end_date specific primary
-    needs:
-    - process_dataset_infants_s8_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_2023_2024_specific_primary.csv
-
   analyse_dataset_infants_rsv_ethnicity_ses_s8_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants season8_start_date
       season8_end_date specific primary
@@ -4440,15 +3981,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_2023_2024_specific_primary.csv
-
-  analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s8_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants season8_start_date season8_end_date specific primary
-    needs:
-    - process_dataset_infants_s8_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_s8_specific_primary:
     run: r:latest analysis/outcome_covid/covid_ethnicity_models.R infants season8_start_date
@@ -4570,15 +4102,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_subgroup_2016_2017_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s1_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants_subgroup season1_start_date season1_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s1_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_subgroup_2016_2017_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ses_s1_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants_subgroup season1_start_date
       season1_end_date specific primary
@@ -4597,15 +4120,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2016_2017_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s1_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants_subgroup season1_start_date season1_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s1_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2016_2017_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s1_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
       season1_start_date season1_end_date specific primary
@@ -4623,15 +4137,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_subgroup_2016_2017_specific_primary.csv
-
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s1_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants_subgroup season1_start_date season1_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s1_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2016_2017_specific_primary.csv
 
   generate_dataset_infants_subgroup_s2_specific_primary:
     run: |-
@@ -4721,15 +4226,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_subgroup_2017_2018_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s2_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants_subgroup season2_start_date season2_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s2_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_subgroup_2017_2018_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ses_s2_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants_subgroup season2_start_date
       season2_end_date specific primary
@@ -4748,15 +4244,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2017_2018_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s2_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants_subgroup season2_start_date season2_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s2_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2017_2018_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s2_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
       season2_start_date season2_end_date specific primary
@@ -4774,15 +4261,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_subgroup_2017_2018_specific_primary.csv
-
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s2_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants_subgroup season2_start_date season2_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s2_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2017_2018_specific_primary.csv
 
   generate_dataset_infants_subgroup_s3_specific_primary:
     run: |-
@@ -4872,15 +4350,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_subgroup_2018_2019_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s3_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants_subgroup season3_start_date season3_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s3_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_subgroup_2018_2019_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ses_s3_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants_subgroup season3_start_date
       season3_end_date specific primary
@@ -4899,15 +4368,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2018_2019_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s3_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants_subgroup season3_start_date season3_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s3_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2018_2019_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s3_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
       season3_start_date season3_end_date specific primary
@@ -4925,15 +4385,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_subgroup_2018_2019_specific_primary.csv
-
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s3_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants_subgroup season3_start_date season3_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s3_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2018_2019_specific_primary.csv
 
   generate_dataset_infants_subgroup_s4_specific_primary:
     run: |-
@@ -5023,15 +4474,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_subgroup_2019_2020_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s4_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants_subgroup season4_start_date season4_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s4_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_subgroup_2019_2020_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ses_s4_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants_subgroup season4_start_date
       season4_end_date specific primary
@@ -5050,15 +4492,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2019_2020_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s4_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants_subgroup season4_start_date season4_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s4_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2019_2020_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s4_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
       season4_start_date season4_end_date specific primary
@@ -5076,15 +4509,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_subgroup_2019_2020_specific_primary.csv
-
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s4_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants_subgroup season4_start_date season4_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s4_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s4_specific_primary:
     run: r:latest analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
@@ -5202,15 +4626,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants_subgroup season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ses_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants_subgroup season5_start_date
       season5_end_date specific primary
@@ -5228,15 +4643,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
-
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants_subgroup season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_hh_comp_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_hh_comp_models.R infants_subgroup season5_start_date
@@ -5256,15 +4662,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_hh_comp_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_hh_comp_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_hh_comp_models.R
-      infants_subgroup season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_hh_comp_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
       season5_start_date season5_end_date specific primary
@@ -5282,15 +4679,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
-
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants_subgroup season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_hh_comp_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_hh_comp_models.R infants_subgroup
@@ -5310,15 +4698,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_hh_comp_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_hh_comp_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_hh_comp_models.R
-      infants_subgroup season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_hh_comp_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ses_hh_comp_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_hh_comp_models.R infants_subgroup season5_start_date
       season5_end_date specific primary
@@ -5337,15 +4716,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_hh_comp_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ses_hh_comp_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_hh_comp_models.R
-      infants_subgroup season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_hh_comp_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_full_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_full_models.R infants_subgroup season5_start_date
       season5_end_date specific primary
@@ -5363,15 +4733,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_full_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
-
-  analyse_dataset_infants_subgroup_overall_and_all_cause_full_s5_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_full_models.R
-      infants_subgroup season5_start_date season5_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s5_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_full_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s5_specific_primary:
     run: r:latest analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
@@ -5524,15 +4885,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_subgroup_2021_2022_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s6_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants_subgroup season6_start_date season6_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s6_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_subgroup_2021_2022_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ses_s6_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants_subgroup season6_start_date
       season6_end_date specific primary
@@ -5551,15 +4903,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2021_2022_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s6_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants_subgroup season6_start_date season6_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s6_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2021_2022_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s6_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
       season6_start_date season6_end_date specific primary
@@ -5577,15 +4920,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_subgroup_2021_2022_specific_primary.csv
-
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s6_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants_subgroup season6_start_date season6_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s6_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s6_specific_primary:
     run: r:latest analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
@@ -5702,15 +5036,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_subgroup_2022_2023_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s7_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants_subgroup season7_start_date season7_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s7_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_subgroup_2022_2023_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ses_s7_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants_subgroup season7_start_date
       season7_end_date specific primary
@@ -5729,15 +5054,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2022_2023_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s7_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants_subgroup season7_start_date season7_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s7_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2022_2023_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s7_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
       season7_start_date season7_end_date specific primary
@@ -5755,15 +5071,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_subgroup_2022_2023_specific_primary.csv
-
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s7_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants_subgroup season7_start_date season7_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s7_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s7_specific_primary:
     run: r:latest analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
@@ -5880,15 +5187,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_subgroup_2023_2024_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s8_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_models.R
-      infants_subgroup season8_start_date season8_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s8_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_subgroup_2023_2024_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ses_s8_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ses_models.R infants_subgroup season8_start_date
       season8_end_date specific primary
@@ -5907,15 +5205,6 @@ actions:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2023_2024_specific_primary.csv
 
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s8_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ses_models.R
-      infants_subgroup season8_start_date season8_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s8_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2023_2024_specific_primary.csv
-
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s8_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
       season8_start_date season8_end_date specific primary
@@ -5933,15 +5222,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/flu_primary/flu_ethnicity_ses_model_outputs_infants_subgroup_2023_2024_specific_primary.csv
-
-  analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s8_specific_primary:
-    run: r:latest analysis/outcome_overall_and_all_cause/overall_and_all_cause_ethnicity_ses_models.R
-      infants_subgroup season8_start_date season8_end_date specific primary
-    needs:
-    - process_dataset_infants_subgroup_s8_specific_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s8_specific_primary:
     run: r:latest analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
@@ -14798,14 +14078,6 @@ actions:
     run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
       older_adults
     needs:
-    - analyse_dataset_older_adults_overall_and_all_cause_s1_specific_primary
-    - analyse_dataset_older_adults_overall_and_all_cause_s2_specific_primary
-    - analyse_dataset_older_adults_overall_and_all_cause_s3_specific_primary
-    - analyse_dataset_older_adults_overall_and_all_cause_s4_specific_primary
-    - analyse_dataset_older_adults_overall_and_all_cause_s5_specific_primary
-    - analyse_dataset_older_adults_overall_and_all_cause_s6_specific_primary
-    - analyse_dataset_older_adults_overall_and_all_cause_s7_specific_primary
-    - analyse_dataset_older_adults_overall_and_all_cause_s8_specific_primary
     - analyse_dataset_older_adults_overall_and_all_cause_s1_sensitive_primary
     - analyse_dataset_older_adults_overall_and_all_cause_s2_sensitive_primary
     - analyse_dataset_older_adults_overall_and_all_cause_s3_sensitive_primary
@@ -15150,14 +14422,6 @@ actions:
     run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
       adults
     needs:
-    - analyse_dataset_adults_overall_and_all_cause_s1_specific_primary
-    - analyse_dataset_adults_overall_and_all_cause_s2_specific_primary
-    - analyse_dataset_adults_overall_and_all_cause_s3_specific_primary
-    - analyse_dataset_adults_overall_and_all_cause_s4_specific_primary
-    - analyse_dataset_adults_overall_and_all_cause_s5_specific_primary
-    - analyse_dataset_adults_overall_and_all_cause_s6_specific_primary
-    - analyse_dataset_adults_overall_and_all_cause_s7_specific_primary
-    - analyse_dataset_adults_overall_and_all_cause_s8_specific_primary
     - analyse_dataset_adults_overall_and_all_cause_s1_sensitive_primary
     - analyse_dataset_adults_overall_and_all_cause_s2_sensitive_primary
     - analyse_dataset_adults_overall_and_all_cause_s3_sensitive_primary
@@ -15457,14 +14721,6 @@ actions:
     run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
       children_and_adolescents
     needs:
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s1_specific_primary
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s2_specific_primary
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s3_specific_primary
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s4_specific_primary
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s5_specific_primary
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s6_specific_primary
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s7_specific_primary
-    - analyse_dataset_children_and_adolescents_overall_and_all_cause_s8_specific_primary
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_s1_sensitive_primary
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_s2_sensitive_primary
     - analyse_dataset_children_and_adolescents_overall_and_all_cause_s3_sensitive_primary
@@ -15834,34 +15090,6 @@ actions:
     run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
       infants
     needs:
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_s1_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_s2_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_s3_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_s4_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_s5_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_s6_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_s7_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_s8_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ses_s1_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ses_s2_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ses_s3_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ses_s4_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ses_s5_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ses_s6_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ses_s7_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ses_s8_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_hh_comp_s5_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s1_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s2_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s3_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s4_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s5_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s6_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s7_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_ses_s8_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ethnicity_hh_comp_s5_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_ses_hh_comp_s5_specific_primary
-    - analyse_dataset_infants_overall_and_all_cause_full_s5_specific_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_s1_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_s2_sensitive_primary
     - analyse_dataset_infants_overall_and_all_cause_ethnicity_s3_sensitive_primary
@@ -16246,34 +15474,6 @@ actions:
     run: r:latest analysis/collation_code/overall_and_all_cause_model_outputs_table_collation.R
       infants_subgroup
     needs:
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s1_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s2_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s3_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s4_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s5_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s6_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s7_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s8_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s1_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s2_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s3_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s4_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s5_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s6_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s7_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_s8_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_hh_comp_s5_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s1_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s2_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s3_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s4_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s5_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s6_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s7_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_ses_s8_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_hh_comp_s5_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_ses_hh_comp_s5_specific_primary
-    - analyse_dataset_infants_subgroup_overall_and_all_cause_full_s5_specific_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s1_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s2_sensitive_primary
     - analyse_dataset_infants_subgroup_overall_and_all_cause_ethnicity_s3_sensitive_primary
