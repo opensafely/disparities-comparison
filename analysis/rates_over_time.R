@@ -197,8 +197,9 @@ fs::dir_create(here::here("output", "results", "rates", "weekly"))
 ##calculate the rates
 calculate_for_groups(df_input, "rsv", characteristics)
 calculate_for_groups(df_input, "flu", characteristics)
-if (study_start_date > covid_season_min) {
+if (study_start_date >= covid_season_min) {
   calculate_for_groups(df_input, "covid", characteristics)
-} else if (codelist_type == "sensitive") {
+} 
+if (codelist_type == "sensitive") {
   calculate_for_groups(df_input, "overall_resp", characteristics)
 }
