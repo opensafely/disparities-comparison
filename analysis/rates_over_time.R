@@ -62,6 +62,10 @@ calculate_rolling_rates <- function(df, pathogen, characteristic,
                                     interval_length = 30,
                                     interval_width = "week") {
   
+  if (pathogen == "covid" & study_start_date == covid_season_min) {
+    start <- as.Date("2020-03-01")
+  }
+  
   #create rolling windows
   intervals <- tibble(start_date = seq(start, end - interval_length + 1,
                                        by = interval_width)) %>%
@@ -193,12 +197,7 @@ fs::dir_create(here::here("output", "results", "rates", "weekly"))
 ##calculate the rates
 calculate_for_groups(df_input, "rsv", characteristics)
 calculate_for_groups(df_input, "flu", characteristics)
-if (study_start_date == covid_season_min) {
-  study_start_date <- as.Date("2020-03-01")
-  calculate_for_groups(df_input, "covid", characteristics)
-  if (length(args) == 0) { study_start_date <- as.Date("2019-09-01")
-  } else study_start_date <- study_dates[[args[[2]]]]
-} else if (study_start_date > covid_season_min) {
+if (study_start_date > covid_season_min) {
   calculate_for_groups(df_input, "covid", characteristics)
 } else if (codelist_type == "sensitive") {
   calculate_for_groups(df_input, "overall_resp", characteristics)
