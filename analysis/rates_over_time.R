@@ -170,9 +170,6 @@ calculate_for_groups <- function(df, pathogen, characteristics) {
     
   }
   
-  # #return the rates
-  # return(df_pathogen)
-  
   #save the files
   write_csv(df_pathogen, here::here("output", "results", "rates", "weekly",
             paste0("rates_over_time_", pathogen, "_", cohort, "_",
@@ -189,6 +186,9 @@ if (study_start_date == as.Date("2020-09-01")) {
 } else {
   characteristics <- c(characteristics, "rurality_classification")
 }
+
+## create output directories ----
+fs::dir_create(here::here("output", "results", "rates", "weekly"))
 
 ##calculate the rates
 calculate_for_groups(df_input, "rsv", characteristics)
