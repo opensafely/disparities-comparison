@@ -43,8 +43,8 @@ if (study_start_date == as.Date("2020-09-01")) {
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_",
-                                      year(study_start_date), "_", year(study_end_date), "_",
-                                      codelist_type, "_", investigation_type, ".arrow")),
+             year(study_start_date), "_", year(study_end_date), "_",
+             codelist_type, "_", investigation_type, ".arrow")),
   col_select = c(all_of(columns_needed), ((ends_with("_date")) & (contains(c(
     "primary", "secondary", "mortality"))) & (!contains(c(
       "_second_", "_inf_", "patient_")))))
@@ -120,7 +120,7 @@ for (i in seq_along(intervals_list)) {
              group = unique(group), fill = list(events_in_interval = 0)) %>%
     pivot_wider(names_from = "in_interval", values_from = "events_in_interval") %>%
     mutate(
-      patients_remaining = total_patients - (before + during)
+      patients_remaining = total_patients - before
     )
   
   #Append these rows to the expanded data frame
@@ -138,7 +138,7 @@ df_rates <- df_intervals %>%
   group_by(interval, event, group) %>%
   summarise(
     total_survival_time = (as.numeric(difftime(int_end(intervals_list[interval]),
-                                      study_start_date)) * patients_remaining),
+                           int_start(intervals_list[interval]))) * patients_remaining),
     total_events_midpoint10 = roundmid_any(during),
     rate_1000_py_midpoint10_derived = (total_events_midpoint10 / total_survival_time) * 1000
   )
