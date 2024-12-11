@@ -575,7 +575,7 @@ else :
       medications.where(medications.dmd_code.is_in(codelists
       .rsv_prescriptions_codelist)).where(medications.date
       .is_on_or_between(dataset.rsv_primary_date + days(14),
-      followup_end_date))
+      followup_end_date)).date.minimum_for_patient()
     )
     
     #get occurrence of event in exclusion list within one month of 
@@ -669,7 +669,7 @@ else :
       medications.where(medications.dmd_code.is_in(codelists
       .rsv_prescriptions_codelist)).where(medications.date
       .is_on_or_between(dataset.rsv_primary_date + days(14),
-      followup_end_date))
+      followup_end_date)).date.minimum_for_patient()
     )
     
     #get occurrence of event in exclusion list within one month of 
