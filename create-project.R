@@ -4448,6 +4448,14 @@ actions_list <- splice(
   action_secondary_covid("older_adults", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
   action_descriptive_secondary("older_adults", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
   
+  comment("# # # # # # # # # # # # # # # # # # #", "DATA SKIMMING", "# # # # # # # # # # # # # # # # # # #"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Specific,","Investigation Type: Secondary", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_skimming("older_adults", "s2", "2017_2018", "specific", "secondary", "season2_start_date", "season2_end_date"),
+  action_skimming("older_adults", "s3", "2018_2019", "specific", "secondary", "season3_start_date", "season3_end_date"),
+  action_skimming("older_adults", "s5", "2020_2021", "specific", "secondary", "season5_start_date", "season5_end_date"),
+  
   comment("# # # # # # # # # # # # # # # # # # #", "EXPLORATORY ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults", "# # # # # # # # # # # # # # # # # # #"),

@@ -11568,6 +11568,68 @@ actions:
         csv: output/table1/secondary_table1_older_adults_2020_2021.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
+  ## DATA SKIMMING 
+  ## # # # # # # # # # # # # # # # # # # # 
+  ## # # # # # # # # # # # # # # # # # # # 
+  ## Cohort: Older Adults, Codelist Type: Specific, 
+  ## Investigation Type: Secondary 
+  ## # # # # # # # # # # # # # # # # # # # 
+
+  skim_dataset_older_adults_s2_specific_secondary:
+    run: r:latest analysis/data_skim.R output/data/input_older_adults_2017_2018_specific_secondary.arrow
+      output/data/
+    needs:
+    - generate_dataset_older_adults_s2_specific_secondary
+    outputs:
+      moderately_sensitive:
+        txt: output/data/*older_adults_2017_2018_specific_secondary*.txt
+
+  skim_processed_dataset_older_adults_s2_specific_secondary:
+    run: r:latest analysis/data_skim.R output/data/input_processed_older_adults_2017_2018_specific_secondary.arrow
+      output/data/
+    needs:
+    - process_dataset_older_adults_s2_specific_secondary
+    outputs:
+      moderately_sensitive:
+        txt: output/data/*processed*older_adults_2017_2018_specific_secondary*.txt
+
+  skim_dataset_older_adults_s3_specific_secondary:
+    run: r:latest analysis/data_skim.R output/data/input_older_adults_2018_2019_specific_secondary.arrow
+      output/data/
+    needs:
+    - generate_dataset_older_adults_s3_specific_secondary
+    outputs:
+      moderately_sensitive:
+        txt: output/data/*older_adults_2018_2019_specific_secondary*.txt
+
+  skim_processed_dataset_older_adults_s3_specific_secondary:
+    run: r:latest analysis/data_skim.R output/data/input_processed_older_adults_2018_2019_specific_secondary.arrow
+      output/data/
+    needs:
+    - process_dataset_older_adults_s3_specific_secondary
+    outputs:
+      moderately_sensitive:
+        txt: output/data/*processed*older_adults_2018_2019_specific_secondary*.txt
+
+  skim_dataset_older_adults_s5_specific_secondary:
+    run: r:latest analysis/data_skim.R output/data/input_older_adults_2020_2021_specific_secondary.arrow
+      output/data/
+    needs:
+    - generate_dataset_older_adults_s5_specific_secondary
+    outputs:
+      moderately_sensitive:
+        txt: output/data/*older_adults_2020_2021_specific_secondary*.txt
+
+  skim_processed_dataset_older_adults_s5_specific_secondary:
+    run: r:latest analysis/data_skim.R output/data/input_processed_older_adults_2020_2021_specific_secondary.arrow
+      output/data/
+    needs:
+    - process_dataset_older_adults_s5_specific_secondary
+    outputs:
+      moderately_sensitive:
+        txt: output/data/*processed*older_adults_2020_2021_specific_secondary*.txt
+
+  ## # # # # # # # # # # # # # # # # # # # 
   ## EXPLORATORY ANALYSES 
   ## # # # # # # # # # # # # # # # # # # # 
   ## # # # # # # # # # # # # # # # # # # # 
