@@ -494,6 +494,14 @@ else :
     .rsv_sensitive_codelist).date))
   )
   
+  #get the date of the occurrence of first relevant prescription
+  rsv_med_date = (
+    medications.where(medications.dmd_code.is_in(codelists
+    .rsv_prescriptions_codelist)).where(medications.date
+    .is_on_or_between(index_date, followup_end_date))
+    .date.minimum_for_patient()
+  )
+  
   #get occurrence of event in exclusion list within one month of rsv_codes_date 
   # - looking at the first date for which there is a code in the RSV exclusion
   #codelist within one month before or after the date of rsv_codes_date, or a 
@@ -501,12 +509,11 @@ else :
   #date of rsv_codes_date
   rsv_exclusion_primary = (case(
     when(first_infection_event(codelists.rsv_primary_exclusion_codelist)
-    .date.is_on_or_between(rsv_codes_date - days(30), rsv_codes_date + days(30)))
-    .then(True), when(medications.where(medications.dmd_code
-    .is_in(codelists.rsv_prescriptions_codelist))
-    .date.minimum_for_patient().is_on_or_between(
-    rsv_codes_date - days(30), rsv_codes_date + days(30)))
-    .then(True), otherwise = False)
+    .date.is_on_or_between(rsv_codes_date - days(30),
+    rsv_codes_date + days(30))).then(True),
+    when(first_infection_event(codelists.rsv_primary_exclusion_codelist)
+    .date.is_on_or_between(rsv_med_date - days(30),
+    rsv_med_date + days(30))).then(True), otherwise = False)
   )
 
   if cohort == "infants" or cohort == "infants_subgroup" :
@@ -562,6 +569,15 @@ else :
       .sort_by(clinical_events.date).first_for_patient().date))
     )
     
+    #get the date of the occurrence of first relevant prescription
+    # - looking at the second episode
+    rsv_med_second_date = (
+      medications.where(medications.dmd_code.is_in(codelists
+      .rsv_prescriptions_codelist)).where(medications.date
+      .is_on_or_between(dataset.rsv_primary_date + days(14),
+      followup_end_date))
+    )
+    
     #get occurrence of event in exclusion list within one month of 
     #rsv_codes_second_date - looking at the same criteria as the first episode
     rsv_exclusion_primary_second = (case(
@@ -571,14 +587,12 @@ else :
       .sort_by(clinical_events.date).first_for_patient().date
       .is_on_or_between(rsv_codes_second_date - days(30),
       rsv_codes_second_date + days(30))).then(True),
-      when(medications.where(medications.dmd_code
-      .is_in(codelists.rsv_prescriptions_codelist))
-      .where(medications.date.is_on_or_between(dataset
-      .rsv_primary_date + days(14), followup_end_date - days(30))).date
-      .minimum_for_patient().is_on_or_between(
-      rsv_codes_second_date - days(30), 
-      rsv_codes_second_date + days(30)))
-      .then(True), otherwise = False)
+      when(is_infection_event(codelists.rsv_primary_exclusion_codelist)
+      .where(clinical_events.date.is_on_or_between(dataset
+      .rsv_primary_date + days(14), followup_end_date - days(30)))
+      .sort_by(clinical_events.date).first_for_patient().date
+      .is_on_or_between(rsv_med_second_date - days(30),
+      rsv_med_second_date + days(30))).then(True), otherwise = False)
     )
     
     #extract date of second episode - using the same criteria as the first episode
@@ -591,15 +605,16 @@ else :
       (case(when(rsv_code_number_second >= 1).then((medications
       .where(medications.dmd_code.is_in(codelists
       .rsv_prescriptions_codelist)).where(medications.date
-      .is_on_or_between(dataset.rsv_primary_date + days(14), followup_end_date))
-      .date.minimum_for_patient())))), (emergency_care_diagnosis_matches(
-      codelists.bronchiolitis_attendance).where(emergency_care_attendances
-      .arrival_date.is_on_or_between(dataset.rsv_primary_date + days(14), 
+      .is_on_or_between(dataset.rsv_primary_date + days(14),
+      followup_end_date)).date.minimum_for_patient())))),
+      (emergency_care_diagnosis_matches(codelists.bronchiolitis_attendance)
+      .where(emergency_care_attendances.arrival_date
+      .is_on_or_between(dataset.rsv_primary_date + days(14), 
       followup_end_date)).arrival_date.minimum_for_patient()),
       (emergency_care_diagnosis_matches(codelists.wheeze_attendance)
       .where(emergency_care_attendances.arrival_date
-      .is_on_or_between(dataset.rsv_primary_date + days(14), followup_end_date))
-      .arrival_date.minimum_for_patient()))))
+      .is_on_or_between(dataset.rsv_primary_date + days(14),
+      followup_end_date)).arrival_date.minimum_for_patient()))))
     )
     
   else :
@@ -648,23 +663,32 @@ else :
       .date))
     )
     
+    #get the date of the occurrence of first relevant prescription
+    # - looking at the second episode
+    rsv_med_second_date = (
+      medications.where(medications.dmd_code.is_in(codelists
+      .rsv_prescriptions_codelist)).where(medications.date
+      .is_on_or_between(dataset.rsv_primary_date + days(14),
+      followup_end_date))
+    )
+    
     #get occurrence of event in exclusion list within one month of 
     #rsv_codes_second_date - looking at the same criteria as the first episode
     rsv_exclusion_primary_second = (case(
       when(is_infection_event(codelists.rsv_primary_exclusion_codelist)
-      .where(clinical_events.date.is_on_or_between(dataset.rsv_primary_date + days(14),
-      followup_end_date - days(30))).sort_by(clinical_events.date)
-      .first_for_patient().date.is_on_or_between(
-      rsv_codes_second_date - days(30), rsv_codes_second_date + days(30)))
-      .then(True), when(medications.where(medications.dmd_code
-      .is_in(codelists.rsv_prescriptions_codelist))
-      .where(medications.date.is_on_or_between(dataset
+      .where(clinical_events.date.is_on_or_between(dataset
       .rsv_primary_date + days(14), followup_end_date - days(30)))
-      .date.minimum_for_patient().is_on_or_between(
-      rsv_codes_second_date - days(30), rsv_codes_second_date + days(30)))
-      .then(True), otherwise = False)
+      .sort_by(clinical_events.date).first_for_patient().date
+      .is_on_or_between(rsv_codes_second_date - days(30),
+      rsv_codes_second_date + days(30))).then(True),
+      when(is_infection_event(codelists.rsv_primary_exclusion_codelist)
+      .where(clinical_events.date.is_on_or_between(dataset
+      .rsv_primary_date + days(14), followup_end_date - days(30)))
+      .sort_by(clinical_events.date).first_for_patient().date
+      .is_on_or_between(rsv_med_second_date - days(30),
+      rsv_med_second_date + days(30))).then(True), otherwise = False)
     )
-      
+   
     #extract date of second episode - using the same criteria as the first episode
     dataset.rsv_primary_second_date = (case(
       when(~rsv_exclusion_primary).then(
@@ -893,6 +917,14 @@ else :
     when(ILI_case).then(minimum_of(ari_date, fever_date)))
   )
   
+  #get date of occurrence of first relevant prescription
+  flu_med_date = (
+    medications.where(medications.dmd_code.is_in(codelists
+    .flu_prescriptions_codelist)).where(medications.date
+    .is_on_or_between(index_date, followup_end_date))
+    .date.minimum_for_patient()
+  )
+  
   #occurrence of event in exclusion list within one month of ILI
   flu_exclusion_primary = (case(
     when(first_infection_event(codelists.flu_primary_exclusion_codelist)
@@ -901,12 +933,10 @@ else :
     codelists.flu_sensitive_codelist).date + days(30))).then(True), 
     when(first_infection_event(codelists.flu_primary_exclusion_codelist)
     .date.is_on_or_between(ILI_date - days(30), ILI_date + days(30)))
-    .then(True), when(medications.where(medications.dmd_code
-    .is_in(codelists.flu_prescriptions_codelist)).where(medications
-    .date.is_on_or_between(index_date, followup_end_date)).date
-    .minimum_for_patient().is_on_or_between(ILI_date - days(30),
-    ILI_date + days(30))).then(True), 
-    otherwise = False)
+    .then(True), when(first_infection_event(codelists
+    .flu_primary_exclusion_codelist).date.is_on_or_between(
+    flu_med_date - days(30), flu_med_date + days(30)))
+    .then(True), otherwise = False)
   )
   
   #get date of first flu episode
@@ -948,6 +978,14 @@ else :
     fever_second_date)))
   )
   
+    #get date of occurrence of first relevant prescription
+  flu_med_second_date = (
+    medications.where(medications.dmd_code.is_in(codelists
+    .flu_prescriptions_codelist)).where(medications.date
+    .is_on_or_between(flu_primary_date + days(14),
+    followup_end_date)).date.minimum_for_patient()
+  )
+  
   #occurrence of event in exclusion list within one month of second ILI 
   flu_exclusion_primary_second = (case(
     when(is_infection_event(codelists.flu_primary_exclusion_codelist)
@@ -968,14 +1006,13 @@ else :
     .flu_primary_date + days(14), followup_end_date - days(30)))
     .sort_by(clinical_events.date).first_for_patient().date
     .is_on_or_between(ILI_second_date - days(30), 
-    ILI_second_date + days(30))).then(True), when(medications
-    .where(medications.dmd_code.is_in(codelists
-    .flu_prescriptions_codelist)).where(medications
-    .date.is_on_or_between(ILI_second_date - days(30), 
-    ILI_second_date + days(30))).sort_by(medications.date)
-    .first_for_patient().date.is_on_or_between(dataset
+    ILI_second_date + days(30))).then(True),
+    when(is_infection_event(codelists.flu_primary_exclusion_codelist)
+    .where(clinical_events.date.is_on_or_between(dataset
     .flu_primary_date + days(14), followup_end_date - days(30)))
-    .then(True), otherwise = False)
+    .sort_by(clinical_events.date).first_for_patient().date
+    .is_on_or_between(flu_med_second_date - days(30), 
+    flu_med_second_date + days(30))).then(True), otherwise = False)
   )
   
   #get date of second flu episode
@@ -1203,6 +1240,14 @@ if study_start_date >= covid_season_min :
       .covid_sensitive_codelist).date))
     )
     
+    #get date of first occurrence of relevant prescription
+    covid_med_date = (
+      medications.where(medications.dmd_code.is_in(codelists
+      .covid_prescriptions_codelist)).where(medications.date
+      .is_on_or_between(index_date, followup_end_date))
+      .date.minimum_for_patient()
+    )
+    
     #occurrence of event in exclusion list within one month of covid_codes_date
     #- looking at the first date for which there is a code in the covid exclusion
     #codelist within one month before or after the date of covid_codes_date, or a 
@@ -1212,10 +1257,10 @@ if study_start_date >= covid_season_min :
       when(first_infection_event(codelists.covid_primary_exclusion_codelist)
       .date.is_on_or_between(covid_codes_date - days(30),
       covid_codes_date + days(30))).then(True),
-      when(medications.where(medications.dmd_code
-      .is_in(codelists.covid_prescriptions_codelist))
-      .date.minimum_for_patient().is_on_or_between(covid_codes_date - days(30),
-      covid_codes_date + days(30))).then(True), otherwise = False)
+      when(first_infection_event(codelists
+      .covid_primary_exclusion_codelist).date.is_on_or_between(
+      covid_med_date - days(30), covid_med_date + days(30)))
+      .then(True), otherwise = False)
     )
     
     #extract date of first episode where the exclusion criteria is not met
@@ -1258,6 +1303,14 @@ if study_start_date >= covid_season_min :
       .date))
     )
     
+    #get date of first occurrence of relevant prescription - for second episode
+    covid_med_second_date = (
+      medications.where(medications.dmd_code.is_in(codelists
+      .covid_prescriptions_codelist)).where(medications.date
+      .is_on_or_between(covid_primary_date + days(14),
+      followup_end_date)).date.minimum_for_patient()
+    )
+    
     #occurrence of event in exclusion list within one month of covid_codes_second_date
     # - using the same criteria as the first episode
     covid_exclusion_primary_second = (case(
@@ -1267,13 +1320,12 @@ if study_start_date >= covid_season_min :
       .sort_by(clinical_events.date).first_for_patient().date
       .is_on_or_between(covid_codes_second_date - days(30),
       covid_codes_second_date + days(30))).then(True),
-      when(medications.where(medications.dmd_code
-      .is_in(codelists.covid_prescriptions_codelist))
-      .where(medications.date.is_on_or_between(dataset
+      when(is_infection_event(codelists.covid_primary_exclusion_codelist)
+      .where(clinical_events.date.is_on_or_between(dataset
       .covid_primary_date + days(14), followup_end_date - days(30)))
-      .date.minimum_for_patient().is_on_or_between(
-      covid_codes_second_date - days(30), covid_codes_second_date + days(30)))
-      .then(True), otherwise = False )                                 
+      .sort_by(clinical_events.date).first_for_patient().date
+      .is_on_or_between(covid_med_second_date - days(30),
+      covid_med_second_date + days(30))).then(True), otherwise = False )                                 
     )
     
     #extract date of second episode - using the same criteria as the first episode
