@@ -984,7 +984,7 @@ else :
   flu_med_second_date = (
     medications.where(medications.dmd_code.is_in(codelists
     .flu_prescriptions_codelist)).where(medications.date
-    .is_on_or_between(flu_primary_date + days(14),
+    .is_on_or_between(dataset.flu_primary_date + days(14),
     followup_end_date)).date.minimum_for_patient()
   )
   
@@ -1311,7 +1311,7 @@ if study_start_date >= covid_season_min :
     covid_med_second_date = (
       medications.where(medications.dmd_code.is_in(codelists
       .covid_prescriptions_codelist)).where(medications.date
-      .is_on_or_between(covid_primary_date + days(14),
+      .is_on_or_between(dataset.covid_primary_date + days(14),
       followup_end_date)).date.minimum_for_patient()
     )
     
@@ -2123,10 +2123,10 @@ if codelist_type == "sensitive" :
     overall_resp_exclusion_secondary = (case(
       when(hospitalisation_diagnosis_matches(codelists
       .respiratory_virus_secondary_exclusion_codelist)
-      .where(apcs.admission_date.is_on_or_between(maxmimum_of(index_date,
+      .where(apcs.admission_date.is_on_or_between(maximum_of(index_date,
       overall_resp_secondary_sens_date - days(30)),
       minimum_of(overall_resp_secondary_sens_date + days(30),
-      followuo_end_date))).exists_for_patient())
+      followup_end_date))).exists_for_patient())
       .then(True), otherwise = False)  
     )
     
