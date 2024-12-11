@@ -61,22 +61,23 @@ covid_severe_hh_comp_further <- glm(covid_secondary_inf ~ composition_category +
                                     data = df_input, family = poisson)
 covid_severe_hh_comp_further_output <- tidy(covid_severe_hh_comp_further)
 
-#covid mortality by household composition
-covid_mortality_hh_comp_further <- glm(covid_mortality_inf ~ composition_category +
-                                         age_band + sex + rurality_classification + 
-                                         covid_vaccination +
-                                         offset(log(time_covid_mortality)),
-                                       data = df_input, family = poisson)
-covid_mortality_hh_comp_further_output <- tidy(covid_mortality_hh_comp_further)
+# #covid mortality by household composition
+# covid_mortality_hh_comp_further <- glm(covid_mortality_inf ~ composition_category +
+#                                          age_band + sex + rurality_classification + 
+#                                          covid_vaccination +
+#                                          offset(log(time_covid_mortality)),
+#                                        data = df_input, family = poisson)
+# covid_mortality_hh_comp_further_output <- tidy(covid_mortality_hh_comp_further)
 
 #define a vector of names for the model outputs
 model_names <- c("Mild COVID-19 by Household Composition", 
-                 "Severe COVID-19 by Household Composition",
-                 "COVID-19 Mortality by Household Composition")
+                 "Severe COVID-19 by Household Composition")#,
+                 # "COVID-19 Mortality by Household Composition")
 
 #create the model outputs list
-model_outputs_list <- list(covid_mild_hh_comp_output, covid_severe_hh_comp_output,
-                           covid_mortality_hh_comp_output)
+model_outputs_list <- list(covid_mild_hh_comp_output_further,
+                           covid_severe_hh_comp_output_further)#,
+                           # covid_mortality_hh_comp_output_further)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {

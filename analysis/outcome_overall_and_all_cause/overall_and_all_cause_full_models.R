@@ -98,17 +98,17 @@ if (cohort == "infants_subgroup") {
     
   }
   
-  #all cause mortality by ethnicity, socioeconomic status and household composition
-  all_cause_mortality_full <- glm(all_cause_mortality_inf ~ latest_ethnicity_group +
-                                    imd_quintile + composition_category +
-                                    age_band + sex + rurality_classification +
-                                    maternal_age + maternal_smoking_status +
-                                    maternal_drinking + maternal_drug_usage +
-                                    maternal_flu_vaccination +
-                                    maternal_pertussis_vaccination +
-                                    offset(log(time_all_cause_mortality)),
-                                  data = df_input, family = poisson)
-  all_cause_mortality_full_output <- tidy(all_cause_mortality_full)
+  # #all cause mortality by ethnicity, socioeconomic status and household composition
+  # all_cause_mortality_full <- glm(all_cause_mortality_inf ~ latest_ethnicity_group +
+  #                                   imd_quintile + composition_category +
+  #                                   age_band + sex + rurality_classification +
+  #                                   maternal_age + maternal_smoking_status +
+  #                                   maternal_drinking + maternal_drug_usage +
+  #                                   maternal_flu_vaccination +
+  #                                   maternal_pertussis_vaccination +
+  #                                   offset(log(time_all_cause_mortality)),
+  #                                 data = df_input, family = poisson)
+  # all_cause_mortality_full_output <- tidy(all_cause_mortality_full)
   
 } else {
   
@@ -130,52 +130,54 @@ if (cohort == "infants_subgroup") {
                                     data = df_input, family = poisson)
     overall_resp_severe_full_output <- tidy(overall_resp_severe_full)
     
-    #overall_resp mortality by ethnicity, socioeconomic status and household composition
-    overall_resp_mortality_full <- glm(overall_resp_mortality_inf ~ latest_ethnicity_group + 
-                                         imd_quintile + composition_category +
-                                         age_band + sex + rurality_classification + 
-                                         offset(log(time_overall_resp_mortality)),
-                                       data = df_input, family = poisson)
-    overall_resp_mortality_full_output <- tidy(overall_resp_mortality_full)
+    # #overall_resp mortality by ethnicity, socioeconomic status and household composition
+    # overall_resp_mortality_full <- glm(overall_resp_mortality_inf ~ latest_ethnicity_group + 
+    #                                      imd_quintile + composition_category +
+    #                                      age_band + sex + rurality_classification + 
+    #                                      offset(log(time_overall_resp_mortality)),
+    #                                    data = df_input, family = poisson)
+    # overall_resp_mortality_full_output <- tidy(overall_resp_mortality_full)
   
   }
   
-  #all cause mortality by ethnicity, socioeconomic status and household composition
-  all_cause_mortality_full <- glm(all_cause_mortality_inf ~ latest_ethnicity_group +
-                                    imd_quintile + composition_category +
-                                    age_band + sex + rurality_classification + 
-                                    offset(log(time_all_cause_mortality)),
-                                  data = df_input, family = poisson)
-  all_cause_mortality_full_output <- tidy(all_cause_mortality_full)
+  # #all cause mortality by ethnicity, socioeconomic status and household composition
+  # all_cause_mortality_full <- glm(all_cause_mortality_inf ~ latest_ethnicity_group +
+  #                                   imd_quintile + composition_category +
+  #                                   age_band + sex + rurality_classification + 
+  #                                   offset(log(time_all_cause_mortality)),
+  #                                 data = df_input, family = poisson)
+  # all_cause_mortality_full_output <- tidy(all_cause_mortality_full)
 
 }
+
+# #define a vector of names for the model outputs
+# if (codelist_type == "sensitive") {
+#   model_names <- c("Mild Overall Respiratory Virus by Ethnicity, IMD Quintile and Household Composition",
+#                    "Severe Overall Respiratory Virus by Ethnicity, IMD Quintile and Household Composition",
+#                    "Overall Respiratory Virus Mortality by Ethnicity, IMD Quintile and Household Composition",
+#                    "All Cause Mortality by Ethnicity, IMD Quintile and Household Composition")
+# } else {
+#   model_names <- c("All Cause Mortality by Ethnicity, IMD Quintile and Household Composition")
+# }
 
 #define a vector of names for the model outputs
-if (study_start_date < covid_season_min) {
-  model_names <- c("All Cause Mortlality by Ethnicity, IMD Quintile and Household Composition")
-} else if (codelist_type == "sensitive") {
-  model_names <- c("Mild Overall Respiratory Virus by Ethnicity, IMD Quintile and Household Composition",
-                   "Severe Overall Respiratory Virus by Ethnicity, IMD Quintile and Household Composition",
-                   "Overall Respiratory Virus Mortality by Ethnicity, IMD Quintile and Household Composition",
-                   "All Cause Mortality by Ethnicity, IMD Quintile and Household Composition")
-} else if (study_start_date >= covid_season_min) {
-  model_names <- c("All Cause Mortality by Ethnicity, IMD Quintile and Household Composition")
-} else {
-  model_names <- c("Mild Overall Respiratory Virus by Ethnicity, IMD Quintile and Household Composition",
-                   "Severe Overall Respiratory Virus by Ethnicity, IMD Quintile and Household Composition",
-                   "Overall Respiratory Virus Mortality by Ethnicity, IMD Quintile and Household Composition",
-                   "All Cause Mortality by Ethnicity, IMD Quintile and Household Composition")
-}
+model_names <- c("Mild Overall Respiratory Virus by Ethnicity, IMD Quintile and Household Composition",
+                 "Severe Overall Respiratory Virus by Ethnicity, IMD Quintile and Household Composition")
+
+# #create the model outputs list
+# model_outputs_list <- list(all_cause_mortality_full_output)
+# 
+# #adjust the model outputs list based on the conditions
+# if (codelist_type == "sensitive") {
+#   model_outputs_list <- c(model_outputs_list,
+#                           list(overall_resp_mild_full_output,
+#                                overall_resp_severe_full_output,
+#                                overall_resp_mortality_full_output))
+# }
 
 #create the model outputs list
-model_outputs_list <- list(all_cause_mortality_full_output)
-
-#adjust the model outputs list based on the conditions
-if (codelist_type == "sensitive") {
-  model_outputs_list <- c(model_outputs_list, list(overall_resp_mild_full_output,
-                                                   overall_resp_severe_full_output,
-                                                   overall_resp_mortality_full_output))
-}
+model_outputs_list <- c(overall_resp_mild_full_output,
+                        overall_resp_severe_full_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {
@@ -191,7 +193,8 @@ if (length(args) == 0) {
   
   model_outputs %>%
     write_csv(file = paste0(here::here("output", "results", "models",
-                            paste0("overall_and_all_cause_", investigation_type)), "/", 
+                            paste0("overall_and_all_cause_",
+                            investigation_type)), "/", 
                             "overalL_and_all_cause_full_model_outputs_", cohort,
                             "_", year(study_start_date), "_",
                             year(study_end_date), "_", codelist_type,
@@ -201,7 +204,8 @@ if (length(args) == 0) {
   
   model_outputs %>%
     write_csv(path = paste0(here::here("output", "results", "models",
-                            paste0("overall_and_all_cause_", investigation_type)), "/", 
+                            paste0("overall_and_all_cause_",
+                            investigation_type)), "/", 
                             "overall_and_all_cause_full_model_outputs_", cohort,
                             "_", year(study_start_date), "_",
                             year(study_end_date), "_", codelist_type,

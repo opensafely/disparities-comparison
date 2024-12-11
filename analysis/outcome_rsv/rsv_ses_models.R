@@ -88,15 +88,15 @@ if (cohort == "infants_subgroup") {
                         data = df_input, family = poisson)
   rsv_severe_ses_output <- tidy(rsv_severe_ses)
   
-  #rsv mortality by ses
-  rsv_mortality_ses <- glm(rsv_mortality_inf ~ imd_quintile + age_band + sex +
-                             rurality_classification + maternal_age +
-                             maternal_smoking_status + maternal_drinking +
-                             maternal_drug_usage + maternal_flu_vaccination + 
-                             maternal_pertussis_vaccination +
-                             offset(log(time_rsv_mortality)),
-                           data = df_input, family = poisson)
-  rsv_mortality_ses_output <- tidy(rsv_mortality_ses)
+  # #rsv mortality by ses
+  # rsv_mortality_ses <- glm(rsv_mortality_inf ~ imd_quintile + age_band + sex +
+  #                            rurality_classification + maternal_age +
+  #                            maternal_smoking_status + maternal_drinking +
+  #                            maternal_drug_usage + maternal_flu_vaccination + 
+  #                            maternal_pertussis_vaccination +
+  #                            offset(log(time_rsv_mortality)),
+  #                          data = df_input, family = poisson)
+  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses)
   
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
@@ -124,17 +124,17 @@ if (cohort == "infants_subgroup") {
                         data = df_input, family = poisson)
   rsv_severe_ses_output <- tidy(rsv_severe_ses)
   
-  #rsv mortality by ses
-  rsv_mortality_ses <- glm(rsv_mortality_inf ~ imd_quintile + age_band + sex +
-                             rurality_classification + has_asthma +
-                             has_copd + has_cystic_fibrosis + has_other_resp +
-                             has_diabetes + has_addisons + severe_obesity +
-                             has_chd + has_ckd + has_cld + has_cnd +
-                             has_cancer + immunosuppressed + has_sickle_cell +
-                             smoking_status + hazardous_drinking + drug_usage +
-                             offset(log(time_rsv_mortality)),
-                           data = df_input, family = poisson)
-  rsv_mortality_ses_output <- tidy(rsv_mortality_ses)
+  # #rsv mortality by ses
+  # rsv_mortality_ses <- glm(rsv_mortality_inf ~ imd_quintile + age_band + sex +
+  #                            rurality_classification + has_asthma +
+  #                            has_copd + has_cystic_fibrosis + has_other_resp +
+  #                            has_diabetes + has_addisons + severe_obesity +
+  #                            has_chd + has_ckd + has_cld + has_cnd +
+  #                            has_cancer + immunosuppressed + has_sickle_cell +
+  #                            smoking_status + hazardous_drinking + drug_usage +
+  #                            offset(log(time_rsv_mortality)),
+  #                          data = df_input, family = poisson)
+  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses)
   
 } else {
   
@@ -152,22 +152,22 @@ if (cohort == "infants_subgroup") {
                         data = df_input, family = poisson)
   rsv_severe_ses_output <- tidy(rsv_severe_ses)
   
-  #rsv mortality by ses
-  rsv_mortality_ses <- glm(rsv_mortality_inf ~ imd_quintile + age_band +
-                             sex + rurality_classification +
-                             offset(log(time_rsv_mortality)),
-                           data = df_input, family = poisson)
-  rsv_mortality_ses_output <- tidy(rsv_mortality_ses)
+  # #rsv mortality by ses
+  # rsv_mortality_ses <- glm(rsv_mortality_inf ~ imd_quintile + age_band +
+  #                            sex + rurality_classification +
+  #                            offset(log(time_rsv_mortality)),
+  #                          data = df_input, family = poisson)
+  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses)
   
 }
 
 #define a vector of names for the model outputs
-model_names <- c("Mild RSV by IMD Quintile", "Severe RSV by IMD Quintile",
-                 "RSV Mortality by IMD Quintile")
+model_names <- c("Mild RSV by IMD Quintile", "Severe RSV by IMD Quintile")#,
+                 # "RSV Mortality by IMD Quintile")
 
 #create the model outputs list
-model_outputs_list <- list(rsv_mild_ses_output, rsv_severe_ses_output, 
-                           rsv_mortality_ses_output)
+model_outputs_list <- list(rsv_mild_ses_output, rsv_severe_ses_output)#, 
+                           # rsv_mortality_ses_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {

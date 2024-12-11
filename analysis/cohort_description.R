@@ -34,7 +34,7 @@ covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
 covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
 df_input <- read_feather(
-  here::here("output", "data", paste0("cohort_processed_", cohort, "_", 
+  here::here("output", "data", paste0("input_processed_", cohort, "_", 
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow")))
 
@@ -49,8 +49,9 @@ if (study_start_date == as.Date("2020-09-01")) {
       mutate(Total = n_distinct(patient_id)) %>%
       select(Total, age_band, sex, latest_ethnicity_group, imd_quintile,
              composition_category, rurality_classification) %>%
-      rename("Age Group" = age_band, Sex = sex, Ethnicity = latest_ethnicity_group,
-             IMD = imd_quintile, "Household Composition" = composition_category,
+      rename("Age Group" = age_band, Sex = sex,
+             Ethnicity = latest_ethnicity_group, IMD = imd_quintile,
+             "Household Composition" = composition_category,
              Rurality = rurality_classification)
   } else if (cohort == "infants_subgroup") {
     table <- df_input %>%
@@ -59,70 +60,58 @@ if (study_start_date == as.Date("2020-09-01")) {
              composition_category, rurality_classification, maternal_age,
              maternal_smoking_status, maternal_drinking, maternal_drug_usage,
              maternal_flu_vaccination, maternal_pertussis_vaccination) %>%
-      rename("Age Group" = age_band, Sex = sex, Ethnicity = latest_ethnicity_group,
-             IMD = imd_quintile, "Household Composition" = composition_category,
+      rename("Age Group" = age_band, Sex = sex,
+             Ethnicity = latest_ethnicity_group, IMD = imd_quintile,
+             "Household Composition" = composition_category,
              Rurality = rurality_classification, "Maternal Age" = maternal_age,
              "Maternal Smoking Status" = maternal_smoking_status,
              "Maternal Drinking" = maternal_drinking,
              "Maternal Drug Usage" = maternal_drug_usage,
              "Maternal Flu Vaccination" = maternal_flu_vaccination,
              "Maternal Pertussis Vaccination" = maternal_pertussis_vaccination)
-  } else if (cohort == "children_and_adolescents") {
+  } else if (cohort == "older_adults" & investigation_type == "secondary") {
     table <- df_input %>%
       mutate(Total = n_distinct(patient_id)) %>%
-      mutate(Reactive_Airway = ifelse(age <= 5, has_asthma_reactive_airway, "No")) %>%
-      mutate(Asthma = ifelse(age > 5, has_asthma_reactive_airway, "No")) %>%
-      select(Total, age_band, sex, latest_ethnicity_group, imd_quintile,
-             composition_category, rurality_classification, Asthma,
-             Reactive_Airway, has_asthma_reactive_airway, prior_flu_vaccination) %>%
-      rename("Age Group" = age_band, Sex = sex, Ethnicity = latest_ethnicity_group,
-             IMD = imd_quintile, "Household Composition" = composition_category,
-             Rurality = rurality_classification, "Reactive Airway" = Reactive_Airway,
-             "Asthma or Reactive Airway" = has_asthma_reactive_airway,
-             "Prior Flu Vaccine" = prior_flu_vaccination)
-    if (study_start_date >= covid_prior_vacc_min) {
-      table <- table %>%
-        mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination) %>%
-        rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
-    }
+      select(Total, smoking_status, hazardous_drinking, drug_usage,
+             has_asthma, has_copd, has_cystic_fibrosis, has_other_resp,
+             has_diabetes, has_addisons, severe_obesity, has_chd, has_ckd,
+             has_cld, has_cnd, has_cancer, immunosuppressed,
+             has_sickle_cell) %>%
+      rename("Smoking Status" = smoking_status,
+             "Hazardous Drinking" = hazardous_drinking,
+             "Drug Usage" = drug_usage, Asthma = has_asthma, COPD = has_copd,
+             "Cystic Fibrosis" = has_cystic_fibrosis,
+             "Other Chronic Respiratory Diseases" = has_other_resp,
+             Diabetes = has_diabetes, Addisons = has_addisons,
+             "Severe Obesity" = severe_obesity,
+             "Chronic Heart Diseases" = has_chd,
+             "Chronic Kidney Disease" = has_ckd,
+             "Chronic Liver Disease" = has_cld,
+             "Chronic Neurological Disease" = has_cnd,
+             "Cancer Within 3 Years" = has_cancer,
+             Immunosuppressed = immunosuppressed,
+             "Sickle Cell Disease" = has_sickle_cell)
   } else {
     table <- df_input %>%
       mutate(Total = n_distinct(patient_id)) %>%
       select(Total, age_band, sex, latest_ethnicity_group, imd_quintile,
-             composition_category, rurality_classification, smoking_status,
-             hazardous_drinking, drug_usage, has_asthma, has_copd,
-             has_cystic_fibrosis, has_other_resp, has_diabetes, has_addisons,
-             severe_obesity, has_chd, has_ckd, has_cld, has_cnd, has_cancer,
-             immunosuppressed, has_sickle_cell, prior_flu_vaccination) %>%
-      rename("Age Group" = age_band, Sex = sex, Ethnicity = latest_ethnicity_group,
+             composition_category, rurality_classification,
+             prior_flu_vaccination) %>%
+      rename("Age Group" = age_band, Sex = sex,
+             Ethnicity = latest_ethnicity_group,
              IMD = imd_quintile, "Household Composition" = composition_category,
-             Rurality = rurality_classification, "Smoking Status" = smoking_status,
-             "Hazardous Drinking" = hazardous_drinking, "Drug Usage" = drug_usage,
-             Asthma = has_asthma, COPD = has_copd,
-             "Cystic Fibrosis" = has_cystic_fibrosis,
-             "Other Chronic Respiratory Diseases" = has_other_resp,
-             Diabetes = has_diabetes, Addisons = has_addisons,
-             "Severe Obesity" = severe_obesity, "Chronic Heart Diseases" = has_chd,
-             "Chronic Kidney Disease" = has_ckd, "Chronic Liver Disease" = has_cld,
-             "Chronic Neurological Disease" = has_cnd,
-             "Cancer Within 3 Years" = has_cancer,
-             Immunosuppressed = immunosuppressed,
-             "Sickle Cell Disease" = has_sickle_cell,
+             Rurality = rurality_classification,
              "Prior Flu Vaccine" = prior_flu_vaccination)
-    if (study_start_date >= covid_prior_vacc_min) {
-      table <- table %>%
-        mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination) %>%
-        rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
-    }
-   }
+  }
 } else {
   if (cohort == "infants") {
     table <- df_input %>%
       mutate(Total = n_distinct(patient_id)) %>%
       select(Total, age_band, sex, latest_ethnicity_group, imd_quintile,
              rurality_classification) %>%
-      rename("Age Group" = age_band, Sex = sex, Ethnicity = latest_ethnicity_group,
-             IMD = imd_quintile, Rurality = rurality_classification)
+      rename("Age Group" = age_band, Sex = sex,
+             Ethnicity = latest_ethnicity_group, IMD = imd_quintile,
+             Rurality = rurality_classification)
   } else if (cohort == "infants_subgroup") {
     table <- df_input %>%
       mutate(Total = n_distinct(patient_id)) %>%
@@ -130,59 +119,58 @@ if (study_start_date == as.Date("2020-09-01")) {
              rurality_classification, maternal_age, maternal_smoking_status,
              maternal_drinking, maternal_drug_usage, maternal_flu_vaccination,
              maternal_pertussis_vaccination) %>%
-      rename("Age Group" = age_band, Sex = sex, Ethnicity = latest_ethnicity_group,
-             IMD = imd_quintile, Rurality = rurality_classification,
+      rename("Age Group" = age_band, Sex = sex,
+             Ethnicity = latest_ethnicity_group, IMD = imd_quintile,
+             Rurality = rurality_classification,
              "Maternal Age" = maternal_age,
              "Maternal Smoking Status" = maternal_smoking_status,
              "Maternal Drinking" = maternal_drinking,
              "Maternal Drug Usage" = maternal_drug_usage,
              "Maternal Flu Vaccination" = maternal_flu_vaccination,
              "Maternal Pertussis Vaccination" = maternal_pertussis_vaccination)
-  } else if (cohort == "children_and_adolescents") {
+  } else if (cohort == "older_adults" & investigation_type == "secondary") {
     table <- df_input %>%
       mutate(Total = n_distinct(patient_id)) %>%
-      mutate(Reactive_Airway = ifelse(age <= 5, has_asthma_reactive_airway, "No")) %>%
-      mutate(Asthma = ifelse(age > 5, has_asthma_reactive_airway, "No")) %>%
-      select(Total, age_band, sex, latest_ethnicity_group, imd_quintile,
-             rurality_classification, Asthma, Reactive_Airway,
-             has_asthma_reactive_airway, prior_flu_vaccination) %>%
-      rename("Age Group" = age_band, Sex = sex, Ethnicity = latest_ethnicity_group,
-             IMD = imd_quintile, Rurality = rurality_classification,
-             "Reactive Airway" = Reactive_Airway,
-             "Asthma or Reactive Airway" = has_asthma_reactive_airway,
-             "Prior Flu Vaccine" = prior_flu_vaccination)
-    if (study_start_date >= covid_prior_vacc_min) {
+      select(Total, smoking_status, hazardous_drinking, drug_usage, has_asthma,
+             has_copd, has_cystic_fibrosis, has_other_resp, has_diabetes,
+             has_addisons, severe_obesity, has_chd, has_ckd, has_cld, has_cnd,
+             has_cancer, immunosuppressed, has_sickle_cell) %>%
+      rename("Smoking Status" = smoking_status,
+             "Hazardous Drinking" = hazardous_drinking,
+             "Drug Usage" = drug_usage,
+             Asthma = has_asthma, COPD = has_copd,
+             "Cystic Fibrosis" = has_cystic_fibrosis,
+             "Other Chronic Respiratory Diseases" = has_other_resp,
+             Diabetes = has_diabetes, Addisons = has_addisons,
+             "Severe Obesity" = severe_obesity,
+             "Chronic Heart Diseases" = has_chd,
+             "Chronic Kidney Disease" = has_ckd,
+             "Chronic Liver Disease" = has_cld,
+             "Chronic Neurological Disease" = has_cnd,
+             "Cancer Within 3 Years" = has_cancer,
+             Immunosuppressed = immunosuppressed,
+             "Sickle Cell Disease" = has_sickle_cell)
+    if (study_start_date == as.Date("2018-09-01")) {
       table <- table %>%
-        mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination)  %>%
+        mutate(prior_flu_vaccination = df_input$prior_flu_vaccination) %>%
+        rename("Prior Flu Vaccine" = prior_flu_vaccination)
+    } else if (study_start_date == covid_prior_vacc_min) {
+      table <- table %>%
+        mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination) %>%
         rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
     }
   } else {
     table <- df_input %>%
       mutate(Total = n_distinct(patient_id)) %>%
       select(Total, age_band, sex, latest_ethnicity_group, imd_quintile,
-             rurality_classification, smoking_status, hazardous_drinking,
-             drug_usage, has_asthma, has_copd, has_cystic_fibrosis,
-             has_other_resp, has_diabetes, has_addisons, severe_obesity,
-             has_chd, has_ckd, has_cld, has_cnd, has_cancer, immunosuppressed,
-             has_sickle_cell, prior_flu_vaccination) %>%
-      rename("Age Group" = age_band, Sex = sex, Ethnicity = latest_ethnicity_group,
-             IMD = imd_quintile, Rurality = rurality_classification,
-             "Smoking Status" = smoking_status,
-             "Hazardous Drinking" = hazardous_drinking, "Drug Usage" = drug_usage,
-             Asthma = has_asthma, COPD = has_copd,
-             "Cystic Fibrosis" = has_cystic_fibrosis,
-             "Other Chronic Respiratory Diseases" = has_other_resp,
-             Diabetes = has_diabetes, Addisons = has_addisons,
-             "Severe Obesity" = severe_obesity, "Chronic Heart Diseases" = has_chd,
-             "Chronic Kidney Disease" = has_ckd, "Chronic Liver Disease" = has_cld,
-             "Chronic Neurological Disease" = has_cnd,
-             "Cancer Within 3 Years" = has_cancer,
-             Immunosuppressed = immunosuppressed,
-             "Sickle Cell Disease" = has_sickle_cell,
+             rurality_classification, prior_flu_vaccination) %>%
+      rename("Age Group" = age_band, Sex = sex,
+             Ethnicity = latest_ethnicity_group, IMD = imd_quintile,
+             Rurality = rurality_classification,
              "Prior Flu Vaccine" = prior_flu_vaccination)
     if (study_start_date >= covid_prior_vacc_min) {
       table <- table %>%
-        mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination) %>%
+        mutate(time_since_last_covid_vaccination = df_input$time_since_last_covid_vaccination)  %>%
         rename("Time Since Last Covid Vaccine" = time_since_last_covid_vaccination)
     }
   }
@@ -190,6 +178,15 @@ if (study_start_date == as.Date("2020-09-01")) {
 
 ## create output directories ----
 fs::dir_create(here::here("output", "table1"))
+
+#define filename
+if (cohort == "older_adults" & investigation_type == "secondary") {
+  file_name <- paste0("secondary_table1_", cohort, "_", year(study_start_date),
+                      "_", year(study_end_date), ".csv")
+} else {
+  file_name <- paste0("table1_", cohort, "_", year(study_start_date), "_",
+                      year(study_end_date), ".csv")
+}
 
 #export
 # table %>%
@@ -211,9 +208,7 @@ if (length(args) == 0) {
   tbl_merge(tab_spanner = FALSE) %>%
   modify_footnote(~NA) %>%
   as_tibble() %>%
-  write_csv(file = paste0(here::here("output", "table1"), "/", "table1_", 
-                          cohort, "_", year(study_start_date), "_",
-                          year(study_end_date),".csv"))
+  write_csv(file = paste0(here::here("output", "table1"), "/", file_name))
 } else {
   tab1 <- table %>% tbl_summary(statistic = list(all_categorical() ~ "{n}")) %>%
     modify_header(stat_0 = "N") %>%
@@ -224,7 +219,5 @@ if (length(args) == 0) {
     as_tibble()
   cbind(tab1, tab2) %>%
     select("**Characteristic**", "N", "%") %>%
-  write_csv(path = paste0(here::here("output", "table1"), "/", "table1_", 
-                          cohort, "_", year(study_start_date), "_",
-                          year(study_end_date),".csv"))
+  write_csv(path = paste0(here::here("output", "table1"), "/", file_name))
 }

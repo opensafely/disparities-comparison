@@ -93,17 +93,17 @@ if (cohort == "infants_subgroup") {
                                         data = df_input, family = poisson)
   covid_severe_ethnicity_hh_comp_output <- tidy(covid_severe_ethnicity_hh_comp)
   
-  #covid mortality by ethnicity and household composition
-  covid_mortality_ethnicity_hh_comp <- glm(covid_mortality_inf ~ latest_ethnicity_group +
-                                             composition_category + age_band +
-                                             sex + rurality_classification +
-                                             maternal_age + maternal_smoking_status +
-                                             maternal_drinking + maternal_drug_usage + 
-                                             maternal_flu_vaccination + 
-                                             maternal_pertussis_vaccination +
-                                             offset(log(time_covid_mortality)),
-                                           data = df_input, family = poisson)
-  covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp)
+  # #covid mortality by ethnicity and household composition
+  # covid_mortality_ethnicity_hh_comp <- glm(covid_mortality_inf ~ latest_ethnicity_group +
+  #                                            composition_category + age_band +
+  #                                            sex + rurality_classification +
+  #                                            maternal_age + maternal_smoking_status +
+  #                                            maternal_drinking + maternal_drug_usage + 
+  #                                            maternal_flu_vaccination + 
+  #                                            maternal_pertussis_vaccination +
+  #                                            offset(log(time_covid_mortality)),
+  #                                          data = df_input, family = poisson)
+  # covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp)
   
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
@@ -138,21 +138,21 @@ if (cohort == "infants_subgroup") {
                                         data = df_input, family = poisson)
   covid_severe_ethnicity_hh_comp_output <- tidy(covid_severe_ethnicity_hh_comp)
   
-  #covid mortality by ethnicity and household composition
-  covid_mortality_ethnicity_hh_comp <- glm(covid_mortality_inf ~ latest_ethnicity_group +
-                                             composition_category + age_band +
-                                             sex + rurality_classification +
-                                             sex + rurality_classification +
-                                             has_asthma + has_copd +
-                                             has_cystic_fibrosis + has_other_resp +
-                                             has_diabetes + has_addisons +
-                                             severe_obesity + has_chd + has_ckd +
-                                             has_cld + has_cnd + has_cancer +
-                                             immunosuppressed + has_sickle_cell +
-                                             smoking_status + hazardous_drinking +
-                                             drug_usage + offset(log(time_covid_primary)),
-                                           data = df_input, family = poisson)
-  covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp)
+  # #covid mortality by ethnicity and household composition
+  # covid_mortality_ethnicity_hh_comp <- glm(covid_mortality_inf ~ latest_ethnicity_group +
+  #                                            composition_category + age_band +
+  #                                            sex + rurality_classification +
+  #                                            sex + rurality_classification +
+  #                                            has_asthma + has_copd +
+  #                                            has_cystic_fibrosis + has_other_resp +
+  #                                            has_diabetes + has_addisons +
+  #                                            severe_obesity + has_chd + has_ckd +
+  #                                            has_cld + has_cnd + has_cancer +
+  #                                            immunosuppressed + has_sickle_cell +
+  #                                            smoking_status + hazardous_drinking +
+  #                                            drug_usage + offset(log(time_covid_primary)),
+  #                                          data = df_input, family = poisson)
+  # covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp)
 
 } else {
   
@@ -172,25 +172,25 @@ if (cohort == "infants_subgroup") {
                                         data = df_input, family = poisson)
   covid_severe_ethnicity_hh_comp_output <- tidy(covid_severe_ethnicity_hh_comp)
   
-  #covid mortality by ethnicity and household composition
-  covid_mortality_ethnicity_hh_comp <- glm(covid_mortality_inf ~ latest_ethnicity_group +
-                                             composition_category + age_band +
-                                             sex + rurality_classification +
-                                             offset(log(time_covid_mortality)),
-                                           data = df_input, family = poisson)
-  covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp)
+  # #covid mortality by ethnicity and household composition
+  # covid_mortality_ethnicity_hh_comp <- glm(covid_mortality_inf ~ latest_ethnicity_group +
+  #                                            composition_category + age_band +
+  #                                            sex + rurality_classification +
+  #                                            offset(log(time_covid_mortality)),
+  #                                          data = df_input, family = poisson)
+  # covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp)
 
 }
 
 #define a vector of names for the model outputs
 model_names <- c("Mild COVID-19 by Ethnicity and Household Composition", 
-                 "Severe COVID-19 by Ethnicity and Household Composition",
-                 "COVID-19 Mortality by Ethnicity and Household Composition")
+                 "Severe COVID-19 by Ethnicity and Household Composition")#,
+                 # "COVID-19 Mortality by Ethnicity and Household Composition")
 
 #create the model outputs list
 model_outputs_list <- list(covid_mild_ethnicity_hh_comp_output, 
-                           covid_severe_ethnicity_hh_comp_output,
-                           covid_mortality_ethnicity_hh_comp_output)
+                           covid_severe_ethnicity_hh_comp_output)#,
+                           # covid_mortality_ethnicity_hh_comp_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {
@@ -207,17 +207,19 @@ if (length(args) == 0) {
   model_outputs %>%
     write_csv(file = paste0(here::here("output", "results", "models",
                             paste0("covid_", investigation_type)), "/", 
-                            "covid_ethnicity_hh_comp_model_outputs_", cohort, "_", 
-                            year(study_start_date), "_", year(study_end_date),
-                            "_", codelist_type, "_", investigation_type, ".csv"))
+                            "covid_ethnicity_hh_comp_model_outputs_", cohort,
+                            "_", year(study_start_date), "_",
+                            year(study_end_date), "_", codelist_type, "_",
+                            investigation_type, ".csv"))
   
 } else {
   
   model_outputs %>%
     write_csv(path = paste0(here::here("output", "results", "models",
                             paste0("covid_", investigation_type)), "/", 
-                            "covid_ethnicity_hh_comp_model_outputs_", cohort, "_", 
-                            year(study_start_date), "_", year(study_end_date), 
-                            "_", codelist_type, "_", investigation_type, ".csv"))
+                            "covid_ethnicity_hh_comp_model_outputs_", cohort,
+                            "_", year(study_start_date), "_",
+                            year(study_end_date), "_", codelist_type, "_",
+                            investigation_type, ".csv"))
   
 }

@@ -80,29 +80,29 @@ if (cohort == "infants_subgroup") {
                                    data = df_input, family = poisson)
     overall_resp_severe_ses_output <- tidy(overall_resp_severe_ses)
     
-    #overall_resp mortality by socioeconomic status
-    overall_resp_mortality_ses <- glm(overall_resp_mortality_inf ~ imd_quintile +
-                                        age_band + sex + rurality_classification +
-                                        maternal_age + maternal_smoking_status +
-                                        maternal_drinking + maternal_drug_usage +
-                                        maternal_flu_vaccination +
-                                        maternal_pertussis_vaccination +
-                                        offset(log(time_overall_resp_mortality)),
-                                      data = df_input, family = poisson)
-    overall_resp_mortality_ses_output <- tidy(overall_resp_mortality_ses)
+    # #overall_resp mortality by socioeconomic status
+    # overall_resp_mortality_ses <- glm(overall_resp_mortality_inf ~ imd_quintile +
+    #                                     age_band + sex + rurality_classification +
+    #                                     maternal_age + maternal_smoking_status +
+    #                                     maternal_drinking + maternal_drug_usage +
+    #                                     maternal_flu_vaccination +
+    #                                     maternal_pertussis_vaccination +
+    #                                     offset(log(time_overall_resp_mortality)),
+    #                                   data = df_input, family = poisson)
+    # overall_resp_mortality_ses_output <- tidy(overall_resp_mortality_ses)
     
   }
   
-  #all cause mortality by socioeconomic status
-  all_cause_mortality_ses <- glm(all_cause_mortality_inf ~ imd_quintile +
-                                   age_band + sex + rurality_classification +
-                                   maternal_age + maternal_smoking_status +
-                                   maternal_drinking + maternal_drug_usage +
-                                   maternal_flu_vaccination +
-                                   maternal_pertussis_vaccination +
-                                   offset(log(time_all_cause_mortality)),
-                                 data = df_input, family = poisson)
-  all_cause_mortality_ses_output <- tidy(all_cause_mortality_ses)
+  # #all cause mortality by socioeconomic status
+  # all_cause_mortality_ses <- glm(all_cause_mortality_inf ~ imd_quintile +
+  #                                  age_band + sex + rurality_classification +
+  #                                  maternal_age + maternal_smoking_status +
+  #                                  maternal_drinking + maternal_drug_usage +
+  #                                  maternal_flu_vaccination +
+  #                                  maternal_pertussis_vaccination +
+  #                                  offset(log(time_all_cause_mortality)),
+  #                                data = df_input, family = poisson)
+  # all_cause_mortality_ses_output <- tidy(all_cause_mortality_ses)
   
 } else {
   
@@ -122,50 +122,53 @@ if (cohort == "infants_subgroup") {
                                    data = df_input, family = poisson)
     overall_resp_severe_ses_output <- tidy(overall_resp_severe_ses)
     
-    #overall_resp mortality by socioeconomic status
-    overall_resp_mortality_ses <- glm(overall_resp_mortality_inf ~ imd_quintile + 
-                                        age_band + sex + rurality_classification + 
-                                        offset(log(time_overall_resp_mortality)),
-                                      data = df_input, family = poisson)
-    overall_resp_mortality_ses_output <- tidy(overall_resp_mortality_ses)
+    # #overall_resp mortality by socioeconomic status
+    # overall_resp_mortality_ses <- glm(overall_resp_mortality_inf ~ imd_quintile + 
+    #                                     age_band + sex +
+    #                                     rurality_classification + 
+    #                                     offset(log(time_overall_resp_mortality)),
+    #                                   data = df_input, family = poisson)
+    # overall_resp_mortality_ses_output <- tidy(overall_resp_mortality_ses)
   
   }
   
-  #all cause mortality by socioeconomic status
-  all_cause_mortality_ses <- glm(all_cause_mortality_inf ~ imd_quintile + 
-                                   age_band + sex + rurality_classification + 
-                                   offset(log(time_all_cause_mortality)),
-                                 data = df_input, family = poisson)
-  all_cause_mortality_ses_output <- tidy(all_cause_mortality_ses)
+  # #all cause mortality by socioeconomic status
+  # all_cause_mortality_ses <- glm(all_cause_mortality_inf ~ imd_quintile + 
+  #                                  age_band + sex + rurality_classification + 
+  #                                  offset(log(time_all_cause_mortality)),
+  #                                data = df_input, family = poisson)
+  # all_cause_mortality_ses_output <- tidy(all_cause_mortality_ses)
 
 }
+
+# #define a vector of names for the model outputs
+# if (codelist_type == "sensitive") {
+#   model_names <- c("Mild Overall Respiratory Virus by IMD Quintile",
+#                    "Severe Overall Respiratory Virus by IMD Quintile",
+#                    "Overall Respiratory Virus Mortality by IMD Quintile",
+#                    "All Cause Mortality by IMD Quintile")
+# } else {
+#   model_names <- c("All Cause Mortality by IMD Quintile")
+# }
 
 #define a vector of names for the model outputs
-if (study_start_date < covid_season_min) {
-  model_names <- c("All Cause Mortlality by IMD Quintile")
-} else if (codelist_type == "sensitive") {
-  model_names <- c("Mild Overall Respiratory Virus by IMD Quintile",
-                   "Severe Overall Respiratory Virus by IMD Quintile",
-                   "Overall Respiratory Virus Mortality by IMD Quintile",
-                   "All Cause Mortality by IMD Quintile")
-} else if (study_start_date >= covid_season_min) {
-  model_names <- c("All Cause Mortality by IMD Quintile")
-} else {
-  model_names <- c("Mild Overall Respiratory Virus by IMD Quintile",
-                   "Severe Overall Respiratory Virus by IMD Quintile",
-                   "Overall Respiratory Virus Mortality by IMD Quintile",
-                   "All Cause Mortality by IMD Quintile")
-}
+model_names <- c("Mild Overall Respiratory Virus by IMD Quintile",
+                 "Severe Overall Respiratory Virus by IMD Quintile")
+
+# #create the model outputs list
+# model_outputs_list <- list(all_cause_mortality_ses_output)
+# 
+# #adjust the model outputs list based on the conditions
+# if (codelist_type == "sensitive") {
+#   model_outputs_list <- c(model_outputs_list,
+#                           list(overall_resp_mild_ses_output,
+#                                overall_resp_severe_ses_output,
+#                                overall_resp_mortality_ses_output))
+# }
 
 #create the model outputs list
-model_outputs_list <- list(all_cause_mortality_ses_output)
-
-#adjust the model outputs list based on the conditions
-if (codelist_type == "sensitive") {
-  model_outputs_list <- c(model_outputs_list, list(overall_resp_mild_ses_output,
-                                                   overall_resp_severe_ses_output,
-                                                   overall_resp_mortality_ses_output))
-}
+model_outputs_list <- c(overall_resp_mild_ses_output,
+                        overall_resp_severe_ses_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {

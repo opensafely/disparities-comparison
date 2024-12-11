@@ -62,25 +62,25 @@ flu_severe_ethnicity_ses_further <- glm(flu_secondary_inf ~ latest_ethnicity_gro
                                         data = df_input, family = poisson)
 flu_severe_ethnicity_ses_further_output <- tidy(flu_severe_ethnicity_ses_further)
   
-#flu mortality by ethnicity and socioeconomic status
-flu_mortality_ethnicity_ses_further <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
-                                             imd_quintile + age_band + sex + 
-                                             rurality_classification + 
-                                             prior_flu_vaccination +
-                                             flu_vaccination +
-                                             offset(log(time_flu_mortality)),
-                                           data = df_input, family = poisson)
-flu_mortality_ethnicity_ses_further_output <- tidy(flu_mortality_ethnicity_ses_further)
+# #flu mortality by ethnicity and socioeconomic status
+# flu_mortality_ethnicity_ses_further <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
+#                                              imd_quintile + age_band + sex + 
+#                                              rurality_classification + 
+#                                              prior_flu_vaccination +
+#                                              flu_vaccination +
+#                                              offset(log(time_flu_mortality)),
+#                                            data = df_input, family = poisson)
+# flu_mortality_ethnicity_ses_further_output <- tidy(flu_mortality_ethnicity_ses_further)
 
 #define a vector of names for the model outputs
 model_names <- c("Mild Influenza by Ethnicity and IMD Quintile", 
-                 "Severe Influenza by Ethnicity and IMD Quintile",
-                 "Influenza Mortality By Ethnicity and IMD Quintile")
+                 "Severe Influenza by Ethnicity and IMD Quintile")#,
+                 # "Influenza Mortality By Ethnicity and IMD Quintile")
 
 #create the model outputs list
 model_outputs_list <- list(flu_mild_ethnicity_ses_further_output, 
-                           flu_severe_ethnicity_ses_further_output,
-                           flu_mortality_ethnicity_ses_further_output)
+                           flu_severe_ethnicity_ses_further_output)#,
+                           # flu_mortality_ethnicity_ses_further_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {
@@ -97,17 +97,19 @@ if (length(args) == 0) {
   model_outputs %>%
     write_csv(file = paste0(here::here("output", "results", "models",
                             paste0("flu_", investigation_type)), "/", 
-                            "further_flu_ethnicity_ses_model_outputs_", cohort, "_", 
-                            year(study_start_date), "_", year(study_end_date), 
-                            "_", codelist_type, "_", investigation_type, ".csv"))
+                            "further_flu_ethnicity_ses_model_outputs_",
+                            cohort, "_", year(study_start_date), "_",
+                            year(study_end_date), "_", codelist_type, "_",
+                            investigation_type, ".csv"))
   
 } else {
   
   model_outputs %>%
     write_csv(path = paste0(here::here("output", "results", "models",
                             paste0("flu_", investigation_type)), "/", 
-                            "further_flu_ethnicity_ses_model_outputs_", cohort, "_", 
-                            year(study_start_date), "_", year(study_end_date), 
-                            "_", codelist_type, "_", investigation_type, ".csv"))
+                            "further_flu_ethnicity_ses_model_outputs_",
+                            cohort, "_", year(study_start_date), "_",
+                            year(study_end_date), "_", codelist_type, "_",
+                            investigation_type, ".csv"))
   
 }

@@ -93,17 +93,17 @@ if (cohort == "infants_subgroup") {
                                   data = df_input, family = poisson)
   flu_severe_ethnicity_ses_output <- tidy(flu_severe_ethnicity_ses)
   
-  #flu mortality by ethnicity and socioeconomic status
-  flu_mortality_ethnicity_ses <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
-                                       imd_quintile + age_band + sex + 
-                                       rurality_classification + 
-                                       maternal_age + maternal_smoking_status +
-                                       maternal_drinking + maternal_drug_usage + 
-                                       maternal_flu_vaccination + 
-                                       maternal_pertussis_vaccination +
-                                       offset(log(time_flu_mortality)),
-                                     data = df_input, family = poisson)
-  flu_mortality_ethnicity_ses_output <- tidy(flu_mortality_ethnicity_ses)
+  # #flu mortality by ethnicity and socioeconomic status
+  # flu_mortality_ethnicity_ses <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
+  #                                      imd_quintile + age_band + sex + 
+  #                                      rurality_classification + 
+  #                                      maternal_age + maternal_smoking_status +
+  #                                      maternal_drinking + maternal_drug_usage + 
+  #                                      maternal_flu_vaccination + 
+  #                                      maternal_pertussis_vaccination +
+  #                                      offset(log(time_flu_mortality)),
+  #                                    data = df_input, family = poisson)
+  # flu_mortality_ethnicity_ses_output <- tidy(flu_mortality_ethnicity_ses)
   
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
@@ -135,20 +135,20 @@ if (cohort == "infants_subgroup") {
                                   data = df_input, family = poisson)
   flu_severe_ethnicity_ses_output <- tidy(flu_severe_ethnicity_ses)
   
-  #flu mortality by ethnicity and socioeconomic status
-  flu_mortality_ethnicity_ses <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
-                                       imd_quintile + age_band + sex + 
-                                       rurality_classification + has_asthma +
-                                       has_copd + has_cystic_fibrosis +
-                                       has_other_resp + has_diabetes +
-                                       has_addisons + severe_obesity +
-                                       has_chd + has_ckd + has_cld + has_cnd +
-                                       has_cancer + immunosuppressed +
-                                       has_sickle_cell + smoking_status +
-                                       hazardous_drinking + drug_usage +
-                                       offset(log(time_flu_mortality)),
-                                     data = df_input, family = poisson)
-  flu_mortality_ethnicity_ses_output <- tidy(flu_mortality_ethnicity_ses)
+  # #flu mortality by ethnicity and socioeconomic status
+  # flu_mortality_ethnicity_ses <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
+  #                                      imd_quintile + age_band + sex + 
+  #                                      rurality_classification + has_asthma +
+  #                                      has_copd + has_cystic_fibrosis +
+  #                                      has_other_resp + has_diabetes +
+  #                                      has_addisons + severe_obesity +
+  #                                      has_chd + has_ckd + has_cld + has_cnd +
+  #                                      has_cancer + immunosuppressed +
+  #                                      has_sickle_cell + smoking_status +
+  #                                      hazardous_drinking + drug_usage +
+  #                                      offset(log(time_flu_mortality)),
+  #                                    data = df_input, family = poisson)
+  # flu_mortality_ethnicity_ses_output <- tidy(flu_mortality_ethnicity_ses)
   
 } else {
   
@@ -168,25 +168,25 @@ if (cohort == "infants_subgroup") {
                                   data = df_input, family = poisson)
   flu_severe_ethnicity_ses_output <- tidy(flu_severe_ethnicity_ses)
   
-  #flu mortality by ethnicity and socioeconomic status
-  flu_mortality_ethnicity_ses <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
-                                       imd_quintile + age_band + sex + 
-                                       rurality_classification + 
-                                       offset(log(time_flu_mortality)),
-                                     data = df_input, family = poisson)
-  flu_mortality_ethnicity_ses_output <- tidy(flu_mortality_ethnicity_ses)
+  # #flu mortality by ethnicity and socioeconomic status
+  # flu_mortality_ethnicity_ses <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
+  #                                      imd_quintile + age_band + sex + 
+  #                                      rurality_classification + 
+  #                                      offset(log(time_flu_mortality)),
+  #                                    data = df_input, family = poisson)
+  # flu_mortality_ethnicity_ses_output <- tidy(flu_mortality_ethnicity_ses)
 
 }
 
 #define a vector of names for the model outputs
 model_names <- c("Mild Influenza by Ethnicity and IMD Quintile", 
-                 "Severe Influenza by Ethnicity and IMD Quintile",
-                 "Influenza Mortality By Ethnicity and IMD Quintile")
+                 "Severe Influenza by Ethnicity and IMD Quintile")#,
+                 # "Influenza Mortality By Ethnicity and IMD Quintile")
 
 #create the model outputs list
 model_outputs_list <- list(flu_mild_ethnicity_ses_output, 
-                           flu_severe_ethnicity_ses_output,
-                           flu_mortality_ethnicity_ses_output)
+                           flu_severe_ethnicity_ses_output)#,
+                           # flu_mortality_ethnicity_ses_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {

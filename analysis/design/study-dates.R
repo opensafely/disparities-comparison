@@ -15,7 +15,7 @@ fs::dir_create(here::here("analysis", "design"))
 
 study_dates <- tibble::lst(
   study_start_date = ymd("2016-03-01"), # first possible study entry date
-  study_end_date = ymd("2024-08-31"), # last study entry dates
+  study_end_date = ymd("2024-03-31"), # last study entry dates
   season1_start_date = ymd("2016-09-01"), #start of first season
   season1_end_date = ymd("2017-08-31"), #end of first season
   season2_start_date = ymd("2017-09-01"), #start of second season

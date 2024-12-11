@@ -89,16 +89,16 @@ if (cohort == "infants_subgroup") {
                         data = df_input, family = poisson)
   flu_severe_ses_output <- tidy(flu_severe_ses)
   
-  #flu mortality by ses
-  flu_mortality_ses <- glm(flu_mortality_inf ~ imd_quintile + 
-                             age_band + sex + rurality_classification + 
-                             maternal_age + maternal_smoking_status +
-                             maternal_drinking + maternal_drug_usage + 
-                             maternal_flu_vaccination + 
-                             maternal_pertussis_vaccination +
-                             offset(log(time_flu_mortality)),
-                           data = df_input, family = poisson)
-  flu_mortality_ses_output <- tidy(flu_mortality_ses)
+  # #flu mortality by ses
+  # flu_mortality_ses <- glm(flu_mortality_inf ~ imd_quintile + 
+  #                            age_band + sex + rurality_classification + 
+  #                            maternal_age + maternal_smoking_status +
+  #                            maternal_drinking + maternal_drug_usage + 
+  #                            maternal_flu_vaccination + 
+  #                            maternal_pertussis_vaccination +
+  #                            offset(log(time_flu_mortality)),
+  #                          data = df_input, family = poisson)
+  # flu_mortality_ses_output <- tidy(flu_mortality_ses)
   
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
@@ -128,18 +128,18 @@ if (cohort == "infants_subgroup") {
                         data = df_input, family = poisson)
   flu_severe_ses_output <- tidy(flu_severe_ses)
   
-  #flu mortality by ses
-  flu_mortality_ses <- glm(flu_mortality_inf ~ imd_quintile + 
-                             age_band + sex + rurality_classification +
-                             has_asthma + has_copd + has_cystic_fibrosis +
-                             has_other_resp + has_diabetes + has_addisons +
-                             severe_obesity + has_chd + has_ckd + has_cld +
-                             has_cnd + has_cancer + immunosuppressed +
-                             has_sickle_cell + smoking_status +
-                             hazardous_drinking + drug_usage +
-                             offset(log(time_flu_mortality)),
-                           data = df_input, family = poisson)
-  flu_mortality_ses_output <- tidy(flu_mortality_ses)
+  # #flu mortality by ses
+  # flu_mortality_ses <- glm(flu_mortality_inf ~ imd_quintile + 
+  #                            age_band + sex + rurality_classification +
+  #                            has_asthma + has_copd + has_cystic_fibrosis +
+  #                            has_other_resp + has_diabetes + has_addisons +
+  #                            severe_obesity + has_chd + has_ckd + has_cld +
+  #                            has_cnd + has_cancer + immunosuppressed +
+  #                            has_sickle_cell + smoking_status +
+  #                            hazardous_drinking + drug_usage +
+  #                            offset(log(time_flu_mortality)),
+  #                          data = df_input, family = poisson)
+  # flu_mortality_ses_output <- tidy(flu_mortality_ses)
   
 } else {
   
@@ -157,23 +157,24 @@ if (cohort == "infants_subgroup") {
                         data = df_input, family = poisson)
   flu_severe_ses_output <- tidy(flu_severe_ses)
   
-  #flu mortality by ses
-  flu_mortality_ses <- glm(flu_mortality_inf ~ imd_quintile + 
-                             age_band + sex + rurality_classification + 
-                             offset(log(time_flu_mortality)),
-                           data = df_input, family = poisson)
-  flu_mortality_ses_output <- tidy(flu_mortality_ses)
+  # #flu mortality by ses
+  # flu_mortality_ses <- glm(flu_mortality_inf ~ imd_quintile + 
+  #                            age_band + sex + rurality_classification + 
+  #                            offset(log(time_flu_mortality)),
+  #                          data = df_input, family = poisson)
+  # flu_mortality_ses_output <- tidy(flu_mortality_ses)
 
 }
 
 #define a vector of names for the model outputs
-model_names <- c("Mild Influenza by IMD Quintile", "Severe Influenza by IMD Quintile",
-                 "Influenza Mortality by IMD Quintile")
+model_names <- c("Mild Influenza by IMD Quintile",
+                 "Severe Influenza by IMD Quintile")#,
+                 # "Influenza Mortality by IMD Quintile")
 
 
 #create the model outputs list
-model_outputs_list <- list(flu_mild_ses_output, flu_severe_ses_output, 
-                           flu_mortality_ses_output)
+model_outputs_list <- list(flu_mild_ses_output, flu_severe_ses_output)#, 
+                           # flu_mortality_ses_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {
@@ -190,17 +191,17 @@ if (length(args) == 0) {
   model_outputs %>%
     write_csv(file = paste0(here::here("output", "results", "models",
                             paste0("flu_", investigation_type)), "/", 
-                            "flu_ses_model_outputs_", cohort, "_", year(study_start_date), 
-                            "_", year(study_end_date), "_", codelist_type,
-                            "_", investigation_type, ".csv"))
+                            "flu_ses_model_outputs_", cohort, "_",
+                            year(study_start_date), "_", year(study_end_date),
+                            "_", codelist_type, "_", investigation_type, ".csv"))
   
 } else {
   
   model_outputs %>%
     write_csv(path = paste0(here::here("output", "results", "models",
                             paste0("flu_", investigation_type)), "/", 
-                            "flu_ses_model_outputs_", cohort, "_", year(study_start_date),
-                            "_", year(study_end_date), "_", codelist_type,
-                            "_", investigation_type, ".csv"))
+                            "flu_ses_model_outputs_", cohort, "_",
+                            year(study_start_date), "_", year(study_end_date),
+                            "_", codelist_type, "_", investigation_type, ".csv"))
   
 }
