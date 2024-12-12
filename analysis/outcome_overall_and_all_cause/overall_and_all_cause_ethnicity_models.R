@@ -53,7 +53,6 @@ if (cohort == "infants_subgroup") {
   
 }
 
-
 if (cohort == "infants_subgroup") {
   
   if (codelist_type == "sensitive") {
@@ -103,7 +102,6 @@ if (cohort == "infants_subgroup") {
   #                                        offset(log(time_all_cause_mortality)),
   #                                      data = df_input, family = poisson)
   # all_cause_mortality_ethnicity_output <- tidy(all_cause_mortality_ethnicity)
-  
   
 } else {
 
@@ -167,8 +165,8 @@ model_names <- c("Mild Overall Respiratory Virus by Ethnicity",
 # }
 
 #create the model outputs list
-model_ouputs_list <- c(overall_resp_mild_ethnicity_output,
-                       overall_resp_severe_ethnicity_output)
+model_outputs_list <- list(overall_resp_mild_ethnicity_output,
+                           overall_resp_severe_ethnicity_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {

@@ -175,8 +175,8 @@ model_names <- c("Mild Overall Respiratory Virus by IMD Quintile and Household C
 # }
 
 #create the model outputs list
-model_outputs_list <- c(overall_resp_mild_ses_hh_comp_output,
-                        overall_resp_severe_ses_hh_comp_output)
+model_outputs_list <- list(overall_resp_mild_ses_hh_comp_output,
+                           overall_resp_severe_ses_hh_comp_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {
