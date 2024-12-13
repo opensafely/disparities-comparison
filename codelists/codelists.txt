@@ -54,6 +54,7 @@ primis-covid19-vacc-uptake/astrxm2/v2.5/
 nhsd-primary-care-domain-refsets/copd_cod/20210127/
 opensafely/copd-medications-new-dmd/20b7de09/
 nhsd-primary-care-domain-refsets/copdres_cod/20200812/
+opensafely/chronic-obstructive-pulmonary-disease-copd-review-qof/01cfd170/
 bristol/ild-snomed/2f3e3051/
 opensafely/cystic-fibrosis/2020-07-20/
 primis-covid19-vacc-uptake/diab/v2.5/

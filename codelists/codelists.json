@@ -282,6 +282,12 @@
       "downloaded_at": "2024-02-09 10:54:24.120962Z",
       "sha": "58b2a092a7379250596e0a46897d1ae8e95277ca"
     },
+    "opensafely-chronic-obstructive-pulmonary-disease-copd-review-qof.csv": {
+      "id": "opensafely/chronic-obstructive-pulmonary-disease-copd-review-qof/01cfd170",
+      "url": "https://www.opencodelists.org/codelist/opensafely/chronic-obstructive-pulmonary-disease-copd-review-qof/01cfd170/",
+      "downloaded_at": "2024-12-13 13:24:15.046916Z",
+      "sha": "e2bd6c6bd876347a2546020c4ebfb4b8731d6b71"
+    },
     "bristol-ild-snomed.csv": {
       "id": "bristol/ild-snomed/2f3e3051",
       "url": "https://www.opencodelists.org/codelist/bristol/ild-snomed/2f3e3051/",
