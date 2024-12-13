@@ -182,7 +182,7 @@ if (cohort == "infants_subgroup") {
 
 #define a vector of names for the model outputs
 model_names <- c("Mild COVID-19 by IMD Quintile and Household Composition", 
-                 "Severe COVID-19 by IMD Quintile and Household Composition"#,
+                 "Severe COVID-19 by IMD Quintile and Household Composition")#,
                  # "COVID-19 Mortality by IMD Quintile and Household Composition")
 
 #create the model outputs list
