@@ -317,7 +317,7 @@ copd_resolved_codelist = codelist_from_csv(
 copd_qof_codelist = codelist_from_csv(
   "codelists/opensafely-chronic-obstructive-pulmonary-disease-copd-review-qof.csv",
   column = "code",
-),
+)
 
 # pulmonary fibrosis
 pulmonary_fibrosis_codelist = codelist_from_csv(
