@@ -48,7 +48,7 @@ df_input <- df_input %>%
 if (study_start_date == covid_current_vacc_min) {
   
   #covid primary by ethnicity and socioeconomic status
-  covid_mild_ethnicity_ses_furter <- glm(covid_primary_inf ~ latest_ethnicity_group +
+  covid_mild_ethnicity_ses_further <- glm(covid_primary_inf ~ latest_ethnicity_group +
                                            imd_quintile + age_band + sex +
                                            rurality_classification +
                                            covid_vaccination_mild +
@@ -56,7 +56,7 @@ if (study_start_date == covid_current_vacc_min) {
                                          data = df_input, family = poisson)
   covid_mild_ethnicity_ses_further_output <- tidy(covid_mild_ethnicity_ses_further)
   
-  #covid secondary by ethnicity and socioeconomic status
+  #covid secondary bfy ethnicity and socioeconomic status
   covid_severe_ethnicity_ses_further <- glm(covid_secondary_inf ~ latest_ethnicity_group +
                                               imd_quintile + age_band + sex +
                                               rurality_classification +
