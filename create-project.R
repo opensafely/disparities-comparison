@@ -3994,6 +3994,222 @@ action_finalise_infants <- function(cohort) {
   
 }
 
+action_overall <- function(cohort) {
+  
+  splice(
+    
+    action(
+      name = glue("combine_seasons_{cohort}_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/combine_seasons.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("process_dataset_{cohort}_s1_specific_primary"),
+                   glue("process_dataset_{cohort}_s2_specific_primary"),
+                   glue("process_dataset_{cohort}_s3_specific_primary"),
+                   glue("process_dataset_{cohort}_s4_specific_primary"),
+                   glue("process_dataset_{cohort}_s5_specific_primary"),
+                   glue("process_dataset_{cohort}_s6_specific_primary"),
+                   glue("process_dataset_{cohort}_s7_specific_primary"),
+                   glue("process_dataset_{cohort}_s8_specific_primary")),
+      highly_sensitive = lst(
+        dataset = glue("output/data/input_processed_combined_{cohort}_specific_primary.arrow"))
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_rsv_overall_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/outcome_rsv/overall_rsv_models_master.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("combine_seasons_{cohort}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/rsv_overall/rsv_*_{cohort}_specific_primary.csv"))
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_flu_overall_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/outcome_flu/overall_flu_models_master.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("combine_seasons_{cohort}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/flu_overall/flu_*_{cohort}_specific_primary.csv"))
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_covid_overall_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/outcome_covid/overall_covid_models_master.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("combine_seasons_{cohort}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/covid_overall/covid_*_{cohort}_specific_primary.csv"))
+    ),
+    
+    action(
+      name = glue("collate_overall_rsv_model_outputs_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/overall_rsv_model_outputs_table_collation.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_rsv_overall_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/overall/{cohort}_overall_rsv_model_outputs_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_overall_flu_model_outputs_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/overall_flu_model_outputs_table_collation.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_flu_overall_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/overall/{cohort}_overall_flu_model_outputs_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_overall_covid_model_outputs_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/overall_covid_model_outputs_table_collation.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_covid_overall_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/overall/{cohort}_overall_covid_model_outputs_collated.csv"))
+    )
+    
+  )
+  
+}
+
+action_overall_infants <- function(cohort) {
+  
+  splice(
+    
+    action(
+      name = glue("combine_seasons_{cohort}_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/combine_seasons.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("process_dataset_{cohort}_s1_specific_primary"),
+                   glue("process_dataset_{cohort}_s2_specific_primary"),
+                   glue("process_dataset_{cohort}_s3_specific_primary"),
+                   glue("process_dataset_{cohort}_s4_specific_primary"),
+                   glue("process_dataset_{cohort}_s5_specific_primary"),
+                   glue("process_dataset_{cohort}_s6_specific_primary"),
+                   glue("process_dataset_{cohort}_s7_specific_primary"),
+                   glue("process_dataset_{cohort}_s8_specific_primary")),
+      highly_sensitive = lst(
+        dataset = glue("output/data/input_processed_combined_{cohort}_specific_primary.arrow"))
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_rsv_ethnicity_overall_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/outcome_rsv/rsv_ethnicity_models.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("combine_seasons_{cohort}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/rsv_overall/rsv_ethnicity_model_outputs_{cohort}.csv"))
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_flu_ethnicity_overall_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/outcome_flu/flu_ethnicity_models.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("combine_seasons_{cohort}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/flu_overall/flu_ethnicity_model_outputs_{cohort}_specific_primary.csv"))
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_covid_ethnicity_overall_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/outcome_covid/covid_ethnicity_models.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("combine_seasons_{cohort}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/covid_overall/covid_ethnicity_model_outputs_{cohort}_specific_primary.csv"))
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_rsv_ses_overall_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/outcome_rsv/rsv_ses_models.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("combine_seasons_{cohort}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/rsv_overall/rsv_ses_model_outputs_{cohort}_specific_primary.csv"))
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_flu_ses_overall_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/outcome_flu/flu_ses_models.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("combine_seasons_{cohort}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/flu_overall/flu_ses_model_outputs_{cohort}_specific_primary.csv"))
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_covid_ses_overall_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/outcome_covid/covid_ses_models.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("combine_seasons_{cohort}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/covid_overall/covid_ses_model_outputs_{cohort}_specific_primary.csv"))
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_overall_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/outcome_rsv/rsv_ethnicity_ses_models.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("combine_seasons_{cohort}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/rsv_overall/rsv_ethnicity_ses_model_outputs_{cohort}_specific_primary.csv"))
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_flu_ethnicity_ses_overall_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/outcome_flu/flu_ethnicity_ses_models.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("combine_seasons_{cohort}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/flu_overall/flu_ethnicity_ses_model_outputs_{cohort}_specific_primary.csv"))
+    ),
+    
+    action(
+      name = glue("analyse_dataset_{cohort}_covid_ethnicity_ses_overall_specific_primary"),
+      run = glue("r:latest analysis/overall_analyses/outcome_covid/covid_ethnicity_ses_models.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("combine_seasons_{cohort}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/results/models/covid_overall/covid_ethnicity_ses_model_outputs_{cohort}_specific_primary.csv"))
+    ),
+    
+    action(
+      name = glue("collate_overall_rsv_model_outputs_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/overall_rsv_model_outputs_table_collation.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_rsv_ethnicity_overall_specific_primary"),
+                   glue("analyse_dataset_{cohort}_rsv_ses_overall_specific_primary"),
+                   glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_overall_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/overall/{cohort}_overall_rsv_model_outputs_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_overall_flu_model_outputs_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/overall_flu_model_outputs_table_collation.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_flu_ethnicity_overall_specific_primary"),
+                   glue("analyse_dataset_{cohort}_flu_ses_overall_specific_primary"),
+                   glue("analyse_dataset_{cohort}_flu_ethnicity_ses_overall_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/overall/{cohort}_overall_flu_model_outputs_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_overall_covid_model_outputs_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/overall_covid_model_outputs_table_collation.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("analyse_dataset_{cohort}_covid_ethnicity_overall_specific_primary"),
+                   glue("analyse_dataset_{cohort}_covid_ses_overall_specific_primary"),
+                   glue("analyse_dataset_{cohort}_covid_ethnicity_ses_overall_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/overall/{cohort}_overall_covid_model_outputs_collated.csv"))
+    )
+    
+  )
+  
+}
+
 # specify project ----
 
 ## defaults ----
@@ -4541,13 +4757,21 @@ actions_list <- splice(
   action_sensitivity_infants_sub_rsv("infants_subgroup", "s2", "2017_2018", "season2_start_date", "season2_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity_infants_sub_flu("infants_subgroup", "s3", "2018_2019", "season3_start_date", "season3_end_date", "specific", "primary", "sensitivity"),
 
-  comment("# # # # # # # # # # # # # # # # # # #", "Files for release", "# # # # # # # # # # # # # # # # # # #"),
+  comment("# # # # # # # # # # # # # # # # # # #", "Collated Files", "# # # # # # # # # # # # # # # # # # #"),
   
   action_finalise_older_adults("older_adults"),
   action_finalise("adults"),
   action_finalise("children_and_adolescents"),
   action_finalise_infants("infants"),
   action_finalise_infants("infants_subgroup"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Overall Analyses", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_overall("older_adults"),
+  action_overall("adults"),
+  action_overall("children_and_adolescents"),
+  action_overall_infants("infants"),
+  action_overall_infants("infants_subgroup"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "End", "# # # # # # # # # # # # # # # # # # #")
 

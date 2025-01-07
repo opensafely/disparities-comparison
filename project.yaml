@@ -13183,7 +13183,7 @@ actions:
         csv: output/results/models/flu_sensitivity/flu_ethnicity_ses_model_outputs_infants_subgroup_2018_2019_specific_sensitivity.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
-  ## Files for release 
+  ## Collated Files 
   ## # # # # # # # # # # # # # # # # # # # 
 
   collate_flow_chart_tables_older_adults:
@@ -14800,6 +14800,465 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/sensitivity/infants_subgroup_flu_model_outputs_collated_sensitivity.csv
+
+  ## # # # # # # # # # # # # # # # # # # # 
+  ## Overall Analyses 
+  ## # # # # # # # # # # # # # # # # # # # 
+
+  combine_seasons_older_adults_specific_primary:
+    run: r:latest analysis/overall_analyses/combine_seasons.R older_adults
+    needs:
+    - process_dataset_older_adults_s1_specific_primary
+    - process_dataset_older_adults_s2_specific_primary
+    - process_dataset_older_adults_s3_specific_primary
+    - process_dataset_older_adults_s4_specific_primary
+    - process_dataset_older_adults_s5_specific_primary
+    - process_dataset_older_adults_s6_specific_primary
+    - process_dataset_older_adults_s7_specific_primary
+    - process_dataset_older_adults_s8_specific_primary
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_processed_combined_older_adults_specific_primary.arrow
+
+  analyse_dataset_older_adults_rsv_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_rsv/overall_rsv_models_master.R
+      older_adults
+    needs:
+    - combine_seasons_older_adults_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_overall/rsv_*_older_adults_specific_primary.csv
+
+  analyse_dataset_older_adults_flu_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_flu/overall_flu_models_master.R
+      older_adults
+    needs:
+    - combine_seasons_older_adults_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_overall/flu_*_older_adults_specific_primary.csv
+
+  analyse_dataset_older_adults_covid_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_covid/overall_covid_models_master.R
+      older_adults
+    needs:
+    - combine_seasons_older_adults_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_overall/covid_*_older_adults_specific_primary.csv
+
+  collate_overall_rsv_model_outputs_tables_older_adults:
+    run: r:latest analysis/collation_code/overall_rsv_model_outputs_table_collation.R
+      older_adults
+    needs:
+    - analyse_dataset_older_adults_rsv_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/older_adults_overall_rsv_model_outputs_collated.csv
+
+  collate_overall_flu_model_outputs_tables_older_adults:
+    run: r:latest analysis/collation_code/overall_flu_model_outputs_table_collation.R
+      older_adults
+    needs:
+    - analyse_dataset_older_adults_flu_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/older_adults_overall_flu_model_outputs_collated.csv
+
+  collate_overall_covid_model_outputs_tables_older_adults:
+    run: r:latest analysis/collation_code/overall_covid_model_outputs_table_collation.R
+      older_adults
+    needs:
+    - analyse_dataset_older_adults_covid_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/older_adults_overall_covid_model_outputs_collated.csv
+
+  combine_seasons_adults_specific_primary:
+    run: r:latest analysis/overall_analyses/combine_seasons.R adults
+    needs:
+    - process_dataset_adults_s1_specific_primary
+    - process_dataset_adults_s2_specific_primary
+    - process_dataset_adults_s3_specific_primary
+    - process_dataset_adults_s4_specific_primary
+    - process_dataset_adults_s5_specific_primary
+    - process_dataset_adults_s6_specific_primary
+    - process_dataset_adults_s7_specific_primary
+    - process_dataset_adults_s8_specific_primary
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_processed_combined_adults_specific_primary.arrow
+
+  analyse_dataset_adults_rsv_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_rsv/overall_rsv_models_master.R
+      adults
+    needs:
+    - combine_seasons_adults_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_overall/rsv_*_adults_specific_primary.csv
+
+  analyse_dataset_adults_flu_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_flu/overall_flu_models_master.R
+      adults
+    needs:
+    - combine_seasons_adults_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_overall/flu_*_adults_specific_primary.csv
+
+  analyse_dataset_adults_covid_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_covid/overall_covid_models_master.R
+      adults
+    needs:
+    - combine_seasons_adults_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_overall/covid_*_adults_specific_primary.csv
+
+  collate_overall_rsv_model_outputs_tables_adults:
+    run: r:latest analysis/collation_code/overall_rsv_model_outputs_table_collation.R
+      adults
+    needs:
+    - analyse_dataset_adults_rsv_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/adults_overall_rsv_model_outputs_collated.csv
+
+  collate_overall_flu_model_outputs_tables_adults:
+    run: r:latest analysis/collation_code/overall_flu_model_outputs_table_collation.R
+      adults
+    needs:
+    - analyse_dataset_adults_flu_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/adults_overall_flu_model_outputs_collated.csv
+
+  collate_overall_covid_model_outputs_tables_adults:
+    run: r:latest analysis/collation_code/overall_covid_model_outputs_table_collation.R
+      adults
+    needs:
+    - analyse_dataset_adults_covid_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/adults_overall_covid_model_outputs_collated.csv
+
+  combine_seasons_children_and_adolescents_specific_primary:
+    run: r:latest analysis/overall_analyses/combine_seasons.R children_and_adolescents
+    needs:
+    - process_dataset_children_and_adolescents_s1_specific_primary
+    - process_dataset_children_and_adolescents_s2_specific_primary
+    - process_dataset_children_and_adolescents_s3_specific_primary
+    - process_dataset_children_and_adolescents_s4_specific_primary
+    - process_dataset_children_and_adolescents_s5_specific_primary
+    - process_dataset_children_and_adolescents_s6_specific_primary
+    - process_dataset_children_and_adolescents_s7_specific_primary
+    - process_dataset_children_and_adolescents_s8_specific_primary
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_processed_combined_children_and_adolescents_specific_primary.arrow
+
+  analyse_dataset_children_and_adolescents_rsv_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_rsv/overall_rsv_models_master.R
+      children_and_adolescents
+    needs:
+    - combine_seasons_children_and_adolescents_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_overall/rsv_*_children_and_adolescents_specific_primary.csv
+
+  analyse_dataset_children_and_adolescents_flu_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_flu/overall_flu_models_master.R
+      children_and_adolescents
+    needs:
+    - combine_seasons_children_and_adolescents_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_overall/flu_*_children_and_adolescents_specific_primary.csv
+
+  analyse_dataset_children_and_adolescents_covid_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_covid/overall_covid_models_master.R
+      children_and_adolescents
+    needs:
+    - combine_seasons_children_and_adolescents_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_overall/covid_*_children_and_adolescents_specific_primary.csv
+
+  collate_overall_rsv_model_outputs_tables_children_and_adolescents:
+    run: r:latest analysis/collation_code/overall_rsv_model_outputs_table_collation.R
+      children_and_adolescents
+    needs:
+    - analyse_dataset_children_and_adolescents_rsv_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/children_and_adolescents_overall_rsv_model_outputs_collated.csv
+
+  collate_overall_flu_model_outputs_tables_children_and_adolescents:
+    run: r:latest analysis/collation_code/overall_flu_model_outputs_table_collation.R
+      children_and_adolescents
+    needs:
+    - analyse_dataset_children_and_adolescents_flu_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/children_and_adolescents_overall_flu_model_outputs_collated.csv
+
+  collate_overall_covid_model_outputs_tables_children_and_adolescents:
+    run: r:latest analysis/collation_code/overall_covid_model_outputs_table_collation.R
+      children_and_adolescents
+    needs:
+    - analyse_dataset_children_and_adolescents_covid_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/children_and_adolescents_overall_covid_model_outputs_collated.csv
+
+  combine_seasons_infants_specific_primary:
+    run: r:latest analysis/overall_analyses/combine_seasons.R infants
+    needs:
+    - process_dataset_infants_s1_specific_primary
+    - process_dataset_infants_s2_specific_primary
+    - process_dataset_infants_s3_specific_primary
+    - process_dataset_infants_s4_specific_primary
+    - process_dataset_infants_s5_specific_primary
+    - process_dataset_infants_s6_specific_primary
+    - process_dataset_infants_s7_specific_primary
+    - process_dataset_infants_s8_specific_primary
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_processed_combined_infants_specific_primary.arrow
+
+  analyse_dataset_infants_rsv_ethnicity_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_rsv/rsv_ethnicity_models.R infants
+    needs:
+    - combine_seasons_infants_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_overall/rsv_ethnicity_model_outputs_infants.csv
+
+  analyse_dataset_infants_flu_ethnicity_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_flu/flu_ethnicity_models.R infants
+    needs:
+    - combine_seasons_infants_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_overall/flu_ethnicity_model_outputs_infants_specific_primary.csv
+
+  analyse_dataset_infants_covid_ethnicity_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_covid/covid_ethnicity_models.R
+      infants
+    needs:
+    - combine_seasons_infants_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_overall/covid_ethnicity_model_outputs_infants_specific_primary.csv
+
+  analyse_dataset_infants_rsv_ses_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_rsv/rsv_ses_models.R infants
+    needs:
+    - combine_seasons_infants_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_overall/rsv_ses_model_outputs_infants_specific_primary.csv
+
+  analyse_dataset_infants_flu_ses_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_flu/flu_ses_models.R infants
+    needs:
+    - combine_seasons_infants_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_overall/flu_ses_model_outputs_infants_specific_primary.csv
+
+  analyse_dataset_infants_covid_ses_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_covid/covid_ses_models.R infants
+    needs:
+    - combine_seasons_infants_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_overall/covid_ses_model_outputs_infants_specific_primary.csv
+
+  analyse_dataset_infants_rsv_ethnicity_ses_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_rsv/rsv_ethnicity_ses_models.R
+      infants
+    needs:
+    - combine_seasons_infants_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_overall/rsv_ethnicity_ses_model_outputs_infants_specific_primary.csv
+
+  analyse_dataset_infants_flu_ethnicity_ses_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_flu/flu_ethnicity_ses_models.R
+      infants
+    needs:
+    - combine_seasons_infants_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_overall/flu_ethnicity_ses_model_outputs_infants_specific_primary.csv
+
+  analyse_dataset_infants_covid_ethnicity_ses_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_covid/covid_ethnicity_ses_models.R
+      infants
+    needs:
+    - combine_seasons_infants_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_overall/covid_ethnicity_ses_model_outputs_infants_specific_primary.csv
+
+  collate_overall_rsv_model_outputs_tables_infants:
+    run: r:latest analysis/collation_code/overall_rsv_model_outputs_table_collation.R
+      infants
+    needs:
+    - analyse_dataset_infants_rsv_ethnicity_overall_specific_primary
+    - analyse_dataset_infants_rsv_ses_overall_specific_primary
+    - analyse_dataset_infants_rsv_ethnicity_ses_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/infants_overall_rsv_model_outputs_collated.csv
+
+  collate_overall_flu_model_outputs_tables_infants:
+    run: r:latest analysis/collation_code/overall_flu_model_outputs_table_collation.R
+      infants
+    needs:
+    - analyse_dataset_infants_flu_ethnicity_overall_specific_primary
+    - analyse_dataset_infants_flu_ses_overall_specific_primary
+    - analyse_dataset_infants_flu_ethnicity_ses_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/infants_overall_flu_model_outputs_collated.csv
+
+  collate_overall_covid_model_outputs_tables_infants:
+    run: r:latest analysis/collation_code/overall_covid_model_outputs_table_collation.R
+      infants
+    needs:
+    - analyse_dataset_infants_covid_ethnicity_overall_specific_primary
+    - analyse_dataset_infants_covid_ses_overall_specific_primary
+    - analyse_dataset_infants_covid_ethnicity_ses_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/infants_overall_covid_model_outputs_collated.csv
+
+  combine_seasons_infants_subgroup_specific_primary:
+    run: r:latest analysis/overall_analyses/combine_seasons.R infants_subgroup
+    needs:
+    - process_dataset_infants_subgroup_s1_specific_primary
+    - process_dataset_infants_subgroup_s2_specific_primary
+    - process_dataset_infants_subgroup_s3_specific_primary
+    - process_dataset_infants_subgroup_s4_specific_primary
+    - process_dataset_infants_subgroup_s5_specific_primary
+    - process_dataset_infants_subgroup_s6_specific_primary
+    - process_dataset_infants_subgroup_s7_specific_primary
+    - process_dataset_infants_subgroup_s8_specific_primary
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_processed_combined_infants_subgroup_specific_primary.arrow
+
+  analyse_dataset_infants_subgroup_rsv_ethnicity_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_rsv/rsv_ethnicity_models.R infants_subgroup
+    needs:
+    - combine_seasons_infants_subgroup_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_overall/rsv_ethnicity_model_outputs_infants_subgroup.csv
+
+  analyse_dataset_infants_subgroup_flu_ethnicity_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_flu/flu_ethnicity_models.R infants_subgroup
+    needs:
+    - combine_seasons_infants_subgroup_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_overall/flu_ethnicity_model_outputs_infants_subgroup_specific_primary.csv
+
+  analyse_dataset_infants_subgroup_covid_ethnicity_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_covid/covid_ethnicity_models.R
+      infants_subgroup
+    needs:
+    - combine_seasons_infants_subgroup_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_overall/covid_ethnicity_model_outputs_infants_subgroup_specific_primary.csv
+
+  analyse_dataset_infants_subgroup_rsv_ses_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_rsv/rsv_ses_models.R infants_subgroup
+    needs:
+    - combine_seasons_infants_subgroup_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_overall/rsv_ses_model_outputs_infants_subgroup_specific_primary.csv
+
+  analyse_dataset_infants_subgroup_flu_ses_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_flu/flu_ses_models.R infants_subgroup
+    needs:
+    - combine_seasons_infants_subgroup_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_overall/flu_ses_model_outputs_infants_subgroup_specific_primary.csv
+
+  analyse_dataset_infants_subgroup_covid_ses_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_covid/covid_ses_models.R infants_subgroup
+    needs:
+    - combine_seasons_infants_subgroup_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_overall/covid_ses_model_outputs_infants_subgroup_specific_primary.csv
+
+  analyse_dataset_infants_subgroup_rsv_ethnicity_ses_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_rsv/rsv_ethnicity_ses_models.R
+      infants_subgroup
+    needs:
+    - combine_seasons_infants_subgroup_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_overall/rsv_ethnicity_ses_model_outputs_infants_subgroup_specific_primary.csv
+
+  analyse_dataset_infants_subgroup_flu_ethnicity_ses_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_flu/flu_ethnicity_ses_models.R
+      infants_subgroup
+    needs:
+    - combine_seasons_infants_subgroup_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_overall/flu_ethnicity_ses_model_outputs_infants_subgroup_specific_primary.csv
+
+  analyse_dataset_infants_subgroup_covid_ethnicity_ses_overall_specific_primary:
+    run: r:latest analysis/overall_analyses/outcome_covid/covid_ethnicity_ses_models.R
+      infants_subgroup
+    needs:
+    - combine_seasons_infants_subgroup_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_overall/covid_ethnicity_ses_model_outputs_infants_subgroup_specific_primary.csv
+
+  collate_overall_rsv_model_outputs_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/overall_rsv_model_outputs_table_collation.R
+      infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_overall_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ses_overall_specific_primary
+    - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/infants_subgroup_overall_rsv_model_outputs_collated.csv
+
+  collate_overall_flu_model_outputs_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/overall_flu_model_outputs_table_collation.R
+      infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_flu_ethnicity_overall_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ses_overall_specific_primary
+    - analyse_dataset_infants_subgroup_flu_ethnicity_ses_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/infants_subgroup_overall_flu_model_outputs_collated.csv
+
+  collate_overall_covid_model_outputs_tables_infants_subgroup:
+    run: r:latest analysis/collation_code/overall_covid_model_outputs_table_collation.R
+      infants_subgroup
+    needs:
+    - analyse_dataset_infants_subgroup_covid_ethnicity_overall_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ses_overall_specific_primary
+    - analyse_dataset_infants_subgroup_covid_ethnicity_ses_overall_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/overall/infants_subgroup_overall_covid_model_outputs_collated.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## End 
