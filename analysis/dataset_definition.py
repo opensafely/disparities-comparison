@@ -1568,8 +1568,12 @@ if codelist_type == "sensitive" :
         dataset.covid_primary_date, first_infection_event(codelists.
         respiratory_virus_primary_codelist).date,
         emergency_care_diagnosis_matches(codelists.rtri_attendance)
+        .where(emergency_care_attendances.arrival_date
+        .is_on_or_between(index_date, followup_end_date))
         .arrival_date.minimum_for_patient(),
         emergency_care_diagnosis_matches(codelists.copd_exacerbation_attendance)
+        .where(emergency_care_attendances.arrival_date
+        .is_on_or_between(index_date, followup_end_date))
         .arrival_date.minimum_for_patient(), first_infection_event(codelists
         .copd_exacerbation_primary_codelist).date, first_infection_event(
         codelists.asthma_exacerbation_primary_codelist).date)))
@@ -1732,6 +1736,8 @@ if codelist_type == "sensitive" :
         dataset.covid_primary_date, first_infection_event(codelists
         .respiratory_virus_primary_codelist).date, 
         emergency_care_diagnosis_matches(codelists.rtri_attendance)
+        .where(emergency_care_attendances.arrival_date
+        .is_on_or_between(index_date, followup_end_date))
         .arrival_date.minimum_for_patient())))
       )
       
