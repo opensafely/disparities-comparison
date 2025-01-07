@@ -50,7 +50,7 @@ covid_mild_ses_hh_comp_further <- glm(covid_primary_inf ~ imd_quintile +
                                         composition_category + age_band +
                                         sex + rurality_classification +
                                         covid_vaccination_mild +
-                                        offset(log(time_covid_primary)),
+                                        offset(log(time_covid_primary*1000)),
                                       data = df_input, family = poisson)
 covid_mild_ses_hh_comp_further_output <- tidy(covid_mild_ses_hh_comp_further)
 
@@ -59,7 +59,7 @@ covid_severe_ses_hh_comp_further <- glm(covid_secondary_inf ~ imd_quintile +
                                           composition_category + age_band +
                                           sex + rurality_classification +
                                           covid_vaccination_severe +
-                                          offset(log(time_covid_secondary)),
+                                          offset(log(time_covid_secondary*1000)),
                                         data = df_input, family = poisson)
 covid_severe_ses_hh_comp_further_output <- tidy(covid_severe_ses_hh_comp_further)
 
@@ -68,7 +68,7 @@ covid_severe_ses_hh_comp_further_output <- tidy(covid_severe_ses_hh_comp_further
 #                                              composition_category + age_band +
 #                                              sex + rurality_classification +
 #                                              covid_vaccination +
-#                                              offset(log(time_covid_mortality)),
+#                                              offset(log(time_covid_mortality*1000)),
 #                                            data = df_input, family = poisson)
 # covid_mortality_ses_hh_comp_further_output <- tidy(covid_mortality_ses_hh_comp_further)
 

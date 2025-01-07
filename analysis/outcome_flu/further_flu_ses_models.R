@@ -48,7 +48,7 @@ df_input <- df_input %>%
 flu_mild_ses_further <- glm(flu_primary_inf ~ imd_quintile + age_band +
                               sex + rurality_classification +
                               prior_flu_vaccination + flu_vaccination_mild +
-                              offset(log(time_flu_primary)),
+                              offset(log(time_flu_primary*1000)),
                             data = df_input, family = poisson)
 flu_mild_ses_further_output <- tidy(flu_mild_ses_further)
   
@@ -56,7 +56,7 @@ flu_mild_ses_further_output <- tidy(flu_mild_ses_further)
 flu_severe_ses_further <- glm(flu_secondary_inf ~ imd_quintile + age_band +
                                 sex + rurality_classification +
                                 prior_flu_vaccination + flu_vaccination_severe +
-                                offset(log(time_flu_secondary)),
+                                offset(log(time_flu_secondary*1000)),
                               data = df_input, family = poisson)
 flu_severe_ses_further_output <- tidy(flu_severe_ses_further)
   
@@ -64,7 +64,7 @@ flu_severe_ses_further_output <- tidy(flu_severe_ses_further)
 # flu_mortality_ses_further <- glm(flu_mortality_inf ~ imd_quintile + age_band +
 #                                    sex + rurality_classification +
 #                                    prior_flu_vaccination + flu_vaccination +
-#                                    offset(log(time_flu_mortality)),
+#                                    offset(log(time_flu_mortality*1000)),
 #                                  data = df_input, family = poisson)
 # flu_mortality_ses_further_output <- tidy(flu_mortality_ses_further)
 

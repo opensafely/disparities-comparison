@@ -58,7 +58,7 @@ if (cohort == "infants_subgroup") {
                             maternal_drinking + maternal_drug_usage + 
                             maternal_flu_vaccination + 
                             maternal_pertussis_vaccination +
-                            offset(log(time_flu_primary)),
+                            offset(log(time_flu_primary*1000)),
                           data = df_input, family = poisson)
   flu_mild_hh_comp_output <- tidy(flu_mild_hh_comp)
   
@@ -69,7 +69,7 @@ if (cohort == "infants_subgroup") {
                               maternal_drinking + maternal_drug_usage + 
                               maternal_flu_vaccination + 
                               maternal_pertussis_vaccination +
-                              offset(log(time_flu_secondary)),
+                              offset(log(time_flu_secondary*1000)),
                             data = df_input, family = poisson)
   flu_severe_hh_comp_output <- tidy(flu_severe_hh_comp)
   
@@ -80,7 +80,7 @@ if (cohort == "infants_subgroup") {
   #                                maternal_drinking + maternal_drug_usage + 
   #                                maternal_flu_vaccination + 
   #                                maternal_pertussis_vaccination +
-  #                                offset(log(time_flu_mortality)),
+  #                                offset(log(time_flu_mortality*1000)),
   #                              data = df_input, family = poisson)
   # flu_mortality_hh_comp_output <- tidy(flu_mortality_hh_comp)
   
@@ -89,21 +89,21 @@ if (cohort == "infants_subgroup") {
   #flu primary by household composition
   flu_mild_hh_comp <- glm(flu_primary_inf ~ composition_category + 
                             age_band + sex + rurality_classification + 
-                            offset(log(time_flu_primary)),
+                            offset(log(time_flu_primary*1000)),
                           data = df_input, family = poisson)
   flu_mild_hh_comp_output <- tidy(flu_mild_hh_comp)
   
   #flu secondary by household composition
   flu_severe_hh_comp <- glm(flu_secondary_inf ~ composition_category + 
                               age_band + sex + rurality_classification + 
-                              offset(log(time_flu_secondary)),
+                              offset(log(time_flu_secondary*1000)),
                             data = df_input, family = poisson)
   flu_severe_hh_comp_output <- tidy(flu_severe_hh_comp)
   
   # #flu mortality by household composition
   # flu_mortality_hh_comp <- glm(flu_mortality_inf ~ composition_category + 
   #                                age_band + sex + rurality_classification + 
-  #                                offset(log(time_flu_mortality)),
+  #                                offset(log(time_flu_mortality*1000)),
   #                              data = df_input, family = poisson)
   # flu_mortality_hh_comp_output <- tidy(flu_mortality_hh_comp)
 

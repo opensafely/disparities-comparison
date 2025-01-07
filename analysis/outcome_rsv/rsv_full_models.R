@@ -44,7 +44,8 @@ if (cohort == "infants_subgroup") {
            !is.na(composition_category), !is.na(age_band), !is.na(sex),
            !is.na(rurality_classification), !is.na(maternal_age),
            !is.na(maternal_smoking_status), !is.na(maternal_drinking),
-           !is.na(maternal_drug_usage), !is.na(maternal_flu_vaccination))
+           !is.na(maternal_drug_usage), !is.na(maternal_flu_vaccination),
+           !is.na(maternal_pertussis_vaccination))
   
 } else {
   
@@ -65,7 +66,7 @@ if (cohort == "infants_subgroup") {
                          maternal_drinking + maternal_drug_usage + 
                          maternal_flu_vaccination + 
                          maternal_pertussis_vaccination +
-                         offset(log(time_rsv_primary)), 
+                         offset(log(time_rsv_primary*1000)), 
                        data = df_input, family = poisson)
   rsv_mild_full_output <- tidy(rsv_mild_full)
   
@@ -77,7 +78,7 @@ if (cohort == "infants_subgroup") {
                            maternal_drinking + maternal_drug_usage + 
                            maternal_flu_vaccination + 
                            maternal_pertussis_vaccination +
-                           offset(log(time_rsv_secondary)),
+                           offset(log(time_rsv_secondary*1000)),
                          data = df_input, family = poisson)
   rsv_severe_full_output <- tidy(rsv_severe_full)
   
@@ -89,7 +90,7 @@ if (cohort == "infants_subgroup") {
   #                             maternal_drinking + maternal_drug_usage + 
   #                             maternal_flu_vaccination + 
   #                             maternal_pertussis_vaccination +
-  #                             offset(log(time_rsv_mortality)),
+  #                             offset(log(time_rsv_mortality*1000)),
   #                           data = df_input, family = poisson)
   # rsv_mortality_full_output <- tidy(rsv_mortality_full)
   
@@ -99,7 +100,7 @@ if (cohort == "infants_subgroup") {
   rsv_mild_full <- glm(rsv_primary_inf ~ latest_ethnicity_group +
                          imd_quintile + composition_category + age_band +
                          sex + rurality_classification + 
-                         offset(log(time_rsv_primary)), 
+                         offset(log(time_rsv_primary*1000)), 
                        data = df_input, family = poisson)
   rsv_mild_full_output <- tidy(rsv_mild_full)
   
@@ -107,7 +108,7 @@ if (cohort == "infants_subgroup") {
   rsv_severe_full <- glm(rsv_secondary_inf ~ latest_ethnicity_group + 
                            imd_quintile + composition_category + age_band +
                            sex + rurality_classification + 
-                           offset(log(time_rsv_secondary)),
+                           offset(log(time_rsv_secondary*1000)),
                          data = df_input, family = poisson)
   rsv_severe_full_output <- tidy(rsv_severe_full)
   
@@ -115,7 +116,7 @@ if (cohort == "infants_subgroup") {
   # rsv_mortality_full <- glm(rsv_mortality ~ latest_ethnicity_group +
   #                             imd_quintile + composition_category + age_band +
   #                             sex + rurality_classification + 
-  #                             offset(log(time_rsv_mortality)),
+  #                             offset(log(time_rsv_mortality*1000)),
   #                           data = df_input, family = poisson)
   # rsv_mortality_full_output <- tidy(rsv_mortality_full)
  

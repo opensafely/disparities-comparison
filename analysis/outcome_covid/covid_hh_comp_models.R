@@ -44,7 +44,7 @@ if (cohort == "infants_subgroup") {
            !is.na(sex), !is.na(rurality_classification),
            !is.na(maternal_age), !is.na(maternal_smoking_status),
            !is.na(maternal_drinking), !is.na(maternal_drug_usage),
-           !is.na(maternal_flu_vaccination))
+           !is.na(maternal_flu_vaccination), !is.na(maternal_pertussis_vaccination))
   
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
@@ -76,7 +76,7 @@ if (cohort == "infants_subgroup") {
                               maternal_drinking + maternal_drug_usage + 
                               maternal_flu_vaccination + 
                               maternal_pertussis_vaccination +
-                              offset(log(time_covid_primary)),
+                              offset(log(time_covid_primary*1000)),
                             data = df_input, family = poisson)
   covid_mild_hh_comp_output <- tidy(covid_mild_hh_comp)
   
@@ -87,7 +87,7 @@ if (cohort == "infants_subgroup") {
                                 maternal_drinking + maternal_drug_usage + 
                                 maternal_flu_vaccination + 
                                 maternal_pertussis_vaccination +
-                                offset(log(time_covid_secondary)),
+                                offset(log(time_covid_secondary*1000)),
                               data = df_input, family = poisson)
   covid_severe_hh_comp_output <- tidy(covid_severe_hh_comp)
   
@@ -98,7 +98,7 @@ if (cohort == "infants_subgroup") {
   #                                  maternal_drinking + maternal_drug_usage + 
   #                                  maternal_flu_vaccination + 
   #                                  maternal_pertussis_vaccination +
-  #                                  offset(log(time_covid_mortality)),
+  #                                  offset(log(time_covid_mortality*1000)),
   #                                data = df_input, family = poisson)
   # covid_mortality_hh_comp_output <- tidy(covid_mortality_hh_comp)
   
@@ -113,7 +113,7 @@ if (cohort == "infants_subgroup") {
                               has_cnd + has_cancer + immunosuppressed +
                               has_sickle_cell + smoking_status +
                               hazardous_drinking + drug_usage +
-                              offset(log(time_covid_primary)),
+                              offset(log(time_covid_primary*1000)),
                             data = df_input, family = poisson)
   covid_mild_hh_comp_output <- tidy(covid_mild_hh_comp)
   
@@ -126,7 +126,7 @@ if (cohort == "infants_subgroup") {
                                 has_cnd + has_cancer + immunosuppressed +
                                 has_sickle_cell + smoking_status +
                                 hazardous_drinking + drug_usage +
-                                offset(log(time_covid_secondary)),
+                                offset(log(time_covid_secondary*1000)),
                               data = df_input, family = poisson)
   covid_severe_hh_comp_output <- tidy(covid_severe_hh_comp)
   
@@ -139,7 +139,7 @@ if (cohort == "infants_subgroup") {
   #                                  has_cnd + has_cancer + immunosuppressed +
   #                                  has_sickle_cell + smoking_status +
   #                                  hazardous_drinking + drug_usage +
-  #                                  offset(log(time_covid_mortality)),
+  #                                  offset(log(time_covid_mortality*1000)),
   #                                data = df_input, family = poisson)
   # covid_mortality_hh_comp_output <- tidy(covid_mortality_hh_comp)  
   
@@ -148,21 +148,21 @@ if (cohort == "infants_subgroup") {
   #covid primary by household composition
   covid_mild_hh_comp <- glm(covid_primary_inf ~ composition_category +
                               age_band + sex + rurality_classification +
-                              offset(log(time_covid_primary)),
+                              offset(log(time_covid_primary*1000)),
                             data = df_input, family = poisson)
   covid_mild_hh_comp_output <- tidy(covid_mild_hh_comp)
   
   #covid secondary by household composition
   covid_severe_hh_comp <- glm(covid_secondary_inf ~ composition_category +
                                 age_band + sex + rurality_classification +
-                                offset(log(time_covid_secondary)),
+                                offset(log(time_covid_secondary*1000)),
                               data = df_input, family = poisson)
   covid_severe_hh_comp_output <- tidy(covid_severe_hh_comp)
   
   # #covid mortality by household composition
   # covid_mortality_hh_comp <- glm(covid_mortality_inf ~ composition_category +
   #                                  age_band + sex + rurality_classification +
-  #                                  offset(log(time_covid_mortality)),
+  #                                  offset(log(time_covid_mortality*1000)),
   #                                data = df_input, family = poisson)
   # covid_mortality_hh_comp_output <- tidy(covid_mortality_hh_comp)
 

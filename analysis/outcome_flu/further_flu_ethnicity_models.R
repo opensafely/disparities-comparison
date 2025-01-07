@@ -49,7 +49,7 @@ flu_mild_ethnicity_further <- glm(flu_primary_inf ~ latest_ethnicity_group +
                                     age_band + sex + rurality_classification + 
                                     prior_flu_vaccination + 
                                     flu_vaccination_mild +
-                                    offset(log(time_flu_secondary)),
+                                    offset(log(time_flu_secondary*1000)),
                                   data = df_input, family = poisson)
 flu_mild_ethnicity_further_output <- tidy(flu_mild_ethnicity_further)
 
@@ -58,7 +58,7 @@ flu_severe_ethnicity_further <- glm(flu_secondary_inf ~ latest_ethnicity_group +
                                       age_band + sex + rurality_classification + 
                                       prior_flu_vaccination +
                                       flu_vaccination_severe +
-                                      offset(log(time_flu_secondary)),
+                                      offset(log(time_flu_secondary*1000)),
                                     data = df_input, family = poisson)
 flu_severe_ethnicity_further_output <- tidy(flu_severe_ethnicity_further)
 
@@ -67,7 +67,7 @@ flu_severe_ethnicity_further_output <- tidy(flu_severe_ethnicity_further)
 #                                          age_band + sex + rurality_classification + 
 #                                          prior_flu_vaccination +
 #                                          flu_vaccination +
-#                                          offset(log(time_flu_mortality)),
+#                                          offset(log(time_flu_mortality*1000)),
 #                                        data = df_input, family = poisson)
 # flu_mortality_ethnicity_further_output <- tidy(flu_mortality_ethnicity_further)
 

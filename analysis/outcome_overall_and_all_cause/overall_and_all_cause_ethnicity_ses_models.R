@@ -44,7 +44,7 @@ if (cohort == "infants_subgroup") {
            !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
            !is.na(maternal_age), !is.na(maternal_smoking_status),
            !is.na(maternal_drinking), !is.na(maternal_drug_usage),
-           !is.na(maternal_flu_vaccination))
+           !is.na(maternal_flu_vaccination), !is.na(maternal_pertussis_vaccination))
   
 } else {
   
@@ -69,7 +69,7 @@ if (cohort == "infants_subgroup") {
                                              maternal_drug_usage +
                                              maternal_flu_vaccination +
                                              maternal_pertussis_vaccination +
-                                             offset(log(time_overall_resp_primary)),
+                                             offset(log(time_overall_resp_primary*1000)),
                                            data = df_input, family = poisson)
     overall_resp_mild_ethnicity_ses_output <- tidy(overall_resp_mild_ethnicity_ses)
     
@@ -83,7 +83,7 @@ if (cohort == "infants_subgroup") {
                                                maternal_drug_usage +
                                                maternal_flu_vaccination +
                                                maternal_pertussis_vaccination +
-                                               offset(log(time_overall_resp_secondary)),
+                                               offset(log(time_overall_resp_secondary*1000)),
                                              data = df_input, family = poisson)
     overall_resp_severe_ethnicity_ses_output <- tidy(overall_resp_severe_ethnicity_ses)
     
@@ -98,7 +98,7 @@ if (cohort == "infants_subgroup") {
     #                                               maternal_drug_usage +
     #                                               maternal_flu_vaccination +
     #                                               maternal_pertussis_vaccination +
-    #                                               offset(log(time_overall_resp_mortality)),
+    #                                               offset(log(time_overall_resp_mortality*1000)),
     #                                             data = df_input, family = poisson)
     # overall_resp_mortality_ethnicity_ses_output <- tidy(overall_resp_mortality_ethnicity_ses)
     
@@ -114,7 +114,7 @@ if (cohort == "infants_subgroup") {
   #                                            maternal_drug_usage +
   #                                            maternal_flu_vaccination +
   #                                            maternal_pertussis_vaccination +
-  #                                            offset(log(time_all_cause_mortality)),
+  #                                            offset(log(time_all_cause_mortality*1000)),
   #                                          data = df_input, family = poisson)
   # all_cause_mortality_ethnicity_ses_output <- tidy(all_cause_mortality_ethnicity_ses)
   
@@ -127,7 +127,7 @@ if (cohort == "infants_subgroup") {
     overall_resp_mild_ethnicity_ses <- glm(overall_resp_primary_inf ~ latest_ethnicity_group +
                                              imd_quintile + age_band + sex + 
                                              rurality_classification + 
-                                             offset(log(time_overall_resp_primary)),
+                                             offset(log(time_overall_resp_primary*1000)),
                                            data = df_input, family = poisson)
     overall_resp_mild_ethnicity_ses_output <- tidy(overall_resp_mild_ethnicity_ses)
     
@@ -135,7 +135,7 @@ if (cohort == "infants_subgroup") {
     overall_resp_severe_ethnicity_ses <- glm(overall_resp_secondary_inf ~ latest_ethnicity_group +
                                                imd_quintile + age_band + sex + 
                                                rurality_classification + 
-                                               offset(log(time_overall_resp_secondary)),
+                                               offset(log(time_overall_resp_secondary*1000)),
                                              data = df_input, family = poisson)
     overall_resp_severe_ethnicity_ses_output <- tidy(overall_resp_severe_ethnicity_ses)
     
@@ -143,7 +143,7 @@ if (cohort == "infants_subgroup") {
     # overall_resp_mortality_ethnicity_ses <- glm(overall_resp_mortality_inf ~ latest_ethnicity_group + 
     #                                               imd_quintile + age_band + sex + 
     #                                               rurality_classification + 
-    #                                               offset(log(time_overall_resp_mortality)),
+    #                                               offset(log(time_overall_resp_mortality*1000)),
     #                                             data = df_input, family = poisson)
     # overall_resp_mortality_ethnicity_ses_output <- tidy(overall_resp_mortality_ethnicity_ses)
  
@@ -153,7 +153,7 @@ if (cohort == "infants_subgroup") {
   # all_cause_mortality_ethnicity_ses <- glm(all_cause_mortality_inf ~ latest_ethnicity_group +
   #                                            imd_quintile + age_band + sex + 
   #                                            rurality_classification + 
-  #                                            offset(log(time_all_cause_mortality)),
+  #                                            offset(log(time_all_cause_mortality*1000)),
   #                                          data = df_input, family = poisson)
   # all_cause_mortality_ethnicity_ses_output <- tidy(all_cause_mortality_ethnicity_ses)
 

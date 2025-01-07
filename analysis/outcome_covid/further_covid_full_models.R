@@ -52,7 +52,7 @@ covid_mild_full_further <- glm(covid_primary_inf ~ latest_ethnicity_group +
                                  imd_quintile + composition_category +
                                  age_band + sex + rurality_classification +
                                  covid_vaccination_mild +
-                                 offset(log(time_covid_primary)),
+                                 offset(log(time_covid_primary*1000)),
                                data = df_input, family = poisson)
 covid_mild_full_further_output <- tidy(covid_mild_full_further)
 
@@ -61,7 +61,7 @@ covid_severe_full_further <- glm(covid_secondary_inf ~ latest_ethnicity_group +
                                    imd_quintile + composition_category +
                                    age_band + sex + rurality_classification +
                                    covid_vaccination_severe +
-                                   offset(log(time_covid_secondary)),
+                                   offset(log(time_covid_secondary*1000)),
                                  data = df_input, family = poisson)
 covid_severe_full_further_output <- tidy(covid_severe_full_further)
 
@@ -70,7 +70,7 @@ covid_severe_full_further_output <- tidy(covid_severe_full_further)
 #                                       imd_quintile + age_band + sex +
 #                                       rurality_classification +
 #                                       covid_vaccination +
-#                                       offset(log(time_covid_mortality)),
+#                                       offset(log(time_covid_mortality*1000)),
 #                                     data = df_input, family = poisson)
 # covid_mortality_full_further_output <- tidy(covid_mortality_full_further)
 
