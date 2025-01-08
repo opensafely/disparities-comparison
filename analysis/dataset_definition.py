@@ -110,13 +110,13 @@ is_female_or_male = patients.sex.is_in(["female", "male"])
 
 #have age
 if cohort == "infants" or cohort == "infants_subgroup" :
-  is_appropriate_age = (age_at_start_months <= 23) & (age_at_end_months >= 0)
+  is_appropriate_age = (age_at_start_months < 24) & (age_at_end_months >= 0)
 elif cohort == "children_and_adolescents" :
-  is_appropriate_age = (age_at_start <= 17) & (age_at_end >= 2)
+  is_appropriate_age = (age_at_start < 18) & (age_at_end >= 2)
 elif cohort == "adults" :
-  is_appropriate_age = (age_at_start <= 64) & (age_at_end >= 18)
+  is_appropriate_age = (age_at_start < 65) & (age_at_end >= 18)
 else :
-  is_appropriate_age = (age_at_start <= 110) & (age_at_end >= 65)
+  is_appropriate_age = (age_at_start < 110) & (age_at_end >= 65)
 
 #have imd
 has_imd = (addresses.for_patient_on(index_date).imd_rounded.is_not_null())
@@ -477,15 +477,15 @@ else :
   #count number of distinct codes in RSV sensitive codelist which occur within 2 weeks
   #of each other - looking at the first episode
   rsv_code_number = (
-      (clinical_events.where(clinical_events
-      .date.is_on_or_between(first_infection_event(codelists
-      .rsv_sensitive_codelist).date, first_infection_event(codelists
-      .rsv_sensitive_codelist).date + days(14)))
-      .where(clinical_events.snomedct_code
-      .is_in(codelists.rsv_sensitive_codelist)))
-      .snomedct_code.count_distinct_for_patient()
-    )
-    
+    (clinical_events.where(clinical_events
+    .date.is_on_or_between(first_infection_event(codelists
+    .rsv_sensitive_codelist).date, first_infection_event(codelists
+    .rsv_sensitive_codelist).date + days(14)))
+    .where(clinical_events.snomedct_code
+    .is_in(codelists.rsv_sensitive_codelist)))
+    .snomedct_code.count_distinct_for_patient()
+  )
+ 
   #get the date of first occurrence a code above, if at least 2 codes are present 
   # - looking at the first episode
   rsv_codes_date = (
@@ -701,8 +701,9 @@ else :
       .rsv_primary_date + days(14))).sort_by(clinical_events.date)
       .first_for_patient().date))), (medications.where(medications
       .dmd_code.is_in(codelists.rsv_prescriptions_codelist))
-      .where(medications.date.is_on_or_after(dataset
-      .rsv_primary_date + days(14))).date.minimum_for_patient()))))
+      .where(medications.date.is_on_or_between(dataset
+      .rsv_primary_date + days(14), followup_end_date))
+      .date.minimum_for_patient()))))
     )
 
 #extract rsv secondary care dates for primary analysis ('specific' phenotype)
