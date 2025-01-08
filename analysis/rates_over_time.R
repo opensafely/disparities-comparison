@@ -115,7 +115,8 @@ calculate_rolling_rates <- function(df, pathogen, characteristic,
       ) %>%
       complete(in_interval = c("during", "before"), event = unique(event), 
                group = unique(group), fill = list(events_in_interval = 0)) %>%
-      pivot_wider(names_from = "in_interval", values_from = "events_in_interval") %>%
+      pivot_wider(names_from = "in_interval", values_from = "events_in_interval",
+                  values_fill = list(events_in_interval = 0)) %>%
       #calculate the number of patients still at risk in interval
       mutate(
         patients_remaining = total_patients - before
@@ -183,7 +184,8 @@ calculate_for_groups <- function(df, pathogen, characteristics) {
 }
 
 #define characteristics
-characteristics <- c("age_band", "sex", "latest_ethnicity_group", "imd_quintile")
+characteristics <- c("age_band", "sex", "latest_ethnicity_group",
+                     "imd_quintile")
 if (study_start_date == as.Date("2020-09-01")) {
   characteristics <- c(characteristics, c("rurality_classification",
                                           "composition_category"))
