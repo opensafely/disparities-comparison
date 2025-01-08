@@ -1767,7 +1767,7 @@ if (cohort == "infants_subgroup") {
       pivot_longer(
         cols = c(rsv_primary_inf, rsv_secondary_inf,# rsv_mortality_inf,
                  flu_primary_inf, flu_secondary_inf,# flu_mortality_inf,
-                 overall_resp_primary_inf),# overall_resp_secondary_inf,
+                 overall_resp_primary_inf, overall_resp_secondary_inf),
                  # overall_resp_mortality_inf, all_cause_mortality_inf),
         names_to = "outcome",
         names_pattern = "(.*)_inf",
@@ -1786,7 +1786,7 @@ if (cohort == "infants_subgroup") {
         cols = c(rsv_primary_inf, rsv_secondary_inf,# rsv_mortality_inf,
                  flu_primary_inf, flu_secondary_inf,# flu_mortality_inf,
                  covid_primary_inf, covid_secondary_inf,# covid_mortality_inf,
-                 overall_resp_primary_inf),# overall_resp_secondary_inf,
+                 overall_resp_primary_inf, overall_resp_secondary_inf),
                  # overall_resp_mortality_inf, all_cause_mortality_inf),
         names_to = "outcome",
         names_pattern = "(.*)_inf",
