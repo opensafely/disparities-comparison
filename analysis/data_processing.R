@@ -128,10 +128,10 @@ df_input <- df_input %>%
       imd_rounded <= as.integer(32800 * 5 / 5) ~ "5 (least deprived)",
       TRUE ~ NA_character_)),
     #format sex
-    sex = factor(case_when(
+    sex = relevel(factor(case_when(
       sex == "female" ~ "Female",
       sex == "male" ~ "Male",
-      TRUE ~ NA_character_))
+      TRUE ~ NA_character_)), ref = "Female")
   )
 
 #identify columns with logical values, excluding specified columns
@@ -143,27 +143,30 @@ logical_cols <- which(sapply(df_input, is.logical) &
 df_input <- df_input %>%
   mutate(across(
     .cols = all_of(logical_cols), 
-    .fns = ~factor(case_when(
+    .fns = ~relevel(factor(case_when(
       . == FALSE ~ "No",
       . == TRUE ~ "Yes",
       TRUE ~ NA_character_
-    ))
+    )), ref = "No")
   ))
 
 #more data manipulation
 df_input <- df_input %>%
   mutate(
     #add labels to ethnicity
-    latest_ethnicity_group = factor(latest_ethnicity_group,
-                                    levels = c("1", "2", "3", "4", "5"),
-                                    labels = c("White", "Mixed",
-                                               "Asian or Asian British",
-                                               "Black or Black British",
-                                               "Other Ethnic Groups")),
+    latest_ethnicity_group = relevel(factor(latest_ethnicity_group,
+                                     levels = c("1", "2", "3", "4", "5"),
+                                     labels = c("White", "Mixed",
+                                                "Asian or Asian British",
+                                                "Black or Black British",
+                                                "Other Ethnic Groups"),
+                                     ordered = FALSE), ref = "White"),
     #recode imd quintile 
-    imd_quintile = recode(df_input$imd_quintile, "1 (most deprived)" = "5 (most deprived)",
-                          "2" = "4", "3" = "3", "4" = "2",
-                          "5 (least deprived)" = "1 (least deprived)"),
+    imd_quintile = relevel(recode(df_input$imd_quintile,
+                           "1 (most deprived)" = "5 (most deprived)",
+                           "2" = "4", "3" = "3", "4" = "2",
+                           "5 (least deprived)" = "1 (least deprived)"),
+                           ref = "1 (least deprived)"),
     #recode rurality to 5 levels
     rurality_code = recode(rural_urban_classification, "1" = "1", "2" = "2", 
                            "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
@@ -175,7 +178,7 @@ df_input <- df_input %>%
       rurality_code == "3" ~ "Urban City and Town",
       rurality_code == "4" ~ "Rural Town and Fringe",
       rurality_code == "5" ~ "Rural Village and Dispersed",
-      TRUE ~ NA_character_), ordered = TRUE)
+      TRUE ~ NA_character_))
   )
 
 #household variables for when they are included (2020-21)
@@ -187,13 +190,23 @@ if (study_start_date == as.Date("2020-09-01")) {
         household_size >= 1 & household_size <= 2 ~ "1",
         household_size >= 3 & household_size <= 5 ~ "2",
         household_size >= 6 ~ "3",
-        TRUE ~ NA_character_), ordered = TRUE),
+        TRUE ~ NA_character_)),
       composition_category = fct_relevel(composition_category,
                                          c("Multiple of the Same Generation",
                                            "Living Alone", "One Other Generation",
                                            "Two Other Generations",
                                            "Three Other Generations"))
     ) %>% arrange(composition_category)
+}
+
+#maternal characteristics
+if (cohort == "infants_subgroup") {
+  df_input <- df_input %>%
+    mutate(
+      #create smoking status factor
+      maternal_smoking_status = relevel(factor(maternal_smoking_status),
+                                        ref = "Never")
+    )
 }
 
 #flu vaccination
@@ -203,9 +216,9 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
       #assign flu vaccination status
       flu_vaccination_immunity_date = flu_vaccination_date + days(10),
       #current flu vaccination status including a lag time
-      flu_vaccination = factor(if_else(
+      flu_vaccination = relevel(factor(if_else(
         is.na(flu_vaccination_immunity_date), "No", "Yes"
-      ), ordered = TRUE)
+      )), ref = "No")
     )
 }
 
@@ -215,15 +228,15 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
   df_input <- df_input %>%
     mutate(
       #define flu_vaccination_mild
-      flu_vaccination_mild = factor(case_when(
+      flu_vaccination_mild = relevel(factor(case_when(
         flu_vaccination_immunity_date > flu_primary_date ~ "No",
         is.na(flu_vaccination_immunity_date) ~ "No",
-        TRUE ~ "Yes"), ordered = TRUE),
+        TRUE ~ "Yes")), ref = "No"),
       #define flu_vaccination severe 
-      flu_vaccination_severe = factor(case_when(
+      flu_vaccination_severe = relevel(factor(case_when(
         flu_vaccination_immunity_date > flu_secondary_date ~ "No",
         is.na(flu_vaccination_immunity_date) ~ "No",
-        TRUE ~ "Yes"), ordered = TRUE)
+        TRUE ~ "Yes")), ref = "No")
     )
 }
 
@@ -231,7 +244,7 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
 if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
   df_input <- df_input %>%
     mutate(
-      time_since_last_covid_vaccination = factor(case_when(
+      time_since_last_covid_vaccination = relevel(factor(case_when(
         time_length(difftime(patient_index_date, last_covid_vaccination_date, 
                              units = "days"), "months") >= 0 &
           time_length(difftime(patient_index_date, last_covid_vaccination_date,
@@ -242,7 +255,7 @@ if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "
                                units = "days"), "months") < 12 ~ "6-12m",
         time_length(difftime(patient_index_date, last_covid_vaccination_date,
                              units = "days"), "months") >= 12 ~ "12m+",
-        TRUE ~ "12m+"), ordered = TRUE)
+        TRUE ~ "12m+")), ref = "0-6m")
     )
 }
 if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
@@ -250,8 +263,8 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
     mutate(
       covid_vaccination_immunity_date = covid_vaccination_date + days(10),
       #current covid vaccination status including a lag time
-      covid_vaccination = factor(if_else(
-        is.na(covid_vaccination_immunity_date), "No", "Yes"), ordered = TRUE)
+      covid_vaccination = relevel(factor(if_else(
+        is.na(covid_vaccination_immunity_date), "No", "Yes")), ref = "No")
     )
 }
 
@@ -261,15 +274,15 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
   df_input <- df_input %>%
     mutate(
       #define covid_vaccination_mild
-      covid_vaccination_mild = factor(case_when(
+      covid_vaccination_mild = relevel(factor(case_when(
         covid_vaccination_immunity_date > covid_primary_date ~ "No",
         is.na(covid_vaccination_immunity_date) ~ "No",
-        TRUE ~ "Yes"), ordered = TRUE),
+        TRUE ~ "Yes")), ref = "No"),
       #define covid_vaccination severe 
-      covid_vaccination_severe = factor(case_when(
+      covid_vaccination_severe = relevel(factor(case_when(
         covid_vaccination_immunity_date > covid_secondary_date ~ "No",
         is.na(covid_vaccination_immunity_date) ~ "No",
-        TRUE ~ "Yes"), ordered = TRUE)
+        TRUE ~ "Yes")), ref = "No")
     )
 }
 
