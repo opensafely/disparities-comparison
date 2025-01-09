@@ -115,7 +115,6 @@ calculate_rolling_rates <- function(df, pathogen, characteristic,
       ) %>%
       complete(in_interval = c("during", "before"), event = unique(event), 
                group = unique(group), fill = list(events_in_interval = 0)) %>%
-      head(in_interval) %>%
       pivot_wider(names_from = "in_interval", values_from = "events_in_interval") %>%
       #calculate the number of patients still at risk in interval
       mutate(
