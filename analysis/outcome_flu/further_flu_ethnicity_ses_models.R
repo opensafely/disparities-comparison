@@ -50,7 +50,7 @@ flu_mild_ethnicity_ses_further <- glm(flu_primary_inf ~ latest_ethnicity_group +
                                         flu_vaccination_mild +
                                         offset(log(time_flu_primary*1000)), 
                                       data = df_input, family = poisson)
-flu_mild_ethnicity_ses_further_output <- tidy(flu_mild_ethnicity_ses_further)
+flu_mild_ethnicity_ses_further_output <- tidy(flu_mild_ethnicity_ses_further, confint = TRUE)
   
 #flu secondary by ethnicity and socioeconomic status
 flu_severe_ethnicity_ses_further <- glm(flu_secondary_inf ~ latest_ethnicity_group +
@@ -60,7 +60,7 @@ flu_severe_ethnicity_ses_further <- glm(flu_secondary_inf ~ latest_ethnicity_gro
                                           flu_vaccination_severe +
                                           offset(log(time_flu_secondary*1000)),
                                         data = df_input, family = poisson)
-flu_severe_ethnicity_ses_further_output <- tidy(flu_severe_ethnicity_ses_further)
+flu_severe_ethnicity_ses_further_output <- tidy(flu_severe_ethnicity_ses_further, confint = TRUE)
   
 # #flu mortality by ethnicity and socioeconomic status
 # flu_mortality_ethnicity_ses_further <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
@@ -70,7 +70,7 @@ flu_severe_ethnicity_ses_further_output <- tidy(flu_severe_ethnicity_ses_further
 #                                              flu_vaccination +
 #                                              offset(log(time_flu_mortality*1000)),
 #                                            data = df_input, family = poisson)
-# flu_mortality_ethnicity_ses_further_output <- tidy(flu_mortality_ethnicity_ses_further)
+# flu_mortality_ethnicity_ses_further_output <- tidy(flu_mortality_ethnicity_ses_further, confint = TRUE)
 
 #define a vector of names for the model outputs
 model_names <- c("Mild Influenza by Ethnicity and IMD Quintile", 

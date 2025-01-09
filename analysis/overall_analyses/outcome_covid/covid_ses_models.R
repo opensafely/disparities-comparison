@@ -68,7 +68,7 @@ if (cohort == "infants_subgroup") {
                           maternal_pertussis_vaccination +
                           offset(log(time_covid_primary*1000)),
                         data = df_input, family = poisson)
-  covid_mild_ses_output <- tidy(covid_mild_ses)
+  covid_mild_ses_output <- tidy(covid_mild_ses, confint = TRUE)
   
   #covid secondary by ses
   covid_severe_ses <- glm(covid_secondary_inf ~ imd_quintile +
@@ -79,7 +79,7 @@ if (cohort == "infants_subgroup") {
                             maternal_pertussis_vaccination +
                             offset(log(time_covid_secondary*1000)),
                           data = df_input, family = poisson)
-  covid_severe_ses_output <- tidy(covid_severe_ses)
+  covid_severe_ses_output <- tidy(covid_severe_ses, confint = TRUE)
   
   # #covid mortality by ses
   # covid_mortality_ses <- glm(covid_mortality_inf ~ imd_quintile +
@@ -90,7 +90,7 @@ if (cohort == "infants_subgroup") {
   #                              maternal_pertussis_vaccination +
   #                              offset(log(time_covid_mortality*1000)),
   #                            data = df_input, family = poisson)
-  # covid_mortality_ses_output <- tidy(covid_mortality_ses)
+  # covid_mortality_ses_output <- tidy(covid_mortality_ses, confint = TRUE)
  
 } else {
   
@@ -99,21 +99,21 @@ if (cohort == "infants_subgroup") {
                           age_band + sex + rurality_classification +
                           offset(log(time_covid_primary*1000)),
                         data = df_input, family = poisson)
-  covid_mild_ses_output <- tidy(covid_mild_ses)
+  covid_mild_ses_output <- tidy(covid_mild_ses, confint = TRUE)
  
   #covid secondary by ses
   covid_severe_ses <- glm(covid_secondary_inf ~ imd_quintile +
                             age_band + sex + rurality_classification +
                             offset(log(time_covid_secondary*1000)),
                           data = df_input, family = poisson)
-  covid_severe_ses_output <- tidy(covid_severe_ses)
+  covid_severe_ses_output <- tidy(covid_severe_ses, confint = TRUE)
  
   # #covid mortality by ses
   # covid_mortality_ses <- glm(covid_mortality_inf ~ imd_quintile +
   #                              age_band + sex + rurality_classification +
   #                              offset(log(time_covid_mortality*1000)),
   #                            data = df_input, family = poisson)
-  # covid_mortality_ses_output <- tidy(covid_mortality_ses)
+  # covid_mortality_ses_output <- tidy(covid_mortality_ses, confint = TRUE)
 
 }
 

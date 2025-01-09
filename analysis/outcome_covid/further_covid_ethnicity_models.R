@@ -52,7 +52,7 @@ if (study_start_date == covid_current_vacc_min) {
                                         covid_vaccination_mild +
                                         offset(log(time_covid_primary*1000)),
                                       data = df_input, family = poisson)
-  covid_mild_ethnicity_further_output <- tidy(covid_mild_ethnicity_further)
+  covid_mild_ethnicity_further_output <- tidy(covid_mild_ethnicity_further, confint = TRUE)
   
   #covid secondary by ethnicity
   covid_severe_ethnicity_further <- glm(covid_secondary_inf ~ latest_ethnicity_group + 
@@ -60,7 +60,7 @@ if (study_start_date == covid_current_vacc_min) {
                                           covid_vaccination_severe +
                                           offset(log(time_covid_secondary*1000)),
                                         data = df_input, family = poisson)
-  covid_severe_ethnicity_further_output <- tidy(covid_severe_ethnicity_further)
+  covid_severe_ethnicity_further_output <- tidy(covid_severe_ethnicity_further, confint = TRUE)
   
   # #covid mortality by ethnicity
   # covid_mortality_ethnicity_further <- glm(covid_mortality_inf ~ latest_ethnicity_group + 
@@ -68,7 +68,7 @@ if (study_start_date == covid_current_vacc_min) {
   #                                            covid_vaccination +
   #                                            offset(log(time_covid_mortality*1000)),
   #                                          data = df_input, family = poisson)
-  # covid_mortality_ethnicity_further_output <- tidy(covid_mortality_ethnicity_further)
+  # covid_mortality_ethnicity_further_output <- tidy(covid_mortality_ethnicity_further, confint = TRUE)
   
 } else {
   
@@ -79,7 +79,7 @@ if (study_start_date == covid_current_vacc_min) {
                                         covid_vaccination_mild +
                                         offset(log(time_covid_primary*1000)),
                                       data = df_input, family = poisson)
-  covid_mild_ethnicity_further_output <- tidy(covid_mild_ethnicity_further)
+  covid_mild_ethnicity_further_output <- tidy(covid_mild_ethnicity_further, confint = TRUE)
   
   #covid secondary by ethnicity
   covid_severe_ethnicity_further <- glm(covid_secondary_inf ~ latest_ethnicity_group + 
@@ -88,7 +88,7 @@ if (study_start_date == covid_current_vacc_min) {
                                           covid_vaccination_severe +
                                           offset(log(time_covid_secondary*1000)),
                                         data = df_input, family = poisson)
-  covid_severe_ethnicity_further_output <- tidy(covid_severe_ethnicity_further)
+  covid_severe_ethnicity_further_output <- tidy(covid_severe_ethnicity_further, confint = TRUE)
   
   # #covid mortality by ethnicity
   # covid_mortality_ethnicity_further <- glm(covid_mortality_inf ~ latest_ethnicity_group + 
@@ -97,7 +97,7 @@ if (study_start_date == covid_current_vacc_min) {
   #                                            covid_vaccination +
   #                                            offset(log(time_covid_mortality*1000)),
   #                                          data = df_input, family = poisson)
-  # covid_mortality_ethnicity_further_output <- tidy(covid_mortality_ethnicity_further)
+  # covid_mortality_ethnicity_further_output <- tidy(covid_mortality_ethnicity_further, confint = TRUE)
 
 } 
 

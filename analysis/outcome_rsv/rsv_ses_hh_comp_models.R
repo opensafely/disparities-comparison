@@ -66,7 +66,7 @@ if (cohort == "infants_subgroup") {
                                 maternal_pertussis_vaccination +
                                 offset(log(time_rsv_primary*1000)), 
                               data = df_input, family = poisson)
-  rsv_mild_ses_hh_comp_output <- tidy(rsv_mild_ses_hh_comp)
+  rsv_mild_ses_hh_comp_output <- tidy(rsv_mild_ses_hh_comp, confint = TRUE)
   
   #rsv secondary by socioeconomic status and household composition
   rsv_severe_ses_hh_comp <- glm(rsv_secondary_inf ~ imd_quintile +
@@ -78,7 +78,7 @@ if (cohort == "infants_subgroup") {
                                   maternal_pertussis_vaccination +
                                   offset(log(time_rsv_secondary*1000)),
                                 data = df_input, family = poisson)
-  rsv_severe_ses_hh_comp_output <- tidy(rsv_severe_ses_hh_comp)
+  rsv_severe_ses_hh_comp_output <- tidy(rsv_severe_ses_hh_comp, confint = TRUE)
   
   # #rsv mortality by socioeconomic status and household composition
   # rsv_mortality_ses_hh_comp <- glm(rsv_mortality_inf ~ imd_quintile + 
@@ -90,7 +90,7 @@ if (cohort == "infants_subgroup") {
   #                                    maternal_pertussis_vaccination +
   #                                    offset(log(time_rsv_mortality*1000)),
   #                                  data = df_input, family = poisson)
-  # rsv_mortality_ses_hh_comp_output <- tidy(rsv_mortality_ses_hh_comp)
+  # rsv_mortality_ses_hh_comp_output <- tidy(rsv_mortality_ses_hh_comp, confint = TRUE)
   
 } else {
   
@@ -100,7 +100,7 @@ if (cohort == "infants_subgroup") {
                                   rurality_classification + 
                                   offset(log(time_rsv_primary*1000)), 
                                 data = df_input, family = poisson)
-  rsv_mild_ses_hh_comp_output <- tidy(rsv_mild_ses_hh_comp)
+  rsv_mild_ses_hh_comp_output <- tidy(rsv_mild_ses_hh_comp, confint = TRUE)
   
   #rsv secondary by socioeconomic status and household composition
   rsv_severe_ses_hh_comp <- glm(rsv_secondary_inf ~ imd_quintile +
@@ -108,7 +108,7 @@ if (cohort == "infants_subgroup") {
                                     rurality_classification + 
                                     offset(log(time_rsv_secondary*1000)),
                                   data = df_input, family = poisson)
-  rsv_severe_ses_hh_comp_output <- tidy(rsv_severe_ses_hh_comp)
+  rsv_severe_ses_hh_comp_output <- tidy(rsv_severe_ses_hh_comp, confint = TRUE)
   
   # #rsv mortality by socioeconomic status and household composition
   # rsv_mortality_ses_hh_comp <- glm(rsv_mortality_inf ~ imd_quintile + 
@@ -116,7 +116,7 @@ if (cohort == "infants_subgroup") {
   #                                      rurality_classification + 
   #                                      offset(log(time_rsv_mortality*1000)),
   #                                    data = df_input, family = poisson)
-  # rsv_mortality_ses_hh_comp_output <- tidy(rsv_mortality_ses_hh_comp)
+  # rsv_mortality_ses_hh_comp_output <- tidy(rsv_mortality_ses_hh_comp, confint = TRUE)
 
 }
 

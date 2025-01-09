@@ -68,7 +68,7 @@ if (cohort == "infants_subgroup") {
                          maternal_pertussis_vaccination +
                          offset(log(time_flu_primary*1000)), 
                        data = df_input, family = poisson)
-  flu_mild_full_output <- tidy(flu_mild_full)
+  flu_mild_full_output <- tidy(flu_mild_full, confint = TRUE)
   
   #flu secondary by ethnicity, socioeconomic status and household composition
   flu_severe_full <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
@@ -80,7 +80,7 @@ if (cohort == "infants_subgroup") {
                            maternal_pertussis_vaccination +
                            offset(log(time_flu_secondary*1000)),
                          data = df_input, family = poisson)
-  flu_severe_full_output <- tidy(flu_severe_full)
+  flu_severe_full_output <- tidy(flu_severe_full, confint = TRUE)
   
   # #flu mortality by ethnicity, socioeconomic status and household composition
   # flu_mortality_full <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
@@ -92,7 +92,7 @@ if (cohort == "infants_subgroup") {
   #                             maternal_pertussis_vaccination +
   #                             offset(log(time_flu_mortality)),
   #                           data = df_input, family = poisson)
-  # flu_mortality_full_output <- tidy(flu_mortality_full)
+  # flu_mortality_full_output <- tidy(flu_mortality_full, confint = TRUE)
   
 } else {
   
@@ -102,7 +102,7 @@ if (cohort == "infants_subgroup") {
                          age_band + sex + rurality_classification + 
                          offset(log(time_flu_primary*1000)), 
                        data = df_input, family = poisson)
-  flu_mild_full_output <- tidy(flu_mild_full)
+  flu_mild_full_output <- tidy(flu_mild_full, confint = TRUE)
   
   #flu secondary by ethnicity, socioeconomic status and household composition
   flu_severe_full <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
@@ -110,7 +110,7 @@ if (cohort == "infants_subgroup") {
                            age_band + sex + rurality_classification + 
                            offset(log(time_flu_secondary*1000)),
                          data = df_input, family = poisson)
-  flu_severe_full_output <- tidy(flu_severe_full)
+  flu_severe_full_output <- tidy(flu_severe_fullv, confint = TRUE)
   
   # #flu mortality by ethnicity, socioeconomic status and household composition
   # flu_mortality_full <- glm(flu_mortality_inf ~ latest_ethnicity_group +
@@ -118,7 +118,7 @@ if (cohort == "infants_subgroup") {
   #                             age_band + sex + rurality_classification + 
   #                             offset(log(time_flu_mortality*1000)),
   #                           data = df_input, family = poisson)
-  # flu_mortality_full_output <- tidy(flu_mortality_full)
+  # flu_mortality_full_output <- tidy(flu_mortality_full, confint = TRUE)
 
 }
 

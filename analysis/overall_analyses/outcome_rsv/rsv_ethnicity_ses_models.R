@@ -69,7 +69,7 @@ if (cohort == "infants_subgroup") {
                                   maternal_pertussis_vaccination +
                                   offset(log(time_rsv_primary*1000)), 
                                 data = df_input, family = poisson)
-  rsv_mild_ethnicity_ses_output <- tidy(rsv_mild_ethnicity_ses)
+  rsv_mild_ethnicity_ses_output <- tidy(rsv_mild_ethnicity_ses, confint = TRUE)
   
   #rsv secondary by ethnicity and socioeconomic status
   rsv_severe_ethnicity_ses <- glm(rsv_secondary_inf ~ latest_ethnicity_group +
@@ -81,7 +81,7 @@ if (cohort == "infants_subgroup") {
                                     maternal_pertussis_vaccination +
                                     offset(log(time_rsv_secondary*1000)),
                                   data = df_input, family = poisson)
-  rsv_severe_ethnicity_ses_output <- tidy(rsv_severe_ethnicity_ses)
+  rsv_severe_ethnicity_ses_output <- tidy(rsv_severe_ethnicity_ses, confint = TRUE)
   
   # #rsv mortality by ethnicity and socioeconomic status
   # rsv_mortality_ethnicity_ses <- glm(rsv_mortality_inf ~ latest_ethnicity_group + 
@@ -93,7 +93,7 @@ if (cohort == "infants_subgroup") {
   #                                      maternal_pertussis_vaccination +
   #                                      offset(log(time_rsv_mortality*1000)),
   #                                    data = df_input, family = poisson)
-  # rsv_mortality_ethnicity_ses_output <- tidy(rsv_mortality_ethnicity_ses)
+  # rsv_mortality_ethnicity_ses_output <- tidy(rsv_mortality_ethnicity_ses, confint = TRUE)
   
 } else {
   
@@ -103,7 +103,7 @@ if (cohort == "infants_subgroup") {
                                   rurality_classification + 
                                   offset(log(time_rsv_primary*1000)), 
                                 data = df_input, family = poisson)
-  rsv_mild_ethnicity_ses_output <- tidy(rsv_mild_ethnicity_ses)
+  rsv_mild_ethnicity_ses_output <- tidy(rsv_mild_ethnicity_ses, confint = TRUE)
   
   #rsv secondary by ethnicity and socioeconomic status
   rsv_severe_ethnicity_ses <- glm(rsv_secondary_inf ~ latest_ethnicity_group +
@@ -111,7 +111,7 @@ if (cohort == "infants_subgroup") {
                                     rurality_classification + 
                                     offset(log(time_rsv_secondary*1000)),
                                   data = df_input, family = poisson)
-  rsv_severe_ethnicity_ses_output <- tidy(rsv_severe_ethnicity_ses)
+  rsv_severe_ethnicity_ses_output <- tidy(rsv_severe_ethnicity_ses, confint = TRUE)
   
   # #rsv mortality by ethnicity and socioeconomic status
   # rsv_mortality_ethnicity_ses <- glm(rsv_mortality_inf ~ latest_ethnicity_group + 
@@ -119,7 +119,7 @@ if (cohort == "infants_subgroup") {
   #                                      rurality_classification + 
   #                                      offset(log(time_rsv_mortality*1000)),
   #                                    data = df_input, family = poisson)
-  # rsv_mortality_ethnicity_ses_output <- tidy(rsv_mortality_ethnicity_ses)
+  # rsv_mortality_ethnicity_ses_output <- tidy(rsv_mortality_ethnicity_ses, confint = TRUE)
 
 }
 

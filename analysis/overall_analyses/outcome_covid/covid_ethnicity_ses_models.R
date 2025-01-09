@@ -71,7 +71,7 @@ if (cohort == "infants_subgroup") {
                                     maternal_pertussis_vaccination +
                                     offset(log(time_covid_primary*1000)),
                                   data = df_input, family = poisson)
-  covid_mild_ethnicity_ses_output <- tidy(covid_mild_ethnicity_ses)
+  covid_mild_ethnicity_ses_output <- tidy(covid_mild_ethnicity_ses, confint = TRUE)
   
   #covid secondary by ethnicity and socioeconomic status
   covid_severe_ethnicity_ses <- glm(covid_secondary_inf ~ latest_ethnicity_group +
@@ -83,7 +83,7 @@ if (cohort == "infants_subgroup") {
                                       maternal_pertussis_vaccination +
                                       offset(log(time_covid_secondary*1000)),
                                     data = df_input, family = poisson)
-  covid_severe_ethnicity_ses_output <- tidy(covid_severe_ethnicity_ses)
+  covid_severe_ethnicity_ses_output <- tidy(covid_severe_ethnicity_ses, confint = TRUE)
   
   # #covid mortality by ethnicity and socioeconomic status
   # covid_mortality_ethnicity_ses <- glm(covid_mortality_inf ~ latest_ethnicity_group +
@@ -95,7 +95,7 @@ if (cohort == "infants_subgroup") {
   #                                        maternal_pertussis_vaccination +
   #                                        offset(log(time_covid_mortality*1000)),
   #                                      data = df_input, family = poisson)
-  # covid_mortality_ethnicity_ses_output <- tidy(covid_mortality_ethnicity_ses)
+  # covid_mortality_ethnicity_ses_output <- tidy(covid_mortality_ethnicity_ses, confint = TRUE)
   
 } else {
   
@@ -105,7 +105,7 @@ if (cohort == "infants_subgroup") {
                                     rurality_classification +
                                     offset(log(time_covid_primary*1000)),
                                   data = df_input, family = poisson)
-  covid_mild_ethnicity_ses_output <- tidy(covid_mild_ethnicity_ses)
+  covid_mild_ethnicity_ses_output <- tidy(covid_mild_ethnicity_ses, confint = TRUE)
   
   #covid secondary by ethnicity and socioeconomic status
   covid_severe_ethnicity_ses <- glm(covid_secondary_inf ~ latest_ethnicity_group +
@@ -113,7 +113,7 @@ if (cohort == "infants_subgroup") {
                                       rurality_classification +
                                       offset(log(time_covid_secondary*1000)),
                                     data = df_input, family = poisson)
-  covid_severe_ethnicity_ses_output <- tidy(covid_severe_ethnicity_ses)
+  covid_severe_ethnicity_ses_output <- tidy(covid_severe_ethnicity_ses, confint = TRUE)
   
   # #covid mortality by ethnicity and socioeconomic status
   # covid_mortality_ethnicity_ses <- glm(covid_mortality_inf ~ latest_ethnicity_group +
@@ -121,7 +121,7 @@ if (cohort == "infants_subgroup") {
   #                                        rurality_classification +
   #                                        offset(log(time_covid_mortality*1000)),
   #                                      data = df_input, family = poisson)
-  # covid_mortality_ethnicity_ses_output <- tidy(covid_mortality_ethnicity_ses)
+  # covid_mortality_ethnicity_ses_output <- tidy(covid_mortality_ethnicity_ses, confint = TRUE)
   
 }
 

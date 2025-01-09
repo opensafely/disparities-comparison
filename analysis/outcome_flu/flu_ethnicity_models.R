@@ -78,7 +78,7 @@ if (cohort == "infants_subgroup") {
                               maternal_pertussis_vaccination +
                               offset(log(time_flu_primary*1000)),
                             data = df_input, family = poisson)
-  flu_mild_ethnicity_output <- tidy(flu_mild_ethnicity)
+  flu_mild_ethnicity_output <- tidy(flu_mild_ethnicity, confint = TRUE)
   
   #flu secondary by ethnicity
   flu_severe_ethnicity <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
@@ -89,7 +89,7 @@ if (cohort == "infants_subgroup") {
                                 maternal_pertussis_vaccination +
                                 offset(log(time_flu_secondary*1000)),
                               data = df_input, family = poisson)
-  flu_severe_ethnicity_output <- tidy(flu_severe_ethnicity)
+  flu_severe_ethnicity_output <- tidy(flu_severe_ethnicity, confint = TRUE)
   
   # #flu mortality by ethnicity
   # flu_mortality_ethnicity <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
@@ -100,7 +100,7 @@ if (cohort == "infants_subgroup") {
   #                                  maternal_pertussis_vaccination +
   #                                  offset(log(time_flu_mortality*1000)),
   #                                data = df_input, family = poisson)
-  # flu_mortality_ethnicity_output <- tidy(flu_mortality_ethnicity)
+  # flu_mortality_ethnicity_output <- tidy(flu_mortality_ethnicity, confint = TRUE)
   
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
@@ -115,7 +115,7 @@ if (cohort == "infants_subgroup") {
                               hazardous_drinking + drug_usage +
                               offset(log(time_flu_primary*1000)),
                             data = df_input, family = poisson)
-  flu_mild_ethnicity_output <- tidy(flu_mild_ethnicity)
+  flu_mild_ethnicity_output <- tidy(flu_mild_ethnicity, confint = TRUE)
   
   #flu secondary by ethnicity
   flu_severe_ethnicity <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
@@ -128,7 +128,7 @@ if (cohort == "infants_subgroup") {
                                 hazardous_drinking + drug_usage +
                                 offset(log(time_flu_secondary*1000)),
                               data = df_input, family = poisson)
-  flu_severe_ethnicity_output <- tidy(flu_severe_ethnicity)
+  flu_severe_ethnicity_output <- tidy(flu_severe_ethnicity, confint = TRUE)
   
   # #flu mortality by ethnicity
   # flu_mortality_ethnicity <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
@@ -141,7 +141,7 @@ if (cohort == "infants_subgroup") {
   #                                  hazardous_drinking + drug_usage +
   #                                  offset(log(time_flu_mortality*1000)),
   #                                data = df_input, family = poisson)
-  # flu_mortality_ethnicity_output <- tidy(flu_mortality_ethnicity)
+  # flu_mortality_ethnicity_output <- tidy(flu_mortality_ethnicity, confint = TRUE)
   
 } else {
 
@@ -150,21 +150,21 @@ if (cohort == "infants_subgroup") {
                               age_band + sex + rurality_classification + 
                               offset(log(time_flu_primary*1000)),
                             data = df_input, family = poisson)
-  flu_mild_ethnicity_output <- tidy(flu_mild_ethnicity)
+  flu_mild_ethnicity_output <- tidy(flu_mild_ethnicity, confint = TRUE)
   
   #flu secondary by ethnicity
   flu_severe_ethnicity <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
                                 age_band + sex + rurality_classification + 
                                 offset(log(time_flu_secondary*1000)),
                               data = df_input, family = poisson)
-  flu_severe_ethnicity_output <- tidy(flu_severe_ethnicity)
+  flu_severe_ethnicity_output <- tidy(flu_severe_ethnicity, confint = TRUE)
   
   # #flu mortality by ethnicity
   # flu_mortality_ethnicity <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
   #                                  age_band + sex + rurality_classification + 
   #                                  offset(log(time_flu_mortality*1000)),
   #                                data = df_input, family = poisson)
-  # flu_mortality_ethnicity_output <- tidy(flu_mortality_ethnicity)
+  # flu_mortality_ethnicity_output <- tidy(flu_mortality_ethnicity, confint = TRUE)
   
 }
 

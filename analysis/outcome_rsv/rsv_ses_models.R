@@ -77,7 +77,7 @@ if (cohort == "infants_subgroup") {
                         maternal_pertussis_vaccination +
                         offset(log(time_rsv_primary*1000)),
                       data = df_input, family = poisson)
-  rsv_mild_ses_output <- tidy(rsv_mild_ses)
+  rsv_mild_ses_output <- tidy(rsv_mild_ses, confint = TRUE)
   
   #rsv secondary by ses
   rsv_severe_ses <- glm(rsv_secondary_inf ~ imd_quintile + age_band + sex +
@@ -87,7 +87,7 @@ if (cohort == "infants_subgroup") {
                           maternal_pertussis_vaccination +
                           offset(log(time_rsv_secondary*1000)),
                         data = df_input, family = poisson)
-  rsv_severe_ses_output <- tidy(rsv_severe_ses)
+  rsv_severe_ses_output <- tidy(rsv_severe_ses, confint = TRUE)
   
   # #rsv mortality by ses
   # rsv_mortality_ses <- glm(rsv_mortality_inf ~ imd_quintile + age_band + sex +
@@ -97,7 +97,7 @@ if (cohort == "infants_subgroup") {
   #                            maternal_pertussis_vaccination +
   #                            offset(log(time_rsv_mortality*1000)),
   #                          data = df_input, family = poisson)
-  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses)
+  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses, confint = TRUE)
   
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
@@ -111,7 +111,7 @@ if (cohort == "infants_subgroup") {
                         smoking_status + hazardous_drinking + drug_usage + 
                         offset(log(time_rsv_primary*1000)),
                       data = df_input, family = poisson)
-  rsv_mild_ses_output <- tidy(rsv_mild_ses)
+  rsv_mild_ses_output <- tidy(rsv_mild_ses, confint = TRUE)
   
   #rsv secondary by ses
   rsv_severe_ses <- glm(rsv_secondary_inf ~ imd_quintile + age_band + sex +
@@ -123,7 +123,7 @@ if (cohort == "infants_subgroup") {
                           smoking_status + hazardous_drinking + drug_usage +
                           offset(log(time_rsv_secondary*1000)),
                         data = df_input, family = poisson)
-  rsv_severe_ses_output <- tidy(rsv_severe_ses)
+  rsv_severe_ses_output <- tidy(rsv_severe_ses, confint = TRUE)
   
   # #rsv mortality by ses
   # rsv_mortality_ses <- glm(rsv_mortality_inf ~ imd_quintile + age_band + sex +
@@ -135,7 +135,7 @@ if (cohort == "infants_subgroup") {
   #                            smoking_status + hazardous_drinking + drug_usage +
   #                            offset(log(time_rsv_mortality*1000)),
   #                          data = df_input, family = poisson)
-  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses)
+  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses, confint = TRUE)
   
 } else {
   
@@ -144,21 +144,21 @@ if (cohort == "infants_subgroup") {
                         sex + rurality_classification +
                         offset(log(time_rsv_primary*1000)),
                       data = df_input, family = poisson)
-  rsv_mild_ses_output <- tidy(rsv_mild_ses)
+  rsv_mild_ses_output <- tidy(rsv_mild_ses, confint = TRUE)
   
   #rsv secondary by ses
   rsv_severe_ses <- glm(rsv_secondary_inf ~ imd_quintile + age_band +
                           sex + rurality_classification +
                           offset(log(time_rsv_secondary*1000)),
                         data = df_input, family = poisson)
-  rsv_severe_ses_output <- tidy(rsv_severe_ses)
+  rsv_severe_ses_output <- tidy(rsv_severe_ses, confint = TRUE)
   
   # #rsv mortality by ses
   # rsv_mortality_ses <- glm(rsv_mortality_inf ~ imd_quintile + age_band +
   #                            sex + rurality_classification +
   #                            offset(log(time_rsv_mortality*1000)),
   #                          data = df_input, family = poisson)
-  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses)
+  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses, confint = TRUE)
   
 }
 

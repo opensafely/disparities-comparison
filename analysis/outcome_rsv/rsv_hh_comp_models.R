@@ -65,7 +65,7 @@ if (cohort == "infants_subgroup") {
                             maternal_pertussis_vaccination +
                             offset(log(time_rsv_primary*1000)), 
                           data = df_input, family = poisson)
-  rsv_mild_hh_comp_output <- tidy(rsv_mild_hh_comp)
+  rsv_mild_hh_comp_output <- tidy(rsv_mild_hh_comp, confint = TRUE)
   
   #rsv secondary by household composition
   rsv_severe_hh_comp <- glm(rsv_secondary_inf ~ composition_category +
@@ -76,7 +76,7 @@ if (cohort == "infants_subgroup") {
                               maternal_pertussis_vaccination +
                               offset(log(time_rsv_secondary*1000)),
                             data = df_input, family = poisson)
-  rsv_severe_hh_comp_output <- tidy(rsv_severe_hh_comp)
+  rsv_severe_hh_comp_output <- tidy(rsv_severe_hh_comp, confint = TRUE)
   
   # #rsv mortality by household composition
   # rsv_mortality_hh_comp <- glm(rsv_mortality_inf ~ composition_category + 
@@ -87,7 +87,7 @@ if (cohort == "infants_subgroup") {
   #                                maternal_pertussis_vaccination +
   #                                offset(log(time_rsv_mortality*1000)),
   #                              data = df_input, family = poisson)
-  # rsv_mortality_hh_comp_output <- tidy(rsv_mortality_hh_comp)
+  # rsv_mortality_hh_comp_output <- tidy(rsv_mortality_hh_comp, confint = TRUE)
   
 } else {
   
@@ -96,21 +96,21 @@ if (cohort == "infants_subgroup") {
                             age_band + sex + rurality_classification + 
                             offset(log(time_rsv_primary*1000)),
                           data = df_input, family = poisson)
-  rsv_mild_hh_comp_output <- tidy(rsv_mild_hh_comp)
+  rsv_mild_hh_comp_output <- tidy(rsv_mild_hh_comp, confint = TRUE)
   
   #rsv secondary by household composition
   rsv_severe_hh_comp <- glm(rsv_secondary_inf ~ composition_category + 
                               age_band + sex + rurality_classification + 
                               offset(log(time_rsv_secondary*1000)),
                             data = df_input, family = poisson)
-  rsv_severe_hh_comp_output <- tidy(rsv_severe_hh_comp)
+  rsv_severe_hh_comp_output <- tidy(rsv_severe_hh_comp, confint = TRUE)
   
   # #rsv mortality by household composition
   # rsv_mortality_hh_comp <- glm(rsv_mortality_inf ~ composition_category + 
   #                                age_band + sex + rurality_classification + 
   #                                offset(log(time_rsv_mortality*1000)),
   #                              data = df_input, family = poisson)
-  # rsv_mortality_hh_comp_output <- tidy(rsv_mortality_hh_comp)
+  # rsv_mortality_hh_comp_output <- tidy(rsv_mortality_hh_comp, confint = TRUE)
   
 }
 

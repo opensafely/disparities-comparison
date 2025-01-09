@@ -82,7 +82,7 @@ if (cohort == "infants_subgroup") {
                            maternal_pertussis_vaccination +
                            offset(log(time_covid_primary*1000)),
                          data = df_input, family = poisson)
-  covid_mild_full_output <- tidy(covid_mild_full)
+  covid_mild_full_output <- tidy(covid_mild_full, confint = TRUE)
   
   #covid secondary by ethnicity and socioeconomic status
   covid_severe_full <- glm(covid_secondary_inf ~ latest_ethnicity_group +
@@ -94,7 +94,7 @@ if (cohort == "infants_subgroup") {
                              maternal_pertussis_vaccination +
                              offset(log(time_covid_secondary*1000)),
                            data = df_input, family = poisson)
-  covid_severe_full_output <- tidy(covid_severe_full)
+  covid_severe_full_output <- tidy(covid_severe_full, confint = TRUE)
   
   # #covid mortality by ethnicity and socioeconomic status
   # covid_mortality_full <- glm(covid_mortality_inf ~ latest_ethnicity_group +
@@ -106,7 +106,7 @@ if (cohort == "infants_subgroup") {
   #                               maternal_pertussis_vaccination +
   #                               offset(log(time_covid_mortality*1000)),
   #                             data = df_input, family = poisson)
-  # covid_mortality_full_output <- tidy(covid_mortality_full)
+  # covid_mortality_full_output <- tidy(covid_mortality_full, confint = TRUE)
   
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
@@ -122,7 +122,7 @@ if (cohort == "infants_subgroup") {
                            hazardous_drinking + drug_usage +
                            offset(log(time_covid_primary*1000)),
                          data = df_input, family = poisson)
-  covid_mild_full_output <- tidy(covid_mild_full)
+  covid_mild_full_output <- tidy(covid_mild_full, confint = TRUE)
   
   #covid secondary by ethnicity and socioeconomic status
   covid_severe_full <- glm(covid_secondary_inf ~ latest_ethnicity_group +
@@ -136,7 +136,7 @@ if (cohort == "infants_subgroup") {
                              hazardous_drinking + drug_usage +
                              offset(log(time_covid_secondary*1000)),
                            data = df_input, family = poisson)
-  covid_severe_full_output <- tidy(covid_severe_full)
+  covid_severe_full_output <- tidy(covid_severe_full, confint = TRUE)
   
   # #covid mortality by ethnicity and socioeconomic status
   # covid_mortality_full <- glm(covid_mortality_inf ~ latest_ethnicity_group +
@@ -150,7 +150,7 @@ if (cohort == "infants_subgroup") {
   #                               hazardous_drinking + drug_usage +
   #                               offset(log(time_covid_mortality*1000)),
   #                             data = df_input, family = poisson)
-  # covid_mortality_full_output <- tidy(covid_mortality_full)
+  # covid_mortality_full_output <- tidy(covid_mortality_full, confint = TRUE)
   
 } else {
   
@@ -160,7 +160,7 @@ if (cohort == "infants_subgroup") {
                            age_band + sex + rurality_classification +
                            offset(log(time_covid_primary*1000)),
                          data = df_input, family = poisson)
-  covid_mild_full_output <- tidy(covid_mild_full)
+  covid_mild_full_output <- tidy(covid_mild_full, confint = TRUE)
   
   #covid secondary by ethnicity and socioeconomic status
   covid_severe_full <- glm(covid_secondary_inf ~ latest_ethnicity_group +
@@ -168,7 +168,7 @@ if (cohort == "infants_subgroup") {
                              age_band + sex + rurality_classification +
                              offset(log(time_covid_secondary*1000)),
                            data = df_input, family = poisson)
-  covid_severe_full_output <- tidy(covid_severe_full)
+  covid_severe_full_output <- tidy(covid_severe_full, confint = TRUE)
   
   # #covid mortality by ethnicity and socioeconomic status
   # covid_mortality_full <- glm(covid_mortality_inf ~ latest_ethnicity_group +
@@ -176,7 +176,7 @@ if (cohort == "infants_subgroup") {
   #                               age_band + sex + rurality_classification +
   #                               offset(log(time_covid_mortality*1000)),
   #                             data = df_input, family = poisson)
-  # covid_mortality_full_output <- tidy(covid_mortality_full)
+  # covid_mortality_full_output <- tidy(covid_mortality_full, confint = TRUE)
   
 }
 

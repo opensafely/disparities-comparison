@@ -79,7 +79,7 @@ if (cohort == "infants_subgroup") {
                                         maternal_pertussis_vaccination +
                                         offset(log(time_covid_primary*1000)),
                                       data = df_input, family = poisson)
-  covid_mild_ethnicity_hh_comp_output <- tidy(covid_mild_ethnicity_hh_comp)
+  covid_mild_ethnicity_hh_comp_output <- tidy(covid_mild_ethnicity_hh_comp, confint = TRUE)
   
   #covid secondary by ethnicity and household composition
   covid_severe_ethnicity_hh_comp <- glm(covid_secondary_inf ~ latest_ethnicity_group +
@@ -91,7 +91,7 @@ if (cohort == "infants_subgroup") {
                                           maternal_pertussis_vaccination +
                                           offset(log(time_covid_secondary*1000)),
                                         data = df_input, family = poisson)
-  covid_severe_ethnicity_hh_comp_output <- tidy(covid_severe_ethnicity_hh_comp)
+  covid_severe_ethnicity_hh_comp_output <- tidy(covid_severe_ethnicity_hh_comp, confint = TRUE)
   
   # #covid mortality by ethnicity and household composition
   # covid_mortality_ethnicity_hh_comp <- glm(covid_mortality_inf ~ latest_ethnicity_group +
@@ -103,7 +103,7 @@ if (cohort == "infants_subgroup") {
   #                                            maternal_pertussis_vaccination +
   #                                            offset(log(time_covid_mortality*1000)),
   #                                          data = df_input, family = poisson)
-  # covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp)
+  # covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp, confint = TRUE)
   
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
@@ -120,7 +120,7 @@ if (cohort == "infants_subgroup") {
                                         smoking_status + hazardous_drinking +
                                         drug_usage + offset(log(time_covid_primary*1000)),
                                       data = df_input, family = poisson)
-  covid_mild_ethnicity_hh_comp_output <- tidy(covid_mild_ethnicity_hh_comp)
+  covid_mild_ethnicity_hh_comp_output <- tidy(covid_mild_ethnicity_hh_comp, confint = TRUE)
   
   #covid secondary by ethnicity and household composition
   covid_severe_ethnicity_hh_comp <- glm(covid_secondary_inf ~ latest_ethnicity_group +
@@ -136,7 +136,7 @@ if (cohort == "infants_subgroup") {
                                           smoking_status + hazardous_drinking +
                                           drug_usage + offset(log(time_covid_primary*1000)),
                                         data = df_input, family = poisson)
-  covid_severe_ethnicity_hh_comp_output <- tidy(covid_severe_ethnicity_hh_comp)
+  covid_severe_ethnicity_hh_comp_output <- tidy(covid_severe_ethnicity_hh_comp, confint = TRUE)
   
   # #covid mortality by ethnicity and household composition
   # covid_mortality_ethnicity_hh_comp <- glm(covid_mortality_inf ~ latest_ethnicity_group +
@@ -152,7 +152,7 @@ if (cohort == "infants_subgroup") {
   #                                            smoking_status + hazardous_drinking +
   #                                            drug_usage + offset(log(time_covid_primary*1000)),
   #                                          data = df_input, family = poisson)
-  # covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp)
+  # covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp, confint = TRUE)
 
 } else {
   
@@ -162,7 +162,7 @@ if (cohort == "infants_subgroup") {
                                         sex + rurality_classification +
                                         offset(log(time_covid_primary*1000)),
                                       data = df_input, family = poisson)
-  covid_mild_ethnicity_hh_comp_output <- tidy(covid_mild_ethnicity_hh_comp)
+  covid_mild_ethnicity_hh_comp_output <- tidy(covid_mild_ethnicity_hh_comp, confint = TRUE)
   
   #covid secondary by ethnicity and household composition
   covid_severe_ethnicity_hh_comp <- glm(covid_secondary_inf ~ latest_ethnicity_group +
@@ -170,7 +170,7 @@ if (cohort == "infants_subgroup") {
                                           sex + rurality_classification +
                                           offset(log(time_covid_secondary*1000)),
                                         data = df_input, family = poisson)
-  covid_severe_ethnicity_hh_comp_output <- tidy(covid_severe_ethnicity_hh_comp)
+  covid_severe_ethnicity_hh_comp_output <- tidy(covid_severe_ethnicity_hh_comp, confint = TRUE)
   
   # #covid mortality by ethnicity and household composition
   # covid_mortality_ethnicity_hh_comp <- glm(covid_mortality_inf ~ latest_ethnicity_group +
@@ -178,7 +178,7 @@ if (cohort == "infants_subgroup") {
   #                                            sex + rurality_classification +
   #                                            offset(log(time_covid_mortality*1000)),
   #                                          data = df_input, family = poisson)
-  # covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp)
+  # covid_mortality_ethnicity_hh_comp_output <- tidy(covid_mortality_ethnicity_hh_comp, confint = TRUE)
 
 }
 

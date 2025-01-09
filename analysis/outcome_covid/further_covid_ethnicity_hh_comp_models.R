@@ -51,7 +51,7 @@ covid_mild_ethnicity_hh_comp_further <- glm(covid_primary_inf ~ latest_ethnicity
                                               covid_vaccination_mild +
                                               offset(log(time_covid_primary*1000)),
                                             data = df_input, family = poisson)
-covid_mild_ethnicity_hh_comp_further_output <- tidy(covid_mild_ethnicity_hh_comp_futher)
+covid_mild_ethnicity_hh_comp_further_output <- tidy(covid_mild_ethnicity_hh_comp_further, confint = TRUE)
 
 #covid secondary by ethnicity and household composition
 covid_severe_ethnicity_hh_comp_further <- glm(covid_secondary_inf ~ latest_ethnicity_group +
@@ -60,7 +60,7 @@ covid_severe_ethnicity_hh_comp_further <- glm(covid_secondary_inf ~ latest_ethni
                                                 covid_vaccination_severe +
                                                 offset(log(time_covid_secondary*1000)),
                                               data = df_input, family = poisson)
-covid_severe_ethnicity_hh_comp_further_output <- tidy(covid_severe_ethnicity_hh_comp_further)
+covid_severe_ethnicity_hh_comp_further_output <- tidy(covid_severe_ethnicity_hh_comp_further, confint = TRUE)
 
 # #covid mortality by ethnicity and household composition
 # covid_mortality_ethnicity_hh_comp_further <- glm(covid_mortality_inf ~ latest_ethnicity_group +
@@ -69,7 +69,7 @@ covid_severe_ethnicity_hh_comp_further_output <- tidy(covid_severe_ethnicity_hh_
 #                                                    covid_vaccination +
 #                                                    offset(log(time_covid_mortality*1000)),
 #                                                  data = df_input, family = poisson)
-# covid_mortality_ethnicity_hh_comp_further_output <- tidy(covid_mortality_ethnicity_hh_comp_further)
+# covid_mortality_ethnicity_hh_comp_further_output <- tidy(covid_mortality_ethnicity_hh_comp_further, confint = TRUE)
 
 #define a vector of names for the model outputs
 model_names <- c("Mild COVID-19 by Ethnicity and Household Composition", 

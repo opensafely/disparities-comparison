@@ -68,7 +68,7 @@ if (cohort == "infants_subgroup") {
                          maternal_pertussis_vaccination +
                          offset(log(time_rsv_primary*1000)), 
                        data = df_input, family = poisson)
-  rsv_mild_full_output <- tidy(rsv_mild_full)
+  rsv_mild_full_output <- tidy(rsv_mild_full, confint = TRUE)
   
   #rsv secondary by ethnicity, socioeconomic status and household composition
   rsv_severe_full <- glm(rsv_secondary_inf ~ latest_ethnicity_group + 
@@ -80,7 +80,7 @@ if (cohort == "infants_subgroup") {
                            maternal_pertussis_vaccination +
                            offset(log(time_rsv_secondary*1000)),
                          data = df_input, family = poisson)
-  rsv_severe_full_output <- tidy(rsv_severe_full)
+  rsv_severe_full_output <- tidy(rsv_severe_full, confint = TRUE)
   
   # #rsv mortality by ethnicity, socioeconomic status and household composition
   # rsv_mortality_full <- glm(rsv_mortality ~ latest_ethnicity_group + 
@@ -92,7 +92,7 @@ if (cohort == "infants_subgroup") {
   #                             maternal_pertussis_vaccination +
   #                             offset(log(time_rsv_mortality*1000)),
   #                           data = df_input, family = poisson)
-  # rsv_mortality_full_output <- tidy(rsv_mortality_full)
+  # rsv_mortality_full_output <- tidy(rsv_mortality_full, confint = TRUE)
   
 } else {
   
@@ -102,7 +102,7 @@ if (cohort == "infants_subgroup") {
                          sex + rurality_classification + 
                          offset(log(time_rsv_primary*1000)), 
                        data = df_input, family = poisson)
-  rsv_mild_full_output <- tidy(rsv_mild_full)
+  rsv_mild_full_output <- tidy(rsv_mild_full, confint = TRUE)
   
   #rsv secondary by ethnicity, socioeconomic status and household composition
   rsv_severe_full <- glm(rsv_secondary_inf ~ latest_ethnicity_group + 
@@ -110,7 +110,7 @@ if (cohort == "infants_subgroup") {
                            sex + rurality_classification + 
                            offset(log(time_rsv_secondary*1000)),
                          data = df_input, family = poisson)
-  rsv_severe_full_output <- tidy(rsv_severe_full)
+  rsv_severe_full_output <- tidy(rsv_severe_full, confint = TRUE)
   
   # #rsv mortality by ethnicity, socioeconomic status and household composition
   # rsv_mortality_full <- glm(rsv_mortality ~ latest_ethnicity_group +
@@ -118,7 +118,7 @@ if (cohort == "infants_subgroup") {
   #                             sex + rurality_classification + 
   #                             offset(log(time_rsv_mortality*1000)),
   #                           data = df_input, family = poisson)
-  # rsv_mortality_full_output <- tidy(rsv_mortality_full)
+  # rsv_mortality_full_output <- tidy(rsv_mortality_full, confint = TRUE)
  
 }
 

@@ -68,7 +68,7 @@ if (cohort == "infants_subgroup") {
                                        maternal_pertussis_vaccination +
                                        offset(log(time_overall_resp_primary*1000)),
                                      data = df_input, family = poisson)
-    overall_resp_mild_hh_comp_output <- tidy(overall_resp_mild_hh_comp)
+    overall_resp_mild_hh_comp_output <- tidy(overall_resp_mild_hh_comp, confint = TRUE)
     
     #overall_resp secondary by household composition
     overall_resp_severe_hh_comp <- glm(overall_resp_secondary_inf ~ composition_category +
@@ -79,7 +79,7 @@ if (cohort == "infants_subgroup") {
                                          maternal_pertussis_vaccination +
                                          offset(log(time_overall_resp_secondary*1000)),
                                        data = df_input, family = poisson)
-    overall_resp_severe_hh_comp_output <- tidy(overall_resp_severe_hh_comp)
+    overall_resp_severe_hh_comp_output <- tidy(overall_resp_severe_hh_comp, confint = TRUE)
     
     # #overall_resp mortality by household composition
     # overall_resp_mortality_hh_comp <- glm(overall_resp_mortality_inf ~ composition_category +
@@ -90,7 +90,7 @@ if (cohort == "infants_subgroup") {
     #                                         maternal_pertussis_vaccination +
     #                                         offset(log(time_overall_resp_mortality*1000)),
     #                                       data = df_input, family = poisson)
-    # overall_resp_mortality_hh_comp_output <- tidy(overall_resp_mortality_hh_comp)
+    # overall_resp_mortality_hh_comp_output <- tidy(overall_resp_mortality_hh_comp, confint = TRUE)
     
   }
   
@@ -103,7 +103,7 @@ if (cohort == "infants_subgroup") {
   #                                      maternal_pertussis_vaccination +
   #                                      offset(log(time_all_cause_mortality*1000)),
   #                                    data = df_input, family = poisson)
-  # all_cause_mortality_hh_comp_output <- tidy(all_cause_mortality_hh_comp)
+  # all_cause_mortality_hh_comp_output <- tidy(all_cause_mortality_hh_comp, confint = TRUE)
   
 } else {
   
@@ -114,21 +114,21 @@ if (cohort == "infants_subgroup") {
                                        age_band + sex + rurality_classification + 
                                        offset(log(time_overall_resp_primary*1000)),
                                      data = df_input, family = poisson)
-    overall_resp_mild_hh_comp_output <- tidy(overall_resp_mild_hh_comp)
+    overall_resp_mild_hh_comp_output <- tidy(overall_resp_mild_hh_comp, confint = TRUE)
     
     #overall_resp secondary by household composition
     overall_resp_severe_hh_comp <- glm(overall_resp_secondary_inf ~ composition_category + 
                                          age_band + sex + rurality_classification + 
                                          offset(log(time_overall_resp_secondary*1000)),
                                        data = df_input, family = poisson)
-    overall_resp_severe_hh_comp_output <- tidy(overall_resp_severe_hh_comp)
+    overall_resp_severe_hh_comp_output <- tidy(overall_resp_severe_hh_comp, confint = TRUE)
     
     # #overall_resp mortality by household composition
     # overall_resp_mortality_hh_comp <- glm(overall_resp_mortality_inf ~ composition_category + 
     #                                         age_band + sex + rurality_classification + 
     #                                         offset(log(time_overall_resp_mortality*1000)),
     #                                       data = df_input, family = poisson)
-    # overall_resp_mortality_hh_comp_output <- tidy(overall_resp_mortality_hh_comp)
+    # overall_resp_mortality_hh_comp_output <- tidy(overall_resp_mortality_hh_comp, confint = TRUE)
   
   }
   
@@ -137,7 +137,7 @@ if (cohort == "infants_subgroup") {
   #                                      age_band + sex + rurality_classification + 
   #                                      offset(log(time_all_cause_mortality*1000)),
   #                                    data = df_input, family = poisson)
-  # all_cause_mortality_hh_comp_output <- tidy(all_cause_mortality_hh_comp)
+  # all_cause_mortality_hh_comp_output <- tidy(all_cause_mortality_hh_comp, confint = TRUE)
 
 }
 
