@@ -70,19 +70,47 @@ if (cohort == "infants_subgroup") {
   
 }
 
+#check there are enough outcomes to model
+too_few_events_mild = if_else(sum(df_input$covid_primary_inf, na.rm = TRUE) < 20,
+                              TRUE, FALSE)
+too_few_events_severe = if_else(sum(df_input$covid_secondary_inf, na.rm = TRUE) < 20,
+                                TRUE, FALSE)
+
 if (cohort == "infants_subgroup") {
   
-  #covid primary by ethnicity and socioeconomic status
-  covid_mild_full <- glm(covid_primary_inf ~ latest_ethnicity_group +
-                           imd_quintile + composition_category +
-                           age_band + sex + rurality_classification +
-                           maternal_age + maternal_smoking_status +
-                           maternal_drinking + maternal_drug_usage + 
-                           maternal_flu_vaccination + 
-                           maternal_pertussis_vaccination +
-                           offset(log(time_covid_primary*1000)),
-                         data = df_input, family = poisson)
-  covid_mild_full_output <- tidy(covid_mild_full, confint = TRUE)
+  if (too_few_events_mild) {
+ 
+    #create data frame with same columns as model outputs
+    covid_mild_full_output <- data.frame(term = "too few events", estimate = NA,
+                                         std.error = NA, statistic = NA,
+                                         p.value = NA, conf.low = NA,
+                                         conf.high = NA)
+ 
+  } else {
+  
+    #covid primary by ethnicity and socioeconomic status
+    covid_mild_full <- glm(covid_primary_inf ~ latest_ethnicity_group +
+                             imd_quintile + composition_category +
+                             age_band + sex + rurality_classification +
+                             maternal_age + maternal_smoking_status +
+                             maternal_drinking + maternal_drug_usage + 
+                             maternal_flu_vaccination + 
+                             maternal_pertussis_vaccination +
+                             offset(log(time_covid_primary*1000)),
+                           data = df_input, family = poisson)
+    covid_mild_full_output <- tidy(covid_mild_full, confint = TRUE)
+  
+  }
+  
+  if (too_few_events_severe) {
+  
+    #create data frame with same columns as model outputs
+    covid_severe_full_output <- data.frame(term = "too few events", estimate = NA,
+                                           std.error = NA, statistic = NA,
+                                           p.value = NA, conf.low = NA,
+                                           conf.high = NA)
+  
+  } else {
   
   #covid secondary by ethnicity and socioeconomic status
   covid_severe_full <- glm(covid_secondary_inf ~ latest_ethnicity_group +
@@ -95,6 +123,8 @@ if (cohort == "infants_subgroup") {
                              offset(log(time_covid_secondary*1000)),
                            data = df_input, family = poisson)
   covid_severe_full_output <- tidy(covid_severe_full, confint = TRUE)
+  
+  }
   
   # #covid mortality by ethnicity and socioeconomic status
   # covid_mortality_full <- glm(covid_mortality_inf ~ latest_ethnicity_group +
@@ -110,22 +140,18 @@ if (cohort == "infants_subgroup") {
   
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
-  #covid primary by ethnicity and socioeconomic status
-  covid_mild_full <- glm(covid_primary_inf ~ latest_ethnicity_group +
-                           imd_quintile + composition_category +
-                           age_band + sex + rurality_classification +
-                           has_asthma + has_copd + has_cystic_fibrosis +
-                           has_other_resp + has_diabetes + has_addisons +
-                           severe_obesity + has_chd + has_ckd + has_cld +
-                           has_cnd + has_cancer + immunosuppressed +
-                           has_sickle_cell + smoking_status +
-                           hazardous_drinking + drug_usage +
-                           offset(log(time_covid_primary*1000)),
-                         data = df_input, family = poisson)
-  covid_mild_full_output <- tidy(covid_mild_full, confint = TRUE)
+  if (too_few_events_mild) {
   
-  #covid secondary by ethnicity and socioeconomic status
-  covid_severe_full <- glm(covid_secondary_inf ~ latest_ethnicity_group +
+    #create data frame with same columns as model outputs
+    covid_mild_full_output <- data.frame(term = "too few events", estimate = NA,
+                                         std.error = NA, statistic = NA,
+                                         p.value = NA, conf.low = NA,
+                                         conf.high = NA)
+  
+  } else {
+  
+    #covid primary by ethnicity and socioeconomic status
+    covid_mild_full <- glm(covid_primary_inf ~ latest_ethnicity_group +
                              imd_quintile + composition_category +
                              age_band + sex + rurality_classification +
                              has_asthma + has_copd + has_cystic_fibrosis +
@@ -134,9 +160,37 @@ if (cohort == "infants_subgroup") {
                              has_cnd + has_cancer + immunosuppressed +
                              has_sickle_cell + smoking_status +
                              hazardous_drinking + drug_usage +
-                             offset(log(time_covid_secondary*1000)),
+                             offset(log(time_covid_primary*1000)),
                            data = df_input, family = poisson)
-  covid_severe_full_output <- tidy(covid_severe_full, confint = TRUE)
+    covid_mild_full_output <- tidy(covid_mild_full, confint = TRUE)
+  
+  }
+  
+  if (too_few_events_severe) {
+    
+    #create data frame with same columns as model outputs
+    covid_severe_full_output <- data.frame(term = "too few events", estimate = NA,
+                                           std.error = NA, statistic = NA,
+                                           p.value = NA, conf.low = NA,
+                                           conf.high = NA)
+    
+  } else {
+  
+    #covid secondary by ethnicity and socioeconomic status
+    covid_severe_full <- glm(covid_secondary_inf ~ latest_ethnicity_group +
+                               imd_quintile + composition_category +
+                               age_band + sex + rurality_classification +
+                               has_asthma + has_copd + has_cystic_fibrosis +
+                               has_other_resp + has_diabetes + has_addisons +
+                               severe_obesity + has_chd + has_ckd + has_cld +
+                               has_cnd + has_cancer + immunosuppressed +
+                               has_sickle_cell + smoking_status +
+                               hazardous_drinking + drug_usage +
+                               offset(log(time_covid_secondary*1000)),
+                             data = df_input, family = poisson)
+    covid_severe_full_output <- tidy(covid_severe_full, confint = TRUE)
+  
+  }
   
   # #covid mortality by ethnicity and socioeconomic status
   # covid_mortality_full <- glm(covid_mortality_inf ~ latest_ethnicity_group +
@@ -154,21 +208,45 @@ if (cohort == "infants_subgroup") {
   
 } else {
   
-  #covid primary by ethnicity and socioeconomic status
-  covid_mild_full <- glm(covid_primary_inf ~ latest_ethnicity_group +
-                           imd_quintile + composition_category +
-                           age_band + sex + rurality_classification +
-                           offset(log(time_covid_primary*1000)),
-                         data = df_input, family = poisson)
-  covid_mild_full_output <- tidy(covid_mild_full, confint = TRUE)
+  if (too_few_events_mild) {
   
-  #covid secondary by ethnicity and socioeconomic status
-  covid_severe_full <- glm(covid_secondary_inf ~ latest_ethnicity_group +
+    #create data frame with same columns as model outputs
+    covid_mild_full_output <- data.frame(term = "too few events", estimate = NA,
+                                         std.error = NA, statistic = NA,
+                                         p.value = NA, conf.low = NA,
+                                         conf.high = NA)
+  
+  } else {
+  
+    #covid primary by ethnicity and socioeconomic status
+    covid_mild_full <- glm(covid_primary_inf ~ latest_ethnicity_group +
                              imd_quintile + composition_category +
                              age_band + sex + rurality_classification +
-                             offset(log(time_covid_secondary*1000)),
+                             offset(log(time_covid_primary*1000)),
                            data = df_input, family = poisson)
-  covid_severe_full_output <- tidy(covid_severe_full, confint = TRUE)
+    covid_mild_full_output <- tidy(covid_mild_full, confint = TRUE)
+  
+  }
+  
+  if (too_few_events_severe) {
+  
+    #create data frame with same columns as model outputs
+    covid_severe_full_output <- data.frame(term = "too few events", estimate = NA,
+                                           std.error = NA, statistic = NA,
+                                           p.value = NA, conf.low = NA,
+                                           conf.high = NA)
+  
+  } else {
+  
+    #covid secondary by ethnicity and socioeconomic status
+    covid_severe_full <- glm(covid_secondary_inf ~ latest_ethnicity_group +
+                               imd_quintile + composition_category +
+                               age_band + sex + rurality_classification +
+                               offset(log(time_covid_secondary*1000)),
+                             data = df_input, family = poisson)
+    covid_severe_full_output <- tidy(covid_severe_full, confint = TRUE)
+  
+  }
   
   # #covid mortality by ethnicity and socioeconomic status
   # covid_mortality_full <- glm(covid_mortality_inf ~ latest_ethnicity_group +

@@ -44,22 +44,52 @@ df_input <- df_input %>%
   filter(!is.na(imd_quintile), !is.na(age_band), !is.na(sex),
          !is.na(rurality_classification))
 
-#flu primary by ses
-flu_mild_ses_further <- glm(flu_primary_inf ~ imd_quintile + age_band +
-                              sex + rurality_classification +
-                              prior_flu_vaccination + flu_vaccination_mild +
-                              offset(log(time_flu_primary*1000)),
-                            data = df_input, family = poisson)
-flu_mild_ses_further_output <- tidy(flu_mild_ses_further, confint = TRUE)
+#check there are enough outcomes to model
+too_few_events_mild = if_else(sum(df_input$flu_primary_inf, na.rm = TRUE) < 20,
+                              TRUE, FALSE)
+too_few_events_severe = if_else(sum(df_input$flu_secondary_inf, na.rm = TRUE) < 20,
+                                TRUE, FALSE)
+
+if (too_few_events_mild) {
   
-#flu secondary by ses
-flu_severe_ses_further <- glm(flu_secondary_inf ~ imd_quintile + age_band +
+  #create data frame with same columns as model output creates
+  flu_mild_ses_further_output <- data.frame(term = "too few events",
+                                            estimate = NA, std.error = NA,
+                                            statistic = NA, p.value = NA,
+                                            conf.low = NA, conf.high = NA)
+  
+} else {
+
+  #flu primary by ses
+  flu_mild_ses_further <- glm(flu_primary_inf ~ imd_quintile + age_band +
                                 sex + rurality_classification +
-                                prior_flu_vaccination + flu_vaccination_severe +
-                                offset(log(time_flu_secondary*1000)),
+                                prior_flu_vaccination + flu_vaccination_mild +
+                                offset(log(time_flu_primary*1000)),
                               data = df_input, family = poisson)
-flu_severe_ses_further_output <- tidy(flu_severe_ses_further, confint = TRUE)
+  flu_mild_ses_further_output <- tidy(flu_mild_ses_further, confint = TRUE)
+
+}
+
+if (too_few_events_severe) {
   
+  #create data frame with same columns as model output creates
+  flu_severe_ses_further_output <- data.frame(term = "too few events",
+                                              estimate = NA, std.error = NA,
+                                              statistic = NA, p.value = NA,
+                                              conf.low = NA, conf.high = NA)
+  
+} else {
+
+  #flu secondary by ses
+  flu_severe_ses_further <- glm(flu_secondary_inf ~ imd_quintile + age_band +
+                                  sex + rurality_classification +
+                                  prior_flu_vaccination + flu_vaccination_severe +
+                                  offset(log(time_flu_secondary*1000)),
+                                data = df_input, family = poisson)
+  flu_severe_ses_further_output <- tidy(flu_severe_ses_further, confint = TRUE)
+
+}
+
 # #flu mortality by ses
 # flu_mortality_ses_further <- glm(flu_mortality_inf ~ imd_quintile + age_band +
 #                                    sex + rurality_classification +

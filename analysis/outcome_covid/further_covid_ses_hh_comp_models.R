@@ -40,28 +40,64 @@ df_input <- read_feather(
 #remove rows with missing values in any of the variables used in models
 #outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 #vaccination will also never be NA as part of processing pipeline
-
 df_input <- df_input %>% 
   filter(!is.na(imd_quintile), !is.na(composition_category),
-         !is.na(age_band), !is.na(sex), !is.na(rurality_classification))
+         !is.na(age_band), !is.na(sex),
+         !is.na(rurality_classification))
 
-#covid primary by socioeconomic status and household composition
-covid_mild_ses_hh_comp_further <- glm(covid_primary_inf ~ imd_quintile +
-                                        composition_category + age_band +
-                                        sex + rurality_classification +
-                                        covid_vaccination_mild +
-                                        offset(log(time_covid_primary*1000)),
-                                      data = df_input, family = poisson)
-covid_mild_ses_hh_comp_further_output <- tidy(covid_mild_ses_hh_comp_further, confint = TRUE)
+#check there are enough outcomes to model
+too_few_events_mild = if_else(sum(df_input$covid_primary_inf, na.rm = TRUE) < 20,
+                              TRUE, FALSE)
+too_few_events_severe = if_else(sum(df_input$covid_secondary_inf, na.rm = TRUE) < 20,
+                                TRUE, FALSE)
 
-#covid secondary by socioeconomic status and household composition
-covid_severe_ses_hh_comp_further <- glm(covid_secondary_inf ~ imd_quintile +
+if (too_few_events_mild) { 
+  
+  #create data frame with same columns as model outputs
+  covid_mild_ses_hh_comp_further_output <- data.frame(term = "too few events",
+                                                      estimate = NA,
+                                                      std.error = NA,
+                                                      statistic = NA,
+                                                      p.value = NA,
+                                                      conf.low = NA,
+                                                      conf.high = NA)
+  
+} else {
+  
+  #covid primary by socioeconomic status and household composition
+  covid_mild_ses_hh_comp_further <- glm(covid_primary_inf ~ imd_quintile +
                                           composition_category + age_band +
                                           sex + rurality_classification +
-                                          covid_vaccination_severe +
-                                          offset(log(time_covid_secondary*1000)),
+                                          covid_vaccination_mild +
+                                          offset(log(time_covid_primary*1000)),
                                         data = df_input, family = poisson)
-covid_severe_ses_hh_comp_further_output <- tidy(covid_severe_ses_hh_comp_further, confint = TRUE)
+  covid_mild_ses_hh_comp_further_output <- tidy(covid_mild_ses_hh_comp_further, confint = TRUE)
+
+}
+
+if (too_few_events_severe) {
+  
+  #create data frame with same columns as model outputs
+  covid_severe_ses_hh_comp_further_output <- data.frame(term = "too few events",
+                                                        estimate = NA,
+                                                        std.error = NA,
+                                                        statistic = NA,
+                                                        p.value = NA,
+                                                        conf.low = NA,
+                                                        conf.high = NA)
+  
+} else {
+
+  #covid secondary by socioeconomic status and household composition
+  covid_severe_ses_hh_comp_further <- glm(covid_secondary_inf ~ imd_quintile +
+                                            composition_category + age_band +
+                                            sex + rurality_classification +
+                                            covid_vaccination_severe +
+                                            offset(log(time_covid_secondary*1000)),
+                                          data = df_input, family = poisson)
+  covid_severe_ses_hh_comp_further_output <- tidy(covid_severe_ses_hh_comp_further, confint = TRUE)
+
+}
 
 # #covid mortality by socioeconomic status and household composition
 # covid_mortality_ses_hh_comp_further <- glm(covid_mortality_inf ~ imd_quintile +

@@ -57,29 +57,59 @@ if (cohort == "infants_subgroup") {
   
 }
 
+#check there are enough outcomes to model
+too_few_events_mild = if_else(sum(df_input$covid_primary_inf, na.rm = TRUE) < 20,
+                              TRUE, FALSE)
+too_few_events_severe = if_else(sum(df_input$covid_secondary_inf, na.rm = TRUE) < 20,
+                                TRUE, FALSE)
+
 if (cohort == "infants_subgroup") {
   
-  #flu primary by ethnicity
-  flu_mild_ethnicity <- glm(flu_primary_inf ~ latest_ethnicity_group + 
-                              age_band + sex + rurality_classification + 
-                              maternal_age + maternal_smoking_status +
-                              maternal_drinking + maternal_drug_usage + 
-                              maternal_flu_vaccination + 
-                              maternal_pertussis_vaccination +
-                              offset(log(time_flu_primary*1000)),
-                            data = df_input, family = poisson)
-  flu_mild_ethnicity_output <- tidy(flu_mild_ethnicity, confint = TRUE)
+  if (too_few_events_mild) {
   
-  #flu secondary by ethnicity
-  flu_severe_ethnicity <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
-                                age_band + sex + rurality_classification +
+    #create data frame with the same columns as model outputs
+    flu_mild_ethnicity_output <- data.frame(term = "too few events",
+                                            estimate = NA, std.error = NA,
+                                            statistic = NA, p.value = NA,
+                                            conf.low = NA, conf.high = NA)
+  
+  } else {
+
+    #flu primary by ethnicity
+    flu_mild_ethnicity <- glm(flu_primary_inf ~ latest_ethnicity_group + 
+                                age_band + sex + rurality_classification + 
                                 maternal_age + maternal_smoking_status +
                                 maternal_drinking + maternal_drug_usage + 
                                 maternal_flu_vaccination + 
                                 maternal_pertussis_vaccination +
-                                offset(log(time_flu_secondary*1000)),
+                                offset(log(time_flu_primary*1000)),
                               data = df_input, family = poisson)
-  flu_severe_ethnicity_output <- tidy(flu_severe_ethnicity, confint = TRUE)
+    flu_mild_ethnicity_output <- tidy(flu_mild_ethnicity, confint = TRUE)
+  
+  }
+  
+  if (too_few_events_severe) {
+  
+    #create data frame with the same columns as model outputs
+    flu_severe_ethnicity_outputs <- data.frame(term = "too few events",
+                                              estimate = NA, std.error = NA,
+                                              statistic = NA, p.value = NA,
+                                              conf.low = NA, conf.high = NA)
+  
+  } else {
+  
+    #flu secondary by ethnicity
+    flu_severe_ethnicity <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
+                                  age_band + sex + rurality_classification +
+                                  maternal_age + maternal_smoking_status +
+                                  maternal_drinking + maternal_drug_usage + 
+                                  maternal_flu_vaccination + 
+                                  maternal_pertussis_vaccination +
+                                  offset(log(time_flu_secondary*1000)),
+                                data = df_input, family = poisson)
+    flu_severe_ethnicity_output <- tidy(flu_severe_ethnicity, confint = TRUE)
+  
+  }
   
   # #flu mortality by ethnicity
   # flu_mortality_ethnicity <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
@@ -94,19 +124,43 @@ if (cohort == "infants_subgroup") {
   
 } else {
 
-  #flu primary by ethnicity
-  flu_mild_ethnicity <- glm(flu_primary_inf ~ latest_ethnicity_group + 
-                              age_band + sex + rurality_classification + 
-                              offset(log(time_flu_primary*1000)),
-                            data = df_input, family = poisson)
-  flu_mild_ethnicity_output <- tidy(flu_mild_ethnicity, confint = TRUE)
+  if (too_few_events_mild) {
   
-  #flu secondary by ethnicity
-  flu_severe_ethnicity <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
+    #create data frame with the same columns as model outputs
+    flu_mild_ethnicity_output <- data.frame(term = "too few events",
+                                            estimate = NA, std.error = NA,
+                                            statistic = NA, p.value = NA,
+                                            conf.low = NA, conf.high = NA)
+  
+  } else {
+  
+    #flu primary by ethnicity
+    flu_mild_ethnicity <- glm(flu_primary_inf ~ latest_ethnicity_group + 
                                 age_band + sex + rurality_classification + 
-                                offset(log(time_flu_secondary*1000)),
+                                offset(log(time_flu_primary*1000)),
                               data = df_input, family = poisson)
-  flu_severe_ethnicity_output <- tidy(flu_severe_ethnicity, confint = TRUE)
+    flu_mild_ethnicity_output <- tidy(flu_mild_ethnicity, confint = TRUE)
+  
+  }
+  
+  if (too_few_events_severe) {
+  
+    #create data frame with the same columns as model outputs
+    flu_severe_ethnicity_output <- data.frame(term = "too few events",
+                                              estimate = NA, std.error = NA,
+                                              statistic = NA, p.value = NA,
+                                              conf.low = NA, conf.high = NA)
+  
+  } else {
+  
+    #flu secondary by ethnicity
+    flu_severe_ethnicity <- glm(flu_secondary_inf ~ latest_ethnicity_group + 
+                                  age_band + sex + rurality_classification + 
+                                  offset(log(time_flu_secondary*1000)),
+                                data = df_input, family = poisson)
+    flu_severe_ethnicity_output <- tidy(flu_severe_ethnicity, confint = TRUE)
+  
+  }
   
   # #flu mortality by ethnicity
   # flu_mortality_ethnicity <- glm(flu_mortality_inf ~ latest_ethnicity_group + 
@@ -134,7 +188,8 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
 }))
 
 ## create output directories ----
-fs::dir_create(here::here("output", "results", "models", "flu_overall"))
+fs::dir_create(here::here("output", "results", "models",
+                          "flu_overall"))
 
 #save model output 
 if (length(args) == 0) {

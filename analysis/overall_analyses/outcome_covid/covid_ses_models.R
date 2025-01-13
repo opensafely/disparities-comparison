@@ -57,29 +57,59 @@ if (cohort == "infants_subgroup") {
   
 }
 
+#check there are enough outcomes to model
+too_few_events_mild = if_else(sum(df_input$covid_primary_inf, na.rm = TRUE) < 20,
+                              TRUE, FALSE)
+too_few_events_severe = if_else(sum(df_input$covid_secondary_inf, na.rm = TRUE) < 20,
+                                TRUE, FALSE)
+
 if (cohort == "infants_subgroup") {
   
-  #covid primary by ses
-  covid_mild_ses <- glm(covid_primary_inf ~ imd_quintile +
-                          age_band + sex + rurality_classification +
-                          maternal_age + maternal_smoking_status +
-                          maternal_drinking + maternal_drug_usage + 
-                          maternal_flu_vaccination + 
-                          maternal_pertussis_vaccination +
-                          offset(log(time_covid_primary*1000)),
-                        data = df_input, family = poisson)
-  covid_mild_ses_output <- tidy(covid_mild_ses, confint = TRUE)
+  if (too_few_events_mild) {
   
-  #covid secondary by ses
-  covid_severe_ses <- glm(covid_secondary_inf ~ imd_quintile +
+    #create data frame with the same columns as model outputs
+    covid_mild_ses_output <- data.frame(term = "too few events",
+                                        estimate = NA, std.error = NA,
+                                        statistic = NA, p.value = NA,
+                                        conf.low = NA, conf.high = NA)
+  
+  } else {
+  
+    #covid primary by ses
+    covid_mild_ses <- glm(covid_primary_inf ~ imd_quintile +
                             age_band + sex + rurality_classification +
                             maternal_age + maternal_smoking_status +
                             maternal_drinking + maternal_drug_usage + 
                             maternal_flu_vaccination + 
                             maternal_pertussis_vaccination +
-                            offset(log(time_covid_secondary*1000)),
+                            offset(log(time_covid_primary*1000)),
                           data = df_input, family = poisson)
-  covid_severe_ses_output <- tidy(covid_severe_ses, confint = TRUE)
+    covid_mild_ses_output <- tidy(covid_mild_ses, confint = TRUE)
+  
+  }
+  
+  if (too_few_events_severe) {
+  
+    #create data frame with the same columns as model outputs
+    covid_severe_ses_output <- data.frame(term = "too few events",
+                                          estimate = NA, std.error = NA,
+                                          statistic = NA, p.value = NA,
+                                          conf.low = NA, conf.high = NA)
+ 
+  } else {
+  
+    #covid secondary by ses
+    covid_severe_ses <- glm(covid_secondary_inf ~ imd_quintile +
+                              age_band + sex + rurality_classification +
+                              maternal_age + maternal_smoking_status +
+                              maternal_drinking + maternal_drug_usage + 
+                              maternal_flu_vaccination + 
+                              maternal_pertussis_vaccination +
+                              offset(log(time_covid_secondary*1000)),
+                            data = df_input, family = poisson)
+    covid_severe_ses_output <- tidy(covid_severe_ses, confint = TRUE)
+  
+  }
   
   # #covid mortality by ses
   # covid_mortality_ses <- glm(covid_mortality_inf ~ imd_quintile +
@@ -94,13 +124,35 @@ if (cohort == "infants_subgroup") {
  
 } else {
   
-  #covid primary by ses
-  covid_mild_ses <- glm(covid_primary_inf ~ imd_quintile +
-                          age_band + sex + rurality_classification +
-                          offset(log(time_covid_primary*1000)),
-                        data = df_input, family = poisson)
-  covid_mild_ses_output <- tidy(covid_mild_ses, confint = TRUE)
+  if (too_few_events_mild) {
+  
+    #create data frame with the same columns as model outputs
+    covid_mild_ses_output <- data.frame(term = "too few events",
+                                        estimate = NA, std.error = NA,
+                                        statistic = NA, p.value = NA,
+                                        conf.low = NA, conf.high = NA)
+  
+  } else {
+  
+    #covid primary by ses
+    covid_mild_ses <- glm(covid_primary_inf ~ imd_quintile +
+                            age_band + sex + rurality_classification +
+                            offset(log(time_covid_primary*1000)),
+                          data = df_input, family = poisson)
+    covid_mild_ses_output <- tidy(covid_mild_ses, confint = TRUE)
  
+  }
+  
+  if (too_few_events_severe) {
+  
+    #create data frame with the same columns as model outputs
+    covid_severe_ses_output <- data.frame(term = "too few events",
+                                          estimate = NA, std.error = NA,
+                                          statistic = NA, p.value = NA,
+                                          conf.low = NA, conf.high = NA)
+ 
+  } else {
+  
   #covid secondary by ses
   covid_severe_ses <- glm(covid_secondary_inf ~ imd_quintile +
                             age_band + sex + rurality_classification +
@@ -108,6 +160,8 @@ if (cohort == "infants_subgroup") {
                           data = df_input, family = poisson)
   covid_severe_ses_output <- tidy(covid_severe_ses, confint = TRUE)
  
+  }
+  
   # #covid mortality by ses
   # covid_mortality_ses <- glm(covid_mortality_inf ~ imd_quintile +
   #                              age_band + sex + rurality_classification +
@@ -132,7 +186,8 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
 }))
   
 ## create output directories ----
-fs::dir_create(here::here("output", "results", "models", "covid_overall"))
+fs::dir_create(here::here("output", "results", "models",
+                          "covid_overall"))
 
 #save model output 
 if (length(args) == 0) {

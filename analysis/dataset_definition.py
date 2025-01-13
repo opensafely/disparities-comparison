@@ -6,7 +6,7 @@ from ehrql import Dataset, create_dataset, case, when, maximum_of, minimum_of, y
 from ehrql.tables.tpp import (
   patients,
   medications,
-  ons_deaths,
+  #ons_deaths,
   addresses,
   clinical_events,
   practice_registrations,
@@ -85,9 +85,7 @@ dataset.patient_end_date = followup_end_date
 
 #define patients status: alive/dead
 was_alive = (
-  (ons_deaths.date.is_after(index_date))
-  |(ons_deaths.date.is_null())
-  |(patients.date_of_death.is_after(index_date))
+  (patients.date_of_death.is_after(index_date))
   |(patients.date_of_death.is_null())
 )
 
@@ -316,8 +314,8 @@ if cohort == "infants" or cohort == "infants_subgroup" :
 else:
   dataset.age = patients.age_on(index_date) #gets the patients age on their specific index date
 
-# #extract date of death
-# dataset.death_date = ons_deaths.date 
+#extract date of death
+dataset.death_date = patients.date_of_death
 
 #extract latest ethnicity code for patient
 dataset.latest_ethnicity_group = (

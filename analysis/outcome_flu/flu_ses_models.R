@@ -49,14 +49,12 @@ if (cohort == "infants_subgroup") {
   
   df_input <- df_input %>% 
     filter(!is.na(latest_ethnicity_group), !is.na(age_band), !is.na(sex),
-           !is.na(rurality_classification), !is.na(has_asthma),
-           !is.na(has_copd), !is.na(has_cystic_fibrosis),
-           !is.na(has_other_resp), !is.na(has_diabetes), !is.na(has_addisons),
-           !is.na(severe_obesity), !is.na(has_chd), !is.na(has_ckd),
-           !is.na(has_cld), !is.na(has_cnd), !is.na(has_cancer),
-           !is.na(immunosuppressed), !is.na(has_sickle_cell),
-           !is.na(smoking_status), !is.na(hazardous_drinking),
-           !is.na(drug_usage))
+           !is.na(rurality_classification), !is.na(has_asthma), !is.na(has_copd),
+           !is.na(has_cystic_fibrosis), !is.na(has_other_resp),
+           !is.na(has_diabetes), !is.na(has_addisons), !is.na(severe_obesity),
+           !is.na(has_chd), !is.na(has_ckd), !is.na(has_cld), !is.na(has_cnd),
+           !is.na(has_cancer), !is.na(immunosuppressed), !is.na(has_sickle_cell),
+           !is.na(smoking_status), !is.na(hazardous_drinking), !is.na(drug_usage))
   
 } else {
   
@@ -66,29 +64,59 @@ if (cohort == "infants_subgroup") {
   
 }
 
+#check there are enough outcomes to model
+too_few_events_mild = if_else(sum(df_input$flu_primary_inf, na.rm = TRUE) < 20,
+                              TRUE, FALSE)
+too_few_events_severe = if_else(sum(df_input$flu_secondary_inf, na.rm = TRUE) < 20,
+                                TRUE, FALSE)
+
 if (cohort == "infants_subgroup") {
   
-  #flu primary by ses
-  flu_mild_ses <- glm(flu_primary_inf ~ imd_quintile + 
-                        age_band + sex + rurality_classification + 
-                        maternal_age + maternal_smoking_status +
-                        maternal_drinking + maternal_drug_usage + 
-                        maternal_flu_vaccination + 
-                        maternal_pertussis_vaccination +
-                        offset(log(time_flu_primary*1000)),
-                      data = df_input, family = poisson)
-  flu_mild_ses_output <- tidy(flu_mild_ses, confint = TRUE)
+  if (too_few_events_mild) {
+ 
+    #create data frame with same columns as model output creates
+    flu_mild_ses_output <- data.frame(term = "too few events", estimate = NA,
+                                      std.error = NA, statistic = NA,
+                                      p.value = NA, conf.low = NA,
+                                      conf.high = NA)
   
-  #flu secondary by ses
-  flu_severe_ses <- glm(flu_secondary_inf ~ imd_quintile + 
+  } else {
+  
+    #flu primary by ses
+    flu_mild_ses <- glm(flu_primary_inf ~ imd_quintile + 
                           age_band + sex + rurality_classification + 
                           maternal_age + maternal_smoking_status +
                           maternal_drinking + maternal_drug_usage + 
                           maternal_flu_vaccination + 
                           maternal_pertussis_vaccination +
-                          offset(log(time_flu_secondary*1000)),
+                          offset(log(time_flu_primary*1000)),
                         data = df_input, family = poisson)
-  flu_severe_ses_output <- tidy(flu_severe_ses, confint = TRUE)
+    flu_mild_ses_output <- tidy(flu_mild_ses, confint = TRUE)
+  
+  }
+  
+  if (too_few_events_severe) {
+ 
+    #create data frame with same columns as model output creates
+    flu_severe_ses_output <- data.frame(term = "too few events", estimate = NA,
+                                        std.error = NA, statistic = NA,
+                                        p.value = NA, conf.low = NA,
+                                        conf.high = NA)
+  
+  } else {
+  
+    #flu secondary by ses
+    flu_severe_ses <- glm(flu_secondary_inf ~ imd_quintile + 
+                            age_band + sex + rurality_classification + 
+                            maternal_age + maternal_smoking_status +
+                            maternal_drinking + maternal_drug_usage + 
+                            maternal_flu_vaccination + 
+                            maternal_pertussis_vaccination +
+                            offset(log(time_flu_secondary*1000)),
+                          data = df_input, family = poisson)
+    flu_severe_ses_output <- tidy(flu_severe_ses, confint = TRUE)
+  
+  }
   
   # #flu mortality by ses
   # flu_mortality_ses <- glm(flu_mortality_inf ~ imd_quintile + 
@@ -103,21 +131,18 @@ if (cohort == "infants_subgroup") {
   
 } else if (cohort == "older_adults" & investigation_type == "secondary") {
   
-  #flu primary by ses
-  flu_mild_ses <- glm(flu_primary_inf ~ imd_quintile + 
-                        age_band + sex + rurality_classification +
-                        has_asthma + has_copd + has_cystic_fibrosis +
-                        has_other_resp + has_diabetes + has_addisons +
-                        severe_obesity + has_chd + has_ckd + has_cld +
-                        has_cnd + has_cancer + immunosuppressed +
-                        has_sickle_cell + smoking_status +
-                        hazardous_drinking + drug_usage +
-                        offset(log(time_flu_primary*1000)),
-                      data = df_input, family = poisson)
-  flu_mild_ses_output <- tidy(flu_mild_ses, confint = TRUE)
+  if (too_few_events_mild) {
+ 
+    #create data frame with same columns as model output creates
+    flu_mild_ses_output <- data.frame(term = "too few events", estimate = NA,
+                                      std.error = NA, statistic = NA,
+                                      p.value = NA, conf.low = NA,
+                                      conf.high = NA)
   
-  #flu secondary by ses
-  flu_severe_ses <- glm(flu_secondary_inf ~ imd_quintile + 
+  } else {
+  
+    #flu primary by ses
+    flu_mild_ses <- glm(flu_primary_inf ~ imd_quintile + 
                           age_band + sex + rurality_classification +
                           has_asthma + has_copd + has_cystic_fibrosis +
                           has_other_resp + has_diabetes + has_addisons +
@@ -125,9 +150,36 @@ if (cohort == "infants_subgroup") {
                           has_cnd + has_cancer + immunosuppressed +
                           has_sickle_cell + smoking_status +
                           hazardous_drinking + drug_usage +
-                          offset(log(time_flu_secondary*1000)),
+                          offset(log(time_flu_primary*1000)),
                         data = df_input, family = poisson)
-  flu_severe_ses_output <- tidy(flu_severe_ses, confint = TRUE)
+    flu_mild_ses_output <- tidy(flu_mild_ses, confint = TRUE)
+  
+  }
+  
+  if (too_few_events_severe) {
+ 
+    #create data frame with same columns as model output creates
+    flu_severe_ses_output <- data.frame(term = "too few events", estimate = NA,
+                                        std.error = NA, statistic = NA,
+                                        p.value = NA, conf.low = NA,
+                                        conf.high = NA)
+  
+  } else {
+  
+    #flu secondary by ses
+    flu_severe_ses <- glm(flu_secondary_inf ~ imd_quintile + 
+                            age_band + sex + rurality_classification +
+                            has_asthma + has_copd + has_cystic_fibrosis +
+                            has_other_resp + has_diabetes + has_addisons +
+                            severe_obesity + has_chd + has_ckd + has_cld +
+                            has_cnd + has_cancer + immunosuppressed +
+                            has_sickle_cell + smoking_status +
+                            hazardous_drinking + drug_usage +
+                            offset(log(time_flu_secondary*1000)),
+                          data = df_input, family = poisson)
+    flu_severe_ses_output <- tidy(flu_severe_ses, confint = TRUE)
+  
+  }
   
   # #flu mortality by ses
   # flu_mortality_ses <- glm(flu_mortality_inf ~ imd_quintile + 
@@ -144,19 +196,43 @@ if (cohort == "infants_subgroup") {
   
 } else {
   
-  #flu primary by ses
-  flu_mild_ses <- glm(flu_primary_inf ~ imd_quintile + 
-                        age_band + sex + rurality_classification + 
-                        offset(log(time_flu_primary*1000)),
-                      data = df_input, family = poisson)
-  flu_mild_ses_output <- tidy(flu_mild_ses, confint = TRUE)
+  if (too_few_events_mild) {
+ 
+    #create data frame with same columns as model output creates
+    flu_mild_ses_output <- data.frame(term = "too few events", estimate = NA,
+                                      std.error = NA, statistic = NA,
+                                      p.value = NA, conf.low = NA,
+                                      conf.high = NA)
   
-  #flu secondary by ses
-  flu_severe_ses <- glm(flu_secondary_inf ~ imd_quintile + 
+  } else {
+  
+    #flu primary by ses
+    flu_mild_ses <- glm(flu_primary_inf ~ imd_quintile + 
                           age_band + sex + rurality_classification + 
-                          offset(log(time_flu_secondary*1000)),
+                          offset(log(time_flu_primary*1000)),
                         data = df_input, family = poisson)
-  flu_severe_ses_output <- tidy(flu_severe_ses, confint = TRUE)
+    flu_mild_ses_output <- tidy(flu_mild_ses, confint = TRUE)
+  
+  }
+  
+  if (too_few_events_severe) {
+ 
+    #create data frame with same columns as model output creates
+    flu_severe_ses_output <- data.frame(term = "too few events", estimate = NA,
+                                        std.error = NA, statistic = NA,
+                                        p.value = NA, conf.low = NA,
+                                        conf.high = NA)
+  
+  } else {
+  
+    #flu secondary by ses
+    flu_severe_ses <- glm(flu_secondary_inf ~ imd_quintile + 
+                            age_band + sex + rurality_classification + 
+                            offset(log(time_flu_secondary*1000)),
+                          data = df_input, family = poisson)
+    flu_severe_ses_output <- tidy(flu_severe_ses, confint = TRUE)
+  
+  }
   
   # #flu mortality by ses
   # flu_mortality_ses <- glm(flu_mortality_inf ~ imd_quintile + 
