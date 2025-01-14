@@ -67,6 +67,13 @@ if (cohort == "infants_subgroup") {
   
 }
 
+lapply(df_input, function(x) {
+  if (is.factor(x)) {
+    levels(x) <- c(levels(x), "NA")
+  }
+  x
+})
+
 #check there are enough outcomes to model
 too_few_events_mild = if_else(sum(df_input$flu_primary_inf, na.rm = TRUE) < 20,
                               TRUE, FALSE)
