@@ -67,11 +67,21 @@ if (cohort == "infants_subgroup") {
   
 }
 
-#check there are enough outcomes to model
-too_few_events_mild = if_else(sum(df_input$flu_primary_inf, na.rm = TRUE) < 30,
-                              TRUE, FALSE)
-too_few_events_severe = if_else(sum(df_input$flu_secondary_inf, na.rm = TRUE) < 30,
-                                TRUE, FALSE)
+# Define the threshold
+event_threshold <- 5
+
+# Check for too few events at each level used in the model
+too_few_events_mild <- df_input %>%
+  group_by(latest_ethnicity_group, age_band, sex, rurality_classification) %>%
+  summarise(event_count = sum(flu_primary_inf, na.rm = TRUE), .groups = "drop") %>%
+  summarise(too_few = any(event_count < event_threshold)) %>%
+  pull(too_few)
+
+too_few_events_severe <- df_input %>%
+  group_by(latest_ethnicity_group, age_band, sex, rurality_classification) %>%
+  summarise(event_count = sum(flu_secondary_inf, na.rm = TRUE), .groups = "drop") %>%
+  summarise(too_few = any(event_count < event_threshold)) %>%
+  pull(too_few)
 
 too_few_events_mild
 too_few_events_severe
