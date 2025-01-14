@@ -67,16 +67,14 @@ if (cohort == "infants_subgroup") {
   
 }
 
-levels(df_input$latest_ethnicity_group)
-levels(df_input$age_band)
-levels(df_input$sex)
-levels(df_input$rurality_classification)
-
 #check there are enough outcomes to model
 too_few_events_mild = if_else(sum(df_input$flu_primary_inf, na.rm = TRUE) < 30,
                               TRUE, FALSE)
 too_few_events_severe = if_else(sum(df_input$flu_secondary_inf, na.rm = TRUE) < 30,
                                 TRUE, FALSE)
+
+too_few_events_mild
+too_few_events_severe
 
 if (cohort == "infants_subgroup") {
   
