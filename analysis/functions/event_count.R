@@ -49,8 +49,10 @@ group_specific_events <- function(df, add_characteristics,
       summarise(events_mild = sum(!!outcome_mild, na.rm = TRUE),
                 events_severe = sum(!!outcome_severe, na.rm = TRUE))
     
-    enough_events_mild <- sum(events_per_group$events_mild > 0) > 1
-    enough_events_severe <- sum(events_per_group$events_severe > 0) > 1
+    enough_events_mild <- if_else(sum(events_per_group$events_mild > 0) > 1,
+                                  TRUE, FALSE)
+    enough_events_severe <- if_else(sum(events_per_group$events_severe > 0) > 1,
+                                    TRUE, FALSE)
     
     #add column with whether there are enough events
     events_per_group <- events_per_group %>%
