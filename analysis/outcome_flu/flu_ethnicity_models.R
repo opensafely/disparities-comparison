@@ -80,6 +80,7 @@ too_few_events_severe <- any(events$enough_events_severe == FALSE)
 
 #show the event counts if there are too few events
 if (too_few_events_mild | too_few_events_severe) print(events)
+print(events)
 
 #run models if there are enough events respectively
 if (cohort == "infants_subgroup") {
