@@ -70,33 +70,9 @@ if (cohort == "infants_subgroup") {
 #import event counting function
 source(here::here("analysis", "functions", "event_count.R"))
 
-#define additional characteristics 
-if (cohort == "infants_subgroup") {
-  
-  additional_characteristics <- c("maternal_age", "maternal_smoking_status",
-                                  "maternal_drinking", "maternal_drug_usage",
-                                  "maternal_flu_vaccination",
-                                  "maternal_pertussis_vaccination")
-  
-} else if (cohort == "older_adults" & investigation_type == "secondary") {
-  
-  additional_characteristics <- c("has_asthma", "has_copd", "has_cystic_fibrosis",
-                                  "has_other_resp", "has_diabetes", "has_addisons",
-                                  "severe_obesity", "has_chd", "has_ckd", "has_cld",
-                                  "has_cnd", "has_cancer", "immunosuppressed",
-                                  "has_sickle_cell", "smoking_status",
-                                  "hazardous_drinking", "drug_usage")
-  
-} else {
-  
-  additional_characteristics <- character(0)
-  
-}
-
 #calculate events per group
-events <- group_specific_events(df_input, c("latest_ethnicity_group",
-                                additional_characteristics), "flu_primary_inf",
-                                "flu_secondary_inf")
+events <- group_specific_events(df_input, "latest_ethnicity_group",
+                                "flu_primary_inf", "flu_secondary_inf")
 
 #check if there are too few events
 too_few_events_mild <- any(events$enough_events_mild == FALSE)
