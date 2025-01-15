@@ -67,24 +67,40 @@ if (cohort == "infants_subgroup") {
   
 }
 
-# Define the threshold
-event_threshold <- 5
+#import event counting function
+source(here::here("analysis", "functions", "event_count.R"))
 
-# Check for too few events at each level used in the model
-too_few_events_mild <- df_input %>%
-  group_by(latest_ethnicity_group, age_band, sex, rurality_classification) %>%
-  summarise(event_count = sum(flu_primary_inf, na.rm = TRUE), .groups = "drop") %>%
-  summarise(too_few = any(event_count < event_threshold)) %>%
-  pull(too_few)
+#define additional characteristics 
+if (cohort == "infants_subgroup") {
+  
+  additional_characteristics <- c("maternal_age", "maternal_smoking_status",
+                                  "maternal_drinking", "maternal_drug_usage",
+                                  "maternal_flu_vaccination",
+                                  "maternal_pertussis_vaccination")
+  
+} else if (cohort == "older_adults" & investigation_type == "secondary") {
+  
+  additional_characteristics <- c("has_asthma", "has_copd", "has_cystic_fibrosis",
+                                  "has_other_resp", "has_diabetes", "has_addisons",
+                                  "severe_obesity", "has_chd", "has_ckd", "has_cld",
+                                  "has_cnd", "has_cancer", "immunosuppressed",
+                                  "has_sickle_cell", "smoking_status",
+                                  "hazardous_drinking", "drug_usage")
+  
+} else {
+  
+  additional_characteristics <- character(0)
+  
+}
 
-too_few_events_severe <- df_input %>%
-  group_by(latest_ethnicity_group, age_band, sex, rurality_classification) %>%
-  summarise(event_count = sum(flu_secondary_inf, na.rm = TRUE), .groups = "drop") %>%
-  summarise(too_few = any(event_count < event_threshold)) %>%
-  pull(too_few)
+#calculate events per group
+events <- group_specific_events(df_input, c("latest_ethnicity_group",
+                                additional_characteristics), "flu_primary_inf",
+                                "flu_secondary_inf")
 
-too_few_events_mild
-too_few_events_severe
+#check if there are too few events
+too_few_events_mild <- any(events$enough_events_mild == FALSE)
+too_few_events_severe <- any(events$enough_events_severe == FALSE)
 
 if (cohort == "infants_subgroup") {
   
