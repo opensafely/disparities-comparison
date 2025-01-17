@@ -210,8 +210,8 @@ if (cohort == "infants_subgroup") {
   df_input_filt <- df_input_filt %>%
     mutate(
       #create smoking status factor
-      maternal_smoking_status = relevel(factor(maternal_smoking_status),
-                                        ref = "Never")
+      maternal_smoking_status = relevel(factor(maternal_smoking_status,
+                                        ordered = FALSE), ref = "Never")
     )
 }
 
