@@ -7,7 +7,7 @@ group_specific_events <- function(df, add_characteristics,
   #define additional characteristics 
   if (cohort == "infants_subgroup") {
     
-    additional_characteristics <- c("maternal_age", "maternal_smoking_status",
+    additional_characteristics <- c("maternal_smoking_status",
                                     "maternal_drinking", "maternal_drug_usage",
                                     "maternal_flu_vaccination",
                                     "maternal_pertussis_vaccination")
