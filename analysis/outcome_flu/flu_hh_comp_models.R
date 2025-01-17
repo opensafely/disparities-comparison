@@ -85,7 +85,7 @@ if (cohort == "infants_subgroup") {
                               maternal_pertussis_vaccination +
                               offset(log(time_flu_primary*1000)),
                             data = df_input, family = poisson)
-    flu_mild_hh_comp_output <- tidy(flu_mild_hh_comp, confint = TRUE)
+    flu_mild_hh_comp_output <- tidy(flu_mild_hh_comp, conf.int = TRUE)
   
   }
   
@@ -108,7 +108,7 @@ if (cohort == "infants_subgroup") {
                                 maternal_pertussis_vaccination +
                                 offset(log(time_flu_secondary*1000)),
                               data = df_input, family = poisson)
-    flu_severe_hh_comp_output <- tidy(flu_severe_hh_comp, confint = TRUE)
+    flu_severe_hh_comp_output <- tidy(flu_severe_hh_comp, conf.int = TRUE)
   
   }
   
@@ -121,7 +121,7 @@ if (cohort == "infants_subgroup") {
   #                                maternal_pertussis_vaccination +
   #                                offset(log(time_flu_mortality*1000)),
   #                              data = df_input, family = poisson)
-  # flu_mortality_hh_comp_output <- tidy(flu_mortality_hh_comp, confint = TRUE)
+  # flu_mortality_hh_comp_output <- tidy(flu_mortality_hh_comp, conf.int = TRUE)
   
 } else {
   
@@ -140,7 +140,7 @@ if (cohort == "infants_subgroup") {
                               age_band + sex + rurality_classification + 
                               offset(log(time_flu_primary*1000)),
                             data = df_input, family = poisson)
-    flu_mild_hh_comp_output <- tidy(flu_mild_hh_comp, confint = TRUE)
+    flu_mild_hh_comp_output <- tidy(flu_mild_hh_comp, conf.int = TRUE)
   
   }
   
@@ -159,7 +159,7 @@ if (cohort == "infants_subgroup") {
                                 age_band + sex + rurality_classification + 
                                 offset(log(time_flu_secondary*1000)),
                               data = df_input, family = poisson)
-    flu_severe_hh_comp_output <- tidy(flu_severe_hh_comp, confint = TRUE)
+    flu_severe_hh_comp_output <- tidy(flu_severe_hh_comp, conf.int = TRUE)
   
   }
   
@@ -168,7 +168,7 @@ if (cohort == "infants_subgroup") {
   #                                age_band + sex + rurality_classification + 
   #                                offset(log(time_flu_mortality*1000)),
   #                              data = df_input, family = poisson)
-  # flu_mortality_hh_comp_output <- tidy(flu_mortality_hh_comp, confint = TRUE)
+  # flu_mortality_hh_comp_output <- tidy(flu_mortality_hh_comp, conf.int = TRUE)
 
 }
 

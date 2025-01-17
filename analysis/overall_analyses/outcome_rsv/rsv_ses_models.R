@@ -75,7 +75,7 @@ if (cohort == "infants_subgroup") {
                           maternal_pertussis_vaccination +
                           offset(log(time_rsv_primary*1000)),
                         data = df_input, family = poisson)
-    rsv_mild_ses_output <- tidy(rsv_mild_ses, confint = TRUE)
+    rsv_mild_ses_output <- tidy(rsv_mild_ses, conf.int = TRUE)
   
   }
   
@@ -97,7 +97,7 @@ if (cohort == "infants_subgroup") {
                             maternal_pertussis_vaccination +
                             offset(log(time_rsv_secondary*1000)),
                           data = df_input, family = poisson)
-    rsv_severe_ses_output <- tidy(rsv_severe_se, confint = TRUE)
+    rsv_severe_ses_output <- tidy(rsv_severe_se, conf.int = TRUE)
   
   }
   
@@ -109,7 +109,7 @@ if (cohort == "infants_subgroup") {
   #                            maternal_pertussis_vaccination +
   #                            offset(log(time_rsv_mortality*1000)),
   #                          data = df_input, family = poisson)
-  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses, confint = TRUE)
+  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses, conf.int = TRUE)
   
 } else {
   
@@ -128,7 +128,7 @@ if (cohort == "infants_subgroup") {
                           sex + rurality_classification +
                           offset(log(time_rsv_primary*1000)),
                         data = df_input, family = poisson)
-    rsv_mild_ses_output <- tidy(rsv_mild_ses, confint = TRUE)
+    rsv_mild_ses_output <- tidy(rsv_mild_ses, conf.int = TRUE)
   
   }
   
@@ -147,7 +147,7 @@ if (cohort == "infants_subgroup") {
                             sex + rurality_classification +
                             offset(log(time_rsv_secondary*1000)),
                           data = df_input, family = poisson)
-    rsv_severe_ses_output <- tidy(rsv_severe_ses, confint = TRUE)
+    rsv_severe_ses_output <- tidy(rsv_severe_ses, conf.int = TRUE)
   
   }
   
@@ -156,7 +156,7 @@ if (cohort == "infants_subgroup") {
   #                            sex + rurality_classification +
   #                            offset(log(time_rsv_mortality*1000)),
   #                          data = df_input, family = poisson)
-  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses, confint = TRUE)
+  # rsv_mortality_ses_output <- tidy(rsv_mortality_ses, conf.int = TRUE)
   
 }
 

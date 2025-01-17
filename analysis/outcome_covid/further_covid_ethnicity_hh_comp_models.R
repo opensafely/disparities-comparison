@@ -79,7 +79,7 @@ if (too_few_events_mild) {
                                                 covid_vaccination_mild +
                                                 offset(log(time_covid_primary*1000)),
                                               data = df_input, family = poisson)
-  covid_mild_ethnicity_hh_comp_further_output <- tidy(covid_mild_ethnicity_hh_comp_further, confint = TRUE)
+  covid_mild_ethnicity_hh_comp_further_output <- tidy(covid_mild_ethnicity_hh_comp_further, conf.int = TRUE)
 
 }
 
@@ -103,7 +103,7 @@ if (too_few_events_severe) {
                                                   covid_vaccination_severe +
                                                   offset(log(time_covid_secondary*1000)),
                                                 data = df_input, family = poisson)
-  covid_severe_ethnicity_hh_comp_further_output <- tidy(covid_severe_ethnicity_hh_comp_further, confint = TRUE)
+  covid_severe_ethnicity_hh_comp_further_output <- tidy(covid_severe_ethnicity_hh_comp_further, conf.int = TRUE)
 
 }
 
@@ -114,7 +114,7 @@ if (too_few_events_severe) {
 #                                                    covid_vaccination +
 #                                                    offset(log(time_covid_mortality*1000)),
 #                                                  data = df_input, family = poisson)
-# covid_mortality_ethnicity_hh_comp_further_output <- tidy(covid_mortality_ethnicity_hh_comp_further, confint = TRUE)
+# covid_mortality_ethnicity_hh_comp_further_output <- tidy(covid_mortality_ethnicity_hh_comp_further, conf.int = TRUE)
 
 #define a vector of names for the model outputs
 model_names <- c("Mild COVID-19 by Ethnicity and Household Composition", 

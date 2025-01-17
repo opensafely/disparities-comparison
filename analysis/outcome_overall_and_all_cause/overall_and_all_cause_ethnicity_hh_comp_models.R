@@ -97,7 +97,7 @@ if (cohort == "infants_subgroup") {
                                                    maternal_pertussis_vaccination +
                                                    offset(log(time_overall_resp_primary*1000)),
                                                  data = df_input, family = poisson)
-      overall_resp_mild_ethnicity_hh_comp_output <- tidy(overall_resp_mild_ethnicity_hh_comp, confint = TRUE)
+      overall_resp_mild_ethnicity_hh_comp_output <- tidy(overall_resp_mild_ethnicity_hh_comp, conf.int = TRUE)
     
     }
     
@@ -127,7 +127,7 @@ if (cohort == "infants_subgroup") {
                                                      maternal_pertussis_vaccination +
                                                      offset(log(time_overall_resp_secondary*1000)),
                                                    data = df_input, family = poisson)
-      overall_resp_severe_ethnicity_hh_comp_output <- tidy(overall_resp_severe_ethnicity_hh_comp, confint = TRUE)
+      overall_resp_severe_ethnicity_hh_comp_output <- tidy(overall_resp_severe_ethnicity_hh_comp, conf.int = TRUE)
     
     }
     
@@ -144,7 +144,7 @@ if (cohort == "infants_subgroup") {
     #                                                   maternal_pertussis_vaccination +
     #                                                   offset(log(time_overall_resp_mortality*1000)),
     #                                                 data = df_input, family = poisson)
-    # overall_resp_mortality_ethnicity_hh_comp_output <- tidy(overall_resp_mortality_ethnicity_hh_comp, confint = TRUE)
+    # overall_resp_mortality_ethnicity_hh_comp_output <- tidy(overall_resp_mortality_ethnicity_hh_comp, conf.int = TRUE)
     
   }
   
@@ -160,7 +160,7 @@ if (cohort == "infants_subgroup") {
   #                                                maternal_pertussis_vaccination +
   #                                                offset(log(time_all_cause_mortality*1000)),
   #                                              data = df_input, family = poisson)
-  # all_cause_mortality_ethnicity_hh_comp_output <- tidy(all_cause_mortality_ethnicity_hh_comp, confint = TRUE)
+  # all_cause_mortality_ethnicity_hh_comp_output <- tidy(all_cause_mortality_ethnicity_hh_comp, conf.int = TRUE)
   
   
 } else {
@@ -187,7 +187,7 @@ if (cohort == "infants_subgroup") {
                                                    rurality_classification + 
                                                    offset(log(time_overall_resp_primary*1000)),
                                                  data = df_input, family = poisson)
-      overall_resp_mild_ethnicity_hh_comp_output <- tidy(overall_resp_mild_ethnicity_hh_comp, confint = TRUE)
+      overall_resp_mild_ethnicity_hh_comp_output <- tidy(overall_resp_mild_ethnicity_hh_comp, conf.int = TRUE)
     
     }
     
@@ -211,7 +211,7 @@ if (cohort == "infants_subgroup") {
                                                      rurality_classification + 
                                                      offset(log(time_overall_resp_secondary*1000)),
                                                    data = df_input, family = poisson)
-      overall_resp_severe_ethnicity_hh_comp_output <- tidy(overall_resp_severe_ethnicity_hh_comp, confint = TRUE)
+      overall_resp_severe_ethnicity_hh_comp_output <- tidy(overall_resp_severe_ethnicity_hh_comp, conf.int = TRUE)
     
     }
     
@@ -222,7 +222,7 @@ if (cohort == "infants_subgroup") {
     #                                                   rurality_classification + 
     #                                                   offset(log(time_overall_resp_mortality*1000)),
     #                                                 data = df_input, family = poisson)
-    # overall_resp_mortality_ethnicity_hh_comp_output <- tidy(overall_resp_mortality_ethnicity_hh_comp, confint = TRUE)
+    # overall_resp_mortality_ethnicity_hh_comp_output <- tidy(overall_resp_mortality_ethnicity_hh_comp, conf.int = TRUE)
   
   }
   
@@ -233,7 +233,7 @@ if (cohort == "infants_subgroup") {
   #                                                rurality_classification +
   #                                                offset(log(time_all_cause_mortality*1000)),
   #                                              data = df_input, family = poisson)
-  # all_cause_mortality_ethnicity_hh_comp_output <- tidy(all_cause_mortality_ethnicity_hh_comp, confint = TRUE)
+  # all_cause_mortality_ethnicity_hh_comp_output <- tidy(all_cause_mortality_ethnicity_hh_comp, conf.int = TRUE)
   
 }
 

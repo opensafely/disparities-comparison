@@ -72,7 +72,7 @@ if (too_few_events_mild) {
                                     prior_flu_vaccination + flu_vaccination_mild +
                                     offset(log(time_flu_primary*1000)),
                                   data = df_input, family = poisson)
-  flu_mild_hh_comp_further_output <- tidy(flu_mild_hh_comp_further, confint = TRUE)
+  flu_mild_hh_comp_further_output <- tidy(flu_mild_hh_comp_further, conf.int = TRUE)
 
 }
 
@@ -92,7 +92,7 @@ if (too_few_events_severe) {
                                       prior_flu_vaccination + flu_vaccination_severe +
                                       offset(log(time_flu_secondary*1000)),
                                     data = df_input, family = poisson)
-  flu_severe_hh_comp_further_output <- tidy(flu_severe_hh_comp_further, confint = TRUE)
+  flu_severe_hh_comp_further_output <- tidy(flu_severe_hh_comp_further, conf.int = TRUE)
   
 }
 
@@ -102,7 +102,7 @@ if (too_few_events_severe) {
 #                                        prior_flu_vaccination + flu_vaccination +
 #                                        offset(log(time_flu_mortality*1000)),
 #                                      data = df_input, family = poisson)
-# flu_mortality_hh_comp_further_output <- tidy(flu_mortality_hh_comp_further, confint = TRUE)
+# flu_mortality_hh_comp_further_output <- tidy(flu_mortality_hh_comp_further, conf.int = TRUE)
 
 #define a vector of names for the model outputs
 model_names <- c("Mild Influenza by Household Composition",
