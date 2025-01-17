@@ -96,11 +96,15 @@ group_specific_events_further <- function(df, add_characteristics,
   
   for (i in seq_along(characteristics)) {
     
-    if (characteristics[i] == current_mild) {
+    if (!(characteristics[i] %in% names(df))) {
+      
+      next
+      
+    } else if (characteristics[i] == current_mild) {
       
       #calculate events per group
       events_per_group <- df %>%
-        group_by(group = current_mild) %>%
+        group_by(group = !!sym(current_mild)) %>%
         summarise(events_mild = sum(!!outcome_mild, na.rm = TRUE))
       
       #add column with whether there are enough events
@@ -117,7 +121,7 @@ group_specific_events_further <- function(df, add_characteristics,
      
       #calculate events per group
       events_per_group <- df %>%
-        group_by(group = current_severe) %>%
+        group_by(group = !!sym(current_severe)) %>%
         summarise(events_severe = sum(!!outcome_severe, na.rm = TRUE))
       
       #add column with whether there are enough events
@@ -154,12 +158,16 @@ group_specific_events_further <- function(df, add_characteristics,
     
   }
   
-  #format vaccination groups
-  current_vacc <- merge(results_mild, results_severe, by = c("characteristic",
-                                                             "group"))
-  
-  #combine with results
-  results <- rbind(results, current_vacc)
+  if (current_mild %in% names(df) & current_severe %in% names(df)) {
+    
+    #format vaccination groups
+    current_vacc <- merge(results_mild, results_severe, by = c("characteristic",
+                                                               "group"))
+    
+    #combine with results
+    results <- rbind(results, current_vacc)
+    
+  }
   
   return(results)
   
