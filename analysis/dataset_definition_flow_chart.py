@@ -70,13 +70,13 @@ else :
 is_female_or_male = patients.sex.is_in(["female", "male"])
 
 if cohort == "infants" or cohort == "infants_subgroup" :
-  is_appropriate_age = (age_at_start_months <= 23) & (age_at_end_months >= 0)
+  is_appropriate_age = (age_at_start_months < 24) & (age_at_end_months >= 0)
 elif cohort == "children_and_adolescents" :
-  is_appropriate_age = (age_at_start <= 17) & (age_at_end >= 2)
+  is_appropriate_age = (age_at_start < 18) & (age_at_end >= 2)
 elif cohort == "adults" :
-  is_appropriate_age = (age_at_start <= 64) & (age_at_end >= 18)
+  is_appropriate_age = (age_at_start < 65) & (age_at_end >= 18)
 else :
-  is_appropriate_age = (age_at_start <= 110) & (age_at_end >= 65)
+  is_appropriate_age = (age_at_start < 110) & (age_at_end >= 65)
 
 has_imd = (addresses.for_patient_on(index_date).imd_rounded.is_not_null())
 
