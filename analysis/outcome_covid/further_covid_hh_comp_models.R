@@ -44,11 +44,18 @@ df_input <- df_input %>%
     filter(!is.na(composition_category), !is.na(age_band), !is.na(sex),
            !is.na(rurality_classification))
 
-#check there are enough outcomes to model
-too_few_events_mild = if_else(sum(df_input$covid_primary_inf, na.rm = TRUE) < 20,
-                              TRUE, FALSE)
-too_few_events_severe = if_else(sum(df_input$covid_secondary_inf, na.rm = TRUE) < 20,
-                                TRUE, FALSE)
+#import event counting function
+source(here::here("analysis", "functions", "event_count.R"))
+
+#calculate events per group
+events <- group_specific_events_further(df_input, c("composition_category"),
+                                        "covid_primary_inf", "covid_secondary_inf",
+                                        "time_since_last_covid_vaccination",
+                                        "covid_vaccination")
+
+#check if there are too few events
+too_few_events_mild <- any(events$enough_events_mild == FALSE)
+too_few_events_severe <- any(events$enough_events_severe == FALSE)
 
 if (too_few_events_mild) {
   

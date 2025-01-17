@@ -57,11 +57,16 @@ if (cohort == "infants_subgroup") {
   
 }
 
-#check there are enough outcomes to model
-too_few_events_mild = if_else(sum(df_input$covid_primary_inf, na.rm = TRUE) < 20,
-                              TRUE, FALSE)
-too_few_events_severe = if_else(sum(df_input$covid_secondary_inf, na.rm = TRUE) < 20,
-                                TRUE, FALSE)
+#import event counting function
+source(here::here("analysis", "functions", "event_count.R"))
+
+#calculate events per group
+events <- group_specific_events(df_input, c("latest_ethnicity_group"),
+                                "covid_primary_inf", "covid_secondary_inf")
+
+#check if there are too few events
+too_few_events_mild <- any(events$enough_events_mild == FALSE)
+too_few_events_severe <- any(events$enough_events_severe == FALSE)
 
 if (cohort == "infants_subgroup") {
   

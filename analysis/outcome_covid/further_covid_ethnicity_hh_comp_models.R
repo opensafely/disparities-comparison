@@ -15,10 +15,10 @@ is_being_sourced <- sys.nframe() > 0
 if (is_being_sourced == FALSE) {
   args <- commandArgs(trailingOnly = TRUE)
   if (length(args) == 0) {
-    study_start_date <- "2016-09-01"
-    study_end_date <- "2017-08-31"
-    cohort <- "infants"
-    codelist_type <- "sensitive"
+    study_start_date <- "2020-09-01"
+    study_end_date <- "2021-08-31"
+    cohort <- "adults"
+    codelist_type <- "specific"
     investigation_type <- "primary"
   } else {
     study_start_date <- study_dates[[args[[2]]]]
@@ -45,11 +45,19 @@ df_input <- df_input %>%
          !is.na(composition_category), !is.na(age_band), !is.na(sex),
          !is.na(rurality_classification))
 
-#check there are enough outcomes to model
-too_few_events_mild = if_else(sum(df_input$covid_primary_inf, na.rm = TRUE) < 20,
-                              TRUE, FALSE)
-too_few_events_severe = if_else(sum(df_input$covid_secondary_inf, na.rm = TRUE) < 20,
-                                TRUE, FALSE)
+#import event counting function
+source(here::here("analysis", "functions", "event_count.R"))
+
+#calculate events per group
+events <- group_specific_events_further(df_input, c("latest_ethnicity_group",
+                                        "composition_category"), "covid_primary_inf",
+                                        "covid_secondary_inf",
+                                        "time_since_last_covid_vaccination",
+                                        "covid_vaccination")
+
+#check if there are too few events
+too_few_events_mild <- any(events$enough_events_mild == FALSE)
+too_few_events_severe <- any(events$enough_events_severe == FALSE)
   
 if (too_few_events_mild) {
   
