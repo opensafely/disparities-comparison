@@ -57,6 +57,9 @@ events <- group_specific_events_further(df_input, c("latest_ethnicity_group"),
 too_few_events_mild <- any(events$enough_events_mild == FALSE)
 too_few_events_severe <- any(events$enough_events_severe == FALSE)
 
+#show the event counts if there are too few events
+if (too_few_events_mild | too_few_events_severe) print(events)
+
 if (study_start_date == covid_current_vacc_min) {
 
   if (too_few_events_mild) {

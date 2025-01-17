@@ -57,6 +57,9 @@ events <- group_specific_events_further(df_input, c("composition_category"),
 too_few_events_mild <- any(events$enough_events_mild == FALSE)
 too_few_events_severe <- any(events$enough_events_severe == FALSE)
 
+#show the event counts if there are too few events
+if (too_few_events_mild | too_few_events_severe) print(events)
+
 if (too_few_events_mild) {
   
   #create data frame with same columns as model outputs
