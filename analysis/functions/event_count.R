@@ -36,6 +36,7 @@ group_specific_events <- function(df, add_characteristics,
   characteristics <- c(characteristics, add_characteristics,
                        additional_characteristics)
   
+  #define outcomes for summarising
   outcome_mild <- ensym(outcome_mild)
   outcome_severe <- ensym(outcome_severe)
   
@@ -61,6 +62,104 @@ group_specific_events <- function(df, add_characteristics,
     results <- rbind(results, events_per_group) 
     
   }
+  
+  return(results)
+  
+}
+
+#define function to calculate events per group for models which include vaccination
+group_specific_events_further <- function(df, add_characteristics,
+                                          outcome_mild, outcome_severe,
+                                          vaccination_prior,
+                                          vaccionation_current) {
+  
+  #define the characteristics that are always included
+  characteristics <- c("age_band", "sex", "rurality_classification")
+  
+  #add characteristics which are model specific
+  characteristics <- c(characteristics, add_characteristics)
+  
+  #define vaccination categories for summaries
+  current_mild <- paste0(vaccionation_current, "_mild")
+  current_severe <- paste0(vaccionation_current, "_severe")
+  
+  #add vaccination characteristics
+  characteristics <- c(characteristics, vaccination_prior, current_mild,
+                       current_severe)
+  
+  #define outcomes for summarising
+  outcome_mild <- ensym(outcome_mild)
+  outcome_severe <- ensym(outcome_severe)
+  
+  #create empty dataframe to store results
+  results <- data.frame()
+  
+  for (i in seq_along(characteristics)) {
+    
+    if (characteristics[i] == current_mild) {
+      
+      #calculate events per group
+      events_per_group <- df %>%
+        group_by(group = current_mild) %>%
+        summarise(events_mild = sum(!!outcome_mild, na.rm = TRUE))
+      
+      #add column with whether there are enough events
+      events_per_group <- events_per_group %>%
+        mutate(enough_events_mild = if_else(sum(events_mild > 0) > 1,
+                                            TRUE, FALSE))
+      
+      #store results for this characteristic
+      events_per_group <- cbind(characteristic = "current vaccination",
+                                events_per_group)
+      results_mild <- events_per_group
+     
+    } else if (characteristics[i] == current_severe) {  
+     
+      #calculate events per group
+      events_per_group <- df %>%
+        group_by(group = current_severe) %>%
+        summarise(events_severe = sum(!!outcome_severe, na.rm = TRUE))
+      
+      #add column with whether there are enough events
+      events_per_group <- events_per_group %>%
+        mutate(enough_events_severe = if_else(sum(events_severe > 0) > 1,
+                                              TRUE, FALSE))
+      
+      #store results for this characteristic
+      events_per_group <- cbind(characteristic = "current vaccination",
+                                events_per_group)
+      results_severe <- events_per_group
+      
+    } else {
+    
+      #calculate events per group
+      events_per_group <- df %>%
+        group_by(group = !!sym(characteristics[i])) %>%
+        summarise(events_mild = sum(!!outcome_mild, na.rm = TRUE),
+                  events_severe = sum(!!outcome_severe, na.rm = TRUE))
+      
+      #add column with whether there are enough events
+      events_per_group <- events_per_group %>%
+        mutate(enough_events_mild = if_else(sum(events_mild > 0) > 1,
+                                            TRUE, FALSE),
+               enough_events_severe = if_else(sum(events_severe > 0) > 1,
+                                              TRUE, FALSE))
+      
+      #store results for this characteristic
+      events_per_group <- cbind(characteristic = characteristics[i],
+                                events_per_group)
+      results <- rbind(results, events_per_group) 
+      
+    }
+    
+  }
+  
+  #format vaccination groups
+  current_vacc <- merge(results_mild, results_severe, by = c("characteristic",
+                                                             "group"))
+  
+  #combine with results
+  results <- rbind(results, current_vacc)
   
   return(results)
   
