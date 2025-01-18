@@ -171,7 +171,7 @@ if (cohort == "infants_subgroup") {
                              age_band + sex + rurality_classification + 
                              offset(log(time_flu_secondary*1000)),
                            data = df_input, family = poisson)
-    flu_severe_full_output <- tidy(flu_severe_fullv, conf.int = TRUE)
+    flu_severe_full_output <- tidy(flu_severe_full, conf.int = TRUE)
   
   }
   
