@@ -169,7 +169,7 @@ df_input <- df_input %>%
                                                        "Other Ethnic Groups"),
                                             ordered = FALSE), ref = "White"),
     #recode imd quintile 
-    imd_quintile = relevel(recode(df_input$imd_quintile,
+    imd_quintile = relevel(recode(imd_quintile,
                                   "1 (most deprived)" = "5 (most deprived)",
                                   "2" = "4", "3" = "3", "4" = "2",
                                   "5 (least deprived)" = "1 (least deprived)"),
