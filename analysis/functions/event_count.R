@@ -30,7 +30,7 @@ group_specific_events <- function(df, add_characteristics,
   }
   
   #define the characteristics that are always included
-  characteristics <- c("age_band", "sex", "rurality_classification")
+  characteristics <- c("age_band", "sex")
   
   #add characteristics which are model specific
   characteristics <- c(characteristics, add_characteristics,
@@ -76,16 +76,40 @@ group_specific_events_further <- function(df, add_characteristics,
   #define the characteristics that are always included
   characteristics <- c("age_band", "sex", "rurality_classification")
   
+  #define additional characteristics 
+  if (cohort == "infants_subgroup") {
+    
+    additional_characteristics <- c("maternal_smoking_status",
+                                    "maternal_drinking", "maternal_drug_usage",
+                                    "maternal_flu_vaccination",
+                                    "maternal_pertussis_vaccination")
+    
+  } else {
+    
+    additional_characteristics <- character(0)
+    
+  }
+  
   #add characteristics which are model specific
-  characteristics <- c(characteristics, add_characteristics)
+  characteristics <- c(characteristics, add_characteristics,
+                       additional_characteristics)
   
-  #define vaccination categories for summaries
-  current_mild <- paste0(vaccionation_current, "_mild")
-  current_severe <- paste0(vaccionation_current, "_severe")
-  
-  #add vaccination characteristics
-  characteristics <- c(characteristics, vaccination_prior, current_mild,
-                       current_severe)
+  if (cohort != "infants" & cohort != "infants_subgroup") {
+    
+    #define vaccination categories for summaries
+    current_mild <- paste0(vaccionation_current, "_mild")
+    current_severe <- paste0(vaccionation_current, "_severe")
+    
+    #add vaccination characteristics
+    characteristics <- c(characteristics, vaccination_prior, current_mild,
+                         current_severe)
+    
+  } else {
+    
+    current_mild <- "none"
+    current_severe <- "none"
+    
+  }
   
   #define outcomes for summarising
   outcome_mild <- ensym(outcome_mild)
