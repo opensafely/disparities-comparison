@@ -28,7 +28,6 @@ if (is_being_sourced == FALSE) {
     investigation_type <- args[[5]]
   }
 }
-covid_season_min <- as.Date("2019-09-01")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
@@ -37,25 +36,9 @@ df_input <- read_feather(
 
 #remove rows with missing values in any of the variables used in models
 #outcome will never be NA (as part of processing pipeline) so does not need to be filtered
-# if (cohort == "infants_subgroup") {
-#   
-#   df_input <- df_input %>% 
-#     filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
-#            !is.na(composition_category), !is.na(age_band), !is.na(sex),
-#            #!is.na(rurality_classification),
-#            !is.na(maternal_age), !is.na(maternal_smoking_status),
-#            !is.na(maternal_drinking), !is.na(maternal_drug_usage),
-#            !is.na(maternal_flu_vaccination),
-#            !is.na(maternal_pertussis_vaccination))
-#   
-# } else {
-  
-  df_input <- df_input %>% 
-    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
-           !is.na(composition_category), !is.na(age_band),
-           !is.na(sex))#, !is.na(rurality_classification))
-  
-#}
+df_input <- df_input %>% 
+  filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+         !is.na(composition_category), !is.na(age_band), !is.na(sex))
 
 #import event counting function
 source(here::here("analysis", "functions", "event_count.R"))
@@ -72,129 +55,50 @@ too_few_events_severe <- any(events$enough_events_severe == FALSE)
 #show the event counts if there are too few events
 if (too_few_events_mild | too_few_events_severe) print(events)
 
-# if (cohort == "infants_subgroup") {
-#   
-#   if (too_few_events_mild) {
-# 
-#     #create data frame with same columns as model output creates
-#     rsv_mild_full_output <- data.frame(term = "too few events", estimate = NA,
-#                                           std.error = NA, statistic = NA,
-#                                           p.value = NA, conf.low = NA,
-#                                           conf.high = NA)
-# 
-#   } else {
-#   
-#     #rsv primary by ethnicity, socioeconomic status and household composition
-#     rsv_mild_full <- glm(rsv_primary_inf ~ latest_ethnicity_group + 
-#                            imd_quintile + composition_category + age_band +
-#                            sex + #rurality_classification +
-#                            maternal_age + maternal_smoking_status +
-#                            maternal_drinking + maternal_drug_usage + 
-#                            maternal_flu_vaccination + 
-#                            maternal_pertussis_vaccination +
-#                            offset(log(time_rsv_primary*1000)), 
-#                          data = df_input, family = poisson)
-#     rsv_mild_full_output <- tidy(rsv_mild_full, conf.int = TRUE)
-#   
-#   }
-#   
-#   if (too_few_events_mild) {
-# 
-#     #create data frame with same columns as model output creates
-#     rsv_severe_full_output <- data.frame(term = "too few events", estimate = NA,
-#                                           std.error = NA, statistic = NA,
-#                                           p.value = NA, conf.low = NA,
-#                                           conf.high = NA)
-# 
-#   } else {
-#  
-#     #rsv secondary by ethnicity, socioeconomic status and household composition
-#     rsv_severe_full <- glm(rsv_secondary_inf ~ latest_ethnicity_group + 
-#                              imd_quintile + composition_category + age_band +
-#                              sex + #rurality_classification +
-#                              maternal_age + maternal_smoking_status +
-#                              maternal_drinking + maternal_drug_usage + 
-#                              maternal_flu_vaccination + 
-#                              maternal_pertussis_vaccination +
-#                              offset(log(time_rsv_secondary*1000)),
-#                            data = df_input, family = poisson)
-#     rsv_severe_full_output <- tidy(rsv_severe_full, conf.int = TRUE)
-#   
-#   }
-#   
-#   # #rsv mortality by ethnicity, socioeconomic status and household composition
-#   # rsv_mortality_full <- glm(rsv_mortality ~ latest_ethnicity_group + 
-#   #                             imd_quintile + composition_category + age_band +
-#   #                             sex + #rurality_classification +
-#   #                             maternal_age + maternal_smoking_status +
-#   #                             maternal_drinking + maternal_drug_usage + 
-#   #                             maternal_flu_vaccination + 
-#   #                             maternal_pertussis_vaccination +
-#   #                             offset(log(time_rsv_mortality*1000)),
-#   #                           data = df_input, family = poisson)
-#   # rsv_mortality_full_output <- tidy(rsv_mortality_full, conf.int = TRUE)
-#   
-# } else {
-  
-  if (too_few_events_mild) {
- 
-    #create data frame with same columns as model output creates
-    rsv_mild_full_output <- data.frame(term = "too few events", estimate = NA,
-                                          std.error = NA, statistic = NA,
-                                          p.value = NA, conf.low = NA,
-                                          conf.high = NA)
- 
-  } else {
+#import model function
+source(here::here("analysis", "functions", "model.R"))
 
-    #rsv primary by ethnicity, socioeconomic status and household composition
-    rsv_mild_full <- glm(rsv_primary_inf ~ latest_ethnicity_group +
-                           imd_quintile + composition_category + age_band +
-                           sex + #rurality_classification + 
-                           offset(log(time_rsv_primary*1000)), 
-                         data = df_input, family = poisson)
-    rsv_mild_full_output <- tidy(rsv_mild_full, conf.int = TRUE)
+#run mild model
+if (too_few_events_mild) {
   
-  }
+  #create data frame with same columns as model output creates
+  rsv_mild_full_output <- data.frame(
+    term = "too few events", estimate = NA, std.error = NA,
+    statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
-  if (too_few_events_severe) {
- 
-    #create data frame with same columns as model output creates
-    rsv_severe_full_output <- data.frame(term = "too few events", estimate = NA,
-                                          std.error = NA, statistic = NA,
-                                          p.value = NA, conf.low = NA,
-                                          conf.high = NA)
+} else {
+  
+  #rsv primary by ethnicity, socioeconomic status and household composition
+  rsv_mild_full_output <- glm_poisson(
+    df_input, c("latest_ethnicity_group", "imd_quintile",
+    "composition_category"), "rsv_primary_inf", "time_rsv_primary")
+  
+}
 
-  } else {
+#run severe model
+if (too_few_events_severe) {
   
-    #rsv secondary by ethnicity, socioeconomic status and household composition
-    rsv_severe_full <- glm(rsv_secondary_inf ~ latest_ethnicity_group + 
-                             imd_quintile + composition_category + age_band +
-                             sex + #rurality_classification + 
-                             offset(log(time_rsv_secondary*1000)),
-                           data = df_input, family = poisson)
-    rsv_severe_full_output <- tidy(rsv_severe_full, conf.int = TRUE)
+  #create data frame with same columns as model output creates
+  rsv_severe_full_output <- data.frame(
+    term = "too few events", estimate = NA, std.error = NA,
+    statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
-  }
+} else {
   
-  # #rsv mortality by ethnicity, socioeconomic status and household composition
-  # rsv_mortality_full <- glm(rsv_mortality ~ latest_ethnicity_group +
-  #                             imd_quintile + composition_category + age_band +
-  #                             sex + #rurality_classification + 
-  #                             offset(log(time_rsv_mortality*1000)),
-  #                           data = df_input, family = poisson)
-  # rsv_mortality_full_output <- tidy(rsv_mortality_full, conf.int = TRUE)
- 
-#}
+  #rsv primary by ethnicity, socioeconomic status and household composition
+  rsv_severe_full_output <- glm_poisson(
+    df_input, c("latest_ethnicity_group", "imd_quintile",
+    "composition_category"), "rsv_secondary_inf", "time_rsv_secondary")
+  
+}
 
 #define a vector of names for the model outputs
 model_names <- c("Mild RSV by Ethnicity, IMD Quintile and Household Composition", 
-                 "Severe RSV by Ethnicity, IMD Quintile and Household Composition")#,
-                 # "RSV Mortality By Ethnicity, IMD Quintile and Household Composition")
+                 "Severe RSV by Ethnicity, IMD Quintile and Household Composition")
 
 #create the model outputs list
 model_outputs_list <- list(rsv_mild_full_output, 
-                           rsv_severe_full_output)#,
-                           # rsv_mortality_full_output)
+                           rsv_severe_full_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {

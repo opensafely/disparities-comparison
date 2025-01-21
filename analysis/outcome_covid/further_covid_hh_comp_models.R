@@ -28,9 +28,6 @@ if (is_being_sourced == FALSE) {
     investigation_type <- args[[5]]
   }
 }
-covid_season_min <- as.Date("2019-09-01")
-covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
-covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
@@ -47,7 +44,8 @@ if (cohort == "infants_subgroup") {
            !is.na(sex), !is.na(rurality_classification),
            !is.na(maternal_age), !is.na(maternal_smoking_status),
            !is.na(maternal_drinking), !is.na(maternal_drug_usage),
-           !is.na(maternal_flu_vaccination), !is.na(maternal_pertussis_vaccination))
+           !is.na(maternal_flu_vaccination),
+           !is.na(maternal_pertussis_vaccination))
   
 } else {
   
@@ -61,10 +59,10 @@ if (cohort == "infants_subgroup") {
 source(here::here("analysis", "functions", "event_count.R"))
 
 #calculate events per group
-events <- group_specific_events_further(df_input, c("composition_category"),
-                                        "covid_primary_inf", "covid_secondary_inf",
-                                        "time_since_last_covid_vaccination",
-                                        "covid_vaccination")
+events <- group_specific_events_further(
+  df_input, c("composition_category"), "covid_primary_inf",
+  "covid_secondary_inf", "time_since_last_covid_vaccination",
+  "covid_vaccination")
 
 #check if there are too few events
 too_few_events_mild <- any(events$enough_events_mild == FALSE)
@@ -73,174 +71,52 @@ too_few_events_severe <- any(events$enough_events_severe == FALSE)
 #show the event counts if there are too few events
 if (too_few_events_mild | too_few_events_severe) print(events)
 
-if (cohort == "infants_subgroup") {
-  
-  if (too_few_events_mild) {
-  
-    #create data frame with same columns as model outputs
-    covid_mild_hh_comp_further_output <- data.frame(term = "too few events",
-                                                    estimate = NA, std.error = NA,
-                                                    statistic = NA, p.value = NA,
-                                                    conf.low = NA, conf.high = NA)
+#import model function
+source(here::here("analysis", "functions", "model.R"))
 
-  } else {
+#run mild model
+if (too_few_events_mild) {
   
-    #covid primary by household composition
-    covid_mild_hh_comp_further <- glm(covid_primary_inf ~ composition_category +
-                                        age_band + sex + rurality_classification +
-                                        maternal_age + maternal_smoking_status +
-                                        maternal_drinking + maternal_drug_usage +
-                                        maternal_flu_vaccination +
-                                        maternal_pertussis_vaccination +
-                                        offset(log(time_covid_primary*1000)),
-                                      data = df_input, family = poisson)
-    covid_mild_hh_comp_further_output <- tidy(covid_mild_hh_comp_further, conf.int = TRUE)
-  
-  }
-  
-  if (too_few_events_severe) {
-  
-    #create data frame with same columns as model outputs
-    covid_severe_hh_comp_further_output <- data.frame(term = "too few events",
-                                                      estimate = NA, std.error = NA,
-                                                      statistic = NA, p.value = NA,
-                                                      conf.low = NA, conf.high = NA)
-
-  } else {
- 
-    #covid secondary by household composition
-    covid_severe_hh_comp_further <- glm(covid_secondary_inf ~ composition_category +
-                                  age_band + sex + rurality_classification + 
-                                  maternal_age + maternal_smoking_status +
-                                  maternal_drinking + maternal_drug_usage + 
-                                  maternal_flu_vaccination + 
-                                  maternal_pertussis_vaccination +
-                                  offset(log(time_covid_secondary*1000)),
-                                data = df_input, family = poisson)
-    covid_severe_hh_comp_further_output <- tidy(covid_severe_hh_comp_further, conf.int = TRUE)
-  
-  }
-  
-  # #covid mortality by household composition
-  # covid_mortality_hh_comp_further <- glm(covid_mortality_inf ~ composition_category +
-  #                                  age_band + sex + rurality_classification +
-  #                                  maternal_age + maternal_smoking_status +
-  #                                  maternal_drinking + maternal_drug_usage + 
-  #                                  maternal_flu_vaccination + 
-  #                                  maternal_pertussis_vaccination +
-  #                                  offset(log(time_covid_mortality*1000)),
-  #                                data = df_input, family = poisson)
-  # covid_mortality_hh_comp_further_output <- tidy(covid_mortality_hh_comp_further, conf.int = TRUE)
-  
-  
-} else if (cohort == "infants") {
-  
-  if (too_few_events_mild) {
-  
-    #create data frame with same columns as model outputs
-    covid_mild_hh_comp_further_output <- data.frame(term = "too few events",
-                                            estimate = NA, std.error = NA,
-                                            statistic = NA, p.value = NA,
-                                            conf.low = NA, conf.high = NA)
-  
-  } else {
-  
-    #covid primary by household composition
-    covid_mild_hh_comp_further <- glm(covid_primary_inf ~ composition_category +
-                                        age_band + sex + rurality_classification +
-                                        offset(log(time_covid_primary*1000)),
-                                      data = df_input, family = poisson)
-    covid_mild_hh_comp_further_output <- tidy(covid_mild_hh_comp_further, conf.int = TRUE)
-  
-  }
-  
-  if (too_few_events_severe) {
-  
-    #create data frame with same columns as model outputs
-    covid_severe_hh_comp_further_output <- data.frame(term = "too few events",
-                                                      estimate = NA, std.error = NA,
-                                                      statistic = NA, p.value = NA,
-                                                      conf.low = NA, conf.high = NA)
-  
-  } else {
-  
-    #covid secondary by household composition
-    covid_severe_hh_comp_further <- glm(covid_secondary_inf ~ composition_category +
-                                          age_band + sex + rurality_classification +
-                                          offset(log(time_covid_secondary*1000)),
-                                        data = df_input, family = poisson)
-    covid_severe_hh_comp_further_output <- tidy(covid_severe_hh_comp_further, conf.int = TRUE)
-  
-  }
-  
-  # #covid mortality by household composition
-  # covid_mortality_hh_comp_further <- glm(covid_mortality_inf ~ composition_category +
-  #                                  age_band + sex + rurality_classification +
-  #                                  offset(log(time_covid_mortality*1000)),
-  #                                data = df_input, family = poisson)
-  # covid_mortality_hh_comp_further_output <- tidy(covid_mortality_hh_comp_further, conf.int = TRUE)
+  #create data frame with same columns as model output creates
+  covid_mild_ethnicity_hh_comp_further_output <- data.frame(
+    term = "too few events", estimate = NA, std.error = NA,
+    statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
 } else {
+  
+  #covid by household composition
+  covid_mild__hh_comp_further_output <- glm_poisson_further(
+    df_input, "composition_category", "covid_primary_inf",
+    "time_since_last_covid_vaccination", "covid_vaccination_mild",
+    "covid_vaccination_severe", "time_covid_primary")
+  
+}
 
-  if (too_few_events_mild) {
-    
-    #create data frame with same columns as model outputs
-    covid_mild_hh_comp_further_output <- data.frame(term = "too few events",
-                                                    estimate = NA, std.error = NA,
-                                                    statistic = NA, p.value = NA,
-                                                    conf.low = NA, conf.high = NA)
-    
-  } else {
+#run severe model
+if (too_few_events_severe) {
   
-    #covid primary by household composition
-    covid_mild_hh_comp_further <- glm(covid_primary_inf ~ composition_category + 
-                                        age_band + sex + rurality_classification +
-                                        covid_vaccination_mild +
-                                        offset(log(time_covid_primary*1000)),
-                                      data = df_input, family = poisson)
-    covid_mild_hh_comp_further_output <- tidy(covid_mild_hh_comp_further, conf.int = TRUE)
+  #create data frame with same columns as model output creates
+  covid_severe_ethnicity_hh_comp_further_output <- data.frame(
+    term = "too few events", estimate = NA, std.error = NA,
+    statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
-  }
+} else {
   
-  if (too_few_events_severe) {
+  #covid by household composition
+  covid_severe_hh_comp_further_output <- glm_poisson_further(
+    df_input, "composition_category", "covid_secondary_inf",
+    "time_since_last_covid_vaccination", "covid_vaccination_mild",
+    "covid_vaccination_severe", "time_covid_secondary")
   
-    #create data frame with same columns as model outputs
-    covid_severe_hh_comp_further_output <- data.frame(term = "too few events",
-                                                      estimate = NA, std.error = NA,
-                                                      statistic = NA, p.value = NA,
-                                                      conf.low = NA, conf.high = NA)
-
-  } else {
-  
-    #covid secondary by household composition
-    covid_severe_hh_comp_further <- glm(covid_secondary_inf ~ composition_category +
-                                          age_band + sex + rurality_classification +
-                                          covid_vaccination_severe +
-                                          offset(log(time_covid_secondary*1000)),
-                                        data = df_input, family = poisson)
-    covid_severe_hh_comp_further_output <- tidy(covid_severe_hh_comp_further, conf.int = TRUE)
-  
-  }
-  
-  # #covid mortality by household composition
-  # covid_mortality_hh_comp_further <- glm(covid_mortality_inf ~ composition_category +
-  #                                          age_band + sex + rurality_classification + 
-  #                                          covid_vaccination +
-  #                                          offset(log(time_covid_mortality*1000)),
-  #                                        data = df_input, family = poisson)
-  # covid_mortality_hh_comp_further_output <- tidy(covid_mortality_hh_comp_further, conf.int = TRUE)
-
 }
 
 #define a vector of names for the model outputs
 model_names <- c("Mild COVID-19 by Household Composition", 
-                 "Severe COVID-19 by Household Composition")#,
-                 # "COVID-19 Mortality by Household Composition")
+                 "Severe COVID-19 by Household Composition")
 
 #create the model outputs list
 model_outputs_list <- list(covid_mild_hh_comp_further_output,
-                           covid_severe_hh_comp_further_output)#,
-                           # covid_mortality_hh_comp_further_output)
+                           covid_severe_hh_comp_further_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {

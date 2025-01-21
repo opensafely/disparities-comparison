@@ -28,7 +28,6 @@ if (is_being_sourced == FALSE) {
     investigation_type <- args[[5]]
   }
 }
-covid_season_min <- as.Date("2019-09-01")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
@@ -59,9 +58,9 @@ if (cohort == "infants_subgroup") {
 source(here::here("analysis", "functions", "event_count.R"))
 
 #calculate events per group
-events <- group_specific_events_further(df_input, c("latest_ethnicity_group",
-                                        "imd_quintile"), "overall_resp_primary_inf",
-                                        "overall_resp_secondary_inf")
+events <- group_specific_events_further(
+  df_input, c("latest_ethnicity_group", "imd_quintile"),
+  "overall_resp_primary_inf", "overall_resp_secondary_inf")
 
 #check if there are too few events
 too_few_events_mild <- any(events$enough_events_mild == FALSE)
@@ -70,194 +69,46 @@ too_few_events_severe <- any(events$enough_events_severe == FALSE)
 #show the event counts if there are too few events
 if (too_few_events_mild | too_few_events_severe) print(events)
 
-if (cohort == "infants_subgroup") {
+#import model function
+source(here::here("analysis", "functions", "model.R"))
+
+#run mild model
+if (too_few_events_mild) {
   
-  if (codelist_type == "sensitive") {
-    
-    if (too_few_events_mild) {
-      
-      #create data frame with the same columns as model outputs
-      overall_resp_mild_ethnicity_ses_further_output <- data.frame(term = "too few events",
-                                                                   estimate = NA,
-                                                                   std.error = NA,
-                                                                   statistic = NA,
-                                                                   p.value = NA,
-                                                                   conf.low = NA,
-                                                                   conf.high = NA)
-      
-    } else {
-      
-      #overall_resp primary by ethnicity and socioeconomic status
-      overall_resp_mild_ethnicity_ses_further <- glm(overall_resp_primary_inf ~ latest_ethnicity_group +
-                                                       imd_quintile + age_band + sex +
-                                                       rurality_classification +
-                                                       maternal_age +
-                                                       maternal_smoking_status +
-                                                       maternal_drinking +
-                                                       maternal_drug_usage +
-                                                       maternal_flu_vaccination +
-                                                       maternal_pertussis_vaccination +
-                                                       offset(log(time_overall_resp_primary*1000)),
-                                                     data = df_input, family = poisson)
-      overall_resp_mild_ethnicity_ses_further_output <- tidy(overall_resp_mild_ethnicity_ses_further, conf.int = TRUE)
-      
-    }
-    
-    if (too_few_events_severe) {
-      
-      #create data frame with the same columns as model outputs
-      overall_resp_severe_ethnicity_ses_further_output <- data.frame(term = "too few events",
-                                                                     estimate = NA,
-                                                                     std.error = NA,
-                                                                     statistic = NA,
-                                                                     p.value = NA,
-                                                                     conf.low = NA,
-                                                                     conf.high = NA)
-      
-    } else {
-      
-      #overall_resp secondary by ethnicity and socioeconomic status
-      overall_resp_severe_ethnicity_ses_further <- glm(overall_resp_secondary_inf ~ latest_ethnicity_group +
-                                                         imd_quintile + age_band + sex +
-                                                         rurality_classification +
-                                                         maternal_age +
-                                                         maternal_smoking_status +
-                                                         maternal_drinking +
-                                                         maternal_drug_usage +
-                                                         maternal_flu_vaccination +
-                                                         maternal_pertussis_vaccination +
-                                                         offset(log(time_overall_resp_secondary*1000)),
-                                                       data = df_input, family = poisson)
-      overall_resp_severe_ethnicity_ses_further_output <- tidy(overall_resp_severe_ethnicity_ses_further, conf.int = TRUE)
-      
-    }
-    
-    # #overall_resp mortality by ethnicity and socioeconomic status
-    # overall_resp_mortality_ethnicity_ses_further <- glm(overall_resp_mortality_inf ~ latest_ethnicity_group +
-    #                                               imd_quintile +
-    #                                               age_band + sex +
-    #                                               rurality_classification +
-    #                                               maternal_age +
-    #                                               maternal_smoking_status +
-    #                                               maternal_drinking +
-    #                                               maternal_drug_usage +
-    #                                               maternal_flu_vaccination +
-    #                                               maternal_pertussis_vaccination +
-    #                                               offset(log(time_overall_resp_mortality*1000)),
-    #                                             data = df_input, family = poisson)
-    # overall_resp_mortality_ethnicity_ses_further_output <- tidy(overall_resp_mortality_ethnicity_ses_further, conf.int = TRUE)
-    
-  }
-  
-  # #all cause mortality by ethnicity and socioeconomic status
-  # all_cause_mortality_ethnicity_ses_further <- glm(all_cause_mortality_inf ~ latest_ethnicity_group +
-  #                                            imd_quintile + age_band + sex +
-  #                                            rurality_classification +
-  #                                            maternal_age +
-  #                                            maternal_smoking_status +
-  #                                            maternal_drinking +
-  #                                            maternal_drug_usage +
-  #                                            maternal_flu_vaccination +
-  #                                            maternal_pertussis_vaccination +
-  #                                            offset(log(time_all_cause_mortality*1000)),
-  #                                          data = df_input, family = poisson)
-  # all_cause_mortality_ethnicity_ses_further_output <- tidy(all_cause_mortality_ethnicity_ses_further, conf.int = TRUE)
-  
+  #create data frame with same columns as model output creates
+  overall_resp_mild_ethnicity_ses_further_output <- data.frame(
+    term = "too few events", estimate = NA, std.error = NA,
+    statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
 } else {
   
-  if (codelist_type == "sensitive") {
-    
-    if (too_few_events_mild) {
-      
-      #create data frame with the same columns as model outputs
-      overall_resp_mild_ethnicity_ses_further_output <- data.frame(term = "too few events",
-                                                                   estimate = NA,
-                                                                   std.error = NA,
-                                                                   statistic = NA,
-                                                                   p.value = NA,
-                                                                   conf.low = NA,
-                                                                   conf.high = NA)
-      
-    } else {
-      
-      #overall_resp primary by ethnicity and socioeconomic status
-      overall_resp_mild_ethnicity_ses_further <- glm(overall_resp_primary_inf ~ latest_ethnicity_group +
-                                                       imd_quintile + age_band + sex +
-                                                       rurality_classification + 
-                                                       offset(log(time_overall_resp_primary*1000)),
-                                                     data = df_input, family = poisson)
-      overall_resp_mild_ethnicity_ses_further_output <- tidy(overall_resp_mild_ethnicity_ses_further, conf.int = TRUE)
-      
-    }
-    
-    if (too_few_events_severe) {
-      
-      #create data frame with the same columns as model outputs
-      overall_resp_severe_ethnicity_ses_further_output <- data.frame(term = "too few events",
-                                                                     estimate = NA,
-                                                                     std.error = NA,
-                                                                     statistic = NA,
-                                                                     p.value = NA,
-                                                                     conf.low = NA,
-                                                                     conf.high = NA)
-      
-    } else {
-      
-      #overall_resp secondary by ethnicity and socioeconomic status
-      overall_resp_severe_ethnicity_ses_further <- glm(overall_resp_secondary_inf ~ latest_ethnicity_group +
-                                                         imd_quintile + age_band + sex +
-                                                         rurality_classification +
-                                                         offset(log(time_overall_resp_secondary*1000)),
-                                                       data = df_input, family = poisson)
-      overall_resp_severe_ethnicity_ses_further_output <- tidy(overall_resp_severe_ethnicity_ses_further, conf.int = TRUE)
-      
-    }
-    
-    # #overall_resp mortality by ethnicity and socioeconomic status
-    # overall_resp_mortality_ethnicity_ses_further <- glm(overall_resp_mortality_inf ~ latest_ethnicity_group + 
-    #                                               imd_quintile + age_band + sex + 
-    #                                               rurality_classification + 
-    #                                               offset(log(time_overall_resp_mortality*1000)),
-    #                                             data = df_input, family = poisson)
-    # overall_resp_mortality_ethnicity_ses_further_output <- tidy(overall_resp_mortality_ethnicity_ses_further, conf.int = TRUE)
-    
-  }
-  
-  # #all cause mortality by ethnicity and socioeconomic status
-  # all_cause_mortality_ethnicity_ses_further <- glm(all_cause_mortality_inf ~ latest_ethnicity_group +
-  #                                            imd_quintile + age_band + sex + 
-  #                                            rurality_classification + 
-  #                                            offset(log(time_all_cause_mortality*1000)),
-  #                                          data = df_input, family = poisson)
-  # all_cause_mortality_ethnicity_ses_further_output <- tidy(all_cause_mortality_ethnicity_ses_further, conf.int = TRUE)
+  #overall primary by socioeconomic status and household composition
+  overall_resp_mild_ethnicity_ses_further_output <- glm_poisson_further(
+    df_input, c("latest_ethnicity_group", "imd_quintile"),
+    "overall_resp_primary_inf", "time_overall_resp_primary")
   
 }
 
-# #define a vector of names for the model outputs
-# if (codelist_type == "sensitive") {
-#   model_names <- c("Mild Overall Respiratory Virus by Ethnicity and IMD Quintile",
-#                    "Severe Overall Respiratory Virus by Ethnicity and IMD Quintile",
-#                    "Overall Respiratory Virus Mortality by Ethnicity and IMD Quintile",
-#                    "All Cause Mortality by Ethnicity and IMD Quintile")
-# } else {
-#   model_names <- c("All Cause Mortality by Ethnicity and IMD Quintile")
-# }
+#run severe model
+if (too_few_events_severe) {
+  
+  #create data frame with same columns as model output creates
+  overall_resp_severe_ethnicity_ses_further_output <- data.frame(
+    term = "too few events", estimate = NA, std.error = NA,
+    statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
+  
+} else {
+  
+  #overall primary by ethnicity and socioeconomic status
+  overall_resp_severe_ethnicity_ses_further_output <- glm_poisson_further(
+    df_input, c("latest_ethnicity_group", "imd_quintile"),
+    "overall_resp_secondary_inf", "time_overall_resp_secondary")
+  
+}
 
 #define a vector of names for the model outputs
 model_names <- c("Mild Overall Respiratory Virus by Ethnicity and IMD Quintile",
                  "Severe Overall Respiratory Virus by Ethnicity and IMD Quintile")
-
-# #create the model outputs list
-# model_outputs_list <- list(all_cause_mortality_ethnicity_ses_further_output)
-# 
-# #adjust the model outputs list based on the conditions
-# if (codelist_type == "sensitive") {
-#   model_outputs_list <- c(model_outputs_list,
-#                           list(overall_resp_mild_ethnicity_ses_further_output,
-#                                overall_resp_severe_ethnicity_ses_further_output,
-#                                overall_resp_mortality_ethnicity_ses_further_output))
-# }
 
 #create the model outputs list
 model_outputs_list <- list(overall_resp_mild_ethnicity_ses_further_output,
@@ -270,8 +121,7 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
 
 ## create output directories ----
 fs::dir_create(here::here("output", "results", "models",
-                          paste0("overall_and_all_cause_",
-                                 investigation_type)))
+                          paste0("overall_and_all_cause_", investigation_type)))
 
 #save model output 
 if (length(args) == 0) {
