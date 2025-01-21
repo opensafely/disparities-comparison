@@ -1,4 +1,9 @@
 library(dplyr)
+library(here)
+library(rlang)
+
+## create output directories ----
+fs::dir_create(here::here("analysis", "functions"))
 
 #define function to calculate events per group
 group_specific_events <- function(df, add_characteristics,
@@ -8,7 +13,8 @@ group_specific_events <- function(df, add_characteristics,
   if (cohort == "infants_subgroup") {
     
     additional_characteristics <- c("maternal_smoking_status",
-                                    "maternal_drinking", "maternal_drug_usage",
+                                    "maternal_drinking",
+                                    "maternal_drug_usage",
                                     "maternal_flu_vaccination",
                                     "maternal_pertussis_vaccination")
     
@@ -80,7 +86,8 @@ group_specific_events_further <- function(df, add_characteristics,
   if (cohort == "infants_subgroup") {
     
     additional_characteristics <- c("maternal_smoking_status",
-                                    "maternal_drinking", "maternal_drug_usage",
+                                    "maternal_drinking",
+                                    "maternal_drug_usage",
                                     "maternal_flu_vaccination",
                                     "maternal_pertussis_vaccination")
     
@@ -185,8 +192,8 @@ group_specific_events_further <- function(df, add_characteristics,
   if (current_mild %in% names(df) & current_severe %in% names(df)) {
     
     #format vaccination groups
-    current_vacc <- merge(results_mild, results_severe, by = c("characteristic",
-                                                               "group"))
+    current_vacc <- merge(results_mild, results_severe,
+                          by = c("characteristic", "group"))
     
     #combine with results
     results <- rbind(results, current_vacc)
