@@ -210,7 +210,8 @@ if (study_start_date == as.Date("2020-09-01")) {
 if (cohort == "older_adults") {
   df_input <- df_input %>%
     mutate(
-      smoking_status = relevel(factor(smoking_status), ref = "Never")
+      smoking_status = relevel(factor(smoking_status, ordered = FALSE),
+                               ref = "Never")
     )
 }
 
