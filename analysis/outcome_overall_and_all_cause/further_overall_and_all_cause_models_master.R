@@ -30,23 +30,22 @@ if (cohort != "infants" | cohort != "infants_subgroup") {
   
   #run model files
   source(here::here("analysis", "outcome_overall_and_all_cause",
-                    "overall_and_all_cause_ethnicity_models.R"))
+                    "further_overall_and_all_cause_ethnicity_models.R"))
   source(here::here("analysis", "outcome_overall_and_all_cause",
-                    "overall_and_all_cause_ses_models.R"))
+                    "further_overall_and_all_cause_ses_models.R"))
   if (study_start_date == as.Date("2020-09-01")) {
     source(here::here("analysis", "outcome_overall_and_all_cause",
-                      "overall_and_all_cause_hh_comp_models.R"))
+                      "further_overall_and_all_cause_hh_comp_models.R"))
   }
   source(here::here("analysis", "outcome_overall_and_all_cause",
-                    "overall_and_all_cause_ethnicity_ses_models.R"))
+                    "further_overall_and_all_cause_ethnicity_ses_models.R"))
   if (study_start_date == as.Date("2020-09-01")) {
     source(here::here("analysis", "outcome_overall_and_all_cause",
-                      "overall_and_all_cause_ethnicity_hh_comp_models.R"))
+                      "further_overall_and_all_cause_ethnicity_hh_comp_models.R"))
     source(here::here("analysis", "outcome_overall_and_all_cause",
-                      "overall_and_all_cause_ses_hh_comp_models.R"))
+                      "further_overall_and_all_cause_ses_hh_comp_models.R"))
     source(here::here("analysis", "outcome_overall_and_all_cause",
-                      "overall_and_all_cause_full_models.R"))
+                      "further_overall_and_all_cause_full_models.R"))
   }
   
 }
-  

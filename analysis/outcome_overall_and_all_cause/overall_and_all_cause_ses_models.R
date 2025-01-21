@@ -37,22 +37,23 @@ df_input <- read_feather(
 
 #remove rows with missing values in any of the variables used in models
 #outcome will never be NA (as part of processing pipeline) so does not need to be filtered
-if (cohort == "infants_subgroup") {
-  
-  df_input <- df_input %>% 
-    filter(!is.na(imd_quintile), !is.na(age_band), !is.na(sex),
-           !is.na(rurality_classification), !is.na(maternal_age),
-           !is.na(maternal_smoking_status), !is.na(maternal_drinking),
-           !is.na(maternal_drug_usage), !is.na(maternal_flu_vaccination),
-           !is.na(maternal_pertussis_vaccination))
-  
-} else {
+# if (cohort == "infants_subgroup") {
+#   
+#   df_input <- df_input %>% 
+#     filter(!is.na(imd_quintile), !is.na(age_band), !is.na(sex),
+#            #!is.na(rurality_classification),
+#            !is.na(maternal_age), !is.na(maternal_smoking_status),
+#            !is.na(maternal_drinking), !is.na(maternal_drug_usage),
+#            !is.na(maternal_flu_vaccination),
+#            !is.na(maternal_pertussis_vaccination))
+#   
+# } else {
   
   df_input <- df_input %>% 
     filter(!is.na(imd_quintile), !is.na(age_band),
-           !is.na(sex), !is.na(rurality_classification))
+           !is.na(sex))#, !is.na(rurality_classification))
   
-}
+#}
 
 #import event counting function
 source(here::here("analysis", "functions", "event_count.R"))
@@ -69,81 +70,81 @@ too_few_events_severe <- any(events$enough_events_severe == FALSE)
 #show the event counts if there are too few events
 if (too_few_events_mild | too_few_events_severe) print(events)
 
-if (cohort == "infants_subgroup") {
-  
-  if (codelist_type == "sensitive") {
-  
-    if (too_few_events_mild) {
-   
-      #create data frame with the same columns as model outputs
-      overall_resp_mild_ses_output <- data.frame(term = "too few events",
-                                                 estimate = NA, std.error = NA,
-                                                 statistic = NA, p.value = NA,
-                                                 conf.low = NA, conf.high = NA)
-    
-    } else {
-    
-      #overall_resp primary by socioeconomic status
-      overall_resp_mild_ses <- glm(overall_resp_primary_inf ~ imd_quintile +
-                                     age_band + sex + rurality_classification +
-                                     maternal_age + maternal_smoking_status +
-                                     maternal_drinking + maternal_drug_usage +
-                                     maternal_flu_vaccination +
-                                     maternal_pertussis_vaccination +
-                                     offset(log(time_overall_resp_primary*1000)),
-                                   data = df_input, family = poisson)
-      overall_resp_mild_ses_output <- tidy(overall_resp_mild_ses, conf.int = TRUE)
-    
-    }
-    
-    if (too_few_events_severe) {
-    
-      #create data frame with the same columns as model outputs
-      overall_resp_severe_ses_output <- data.frame(term = "too few events",
-                                                   estimate = NA, std.error = NA,
-                                                   statistic = NA, p.value = NA,
-                                                   conf.low = NA, conf.high = NA)
-    
-    } else {
-    
-      #overall_resp secondary by socioeconomic status
-      overall_resp_severe_ses <- glm(overall_resp_secondary_inf ~ imd_quintile +
-                                       age_band + sex + rurality_classification +
-                                       maternal_age + maternal_smoking_status +
-                                       maternal_drinking + maternal_drug_usage +
-                                       maternal_flu_vaccination +
-                                       maternal_pertussis_vaccination +
-                                       offset(log(time_overall_resp_secondary*1000)),
-                                     data = df_input, family = poisson)
-      overall_resp_severe_ses_output <- tidy(overall_resp_severe_ses, conf.int = TRUE)
-    
-    }
-    
-    # #overall_resp mortality by socioeconomic status
-    # overall_resp_mortality_ses <- glm(overall_resp_mortality_inf ~ imd_quintile +
-    #                                     age_band + sex + rurality_classification +
-    #                                     maternal_age + maternal_smoking_status +
-    #                                     maternal_drinking + maternal_drug_usage +
-    #                                     maternal_flu_vaccination +
-    #                                     maternal_pertussis_vaccination +
-    #                                     offset(log(time_overall_resp_mortality*1000)),
-    #                                   data = df_input, family = poisson)
-    # overall_resp_mortality_ses_output <- tidy(overall_resp_mortality_ses, conf.int = TRUE)
-    
-  }
-  
-  # #all cause mortality by socioeconomic status
-  # all_cause_mortality_ses <- glm(all_cause_mortality_inf ~ imd_quintile +
-  #                                  age_band + sex + rurality_classification +
-  #                                  maternal_age + maternal_smoking_status +
-  #                                  maternal_drinking + maternal_drug_usage +
-  #                                  maternal_flu_vaccination +
-  #                                  maternal_pertussis_vaccination +
-  #                                  offset(log(time_all_cause_mortality*1000)),
-  #                                data = df_input, family = poisson)
-  # all_cause_mortality_ses_output <- tidy(all_cause_mortality_ses, conf.int = TRUE)
-  
-} else {
+# if (cohort == "infants_subgroup") {
+#   
+#   if (codelist_type == "sensitive") {
+#   
+#     if (too_few_events_mild) {
+#    
+#       #create data frame with the same columns as model outputs
+#       overall_resp_mild_ses_output <- data.frame(term = "too few events",
+#                                                  estimate = NA, std.error = NA,
+#                                                  statistic = NA, p.value = NA,
+#                                                  conf.low = NA, conf.high = NA)
+#     
+#     } else {
+#     
+#       #overall_resp primary by socioeconomic status
+#       overall_resp_mild_ses <- glm(overall_resp_primary_inf ~ imd_quintile +
+#                                      age_band + sex + #rurality_classification +
+#                                      maternal_age + maternal_smoking_status +
+#                                      maternal_drinking + maternal_drug_usage +
+#                                      maternal_flu_vaccination +
+#                                      maternal_pertussis_vaccination +
+#                                      offset(log(time_overall_resp_primary*1000)),
+#                                    data = df_input, family = poisson)
+#       overall_resp_mild_ses_output <- tidy(overall_resp_mild_ses, conf.int = TRUE)
+#     
+#     }
+#     
+#     if (too_few_events_severe) {
+#     
+#       #create data frame with the same columns as model outputs
+#       overall_resp_severe_ses_output <- data.frame(term = "too few events",
+#                                                    estimate = NA, std.error = NA,
+#                                                    statistic = NA, p.value = NA,
+#                                                    conf.low = NA, conf.high = NA)
+#     
+#     } else {
+#     
+#       #overall_resp secondary by socioeconomic status
+#       overall_resp_severe_ses <- glm(overall_resp_secondary_inf ~ imd_quintile +
+#                                        age_band + sex + #rurality_classification +
+#                                        maternal_age + maternal_smoking_status +
+#                                        maternal_drinking + maternal_drug_usage +
+#                                        maternal_flu_vaccination +
+#                                        maternal_pertussis_vaccination +
+#                                        offset(log(time_overall_resp_secondary*1000)),
+#                                      data = df_input, family = poisson)
+#       overall_resp_severe_ses_output <- tidy(overall_resp_severe_ses, conf.int = TRUE)
+#     
+#     }
+#     
+#     # #overall_resp mortality by socioeconomic status
+#     # overall_resp_mortality_ses <- glm(overall_resp_mortality_inf ~ imd_quintile +
+#     #                                     age_band + sex + #rurality_classification +
+#     #                                     maternal_age + maternal_smoking_status +
+#     #                                     maternal_drinking + maternal_drug_usage +
+#     #                                     maternal_flu_vaccination +
+#     #                                     maternal_pertussis_vaccination +
+#     #                                     offset(log(time_overall_resp_mortality*1000)),
+#     #                                   data = df_input, family = poisson)
+#     # overall_resp_mortality_ses_output <- tidy(overall_resp_mortality_ses, conf.int = TRUE)
+#     
+#   }
+#   
+#   # #all cause mortality by socioeconomic status
+#   # all_cause_mortality_ses <- glm(all_cause_mortality_inf ~ imd_quintile +
+#   #                                  age_band + sex + #rurality_classification +
+#   #                                  maternal_age + maternal_smoking_status +
+#   #                                  maternal_drinking + maternal_drug_usage +
+#   #                                  maternal_flu_vaccination +
+#   #                                  maternal_pertussis_vaccination +
+#   #                                  offset(log(time_all_cause_mortality*1000)),
+#   #                                data = df_input, family = poisson)
+#   # all_cause_mortality_ses_output <- tidy(all_cause_mortality_ses, conf.int = TRUE)
+#   
+# } else {
   
   if (codelist_type == "sensitive") {
   
@@ -159,7 +160,7 @@ if (cohort == "infants_subgroup") {
     
       #overall_resp primary by socioeconomic status
       overall_resp_mild_ses <- glm(overall_resp_primary_inf ~ imd_quintile + 
-                                     age_band + sex + rurality_classification + 
+                                     age_band + sex + #rurality_classification + 
                                      offset(log(time_overall_resp_primary*1000)),
                                    data = df_input, family = poisson)
       overall_resp_mild_ses_output <- tidy(overall_resp_mild_ses, conf.int = TRUE)
@@ -178,7 +179,7 @@ if (cohort == "infants_subgroup") {
     
       #overall_resp secondary by socioeconomic status
       overall_resp_severe_ses <- glm(overall_resp_secondary_inf ~ imd_quintile + 
-                                       age_band + sex + rurality_classification + 
+                                       age_band + sex + #rurality_classification + 
                                        offset(log(time_overall_resp_secondary*1000)),
                                      data = df_input, family = poisson)
       overall_resp_severe_ses_output <- tidy(overall_resp_severe_ses, conf.int = TRUE)
@@ -188,7 +189,7 @@ if (cohort == "infants_subgroup") {
     # #overall_resp mortality by socioeconomic status
     # overall_resp_mortality_ses <- glm(overall_resp_mortality_inf ~ imd_quintile + 
     #                                     age_band + sex +
-    #                                     rurality_classification + 
+    #                                     #rurality_classification + 
     #                                     offset(log(time_overall_resp_mortality*1000)),
     #                                   data = df_input, family = poisson)
     # overall_resp_mortality_ses_output <- tidy(overall_resp_mortality_ses, conf.int = TRUE)
@@ -197,12 +198,12 @@ if (cohort == "infants_subgroup") {
   
   # #all cause mortality by socioeconomic status
   # all_cause_mortality_ses <- glm(all_cause_mortality_inf ~ imd_quintile + 
-  #                                  age_band + sex + rurality_classification + 
+  #                                  age_band + sex + #rurality_classification + 
   #                                  offset(log(time_all_cause_mortality*1000)),
   #                                data = df_input, family = poisson)
   # all_cause_mortality_ses_output <- tidy(all_cause_mortality_ses, conf.int = TRUE)
 
-}
+#}
 
 # #define a vector of names for the model outputs
 # if (codelist_type == "sensitive") {

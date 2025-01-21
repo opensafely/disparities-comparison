@@ -40,10 +40,25 @@ df_input <- read_feather(
 #remove rows with missing values in any of the variables used in models
 #outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 #vaccination will also never be NA as part of processing pipeline
-df_input <- df_input %>% 
-  filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
-         !is.na(composition_category), !is.na(age_band), !is.na(sex),
-         !is.na(rurality_classification))
+if (cohort == "infants_subgroup") {
+  
+  df_input <- df_input %>% 
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(composition_category), !is.na(age_band),
+           !is.na(sex), !is.na(rurality_classification),
+           !is.na(maternal_age), !is.na(maternal_smoking_status),
+           !is.na(maternal_drinking), !is.na(maternal_drug_usage),
+           !is.na(maternal_flu_vaccination),
+           !is.na(maternal_pertussis_vaccination))
+
+} else {
+  
+  df_input <- df_input %>% 
+    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+           !is.na(composition_category), !is.na(age_band),
+           !is.na(sex), !is.na(rurality_classification))
+  
+}
  
 #import event counting function
 source(here::here("analysis", "functions", "event_count.R"))
@@ -51,7 +66,8 @@ source(here::here("analysis", "functions", "event_count.R"))
 #calculate events per group
 events <- group_specific_events_further(df_input, c("latest_ethnicity_group",
                                         "imd_quintile" , "composition_category"),
-                                        "covid_primary_inf", "covid_secondary_inf",
+                                        "covid_primary_inf",
+                                        "covid_secondary_inf",
                                         "time_since_last_covid_vaccination",
                                         "covid_vaccination")
 
@@ -62,57 +78,171 @@ too_few_events_severe <- any(events$enough_events_severe == FALSE)
 #show the event counts if there are too few events
 if (too_few_events_mild | too_few_events_severe) print(events)
 
-if (too_few_events_mild) {
-  
-  #create data frame with same columns as model outputs
-  covid_mild_full_further <- data.frame(term = "too few events",
-                                        estimate = NA, std.error = NA,
-                                        statistic = NA, p.value = NA,
-                                        conf.low = NA, conf.high = NA)
-  
-} else {
-  
-  #covid primary by ethnicity and socioeconomic status
-  covid_mild_full_further <- glm(covid_primary_inf ~ latest_ethnicity_group +
-                                   imd_quintile + composition_category +
-                                   age_band + sex + rurality_classification +
-                                   covid_vaccination_mild +
-                                   offset(log(time_covid_primary*1000)),
-                                 data = df_input, family = poisson)
-  covid_mild_full_further_output <- tidy(covid_mild_full_further, conf.int = TRUE)
+if (cohort == "infants_subgroup") {
 
-}
-
-if (too_few_events_severe) {
+  if (too_few_events_mild) {
   
-  #create data frame with same columns as model outputs
-  covid_severe_full_further <- data.frame(term = "too few events",
+    #create data frame with same columns as model outputs
+    covid_mild_full_further_output <- data.frame(term = "too few events",
+                                                 estimate = NA, std.error = NA,
+                                                 statistic = NA, p.value = NA,
+                                                 conf.low = NA, conf.high = NA)
+  
+  } else {
+  
+    #covid primary by ethnicity and socioeconomic status
+    covid_mild_full_further <- glm(covid_primary_inf ~ latest_ethnicity_group +
+                                     imd_quintile + composition_category +
+                                     age_band + sex + rurality_classification +
+                                     maternal_age + maternal_smoking_status +
+                                     maternal_drinking + maternal_drug_usage +
+                                     maternal_flu_vaccination +
+                                     maternal_pertussis_vaccination +
+                                     offset(log(time_covid_primary*1000)),
+                                   data = df_input, family = poisson)
+    covid_mild_full_further_output <- tidy(covid_mild_full_further, conf.int = TRUE)
+  
+  }
+  
+  if (too_few_events_severe) {
+  
+    #create data frame with same columns as model outputs
+    covid_severe_full_further_output <- data.frame(term = "too few events",
+                                                   estimate = NA, std.error = NA,
+                                                   statistic = NA, p.value = NA,
+                                                   conf.low = NA, conf.high = NA)
+  
+  } else {
+  
+    #covid secondary by ethnicity and socioeconomic status
+    covid_severe_full_further <- glm(covid_secondary_inf ~ latest_ethnicity_group +
+                                       imd_quintile + composition_category +
+                                       age_band + sex + rurality_classification +
+                                       maternal_age + maternal_smoking_status +
+                                       maternal_drinking + maternal_drug_usage +
+                                       maternal_flu_vaccination +
+                                       maternal_pertussis_vaccination +
+                                       offset(log(time_covid_secondary*1000)),
+                                     data = df_input, family = poisson)
+    covid_severe_full_further_output <- tidy(covid_severe_full_further, conf.int = TRUE)
+  
+  }
+  
+  # #covid mortality by ethnicity and socioeconomic status
+  # covid_mortality_full_further <- glm(covid_mortality_inf ~ latest_ethnicity_group +
+  #                               imd_quintile + composition_category +
+  #                               age_band + sex + rurality_classification +
+  #                               maternal_age + maternal_smoking_status +
+  #                               maternal_drinking + maternal_drug_usage + 
+  #                               maternal_flu_vaccination + 
+  #                               maternal_pertussis_vaccination +
+  #                               offset(log(time_covid_mortality*1000)),
+  #                             data = df_input, family = poisson)
+  # covid_mortality_full_further_output <- tidy(covid_mortality_full_further, conf.int = TRUE)
+  
+} else if (cohort == "infants") {
+  
+  if (too_few_events_mild) {
+  
+    #create data frame with same columns as model outputs
+    covid_mild_full_further_output <- data.frame(term = "too few events",
+                                                 estimate = NA, std.error = NA,
+                                                 statistic = NA, p.value = NA,
+                                                 conf.low = NA, conf.high = NA)
+  
+  } else {
+  
+    #covid primary by ethnicity and socioeconomic status
+    covid_mild_full_further <- glm(covid_primary_inf ~ latest_ethnicity_group +
+                                     imd_quintile + composition_category +
+                                     age_band + sex + rurality_classification +
+                                     offset(log(time_covid_primary*1000)),
+                                   data = df_input, family = poisson)
+    covid_mild_full_further_output <- tidy(covid_mild_full_further, conf.int = TRUE)
+  
+  }
+  
+  if (too_few_events_severe) {
+  
+    #create data frame with same columns as model outputs
+    covid_severe_full_further_output <- data.frame(term = "too few events",
+                                                   estimate = NA, std.error = NA,
+                                                   statistic = NA, p.value = NA,
+                                                   conf.low = NA, conf.high = NA)
+  
+  } else {
+  
+    #covid secondary by ethnicity and socioeconomic status
+    covid_severe_full_further <- glm(covid_secondary_inf ~ latest_ethnicity_group +
+                                       imd_quintile + composition_category +
+                                       age_band + sex + rurality_classification +
+                                       offset(log(time_covid_secondary*1000)),
+                                     data = df_input, family = poisson)
+    covid_severe_full_further_output <- tidy(covid_severe_full_further, conf.int = TRUE)
+  
+  }
+  
+  # #covid mortality by ethnicity and socioeconomic status
+  # covid_mortality_full_further <- glm(covid_mortality_inf ~ latest_ethnicity_group +
+  #                               imd_quintile + composition_category +
+  #                               age_band + sex + rurality_classification +
+  #                               offset(log(time_covid_mortality*1000)),
+  #                             data = df_input, family = poisson)
+  # covid_mortality_full_further_output <- tidy(covid_mortality_full_further, conf.int = TRUE)
+  
+} else { 
+  
+  if (too_few_events_mild) {
+  
+    #create data frame with same columns as model outputs
+    covid_mild_full_further <- data.frame(term = "too few events",
                                           estimate = NA, std.error = NA,
                                           statistic = NA, p.value = NA,
                                           conf.low = NA, conf.high = NA)
   
-} else {
-
-  #covid secondary by ethnicity and socioeconomic status
-  covid_severe_full_further <- glm(covid_secondary_inf ~ latest_ethnicity_group +
+  } else {
+  
+    #covid primary by ethnicity and socioeconomic status
+    covid_mild_full_further <- glm(covid_primary_inf ~ latest_ethnicity_group +
                                      imd_quintile + composition_category +
                                      age_band + sex + rurality_classification +
-                                     covid_vaccination_severe +
-                                     offset(log(time_covid_secondary*1000)),
+                                     covid_vaccination_mild +
+                                     offset(log(time_covid_primary*1000)),
                                    data = df_input, family = poisson)
-  covid_severe_full_further_output <- tidy(covid_severe_full_further, conf.int = TRUE)
-
+    covid_mild_full_further_output <- tidy(covid_mild_full_further, conf.int = TRUE)
+  
+  }
+  
+  if (too_few_events_severe) {
+  
+    #create data frame with same columns as model outputs
+    covid_severe_full_further <- data.frame(term = "too few events",
+                                            estimate = NA, std.error = NA,
+                                            statistic = NA, p.value = NA,
+                                            conf.low = NA, conf.high = NA)
+  
+  } else {
+  
+    #covid secondary by ethnicity and socioeconomic status
+    covid_severe_full_further <- glm(covid_secondary_inf ~ latest_ethnicity_group +
+                                       imd_quintile + composition_category +
+                                       age_band + sex + rurality_classification +
+                                       covid_vaccination_severe +
+                                       offset(log(time_covid_secondary*1000)),
+                                     data = df_input, family = poisson)
+    covid_severe_full_further_output <- tidy(covid_severe_full_further, conf.int = TRUE)
+  
+  }
+  
+  # #covid mortality by ethnicity and socioeconomic status
+  # covid_mortality_full_further <- glm(covid_mortality_inf ~ latest_ethnicity_group +
+  #                                       imd_quintile + age_band + sex +
+  #                                       rurality_classification +
+  #                                       covid_vaccination +
+  #                                       offset(log(time_covid_mortality*1000)),
+  #                                     data = df_input, family = poisson)
+  # covid_mortality_full_further_output <- tidy(covid_mortality_full_further, conf.int = TRUE)
 }
-
-# #covid mortality by ethnicity and socioeconomic status
-# covid_mortality_full_further <- glm(covid_mortality_inf ~ latest_ethnicity_group +
-#                                       imd_quintile + age_band + sex +
-#                                       rurality_classification +
-#                                       covid_vaccination +
-#                                       offset(log(time_covid_mortality*1000)),
-#                                     data = df_input, family = poisson)
-# covid_mortality_full_further_output <- tidy(covid_mortality_full_further, conf.int = TRUE)
-
 
 #define a vector of names for the model outputs
 model_names <- c("Mild COVID-19 by Ethnicity, IMD Quintile and Household Composition", 
@@ -120,7 +250,8 @@ model_names <- c("Mild COVID-19 by Ethnicity, IMD Quintile and Household Composi
                  # "COVID-19 Mortality by Ethnicity, IMD Quintile and Household Composition")
   
 #create the model outputs list
-model_outputs_list <- list(covid_mild_full_further_output, covid_severe_full_further_output)#,
+model_outputs_list <- list(covid_mild_full_further_output,
+                           covid_severe_full_further_output)#,
                            # covid_mortality_full_further_output)
   
 #bind model outputs together and add a column with the corresponding names
