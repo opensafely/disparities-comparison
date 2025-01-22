@@ -65,7 +65,16 @@ for (i in 1:length(collated_input_processed)) {
   df <- df[, all_columns]
   
   #update the list with the modified data frame
-  collated_input_processed[[i]] <- df
+  collated_input_processed[[i]] <- df %>%
+    select(subset, patient_id, sex, age_band, latest_ethnicity_group,
+           imd_quintile, rurality_classification, prior_flu_vaccination,
+           flu_vaccination_mild, flu_vaccination_severe,
+           time_since_last_covid_vaccination, covid_vaccination_mild,
+           covid_vaccination_severe, rsv_primary_inf, time_rsv_primary,
+           rsv_secondary_inf, time_rsv_secondary, flu_primary_inf,
+           time_flu_primary, flu_secondary_inf, time_flu_secondary,
+           covid_primary_inf, time_covid_primary, covid_secondary_inf,
+           time_covid_secondary)
   
 }
 
@@ -74,18 +83,6 @@ collated_input_processed <- do.call(rbind, collated_input_processed)
 
 #remove row names
 row.names(collated_input_processed) <- NULL
-
-#select only necessary columns
-collated_input_processed <- collated_input_processed %>%
-  select(subset, patient_id, sex, age_band, latest_ethnicity_group,
-         imd_quintile, rurality_classification, prior_flu_vaccination,
-         flu_vaccination_mild, flu_vaccination_severe,
-         time_since_last_covid_vaccination, covid_vaccination_mild,
-         covid_vaccination_severe, rsv_primary_inf, time_rsv_primary,
-         rsv_secondary_inf, time_rsv_secondary, flu_primary_inf,
-         time_flu_primary, flu_secondary_inf, time_flu_secondary,
-         covid_primary_inf, time_covid_primary, covid_secondary_inf,
-         time_covid_secondary)
 
 ## create output directories ----
 fs::dir_create(here::here("output", "data", "overall_analyses"))
