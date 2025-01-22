@@ -5773,7 +5773,7 @@ action_overall <- function(cohort) {
                    glue("process_dataset_{cohort}_s7_specific_primary"),
                    glue("process_dataset_{cohort}_s8_specific_primary")),
       highly_sensitive = lst(
-        dataset = glue("output/data/input_processed_combined_{cohort}_specific_primary.arrow"))
+        dataset = glue("output/data/overall_analyses/input_processed_combined_{cohort}_specific_primary.arrow"))
     ),
     
     action(
@@ -5851,7 +5851,7 @@ action_overall_infants <- function(cohort) {
                    glue("process_dataset_{cohort}_s7_specific_primary"),
                    glue("process_dataset_{cohort}_s8_specific_primary")),
       highly_sensitive = lst(
-        dataset = glue("output/data/input_processed_combined_{cohort}_specific_primary.arrow"))
+        dataset = glue("output/data/overall_analyses/input_processed_combined_{cohort}_specific_primary.arrow"))
     ),
     
     action(
