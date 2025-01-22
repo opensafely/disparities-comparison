@@ -65,6 +65,8 @@ for (i in 1:length(collated_input_processed)) {
   df <- df[, all_columns]
   
   #update the list with the modified data frame
+  if (cohort != "infants" & cohort != "infants_subgroup") {
+   
   collated_input_processed[[i]] <- df %>%
     select(subset, patient_id, sex, age_band, latest_ethnicity_group,
            imd_quintile, rurality_classification, prior_flu_vaccination,
@@ -75,6 +77,18 @@ for (i in 1:length(collated_input_processed)) {
            time_flu_primary, flu_secondary_inf, time_flu_secondary,
            covid_primary_inf, time_covid_primary, covid_secondary_inf,
            time_covid_secondary)
+    
+  } else {
+    
+    collated_input_processed[[i]] <- df %>%
+      select(subset, patient_id, sex, age_band, latest_ethnicity_group,
+             imd_quintile, rurality_classification, rsv_primary_inf,
+             time_rsv_primary, rsv_secondary_inf, time_rsv_secondary,
+             flu_primary_inf, time_flu_primary, flu_secondary_inf,
+             time_flu_secondary, covid_primary_inf, time_covid_primary,
+             covid_secondary_inf, time_covid_secondary)
+    
+  }
   
 }
 
