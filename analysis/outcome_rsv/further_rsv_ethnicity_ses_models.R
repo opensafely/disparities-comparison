@@ -72,9 +72,9 @@ if (cohort == "infants_subgroup") {
 source(here::here("analysis", "functions", "event_count.R"))
 
 #calculate events per group
-events <- group_specific_events_further(df_input, c("latest_ethnicity_group",
-                                        "imd_quintile"), "rsv_primary_inf",
-                                        "rsv_secondary_inf")
+events <- group_specific_events_further(
+  df_input, c("latest_ethnicity_group", "imd_quintile"),
+  "rsv_primary_inf", "rsv_secondary_inf")
 
 #check if there are too few events
 too_few_events_mild <- any(events$enough_events_mild == FALSE)
@@ -99,7 +99,7 @@ if (too_few_events_mild) {
   #rsv primary by ethnicity and socioeconomic status
   rsv_mild_ethnicity_ses_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "imd_quintile"),
-    "rsv_primary_inf", "time_rsv_primary")
+    "rsv_primary_inf", offset_var = "time_rsv_primary")
   
 }
 
@@ -116,7 +116,7 @@ if (too_few_events_severe) {
   #rsv primary by ethnicity and socioeconomic status
   rsv_severe_ethnicity_ses_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "imd_quintile"),
-    "rsv_secondary_inf", "time_rsv_secondary")
+    "rsv_secondary_inf", offset_var = "time_rsv_secondary")
   
 }
 

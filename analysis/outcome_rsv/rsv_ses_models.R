@@ -58,8 +58,8 @@ if (cohort == "older_adults" & investigation_type == "secondary") {
 source(here::here("analysis", "functions", "event_count.R"))
 
 #calculate events per group
-events <- group_specific_events(df_input, c("imd_quintile"), "rsv_primary_inf",
-                                "rsv_secondary_inf")
+events <- group_specific_events(
+  df_input, c("imd_quintile"), "rsv_primary_inf", "rsv_secondary_inf")
 
 #check if there are too few events
 too_few_events_mild <- any(events$enough_events_mild == FALSE)

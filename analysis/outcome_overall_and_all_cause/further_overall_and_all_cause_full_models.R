@@ -87,7 +87,7 @@ if (too_few_events_mild) {
   overall_resp_mild_full_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "imd_quintile",
     "composition_category"), "overall_resp_primary_inf",
-    "time_overall_resp_primary")
+    offset_var = "time_overall_resp_primary")
   
 }
 
@@ -105,7 +105,7 @@ if (too_few_events_severe) {
   overall_resp_severe_full_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "imd_quintile",
     "composition_category"), "overall_resp_secondary_inf",
-    "time_overall_resp_secondary")
+    offset_var = "time_overall_resp_secondary")
   
 }
 

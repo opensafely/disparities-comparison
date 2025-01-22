@@ -58,10 +58,9 @@ if (cohort == "infants_subgroup") {
 source(here::here("analysis", "functions", "event_count.R"))
 
 #calculate events per group
-events <- group_specific_events_further(df_input, c("imd_quintile",
-                                        "composition_category"),
-                                        "overall_resp_primary_inf",
-                                        "overall_resp_secondary_inf")
+events <- group_specific_events_further(
+  df_input, c("imd_quintile", "composition_category"),
+  "overall_resp_primary_inf", "overall_resp_secondary_inf")
 
 #check if there are too few events
 too_few_events_mild <- any(events$enough_events_mild == FALSE)
@@ -86,7 +85,7 @@ if (too_few_events_mild) {
   #overall primary by socioeconomic status and household composition
   overall_resp_mild_ses_hh_comp_further_output <- glm_poisson_further(
     df_input, c("imd_quintile", "composition_category"),
-    "overall_resp_primary_inf", "time_overall_resp_primary")
+    "overall_resp_primary_inf", offset_var = "time_overall_resp_primary")
   
 }
 
@@ -103,7 +102,7 @@ if (too_few_events_severe) {
   #overall primary by socioeconomic status and household composition
   overall_resp_severe_ses_hh_comp_further_output <- glm_poisson_further(
     df_input, c("imd_quintile", "composition_category"),
-    "overall_resp_secondary_inf", "time_overall_resp_secondary")
+    "overall_resp_secondary_inf", offset_var = "time_overall_resp_secondary")
   
 }
 
@@ -122,8 +121,7 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
 
 ## create output directories ----
 fs::dir_create(here::here("output", "results", "models",
-                          paste0("overall_and_all_cause_",
-                                 investigation_type)))
+                          paste0("overall_and_all_cause_", investigation_type)))
 
 #save model output 
 if (length(args) == 0) {

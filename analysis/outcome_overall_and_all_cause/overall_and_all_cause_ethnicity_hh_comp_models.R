@@ -44,10 +44,9 @@ df_input <- df_input %>%
 source(here::here("analysis", "functions", "event_count.R"))
 
 #calculate events per group
-events <- group_specific_events(df_input, c("latest_ethnicity_group",
-                                "composition_category"),
-                                "overall_resp_primary_inf",
-                                "overall_resp_secondary_inf")
+events <- group_specific_events(
+  df_input, c("latest_ethnicity_group", "composition_category"),
+  "overall_resp_primary_inf", "overall_resp_secondary_inf")
 
 #check if there are too few events
 too_few_events_mild <- any(events$enough_events_mild == FALSE)
@@ -108,8 +107,7 @@ model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i
 
 ## create output directories ----
 fs::dir_create(here::here("output", "results", "models",
-                          paste0("overall_and_all_cause_",
-                                 investigation_type)))
+                          paste0("overall_and_all_cause_", investigation_type)))
 
 #save model output 
 if (length(args) == 0) {

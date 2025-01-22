@@ -57,8 +57,8 @@ if (cohort == "infants_subgroup") {
 source(here::here("analysis", "functions", "event_count.R"))
 
 #calculate events per group
-events <- group_specific_events_further(df_input, c("composition_category"),
-                                        "rsv_primary_inf", "rsv_secondary_inf")
+events <- group_specific_events_further(
+  df_input, c("composition_category"), "rsv_primary_inf", "rsv_secondary_inf")
 
 #check if there are too few events
 too_few_events_mild <- any(events$enough_events_mild == FALSE)
@@ -83,7 +83,7 @@ if (too_few_events_mild) {
   #rsv primary by household composition
   rsv_mild_hh_comp_further_output <- glm_poisson_further(
     df_input, "composition_category", "rsv_primary_inf",
-    "time_rsv_primary")
+    offset_var = "time_rsv_primary")
   
 }
 
@@ -100,7 +100,7 @@ if (too_few_events_severe) {
   #rsv primary by household composition
   rsv_severe_hh_comp_further_output <- glm_poisson_further(
     df_input, "composition_category", "rsv_secondary_inf",
-    "time_rsv_secondary")
+    offset_var = "time_rsv_secondary")
   
 }
 

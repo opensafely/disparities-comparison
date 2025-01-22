@@ -57,9 +57,9 @@ if (cohort == "infants_subgroup") {
 source(here::here("analysis", "functions", "event_count.R"))
 
 #calculate events per group
-events <- group_specific_events_further(df_input, c("imd_quintile"),
-                                        "overall_resp_primary_inf",
-                                        "overall_resp_secondary_inf")
+events <- group_specific_events_further(
+  df_input, c("imd_quintile"), "overall_resp_primary_inf",
+  "overall_resp_secondary_inf")
 
 #check if there are too few events
 too_few_events_mild <- any(events$enough_events_mild == FALSE)
@@ -84,7 +84,7 @@ if (too_few_events_mild) {
   #overall primary by socioeconomic status
   overall_resp_mild_ses_further_output <- glm_poisson_further(
     df_input, "imd_quintile", "overall_resp_primary_inf",
-    "time_overall_resp_primary")
+    offset_var = "time_overall_resp_primary")
   
 }
 
@@ -101,7 +101,7 @@ if (too_few_events_severe) {
   #overall primary by socioeconomic status
   overall_resp_severe_ses_further_output <- glm_poisson_further(
     df_input, "imd_quintile", "overall_resp_secondary_inf",
-    "time_overall_resp_secondary")
+    offset_var = "time_overall_resp_secondary")
   
 }
 

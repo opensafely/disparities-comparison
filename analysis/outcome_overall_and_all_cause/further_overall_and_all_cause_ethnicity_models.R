@@ -84,7 +84,7 @@ if (too_few_events_mild) {
   #overall primary by ethnicity
   overall_resp_mild_ethnicity_further_output <- glm_poisson_further(
     df_input, "latest_ethnicity_group", "overall_resp_primary_inf",
-    "time_overall_resp_primary")
+    offset_var = "time_overall_resp_primary")
   
 }
 
@@ -101,7 +101,7 @@ if (too_few_events_severe) {
   #overall primary by ethnicity
   overall_resp_severe_ethnicity_further_output <- glm_poisson_further(
     df_input, "latest_ethnicity_group", "overall_resp_secondary_inf",
-    "time_overall_resp_secondary")
+    offset_var = "time_overall_resp_secondary")
   
 }
 

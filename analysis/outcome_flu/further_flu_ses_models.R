@@ -57,10 +57,9 @@ if (cohort == "infants_subgroup") {
 source(here::here("analysis", "functions", "event_count.R"))
 
 #calculate events per group
-events <- group_specific_events_further(df_input, c("imd_quintile"),
-                                        "flu_primary_inf", "flu_secondary_inf",
-                                        "prior_flu_vaccination",
-                                        "flu_vaccination")
+events <- group_specific_events_further(
+  df_input, c("imd_quintile"), "flu_primary_inf", "flu_secondary_inf",
+  "prior_flu_vaccination", "flu_vaccination")
 
 #check if there are too few events
 too_few_events_mild <- any(events$enough_events_mild == FALSE)

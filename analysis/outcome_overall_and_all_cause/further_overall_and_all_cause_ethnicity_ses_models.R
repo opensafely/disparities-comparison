@@ -85,7 +85,7 @@ if (too_few_events_mild) {
   #overall primary by socioeconomic status and household composition
   overall_resp_mild_ethnicity_ses_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "imd_quintile"),
-    "overall_resp_primary_inf", "time_overall_resp_primary")
+    "overall_resp_primary_inf", offset_var = "time_overall_resp_primary")
   
 }
 
@@ -102,7 +102,7 @@ if (too_few_events_severe) {
   #overall primary by ethnicity and socioeconomic status
   overall_resp_severe_ethnicity_ses_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "imd_quintile"),
-    "overall_resp_secondary_inf", "time_overall_resp_secondary")
+    "overall_resp_secondary_inf", offset_var = "time_overall_resp_secondary")
   
 }
 

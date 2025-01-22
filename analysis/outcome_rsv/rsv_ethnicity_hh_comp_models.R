@@ -41,9 +41,9 @@ df_input <- df_input %>%
 source(here::here("analysis", "functions", "event_count.R"))
 
 #calculate events per group
-events <- group_specific_events(df_input, c("latest_ethnicity_group",
-                                "composition_category"), "rsv_primary_inf",
-                                "rsv_secondary_inf")
+events <- group_specific_events(
+  df_input, c("latest_ethnicity_group", "composition_category"),
+  "rsv_primary_inf", "rsv_secondary_inf")
 
 #check if there are too few events
 too_few_events_mild <- any(events$enough_events_mild == FALSE)

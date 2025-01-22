@@ -60,9 +60,9 @@ if (cohort == "older_adults" & investigation_type == "secondary") {
 source(here::here("analysis", "functions", "event_count.R"))
 
 #calculate events per group
-events <- group_specific_events(df_input, c("latest_ethnicity_group",
-                                "imd_quintile"), "rsv_primary_inf",
-                                "rsv_secondary_inf")
+events <- group_specific_events(
+  df_input, c("latest_ethnicity_group", "imd_quintile"),
+  "rsv_primary_inf", "rsv_secondary_inf")
 
 #check if there are too few events
 too_few_events_mild <- any(events$enough_events_mild == FALSE)
@@ -78,14 +78,14 @@ source(here::here("analysis", "functions", "model.R"))
 if (too_few_events_mild) {
   
   #create data frame with same columns as model output creates
-  rsv_mild_full_output <- data.frame(
+  rsv_mild_ethnicity_ses_output <- data.frame(
     term = "too few events", estimate = NA, std.error = NA,
     statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
 } else {
   
   #rsv primary by ethnicity and socioeconomic status
-  rsv_mild_full_output <- glm_poisson(
+  rsv_mild_ethnicity_ses_output <- glm_poisson(
     df_input, c("latest_ethnicity_group", "imd_quintile"),
     "rsv_primary_inf", "time_rsv_primary")
   
@@ -95,14 +95,14 @@ if (too_few_events_mild) {
 if (too_few_events_severe) {
   
   #create data frame with same columns as model output creates
-  rsv_severe_full_output <- data.frame(
+  rsv_severe_ethnicity_ses_output <- data.frame(
     term = "too few events", estimate = NA, std.error = NA,
     statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
 } else {
   
   #rsv primary by ethnicity and socioeconomic status
-  rsv_severe_full_output <- glm_poisson(
+  rsv_severe_ethnicity_ses_output <- glm_poisson(
     df_input, c("latest_ethnicity_group", "imd_quintile"),
     "rsv_secondary_inf", "time_rsv_secondary")
   
