@@ -78,16 +78,17 @@ source(here::here("analysis", "functions", "model.R"))
 if (too_few_events_mild) {
   
   #create data frame with same columns as model output creates
-  flu_mild_ses_further_output <- data.frame(
+  flu_mild_ethnicity_ses_further_output <- data.frame(
     term = "too few events", estimate = NA, std.error = NA,
     statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
 } else {
   
-  #flu by socioeconomic status
-  flu_mild_ses_further_output <- glm_poisson_further(
-    df_input, "imd_quintile", "flu_primary_inf", "prior_flu_vaccination",
-    "flu_vaccination_mild", "flu_vaccination_severe", "time_flu_primary")
+  #flu by ethnicity and socioeconomic status
+  flu_mild_ethnicity_ses_further_output <- glm_poisson_further(
+    df_input, c("latest_ethnicity_group", "imd_quintile"), "flu_primary_inf",
+    "prior_flu_vaccination", "flu_vaccination_mild", "flu_vaccination_severe",
+    "time_flu_primary")
   
 }
 
@@ -95,16 +96,17 @@ if (too_few_events_mild) {
 if (too_few_events_severe) {
   
   #create data frame with same columns as model output creates
-  flu_severe_ses_further_output <- data.frame(
+  flu_severe_ethnicity_ses_further_output <- data.frame(
     term = "too few events", estimate = NA, std.error = NA,
     statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
 } else {
   
-  #flu by socioeconomic status
-  flu_severe_ses_further_output <- glm_poisson_further(
-    df_input, "imd_quintile", "flu_secondary_inf", "prior_flu_vaccination",
-    "flu_vaccination_mild", "flu_vaccination_severe", "time_flu_secondary")
+  #flu by ethnicity and socioeconomic status
+  flu_severe_ethnicity_ses_further_output <- glm_poisson_further(
+    df_input, c("latest_ethnicity_group", "imd_quintile"), "flu_secondary_inf",
+    "prior_flu_vaccination", "flu_vaccination_mild", "flu_vaccination_severe",
+    "time_flu_secondary")
   
 }
 
