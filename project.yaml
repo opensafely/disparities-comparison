@@ -19425,7 +19425,7 @@ actions:
     - process_dataset_older_adults_s8_specific_primary
     outputs:
       highly_sensitive:
-        dataset: output/data/input_processed_combined_older_adults_specific_primary.arrow
+        dataset: output/data/overall_analyses/input_processed_combined_older_adults_specific_primary.arrow
 
   analyse_dataset_older_adults_rsv_overall_specific_primary:
     run: r:latest analysis/overall_analyses/outcome_rsv/overall_rsv_models_master.R
@@ -19494,7 +19494,7 @@ actions:
     - process_dataset_adults_s8_specific_primary
     outputs:
       highly_sensitive:
-        dataset: output/data/input_processed_combined_adults_specific_primary.arrow
+        dataset: output/data/overall_analyses/input_processed_combined_adults_specific_primary.arrow
 
   analyse_dataset_adults_rsv_overall_specific_primary:
     run: r:latest analysis/overall_analyses/outcome_rsv/overall_rsv_models_master.R
@@ -19563,7 +19563,7 @@ actions:
     - process_dataset_children_and_adolescents_s8_specific_primary
     outputs:
       highly_sensitive:
-        dataset: output/data/input_processed_combined_children_and_adolescents_specific_primary.arrow
+        dataset: output/data/overall_analyses/input_processed_combined_children_and_adolescents_specific_primary.arrow
 
   analyse_dataset_children_and_adolescents_rsv_overall_specific_primary:
     run: r:latest analysis/overall_analyses/outcome_rsv/overall_rsv_models_master.R
@@ -19632,7 +19632,7 @@ actions:
     - process_dataset_infants_s8_specific_primary
     outputs:
       highly_sensitive:
-        dataset: output/data/input_processed_combined_infants_specific_primary.arrow
+        dataset: output/data/overall_analyses/input_processed_combined_infants_specific_primary.arrow
 
   analyse_dataset_infants_rsv_ethnicity_overall_specific_primary:
     run: r:latest analysis/overall_analyses/outcome_rsv/rsv_ethnicity_models.R infants
@@ -19756,7 +19756,7 @@ actions:
     - process_dataset_infants_subgroup_s8_specific_primary
     outputs:
       highly_sensitive:
-        dataset: output/data/input_processed_combined_infants_subgroup_specific_primary.arrow
+        dataset: output/data/overall_analyses/input_processed_combined_infants_subgroup_specific_primary.arrow
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_overall_specific_primary:
     run: r:latest analysis/overall_analyses/outcome_rsv/rsv_ethnicity_models.R infants_subgroup

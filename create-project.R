@@ -74,7 +74,9 @@ action_flow <- function(cohort, season, dates, season_start_date,
         dataset = glue("output/flow_chart/{cohort}_{dates}_flow_chart.arrow")
       )
     )
+    
   )
+  
 }
 
 action_flow_infants_sub <- function(cohort, season, dates, season_start_date, 
@@ -114,7 +116,9 @@ action_flow_infants_sub <- function(cohort, season, dates, season_start_date,
       highly_sensitive = lst(
         dataset = glue("output/flow_chart/{cohort}_{dates}_flow_chart.arrow"))
     )
+    
   )
+  
 }
  
 action_inclusion <- function(cohort, season, dates, season_start_date, 
@@ -132,6 +136,7 @@ action_inclusion <- function(cohort, season, dates, season_start_date,
     )
     
   )
+  
 }
 
 ##household actions 
@@ -164,6 +169,7 @@ action_household <- function(season, dates, season_start_date, season_end_date) 
     )
     
   )
+  
 }
 
 ##actions for all cohorts/seasons 
@@ -5981,7 +5987,7 @@ defaults_list <- lst(
 )
 
 ## actions ----
-actions_list <- splice(
+actions_list <- splice (
 
   comment("# # # # # # # # # # # # # # # # # # #",
           "DO NOT EDIT project.yaml DIRECTLY",
