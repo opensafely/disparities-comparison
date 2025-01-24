@@ -41,7 +41,7 @@ glm_poisson <- function(df, x, y, offset_var) {
   model <- glm(formula, data = df, family = poisson)
   
   #tidy model output
-  tidy_model <- tidy(model, conf.int = TRUE)
+  tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
   
   #return output
   return(tidy_model)
@@ -127,7 +127,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
   model <- glm(formula, data = df, family = poisson)
   
   #tidy model output
-  tidy_model <- tidy(model, conf.int = TRUE)
+  tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
   
   #return output
   return(tidy_model)
