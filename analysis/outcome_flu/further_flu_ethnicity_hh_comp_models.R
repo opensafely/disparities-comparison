@@ -85,7 +85,7 @@ if (too_few_events_mild) {
 } else {
   
   #flu by ethnicity and household composition
-  flu_mild_ses_hh_comp_further_output <- glm_poisson_further(
+  flu_mild_ethnicity_hh_comp_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "composition_category"),
     "flu_primary_inf", "prior_flu_vaccination", "flu_vaccination_mild",
     "flu_vaccination_severe", "time_flu_primary")

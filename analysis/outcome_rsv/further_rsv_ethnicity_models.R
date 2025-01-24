@@ -70,7 +70,7 @@ if (cohort == "infants_subgroup") {
 source(here::here("analysis", "functions", "event_count.R"))
 
 #calculate events per group
-events <- group_specific_events(
+events <- group_specific_events_further(
   df_input, c("latest_ethnicity_group"), "rsv_primary_inf", "rsv_secondary_inf")
 
 #check if there are too few events

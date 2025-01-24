@@ -78,14 +78,14 @@ source(here::here("analysis", "functions", "model.R"))
 if (too_few_events_mild) {
   
   #create data frame with same columns as model output creates
-  covid_mild_ethnicity_hh_comp_further_output <- data.frame(
+  covid_mild_hh_comp_further_output <- data.frame(
     term = "too few events", estimate = NA, std.error = NA,
     statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
 } else {
   
   #covid by household composition
-  covid_mild__hh_comp_further_output <- glm_poisson_further(
+  covid_mild_hh_comp_further_output <- glm_poisson_further(
     df_input, "composition_category", "covid_primary_inf",
     "time_since_last_covid_vaccination", "covid_vaccination_mild",
     "covid_vaccination_severe", "time_covid_primary")
@@ -96,7 +96,7 @@ if (too_few_events_mild) {
 if (too_few_events_severe) {
   
   #create data frame with same columns as model output creates
-  covid_severe_ethnicity_hh_comp_further_output <- data.frame(
+  covid_severe_hh_comp_further_output <- data.frame(
     term = "too few events", estimate = NA, std.error = NA,
     statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   

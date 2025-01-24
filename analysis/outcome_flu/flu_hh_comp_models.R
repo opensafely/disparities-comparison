@@ -83,7 +83,7 @@ if (too_few_events_severe) {
 } else {
   
   #flu by household composition
-  flu_severe_ses_hh_comp_output <- glm_poisson(
+  flu_severe_hh_comp_output <- glm_poisson(
     df_input, "composition_category", "flu_secondary_inf", "time_flu_secondary")
   
 }

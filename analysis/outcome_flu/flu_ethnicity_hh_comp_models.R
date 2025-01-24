@@ -62,15 +62,16 @@ source(here::here("analysis", "functions", "model.R"))
 if (too_few_events_mild) {
   
   #create data frame with same columns as model output creates
-  flu_mild_hh_comp_output <- data.frame(
+  flu_mild_ethnicity_hh_comp_output <- data.frame(
     term = "too few events", estimate = NA, std.error = NA,
     statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
 } else {
   
-  #flu by household composition
-  flu_mild_hh_comp_output <- glm_poisson(
-    df_input, "composition_category", "flu_primary_inf", "time_flu_primary")
+  #flu by ethnicity and household composition
+  flu_mild_ethnicity_hh_comp_output <- glm_poisson(
+    df_input, c("latest_ethnicity_group", "composition_category"),
+    "flu_primary_inf", "time_flu_primary")
   
 }
 
@@ -78,15 +79,16 @@ if (too_few_events_mild) {
 if (too_few_events_severe) {
   
   #create data frame with same columns as model output creates
-  flu_severe_hh_comp_output <- data.frame(
+  flu_severe_ethnicity_hh_comp_output <- data.frame(
     term = "too few events", estimate = NA, std.error = NA,
     statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
 } else {
   
-  #flu by household composition
-  flu_severe_hh_comp_output <- glm_poisson(
-    df_input, "composition_category", "flu_secondary_inf", "time_flu_secondary")
+  #flu by ethnicity household composition
+  flu_severe_ethnicity_hh_comp_output <- glm_poisson(
+    df_input, c("latest_ethnicity_group", "composition_category"),
+    "flu_secondary_inf", "time_flu_secondary")
   
 }
 

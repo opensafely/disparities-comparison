@@ -86,7 +86,7 @@ if (too_few_events_severe) {
 } else {
   
   #flu by ethnicity, socioeconomic status and household composition
-  flu_severe_full_comp_output <- glm_poisson(
+  flu_severe_full_output <- glm_poisson(
     df_input, c("latest_ethnicity_group", "imd_quintile",
     "composition_category"), "flu_secondary_inf", "time_flu_secondary")
   
