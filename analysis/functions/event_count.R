@@ -76,8 +76,8 @@ group_specific_events <- function(df, add_characteristics,
 #define function to calculate events per group for models which include vaccination
 group_specific_events_further <- function(df, add_characteristics,
                                           outcome_mild, outcome_severe,
-                                          vaccination_prior,
-                                          vaccionation_current) {
+                                          vaccination_prior = NULL,
+                                          vaccination_current = NULL) {
   
   #define the characteristics that are always included
   characteristics <- c("age_band", "sex", "rurality_classification")
@@ -104,8 +104,8 @@ group_specific_events_further <- function(df, add_characteristics,
   if (cohort != "infants" & cohort != "infants_subgroup") {
     
     #define vaccination categories for summaries
-    current_mild <- paste0(vaccionation_current, "_mild")
-    current_severe <- paste0(vaccionation_current, "_severe")
+    current_mild <- paste0(vaccination_current, "_mild")
+    current_severe <- paste0(vaccination_current, "_severe")
     
     #add vaccination characteristics
     characteristics <- c(characteristics, vaccination_prior, current_mild,
