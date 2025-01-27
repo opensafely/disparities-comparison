@@ -280,7 +280,7 @@ if (study_start_date == as.Date("2017-09-01")) {
                                   patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       rsv_primary_censor = if_else(rsv_primary_inf_date < rsv_primary_date,
-                                   1, 0),
+                                   1, 0, missing = 1),
       #infer mild rsv outcome 
       rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
       #infer severe case date for rsv
@@ -288,7 +288,7 @@ if (study_start_date == as.Date("2017-09-01")) {
                                     death_date, patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       rsv_secondary_censor = if_else(rsv_secondary_inf_date < rsv_secondary_date,
-                                     1, 0),
+                                     1, 0, missing = 1),
       #infer severe rsv outcome
       rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0)#,
       # #infer rsv mortality outcome 
@@ -296,7 +296,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       #                               death_date, patient_end_date, na.rm = TRUE),
       # #assign censoring indicator
       # rsv_mortality_censor = if_else(rsv_mortality_inf_date < rsv_mortality_date,
-      #                                1, 0),
+      #                                1, 0, missing = 1),
       # #infer rsv mortality outcome
       # rsv_mortality_inf = if_else(rsv_mortality_censor == 0, 1, 0)
     )
@@ -327,7 +327,7 @@ if (study_start_date == as.Date("2017-09-01")) {
                                   patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       flu_primary_censor = if_else(flu_primary_inf_date < flu_primary_date,
-                                   1, 0),
+                                   1, 0, missing = 1),
       #infer mild flu outcome 
       flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
       #infer severe case date for flu
@@ -335,7 +335,7 @@ if (study_start_date == as.Date("2017-09-01")) {
                                     death_date, patient_end_date, na.rm = TRUE),
       #assign censoring indicator
       flu_secondary_censor = if_else(flu_secondary_inf_date < flu_secondary_date,
-                                     1, 0),
+                                     1, 0, missing = 1),
       #infer severe flu outcome
       flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0)#,
       # #infer flu mortality outcome 
@@ -343,7 +343,7 @@ if (study_start_date == as.Date("2017-09-01")) {
       #                               death_date, patient_end_date, na.rm = TRUE),
       # #assign censoring indicator
       # flu_mortality_censor = if_else(flu_mortality_inf_date < flu_mortality_date,
-      #                                1, 0),
+      #                                1, 0, missing = 1),
       # #infer flu mortality outcome
       # flu_mortality_inf = if_else(flu_mortality_censor == 0, 1, 0)
     )
@@ -362,7 +362,8 @@ if (study_start_date == as.Date("2017-09-01")) {
 #                                         na.rm = TRUE),
 #     #assign censoring indicator
 #     all_cause_mortality_censor = if_else(all_cause_mortality_inf_date <
-#                                          all_cause_mortality_date, 1, 0),
+#                                          all_cause_mortality_date, 1, 0,
+#                                          missing = 1),
 #     #infer all cause mortality outcome
 #     all_cause_mortality_inf = if_else(all_cause_mortality_censor == 0, 1, 0)
 #   )
