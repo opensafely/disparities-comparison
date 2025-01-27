@@ -10,15 +10,7 @@ group_specific_events <- function(df, add_characteristics,
                                   outcome_mild, outcome_severe) {
   
   #define additional characteristics 
-  if (cohort == "infants_subgroup") {
-    
-    additional_characteristics <- c("maternal_smoking_status",
-                                    "maternal_drinking",
-                                    "maternal_drug_usage",
-                                    "maternal_flu_vaccination",
-                                    "maternal_pertussis_vaccination")
-    
-  } else if (cohort == "older_adults" & investigation_type == "secondary") {
+  if (cohort == "older_adults" & investigation_type == "secondary") {
     
     additional_characteristics <- c("has_asthma", "has_copd",
                                     "has_cystic_fibrosis", "has_other_resp",
@@ -65,6 +57,8 @@ group_specific_events <- function(df, add_characteristics,
                                             TRUE, FALSE))
     
     #store results for this characteristic
+    events_per_group <- cbind(characteristic = characteristics[i],
+                              events_per_group)
     results <- rbind(results, events_per_group) 
     
   }
