@@ -63,7 +63,7 @@ group_specific_events <- function(df, add_characteristics,
     
   }
   
-  return(results)
+  return(as_tibble(results))
   
 }
 
@@ -194,6 +194,6 @@ group_specific_events_further <- function(df, add_characteristics,
     
   }
   
-  return(results)
+  return(as_tibble(results))
   
 }
