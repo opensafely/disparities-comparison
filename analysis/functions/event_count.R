@@ -59,9 +59,9 @@ group_specific_events <- function(df, add_characteristics,
     
     #add column with whether there are enough events
     events_per_group <- events_per_group %>%
-      mutate(enough_events_mild = if_else(sum(events_mild > 10) > 1,
+      mutate(enough_events_mild = if_else(sum(events_mild > 20) > 1,
                                           TRUE, FALSE),
-             enough_events_severe = if_else(sum(events_severe > 10) > 1,
+             enough_events_severe = if_else(sum(events_severe > 20) > 1,
                                             TRUE, FALSE))
     
     #store results for this characteristic
@@ -157,7 +157,7 @@ group_specific_events_further <- function(df, add_characteristics,
       
       #add column with whether there are enough events
       events_per_group <- events_per_group %>%
-        mutate(enough_events_severe = if_else(sum(events_severe > 10) > 1,
+        mutate(enough_events_severe = if_else(sum(events_severe > 20) > 1,
                                               TRUE, FALSE))
       
       #store results for this characteristic
@@ -175,9 +175,9 @@ group_specific_events_further <- function(df, add_characteristics,
       
       #add column with whether there are enough events
       events_per_group <- events_per_group %>%
-        mutate(enough_events_mild = if_else(sum(events_mild > 10) > 1,
+        mutate(enough_events_mild = if_else(sum(events_mild > 20) > 1,
                                             TRUE, FALSE),
-               enough_events_severe = if_else(sum(events_severe > 10) > 1,
+               enough_events_severe = if_else(sum(events_severe > 20) > 1,
                                               TRUE, FALSE))
       
       #store results for this characteristic
