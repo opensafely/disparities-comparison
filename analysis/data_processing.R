@@ -190,7 +190,8 @@ df_input <- df_input %>%
   )
 
 #household variables for when they are included (2020-21)
-if (study_start_date == as.Date("2020-09-01")) {
+if (study_start_date == as.Date("2020-09-01") &
+    cohort != "infants" & cohort != "infants_subgroup") {
   df_input <- df_input %>%
     mutate(
       #define household size categories
