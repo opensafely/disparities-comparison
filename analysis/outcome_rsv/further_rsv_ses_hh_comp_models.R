@@ -138,7 +138,7 @@ if (length(args) == 0) {
   model_outputs %>%
     write_csv(path = paste0(here::here("output", "results", "models",
                             paste0("rsv_", investigation_type)), "/", 
-                            "further_rsv_ses_hh_comp__model_outputs_", cohort, "_", 
+                            "further_rsv_ses_hh_comp_model_outputs_", cohort, "_", 
                             year(study_start_date), "_", year(study_end_date), 
                             "_", codelist_type, "_", investigation_type, ".csv"))
   

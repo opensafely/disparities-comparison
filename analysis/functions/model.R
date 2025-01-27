@@ -74,7 +74,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
     
   } else if (cohort == "infants") {
     
-    next
+    predictors <- predictors
     
   } else {
     

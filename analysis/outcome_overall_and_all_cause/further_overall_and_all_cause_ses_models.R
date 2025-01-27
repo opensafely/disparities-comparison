@@ -130,7 +130,7 @@ if (length(args) == 0) {
     write_csv(file = paste0(here::here("output", "results", "models",
                             paste0("overall_and_all_cause_",
                             investigation_type)), "/",
-                            "further_overalL_and_all_cause_ses_further_model_outputs_",
+                            "further_overalL_and_all_cause_ses_model_outputs_",
                             cohort, "_", year(study_start_date), "_",
                             year(study_end_date), "_", codelist_type,
                             "_", investigation_type, ".csv"))
@@ -141,7 +141,7 @@ if (length(args) == 0) {
     write_csv(path = paste0(here::here("output", "results", "models",
                             paste0("overall_and_all_cause_",
                             investigation_type)), "/",
-                            "further_overall_and_all_cause_ses_further_model_outputs_",
+                            "further_overall_and_all_cause_ses_model_outputs_",
                             cohort, "_", year(study_start_date), "_",
                             year(study_end_date), "_", codelist_type,
                             "_", investigation_type, ".csv"))

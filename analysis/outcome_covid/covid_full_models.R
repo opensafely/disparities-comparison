@@ -96,7 +96,7 @@ if (too_few_events_mild) {
 if (too_few_events_severe) {
   
   #create data frame with same columns as model output creates
-  covid_severe_full_comp_output <- data.frame(
+  covid_severe_full_output <- data.frame(
     term = "too few events", estimate = NA, std.error = NA,
     statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   

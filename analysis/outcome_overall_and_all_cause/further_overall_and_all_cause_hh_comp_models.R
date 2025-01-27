@@ -105,6 +105,10 @@ if (too_few_events_severe) {
   
 }
 
+#define a vector of names for the model outputs
+model_names <- c("Mild Overall Respiratory Virus by Household Composition",
+                 "Severe Overall Respiratory Virus by Household Composition")
+
 #create the model outputs list
 model_outputs_list <- list(overall_resp_mild_hh_comp_further_output,
                            overall_resp_severe_hh_comp_further_output)

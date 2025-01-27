@@ -34,7 +34,8 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_",
              codelist_type, "_", investigation_type,".arrow")))
 
-if (study_start_date == as.Date("2020-09-01")) {
+if (study_start_date == as.Date("2020-09-01") &
+    cohort != "infants" & cohort != "infants_subgroup") {
   
   df_household <- read_feather(
     here::here("output", "data", paste0("input_household_processed_", 
