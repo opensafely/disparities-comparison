@@ -14,9 +14,9 @@ fs::dir_create(here::here("analysis"))
 source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- as.Date("2019-09-01")
-  study_end_date <- as.Date("2020-08-31")
-  cohort <- "older_adults"
+  study_start_date <- as.Date("2016-09-01")
+  study_end_date <- as.Date("2017-08-31")
+  cohort <- "infants"
   codelist_type <- "specific"
   investigation_type <- "primary"
 } else {
@@ -115,7 +115,14 @@ calculate_rolling_rates <- function(df, pathogen, characteristic,
       ) %>%
       complete(in_interval = c("during", "before"), event = unique(event), 
                group = unique(group), fill = list(events_in_interval = 0)) %>%
-      pivot_wider(names_from = "in_interval", values_from = "events_in_interval") %>%
+      pivot_wider(names_from = "in_interval", values_from = "events_in_interval")
+    
+    if (!"before" %in% names(df_expanded)) {
+      df_expanded <- df_expanded %>%
+        mutate(before = 0)
+    }
+    
+    df_expanded <- df_expanded %>%
       #calculate the number of patients still at risk in interval
       mutate(
         patients_remaining = total_patients - before
@@ -125,6 +132,8 @@ calculate_rolling_rates <- function(df, pathogen, characteristic,
     df_intervals <- bind_rows(df_intervals, df_expanded)
     
   }
+  
+  return(df_intervals)
   
   ## calculate the rates per event type per group per interval
   
