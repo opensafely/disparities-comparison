@@ -28,7 +28,6 @@ if (is_being_sourced == FALSE) {
     investigation_type <- args[[5]]
   }
 }
-covid_season_min <- as.Date("2019-09-01")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
@@ -37,98 +36,69 @@ df_input <- read_feather(
 
 #remove rows with missing values in any of the variables used in models
 #outcome will never be NA (as part of processing pipeline) so does not need to be filtered
-if (cohort == "infants_subgroup") {
+df_input <- df_input %>% 
+  filter(!is.na(imd_quintile), !is.na(composition_category),
+         !is.na(age_band), !is.na(sex))
+
+#import event counting function
+source(here::here("analysis", "functions", "event_count.R"))
+
+#calculate events per group
+events <- group_specific_events(
+  df_input, c("imd_quintile", "composition_category"),
+  "rsv_primary_inf", "rsv_secondary_inf")
+
+#check if there are too few events
+too_few_events_mild <- any(events$enough_events_mild == FALSE)
+too_few_events_severe <- any(events$enough_events_severe == FALSE)
+
+#show the event counts if there are too few events
+if (too_few_events_mild | too_few_events_severe) print(events)
+
+#import model function
+source(here::here("analysis", "functions", "model.R"))
+
+#run mild model
+if (too_few_events_mild) {
   
-  df_input <- df_input %>% 
-    filter(!is.na(imd_quintile), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
-           !is.na(maternal_age), !is.na(maternal_smoking_status),
-           !is.na(maternal_drinking), !is.na(maternal_drug_usage),
-           !is.na(maternal_flu_vaccination))
+  #create data frame with same columns as model output creates
+  rsv_mild_ses_hh_comp_output <- data.frame(
+    term = "too few events", estimate = NA, std.error = NA,
+    statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
 } else {
   
-  df_input <- df_input %>% 
-    filter(!is.na(imd_quintile), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification))
+  #rsv primary by socioeconomic status and household composition
+  rsv_mild_ses_hh_comp_output <- glm_poisson(
+    df_input, c("imd_quintile", "composition_category"),
+    "rsv_primary_inf", "time_rsv_primary")
   
 }
 
-if (cohort == "infants_subgroup") {
+#run severe model
+if (too_few_events_severe) {
   
-  #rsv primary by socioeconomic status and household composition
-  rsv_mild_ses_hh_comp <- glm(rsv_primary_inf ~ imd_quintile + 
-                                composition_category + age_band + sex + 
-                                rurality_classification + 
-                                maternal_age + maternal_smoking_status +
-                                maternal_drinking + maternal_drug_usage + 
-                                maternal_flu_vaccination + 
-                                maternal_pertussis_vaccination +
-                                offset(log(time_rsv_primary)), 
-                              data = df_input, family = poisson)
-  rsv_mild_ses_hh_comp_output <- tidy(rsv_mild_ses_hh_comp)
-  
-  #rsv secondary by socioeconomic status and household composition
-  rsv_severe_ses_hh_comp <- glm(rsv_secondary_inf ~ imd_quintile +
-                                  composition_category + age_band + sex + 
-                                  rurality_classification + 
-                                  maternal_age + maternal_smoking_status +
-                                  maternal_drinking + maternal_drug_usage + 
-                                  maternal_flu_vaccination + 
-                                  maternal_pertussis_vaccination +
-                                  offset(log(time_rsv_secondary)),
-                                data = df_input, family = poisson)
-  rsv_severe_ses_hh_comp_output <- tidy(rsv_severe_ses_hh_comp)
-  
-  # #rsv mortality by socioeconomic status and household composition
-  # rsv_mortality_ses_hh_comp <- glm(rsv_mortality_inf ~ imd_quintile + 
-  #                                    composition_category + age_band + sex + 
-  #                                    rurality_classification + 
-  #                                    maternal_age + maternal_smoking_status +
-  #                                    maternal_drinking + maternal_drug_usage + 
-  #                                    maternal_flu_vaccination + 
-  #                                    maternal_pertussis_vaccination +
-  #                                    offset(log(time_rsv_mortality)),
-  #                                  data = df_input, family = poisson)
-  # rsv_mortality_ses_hh_comp_output <- tidy(rsv_mortality_ses_hh_comp)
+  #create data frame with same columns as model output creates
+  rsv_severe_ses_hh_comp_output <- data.frame(
+    term = "too few events", estimate = NA, std.error = NA,
+    statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
 } else {
   
   #rsv primary by socioeconomic status and household composition
-  rsv_mild_ses_hh_comp <- glm(rsv_primary_inf ~ imd_quintile +
-                                  composition_category + age_band + sex + 
-                                  rurality_classification + 
-                                  offset(log(time_rsv_primary)), 
-                                data = df_input, family = poisson)
-  rsv_mild_ses_hh_comp_output <- tidy(rsv_mild_ses_hh_comp)
+  rsv_severe_ses_hh_comp_output <- glm_poisson(
+    df_input, c("imd_quintile", "composition_category"),
+    "rsv_secondary_inf", "time_rsv_secondary")
   
-  #rsv secondary by socioeconomic status and household composition
-  rsv_severe_ses_hh_comp <- glm(rsv_secondary_inf ~ imd_quintile +
-                                    composition_category + age_band + sex + 
-                                    rurality_classification + 
-                                    offset(log(time_rsv_secondary)),
-                                  data = df_input, family = poisson)
-  rsv_severe_ses_hh_comp_output <- tidy(rsv_severe_ses_hh_comp)
-  
-  # #rsv mortality by socioeconomic status and household composition
-  # rsv_mortality_ses_hh_comp <- glm(rsv_mortality_inf ~ imd_quintile + 
-  #                                      composition_category + age_band + sex + 
-  #                                      rurality_classification + 
-  #                                      offset(log(time_rsv_mortality)),
-  #                                    data = df_input, family = poisson)
-  # rsv_mortality_ses_hh_comp_output <- tidy(rsv_mortality_ses_hh_comp)
-
 }
 
 #define a vector of names for the model outputs
 model_names <- c("Mild RSV by IMD Quintile and Household Composition",
-                 "Severe RSV by IMD Quintile and Household Composition")#,
-                 # "RSV Mortality By IMD Quintile and Household Composition")
+                 "Severe RSV by IMD Quintile and Household Composition")
 
 #create the model outputs list
 model_outputs_list <- list(rsv_mild_ses_hh_comp_output, 
-                           rsv_severe_ses_hh_comp_output)#,
-                           # rsv_mortality_ses_hh_comp_output)
+                           rsv_severe_ses_hh_comp_output)
 
 #bind model outputs together and add a column with the corresponding names
 model_outputs <- do.call(rbind, lapply(seq_along(model_outputs_list), function(i) {

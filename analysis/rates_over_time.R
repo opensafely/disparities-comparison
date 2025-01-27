@@ -192,7 +192,8 @@ calculate_for_groups <- function(df, pathogen, characteristics) {
 }
 
 #define characteristics
-characteristics <- c("age_band", "sex", "latest_ethnicity_group", "imd_quintile")
+characteristics <- c("age_band", "sex", "latest_ethnicity_group",
+                     "imd_quintile")
 if (study_start_date == as.Date("2020-09-01")) {
   characteristics <- c(characteristics, c("rurality_classification",
                                           "composition_category"))

@@ -1196,7 +1196,8 @@ if (study_start_date >= covid_season_min) {
 }
 
 #household composition for when it cane be included (2020-21)
-if (study_start_date == as.Date("2020-09-01")) {
+if (study_start_date == as.Date("2020-09-01") &
+    cohort != "infants" & cohort != "infants_subgroup") {
   #calculate total person-time for each outcome type by household composition type
   if (study_start_date >= covid_season_min) {
     survival_hh_comp <- df_input %>%
@@ -1767,7 +1768,7 @@ if (cohort == "infants_subgroup") {
       pivot_longer(
         cols = c(rsv_primary_inf, rsv_secondary_inf,# rsv_mortality_inf,
                  flu_primary_inf, flu_secondary_inf,# flu_mortality_inf,
-                 overall_resp_primary_inf),# overall_resp_secondary_inf,
+                 overall_resp_primary_inf, overall_resp_secondary_inf),
                  # overall_resp_mortality_inf, all_cause_mortality_inf),
         names_to = "outcome",
         names_pattern = "(.*)_inf",
@@ -1786,7 +1787,7 @@ if (cohort == "infants_subgroup") {
         cols = c(rsv_primary_inf, rsv_secondary_inf,# rsv_mortality_inf,
                  flu_primary_inf, flu_secondary_inf,# flu_mortality_inf,
                  covid_primary_inf, covid_secondary_inf,# covid_mortality_inf,
-                 overall_resp_primary_inf),# overall_resp_secondary_inf,
+                 overall_resp_primary_inf, overall_resp_secondary_inf),
                  # overall_resp_mortality_inf, all_cause_mortality_inf),
         names_to = "outcome",
         names_pattern = "(.*)_inf",
@@ -3398,10 +3399,10 @@ if (cohort == "children_and_adolescents" |
 if (study_start_date == as.Date("2020-09-01")) {
   if (cohort == "infants") {
     table_groups <- c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
-                      "Household Composition Category", "Rurality Classification")
+                      "Rurality Classification")
   } else if (cohort == "infants_subgroup") {
-    table_groups <- c("Total", "Age Group", "Sex", "Ethnicity", "IMD Quintile",
-                      "Household Composition Category", "Rurality Classification",
+    table_groups <- c("Total", "Age Group", "Sex", "Ethnicity",
+                      "IMD Quintile", "Rurality Classification",
                       "Average Maternal Age", "Maternal Smoking Status",
                       "Maternal Drinking", "Maternal Drug Usage",
                       "Maternal Pertussis Vaccination Status",

@@ -314,6 +314,10 @@ copd_resolved_codelist = codelist_from_csv(
   "codelists/nhsd-primary-care-domain-refsets-copdres_cod.csv",
   column = "code",
 )
+copd_qof_codelist = codelist_from_csv(
+  "codelists/opensafely-chronic-obstructive-pulmonary-disease-copd-review-qof.csv",
+  column = "code",
+)
 
 # pulmonary fibrosis
 pulmonary_fibrosis_codelist = codelist_from_csv(

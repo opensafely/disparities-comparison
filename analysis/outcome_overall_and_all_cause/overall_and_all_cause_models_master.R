@@ -25,7 +25,6 @@ if (length(args) == 0) {
   codelist_type <- args[[4]]
   investigation_type <- args[[5]]
 }
-covid_season_min <- as.Date("2019-09-01")
 
 if (cohort != "infants" | cohort != "infants_subgroup") {
   
