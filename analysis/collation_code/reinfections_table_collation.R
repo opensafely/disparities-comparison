@@ -39,12 +39,12 @@ collated_reinfections = rbind(
            cohort, "_2023_2024.csv"))) %>% mutate(subset = "2023_24")
 )
 
-#perform redaction and rounding 
-collated_reinfections <- collated_reinfections %>% 
-  mutate(n = roundmid_any(as.numeric(n)))
-
-#rename n column
-colnames(collated_reinfections)[colnames(collated_reinfections) == "n"] <- "n (midpoint 10 rounded)"
+# #perform redaction and rounding 
+# collated_reinfections <- collated_reinfections %>% 
+#   mutate(n = roundmid_any(as.numeric(n)))
+# 
+# #rename n column
+# colnames(collated_reinfections)[colnames(collated_reinfections) == "n"] <- "n (midpoint 10 rounded)"
 
 #save as csv
 write_csv(collated_reinfections, paste0(here::here("output", "collated", "descriptive"), 
