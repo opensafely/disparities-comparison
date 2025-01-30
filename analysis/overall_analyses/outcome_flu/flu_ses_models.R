@@ -26,7 +26,7 @@ df_input <- read_feather(
                     "_specific_primary.arrow")))
 
 df_input <- df_input %>% 
-  filter(!is.na(latest_ethnicity_group), !is.na(age_band), !is.na(sex))
+  filter(!is.na(imd_quintile), !is.na(age_band), !is.na(sex))
 
 #import event counting function
 source(here::here("analysis", "functions", "event_count.R"))
@@ -72,7 +72,7 @@ if (too_few_events_severe) {
 } else {
   
   #flu by socioeconomic status
-  flu_severe_ses_output <- glm_poisson_further(
+  flu_severe_ses_output <- glm_poisson(
     df_input, "imd_quintile", "flu_secondary_inf", "time_flu_secondary")
   
 }

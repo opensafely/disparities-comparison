@@ -8,15 +8,15 @@ library(readr)
 fs::dir_create(here::here("analysis", "overall_analyses", "outcome_covid"))
 
 #define cohort
-is_being_sourced <- sys.nframe() > 0
-if (is_being_sourced == FALSE) {
-  args <- commandArgs(trailingOnly = TRUE)
-  if (length(args) == 0) {
-    cohort <- "infants"
-  } else {
-    cohort <- args[[1]]
-  }
+source(here::here("analysis", "design", "design.R"))
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) == 0) {
+  cohort <- "adults"
+} else {
+  cohort <- args[[1]]
 }
+
+investigation_type <- "primary"
 
 if (cohort != "infants" | cohort != "infants_subgroup") {
   

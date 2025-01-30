@@ -74,7 +74,7 @@ if (too_few_events_severe) {
 } else {
   
   #flu by ethnicity
-  flu_severe_ethnicity_output <- glm_poisson_further(
+  flu_severe_ethnicity_output <- glm_poisson(
     df_input, "latest_ethnicity_group", "flu_secondary_inf",
     "time_flu_secondary")
   

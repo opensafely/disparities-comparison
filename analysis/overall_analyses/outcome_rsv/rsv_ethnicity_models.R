@@ -74,7 +74,7 @@ if (too_few_events_severe) {
 } else {
   
   #rsv by ethnicity
-  rsv_severe_ethnicity_output <- glm_poisson_further(
+  rsv_severe_ethnicity_output <- glm_poisson(
     df_input, "latest_ethnicity_group", "rsv_secondary_inf",
     "time_rsv_secondary")
   

@@ -77,7 +77,7 @@ if (too_few_events_severe) {
 } else {
   
   #covid by ethnicity and socioeconomic status
-  covid_severe_ethnicity_ses_output <- glm_poisson_further(
+  covid_severe_ethnicity_ses_output <- glm_poisson(
     df_input, c("latest_ethnicity_group", "imd_quintile"),
     "covid_secondary_inf", "time_covid_secondary")
   

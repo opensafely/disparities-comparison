@@ -14,7 +14,7 @@ is_being_sourced <- sys.nframe() > 0
 if (is_being_sourced == FALSE) {
   args <- commandArgs(trailingOnly = TRUE)
   if (length(args) == 0) {
-    cohort <- "infants"
+    cohort <- "adults"
   } else {
     cohort <- args[[1]]
   }
@@ -77,7 +77,7 @@ if (too_few_events_severe) {
 } else {
   
   #flu by ethnicity and socioeconomic status
-  flu_severe_ethnicity_ses_output <- glm_poisson_further(
+  flu_severe_ethnicity_ses_output <- glm_poisson(
     df_input, c("latest_ethnicity_group", "imd_quintile"), "flu_secondary_inf",
     "time_flu_secondary")
   

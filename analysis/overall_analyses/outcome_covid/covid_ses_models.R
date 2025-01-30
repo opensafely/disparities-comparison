@@ -75,7 +75,7 @@ if (too_few_events_severe) {
 } else {
   
   #covid by socioeconomic status
-  covid_severe_ses_output <- glm_poisson_further(
+  covid_severe_ses_output <- glm_poisson(
     df_input, "imd_quintile", "covid_secondary_inf", "time_covid_secondary")
   
 }

@@ -74,7 +74,7 @@ if (too_few_events_severe) {
 } else {
   
   #rsv by socioeconomic status
-  rsv_severe_ses_output <- glm_poisson_further(
+  rsv_severe_ses_output <- glm_poisson(
     df_input, "imd_quintile", "rsv_secondary_inf", "time_rsv_secondary")
   
 }
