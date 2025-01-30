@@ -66,7 +66,7 @@ sim_list = lst(
   
   #date of deregistration
   deregistration_day = bn_node(
-    ~ as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+    ~ as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
     missing_rate = ~ 0.99
   ),
   
@@ -256,19 +256,19 @@ sim_list = lst(
   
   #day of current flu vaccination
   flu_vaccination_day = bn_node(
-    ~as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+    ~as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
     missing_rate = ~ 0.3
   ),
   
   #day of last covid vaccination
   last_covid_vaccination_day = bn_node(
-    ~ as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+    ~ as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
     missing_rate = ~ 0.3
   ),
   
   #day of current covid vaccination
   covid_vaccination_day = bn_node(
-    ~ as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+    ~ as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
     missing_rate = ~ 0.3
   ),
   
@@ -282,7 +282,7 @@ sim_list = lst(
   #date
   rsv_primary_day = bn_node(
     ~ if_else(rsv_primary == TRUE, 
-              as.integer(runif(n = ..n, patient_index_day, index_day + 365)), 
+              as.integer(runif(n = ..n, patient_index_day, patient_end_day)), 
               NA_integer_)
   ),
   
@@ -296,7 +296,7 @@ sim_list = lst(
   #date
   rsv_primary_second_day = bn_node(
     ~ if_else(rsv_primary_second == TRUE, 
-              as.integer(runif(n = ..n, rsv_primary_day + 14, index_day + 365)), 
+              as.integer(runif(n = ..n, rsv_primary_day + 14, patient_end_day)), 
               NA_integer_)
   ),
   
@@ -308,7 +308,7 @@ sim_list = lst(
   #date
   rsv_secondary_day = bn_node(
     ~ if_else(rsv_secondary == TRUE, 
-              as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+              as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
               NA_integer_)
   ),
   
@@ -329,7 +329,7 @@ sim_list = lst(
   #date
   rsv_secondary_second_day = bn_node(
     ~ if_else(rsv_secondary_second == TRUE, 
-              as.integer(runif(n = ..n, rsv_secondary_day + 14, index_day + 365)), 
+              as.integer(runif(n = ..n, rsv_secondary_day + 14, patient_end_day)), 
               NA_integer_)
   ),
   
@@ -348,7 +348,7 @@ sim_list = lst(
   #date
   flu_primary_day = bn_node(
     ~ if_else(flu_primary == TRUE,
-              as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+              as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
               NA_integer_)
   ),
   
@@ -362,7 +362,7 @@ sim_list = lst(
   #date
   flu_primary_second_day = bn_node(
     ~ if_else(flu_primary_second == TRUE,
-              as.integer(runif(n = ..n, flu_primary_day + 14, index_day + 365)),
+              as.integer(runif(n = ..n, flu_primary_day + 14, patient_end_day)),
               NA_integer_)
   ),
   
@@ -374,7 +374,7 @@ sim_list = lst(
   #date
   flu_secondary_day = bn_node(
     ~ if_else(flu_secondary == TRUE,
-              as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+              as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
               NA_integer_)
   ),
   
@@ -395,7 +395,7 @@ sim_list = lst(
   #date
   flu_secondary_second_day = bn_node(
     ~ if_else(flu_secondary_second == TRUE,
-              as.integer(runif(n = ..n, flu_secondary_day + 14, index_day + 365)),
+              as.integer(runif(n = ..n, flu_secondary_day + 14, patient_end_day)),
               NA_integer_)
   ),
   
@@ -414,7 +414,7 @@ sim_list = lst(
   #date
   covid_primary_day = bn_node(
     ~ if_else(covid_primary == TRUE,
-              as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+              as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
               NA_integer_)
   ),
   
@@ -428,7 +428,7 @@ sim_list = lst(
   #date
   covid_primary_second_day = bn_node(
     ~ if_else(covid_primary_second == TRUE,
-              as.integer(runif(n = ..n, covid_primary_day + 14, index_day + 365)),
+              as.integer(runif(n = ..n, covid_primary_day + 14, patient_end_day)),
               NA_integer_)
   ),
   
@@ -440,7 +440,7 @@ sim_list = lst(
   #date
   covid_secondary_day = bn_node(
     ~ if_else(covid_secondary == TRUE,
-              as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+              as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
               NA_integer_)
   ),
   
@@ -461,7 +461,7 @@ sim_list = lst(
   #date
   covid_secondary_second_day = bn_node(
     ~ if_else(covid_secondary_second == TRUE,
-              as.integer(runif(n = ..n, covid_secondary_day + 14, index_day + 365)),
+              as.integer(runif(n = ..n, covid_secondary_day + 14, patient_end_day)),
               NA_integer_)
   ),
   
@@ -481,7 +481,7 @@ sim_list = lst(
   #date
   overall_resp_primary_day = bn_node(
     ~ if_else(overall_resp_primary == TRUE,
-              as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+              as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
               NA_integer_)
   ),
   
@@ -495,7 +495,7 @@ sim_list = lst(
   #date
   overall_resp_primary_second_day = bn_node(
     ~ if_else(overall_resp_primary_second == TRUE,
-              as.integer(runif(n = ..n, overall_resp_primary_day + 14, index_day + 365)),
+              as.integer(runif(n = ..n, overall_resp_primary_day + 14, patient_end_day)),
               NA_integer_)
   ),
   
@@ -508,7 +508,7 @@ sim_list = lst(
   #date
   overall_resp_secondary_day = bn_node(
     ~ if_else(overall_resp_secondary == TRUE,
-              as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+              as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
               NA_integer_)
   ),
   
@@ -529,7 +529,7 @@ sim_list = lst(
   #date
   overall_resp_secondary_second_day = bn_node(
     ~ if_else(overall_resp_secondary_second == TRUE,
-              as.integer(runif(n = ..n, overall_resp_secondary_day + 14, index_day + 365)),
+              as.integer(runif(n = ..n, overall_resp_secondary_day + 14, patient_end_day)),
               NA_integer_)
   ),
   
@@ -550,7 +550,7 @@ sim_list = lst(
   #date
   rsv_mortality_day = bn_node(
     ~ if_else(rsv_mortality == TRUE,
-              as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+              as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
               NA_integer_)
   ),
   
@@ -562,7 +562,7 @@ sim_list = lst(
   #date
   flu_mortality_day = bn_node(
     ~ if_else(flu_mortality == TRUE,
-              as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+              as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
               NA_integer_)
   ),
   
@@ -574,7 +574,7 @@ sim_list = lst(
   #date
   covid_mortality_day = bn_node(
     ~ if_else(covid_mortality == TRUE,
-              as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+              as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
               NA_integer_)
   ),
   
@@ -588,18 +588,18 @@ sim_list = lst(
   #date
   overall_resp_mortality_day = bn_node(
     ~ if_else(overall_resp_mortality == TRUE,
-              as.integer(runif(n = ..n, patient_index_day, index_day + 365)),
+              as.integer(runif(n = ..n, patient_index_day, patient_end_day)),
               NA_integer_)
   ),
   
   #all cause mortality
   all_cause_mortality = bn_node(
-    ~ if_else(death_day <= index_day + 365, TRUE, FALSE)
+    ~ if_else(death_day <= patient_end_day, TRUE, FALSE)
   ),
   
   #date
   all_cause_mortality_day = bn_node(
-    ~ if_else(death_day <= index_day + 365, death_day, NA_integer_)
+    ~ if_else(death_day <= patient_end_day, death_day, NA_integer_)
   ),
   
   ##exclusion criteria
