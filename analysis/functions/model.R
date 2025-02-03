@@ -2,6 +2,7 @@ library(here)
 library(broom)
 library(rlang)
 library(purrr)
+library(detectseparation)
 
 ## create output directories ----
 fs::dir_create(here::here("analysis", "functions"))
@@ -15,9 +16,10 @@ glm_poisson <- function(df, x, y, offset_var) {
   #update predictors based on cohort and investigation type
   if (cohort == "older_adults" & investigation_type == "secondary") {
     
-    additional_predictors <- c("has_asthma", "has_copd", "has_cystic_fibrosis", 
-                               "has_other_resp", "has_diabetes", "has_addisons", 
-                               "severe_obesity", "has_chd", "has_ckd", 
+    additional_predictors <- c("has_asthma", "has_copd",
+                               "has_cystic_fibrosis", "has_other_resp",
+                               "has_diabetes", "has_addisons",
+                               "severe_obesity", "has_chd", "has_ckd",
                                "has_cld", "has_cnd", "has_cancer", 
                                "immunosuppressed", "has_sickle_cell", 
                                "smoking_status", "hazardous_drinking",
@@ -37,14 +39,27 @@ glm_poisson <- function(df, x, y, offset_var) {
   #convert to a formula object
   formula <- as.formula(formula_string)
   
-  #fit the model
-  model <- glm(formula, data = df, family = poisson)
+  #check for separation
+  separation <- detect_separation(formula, data = df, family = poisson,
+                                  method = "detect_separation")
   
-  #tidy model output
-  tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
-  
-  #return output
-  return(tidy_model)
+  #return the results if separation is detected
+  if (separation$separation == TRUE) {
+    
+    return(separation)
+    
+  } else {
+    
+    #fit the model
+    model <- glm(formula, data = df, family = poisson)
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+    
+    #return output
+    return(tidy_model)
+    
+  }
   
 }
 
@@ -123,13 +138,26 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
   #convert to a formula object
   formula <- as.formula(formula_string)
   
-  #fit the model
-  model <- glm(formula, data = df, family = poisson)
+  #check for separation
+  separation <- detect_separation(formula, data = df, family = poisson,
+                                  method = "detect_separation")
   
-  #tidy model output
-  tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
-  
-  #return output
-  return(tidy_model)
+  #return the results if separation is detected
+  if (separation$separation == TRUE) {
+    
+    return(separation)
+    
+  } else {
+    
+    #fit the model
+    model <- glm(formula, data = df, family = poisson)
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+    
+    #return output
+    return(tidy_model)
+    
+  }
   
 }
