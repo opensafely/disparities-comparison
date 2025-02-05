@@ -37,24 +37,9 @@ df_input <- read_feather(
 #remove rows with missing values in any of the variables used in models
 #outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 #vaccination will also never be NA as part of processing pipeline
-if (cohort == "infants_subgroup") {
-  
-  df_input <- df_input %>% 
-    filter(!is.na(latest_ethnicity_group), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
-           !is.na(maternal_age), !is.na(maternal_smoking_status),
-           !is.na(maternal_drinking), !is.na(maternal_drug_usage),
-           !is.na(maternal_flu_vaccination),
-           !is.na(maternal_pertussis_vaccination))
-  
-} else {
-  
-  df_input <- df_input %>% 
-    filter(!is.na(latest_ethnicity_group), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex),
-           !is.na(rurality_classification))
-  
-}
+df_input <- df_input %>% 
+  filter(!is.na(latest_ethnicity_group), !is.na(composition_category),
+         !is.na(age_band), !is.na(sex), !is.na(rurality_classification))
 
 #import event counting function
 source(here::here("analysis", "functions", "event_count.R"))
@@ -89,7 +74,8 @@ if (too_few_events_mild) {
   covid_mild_ethnicity_hh_comp_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "composition_category"),
     "covid_primary_inf", "time_since_last_covid_vaccination",
-    "covid_vaccination_mild", "covid_vaccination_severe", "time_covid_primary")
+    "covid_vaccination_mild", "covid_vaccination_severe",
+    "time_covid_primary")
   
 }
 
