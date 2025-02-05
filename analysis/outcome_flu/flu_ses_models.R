@@ -39,7 +39,7 @@ df_input <- read_feather(
 if (cohort == "older_adults" & investigation_type == "secondary") {
   
   df_input <- df_input %>% 
-    filter(!is.na(latest_ethnicity_group), !is.na(age_band), !is.na(sex),
+    filter(!is.na(imd_quintile), !is.na(age_band), !is.na(sex),
            !is.na(has_asthma), !is.na(has_copd), !is.na(has_cystic_fibrosis),
            !is.na(has_other_resp), !is.na(has_diabetes), !is.na(has_addisons),
            !is.na(severe_obesity), !is.na(has_chd), !is.na(has_ckd),
@@ -51,7 +51,7 @@ if (cohort == "older_adults" & investigation_type == "secondary") {
 } else {
   
   df_input <- df_input %>% 
-    filter(!is.na(latest_ethnicity_group), !is.na(age_band), !is.na(sex))
+    filter(!is.na(imd_quintile), !is.na(age_band), !is.na(sex))
   
 }
 
