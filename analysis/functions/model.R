@@ -28,6 +28,15 @@ glm_poisson <- function(df, x, y, offset_var) {
     
   }
   
+  #construct formula for binomial logistic regression
+  formula_logistic <- as.formula(
+    paste(y, "~", paste(predictors, collapse = " + "))
+  )
+  
+  #check for separation
+  separation <- glm(formula_logistic, data = df, family = binomial(),
+                    method = "detect_separation")
+  
   #add offset to the formula
   offset_term <- paste0("offset(log(", offset_var, " * 1000))")
   
@@ -39,13 +48,10 @@ glm_poisson <- function(df, x, y, offset_var) {
   #convert to a formula object
   formula <- as.formula(formula_string)
   
-  #check for separation
-  separation <- detect_separation(formula, data = df, family = poisson,
-                                  method = "detect_separation")
-  
   #return the results if separation is detected
-  if (separation$separation == TRUE) {
+  if (any(separation$separation)) {
     
+    warning("Separation detected. Poisson model may not be reliable.")
     return(separation)
     
   } else {
@@ -74,9 +80,6 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
   
   #combine predictors
   predictors <- c(x, "age_band", "sex", "rurality_classification")
-  
-  #add offset to the formula
-  offset_term <- paste0("offset(log(", offset_var, " * 1000))")
   
   #update predictors based on the outcome, cohort, and study start date
   if (cohort == "infants_subgroup") {
@@ -129,22 +132,30 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
     
   }
   
+  #construct formula for binomial logistic regression
+  formula_logistic <- as.formula(
+    paste(y, "~", paste(predictors, collapse = " + "))
+  )
+  
+  #check for separation
+  separation <- glm(formula_logistic, data = df, family = binomial(),
+                    method = "detect_separation")
+  
+  #add offset to the formula
+  offset_term <- paste0("offset(log(", offset_var, " * 1000))")
+  
   #construct the formula as a string
   formula_string <- paste(
-    y, "~", paste(predictors, collapse = " + "),
-    "+ offset(log(", offset_var, "* 1000))"
+    y, "~", paste(c(predictors, offset_term), collapse = " + ")
   )
   
   #convert to a formula object
   formula <- as.formula(formula_string)
   
-  #check for separation
-  separation <- detect_separation(formula, data = df, family = poisson,
-                                  method = "detect_separation")
-  
   #return the results if separation is detected
-  if (separation$separation == TRUE) {
+  if (any(separation$separation)) {
     
+    warning("Separation detected. Poisson model may not be reliable.")
     return(separation)
     
   } else {
