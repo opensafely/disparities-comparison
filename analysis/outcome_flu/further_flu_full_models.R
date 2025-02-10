@@ -37,25 +37,10 @@ df_input <- read_feather(
 #remove rows with missing values in any of the variables used in models
 #outcome will never be NA (as part of processing pipeline) so does not need to be filtered
 #vaccination status will also never be NA as part of processing pipeline
-if (cohort == "infants_subgroup") {
-  
-  df_input <- df_input %>% 
-    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
-           !is.na(composition_category), !is.na(age_band),
-           !is.na(sex), !is.na(rurality_classification),
-           !is.na(maternal_age), !is.na(maternal_smoking_status),
-           !is.na(maternal_drinking), !is.na(maternal_drug_usage),
-           !is.na(maternal_flu_vaccination),
-           !is.na(maternal_pertussis_vaccination))
-  
-} else {
-  
-  df_input <- df_input %>% 
-    filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
-           !is.na(composition_category), !is.na(age_band),
-           !is.na(sex), !is.na(rurality_classification))
-  
-}
+df_input <- df_input %>% 
+  filter(!is.na(latest_ethnicity_group), !is.na(imd_quintile),
+         !is.na(composition_category), !is.na(age_band),
+         !is.na(sex), !is.na(rurality_classification))
   
 #import event counting function
 source(here::here("analysis", "functions", "event_count.R"))
@@ -113,8 +98,9 @@ if (too_few_events_severe) {
 }
 
 #define a vector of names for the model outputs
-model_names <- c("Mild Influenza by Ethnicity, IMD Quintile and Household Composition", 
-                 "Severe Influenza by Ethnicity, IMD Quintile and Household Composition")
+model_names <- c(
+  "Mild Influenza by Ethnicity, IMD Quintile and Household Composition",
+  "Severe Influenza by Ethnicity, IMD Quintile and Household Composition")
 
 #create the model outputs list
 model_outputs_list <- list(flu_mild_full_further_output, 

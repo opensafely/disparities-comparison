@@ -40,7 +40,7 @@ df_input <- read_feather(
 if (cohort == "infants_subgroup") {
   
   df_input <- df_input %>% 
-    filter(!is.na(latest_ethnicity_group), !is.na(age_band), !is.na(sex),
+    filter(!is.na(imd_quintile), !is.na(age_band), !is.na(sex),
            !is.na(rurality_classification), !is.na(maternal_age),
            !is.na(maternal_smoking_status), !is.na(maternal_drinking),
            !is.na(maternal_drug_usage), !is.na(maternal_flu_vaccination),
@@ -49,7 +49,7 @@ if (cohort == "infants_subgroup") {
 } else {
   
   df_input <- df_input %>% 
-    filter(!is.na(latest_ethnicity_group), !is.na(age_band),
+    filter(!is.na(imd_quintile), !is.na(age_band),
            !is.na(sex), !is.na(rurality_classification))
   
 }

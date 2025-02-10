@@ -11,19 +11,22 @@ fs::dir_create(here::here("analysis", "outcome_rsv"))
 
 #define study start date and study end date
 source(here::here("analysis", "design", "design.R"))
-args <- commandArgs(trailingOnly = TRUE)
-if (length(args) == 0) {
-  study_start_date <- "2020-09-01"
-  study_end_date <- "2021-08-31"
-  cohort <- "older_adults"
-  codelist_type <- "specific"
-  investigation_type <- "primary"
-} else {
-  study_start_date <- study_dates[[args[[2]]]]
-  study_end_date <- study_dates[[args[[3]]]]
-  cohort <- args[[1]]
-  codelist_type <- args[[4]]
-  investigation_type <- args[[5]]
+is_being_sourced <- sys.nframe() > 0
+if (is_being_sourced == FALSE) {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    study_start_date <- "2016-09-01"
+    study_end_date <- "2017-08-31"
+    cohort <- "infants"
+    codelist_type <- "sensitive"
+    investigation_type <- "primary"
+  } else {
+    study_start_date <- study_dates[[args[[2]]]]
+    study_end_date <- study_dates[[args[[3]]]]
+    cohort <- args[[1]]
+    codelist_type <- args[[4]]
+    investigation_type <- args[[5]]
+  }
 }
 
 df_input <- read_feather(
@@ -33,23 +36,9 @@ df_input <- read_feather(
 
 #remove rows with missing values in any of the variables used in models
 #outcome will never be NA (as part of processing pipeline) so does not need to be filtered
-if (cohort == "infants_subgroup") {
-  
-  df_input <- df_input %>% 
-    filter(!is.na(latest_ethnicity_group), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
-           !is.na(maternal_age), !is.na(maternal_smoking_status),
-           !is.na(maternal_drinking), !is.na(maternal_drug_usage),
-           !is.na(maternal_flu_vaccination),
-           !is.na(maternal_pertussis_vaccination))
-  
-} else {
-  
-  df_input <- df_input %>% 
-    filter(!is.na(latest_ethnicity_group), !is.na(composition_category),
-           !is.na(age_band), !is.na(sex), !is.na(rurality_classification))
-  
-}
+df_input <- df_input %>% 
+  filter(!is.na(latest_ethnicity_group), !is.na(composition_category),
+         !is.na(age_band), !is.na(sex), !is.na(rurality_classification))
 
 #import event counting function
 source(here::here("analysis", "functions", "event_count.R"))

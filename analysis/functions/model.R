@@ -2,6 +2,7 @@ library(here)
 library(broom)
 library(rlang)
 library(purrr)
+library(detectseparation)
 
 ## create output directories ----
 fs::dir_create(here::here("analysis", "functions"))
@@ -15,9 +16,10 @@ glm_poisson <- function(df, x, y, offset_var) {
   #update predictors based on cohort and investigation type
   if (cohort == "older_adults" & investigation_type == "secondary") {
     
-    additional_predictors <- c("has_asthma", "has_copd", "has_cystic_fibrosis", 
-                               "has_other_resp", "has_diabetes", "has_addisons", 
-                               "severe_obesity", "has_chd", "has_ckd", 
+    additional_predictors <- c("has_asthma", "has_copd",
+                               "has_cystic_fibrosis", "has_other_resp",
+                               "has_diabetes", "has_addisons",
+                               "severe_obesity", "has_chd", "has_ckd",
                                "has_cld", "has_cnd", "has_cancer", 
                                "immunosuppressed", "has_sickle_cell", 
                                "smoking_status", "hazardous_drinking",
@@ -25,6 +27,15 @@ glm_poisson <- function(df, x, y, offset_var) {
     predictors <- c(predictors, additional_predictors)
     
   }
+  
+  #construct formula for binomial logistic regression
+  formula_logistic <- as.formula(
+    paste(y, "~", paste(predictors, collapse = " + "))
+  )
+  
+  #check for separation
+  separation <- glm(formula_logistic, data = df, family = binomial(),
+                    method = "detect_separation")
   
   #add offset to the formula
   offset_term <- paste0("offset(log(", offset_var, " * 1000))")
@@ -37,14 +48,24 @@ glm_poisson <- function(df, x, y, offset_var) {
   #convert to a formula object
   formula <- as.formula(formula_string)
   
-  #fit the model
-  model <- glm(formula, data = df, family = poisson)
-  
-  #tidy model output
-  tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
-  
-  #return output
-  return(tidy_model)
+  #return the results if separation is detected
+  if (any(separation$separation)) {
+    
+    warning("Separation detected. Poisson model may not be reliable.")
+    return(separation)
+    
+  } else {
+    
+    #fit the model
+    model <- glm(formula, data = df, family = poisson)
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+    
+    #return output
+    return(tidy_model)
+    
+  }
   
 }
 
@@ -59,9 +80,6 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
   
   #combine predictors
   predictors <- c(x, "age_band", "sex", "rurality_classification")
-  
-  #add offset to the formula
-  offset_term <- paste0("offset(log(", offset_var, " * 1000))")
   
   #update predictors based on the outcome, cohort, and study start date
   if (cohort == "infants_subgroup") {
@@ -114,22 +132,43 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
     
   }
   
+  #construct formula for binomial logistic regression
+  formula_logistic <- as.formula(
+    paste(y, "~", paste(predictors, collapse = " + "))
+  )
+  
+  #check for separation
+  separation <- glm(formula_logistic, data = df, family = binomial(),
+                    method = "detect_separation")
+  
+  #add offset to the formula
+  offset_term <- paste0("offset(log(", offset_var, " * 1000))")
+  
   #construct the formula as a string
   formula_string <- paste(
-    y, "~", paste(predictors, collapse = " + "),
-    "+ offset(log(", offset_var, "* 1000))"
+    y, "~", paste(c(predictors, offset_term), collapse = " + ")
   )
   
   #convert to a formula object
   formula <- as.formula(formula_string)
   
-  #fit the model
-  model <- glm(formula, data = df, family = poisson)
-  
-  #tidy model output
-  tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
-  
-  #return output
-  return(tidy_model)
+  #return the results if separation is detected
+  if (any(separation$separation)) {
+    
+    warning("Separation detected. Poisson model may not be reliable.")
+    return(separation)
+    
+  } else {
+    
+    #fit the model
+    model <- glm(formula, data = df, family = poisson)
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+    
+    #return output
+    return(tidy_model)
+    
+  }
   
 }
