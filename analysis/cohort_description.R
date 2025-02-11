@@ -48,21 +48,19 @@ if (study_start_date == as.Date("2020-09-01")) {
     table <- df_input %>%
       mutate(Total = n_distinct(patient_id)) %>%
       select(Total, age_band, sex, latest_ethnicity_group, imd_quintile,
-             composition_category, rurality_classification) %>%
+             rurality_classification) %>%
       rename("Age Group" = age_band, Sex = sex,
              Ethnicity = latest_ethnicity_group, IMD = imd_quintile,
-             "Household Composition" = composition_category,
              Rurality = rurality_classification)
   } else if (cohort == "infants_subgroup") {
     table <- df_input %>%
       mutate(Total = n_distinct(patient_id)) %>%
       select(Total, age_band, sex, latest_ethnicity_group, imd_quintile,
-             composition_category, rurality_classification, maternal_age,
-             maternal_smoking_status, maternal_drinking, maternal_drug_usage,
-             maternal_flu_vaccination, maternal_pertussis_vaccination) %>%
+             rurality_classification, maternal_age, maternal_smoking_status,
+             maternal_drinking, maternal_drug_usage, maternal_flu_vaccination,
+             maternal_pertussis_vaccination) %>%
       rename("Age Group" = age_band, Sex = sex,
              Ethnicity = latest_ethnicity_group, IMD = imd_quintile,
-             "Household Composition" = composition_category,
              Rurality = rurality_classification, "Maternal Age" = maternal_age,
              "Maternal Smoking Status" = maternal_smoking_status,
              "Maternal Drinking" = maternal_drinking,
