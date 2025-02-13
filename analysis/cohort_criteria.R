@@ -22,6 +22,21 @@ patients_df <- read_feather(
   here::here("output", "flow_chart", paste0(cohort, "_", year(study_start_date), 
              "_", year(study_end_date), "_flow_chart", ".arrow")))
 
+if (study_start_date == as.Date("2020-09-01") &
+    cohort != "infants" & cohort != "infants_subgroup") {
+  
+  df_household <- read_feather(
+    here::here("output", "data", paste0("input_household_processed_", 
+               year(study_start_date), "_", year(study_end_date), ".arrow")))
+  
+  household_comp_vars <- tibble("patient_id" = df_household$patient_id,
+                                "num_generations"= df_household$num_generations, 
+                                "composition_category" = df_household$composition_category)
+  
+  patient_df <- merge(patient_df, household_comp_vars, by = "patient_id")
+  
+}
+
 patients_df <- patients_df %>%
   mutate(
     has_imd = if_else(is.na(patients_df$imd_rounded), F, T),
