@@ -28,10 +28,10 @@ from variable_lib import (
 
 import codelists
 
-dataset = create_dataset()
-dataset.configure_dummy_data(population_size = 10000)
+# dataset = create_dataset()
+# dataset.configure_dummy_data(population_size = 10000)
 
-# dataset = Dataset()
+dataset = Dataset()
 
 #######################################################################################
 # Import study dates defined in "./analysis/design/study-dates.R" script and then exported
