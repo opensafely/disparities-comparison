@@ -14,9 +14,9 @@ fs::dir_create(here::here("analysis"))
 source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- as.Date("2019-09-01")
-  study_end_date <- as.Date("2020-08-31")
-  cohort <- "older_adults"
+  study_start_date <- as.Date("2016-09-01")
+  study_end_date <- as.Date("2017-08-31")
+  cohort <- "infants"
   codelist_type <- "specific"
   investigation_type <- "primary"
 } else {
