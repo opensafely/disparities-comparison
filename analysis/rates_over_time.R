@@ -36,7 +36,8 @@ source(here::here("analysis", "functions", "redaction.R"))
 columns_needed <- c("patient_id", "patient_index_date", "patient_end_date",
                     "age_band", "sex", "latest_ethnicity_group",
                     "imd_quintile", "rurality_classification")
-if (study_start_date == as.Date("2020-09-01")) {
+if (study_start_date == as.Date("2020-09-01") & cohort != "infants" &
+    cohort != "infants_subgroup") {
   columns_needed <- c(columns_needed, "composition_category")
 }
 
