@@ -133,8 +133,6 @@ calculate_rolling_rates <- function(df, pathogen, characteristic,
     
   }
   
-  return(df_intervals)
-  
   ## calculate the rates per event type per group per interval
   
   df_rates <- df_intervals %>%
