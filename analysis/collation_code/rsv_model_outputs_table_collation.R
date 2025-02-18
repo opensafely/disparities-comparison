@@ -123,7 +123,7 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
                investigation_type = "primary", subset = "2022_23"),
     read_csv(here::here("output", "results", "models", "rsv_primary", 
                         paste0("rsv_ethnicity_ses_model_outputs_", 
-                               cohort, "_2023_2024_specific_primary.csv"))) 
+                               cohort, "_2022_2023_specific_primary.csv"))) 
     %>% mutate(model_type = "ethnicity_ses", codelist_type = "specific", 
                investigation_type = "primary", subset = "2023_24"),
     read_csv(here::here("output", "results", "models", "rsv_primary", 
@@ -247,11 +247,6 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
     %>% mutate(model_type = "ethnicity_ses", codelist_type = "sensitive", 
                investigation_type = "primary", subset = "2022_23"),
     read_csv(here::here("output", "results", "models", "rsv_primary", 
-                        paste0("rsv_ethnicity_ses_model_outputs_",
-                               cohort, "_2023_2024_sensitive_primary.csv"))) 
-    %>% mutate(model_type = "ethnicity_ses", codelist_type = "sensitive", 
-               investigation_type = "primary", subset = "2023_24"),
-    read_csv(here::here("output", "results", "models", "rsv_primary", 
                         paste0("rsv_ethnicity_model_outputs_", 
                                cohort, "_2023_2024_sensitive_primary.csv"))) 
     %>% mutate(model_type = "ethnicity", codelist_type = "sensitive", 
@@ -260,6 +255,11 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
                         paste0("rsv_ses_model_outputs_", 
                                cohort, "_2023_2024_sensitive_primary.csv"))) 
     %>% mutate(model_type = "ses", codelist_type = "sensitive", 
+               investigation_type = "primary", subset = "2023_24"),
+    read_csv(here::here("output", "results", "models", "rsv_primary", 
+                        paste0("rsv_ethnicity_ses_model_outputs_",
+                               cohort, "_2023_2024_sensitive_primary.csv"))) 
+    %>% mutate(model_type = "ethnicity_ses", codelist_type = "sensitive", 
                investigation_type = "primary", subset = "2023_24")
   )
   
@@ -388,7 +388,7 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
                investigation_type = "primary", subset = "2022_23"),
     read_csv(here::here("output", "results", "models", "rsv_primary", 
                         paste0("rsv_ethnicity_ses_model_outputs_", 
-                               cohort, "_2023_2024_specific_primary.csv"))) 
+                               cohort, "_2022_2023_specific_primary.csv"))) 
     %>% mutate(model_type = "ethnicity_ses", codelist_type = "specific", 
                investigation_type = "primary", subset = "2023_24"),
     read_csv(here::here("output", "results", "models", "rsv_primary", 
@@ -532,11 +532,6 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
     %>% mutate(model_type = "ethnicity_ses", codelist_type = "sensitive", 
                investigation_type = "primary", subset = "2022_23"),
     read_csv(here::here("output", "results", "models", "rsv_primary", 
-                        paste0("rsv_ethnicity_ses_model_outputs_",
-                               cohort, "_2023_2024_sensitive_primary.csv"))) 
-    %>% mutate(model_type = "ethnicity_ses", codelist_type = "sensitive", 
-               investigation_type = "primary", subset = "2023_24"),
-    read_csv(here::here("output", "results", "models", "rsv_primary", 
                         paste0("rsv_ethnicity_model_outputs_", 
                                cohort, "_2023_2024_sensitive_primary.csv"))) 
     %>% mutate(model_type = "ethnicity", codelist_type = "sensitive", 
@@ -545,6 +540,11 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
                         paste0("rsv_ses_model_outputs_", 
                                cohort, "_2023_2024_sensitive_primary.csv"))) 
     %>% mutate(model_type = "ses", codelist_type = "sensitive", 
+               investigation_type = "primary", subset = "2023_24"),
+    read_csv(here::here("output", "results", "models", "rsv_primary", 
+                        paste0("rsv_ethnicity_ses_model_outputs_",
+                               cohort, "_2023_2024_sensitive_primary.csv"))) 
+    %>% mutate(model_type = "ethnicity_ses", codelist_type = "sensitive", 
                investigation_type = "primary", subset = "2023_24")
   )
   
