@@ -1438,7 +1438,7 @@ if (study_start_date == as.Date("2017-09-01")) {
 
 #calculate total person-time for each outcome type by cystic fibrosis
 if (study_start_date == as.Date("2017-09-01")) {
-  survival_cysticfibrosis <- df_input %>%
+  survival_cystic_fibrosis <- df_input %>%
     group_by(has_cystic_fibrosis) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
