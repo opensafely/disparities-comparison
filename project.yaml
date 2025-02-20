@@ -96,6 +96,8 @@ actions:
       --output output/flow_chart/older_adults_2020_2021_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_older_adults_2020_2021.arrow
       -- older_adults season5_start_date season5_end_date
+    needs:
+    - process_household_information_s5
     outputs:
       highly_sensitive:
         dataset: output/flow_chart/older_adults_2020_2021_flow_chart.arrow
@@ -244,6 +246,8 @@ actions:
       --output output/flow_chart/adults_2020_2021_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_adults_2020_2021.arrow
       -- adults season5_start_date season5_end_date
+    needs:
+    - process_household_information_s5
     outputs:
       highly_sensitive:
         dataset: output/flow_chart/adults_2020_2021_flow_chart.arrow
@@ -396,6 +400,8 @@ actions:
       --output output/flow_chart/children_and_adolescents_2020_2021_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2020_2021.arrow
       -- children_and_adolescents season5_start_date season5_end_date
+    needs:
+    - process_household_information_s5
     outputs:
       highly_sensitive:
         dataset: output/flow_chart/children_and_adolescents_2020_2021_flow_chart.arrow

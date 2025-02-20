@@ -79,6 +79,28 @@ action_flow <- function(cohort, season, dates, season_start_date,
   
 }
 
+action_flow_2020 <- function(cohort, season, dates, season_start_date,
+                             season_end_date) {
+  
+  splice (
+    
+    action(
+      name = glue("generate_flow_chart_data_{cohort}_{season}"),
+      run = glue("ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
+      --output output/flow_chart/{cohort}_{dates}_flow_chart.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      -- {cohort} {season_start_date} {season_end_date}"),
+      # arguments = c(cohort, season, dates, season_start_date, season_end_date),
+      needs = list(glue("process_household_information_{season}")),
+      highly_sensitive = lst(
+        dataset = glue("output/flow_chart/{cohort}_{dates}_flow_chart.arrow")
+      )
+    )
+    
+  )
+  
+}
+
 action_flow_infants_sub <- function(cohort, season, dates, season_start_date, 
                                     season_end_date) {
   
@@ -5803,7 +5825,7 @@ actions_list <- splice (
   action_inclusion("older_adults", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
   action_flow("older_adults", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
   action_inclusion("older_adults", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
-  action_flow("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_flow_2020("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
   action_inclusion("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
   action_flow("older_adults", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
   action_inclusion("older_adults", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
@@ -5822,7 +5844,7 @@ actions_list <- splice (
   action_inclusion("adults", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
   action_flow("adults", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
   action_inclusion("adults", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
-  action_flow("adults", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_flow_2020("adults", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
   action_inclusion("adults", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
   action_flow("adults", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
   action_inclusion("adults", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
@@ -5841,7 +5863,7 @@ actions_list <- splice (
   action_inclusion("children_and_adolescents", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
   action_flow("children_and_adolescents", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
   action_inclusion("children_and_adolescents", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
-  action_flow("children_and_adolescents", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_flow_2020("children_and_adolescents", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
   action_inclusion("children_and_adolescents", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
   action_flow("children_and_adolescents", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
   action_inclusion("children_and_adolescents", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
