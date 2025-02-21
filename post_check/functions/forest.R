@@ -4,6 +4,7 @@ library(rlang)
 library(broom.helpers)
 library(cowplot)
 library(stringr)
+library(RColorBrewer)
 
 ## create output directories ----
 fs::dir_create(here::here("post_check", "functions"))
@@ -128,6 +129,12 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     
   }
   
+  if (investigation_type == "secondary") {
+    
+    levels <- c(levels, "No", "Yes", "Never", "Current", "Former")
+    
+  }
+  
   make_forest_plot <- function(tidy_forest, shape_value, title_suffix) {
     
     pathogen_title <- case_when(
@@ -168,15 +175,16 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       mutate(reference_row = NA) %>%
       ggplot(aes(x = label, y = estimate, ymin = conf.low,
                  ymax = conf.high, color = subset)) +
+      #scale_color_viridis_d(option = "turbo", na.translate = F, direction = -1) +
+      scale_color_brewer(palette = "PuOr", na.translate = F) +
       geom_hline(yintercept = 1, linetype = 2) + 
-      geom_pointrange(position = position_dodge(width = 0.5), size = 0.2,
+      geom_pointrange(position = position_dodge(width = 0.5), size = 0.45,
                       shape = shape_value) +
       geom_point(data = references, aes(x = label, y = estimate,
                                         shape = as.factor(estimate)),
-                 size = 1, stroke = 1, color = "black") +
+                 size = 1, stroke = 1, color = "deeppink") +
       scale_shape_manual(name = "", values = c(8),
                          labels = "Reference Category") +
-      scale_color_discrete(na.translate = F) +
       guides(color = guide_legend("Season", order = 1,
                                   override.aes = list(shape = shape_value))) +
       coord_flip() + facet_wrap(~ plot_label, scales = "free_y") + 
@@ -293,6 +301,50 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     
   }
   
+  if (investigation_type == "secondary") {
+    
+    levels <- c(levels, "No", "Yes", "Never", "Current", "Former")
+    
+  }
+  
+  group_order <- case_when(
+    model_type == "ethnicity" ~ list(c("Sex (False)", "Age Band (False)",
+                                       "Latest Ethnicity Group (False)",
+                                       "Sex (True)", "Age Band (True)",
+                                       "Latest Ethnicity Group (True)")),
+    model_type == "ses" ~ list(c("Sex (False)", "Age Band (False)",
+                                 "IMD Quintile (False)", "Sex (True)",
+                                 "Age Band (True)", "IMD Quintile (True)")),
+    model_type == "composition" ~ list(c("Sex (False)", "Age Band (False)",
+                                         "Household Composition (False)",
+                                         "Sex (True)", "Age Band (True)",
+                                         "Household Composition (True)")),
+    model_type == "ethnicity_ses" ~ list(c("Sex (False)", "Age Band (False)",
+                                           "Latest Ethnicity Group (False)",
+                                           "IMD Quintile (False)",
+                                           "Sex (True)", "Age Band (True)",
+                                           "Latest Ethnicity Group (True)",
+                                           "IMD Quintile (True)")),
+    model_type == "ethnicity_composition" ~ list(c(
+      "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)",
+      "Household Composition (False)", "Sex (True)", "Age Band (True)",
+      "Latest Ethnicity Group (True)", "Household Composition (True)")),
+    model_type == "ses_composition" ~ list(c("Sex (False)", "Age Band (False)",
+                                             "IMD Quintile (False)",
+                                             "Household Composition (False)",
+                                             "Sex (True)", "Age Band (True)",
+                                             "IMD Quintile (True)",
+                                             "Household Composition (True)")),
+    model_type == "full" ~ list(c("Sex (False)", "Age Band (False)",
+                                  "Latest Ethnicity Group (False)",
+                                  "IMD Quintile (False)",
+                                  "Household Composition (False)", "Sex (True)",
+                                  "Age Band (True)",
+                                  "Latest Ethnicity Group (True)",
+                                  "IMD Quintile (True)",
+                                  "Household Composition (True)"))
+  )[[1]]
+  
   process_forest_plot <- function(df_model, codelist_filter, shape_value,
                                   title_label) {
     
@@ -324,6 +376,12 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       filter(!reference_row) %>%
       bind_rows(reference_rows)
     
+    legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
+    
+    f <- function(pal) brewer.pal(brewer.pal.info[pal, length(legend_labels)],
+                                  pal)
+    cols <- f("Dark2")
+    
     tidy_forest %>%
       mutate(
         plot_label = str_to_title(gsub("_", " ", variable)),
@@ -338,14 +396,24 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
                                                 plot_label),
           TRUE ~ plot_label)
       ) %>%
+      mutate(
+        plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
+      ) %>%
+      mutate(
+        plot_label2 = factor(plot_label2, levels = group_order)
+      ) %>%
       ggplot(aes(x = label, y = estimate, ymin = conf.low,
-                 ymax = conf.high, color = plot_label)) +
+                 ymax = conf.high, color = plot_label2, shape = plot_label2)) +
+        scale_color_manual(values = rep(cols, 2),
+                           name = "Characteristic (Reference)") +
+        scale_shape_manual(name = "Characteristic (Reference)",
+                           values = c(rep(shape_value, length(legend_labels)),
+                                      rep(8, length(legend_labels)))) +
         geom_hline(yintercept = 1, linetype = 2) + 
-        geom_pointrange(aes(shape = reference_row),
-                        position = position_dodge(width = 0.5), size = 0.2) +
-        scale_shape_manual(values = c("TRUE" = 8, "FALSE" = shape_value)) +
-        guides(color = guide_legend("Characteristic", order = 1),
-               shape = guide_legend("Reference Category", order = 2)) +
+        geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
+        # Combine the legends
+        guides(color = guide_legend("Characteristic (Reference)"),
+               shape = guide_legend("Characteristic (Reference)")) +
         coord_flip() + facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
         labs(y = "Rate Ratio", x = " ", title = title_label) +
         theme_bw()
@@ -510,9 +578,105 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
   
   if (cohort == "infants_subgroup") {
     
-    levels <- c(levels, "Never", "Former", "Current")
+    levels <- c(levels, "Maternal Age", "Never", "Former", "Current",
+                "No", "Yes")
+    
+  } else if (cohort != "infants" & pathogen == "flu") {
+    
+    levels <- c(levels, "No", "Yes")
+    
+  } else if (cohort != "infants" & pathogen == "covid") {
+    
+    levels <- c(levels, "No", "Yes", "0-6m", "6-12m", "12m+")
     
   }
+  
+  group_order <- case_when(
+    model_type == "ethnicity" & cohort == "infants" ~ list(c(
+      "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+      "Rurality Classification (False)", "Sex (True)", "Age Band (True)", 
+      "Latest Ethnicity Group (True)", "Rurality Classification (True)")),
+    
+    model_type == "ses" & cohort == "infants" ~ list(c(
+      "Sex (False)", "Age Band (False)", "IMD Quintile (False)", 
+      "Rurality Classification (False)", "Sex (True)", "Age Band (True)", 
+      "IMD Quintile (True)", "Rurality Classification (True)")),
+    
+    model_type == "ethnicity_ses" & cohort == "infants" ~ list(c(
+      "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+      "IMD Quintile (False)", "Rurality Classification (False)", 
+      "Sex (True)", "Age Band (True)", "Latest Ethnicity Group (True)", 
+      "IMD Quintile (True)", "Rurality Classification (True)")),
+    
+    model_type == "ethnicity" & cohort == "infants_subgroup" ~ list(c(
+      "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+      "Rurality Classification (False)", "Maternal Age (False)", 
+      "Maternal Smoking Status (False)", "Maternal Drinking (False)", 
+      "Maternal Drug Usage (False)", "Maternal Flu Vaccination (False)", 
+      "Maternal Pertussis Vaccination (False)", "Sex (True)", "Age Band (True)", 
+      "Latest Ethnicity Group (True)", "Rurality Classification (True)", 
+      "Maternal Age (True)", "Maternal Smoking Status (True)", 
+      "Maternal Drinking (True)", "Maternal Drug Usage (True)", 
+      "Maternal Flu Vaccination (True)", "Maternal Pertussis Vaccination (True)")),
+    
+    model_type == "ses" & cohort == "infants_subgroup" ~ list(c(
+      "Sex (False)", "Age Band (False)", "IMD Quintile (False)", 
+      "Rurality Classification (False)", "Maternal Age (False)", 
+      "Maternal Smoking Status (False)", "Maternal Drinking (False)", 
+      "Maternal Drug Usage (False)", "Maternal Flu Vaccination (False)", 
+      "Maternal Pertussis Vaccination (False)", "Sex (True)", "Age Band (True)", 
+      "IMD Quintile (True)", "Rurality Classification (True)", 
+      "Maternal Age (True)", "Maternal Smoking Status (True)", 
+      "Maternal Drinking (True)", "Maternal Drug Usage (True)", 
+      "Maternal Flu Vaccination (True)", "Maternal Pertussis Vaccination (True)")),
+    
+    model_type == "ethnicity_ses" & cohort == "infants_subgroup" ~ list(c(
+      "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+      "IMD Quintile (False)", "Rurality Classification (False)", 
+      "Maternal Age (False)", "Maternal Smoking Status (False)", 
+      "Maternal Drinking (False)", "Maternal Drug Usage (False)", 
+      "Maternal Flu Vaccination (False)", "Maternal Pertussis Vaccination (False)", 
+      "Sex (True)", "Age Band (True)", "Latest Ethnicity Group (True)", 
+      "IMD Quintile (True)", "Rurality Classification (True)", 
+      "Maternal Age (True)", "Maternal Smoking Status (True)", 
+      "Maternal Drinking (True)", "Maternal Drug Usage (True)", 
+      "Maternal Flu Vaccination (True)", "Maternal Pertussis Vaccination (True)")),
+    
+    # RSV  
+    model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
+                      "ethnicity_composition", "ses_composition", "full") & 
+      cohort != "infants" & cohort != "infants_subgroup" & pathogen == "rsv" ~ list(c(
+        "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+        "IMD Quintile (False)", "Household Composition (False)", 
+        "Rurality Classification (False)", "Sex (True)", "Age Band (True)", 
+        "Latest Ethnicity Group (True)", "IMD Quintile (True)", 
+        "Household Composition (True)", "Rurality Classification (True)")),
+    
+    # Flu
+    model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
+                      "ethnicity_composition", "ses_composition", "full") & 
+      cohort != "infants" & cohort != "infants_subgroup" & pathogen == "flu" ~ list(c(
+        "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+        "IMD Quintile (False)", "Household Composition (False)", 
+        "Rurality Classification (False)", "Prior Flu Vaccine (False)", 
+        "Current Flu Vaccine (False)", "Sex (True)", "Age Band (True)", 
+        "Latest Ethnicity Group (True)", "IMD Quintile (True)", 
+        "Household Composition (True)", "Rurality Classification (True)", 
+        "Prior Flu Vaccine (True)", "Current Flu Vaccine (True)")),
+    
+    # COVID
+    model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
+                      "ethnicity_composition", "ses_composition", "full") & 
+      cohort != "infants" & cohort != "infants_subgroup" & pathogen == "covid" ~ list(c(
+        "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+        "IMD Quintile (False)", "Household Composition (False)", 
+        "Rurality Classification (False)", "Time Since Last Covid Vaccine (False)", 
+        "Current Covid Vaccine (False)", "Sex (True)", "Age Band (True)", 
+        "Latest Ethnicity Group (True)", "IMD Quintile (True)", 
+        "Household Composition (True)", "Rurality Classification (True)", 
+        "Time Since Last Covid Vaccine (True)", "Current Covid Vaccine (True)"))
+  )[[1]]
+  
   
   make_forest_plot <- function(tidy_forest, shape_value, title_suffix) {
     
@@ -535,6 +699,9 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
                                                 "Household Composition",
                                                 plot_label),
           TRUE ~ plot_label)
+      ) %>%
+      mutate(
+        plot_label = factor(plot_label, levels = group_order)
       )
     
     tidy_forest %>%
@@ -554,15 +721,15 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       mutate(reference_row = NA) %>%
       ggplot(aes(x = label, y = estimate, ymin = conf.low,
                  ymax = conf.high, color = subset)) +
+      scale_color_viridis_d(option = "turbo", na.translate = F, direction = -1) +
       geom_hline(yintercept = 1, linetype = 2) + 
       geom_pointrange(position = position_dodge(width = 0.5), size = 0.2,
                       shape = shape_value) +
       geom_point(data = references, aes(x = label, y = estimate,
                                         shape = as.factor(estimate)),
-                 size = 1, stroke = 1, color = "black") +
+                 size = 1, stroke = 1, color = "deeppink") +
       scale_shape_manual(name = "", values = c(8),
                          labels = "Reference Category") +
-      scale_color_discrete(na.translate = F) +
       guides(color = guide_legend("Season", order = 1,
                                   override.aes = list(shape = shape_value))) +
       coord_flip() + facet_wrap(~ plot_label, scales = "free_y") + 
@@ -752,6 +919,7 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type, outcome_type
       ) %>%
       ggplot(aes(x = label, y = estimate, ymin = conf.low,
                  ymax = conf.high, color = plot_label)) +
+      scale_color_brewer(palette = "Dark2") +
       geom_hline(yintercept = 1, linetype = 2) + 
       geom_pointrange(aes(shape = reference_row),
                       position = position_dodge(width = 0.5), size = 0.2) +
