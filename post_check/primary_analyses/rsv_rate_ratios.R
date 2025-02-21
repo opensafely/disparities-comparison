@@ -143,5 +143,7 @@ plotlist <- list(
 
 #plot all
 for(p in plotlist) {
+  
   print(p)
+  
 }
