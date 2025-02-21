@@ -33,7 +33,7 @@ if (study_start_date == as.Date("2020-09-01") &
                                 "num_generations"= df_household$num_generations, 
                                 "composition_category" = df_household$composition_category)
   
-  patient_df <- merge(patient_df, household_comp_vars, by = "patient_id")
+  patients_df <- merge(patients_df, household_comp_vars, by = "patient_id")
   
 }
 
