@@ -28,14 +28,14 @@ glm_poisson <- function(df, x, y, offset_var) {
     
   }
   
-  #construct formula for binomial logistic regression
-  formula_logistic <- as.formula(
-    paste(y, "~", paste(predictors, collapse = " + "))
-  )
-  
-  #check for separation
-  separation <- glm(formula_logistic, data = df, family = binomial(),
-                    method = "detect_separation")
+  # #construct formula for binomial logistic regression
+  # formula_logistic <- as.formula(
+  #   paste(y, "~", paste(predictors, collapse = " + "))
+  # )
+  # 
+  # #check for separation
+  # separation <- glm(formula_logistic, data = df, family = binomial(),
+  #                   method = "detect_separation")
   
   #add offset to the formula
   offset_term <- paste0("offset(log(", offset_var, " * 1000))")
@@ -48,24 +48,33 @@ glm_poisson <- function(df, x, y, offset_var) {
   #convert to a formula object
   formula <- as.formula(formula_string)
   
-  #return the results if separation is detected
-  if (any(separation$separation)) {
-    
-    warning("Separation detected. Poisson model may not be reliable.")
-    return(separation)
-    
-  } else {
-    
-    #fit the model
-    model <- glm(formula, data = df, family = poisson)
-    
-    #tidy model output
-    tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
-    
-    #return output
-    return(tidy_model)
-    
-  }
+  # #return the results if separation is detected
+  # if (any(separation$separation)) {
+  #   
+  #   warning("Separation detected. Poisson model may not be reliable.")
+  #   return(separation)
+  #   
+  # } else {
+  #   
+  #   #fit the model
+  #   model <- glm(formula, data = df, family = poisson)
+  #   
+  #   #tidy model output
+  #   tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+  #   
+  #   #return output
+  #   return(tidy_model)
+  #   
+  # }
+  
+  #fit the model
+  model <- glm(formula, data = df, family = poisson)
+  
+  #tidy model output
+  tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+  
+  #return output
+  return(tidy_model)
   
 }
 
@@ -132,14 +141,14 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
     
   }
   
-  #construct formula for binomial logistic regression
-  formula_logistic <- as.formula(
-    paste(y, "~", paste(predictors, collapse = " + "))
-  )
-  
-  #check for separation
-  separation <- glm(formula_logistic, data = df, family = binomial(),
-                    method = "detect_separation")
+  # #construct formula for binomial logistic regression
+  # formula_logistic <- as.formula(
+  #   paste(y, "~", paste(predictors, collapse = " + "))
+  # )
+  # 
+  # #check for separation
+  # separation <- glm(formula_logistic, data = df, family = binomial(),
+  #                   method = "detect_separation")
   
   #add offset to the formula
   offset_term <- paste0("offset(log(", offset_var, " * 1000))")
@@ -152,23 +161,32 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
   #convert to a formula object
   formula <- as.formula(formula_string)
   
-  #return the results if separation is detected
-  if (any(separation$separation)) {
-    
-    warning("Separation detected. Poisson model may not be reliable.")
-    return(separation)
-    
-  } else {
-    
-    #fit the model
-    model <- glm(formula, data = df, family = poisson)
-    
-    #tidy model output
-    tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
-    
-    #return output
-    return(tidy_model)
-    
-  }
+  # #return the results if separation is detected
+  # if (any(separation$separation)) {
+  #   
+  #   warning("Separation detected. Poisson model may not be reliable.")
+  #   return(separation)
+  #   
+  # } else {
+  #   
+  #   #fit the model
+  #   model <- glm(formula, data = df, family = poisson)
+  #   
+  #   #tidy model output
+  #   tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+  #   
+  #   #return output
+  #   return(tidy_model)
+  #   
+  # }
+  
+  #fit the model
+  model <- glm(formula, data = df, family = poisson)
+  
+  #tidy model output
+  tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+  
+  #return output
+  return(tidy_model)
   
 }
