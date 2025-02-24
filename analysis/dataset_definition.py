@@ -318,7 +318,16 @@ else:
 dataset.death_date = patients.date_of_death
 
 #extract latest ethnicity code for patient
-dataset.latest_ethnicity_group = (
+if cohort == "infants" or cohort == "infants_subgroup" :
+  dataset.latest_ethnicity_group = (
+  clinical_events.where(clinical_events
+  .snomedct_code.is_in(codelists.ethnicity_codes))
+  .sort_by(clinical_events.date)
+  .last_for_patient().snomedct_code
+  .to_category(codelists.ethnicity_codes)
+)
+else:
+  dataset.latest_ethnicity_group = (
   clinical_events.where(clinical_events
   .snomedct_code.is_in(codelists.ethnicity_codes))
   .where(clinical_events.date.is_on_or_before(index_date))
@@ -331,7 +340,9 @@ dataset.latest_ethnicity_group = (
 dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
 
 #extract rural/urban classification
-dataset.rural_urban_classification = addresses.for_patient_on(index_date).rural_urban_classification
+dataset.rural_urban_classification = (
+  addresses.for_patient_on(index_date).rural_urban_classification
+)
 
 #extract patients household info
 if study_start_date == datetime.strptime("2020-09-01", "%Y-%m-%d").date() :
