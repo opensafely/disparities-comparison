@@ -14,7 +14,8 @@ from ehrql.tables.tpp import (
   vaccinations,
   apcs,
   emergency_care_attendances,
-  parents
+  parents,
+  ethnicity_from_sus
 )
 
 from variable_lib import (
@@ -325,7 +326,9 @@ if cohort == "infants" or cohort == "infants_subgroup" :
   .sort_by(clinical_events.date)
   .last_for_patient().snomedct_code
   .to_category(codelists.ethnicity_codes)
-)
+  )
+  #extract HES ethnicity
+  dataset.latest_ethnicity_group_hes = ethnicity_from_sus.code
 else:
   dataset.latest_ethnicity_group = (
   clinical_events.where(clinical_events
@@ -334,7 +337,7 @@ else:
   .sort_by(clinical_events.date)
   .last_for_patient().snomedct_code
   .to_category(codelists.ethnicity_codes)
-)
+  )
 
 #extract patients IMD rank
 dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded

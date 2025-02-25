@@ -142,6 +142,7 @@ rate_viz <- function(df, pathogen, outcome_type) {
     cols[1], cols[1], cols[2], cols[2], cols[3], cols[3], cols[4], cols[4],
     cols[5], cols[5], cols[6], cols[6], cols[7], cols[7], cols[8], cols[8]
   )
+  if (pathogen == "COVID") cols <- cols[7:16]
   
   orders <- c(
     "2016-17, Specific",
@@ -191,7 +192,7 @@ rate_viz <- function(df, pathogen, outcome_type) {
     ggplot(aes(fill = fill_type, y = Rate_Midpoint10_Derived,
                x = Group, alpha = fill_type)) +
     geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
-    facet_wrap(~Characteristic, scales = "free") +
+    facet_wrap(~Characteristic, scales = "free_x") +
     theme_bw() + scale_fill_manual(name = "Season and Phenotype",
                                    values = cols) +
     scale_alpha_manual(name = "Season and Phenotype",
@@ -334,6 +335,7 @@ rate_viz_season <- function(df, pathogen, outcome_type) {
     cols[1], cols[1], cols[2], cols[2], cols[3], cols[3], cols[4], cols[4],
     cols[5], cols[5], cols[6], cols[6], cols[7], cols[7], cols[8], cols[8]
   )
+  if (pathogen == "COVID") cols <- cols[7:16]
 
   orders <- c(
     "2016-17, Specific",
@@ -388,7 +390,7 @@ rate_viz_season <- function(df, pathogen, outcome_type) {
     ggplot(aes(y = Rate_Midpoint10_Derived, x = Group,
                alpha = fill_type, fill = fill_type)) +
     geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
-    facet_wrap(~subset, scales = "free") +
+    facet_wrap(~subset, scales = "free_x") +
     theme_bw() + scale_fill_manual(name = "Season and Phenotype",
                                    values = cols) +
     scale_alpha_manual(name = "Season and Phenotype",
@@ -536,6 +538,7 @@ rate_viz_mult <- function(df, pathogen, outcome_type) {
     cols[1], cols[1], cols[2], cols[2], cols[3], cols[3], cols[4], cols[4],
     cols[5], cols[5], cols[6], cols[6], cols[7], cols[7], cols[8], cols[8]
   )
+  if (pathogen == "COVID") cols <- cols[7:16]
   
   orders <- c(
     "2016-17, Specific",
@@ -585,7 +588,7 @@ rate_viz_mult <- function(df, pathogen, outcome_type) {
       ggplot(aes(y = Rate_Midpoint10_Derived, x = subset,
                  alpha = fill_type, fill = fill_type)) +
       geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
-      facet_wrap(~Group, scales = "free") +
+      facet_wrap(~Group, scales = "free_x") +
       theme_bw() + scale_fill_manual(name = "Season and Phenotype",
                                     values = cols) +
       scale_alpha_manual(name = "Season and Phenotype",

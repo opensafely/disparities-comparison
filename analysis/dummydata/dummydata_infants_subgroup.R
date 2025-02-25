@@ -155,6 +155,22 @@ sim_list = lst(
     missing_rate = ~ 0.05
   ),
   
+  #ethnicity (HES supplement)
+  latest_ethnicity_group_hes = bn_node(
+    ~ rfactor(n = ..n, levels = c(
+      "R", "S",
+      "M", "N", "P",
+      "H", "J", "K", "L",
+      "D", "E", "F", "G",
+      "A", "B", "C"
+    ), p = c(0.01, 0.01,
+             0.013, 0.014, 0.013,
+             0.025, 0.025, 0.025, 0.025,
+             0.01, 0.01, 0.005, 0.005,
+             0.3, 0.3, 0.21)),
+    missing_rate = ~ 0.05
+  ),
+  
   #household ID (to determine composition)
   household_pseudo_id = bn_node(
     ~ as.integer(runif(n = ..n, min = 1, max = 30000))
