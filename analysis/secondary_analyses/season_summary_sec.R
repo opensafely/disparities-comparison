@@ -39,8 +39,7 @@ df_input <- read_feather(
              codelist_type, "_", investigation_type,".arrow")))
 
 #set all NA categories to "Unknown"
-df_input <- df_input %>% mutate_if(is.factor,
-                                   forcats::fct_explicit_na,
+df_input <- df_input %>% mutate_if(is.factor, forcats::fct_explicit_na,
                                    na_level = "Unknown")
 
 #calculate total person-time for each outcome type 
@@ -48,22 +47,19 @@ if (study_start_date == as.Date("2017-09-01")) {
   survival <- df_input %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival <- df_input %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival <- df_input %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -83,22 +79,19 @@ if (study_start_date == as.Date("2017-09-01")) {
   events <- df_input %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events <- df_input %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events <- df_input %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -123,11 +116,11 @@ results <- results %>%
 
 #define row order desired
 if (study_start_date == as.Date("2017-09-01")) {
-  row_order <- c("rsv_mild", "rsv_severe")#, "rsv_mortality")
+  row_order <- c("rsv_mild", "rsv_severe")
 } else if (study_start_date == as.Date("2018-09-01")) {
-  row_order <- c("flu_mild", "flu_severe")#, "flu_mortality")
+  row_order <- c("flu_mild", "flu_severe")
 } else if (study_start_date == as.Date("2020-09-01")) {
-  row_order <- c("covid_mild", "covid_severe")#, "covid_mortality")
+  row_order <- c("covid_mild", "covid_severe")
 }
 
 #reorder rows
@@ -137,7 +130,7 @@ results <- results %>%
 #final results table
 if (study_start_date == as.Date("2017-09-01")) {
   final_results <- data.frame(
-    Outcome = c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+    Outcome = c("RSV Mild", "RSV Severe"),
     PYears = results$person_years,
     Events_Midpoint10 = results$events,
     Rate_Midpoint10_Derived = results$incidence_rate,
@@ -146,7 +139,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   )
 } else if (study_start_date == as.Date("2018-09-01")) {
   final_results <- data.frame(
-    Outcome = c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+    Outcome = c("Flu Mild", "Flu Severe"),
     PYears = results$person_years,
     Events_Midpoint10 = results$events,
     Rate_Midpoint10_Derived = results$incidence_rate,
@@ -155,7 +148,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   )
 } else if (study_start_date == as.Date("2020-09-01")) {
   final_results <- data.frame(
-    Outcome = c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+    Outcome = c("COVID Mild", "COVID Severe"),
     PYears = results$person_years,
     Events_Midpoint10 = results$events,
     Rate_Midpoint10_Derived = results$incidence_rate,
@@ -172,24 +165,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(age_band) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_age <- df_input %>%
     group_by(age_band) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_age <- df_input %>%
     group_by(age_band) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -210,24 +200,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(age_band) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_age <- df_input %>%
     group_by(age_band) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_age <- df_input %>%
     group_by(age_band) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -263,7 +250,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     age_bands),
       PYears = results_age$person_years,
       Events_Midpoint10 = results_age$events,
@@ -275,7 +262,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     age_bands),
       PYears = results_age$person_years,
       Events_Midpoint10 = results_age$events,
@@ -287,7 +274,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),#, "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                       age_bands),
       PYears = results_age$person_years,
       Events_Midpoint10 = results_age$events,
@@ -303,24 +290,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(sex) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_sex <- df_input %>%
     group_by(sex) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_sex <- df_input %>%
     group_by(sex) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -341,24 +325,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(sex) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_sex <- df_input %>%
     group_by(sex) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_sex <- df_input %>%
     group_by(sex) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -392,7 +373,6 @@ if (study_start_date == as.Date("2017-09-01")) {
     final_results,
     data.frame(
       Outcome = rep(c("RSV Mild", "RSV Severe"), 2),
-                      # "RSV Mortality"), 2),
       PYears = results_sex$person_years,
       Events_Midpoint10 = results_sex$events,
       Rate_Midpoint10_Derived = results_sex$incidence_rate,
@@ -404,7 +384,6 @@ if (study_start_date == as.Date("2017-09-01")) {
     final_results,
     data.frame(
       Outcome = rep(c("Flu Mild", "Flu Severe"), 2),
-                      # "Flu Mortality"), 2),
       PYears = results_sex$person_years,
       Events_Midpoint10 = results_sex$events,
       Rate_Midpoint10_Derived = results_sex$incidence_rate,
@@ -416,7 +395,6 @@ if (study_start_date == as.Date("2017-09-01")) {
     final_results,
     data.frame(
       Outcome = rep(c("COVID Mild", "COVID Severe"), 2),
-                      # "COVID Mortality"), 2),
       PYears = results_sex$person_years,
       Events_Midpoint10 = results_sex$events,
       Rate_Midpoint10_Derived = results_sex$incidence_rate,
@@ -431,24 +409,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(latest_ethnicity_group) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_ethnicity <- df_input %>%
     group_by(latest_ethnicity_group) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_ethnicity <- df_input %>%
     group_by(latest_ethnicity_group) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -469,24 +444,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(latest_ethnicity_group) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_ethnicity <- df_input %>%
     group_by(latest_ethnicity_group) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_ethnicity <- df_input %>%
     group_by(latest_ethnicity_group) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -523,7 +495,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     ethnicity_groups),
       PYears = results_ethnicity$person_years,
       Events_Midpoint10 = results_ethnicity$events,
@@ -535,7 +507,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),#, "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     ethnicity_groups),
       PYears = results_ethnicity$person_years,
       Events_Midpoint10 = results_ethnicity$events,
@@ -547,7 +519,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     ethnicity_groups),
       PYears = results_ethnicity$person_years,
       Events_Midpoint10 = results_ethnicity$events,
@@ -563,24 +535,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(imd_quintile) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_ses <- df_input %>%
     group_by(imd_quintile) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_ses <- df_input %>%
     group_by(imd_quintile) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -601,24 +570,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(imd_quintile) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_ses <- df_input %>%
     group_by(imd_quintile) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_ses <- df_input %>%
     group_by(imd_quintile) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -654,7 +620,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     ses_groups),
       PYears = results_ses$person_years,
       Events_Midpoint10 = results_ses$events,
@@ -666,7 +632,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     ses_groups),
       PYears = results_ses$person_years,
       Events_Midpoint10 = results_ses$events,
@@ -678,7 +644,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     ses_groups),
       PYears = results_ses$person_years,
       Events_Midpoint10 = results_ses$events,
@@ -694,8 +660,7 @@ if (study_start_date == as.Date("2020-09-01")) {
     group_by(composition_category) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 
   #get unique rows
@@ -714,8 +679,7 @@ if (study_start_date == as.Date("2020-09-01")) {
     group_by(composition_category) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 
   #get unique rows
@@ -750,7 +714,7 @@ if (study_start_date == as.Date("2020-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     hh_comp_groups),
       PYears = results_hh_comp$person_years,
       Events_Midpoint10 = results_hh_comp$events,
@@ -767,24 +731,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(rurality_classification) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_rurality <- df_input %>%
     group_by(rurality_classification) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_rurality <- df_input %>%
     group_by(rurality_classification) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -805,24 +766,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(rurality_classification) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_rurality <- df_input %>%
     group_by(rurality_classification) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_rurality <- df_input %>%
     group_by(rurality_classification) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -859,7 +817,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     rurality_groups),
       PYears = results_rurality$person_years,
       Events_Midpoint10 = results_rurality$events,
@@ -871,7 +829,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     rurality_groups),
       PYears = results_rurality$person_years,
       Events_Midpoint10 = results_rurality$events,
@@ -883,7 +841,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     rurality_groups),
       PYears = results_rurality$person_years,
       Events_Midpoint10 = results_rurality$events,
@@ -899,8 +857,7 @@ if (study_start_date == as.Date("2017-09-01")) {
 #     group_by(prior_flu_vaccination) %>%
 #     transmute(
 #       flu_mild = sum(time_flu_primary, na.rm = T),
-#       flu_severe = sum(time_flu_secondary, na.rm = T)#,
-#       # flu_mortality = sum(time_flu_mortality, na.rm = T)
+#       flu_severe = sum(time_flu_secondary, na.rm = T)
 #     )
 #   #get unique rows
 #   survival_prior_flu_vacc <- unique(survival_prior_flu_vacc)
@@ -917,8 +874,7 @@ if (study_start_date == as.Date("2017-09-01")) {
 #     group_by(prior_flu_vaccination) %>%
 #     transmute(
 #       flu_mild = sum(flu_primary_inf, na.rm = T),
-#       flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-#       # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+#       flu_severe = sum(flu_secondary_inf, na.rm = T)
 #     )
 #   #get unique rows
 #   events_prior_flu_vacc <- unique(events_prior_flu_vacc)
@@ -965,15 +921,9 @@ if (study_start_date == as.Date("2017-09-01")) {
 #     transmute(
 #       flu_severe = sum(time_flu_secondary, na.rm = T)
 #     )
-#   # survival_flu_vacc_mortality <- df_input %>%
-#   #   group_by(flu_vaccination) %>%
-#   #   transmute(
-#   #       flu_mortality = sum(time_flu_mortality, na.rm = T)
-#   #   )
 #   #get unique rows
 #   survival_flu_vacc_mild <- unique(survival_flu_vacc_mild)
 #   survival_flu_vacc_severe <- unique(survival_flu_vacc_severe)
-#   # survival_flu_vacc_mortality <- unique(survival_flu_vacc_mortality)
 #   #wide to long
 #   survival_flu_vacc_mild <- survival_flu_vacc_mild %>%
 #     pivot_longer(
@@ -987,16 +937,9 @@ if (study_start_date == as.Date("2017-09-01")) {
 #       names_to = "outcome",
 #       values_to = "person_years"
 #     )
-#   # survival_flu_vacc_mortality <- survival_flu_vacc_mortality %>%
-#   #   pivot_longer(
-#   #     cols = !flu_vaccination,
-#   #     names_to = "outcome",
-#   #     values_to = "person_years"
-#   #   )
 #   #join the groups
 #   survival_flu_vacc <- rbind(survival_flu_vacc_mild,
-#                              survival_flu_vacc_severe)#,
-#                              # survival_flu_vacc_mortality)
+#                              survival_flu_vacc_severe)
 #   #calculate total number of events for each outcome type by
 #   #flu vaccination status
 #   events_flu_vacc_mild <- df_input %>%
@@ -1009,15 +952,9 @@ if (study_start_date == as.Date("2017-09-01")) {
 #     transmute(
 #       flu_severe = sum(flu_secondary_inf, na.rm = T)
 #     )
-#   # events_flu_vacc_mortality <- df_input %>%
-#   #   group_by(flu_vaccination) %>%
-#   #   transmute(
-#   #     flu_mortality = sum(flu_mortality_inf, na.rm = T)
-#   #   )
 #   #get unique rows
 #   events_flu_vacc_mild <- unique(events_flu_vacc_mild)
 #   events_flu_vacc_severe <- unique(events_flu_vacc_severe)
-#   # events_flu_vacc_mortality <- unique(events_flu_vacc_mortality)
 #   #wide to long
 #   events_flu_vacc_mild <- events_flu_vacc_mild %>%
 #     pivot_longer(
@@ -1031,16 +968,9 @@ if (study_start_date == as.Date("2017-09-01")) {
 #       names_to = "outcome",
 #       values_to = "events"
 #     )
-#   # events_flu_vacc_mortality <- events_flu_vacc_mortality %>%
-#   #   pivot_longer(
-#   #     cols = !flu_vaccination,
-#   #     names_to = "outcome",
-#   #     values_to = "events"
-#   #   )
 #   #join the groups
 #   events_flu_vacc <- rbind(events_flu_vacc_mild,
-#                            events_flu_vacc_severe)#,
-#                            # events_flu_vacc_mortality)
+#                            events_flu_vacc_severe)
 #   #overall results
 #   results_flu_vacc <- merge(survival_flu_vacc, events_flu_vacc)
 #   #calculate incidence rate per 1000 person-years
@@ -1052,7 +982,6 @@ if (study_start_date == as.Date("2017-09-01")) {
 #     final_results,
 #     data.frame(
 #       Outcome = c(rep(c("Flu Mild", "Flu Severe"), 2)),
-#                         # "Flu Mortality"), 2)),
 #       PYears = results_flu_vacc$person_years,
 #       Events_Midpoint10 = results_flu_vacc$events,
 #       Rate_Midpoint10_Derived = results_flu_vacc$incidence_rate,
@@ -1075,15 +1004,9 @@ if (study_start_date == as.Date("2017-09-01")) {
 #     transmute(
 #       covid_severe = sum(time_covid_secondary, na.rm = T)
 #     )
-#   # survival_cov_vaccines_mortality <- df_input %>%
-#   #   group_by(covid_vaccination) %>%
-#   #   transmute(
-#   #     covid_mortality = sum(time_covid_mortality, na.rm = T)
-#   #   )
 #   #get unique rows
 #   survival_cov_vaccines_mild <- unique(survival_cov_vaccines_mild)
 #   survival_cov_vaccines_severe <- unique(survival_cov_vaccines_severe)
-#   # survival_cov_vaccines_mortality <- unique(survival_cov_vaccines_mortality)
 #   #wide to long
 #   survival_cov_vaccines_mild <- survival_cov_vaccines_mild %>%
 #     pivot_longer(
@@ -1097,16 +1020,9 @@ if (study_start_date == as.Date("2017-09-01")) {
 #       names_to = "outcome",
 #       values_to = "person_years"
 #     )
-#   # survival_cov_vaccines_mortality <- survival_cov_vaccines_mortality %>%
-#   #   pivot_longer(
-#   #     cols = !covid_vaccination,
-#   #     names_to = "outcome",
-#   #     values_to = "person_years"
-#   #   )
 #   #join the groups
 #   survival_cov_vaccines <- rbind(survival_cov_vaccines_mild,
-#                                  survival_cov_vaccines_severe)#,
-#                                  # survival_cov_vaccines_mortality)
+#                                  survival_cov_vaccines_severe)
 #   #calculate total number of events for each outcome type by
 #   #time since last covid vaccine
 #   events_cov_vaccines_mild <- df_input %>%
@@ -1119,15 +1035,9 @@ if (study_start_date == as.Date("2017-09-01")) {
 #     transmute(
 #       covid_severe = sum(covid_secondary_inf, na.rm = T)
 #     )
-#   # events_cov_vaccines_mortality <- df_input %>%
-#   #   group_by(covid_vaccination) %>%
-#   #   transmute(
-#   #     covid_mortality = sum(covid_mortality_inf, na.rm = T)
-#   #   )
 #   #get unique rows
 #   events_cov_vaccines_mild <- unique(events_cov_vaccines_mild)
 #   events_cov_vaccines_severe <- unique(events_cov_vaccines_severe)
-#   # events_cov_vaccines_mortality <- unique(events_cov_vaccines_mortality)
 #   #wide to long
 #   events_cov_vaccines_mild <- events_cov_vaccines_mild %>%
 #     pivot_longer(
@@ -1141,16 +1051,9 @@ if (study_start_date == as.Date("2017-09-01")) {
 #       names_to = "outcome",
 #       values_to = "events"
 #     )
-#   # events_cov_vaccines_mortality <- events_cov_vaccines_mortality %>%
-#   #   pivot_longer(
-#   #     cols = !covid_vaccination,
-#   #     names_to = "outcome",
-#   #     values_to = "events"
-#   #   )
 #   #join the groups
 #   events_cov_vaccines <- rbind(events_cov_vaccines_mild,
-#                                events_cov_vaccines_severe)#,
-#                                # events_cov_vaccines_mortality)
+#                                events_cov_vaccines_severe)
 #   #overall results
 #   results_cov_vaccines <- merge(survival_cov_vaccines, events_cov_vaccines)
 #   #calculate incidence rate per 1000 person-years
@@ -1162,7 +1065,6 @@ if (study_start_date == as.Date("2017-09-01")) {
 #     final_results,
 #     data.frame(
 #       Outcome = c(rep(c("COVID Mild", "COVID Severe"), 2)),
-#                       # "COVID Mortality"), 2)),
 #       PYears = results_cov_vaccines$person_years,
 #       Events_Midpoint10 = results_cov_vaccines$events,
 #       Rate_Midpoint10_Derived = results_cov_vaccines$incidence_rate,
@@ -1178,24 +1080,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_asthma) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_asthma <- df_input %>%
     group_by(has_asthma) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_asthma <- df_input %>%
     group_by(has_asthma) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -1216,24 +1115,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_asthma) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_asthma <- df_input %>%
     group_by(has_asthma) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_asthma <- df_input %>%
     group_by(has_asthma) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -1270,7 +1166,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     asthma_groups),
       PYears = results_asthma$person_years,
       Events_Midpoint10 = results_asthma$events,
@@ -1282,7 +1178,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     asthma_groups),
       PYears = results_asthma$person_years,
       Events_Midpoint10 = results_asthma$events,
@@ -1294,7 +1190,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     asthma_groups),
       PYears = results_asthma$person_years,
       Events_Midpoint10 = results_asthma$events,
@@ -1310,24 +1206,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_copd) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_copd <- df_input %>%
     group_by(has_copd) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_copd <- df_input %>%
     group_by(has_copd) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -1348,24 +1241,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_copd) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_copd <- df_input %>%
     group_by(has_copd) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_copd <- df_input %>%
     group_by(has_copd) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -1402,7 +1292,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     copd_groups),
       PYears = results_copd$person_years,
       Events_Midpoint10 = results_copd$events,
@@ -1414,7 +1304,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     copd_groups),
       PYears = results_copd$person_years,
       Events_Midpoint10 = results_copd$events,
@@ -1426,7 +1316,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     copd_groups),
       PYears = results_copd$person_years,
       Events_Midpoint10 = results_copd$events,
@@ -1442,24 +1332,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_cystic_fibrosis) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_cystic_fibrosis <- df_input %>%
     group_by(has_cystic_fibrosis) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_cystic_fibrosis <- df_input %>%
     group_by(has_cystic_fibrosis) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -1480,24 +1367,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_cystic_fibrosis) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_cystic_fibrosis <- df_input %>%
     group_by(has_cystic_fibrosis) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_cystic_fibrosis <- df_input %>%
     group_by(has_cystic_fibrosis) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -1534,7 +1418,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     cystic_fibrosis_groups),
       PYears = results_cystic_fibrosis$person_years,
       Events_Midpoint10 = results_cystic_fibrosis$events,
@@ -1546,7 +1430,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     cystic_fibrosis_groups),
       PYears = results_cystic_fibrosis$person_years,
       Events_Midpoint10 = results_cystic_fibrosis$events,
@@ -1558,7 +1442,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     cystic_fibrosis_groups),
       PYears = results_cystic_fibrosis$person_years,
       Events_Midpoint10 = results_cystic_fibrosis$events,
@@ -1574,24 +1458,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_other_resp) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_other_resp <- df_input %>%
     group_by(has_other_resp) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_other_resp <- df_input %>%
     group_by(has_other_resp) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -1612,24 +1493,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_other_resp) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_other_resp <- df_input %>%
     group_by(has_other_resp) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_other_resp <- df_input %>%
     group_by(has_other_resp) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -1666,7 +1544,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     other_resp_groups),
       PYears = results_other_resp$person_years,
       Events_Midpoint10 = results_other_resp$events,
@@ -1678,7 +1556,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     other_resp_groups),
       PYears = results_other_resp$person_years,
       Events_Midpoint10 = results_other_resp$events,
@@ -1690,7 +1568,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     other_resp_groups),
       PYears = results_other_resp$person_years,
       Events_Midpoint10 = results_other_resp$events,
@@ -1706,24 +1584,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_diabetes) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_diabetes <- df_input %>%
     group_by(has_diabetes) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_diabetes <- df_input %>%
     group_by(has_diabetes) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -1744,24 +1619,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_diabetes) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_diabetes <- df_input %>%
     group_by(has_diabetes) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_diabetes <- df_input %>%
     group_by(has_diabetes) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -1798,7 +1670,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     diabetes_groups),
       PYears = results_diabetes$person_years,
       Events_Midpoint10 = results_diabetes$events,
@@ -1810,7 +1682,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     diabetes_groups),
       PYears = results_diabetes$person_years,
       Events_Midpoint10 = results_diabetes$events,
@@ -1822,7 +1694,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     diabetes_groups),
       PYears = results_diabetes$person_years,
       Events_Midpoint10 = results_diabetes$events,
@@ -1838,24 +1710,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_addisons) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_addisons <- df_input %>%
     group_by(has_addisons) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_addisons <- df_input %>%
     group_by(has_addisons) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -1876,24 +1745,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_addisons) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_addisons <- df_input %>%
     group_by(has_addisons) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_addisons <- df_input %>%
     group_by(has_addisons) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -1930,7 +1796,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     addisons_groups),
       PYears = results_addisons$person_years,
       Events_Midpoint10 = results_addisons$events,
@@ -1942,7 +1808,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     addisons_groups),
       PYears = results_addisons$person_years,
       Events_Midpoint10 = results_addisons$events,
@@ -1954,7 +1820,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     addisons_groups),
       PYears = results_addisons$person_years,
       Events_Midpoint10 = results_addisons$events,
@@ -1970,24 +1836,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(severe_obesity) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_severe_obesity <- df_input %>%
     group_by(severe_obesity) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_severe_obesity <- df_input %>%
     group_by(severe_obesity) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -2008,24 +1871,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(severe_obesity) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_severe_obesity <- df_input %>%
     group_by(severe_obesity) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_severe_obesity <- df_input %>%
     group_by(severe_obesity) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -2062,7 +1922,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     severe_obesity_groups),
       PYears = results_severe_obesity$person_years,
       Events_Midpoint10 = results_severe_obesity$events,
@@ -2074,7 +1934,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     severe_obesity_groups),
       PYears = results_severe_obesity$person_years,
       Events_Midpoint10 = results_severe_obesity$events,
@@ -2086,7 +1946,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     severe_obesity_groups),
       PYears = results_severe_obesity$person_years,
       Events_Midpoint10 = results_severe_obesity$events,
@@ -2102,24 +1962,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_chd) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_chd <- df_input %>%
     group_by(has_chd) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_chd <- df_input %>%
     group_by(has_chd) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -2140,24 +1997,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_chd) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_chd <- df_input %>%
     group_by(has_chd) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_chd <- df_input %>%
     group_by(has_chd) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -2194,7 +2048,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     chd_groups),
       PYears = results_chd$person_years,
       Events_Midpoint10 = results_chd$events,
@@ -2206,7 +2060,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     chd_groups),
       PYears = results_chd$person_years,
       Events_Midpoint10 = results_chd$events,
@@ -2218,7 +2072,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     chd_groups),
       PYears = results_chd$person_years,
       Events_Midpoint10 = results_chd$events,
@@ -2234,24 +2088,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_ckd) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_ckd <- df_input %>%
     group_by(has_ckd) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_ckd <- df_input %>%
     group_by(has_ckd) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -2272,24 +2123,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_ckd) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_ckd <- df_input %>%
     group_by(has_ckd) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_ckd <- df_input %>%
     group_by(has_ckd) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -2326,7 +2174,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     ckd_groups),
       PYears = results_ckd$person_years,
       Events_Midpoint10 = results_ckd$events,
@@ -2338,7 +2186,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     ckd_groups),
       PYears = results_ckd$person_years,
       Events_Midpoint10 = results_ckd$events,
@@ -2350,7 +2198,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     ckd_groups),
       PYears = results_ckd$person_years,
       Events_Midpoint10 = results_ckd$events,
@@ -2366,24 +2214,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_cld) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_cld <- df_input %>%
     group_by(has_cld) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_cld <- df_input %>%
     group_by(has_cld) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -2404,24 +2249,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_cld) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_cld <- df_input %>%
     group_by(has_cld) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_cld <- df_input %>%
     group_by(has_cld) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -2458,7 +2300,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     cld_groups),
       PYears = results_cld$person_years,
       Events_Midpoint10 = results_cld$events,
@@ -2470,7 +2312,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     cld_groups),
       PYears = results_cld$person_years,
       Events_Midpoint10 = results_cld$events,
@@ -2482,7 +2324,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     cld_groups),
       PYears = results_cld$person_years,
       Events_Midpoint10 = results_cld$events,
@@ -2498,24 +2340,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_cnd) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_cnd <- df_input %>%
     group_by(has_cnd) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_cnd <- df_input %>%
     group_by(has_cnd) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -2536,24 +2375,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_cnd) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_cnd <- df_input %>%
     group_by(has_cnd) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_cnd <- df_input %>%
     group_by(has_cnd) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -2590,7 +2426,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     cnd_groups),
       PYears = results_cnd$person_years,
       Events_Midpoint10 = results_cnd$events,
@@ -2602,7 +2438,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     cnd_groups),
       PYears = results_cnd$person_years,
       Events_Midpoint10 = results_cnd$events,
@@ -2614,7 +2450,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     cnd_groups),
       PYears = results_cnd$person_years,
       Events_Midpoint10 = results_cnd$events,
@@ -2630,24 +2466,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_cancer) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_cancer <- df_input %>%
     group_by(has_cancer) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_cancer <- df_input %>%
     group_by(has_cancer) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -2668,24 +2501,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_cancer) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_cancer <- df_input %>%
     group_by(has_cancer) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_cancer <- df_input %>%
     group_by(has_cancer) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -2722,7 +2552,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     cancer_groups),
       PYears = results_cancer$person_years,
       Events_Midpoint10 = results_cancer$events,
@@ -2734,7 +2564,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     cancer_groups),
       PYears = results_cancer$person_years,
       Events_Midpoint10 = results_cancer$events,
@@ -2746,7 +2576,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     cancer_groups),
       PYears = results_cancer$person_years,
       Events_Midpoint10 = results_cancer$events,
@@ -2762,24 +2592,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(immunosuppressed) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_immunosuppressed <- df_input %>%
     group_by(immunosuppressed) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_immunosuppressed <- df_input %>%
     group_by(immunosuppressed) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -2800,24 +2627,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(immunosuppressed) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_immunosuppressed <- df_input %>%
     group_by(immunosuppressed) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_immunosuppressed <- df_input %>%
     group_by(immunosuppressed) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -2854,7 +2678,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     immunosuppressed_groups),
       PYears = results_immunosuppressed$person_years,
       Events_Midpoint10 = results_immunosuppressed$events,
@@ -2866,7 +2690,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     immunosuppressed_groups),
       PYears = results_immunosuppressed$person_years,
       Events_Midpoint10 = results_immunosuppressed$events,
@@ -2878,7 +2702,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     immunosuppressed_groups),
       PYears = results_immunosuppressed$person_years,
       Events_Midpoint10 = results_immunosuppressed$events,
@@ -2894,24 +2718,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_sickle_cell) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_sickle_cell <- df_input %>%
     group_by(has_sickle_cell) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_sickle_cell <- df_input %>%
     group_by(has_sickle_cell) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -2932,24 +2753,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(has_sickle_cell) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_sickle_cell <- df_input %>%
     group_by(has_sickle_cell) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_sickle_cell <- df_input %>%
     group_by(has_sickle_cell) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -2986,7 +2804,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     sickle_cell_groups),
       PYears = results_sickle_cell$person_years,
       Events_Midpoint10 = results_sickle_cell$events,
@@ -2998,7 +2816,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     sickle_cell_groups),
       PYears = results_sickle_cell$person_years,
       Events_Midpoint10 = results_sickle_cell$events,
@@ -3010,7 +2828,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     sickle_cell_groups),
       PYears = results_sickle_cell$person_years,
       Events_Midpoint10 = results_sickle_cell$events,
@@ -3026,24 +2844,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(smoking_status) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_smoking <- df_input %>%
     group_by(smoking_status) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_smoking <- df_input %>%
     group_by(smoking_status) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -3064,24 +2879,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(smoking_status) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_smoking <- df_input %>%
     group_by(smoking_status) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_smoking <- df_input %>%
     group_by(smoking_status) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -3118,7 +2930,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     smoking_groups),
       PYears = results_smoking$person_years,
       Events_Midpoint10 = results_smoking$events,
@@ -3130,7 +2942,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     smoking_groups),
       PYears = results_smoking$person_years,
       Events_Midpoint10 = results_smoking$events,
@@ -3142,7 +2954,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     smoking_groups),
       PYears = results_smoking$person_years,
       Events_Midpoint10 = results_smoking$events,
@@ -3158,24 +2970,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(hazardous_drinking) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_drinking <- df_input %>%
     group_by(hazardous_drinking) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_drinking <- df_input %>%
     group_by(hazardous_drinking) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -3196,24 +3005,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(hazardous_drinking) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_drinking <- df_input %>%
     group_by(hazardous_drinking) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_drinking <- df_input %>%
     group_by(hazardous_drinking) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -3250,7 +3056,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     drinking_groups),
       PYears = results_drinking$person_years,
       Events_Midpoint10 = results_drinking$events,
@@ -3262,7 +3068,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     drinking_groups),
       PYears = results_drinking$person_years,
       Events_Midpoint10 = results_drinking$events,
@@ -3274,7 +3080,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     drinking_groups),
       PYears = results_drinking$person_years,
       Events_Midpoint10 = results_drinking$events,
@@ -3290,24 +3096,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(drug_usage) %>%
     transmute(
       rsv_mild = sum(time_rsv_primary, na.rm = T),
-      rsv_severe = sum(time_rsv_secondary, na.rm = T)#,
-      # rsv_mortality = sum(time_rsv_mortality, na.rm = T)
+      rsv_severe = sum(time_rsv_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   survival_drugs <- df_input %>%
     group_by(drug_usage) %>%
     transmute(
       flu_mild = sum(time_flu_primary, na.rm = T),
-      flu_severe = sum(time_flu_secondary, na.rm = T)#,
-      # flu_mortality = sum(time_flu_mortality, na.rm = T)
+      flu_severe = sum(time_flu_secondary, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   survival_drugs <- df_input %>%
     group_by(drug_usage) %>%
     transmute(
       covid_mild = sum(time_covid_primary, na.rm = T),
-      covid_severe = sum(time_covid_secondary, na.rm = T)#,
-      # covid_mortality = sum(time_covid_mortality, na.rm = T)
+      covid_severe = sum(time_covid_secondary, na.rm = T)
     )
 }
 
@@ -3328,24 +3131,21 @@ if (study_start_date == as.Date("2017-09-01")) {
     group_by(drug_usage) %>%
     transmute(
       rsv_mild = sum(rsv_primary_inf, na.rm = T),
-      rsv_severe = sum(rsv_secondary_inf, na.rm = T)#,
-      # rsv_mortality = sum(rsv_mortality_inf, na.rm = T)
+      rsv_severe = sum(rsv_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   events_drugs <- df_input %>%
     group_by(drug_usage) %>%
     transmute(
       flu_mild = sum(flu_primary_inf, na.rm = T),
-      flu_severe = sum(flu_secondary_inf, na.rm = T)#,
-      # flu_mortality = sum(flu_mortality_inf, na.rm = T)
+      flu_severe = sum(flu_secondary_inf, na.rm = T)
     )
 } else if (study_start_date == as.Date("2020-09-01")) {
   events_drugs <- df_input %>%
     group_by(drug_usage) %>%
     transmute(
       covid_mild = sum(covid_primary_inf, na.rm = T),
-      covid_severe = sum(covid_secondary_inf, na.rm = T)#,
-      # covid_mortality = sum(covid_mortality_inf, na.rm = T)
+      covid_severe = sum(covid_secondary_inf, na.rm = T)
     )
 }
 
@@ -3382,7 +3182,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("RSV Mild", "RSV Severe"),# "RSV Mortality"),
+      Outcome = rep(c("RSV Mild", "RSV Severe"),
                     drugs_groups),
       PYears = results_drugs$person_years,
       Events_Midpoint10 = results_drugs$events,
@@ -3394,7 +3194,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("Flu Mild", "Flu Severe"),# "Flu Mortality"),
+      Outcome = rep(c("Flu Mild", "Flu Severe"),
                     drugs_groups),
       PYears = results_drugs$person_years,
       Events_Midpoint10 = results_drugs$events,
@@ -3406,7 +3206,7 @@ if (study_start_date == as.Date("2017-09-01")) {
   final_results <- rbind(
     final_results,
     data.frame(
-      Outcome = rep(c("COVID Mild", "COVID Severe"),# "COVID Mortality"),
+      Outcome = rep(c("COVID Mild", "COVID Severe"),
                     drugs_groups),
       PYears = results_drugs$person_years,
       Events_Midpoint10 = results_drugs$events,
