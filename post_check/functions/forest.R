@@ -151,10 +151,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       ) %>%
       mutate(
         plot_label = case_when(
+          str_detect(plot_label, "Age") ~ "Age Group",
           str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
-          str_detect(plot_label, "Comp") ~ gsub("Composition Category",
-                                                "Household Composition",
-                                                plot_label),
+          str_detect(plot_label, "Latest") ~ "Ethnicity",
+          str_detect(plot_label, "Comp") ~ "Household Composition",
           TRUE ~ plot_label)
       )
     
@@ -167,9 +167,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       mutate(
         plot_label = case_when(
           str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
-          str_detect(plot_label, "Comp") ~ gsub("Composition Category",
-                                                "Household Composition",
-                                                plot_label),
+          str_detect(plot_label, "Latest") ~ "Ethnicity",
+          str_detect(plot_label, "Comp") ~ "Household Composition",
           TRUE ~ plot_label)
       ) %>%
       mutate(reference_row = NA) %>%
@@ -308,39 +307,39 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
   }
   
   group_order <- case_when(
-    model_type == "ethnicity" ~ list(c("Sex (False)", "Age Band (False)",
-                                       "Latest Ethnicity Group (False)",
-                                       "Sex (True)", "Age Band (True)",
-                                       "Latest Ethnicity Group (True)")),
-    model_type == "ses" ~ list(c("Sex (False)", "Age Band (False)",
+    model_type == "ethnicity" ~ list(c("Sex (False)", "Age Group (False)",
+                                       "Ethnicity (False)",
+                                       "Sex (True)", "Age Group (True)",
+                                       "Ethnicity (True)")),
+    model_type == "ses" ~ list(c("Sex (False)", "Age Group (False)",
                                  "IMD Quintile (False)", "Sex (True)",
-                                 "Age Band (True)", "IMD Quintile (True)")),
-    model_type == "composition" ~ list(c("Sex (False)", "Age Band (False)",
+                                 "Age Group (True)", "IMD Quintile (True)")),
+    model_type == "composition" ~ list(c("Sex (False)", "Age Group (False)",
                                          "Household Composition (False)",
-                                         "Sex (True)", "Age Band (True)",
+                                         "Sex (True)", "Age Group (True)",
                                          "Household Composition (True)")),
-    model_type == "ethnicity_ses" ~ list(c("Sex (False)", "Age Band (False)",
-                                           "Latest Ethnicity Group (False)",
+    model_type == "ethnicity_ses" ~ list(c("Sex (False)", "Age Group (False)",
+                                           "Ethnicity (False)",
                                            "IMD Quintile (False)",
-                                           "Sex (True)", "Age Band (True)",
-                                           "Latest Ethnicity Group (True)",
+                                           "Sex (True)", "Age Group (True)",
+                                           "Ethnicity (True)",
                                            "IMD Quintile (True)")),
     model_type == "ethnicity_composition" ~ list(c(
-      "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)",
-      "Household Composition (False)", "Sex (True)", "Age Band (True)",
-      "Latest Ethnicity Group (True)", "Household Composition (True)")),
-    model_type == "ses_composition" ~ list(c("Sex (False)", "Age Band (False)",
+      "Sex (False)", "Age Group (False)", "Ethnicity (False)",
+      "Household Composition (False)", "Sex (True)", "Age Group (True)",
+      "Ethnicity (True)", "Household Composition (True)")),
+    model_type == "ses_composition" ~ list(c("Sex (False)", "Age Group (False)",
                                              "IMD Quintile (False)",
                                              "Household Composition (False)",
-                                             "Sex (True)", "Age Band (True)",
+                                             "Sex (True)", "Age Group (True)",
                                              "IMD Quintile (True)",
                                              "Household Composition (True)")),
-    model_type == "full" ~ list(c("Sex (False)", "Age Band (False)",
-                                  "Latest Ethnicity Group (False)",
+    model_type == "full" ~ list(c("Sex (False)", "Age Group (False)",
+                                  "Ethnicity (False)",
                                   "IMD Quintile (False)",
                                   "Household Composition (False)", "Sex (True)",
-                                  "Age Band (True)",
-                                  "Latest Ethnicity Group (True)",
+                                  "Age Group (True)",
+                                  "Ethnicity (True)",
                                   "IMD Quintile (True)",
                                   "Household Composition (True)"))
   )[[1]]
@@ -378,8 +377,8 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
     
-    f <- function(pal) brewer.pal(brewer.pal.info[pal, length(legend_labels)],
-                                  pal)
+    f <- function(pal) brewer.pal(brewer.pal.info[pal, "maxcolors"],
+                                  pal)[1:length(legend_labels)]
     cols <- f("Dark2")
     
     tidy_forest %>%
@@ -390,10 +389,10 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       ) %>%
       mutate(
         plot_label = case_when(
+          str_detect(plot_label, "Age") ~ "Age Group",
           str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
-          str_detect(plot_label, "Comp") ~ gsub("Composition Category",
-                                                "Household Composition",
-                                                plot_label),
+          str_detect(plot_label, "Latest") ~ "Ethnicity",
+          str_detect(plot_label, "Comp") ~ "Household Composition",
           TRUE ~ plot_label)
       ) %>%
       mutate(
@@ -593,50 +592,50 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
   
   group_order <- case_when(
     model_type == "ethnicity" & cohort == "infants" ~ list(c(
-      "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
-      "Rurality Classification (False)", "Sex (True)", "Age Band (True)", 
-      "Latest Ethnicity Group (True)", "Rurality Classification (True)")),
+      "Sex (False)", "Age Group (False)", "Ethnicity (False)", 
+      "Rurality Classification (False)", "Sex (True)", "Age Group (True)", 
+      "Ethnicity (True)", "Rurality Classification (True)")),
     
     model_type == "ses" & cohort == "infants" ~ list(c(
-      "Sex (False)", "Age Band (False)", "IMD Quintile (False)", 
-      "Rurality Classification (False)", "Sex (True)", "Age Band (True)", 
+      "Sex (False)", "Age Group (False)", "IMD Quintile (False)", 
+      "Rurality Classification (False)", "Sex (True)", "Age Group (True)", 
       "IMD Quintile (True)", "Rurality Classification (True)")),
     
     model_type == "ethnicity_ses" & cohort == "infants" ~ list(c(
-      "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+      "Sex (False)", "Age Group (False)", "Ethnicity (False)", 
       "IMD Quintile (False)", "Rurality Classification (False)", 
-      "Sex (True)", "Age Band (True)", "Latest Ethnicity Group (True)", 
+      "Sex (True)", "Age Group (True)", "Ethnicity (True)", 
       "IMD Quintile (True)", "Rurality Classification (True)")),
     
     model_type == "ethnicity" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+      "Sex (False)", "Age Group (False)", "Ethnicity (False)", 
       "Rurality Classification (False)", "Maternal Age (False)", 
       "Maternal Smoking Status (False)", "Maternal Drinking (False)", 
       "Maternal Drug Usage (False)", "Maternal Flu Vaccination (False)", 
-      "Maternal Pertussis Vaccination (False)", "Sex (True)", "Age Band (True)", 
-      "Latest Ethnicity Group (True)", "Rurality Classification (True)", 
+      "Maternal Pertussis Vaccination (False)", "Sex (True)", "Age Group (True)", 
+      "Ethnicity (True)", "Rurality Classification (True)", 
       "Maternal Age (True)", "Maternal Smoking Status (True)", 
       "Maternal Drinking (True)", "Maternal Drug Usage (True)", 
       "Maternal Flu Vaccination (True)", "Maternal Pertussis Vaccination (True)")),
     
     model_type == "ses" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (False)", "Age Band (False)", "IMD Quintile (False)", 
+      "Sex (False)", "Age Group (False)", "IMD Quintile (False)", 
       "Rurality Classification (False)", "Maternal Age (False)", 
       "Maternal Smoking Status (False)", "Maternal Drinking (False)", 
       "Maternal Drug Usage (False)", "Maternal Flu Vaccination (False)", 
-      "Maternal Pertussis Vaccination (False)", "Sex (True)", "Age Band (True)", 
+      "Maternal Pertussis Vaccination (False)", "Sex (True)", "Age Group (True)", 
       "IMD Quintile (True)", "Rurality Classification (True)", 
       "Maternal Age (True)", "Maternal Smoking Status (True)", 
       "Maternal Drinking (True)", "Maternal Drug Usage (True)", 
       "Maternal Flu Vaccination (True)", "Maternal Pertussis Vaccination (True)")),
     
     model_type == "ethnicity_ses" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+      "Sex (False)", "Age Group (False)", "Ethnicity (False)", 
       "IMD Quintile (False)", "Rurality Classification (False)", 
       "Maternal Age (False)", "Maternal Smoking Status (False)", 
       "Maternal Drinking (False)", "Maternal Drug Usage (False)", 
       "Maternal Flu Vaccination (False)", "Maternal Pertussis Vaccination (False)", 
-      "Sex (True)", "Age Band (True)", "Latest Ethnicity Group (True)", 
+      "Sex (True)", "Age Group (True)", "Ethnicity (True)", 
       "IMD Quintile (True)", "Rurality Classification (True)", 
       "Maternal Age (True)", "Maternal Smoking Status (True)", 
       "Maternal Drinking (True)", "Maternal Drug Usage (True)", 
@@ -646,21 +645,21 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
                       "ethnicity_composition", "ses_composition", "full") & 
       cohort != "infants" & cohort != "infants_subgroup" & pathogen == "rsv" ~ list(c(
-        "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+        "Sex (False)", "Age Group (False)", "Ethnicity (False)", 
         "IMD Quintile (False)", "Household Composition (False)", 
-        "Rurality Classification (False)", "Sex (True)", "Age Band (True)", 
-        "Latest Ethnicity Group (True)", "IMD Quintile (True)", 
+        "Rurality Classification (False)", "Sex (True)", "Age Group (True)", 
+        "Ethnicity (True)", "IMD Quintile (True)", 
         "Household Composition (True)", "Rurality Classification (True)")),
     
     # Flu
     model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
                       "ethnicity_composition", "ses_composition", "full") & 
       cohort != "infants" & cohort != "infants_subgroup" & pathogen == "flu" ~ list(c(
-        "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+        "Sex (False)", "Age Group (False)", "Ethnicity (False)", 
         "IMD Quintile (False)", "Household Composition (False)", 
         "Rurality Classification (False)", "Prior Flu Vaccine (False)", 
-        "Current Flu Vaccine (False)", "Sex (True)", "Age Band (True)", 
-        "Latest Ethnicity Group (True)", "IMD Quintile (True)", 
+        "Current Flu Vaccine (False)", "Sex (True)", "Age Group (True)", 
+        "Ethnicity (True)", "IMD Quintile (True)", 
         "Household Composition (True)", "Rurality Classification (True)", 
         "Prior Flu Vaccine (True)", "Current Flu Vaccine (True)")),
     
@@ -668,11 +667,11 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
                       "ethnicity_composition", "ses_composition", "full") & 
       cohort != "infants" & cohort != "infants_subgroup" & pathogen == "covid" ~ list(c(
-        "Sex (False)", "Age Band (False)", "Latest Ethnicity Group (False)", 
+        "Sex (False)", "Age Group (False)", "Ethnicity (False)", 
         "IMD Quintile (False)", "Household Composition (False)", 
         "Rurality Classification (False)", "Time Since Last Covid Vaccine (False)", 
-        "Current Covid Vaccine (False)", "Sex (True)", "Age Band (True)", 
-        "Latest Ethnicity Group (True)", "IMD Quintile (True)", 
+        "Current Covid Vaccine (False)", "Sex (True)", "Age Group (True)", 
+        "Ethnicity (True)", "IMD Quintile (True)", 
         "Household Composition (True)", "Rurality Classification (True)", 
         "Time Since Last Covid Vaccine (True)", "Current Covid Vaccine (True)"))
   )[[1]]
@@ -694,10 +693,10 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       ) %>%
       mutate(
         plot_label = case_when(
+          str_detect(plot_label, "Age") ~ "Age Group",
           str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
-          str_detect(plot_label, "Comp") ~ gsub("Composition Category",
-                                                "Household Composition",
-                                                plot_label),
+          str_detect(plot_label, "Latest") ~ "Ethnicity",
+          str_detect(plot_label, "Comp") ~ "Household Composition",
           TRUE ~ plot_label)
       ) %>%
       mutate(
@@ -712,7 +711,9 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       ) %>%
       mutate(
         plot_label = case_when(
+          str_detect(plot_label, "Age") ~ "Age Group",
           str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
+          str_detect(plot_label, "Latest") ~ gsub("Latest", "", plot_label),
           str_detect(plot_label, "Comp") ~ gsub("Composition Category",
                                                 "Household Composition",
                                                 plot_label),
@@ -911,10 +912,10 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type, outcome_type
       ) %>%
       mutate(
         plot_label = case_when(
+          str_detect(plot_label, "Age") ~ "Age Group",
           str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
-          str_detect(plot_label, "Comp") ~ gsub("Composition Category",
-                                                "Household Composition",
-                                                plot_label),
+          str_detect(plot_label, "Latest") ~ "Ethnicity",
+          str_detect(plot_label, "Comp") ~ "Household Composition",
           TRUE ~ plot_label)
       ) %>%
       ggplot(aes(x = label, y = estimate, ymin = conf.low,

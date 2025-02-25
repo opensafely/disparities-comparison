@@ -26,8 +26,15 @@ character_viz <- function(df) {
               "Maternal Smoking Status", "Maternal Drinking",
               "Maternal Drug Usage", "Maternal Flu Vaccination",
               "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
-              "Time Since Last Covid Vaccine"),
-    count = c(1, age_groups, 2, 6, 5, 5, 5, 1, 4, 1, 1, 1, 1, 1, 3)
+              "Time Since Last Covid Vaccine", "Has Asthma", "Has COPD",
+              "Has Cystic Fibrosis", "Has Other Resp. Diseases",
+              "Has Diabetes", "Has Addison's Disease", "Severely Obese",
+              "Has CHD", "Has CKD", "Has CLD", "Has CND",
+              "Had Cancer Within 3 Years", "Immunosuppressed",
+              "Has Sickle Cell Disease", "Smoking Status",
+              "Hazardous Drinking", "Drug Usage"),
+    count = c(1, age_groups, 2, 6, 5, 5, 5, 1, 4, 1, 1, 1, 1, 1, 3, 1, 1,
+              1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 1)
   )
   
   group_counts <- group_counts %>%
@@ -111,6 +118,16 @@ character_viz <- function(df) {
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
                 "Prior Flu Vaccine", "0-6m", "6-12m", "12m+")
+    
+  } else if (cohort == "older_adults" & investigation_type == "secondary") {
+    
+    levels <- c("Has Asthma", "Has COPD", "Has Cystic Fibrosis",
+                "Has Other Resp. Diseases", "Has Diabetes",
+                "Has Addison's Disease", "Severely Obese", "Has CHD",
+                "Has CKD", "Has CLD", "Has CND", "Had Cancer Within 3 Years",
+                "Immunosuppressed", "Has Sickle Cell Disease", "Smoking Status",
+                "Hazardous Drinking", "Drug Usage", "Never", "Current",
+                "Former", "Unknown")
     
   } else {
     
@@ -169,8 +186,15 @@ character_viz_mult <- function(df) {
               "Maternal Smoking Status", "Maternal Drinking",
               "Maternal Drug Usage", "Maternal Flu Vaccination",
               "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
-              "Time Since Last Covid Vaccine"),
-    count = c(1, age_groups, 2, 6, 5, 5, 5, 1, 4, 1, 1, 1, 1, 1, 3)
+              "Time Since Last Covid Vaccine", "Has Asthma", "Has COPD",
+              "Has Cystic Fibrosis", "Has Other Resp. Diseases",
+              "Has Diabetes", "Has Addison's Disease", "Severely Obese",
+              "Has CHD", "Has CKD", "Has CLD", "Has CND",
+              "Had Cancer Within 3 Years", "Immunosuppressed",
+              "Has Sickle Cell Disease", "Smoking Status",
+              "Hazardous Drinking", "Drug Usage"),
+    count = c(1, age_groups, 2, 6, 5, 5, 5, 1, 4, 1, 1, 1, 1, 1, 3, 1, 1,
+              1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 1)
   )
   
   group_counts <- group_counts %>%
@@ -255,13 +279,24 @@ character_viz_mult <- function(df) {
                 "Rural Town and Fringe", "Rural Village and Dispersed",
                 "Prior Flu Vaccine", "0-6m", "6-12m", "12m+")
     
+  } else if (cohort == "older_adults" & investigation_type == "secondary") {
+    
+    levels <- c("Has Asthma", "Has COPD", "Has Cystic Fibrosis",
+                "Has Other Resp. Diseases", "Has Diabetes",
+                "Has Addison's Disease", "Severely Obese", "Has CHD",
+                "Has CKD", "Has CLD", "Has CND", "Had Cancer Within 3 Years",
+                "Immunosuppressed", "Has Sickle Cell Disease",
+                "Smoking Status", "Hazardous Drinking", "Drug Usage",
+                "Never", "Current", "Former", "Unknown")
+    
   } else {
     
     levels <- c("65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (least deprived)", "2",
-                "3", "4", "5 (most deprived)", "Multiple of the Same Generation",
-                "Living Alone", "One Other Generation", "Two Other Generations",
+                "Other Ethnic Groups", "Unknown", "1 (least deprived)",
+                "2", "3", "4", "5 (most deprived)",
+                "Multiple of the Same Generation", "Living Alone",
+                "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
@@ -315,7 +350,7 @@ character_viz_mult <- function(df) {
       plot.margin = margin(0, 0, 0, 7)
     )
   
-  plot_row <- plot_grid(plotlist = plot_list, ncol = 3)
+  plot_row <- plot_grid(plotlist = plot_list, ncol = length(all_groups))
   
   plot_grid(title, plot_row, ncol = 1, rel_heights = c(0.1, 1))
   
