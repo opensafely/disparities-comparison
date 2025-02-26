@@ -30,7 +30,7 @@ covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
              year(study_start_date), "_", year(study_end_date), "_", 
-             "specific", "_", "primary",".arrow")))
+             codelist_type, "_", investigation_type,".arrow")))
 
 #compare those with and without HES ethnicity
 df_input <- df_input %>%
