@@ -24,7 +24,7 @@ source(here::here("post_check", "functions", "rates_visualisation.R"))
 infants_rsv_mild <- rate_viz(df_input, "RSV", "Mild")
 infants_season_rsv_mild <- rate_viz_season(df_input, "RSV", "Mild")
 infants_characters_rsv_mild <- rate_viz_mult(df_input, "RSV", "Mild")
-infants_rsv_severe <- rate_viz(df_input, "RSV", "severe")
+infants_rsv_severe <- rate_viz(df_input, "RSV", "Severe")
 infants_season_rsv_severe <- rate_viz_season(df_input, "RSV", "Severe")
 infants_characters_rsv_severe <- rate_viz_mult(df_input, "RSV", "Severe")
 
