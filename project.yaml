@@ -15234,8 +15234,7 @@ actions:
     - process_dataset_infants_s1_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2016_2017_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2016_2017_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2016_2017_specific_primary.csv
 
   ethnicity_HES_comp_infants_s1_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants season1_start_date
@@ -15244,8 +15243,7 @@ actions:
     - process_dataset_infants_s1_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2016_2017_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2016_2017_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2016_2017_sensitive_primary.csv
 
   phenotype_sensitivity_infants_s2:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season2_start_date
@@ -15282,8 +15280,7 @@ actions:
     - process_dataset_infants_s2_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2017_2018_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2017_2018_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2017_2018_specific_primary.csv
 
   ethnicity_HES_comp_infants_s2_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants season2_start_date
@@ -15292,8 +15289,7 @@ actions:
     - process_dataset_infants_s2_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2017_2018_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2017_2018_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2017_2018_sensitive_primary.csv
 
   phenotype_sensitivity_infants_s3:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season3_start_date
@@ -15330,8 +15326,7 @@ actions:
     - process_dataset_infants_s3_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2018_2019_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2018_2019_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2018_2019_specific_primary.csv
 
   ethnicity_HES_comp_infants_s3_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants season3_start_date
@@ -15340,8 +15335,7 @@ actions:
     - process_dataset_infants_s3_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2018_2019_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2018_2019_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2018_2019_sensitive_primary.csv
 
   phenotype_sensitivity_infants_s4:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season4_start_date
@@ -15378,8 +15372,7 @@ actions:
     - process_dataset_infants_s4_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2019_2020_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2019_2020_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2019_2020_specific_primary.csv
 
   ethnicity_HES_comp_infants_s4_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants season4_start_date
@@ -15388,8 +15381,7 @@ actions:
     - process_dataset_infants_s4_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2019_2020_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2019_2020_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2019_2020_sensitive_primary.csv
 
   phenotype_sensitivity_infants_s5:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season5_start_date
@@ -15426,8 +15418,7 @@ actions:
     - process_dataset_infants_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2020_2021_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2020_2021_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2020_2021_specific_primary.csv
 
   ethnicity_HES_comp_infants_s5_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants season5_start_date
@@ -15436,8 +15427,7 @@ actions:
     - process_dataset_infants_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2020_2021_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2020_2021_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2020_2021_sensitive_primary.csv
 
   phenotype_sensitivity_infants_s6:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season6_start_date
@@ -15474,8 +15464,7 @@ actions:
     - process_dataset_infants_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2021_2022_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2021_2022_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2021_2022_specific_primary.csv
 
   ethnicity_HES_comp_infants_s6_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants season6_start_date
@@ -15484,8 +15473,7 @@ actions:
     - process_dataset_infants_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2021_2022_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2021_2022_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2021_2022_sensitive_primary.csv
 
   phenotype_sensitivity_infants_s7:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season7_start_date
@@ -15522,8 +15510,7 @@ actions:
     - process_dataset_infants_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2022_2023_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2022_2023_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2022_2023_specific_primary.csv
 
   ethnicity_HES_comp_infants_s7_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants season7_start_date
@@ -15532,8 +15519,7 @@ actions:
     - process_dataset_infants_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2022_2023_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2022_2023_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2022_2023_sensitive_primary.csv
 
   phenotype_sensitivity_infants_s8:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants season8_start_date
@@ -15570,8 +15556,7 @@ actions:
     - process_dataset_infants_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2023_2024_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2023_2024_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2023_2024_specific_primary.csv
 
   ethnicity_HES_comp_infants_s8_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants season8_start_date
@@ -15580,8 +15565,7 @@ actions:
     - process_dataset_infants_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_2023_2024_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_2023_2024_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_2023_2024_sensitive_primary.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Infants Subgroup 
@@ -15622,8 +15606,7 @@ actions:
     - process_dataset_infants_subgroup_s1_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2016_2017_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2016_2017_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2016_2017_specific_primary.csv
 
   ethnicity_HES_comp_infants_subgroup_s1_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants_subgroup
@@ -15632,8 +15615,7 @@ actions:
     - process_dataset_infants_subgroup_s1_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2016_2017_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2016_2017_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2016_2017_sensitive_primary.csv
 
   phenotype_sensitivity_infants_subgroup_s2:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -15670,8 +15652,7 @@ actions:
     - process_dataset_infants_subgroup_s2_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2017_2018_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2017_2018_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2017_2018_specific_primary.csv
 
   ethnicity_HES_comp_infants_subgroup_s2_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants_subgroup
@@ -15680,8 +15661,7 @@ actions:
     - process_dataset_infants_subgroup_s2_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2017_2018_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2017_2018_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2017_2018_sensitive_primary.csv
 
   phenotype_sensitivity_infants_subgroup_s3:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -15718,8 +15698,7 @@ actions:
     - process_dataset_infants_subgroup_s3_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2018_2019_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2018_2019_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2018_2019_specific_primary.csv
 
   ethnicity_HES_comp_infants_subgroup_s3_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants_subgroup
@@ -15728,8 +15707,7 @@ actions:
     - process_dataset_infants_subgroup_s3_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2018_2019_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2018_2019_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2018_2019_sensitive_primary.csv
 
   phenotype_sensitivity_infants_subgroup_s4:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -15766,8 +15744,7 @@ actions:
     - process_dataset_infants_subgroup_s4_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2019_2020_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2019_2020_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2019_2020_specific_primary.csv
 
   ethnicity_HES_comp_infants_subgroup_s4_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants_subgroup
@@ -15776,8 +15753,7 @@ actions:
     - process_dataset_infants_subgroup_s4_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2019_2020_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2019_2020_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2019_2020_sensitive_primary.csv
 
   phenotype_sensitivity_infants_subgroup_s5:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -15814,8 +15790,7 @@ actions:
     - process_dataset_infants_subgroup_s5_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2020_2021_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2020_2021_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2020_2021_specific_primary.csv
 
   ethnicity_HES_comp_infants_subgroup_s5_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants_subgroup
@@ -15824,8 +15799,7 @@ actions:
     - process_dataset_infants_subgroup_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2020_2021_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2020_2021_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2020_2021_sensitive_primary.csv
 
   phenotype_sensitivity_infants_subgroup_s6:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -15862,8 +15836,7 @@ actions:
     - process_dataset_infants_subgroup_s6_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2021_2022_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2021_2022_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2021_2022_specific_primary.csv
 
   ethnicity_HES_comp_infants_subgroup_s6_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants_subgroup
@@ -15872,8 +15845,7 @@ actions:
     - process_dataset_infants_subgroup_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2021_2022_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2021_2022_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2021_2022_sensitive_primary.csv
 
   phenotype_sensitivity_infants_subgroup_s7:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -15910,8 +15882,7 @@ actions:
     - process_dataset_infants_subgroup_s7_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2022_2023_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2022_2023_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2022_2023_specific_primary.csv
 
   ethnicity_HES_comp_infants_subgroup_s7_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants_subgroup
@@ -15920,8 +15891,7 @@ actions:
     - process_dataset_infants_subgroup_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2022_2023_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2022_2023_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2022_2023_sensitive_primary.csv
 
   phenotype_sensitivity_infants_subgroup_s8:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
@@ -15958,8 +15928,7 @@ actions:
     - process_dataset_infants_subgroup_s8_specific_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2023_2024_specific_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2023_2024_specific_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2023_2024_specific_primary.csv
 
   ethnicity_HES_comp_infants_subgroup_s8_sensitive_primary:
     run: r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R infants_subgroup
@@ -15968,8 +15937,7 @@ actions:
     - process_dataset_infants_subgroup_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/exploratory/ethnicity_HES_comp_infants_subgroup_2023_2024_sensitive_primary.csv
-        csv: output/exploratory/ethnicity_HES_comp_tables_infants_subgroup_2023_2024_sensitive_primary.csv
+        csv: output/exploratory/ethnicity_HES_*_infants_subgroup_2023_2024_sensitive_primary.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## SENSITIVITY ANALYSES: REDUCED SEASONS 
@@ -18001,8 +17969,7 @@ actions:
     - ethnicity_HES_comp_infants_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/infants_ethnicity_HES_comp_collated.csv
-        csv: output/collated/descriptive/infants_ethnicity_HES_comp_tables_collated.csv
+        csv: output/collated/descriptive/infants_ethnicity_HES_*_collated.csv
 
   collate_phenotype_sensitivity_tables_infants:
     run: r:latest analysis/collation_code/phenotype_sensitivity_table_collation.R
@@ -18562,8 +18529,7 @@ actions:
     - ethnicity_HES_comp_infants_subgroup_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/infants_subgroup_ethnicity_HES_comp_collated.csv
-        csv: output/collated/descriptive/infants_subgroup_ethnicity_HES_comp_tables_collated.csv
+        csv: output/collated/descriptive/infants_subgroup_ethnicity_HES_*_collated.csv
 
   collate_phenotype_sensitivity_tables_infants_subgroup:
     run: r:latest analysis/collation_code/phenotype_sensitivity_table_collation.R
