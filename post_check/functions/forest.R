@@ -100,18 +100,18 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
   
   if (str_detect(model_type, "ses")) {
     
-    levels <- c(levels, c("1 (least deprived)", "2", "3", "4",
-                          "5 (most deprived)"))
+    levels <- c(c("1 (least deprived)", "2", "3", "4",
+                  "5 (most deprived)"), levels)
     
   }
   
   if (str_detect(model_type, "hh_comp") & cohort != "infants" &
       cohort != "infants_subgroup") {
     
-    levels <- c(levels, c("Multiple of the Same Generation",
-                          "Living Alone", "One Other Generation",
-                          "Two Other Generations",
-                          "Three Other Generations"))
+    levels <- c(c("Multiple of the Same Generation",
+                  "Living Alone", "One Other Generation",
+                  "Two Other Generations", "Three Other Generations"),
+                levels)
     
   }
   
@@ -119,13 +119,12 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       cohort != "infants_subgroup") {
     
     levels <- c(c("White", "Mixed", "Asian or Asian British",
-                  "Black or Black British", "Other Ethnic Groups"),
-                levels, c("1 (least deprived)", "2", "3", "4",
-                          "5 (most deprived)",
-                          "Multiple of the Same Generation",
-                          "Living Alone", "One Other Generation",
-                          "Two Other Generations",
-                          "Three Other Generations"))
+                  "Black or Black British", "Other Ethnic Groups",
+                  "1 (least deprived)", "2", "3", "4",
+                  "5 (most deprived)", "Multiple of the Same Generation",
+                  "Living Alone", "One Other Generation",
+                  "Two Other Generations", "Three Other Generations"),
+                levels)
     
   }
   
@@ -166,31 +165,31 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       ) %>%
       mutate(
         plot_label = case_when(
+          str_detect(plot_label, "Age") ~ "Age Group",
           str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
           str_detect(plot_label, "Latest") ~ "Ethnicity",
           str_detect(plot_label, "Comp") ~ "Household Composition",
           TRUE ~ plot_label)
       ) %>%
       mutate(reference_row = NA) %>%
-      ggplot(aes(x = label, y = estimate, ymin = conf.low,
-                 ymax = conf.high, color = subset)) +
-      #scale_color_viridis_d(option = "turbo", na.translate = F, direction = -1) +
+      ggplot(aes(y = label, x = estimate, xmin = conf.low,
+                 xmax = conf.high, color = subset)) +
       scale_color_brewer(palette = "PuOr", na.translate = F) +
-      geom_hline(yintercept = 1, linetype = 2) + 
+      geom_vline(xintercept = 1, linetype = 2) + 
       geom_pointrange(position = position_dodge(width = 0.5), size = 0.45,
                       shape = shape_value) +
-      geom_point(data = references, aes(x = label, y = estimate,
+      geom_point(data = references, aes(y = label, x = estimate,
                                         shape = as.factor(estimate)),
                  size = 1, stroke = 1, color = "deeppink") +
       scale_shape_manual(name = "", values = c(8),
                          labels = "Reference Category") +
       guides(color = guide_legend("Season", order = 1,
                                   override.aes = list(shape = shape_value))) +
-      coord_flip() + facet_wrap(~ plot_label, scales = "free_y") + 
-      labs(y = "Rate Ratio", x = " ",
+      facet_wrap(~ plot_label, scales = "free_y") + 
+      labs(x = "Rate Ratio", y = " ",
            title = paste0("Rate Ratios of ", outcome_type, " ", 
                           pathogen_title, " (", title_suffix, ")")) + 
-      ylim(conf_low, conf_high) +
+      scale_x_log10(limits = c(conf_low, conf_high)) +
       theme_bw() + theme(plot.tag.position = "topright",
                          plot.tag = element_text(hjust = 0, size = 9))
     
@@ -271,18 +270,18 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
   
   if (str_detect(model_type, "ses")) {
     
-    levels <- c(levels, c("1 (least deprived)", "2", "3", "4",
-                          "5 (most deprived)"))
+    levels <- c(c("1 (least deprived)", "2", "3", "4",
+                  "5 (most deprived)"), levels)
     
   }
   
   if (str_detect(model_type, "hh_comp") & cohort != "infants" &
       cohort != "infants_subgroup") {
     
-    levels <- c(levels, c("Multiple of the Same Generation",
-                          "Living Alone", "One Other Generation",
-                          "Two Other Generations",
-                          "Three Other Generations"))
+    levels <- c(c("Multiple of the Same Generation",
+                  "Living Alone", "One Other Generation",
+                  "Two Other Generations", "Three Other Generations"),
+                levels)
     
   }
   
@@ -290,13 +289,12 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       cohort != "infants_subgroup") {
     
     levels <- c(c("White", "Mixed", "Asian or Asian British",
-                  "Black or Black British", "Other Ethnic Groups"),
-                levels, c("1 (least deprived)", "2", "3", "4",
-                          "5 (most deprived)",
-                          "Multiple of the Same Generation",
-                          "Living Alone", "One Other Generation",
-                          "Two Other Generations",
-                          "Three Other Generations"))
+                  "Black or Black British", "Other Ethnic Groups",
+                  "1 (least deprived)", "2", "3", "4",
+                  "5 (most deprived)", "Multiple of the Same Generation",
+                  "Living Alone", "One Other Generation",
+                  "Two Other Generations", "Three Other Generations"),
+                levels)
     
   }
   
@@ -401,20 +399,19 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       mutate(
         plot_label2 = factor(plot_label2, levels = group_order)
       ) %>%
-      ggplot(aes(x = label, y = estimate, ymin = conf.low,
-                 ymax = conf.high, color = plot_label2, shape = plot_label2)) +
+      ggplot(aes(y = label, x = estimate, xmin = conf.low,
+                 xmax = conf.high, color = plot_label2, shape = plot_label2)) +
         scale_color_manual(values = rep(cols, 2),
                            name = "Characteristic (Reference)") +
         scale_shape_manual(name = "Characteristic (Reference)",
                            values = c(rep(shape_value, length(legend_labels)),
                                       rep(8, length(legend_labels)))) +
-        geom_hline(yintercept = 1, linetype = 2) + 
+        geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
         geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
-        # Combine the legends
         guides(color = guide_legend("Characteristic (Reference)"),
                shape = guide_legend("Characteristic (Reference)")) +
-        coord_flip() + facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
-        labs(y = "Rate Ratio", x = " ", title = title_label) +
+        facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
+        labs(x = "Rate Ratio", y = " ", title = title_label) +
         theme_bw()
     
   }
@@ -540,22 +537,23 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
   
   if (str_detect(model_type, "ses")) {
     
-    levels <- c(levels, c("1 (least deprived)", "2", "3", "4",
-                          "5 (most deprived)", "Urban Major Conurbation",
-                          "Urban Minor Conurbation", "Urban City and Town",
-                          "Rural Town and Fringe", "Rural Village and Dispersed"))
+    levels <- c(c("1 (least deprived)", "2", "3", "4",
+                  "5 (most deprived)"), levels,
+                c("Urban Major Conurbation", "Urban Minor Conurbation",
+                  "Urban City and Town", "Rural Town and Fringe",
+                  "Rural Village and Dispersed"))
     
   }
   
   if (str_detect(model_type, "hh_comp") & cohort != "infants" &
       cohort != "infants_subgroup") {
     
-    levels <- c(levels, c("Multiple of the Same Generation",
-                          "Living Alone", "One Other Generation",
-                          "Two Other Generations",
-                          "Three Other Generations", "Urban Major Conurbation",
-                          "Urban Minor Conurbation", "Urban City and Town",
-                          "Rural Town and Fringe", "Rural Village and Dispersed"))
+    levels <- c(c("Multiple of the Same Generation",
+                  "Living Alone", "One Other Generation",
+                  "Two Other Generations"), levels,
+                c("Urban Major Conurbation", "Urban Minor Conurbation",
+                  "Urban City and Town", "Rural Town and Fringe",
+                  "Rural Village and Dispersed"))
     
   }
   
@@ -563,15 +561,14 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       cohort != "infants_subgroup") {
     
     levels <- c(c("White", "Mixed", "Asian or Asian British",
-                  "Black or Black British", "Other Ethnic Groups"),
-                levels, c("1 (least deprived)", "2", "3", "4",
-                          "5 (most deprived)",
-                          "Multiple of the Same Generation",
-                          "Living Alone", "One Other Generation",
-                          "Two Other Generations",
-                          "Three Other Generations", "Urban Major Conurbation",
-                          "Urban Minor Conurbation", "Urban City and Town",
-                          "Rural Town and Fringe", "Rural Village and Dispersed"))
+                  "Black or Black British", "Other Ethnic Groups",
+                  "1 (least deprived)", "2", "3", "4",
+                  "5 (most deprived)", "Multiple of the Same Generation",
+                  "Living Alone", "One Other Generation",
+                  "Two Other Generations", "Three Other Generations"),
+                levels, c("Urban Major Conurbation", "Urban Minor Conurbation",
+                          "Urban City and Town", "Rural Town and Fringe",
+                          "Rural Village and Dispersed"))
     
   }
   
@@ -713,31 +710,29 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
         plot_label = case_when(
           str_detect(plot_label, "Age") ~ "Age Group",
           str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
-          str_detect(plot_label, "Latest") ~ gsub("Latest", "", plot_label),
-          str_detect(plot_label, "Comp") ~ gsub("Composition Category",
-                                                "Household Composition",
-                                                plot_label),
+          str_detect(plot_label, "Latest") ~ "Ethnicity",
+          str_detect(plot_label, "Comp") ~ "Household Composition",
           TRUE ~ plot_label)
       ) %>%
       mutate(reference_row = NA) %>%
-      ggplot(aes(x = label, y = estimate, ymin = conf.low,
-                 ymax = conf.high, color = subset)) +
-      scale_color_viridis_d(option = "turbo", na.translate = F, direction = -1) +
-      geom_hline(yintercept = 1, linetype = 2) + 
-      geom_pointrange(position = position_dodge(width = 0.5), size = 0.2,
+      ggplot(aes(y = label, x = estimate, xmin = conf.low,
+                 xmax = conf.high, color = subset)) +
+      scale_color_brewer(palette = "PuOr", na.translate = F) +
+      geom_vline(xintercept = 1, linetype = 2) + 
+      geom_pointrange(position = position_dodge(width = 0.5), size = 0.45,
                       shape = shape_value) +
-      geom_point(data = references, aes(x = label, y = estimate,
+      geom_point(data = references, aes(y = label, x = estimate,
                                         shape = as.factor(estimate)),
                  size = 1, stroke = 1, color = "deeppink") +
       scale_shape_manual(name = "", values = c(8),
                          labels = "Reference Category") +
       guides(color = guide_legend("Season", order = 1,
                                   override.aes = list(shape = shape_value))) +
-      coord_flip() + facet_wrap(~ plot_label, scales = "free_y") + 
-      labs(y = "Rate Ratio", x = " ",
+      facet_wrap(~ plot_label, scales = "free_y") + 
+      labs(x = "Rate Ratio", y = " ",
            title = paste0("Rate Ratios of ", outcome_type, " ", 
                           pathogen_title, " (", title_suffix, ")")) + 
-      ylim(conf_low, conf_high) +
+      scale_x_log10(limits = c(conf_low, conf_high)) +
       theme_bw() + theme(plot.tag.position = "topright",
                          plot.tag = element_text(hjust = 0, size = 9))
     
@@ -752,7 +747,8 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
   
 }
 
-forest_year_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
+forest_year_further <- function(df, df_dummy, pathogen, model_type,
+                                outcome_type) {
   
   df_model <- df %>%
     filter(model_type == !!model_type,
@@ -832,22 +828,23 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type, outcome_type
   
   if (str_detect(model_type, "ses")) {
     
-    levels <- c(levels, c("1 (least deprived)", "2", "3", "4",
-                          "5 (most deprived)", "Urban Major Conurbation",
-                          "Urban Minor Conurbation", "Urban City and Town",
-                          "Rural Town and Fringe", "Rural Village and Dispersed"))
+    levels <- c(c("1 (least deprived)", "2", "3", "4",
+                  "5 (most deprived)"), levels,
+                c("Urban Major Conurbation", "Urban Minor Conurbation",
+                  "Urban City and Town", "Rural Town and Fringe",
+                  "Rural Village and Dispersed"))
     
   }
   
   if (str_detect(model_type, "hh_comp") & cohort != "infants" &
       cohort != "infants_subgroup") {
     
-    levels <- c(levels, c("Multiple of the Same Generation",
-                          "Living Alone", "One Other Generation",
-                          "Two Other Generations",
-                          "Three Other Generations", "Urban Major Conurbation",
-                          "Urban Minor Conurbation", "Urban City and Town",
-                          "Rural Town and Fringe", "Rural Village and Dispersed"))
+    levels <- c(c("Multiple of the Same Generation",
+                  "Living Alone", "One Other Generation",
+                  "Two Other Generations"), levels,
+                c("Urban Major Conurbation", "Urban Minor Conurbation",
+                  "Urban City and Town", "Rural Town and Fringe",
+                  "Rural Village and Dispersed"))
     
   }
   
@@ -855,21 +852,29 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type, outcome_type
       cohort != "infants_subgroup") {
     
     levels <- c(c("White", "Mixed", "Asian or Asian British",
-                  "Black or Black British", "Other Ethnic Groups"),
-                levels, c("1 (least deprived)", "2", "3", "4",
-                          "5 (most deprived)",
-                          "Multiple of the Same Generation",
-                          "Living Alone", "One Other Generation",
-                          "Two Other Generations",
-                          "Three Other Generations", "Urban Major Conurbation",
-                          "Urban Minor Conurbation", "Urban City and Town",
-                          "Rural Town and Fringe", "Rural Village and Dispersed"))
+                  "Black or Black British", "Other Ethnic Groups",
+                  "1 (least deprived)", "2", "3", "4",
+                  "5 (most deprived)", "Multiple of the Same Generation",
+                  "Living Alone", "One Other Generation",
+                  "Two Other Generations", "Three Other Generations"),
+                levels, c("Urban Major Conurbation", "Urban Minor Conurbation",
+                          "Urban City and Town", "Rural Town and Fringe",
+                          "Rural Village and Dispersed"))
     
   }
   
   if (cohort == "infants_subgroup") {
     
-    levels <- c(levels, "Never", "Former", "Current")
+    levels <- c(levels, "Maternal Age", "Never", "Former", "Current",
+                "No", "Yes")
+    
+  } else if (cohort != "infants" & pathogen == "flu") {
+    
+    levels <- c(levels, "No", "Yes")
+    
+  } else if (cohort != "infants" & pathogen == "covid") {
+    
+    levels <- c(levels, "No", "Yes", "0-6m", "6-12m", "12m+")
     
   }
   
@@ -918,17 +923,25 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type, outcome_type
           str_detect(plot_label, "Comp") ~ "Household Composition",
           TRUE ~ plot_label)
       ) %>%
-      ggplot(aes(x = label, y = estimate, ymin = conf.low,
-                 ymax = conf.high, color = plot_label)) +
-      scale_color_brewer(palette = "Dark2") +
-      geom_hline(yintercept = 1, linetype = 2) + 
-      geom_pointrange(aes(shape = reference_row),
-                      position = position_dodge(width = 0.5), size = 0.2) +
-      scale_shape_manual(values = c("TRUE" = 8, "FALSE" = shape_value)) +
-      guides(color = guide_legend("Characteristic", order = 1),
-             shape = guide_legend("Reference Category", order = 2)) +
-      coord_flip() + facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
-      labs(y = "Rate Ratio", x = " ", title = title_label) +
+      mutate(
+        plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
+      ) %>%
+      mutate(
+        plot_label2 = factor(plot_label2, levels = group_order)
+      ) %>%
+      ggplot(aes(y = label, x = estimate, xmin = conf.low,
+                 xmax = conf.high, color = plot_label2, shape = plot_label2)) +
+      scale_color_manual(values = rep(cols, 2),
+                         name = "Characteristic (Reference)") +
+      scale_shape_manual(name = "Characteristic (Reference)",
+                         values = c(rep(shape_value, length(legend_labels)),
+                                    rep(8, length(legend_labels)))) +
+      geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
+      geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
+      guides(color = guide_legend("Characteristic (Reference)"),
+             shape = guide_legend("Characteristic (Reference)")) +
+      facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
+      labs(x = "Rate Ratio", y = " ", title = title_label) +
       theme_bw()
     
   }
