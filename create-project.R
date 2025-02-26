@@ -3958,6 +3958,34 @@ action_exploratory <- function(cohort, season, dates, season_start_date,
   
 }
 
+action_exploratory_infants <- function(cohort, season, dates, season_start_date, 
+                                       season_end_date) {
+  
+  splice(
+    
+    action(
+      name = glue("ethnicity_HES_comp_{cohort}_{season}_specific_primary"),
+      run = glue("r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R {cohort} {season_start_date} {season_end_date} specific primary"),
+      # arguments = c(cohort, season, dates, season_start_date, season_end_date),
+      needs = list(glue("process_dataset_{cohort}_{season}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/exploratory/ethnicity_HES_comp_{cohort}_{dates}_specific_primary.csv"))
+    ),
+    
+    action(
+      name = glue("ethnicity_HES_comp_{cohort}_{season}_sensitive_primary"),
+      run = glue("r:latest analysis/exploratory_analyses/ethnicity_HES_comp.R {cohort} {season_start_date} {season_end_date} sensitive primary"),
+      # arguments = c(cohort, season, dates, season_start_date, season_end_date),
+      needs = list(glue("process_dataset_{cohort}_{season}_sensitive_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/exploratory/ethnicity_HES_comp_{cohort}_{dates}_sensitive_primary.csv"))
+    )
+    
+    
+  )
+  
+}
+
 ##sensitivity analyses
 
 action_sensitivity_rsv <- function(cohort, season, dates, season_start_date,
@@ -5688,6 +5716,30 @@ action_finalise_infants <- function(cohort) {
     ),
     
     action(
+      name = glue("collate_ethnicity_HES_comp_tables_{cohort}"),
+      run = glue("r:latest analysis/collation_code/ethnicity_HES_comp_collation.R {cohort}"),
+      # arguments = c(cohort),
+      needs = list(glue("ethnicity_HES_comp_{cohort}_s1_specific_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s2_specific_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s3_specific_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s4_specific_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s5_specific_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s6_specific_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s7_specific_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s8_specific_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s1_sensitive_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s2_sensitive_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s3_sensitive_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s4_sensitive_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s5_sensitive_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s6_sensitive_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s7_sensitive_primary"),
+                   glue("ethnicity_HES_comp_{cohort}_s8_sensitive_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_ethnicity_HES_comp_collated.csv"))
+    ),
+    
+    action(
       name = glue("collate_phenotype_sensitivity_tables_{cohort}"),
       run = glue("r:latest analysis/collation_code/phenotype_sensitivity_table_collation.R {cohort}"),
       # arguments = c(cohort),
@@ -6287,24 +6339,40 @@ actions_list <- splice (
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants", "# # # # # # # # # # # # # # # # # # #"),
   
   action_exploratory("infants", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
+  action_exploratory_infants("infants", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
   action_exploratory("infants", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
+  action_exploratory_infants("infants", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
   action_exploratory("infants", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
+  action_exploratory_infants("infants", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
   action_exploratory("infants", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
+  action_exploratory_infants("infants", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
   action_exploratory("infants", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_exploratory_infants("infants", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
   action_exploratory("infants", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
+  action_exploratory_infants("infants", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
   action_exploratory("infants", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
+  action_exploratory_infants("infants", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
   action_exploratory("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
+  action_exploratory_infants("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants Subgroup", "# # # # # # # # # # # # # # # # # # #"),
   
   action_exploratory("infants_subgroup", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
+  action_exploratory_infants("infants_subgroup", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
   action_exploratory("infants_subgroup", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
+  action_exploratory_infants("infants_subgroup", "s2", "2017_2018", "season2_start_date", "season2_end_date"),
   action_exploratory("infants_subgroup", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
+  action_exploratory_infants("infants_subgroup", "s3", "2018_2019", "season3_start_date", "season3_end_date"),
   action_exploratory("infants_subgroup", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
+  action_exploratory_infants("infants_subgroup", "s4", "2019_2020", "season4_start_date", "season4_end_date"),
   action_exploratory("infants_subgroup", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
+  action_exploratory_infants("infants_subgroup", "s5", "2020_2021", "season5_start_date", "season5_end_date"),
   action_exploratory("infants_subgroup", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
+  action_exploratory_infants("infants_subgroup", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
   action_exploratory("infants_subgroup", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
+  action_exploratory_infants("infants_subgroup", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
   action_exploratory("infants_subgroup", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
+  action_exploratory_infants("infants_subgroup", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "SENSITIVITY ANALYSES: REDUCED SEASONS", "# # # # # # # # # # # # # # # # # # #"),
 
