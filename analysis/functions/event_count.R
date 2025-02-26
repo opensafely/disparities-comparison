@@ -52,8 +52,8 @@ group_specific_events <- function(df, add_characteristics,
     #add column with whether there are enough events
     events_per_group <- events_per_group %>%
       mutate(
-        enough_events_mild = all(events_per_group$events_mild > 0),
-        enough_events_severe = all(events_per_group$events_severe > 0)
+        enough_events_mild = all(events_per_group$events_mild > 1),
+        enough_events_severe = all(events_per_group$events_severe > 1)
       )
     
     #store results for this characteristic
@@ -134,7 +134,7 @@ group_specific_events_further <- function(df, add_characteristics,
       
       #add column with whether there are enough events
       events_per_group <- events_per_group %>%
-        mutate(enough_events_mild = all(events_per_group$events_mild > 0))
+        mutate(enough_events_mild = all(events_per_group$events_mild > 1))
       
       #store results for this characteristic
       events_per_group <- cbind(characteristic = "current vaccination",
@@ -150,7 +150,7 @@ group_specific_events_further <- function(df, add_characteristics,
       
       #add column with whether there are enough events
       events_per_group <- events_per_group %>%
-        mutate(enough_events_mild = all(events_per_group$events_mild > 0))
+        mutate(enough_events_mild = all(events_per_group$events_mild > 1))
       
       #store results for this characteristic
       events_per_group <- cbind(characteristic = "current vaccination",
@@ -168,8 +168,8 @@ group_specific_events_further <- function(df, add_characteristics,
       #add column with whether there are enough events
       events_per_group <- events_per_group %>%
         mutate(        
-          enough_events_mild = all(events_per_group$events_mild > 0),
-          enough_events_severe = all(events_per_group$events_severe > 0)
+          enough_events_mild = all(events_per_group$events_mild > 1),
+          enough_events_severe = all(events_per_group$events_severe > 1)
           )
       
       #store results for this characteristic
