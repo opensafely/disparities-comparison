@@ -51,10 +51,10 @@ group_specific_events <- function(df, add_characteristics,
     
     #add column with whether there are enough events
     events_per_group <- events_per_group %>%
-      mutate(enough_events_mild = if_else(sum(events_mild > 0) > 1,
-                                          TRUE, FALSE),
-             enough_events_severe = if_else(sum(events_severe > 0) > 1,
-                                            TRUE, FALSE))
+      mutate(
+        enough_events_mild = all(events_per_group$events_mild > 0),
+        enough_events_severe = all(events_per_group$events_severe > 0)
+      )
     
     #store results for this characteristic
     events_per_group <- cbind(characteristic = characteristics[i],
@@ -134,8 +134,7 @@ group_specific_events_further <- function(df, add_characteristics,
       
       #add column with whether there are enough events
       events_per_group <- events_per_group %>%
-        mutate(enough_events_mild = if_else(sum(events_mild > 0) > 1,
-                                            TRUE, FALSE))
+        mutate(enough_events_mild = all(events_per_group$events_mild > 0))
       
       #store results for this characteristic
       events_per_group <- cbind(characteristic = "current vaccination",
@@ -151,8 +150,7 @@ group_specific_events_further <- function(df, add_characteristics,
       
       #add column with whether there are enough events
       events_per_group <- events_per_group %>%
-        mutate(enough_events_severe = if_else(sum(events_severe > 0) > 1,
-                                              TRUE, FALSE))
+        mutate(enough_events_mild = all(events_per_group$events_mild > 0))
       
       #store results for this characteristic
       events_per_group <- cbind(characteristic = "current vaccination",
@@ -169,10 +167,10 @@ group_specific_events_further <- function(df, add_characteristics,
       
       #add column with whether there are enough events
       events_per_group <- events_per_group %>%
-        mutate(enough_events_mild = if_else(sum(events_mild > 0) > 1,
-                                            TRUE, FALSE),
-               enough_events_severe = if_else(sum(events_severe > 0) > 1,
-                                              TRUE, FALSE))
+        mutate(        
+          enough_events_mild = all(events_per_group$events_mild > 0),
+          enough_events_severe = all(events_per_group$events_severe > 0)
+          )
       
       #store results for this characteristic
       events_per_group <- cbind(characteristic = characteristics[i],
