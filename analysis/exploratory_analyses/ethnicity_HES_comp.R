@@ -48,25 +48,7 @@ contingency <- function(df, var2) {
 }
 
 #create contingency tables to output
-if (study_start_date == covid_season_min & codelist_type == "sensitive") {
-  
-  contingency_tbls <- bind_rows(
-    contingency(df_input, "age_band"),
-    contingency(df_input, "sex"),
-    contingency(df_input, "imd_quintile"),
-    contingency(df_input, "rurality_classification"),
-    contingency(df_input, "household_composition"),
-    contingency(df_input, "rsv_primary_inf"),
-    contingency(df_input, "rsv_secondary_inf"),
-    contingency(df_input, "flu_primary_inf"),
-    contingency(df_input, "flu_secondary_inf"),
-    contingency(df_input, "covid_primary_inf"),
-    contingency(df_input, "covid_secondary_inf"),
-    contingency(df_input, "overall_resp_primary_inf"),
-    contingency(df_input, "overall_resp_secondary_inf")
-  )
-  
-} else if (study_start_date > covid_season_min & codelist_type == "sensitive") {
+if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   
   contingency_tbls <- bind_rows(
     contingency(df_input, "age_band"),
@@ -83,23 +65,7 @@ if (study_start_date == covid_season_min & codelist_type == "sensitive") {
     contingency(df_input, "overall_resp_secondary_inf")
   )
   
-} else if (study_start_date == covid_season_min) {
-  
-  contingency_tbls <- bind_rows(
-    contingency(df_input, "age_band"),
-    contingency(df_input, "sex"),
-    contingency(df_input, "imd_quintile"),
-    contingency(df_input, "rurality_classification"),
-    contingency(df_input, "household_composition"),
-    contingency(df_input, "rsv_primary_inf"),
-    contingency(df_input, "rsv_secondary_inf"),
-    contingency(df_input, "flu_primary_inf"),
-    contingency(df_input, "flu_secondary_inf"),
-    contingency(df_input, "covid_primary_inf"),
-    contingency(df_input, "covid_secondary_inf")
-  )
-  
-} else if (study_start_date > covid_season_min) {
+} else if (study_start_date >= covid_season_min) {
   
   contingency_tbls <- bind_rows(
     contingency(df_input, "age_band"),
@@ -166,20 +132,7 @@ chi2 <- function(df, var2) {
 }
 
 #run chi squared tests
-if (study_start_date == covid_season_min & codelist_type == "sensitive") {
-  
-  results <- bind_rows(
-    chi2(df_input, "age_band"), chi2(df_input, "sex"),
-    chi2(df_input, "imd_quintile"), chi2(df_input, "rurality_classification"),
-    chi2(df_input, "composition_category"), chi2(df_input, "rsv_primary_inf"),
-    chi2(df_input, "rsv_secondary_inf"), chi2(df_input, "flu_primary_inf"),
-    chi2(df_input, "flu_secondary_inf"), chi2(df_input, "covid_primary_inf"),
-    chi2(df_input, "covid_secondary_inf"),
-    chi2(df_input, "overall_resp_primary_inf"),
-    chi2(df_input, "overall_resp_secondary_inf")
-  )
-
-} else if (study_start_date > covid_season_min & codelist_type == "sensitive") {
+if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
   
   results <- bind_rows(
     chi2(df_input, "age_band"), chi2(df_input, "sex"),
@@ -191,18 +144,7 @@ if (study_start_date == covid_season_min & codelist_type == "sensitive") {
     chi2(df_input, "overall_resp_secondary_inf")
   )
   
-} else if (study_start_date == covid_season_min) {
-  
-  results <- bind_rows(
-    chi2(df_input, "age_band"), chi2(df_input, "sex"),
-    chi2(df_input, "imd_quintile"), chi2(df_input, "rurality_classification"),
-    chi2(df_input, "composition_category"), chi2(df_input, "rsv_primary_inf"),
-    chi2(df_input, "rsv_secondary_inf"), chi2(df_input, "flu_primary_inf"),
-    chi2(df_input, "flu_secondary_inf"), chi2(df_input, "covid_primary_inf"),
-    chi2(df_input, "covid_secondary_inf")
-  )
-  
-} else if (study_start_date > covid_season_min) {
+} else if (study_start_date >= covid_season_min) {
   
   results <- bind_rows(
     chi2(df_input, "age_band"), chi2(df_input, "sex"),
@@ -273,24 +215,7 @@ if (study_start_date == covid_season_min & codelist_type == "sensitive") {
 # }
 # 
 # #run chi squared tests
-# if (study_start_date == covid_season_min & codelist_type == "sensitive") {
-#   
-#   combined_results <- bind_rows(
-#     chi2_group(df_input, "age_band", "sex"),
-#     chi2_group(df_input, "age_band", "imd_quintile"),
-#     chi2_group(df_input, "age_band", "rurality_classification"),
-#     chi2_group(df_input, "age_band", "composition_category"),
-#     chi2_group(df_input, "age_band", "rsv_primary_inf"),
-#     chi2_group(df_input, "age_band", "rsv_secondary_inf"),
-#     chi2_group(df_input, "age_band", "flu_primary_inf"),
-#     chi2_group(df_input, "age_band", "flu_secondary_inf"),
-#     chi2_group(df_input, "age_band", "covid_primary_inf"),
-#     chi2_group(df_input, "age_band", "covid_secondary_inf"),
-#     chi2_group(df_input, "age_band", "overall_resp_primary_inf"),
-#     chi2_group(df_input, "age_band", "overall_resp_secondary_inf")
-#   )
-#   
-# } else if (study_start_date > covid_season_min & codelist_type == "sensitive") {
+# if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
 #   
 #   combined_results <- bind_rows(
 #     chi2_group(df_input, "age_band", "sex"),
@@ -306,22 +231,7 @@ if (study_start_date == covid_season_min & codelist_type == "sensitive") {
 #     chi2_group(df_input, "age_band", "overall_resp_secondary_inf")
 #   )
 #   
-# } else if (study_start_date == covid_season_min) {
-#   
-#   combined_results <- bind_rows(
-#     chi2_group(df_input, "age_band", "sex"),
-#     chi2_group(df_input, "age_band", "imd_quintile"),
-#     chi2_group(df_input, "age_band", "rurality_classification"),
-#     chi2_group(df_input, "age_band", "composition_category"),
-#     chi2_group(df_input, "age_band", "rsv_primary_inf"),
-#     chi2_group(df_input, "age_band", "rsv_secondary_inf"),
-#     chi2_group(df_input, "age_band", "flu_primary_inf"),
-#     chi2_group(df_input, "age_band", "flu_secondary_inf"),
-#     chi2_group(df_input, "age_band", "covid_primary_inf"),
-#     chi2_group(df_input, "age_band", "covid_secondary_inf")
-#   )
-#   
-# } else if (study_start_date > covid_season_min) {
+# } else if (study_start_date >= covid_season_min) {
 #   
 #   combined_results <- bind_rows(
 #     chi2_group(df_input, "age_band", "sex"),
