@@ -207,7 +207,7 @@ df_input_filt <- df_input_filt %>%
 
 #ethnicity from HES
 if (cohort == "infants" | cohort == "infants_subgroup") {
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(
       latest_ethnicity_group_hes = relevel(factor(recode(
         latest_ethnicity_group_hes, "A" = "White", "B" = "White", "C" = "White",
