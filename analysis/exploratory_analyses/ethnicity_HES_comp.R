@@ -43,7 +43,7 @@ df_input <- df_input %>%
 contingency <- function(df, var2) {
   
   contingency <- table(df[[var2]], df$ethnicity_HES)
-  return(contingency)
+  return(as.data.frame(contingency))
   
 }
 
@@ -146,7 +146,7 @@ if (study_start_date == covid_season_min & codelist_type == "sensitive") {
 
 chi2 <- function(df, var2) {
   
-  contingency <- contingency(df, var2)
+  contingency <- table(df[[var2]], df$ethnicity_HES)
   
   chi2 <- chisq.test(contingency)
   
