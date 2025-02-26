@@ -234,134 +234,134 @@ if (study_start_date == covid_season_min & codelist_type == "sensitive") {
   
 }
 
-##chi squared by age group
-chi2_group <- function(df, groups, var2) {
-  
-  results_list <- list()
-  
-  group <- unique(df[[groups]])
-  
-  for (group in group) {
-    
-    df_subset <- df %>%
-      filter({{group}} == !!group)
-    
-    contingency <- table(df_subset[[var2]], df_subset$ethnicity_HES)
-    
-    chi2 <- chisq.test(contingency)
-    
-    chi2 <- tidy(chi2)
-    chi2_tbl <- tibble(
-      variable = var2,
-      group = group,
-      statistic = chi2$statistic,
-      p.value = chi2$p.value,
-      parameter = chi2$parameter,
-      method = chi2$method,
-      codelist_type = codelist_type,
-      investigation_type = investigation_type
-    )
-    
-    results_list[[as.character(groups)]] <- chi2_tbl
-    
-  }
-  
-  combined_results <- bind_rows(results_list)
-  
-  return(combined_results)
-  
-}
-
-#run chi squared tests
-if (study_start_date == covid_season_min & codelist_type == "sensitive") {
-  
-  combined_results <- bind_rows(
-    chi2_group(df_input, "age_band", "sex"),
-    chi2_group(df_input, "age_band", "imd_quintile"),
-    chi2_group(df_input, "age_band", "rurality_classification"),
-    chi2_group(df_input, "age_band", "composition_category"),
-    chi2_group(df_input, "age_band", "rsv_primary_inf"),
-    chi2_group(df_input, "age_band", "rsv_secondary_inf"),
-    chi2_group(df_input, "age_band", "flu_primary_inf"),
-    chi2_group(df_input, "age_band", "flu_secondary_inf"),
-    chi2_group(df_input, "age_band", "covid_primary_inf"),
-    chi2_group(df_input, "age_band", "covid_secondary_inf"),
-    chi2_group(df_input, "age_band", "overall_resp_primary_inf"),
-    chi2_group(df_input, "age_band", "overall_resp_secondary_inf")
-  )
-  
-} else if (study_start_date > covid_season_min & codelist_type == "sensitive") {
-  
-  combined_results <- bind_rows(
-    chi2_group(df_input, "age_band", "sex"),
-    chi2_group(df_input, "age_band", "imd_quintile"),
-    chi2_group(df_input, "age_band", "rurality_classification"),
-    chi2_group(df_input, "age_band", "rsv_primary_inf"),
-    chi2_group(df_input, "age_band", "rsv_secondary_inf"),
-    chi2_group(df_input, "age_band", "flu_primary_inf"),
-    chi2_group(df_input, "age_band", "flu_secondary_inf"),
-    chi2_group(df_input, "age_band", "covid_primary_inf"),
-    chi2_group(df_input, "age_band", "covid_secondary_inf"),
-    chi2_group(df_input, "age_band", "overall_resp_primary_inf"),
-    chi2_group(df_input, "age_band", "overall_resp_secondary_inf")
-  )
-  
-} else if (study_start_date == covid_season_min) {
-  
-  combined_results <- bind_rows(
-    chi2_group(df_input, "age_band", "sex"),
-    chi2_group(df_input, "age_band", "imd_quintile"),
-    chi2_group(df_input, "age_band", "rurality_classification"),
-    chi2_group(df_input, "age_band", "composition_category"),
-    chi2_group(df_input, "age_band", "rsv_primary_inf"),
-    chi2_group(df_input, "age_band", "rsv_secondary_inf"),
-    chi2_group(df_input, "age_band", "flu_primary_inf"),
-    chi2_group(df_input, "age_band", "flu_secondary_inf"),
-    chi2_group(df_input, "age_band", "covid_primary_inf"),
-    chi2_group(df_input, "age_band", "covid_secondary_inf")
-  )
-  
-} else if (study_start_date > covid_season_min) {
-  
-  combined_results <- bind_rows(
-    chi2_group(df_input, "age_band", "sex"),
-    chi2_group(df_input, "age_band", "imd_quintile"),
-    chi2_group(df_input, "age_band", "rurality_classification"),
-    chi2_group(df_input, "age_band", "rsv_primary_inf"),
-    chi2_group(df_input, "age_band", "rsv_secondary_inf"),
-    chi2_group(df_input, "age_band", "flu_primary_inf"),
-    chi2_group(df_input, "age_band", "flu_secondary_inf"),
-    chi2_group(df_input, "age_band", "covid_primary_inf"),
-    chi2_group(df_input, "age_band", "covid_secondary_inf")
-  )
-  
-} else if (codelist_type == "sensitive") {
-  
-  combined_results <- bind_rows(
-    chi2_group(df_input, "age_band", "sex"),
-    chi2_group(df_input, "age_band", "imd_quintile"),
-    chi2_group(df_input, "age_band", "rurality_classification"),
-    chi2_group(df_input, "age_band", "rsv_primary_inf"),
-    chi2_group(df_input, "age_band", "rsv_secondary_inf"),
-    chi2_group(df_input, "age_band", "flu_primary_inf"),
-    chi2_group(df_input, "age_band", "flu_secondary_inf"),
-    chi2_group(df_input, "age_band", "overall_resp_primary_inf"),
-    chi2_group(df_input, "age_band", "overall_resp_secondary_inf")
-  )
-  
-} else {
-  
-  combined_results <- bind_rows(
-    chi2_group(df_input, "age_band", "sex"),
-    chi2_group(df_input, "age_band", "imd_quintile"),
-    chi2_group(df_input, "age_band", "rurality_classification"),
-    chi2_group(df_input, "age_band", "rsv_primary_inf"),
-    chi2_group(df_input, "age_band", "rsv_secondary_inf"),
-    chi2_group(df_input, "age_band", "flu_primary_inf"),
-    chi2_group(df_input, "age_band", "flu_secondary_inf")
-  )
-  
-}
+# ##chi squared by age group
+# chi2_group <- function(df, groups, var2) {
+#   
+#   results_list <- list()
+#   
+#   group <- unique(df[[groups]])
+#   
+#   for (group in group) {
+#     
+#     df_subset <- df %>%
+#       filter({{group}} == !!group)
+#     
+#     contingency <- table(df_subset[[var2]], df_subset$ethnicity_HES)
+#     
+#     chi2 <- chisq.test(contingency)
+#     
+#     chi2 <- tidy(chi2)
+#     chi2_tbl <- tibble(
+#       variable = var2,
+#       group = group,
+#       statistic = chi2$statistic,
+#       p.value = chi2$p.value,
+#       parameter = chi2$parameter,
+#       method = chi2$method,
+#       codelist_type = codelist_type,
+#       investigation_type = investigation_type
+#     )
+#     
+#     results_list[[as.character(groups)]] <- chi2_tbl
+#     
+#   }
+#   
+#   combined_results <- bind_rows(results_list)
+#   
+#   return(combined_results)
+#   
+# }
+# 
+# #run chi squared tests
+# if (study_start_date == covid_season_min & codelist_type == "sensitive") {
+#   
+#   combined_results <- bind_rows(
+#     chi2_group(df_input, "age_band", "sex"),
+#     chi2_group(df_input, "age_band", "imd_quintile"),
+#     chi2_group(df_input, "age_band", "rurality_classification"),
+#     chi2_group(df_input, "age_band", "composition_category"),
+#     chi2_group(df_input, "age_band", "rsv_primary_inf"),
+#     chi2_group(df_input, "age_band", "rsv_secondary_inf"),
+#     chi2_group(df_input, "age_band", "flu_primary_inf"),
+#     chi2_group(df_input, "age_band", "flu_secondary_inf"),
+#     chi2_group(df_input, "age_band", "covid_primary_inf"),
+#     chi2_group(df_input, "age_band", "covid_secondary_inf"),
+#     chi2_group(df_input, "age_band", "overall_resp_primary_inf"),
+#     chi2_group(df_input, "age_band", "overall_resp_secondary_inf")
+#   )
+#   
+# } else if (study_start_date > covid_season_min & codelist_type == "sensitive") {
+#   
+#   combined_results <- bind_rows(
+#     chi2_group(df_input, "age_band", "sex"),
+#     chi2_group(df_input, "age_band", "imd_quintile"),
+#     chi2_group(df_input, "age_band", "rurality_classification"),
+#     chi2_group(df_input, "age_band", "rsv_primary_inf"),
+#     chi2_group(df_input, "age_band", "rsv_secondary_inf"),
+#     chi2_group(df_input, "age_band", "flu_primary_inf"),
+#     chi2_group(df_input, "age_band", "flu_secondary_inf"),
+#     chi2_group(df_input, "age_band", "covid_primary_inf"),
+#     chi2_group(df_input, "age_band", "covid_secondary_inf"),
+#     chi2_group(df_input, "age_band", "overall_resp_primary_inf"),
+#     chi2_group(df_input, "age_band", "overall_resp_secondary_inf")
+#   )
+#   
+# } else if (study_start_date == covid_season_min) {
+#   
+#   combined_results <- bind_rows(
+#     chi2_group(df_input, "age_band", "sex"),
+#     chi2_group(df_input, "age_band", "imd_quintile"),
+#     chi2_group(df_input, "age_band", "rurality_classification"),
+#     chi2_group(df_input, "age_band", "composition_category"),
+#     chi2_group(df_input, "age_band", "rsv_primary_inf"),
+#     chi2_group(df_input, "age_band", "rsv_secondary_inf"),
+#     chi2_group(df_input, "age_band", "flu_primary_inf"),
+#     chi2_group(df_input, "age_band", "flu_secondary_inf"),
+#     chi2_group(df_input, "age_band", "covid_primary_inf"),
+#     chi2_group(df_input, "age_band", "covid_secondary_inf")
+#   )
+#   
+# } else if (study_start_date > covid_season_min) {
+#   
+#   combined_results <- bind_rows(
+#     chi2_group(df_input, "age_band", "sex"),
+#     chi2_group(df_input, "age_band", "imd_quintile"),
+#     chi2_group(df_input, "age_band", "rurality_classification"),
+#     chi2_group(df_input, "age_band", "rsv_primary_inf"),
+#     chi2_group(df_input, "age_band", "rsv_secondary_inf"),
+#     chi2_group(df_input, "age_band", "flu_primary_inf"),
+#     chi2_group(df_input, "age_band", "flu_secondary_inf"),
+#     chi2_group(df_input, "age_band", "covid_primary_inf"),
+#     chi2_group(df_input, "age_band", "covid_secondary_inf")
+#   )
+#   
+# } else if (codelist_type == "sensitive") {
+#   
+#   combined_results <- bind_rows(
+#     chi2_group(df_input, "age_band", "sex"),
+#     chi2_group(df_input, "age_band", "imd_quintile"),
+#     chi2_group(df_input, "age_band", "rurality_classification"),
+#     chi2_group(df_input, "age_band", "rsv_primary_inf"),
+#     chi2_group(df_input, "age_band", "rsv_secondary_inf"),
+#     chi2_group(df_input, "age_band", "flu_primary_inf"),
+#     chi2_group(df_input, "age_band", "flu_secondary_inf"),
+#     chi2_group(df_input, "age_band", "overall_resp_primary_inf"),
+#     chi2_group(df_input, "age_band", "overall_resp_secondary_inf")
+#   )
+#   
+# } else {
+#   
+#   combined_results <- bind_rows(
+#     chi2_group(df_input, "age_band", "sex"),
+#     chi2_group(df_input, "age_band", "imd_quintile"),
+#     chi2_group(df_input, "age_band", "rurality_classification"),
+#     chi2_group(df_input, "age_band", "rsv_primary_inf"),
+#     chi2_group(df_input, "age_band", "rsv_secondary_inf"),
+#     chi2_group(df_input, "age_band", "flu_primary_inf"),
+#     chi2_group(df_input, "age_band", "flu_secondary_inf")
+#   )
+#   
+# }
 
 ## create output directories ----
 fs::dir_create(here::here("output", "exploratory"))
@@ -378,8 +378,8 @@ write_csv(results, paste0(here::here("output", "exploratory"),
           "_", year(study_end_date), "_", codelist_type, "_",
           investigation_type, ".csv"))
 
-#write to file
-write_csv(combined_results, paste0(here::here("output", "exploratory"),
-          "/", "ethnicity_HES_comp_by_group_", cohort, "_",
-          year(study_start_date), "_", year(study_end_date), "_",
-          codelist_type, "_", investigation_type, ".csv"))
+# #write to file
+# write_csv(combined_results, paste0(here::here("output", "exploratory"),
+#           "/", "ethnicity_HES_comp_by_group_", cohort, "_",
+#           year(study_start_date), "_", year(study_end_date), "_",
+#           codelist_type, "_", investigation_type, ".csv"))
