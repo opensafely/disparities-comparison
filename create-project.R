@@ -3969,7 +3969,8 @@ action_exploratory_infants <- function(cohort, season, dates, season_start_date,
       # arguments = c(cohort, season, dates, season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_specific_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/exploratory/ethnicity_HES_comp_{cohort}_{dates}_specific_primary.csv"))
+        csv = glue("output/exploratory/ethnicity_HES_comp_{cohort}_{dates}_specific_primary.csv"),
+        csv = glue("output/exploratory/ethnicity_HES_comp_tables_{cohort}_{dates}_specific_primary.csv"))
     ),
     
     action(
@@ -3978,7 +3979,8 @@ action_exploratory_infants <- function(cohort, season, dates, season_start_date,
       # arguments = c(cohort, season, dates, season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/exploratory/ethnicity_HES_comp_{cohort}_{dates}_sensitive_primary.csv"))
+        csv = glue("output/exploratory/ethnicity_HES_comp_{cohort}_{dates}_sensitive_primary.csv"),
+        csv = glue("output/exploratory/ethnicity_HES_comp_tables_{cohort}_{dates}_sensitive_primary.csv"))
     )
     
     
@@ -5736,7 +5738,8 @@ action_finalise_infants <- function(cohort) {
                    glue("ethnicity_HES_comp_{cohort}_s7_sensitive_primary"),
                    glue("ethnicity_HES_comp_{cohort}_s8_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/{cohort}_ethnicity_HES_comp_collated.csv"))
+        csv = glue("output/collated/descriptive/{cohort}_ethnicity_HES_comp_collated.csv"),
+        csv = glue("output/collated/descriptive/{cohort}_ethnicity_HES_comp_tables_collated.csv"))
     ),
     
     action(
