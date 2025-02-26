@@ -262,7 +262,7 @@ chi2_group <- function(df, groups, var2) {
       investigation_type = investigation_type
     )
     
-    results_list[[as.character(age_group)]] <- chi2_tbl
+    results_list[[as.character(groups)]] <- chi2_tbl
     
   }
   
