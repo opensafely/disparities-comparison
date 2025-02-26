@@ -39,11 +39,115 @@ df_input <- df_input %>%
                             FALSE, TRUE)
   ) 
 
-##create required contigency tables
+##create required contingency tables
+contingency <- function(df, var2) {
+  
+  contingency <- table(df[[var2]], df$ethnicity_HES)
+  return(contingency)
+  
+}
+
+#create contingency tables to output
+if (study_start_date == covid_season_min & codelist_type == "sensitive") {
+  
+  contingency_tbls <- bind_rows(
+    contingency(df_input, "age_band"),
+    contingency(df_input, "sex"),
+    contingency(df_input, "imd_quintile"),
+    contingency(df_input, "rurality_classification"),
+    contingency(df_input, "household_composition"),
+    contingency(df_input, "rsv_primary_inf"),
+    contingency(df_input, "rsv_secondary_inf"),
+    contingency(df_input, "flu_primary_inf"),
+    contingency(df_input, "flu_secondary_inf"),
+    contingency(df_input, "covid_primary_inf"),
+    contingency(df_input, "covid_secondary_inf"),
+    contingency(df_input, "overall_resp_primary_inf"),
+    contingency(df_input, "overall_resp_secondary_inf")
+  )
+  
+} else if (study_start_date > covid_season_min & codelist_type == "sensitive") {
+  
+  contingency_tbls <- bind_rows(
+    contingency(df_input, "age_band"),
+    contingency(df_input, "sex"),
+    contingency(df_input, "imd_quintile"),
+    contingency(df_input, "rurality_classification"),
+    contingency(df_input, "rsv_primary_inf"),
+    contingency(df_input, "rsv_secondary_inf"),
+    contingency(df_input, "flu_primary_inf"),
+    contingency(df_input, "flu_secondary_inf"),
+    contingency(df_input, "covid_primary_inf"),
+    contingency(df_input, "covid_secondary_inf"),
+    contingency(df_input, "overall_resp_primary_inf"),
+    contingency(df_input, "overall_resp_secondary_inf")
+  )
+  
+} else if (study_start_date == covid_season_min) {
+  
+  contingency_tbls <- bind_rows(
+    contingency(df_input, "age_band"),
+    contingency(df_input, "sex"),
+    contingency(df_input, "imd_quintile"),
+    contingency(df_input, "rurality_classification"),
+    contingency(df_input, "household_composition"),
+    contingency(df_input, "rsv_primary_inf"),
+    contingency(df_input, "rsv_secondary_inf"),
+    contingency(df_input, "flu_primary_inf"),
+    contingency(df_input, "flu_secondary_inf"),
+    contingency(df_input, "covid_primary_inf"),
+    contingency(df_input, "covid_secondary_inf")
+  )
+  
+} else if (study_start_date > covid_season_min) {
+  
+  contingency_tbls <- bind_rows(
+    contingency(df_input, "age_band"),
+    contingency(df_input, "sex"),
+    contingency(df_input, "imd_quintile"),
+    contingency(df_input, "rurality_classification"),
+    contingency(df_input, "rsv_primary_inf"),
+    contingency(df_input, "rsv_secondary_inf"),
+    contingency(df_input, "flu_primary_inf"),
+    contingency(df_input, "flu_secondary_inf"),
+    contingency(df_input, "covid_primary_inf"),
+    contingency(df_input, "covid_secondary_inf")
+  )
+  
+} else if (codelist_type == "sensitive") {
+  
+  contingency_tbls <- bind_rows(
+    contingency(df_input, "age_band"),
+    contingency(df_input, "sex"),
+    contingency(df_input, "imd_quintile"),
+    contingency(df_input, "rurality_classification"),
+    contingency(df_input, "rsv_primary_inf"),
+    contingency(df_input, "rsv_secondary_inf"),
+    contingency(df_input, "flu_primary_inf"),
+    contingency(df_input, "flu_secondary_inf"),
+    contingency(df_input, "overall_resp_primary_inf"),
+    contingency(df_input, "overall_resp_secondary_inf")
+  )
+  
+} else {
+  
+  contingency_tbls <- bind_rows(
+    contingency(df_input, "age_band"),
+    contingency(df_input, "sex"),
+    contingency(df_input, "imd_quintile"),
+    contingency(df_input, "rurality_classification"),
+    contingency(df_input, "rsv_primary_inf"),
+    contingency(df_input, "rsv_secondary_inf"),
+    contingency(df_input, "flu_primary_inf"),
+    contingency(df_input, "flu_secondary_inf")
+  )
+  
+}
 
 chi2 <- function(df, var2) {
   
-  contingency <- table(df$ethnicity_HES, df[[var2]])
+  contingency <- contingency(df, var2)
+  
   chi2 <- chisq.test(contingency)
   
   chi2 <- tidy(chi2)
@@ -165,6 +269,12 @@ if (study_start_date == covid_season_min & codelist_type == "sensitive") {
 
 ## create output directories ----
 fs::dir_create(here::here("output", "exploratory"))
+
+#write to file
+write_csv(contingency_tbls, paste0(here::here("output", "exploratory"),
+          "/", "ethnicity_HES_comp_tables_", cohort, "_",
+          year(study_start_date), "_", year(study_end_date), "_",
+          codelist_type, "_", investigation_type, ".csv"))
 
 #write to file
 write_csv(results, paste0(here::here("output", "exploratory"),
