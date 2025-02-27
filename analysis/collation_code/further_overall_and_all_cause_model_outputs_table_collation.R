@@ -291,5 +291,5 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
 
 #save as csv
 write_csv(collated_model_outputs_overall_and_all_cause, 
-          paste0(here::here("output", "collated", "analytic"),
-          "/", cohort, "further_overall_and_all_cause_model_outputs_collated.csv"))
+          paste0(here::here("output", "collated", "analytic"), "/", cohort,
+                 "_further_overall_and_all_cause_model_outputs_collated.csv"))
