@@ -323,18 +323,50 @@ character_viz_mult <- function(df) {
   
   plot_list <- list()
   
+  cols2 <- tibble(
+    var = c("Age Group", "Sex", "Ethnicity", "IMD",
+            "Rurality", "Household Composition", "Maternal Age",
+            "Maternal Smoking Status", "Maternal Drinking",
+            "Maternal Drug Usage", "Maternal Flu Vaccination",
+            "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
+            "Time Since Last Covid Vaccine", "Has Asthma", "Has COPD",
+            "Has Cystic Fibrosis", "Has Other Resp. Diseases",
+            "Has Diabetes", "Has Addison's Disease", "Severely Obese",
+            "Has CHD", "Has CKD", "Has CLD", "Has CND",
+            "Had Cancer Within 3 Years", "Immunosuppressed",
+            "Has Sickle Cell Disease", "Smoking Status",
+            "Hazardous Drinking", "Drug Usage"),
+    col = c("#50edb2", "#f64883", "#43006f", "#b1e466", "#8e0077", "#227e00",
+            "#ff62ab", "#004e13", "#e1b1ff", "#ae9500", "#004194", "#d98116",
+            "#bb1782", "#bb1782", "#42025b", "#9dc83f", "#1d6ae0", "#5cb139",
+            "#eb3f89", "#e9d477", "#0282d4", "#ff9351", "#5f0041", "#ffab86",
+            "#ff92ec", "#724500", "#ff6688", "#611b00", "#bf668c", "#be0439",
+            "#720027")
+    )
+  
+  #cols2 <- cols2 %>% filter(var %in% all_groups)
+  
   for (group in all_groups) {
+    
+    fill_col <- cols2 %>%
+      filter(var == !!group) %>%
+      pull(col)
+    
+    alpha_length <- df %>%
+      filter(group == !!group)
+    alpha_length <-  length(unique(alpha_length$characteristic))
     
     plot_list[[group]] <- df %>%
       filter(group == !!group) %>%
-      ggplot(aes(fill = characteristic, y = percentage,
+      ggplot(aes(alpha = characteristic, y = percentage,
                  x = subset)) +
-      geom_bar(stat = "identity", position = "dodge", color = "white") +
-      theme_bw() + #theme(plot.title = element_text(size = 12)) +
-      scale_fill_light(aesthetics = "fill") +
+      geom_bar(stat = "identity", position = "dodge",
+               color = "white", fill = fill_col) +
+      theme_bw() + scale_alpha_manual(
+        values = c(seq(0.25, 1, length.out = alpha_length))) +
       labs(x = "Season", y = "Percentage (%)") + #, title = group) +
       guides(fill = guide_legend(
-        title = group,
+        title = str_to_title(group),
         theme = theme(legend.text = element_text(size = 8),
                       legend.key.height = unit(1, "cm")))) 
     
@@ -350,7 +382,7 @@ character_viz_mult <- function(df) {
       plot.margin = margin(0, 0, 0, 7)
     )
   
-  plot_row <- plot_grid(plotlist = plot_list, ncol = length(all_groups))
+  plot_row <- plot_grid(plotlist = plot_list, nrow = 2)
   
   plot_grid(title, plot_row, ncol = 1, rel_heights = c(0.1, 1))
   
