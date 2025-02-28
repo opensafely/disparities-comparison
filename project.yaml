@@ -16296,7 +16296,7 @@ actions:
         csv: output/results/models/flu_sensitivity/flu_ethnicity_ses_model_outputs_infants_2018_2019_specific_sensitivity.csv
 
   analyse_dataset_infants_flu_ethnicity_further_s3_specific_sensitivity:
-    run: r:latest analysis/outcome_flu/further_lu_ethnicity_models.R infants season3_start_date
+    run: r:latest analysis/outcome_flu/further_flu_ethnicity_models.R infants season3_start_date
       season3_end_date specific sensitivity
     needs:
     - process_dataset_infants_s3_specific_sensitivity

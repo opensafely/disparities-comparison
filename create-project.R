@@ -4336,7 +4336,7 @@ action_sensitivity_infants_flu <- function(cohort, season, dates,
     
     action(
       name = glue("analyse_dataset_{cohort}_flu_ethnicity_further_{season}_{codelist_type}_sensitivity"),
-      run = glue("r:latest analysis/outcome_flu/further_lu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      run = glue("r:latest analysis/outcome_flu/further_flu_ethnicity_models.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       # arguments = c(cohort, season, dates, codelist_type, investigation_type, 
       #               season_start_date, season_end_date),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_sensitivity")),
