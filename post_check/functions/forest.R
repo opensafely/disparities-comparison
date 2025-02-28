@@ -6,6 +6,7 @@ library(cowplot)
 library(stringr)
 library(RColorBrewer)
 library(khroma)
+library(paletteer)
 
 ## create output directories ----
 fs::dir_create(here::here("post_check", "functions"))
@@ -158,6 +159,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
           TRUE ~ plot_label)
       )
     
+    cc <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+    
     tidy_forest %>%
       mutate(
         plot_label = str_to_title(gsub("_", " ", variable)),
@@ -175,13 +178,13 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       mutate(reference_row = NA) %>%
       ggplot(aes(y = label, x = estimate, xmin = conf.low,
                  xmax = conf.high, color = subset)) +
-      scale_color_brewer(palette = "PuOr", na.translate = F) +
+      scale_color_manual(values = cc, na.translate = F) +
       geom_vline(xintercept = 1, linetype = 2) + 
       geom_pointrange(position = position_dodge(width = 0.5), size = 0.45,
                       shape = shape_value) +
       geom_point(data = references, aes(y = label, x = estimate,
                                         shape = as.factor(estimate)),
-                 size = 1, stroke = 1, color = "deeppink") +
+                 size = 1, stroke = 1, color = "#4e3f2c") +
       scale_shape_manual(name = "", values = c(8),
                          labels = "Reference Category") +
       guides(color = guide_legend("Season", order = 1,
@@ -405,10 +408,12 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
               "has_addisons", "severe_obesity", "has_chd", "has_ckd", "has_cld",
               "has_cnd", "has_cancer", "immunosuppressed", "has_sickle_cell",
               "smoking_status", "hazardous_drinking", "drug_usage"),
-      col = c("#f64883", "#50edb2", "#43006f", "#b1e466", "#8e0077", "#227e00",
-              "#42025b", "#9dc83f", "#1d6ae0", "#5cb139", "#eb3f89", "#e9d477",
-              "#0282d4", "#ff9351", "#5f0041", "#ffab86", "#ff92ec", "#724500",
-              "#ff6688", "#611b00", "#bf668c", "#be0439", "#720027")
+      col = c("#f64883", "#50edb2", "#43006f", "#b1e466",
+              "#8e0077", "#42025b", "#9dc83f",
+              "#1d6ae0", "#5cb139", "#eb3f89",
+              "#e9d477", "#0282d4", "#ff9351", "#5f0041", "#ffab86",
+              "#ff92ec", "#724500", "#ff6688", "#611b00",
+              "#bf668c", "#be0439", "#720027")
     )
     cols_final <- cols2 %>%
       filter(var %in% unique(tidy_forest$variable)) %>%
@@ -651,6 +656,8 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
           TRUE ~ plot_label)
       )
     
+    cc <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+    
     tidy_forest %>%
       mutate(
         plot_label = str_to_title(gsub("_", " ", variable)),
@@ -668,7 +675,7 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       mutate(reference_row = NA) %>%
       ggplot(aes(y = label, x = estimate, xmin = conf.low,
                  xmax = conf.high, color = subset)) +
-      scale_color_brewer(palette = "PuOr", na.translate = F) +
+      scale_color_manual(values = cc, na.translate = F) +
       geom_vline(xintercept = 1, linetype = 2) + 
       geom_pointrange(position = position_dodge(width = 0.5), size = 0.45,
                       shape = shape_value) +
@@ -971,9 +978,12 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
               "maternal_smoking_status", "maternal_drinking",
               "maternal_drug_usage", "maternal_flu_vaccination",
               "maternal_pertussis_vaccination"),
-      col = c("#f64883", "#50edb2", "#43006f", "#b1e466", "#8e0077", "#227e00",
-              "#bb1782", "#009142", "#ff62ab", "#004e13", "#e1b1ff", "#ae9500",
-              "#004194", "#d98116")
+      col = c("#f64883", "#50edb2", "#43006f", "#b1e466",
+              "#8e0077", "#227e00",
+              "#bb1782", "#009142", "#ff62ab",
+              "#004e13", "#e1b1ff",
+              "#ae9500", "#004194",
+              "#d98116")
     )
     cols_final <- cols2 %>%
       filter(var %in% unique(tidy_forest$variable)) %>%

@@ -143,6 +143,8 @@ character_viz <- function(df) {
     
   }
   
+  cc <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+  
   df %>%
     filter(group != "Total") %>%
     mutate(
@@ -161,7 +163,7 @@ character_viz <- function(df) {
     geom_bar(stat = "identity", position = "dodge", color = "white") +
     facet_wrap(~group, scales = "free") +
     #scale_fill_viridis_d(option = "mako") + 
-    theme_bw() + scale_fill_brewer(palette = "PuOr") +
+    theme_bw() + scale_fill_manual(values = cc) +
     labs(title = "Participant Characteristics", x = "Characteristic",
          y = "Percentage (%)") +
     guides(fill = guide_legend(title = "Season")) 
