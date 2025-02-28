@@ -136,8 +136,8 @@ rate_viz <- function(df, pathogen, outcome_type) {
     
   }
   
-  f <- function(pal) brewer.pal(brewer.pal.info[pal, "maxcolors"], pal)[1:8]
-  cols <- f("Dark2")
+  #f <- function(pal) brewer.pal(brewer.pal.info[pal, "maxcolors"], pal)[1:8]
+  cols <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
   cols <- c(
     cols[1], cols[1], cols[2], cols[2], cols[3], cols[3], cols[4], cols[4],
     cols[5], cols[5], cols[6], cols[6], cols[7], cols[7], cols[8], cols[8]
@@ -329,8 +329,8 @@ rate_viz_season <- function(df, pathogen, outcome_type) {
     
   }
  
-  f <- function(pal) brewer.pal(brewer.pal.info[pal, "maxcolors"], pal)[1:8]
-  cols <- f("Dark2")
+  #f <- function(pal) brewer.pal(brewer.pal.info[pal, "maxcolors"], pal)[1:8]
+  cols <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
   cols <- c(
     cols[1], cols[1], cols[2], cols[2], cols[3], cols[3], cols[4], cols[4],
     cols[5], cols[5], cols[6], cols[6], cols[7], cols[7], cols[8], cols[8]
@@ -532,8 +532,8 @@ rate_viz_mult <- function(df, pathogen, outcome_type) {
     
   }
   
-  f <- function(pal) brewer.pal(brewer.pal.info[pal, "maxcolors"], pal)[1:8]
-  cols <- f("Dark2")
+  #f <- function(pal) brewer.pal(brewer.pal.info[pal, "maxcolors"], pal)[1:8]
+  cols <- cols <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
   cols <- c(
     cols[1], cols[1], cols[2], cols[2], cols[3], cols[3], cols[4], cols[4],
     cols[5], cols[5], cols[6], cols[6], cols[7], cols[7], cols[8], cols[8]
