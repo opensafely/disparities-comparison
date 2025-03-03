@@ -18032,7 +18032,7 @@ actions:
     - analyse_dataset_infants_rsv_ethnicity_ses_s2_specific_sensitivity
     outputs:
       moderately_sensitive:
-        csv: output/collated/sensitivity/infants_rsv_model_outputs_collated_sensitivity.csv
+        csv: output/collated/analytic/sensitivity/infants_rsv_model_outputs_collated_sensitivity.csv
 
   collate_further_rsv_model_outputs_tables_infants_sensitivity:
     run: r:latest analysis/collation_code/further_rsv_model_outputs_table_collation_sensitivity.R
@@ -18043,7 +18043,7 @@ actions:
     - analyse_dataset_infants_rsv_ethnicity_ses_further_s2_specific_sensitivity
     outputs:
       moderately_sensitive:
-        csv: output/collated/sensitivity/infants_further_rsv_model_outputs_collated_sensitivity.csv
+        csv: output/collated/analytic/sensitivity/infants_further_rsv_model_outputs_collated_sensitivity.csv
 
   collate_further_flu_model_outputs_tables_infants_sensitivity:
     run: r:latest analysis/collation_code/further_flu_model_outputs_table_collation_sensitivity.R
@@ -18054,7 +18054,7 @@ actions:
     - analyse_dataset_infants_flu_ethnicity_ses_further_s3_specific_sensitivity
     outputs:
       moderately_sensitive:
-        csv: output/collated/sensitivity/infants_further_flu_model_outputs_collated_sensitivity.csv
+        csv: output/collated/analytic/sensitivity/infants_further_flu_model_outputs_collated_sensitivity.csv
 
   collate_flu_model_outputs_tables_infants_sensitivity:
     run: r:latest analysis/collation_code/flu_model_outputs_table_collation_sensitivity.R
@@ -18065,7 +18065,7 @@ actions:
     - analyse_dataset_infants_flu_ethnicity_ses_s3_specific_sensitivity
     outputs:
       moderately_sensitive:
-        csv: output/collated/sensitivity/infants_flu_model_outputs_collated_sensitivity.csv
+        csv: output/collated/analytic/sensitivity/infants_flu_model_outputs_collated_sensitivity.csv
 
   collate_flow_chart_tables_infants_subgroup:
     run: r:latest analysis/collation_code/flow_chart_table_collation.R infants_subgroup
@@ -18592,7 +18592,7 @@ actions:
     - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s2_specific_sensitivity
     outputs:
       moderately_sensitive:
-        csv: output/collated/sensitivity/infants_subgroup_rsv_model_outputs_collated_sensitivity.csv
+        csv: output/collated/analytic/sensitivity/infants_subgroup_rsv_model_outputs_collated_sensitivity.csv
 
   collate_further_rsv_model_outputs_tables_infants_subgroup_sensitivity:
     run: r:latest analysis/collation_code/further_rsv_model_outputs_table_collation_sensitivity.R
@@ -18603,7 +18603,7 @@ actions:
     - analyse_dataset_infants_subgroup_rsv_ethnicity_ses_further_s2_specific_sensitivity
     outputs:
       moderately_sensitive:
-        csv: output/collated/sensitivity/infants_subgroup_further_rsv_model_outputs_collated_sensitivity.csv
+        csv: output/collated/analytic/sensitivity/infants_subgroup_further_rsv_model_outputs_collated_sensitivity.csv
 
   collate_further_flu_model_outputs_tables_infants_subgroup_sensitivity:
     run: r:latest analysis/collation_code/further_flu_model_outputs_table_collation_sensitivity.R
@@ -18614,7 +18614,7 @@ actions:
     - analyse_dataset_infants_subgroup_flu_ethnicity_ses_further_s3_specific_sensitivity
     outputs:
       moderately_sensitive:
-        csv: output/collated/sensitivity/infants_subgroup_further_flu_model_outputs_collated_sensitivity.csv
+        csv: output/collated/analytic/sensitivity/infants_subgroup_further_flu_model_outputs_collated_sensitivity.csv
 
   collate_flu_model_outputs_tables_infants_subgroup_sensitivity:
     run: r:latest analysis/collation_code/flu_model_outputs_table_collation_sensitivity.R
@@ -18625,7 +18625,7 @@ actions:
     - analyse_dataset_infants_subgroup_flu_ethnicity_ses_s3_specific_sensitivity
     outputs:
       moderately_sensitive:
-        csv: output/collated/sensitivity/infants_subgroup_flu_model_outputs_collated_sensitivity.csv
+        csv: output/collated/analytic/sensitivity/infants_subgroup_flu_model_outputs_collated_sensitivity.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## End 

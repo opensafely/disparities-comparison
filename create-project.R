@@ -5799,7 +5799,7 @@ action_finalise_infants <- function(cohort) {
                    glue("analyse_dataset_{cohort}_rsv_ses_s2_specific_sensitivity"),
                    glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_s2_specific_sensitivity")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/sensitivity/{cohort}_rsv_model_outputs_collated_sensitivity.csv"))
+        csv = glue("output/collated/analytic/sensitivity/{cohort}_rsv_model_outputs_collated_sensitivity.csv"))
     ),
     
     action(
@@ -5810,7 +5810,7 @@ action_finalise_infants <- function(cohort) {
                    glue("analyse_dataset_{cohort}_rsv_ses_further_s2_specific_sensitivity"),
                    glue("analyse_dataset_{cohort}_rsv_ethnicity_ses_further_s2_specific_sensitivity")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/sensitivity/{cohort}_further_rsv_model_outputs_collated_sensitivity.csv"))
+        csv = glue("output/collated/analytic/sensitivity/{cohort}_further_rsv_model_outputs_collated_sensitivity.csv"))
     ),
     
     action(
@@ -5821,7 +5821,7 @@ action_finalise_infants <- function(cohort) {
                    glue("analyse_dataset_{cohort}_flu_ses_further_s3_specific_sensitivity"),
                    glue("analyse_dataset_{cohort}_flu_ethnicity_ses_further_s3_specific_sensitivity")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/sensitivity/{cohort}_further_flu_model_outputs_collated_sensitivity.csv"))
+        csv = glue("output/collated/analytic/sensitivity/{cohort}_further_flu_model_outputs_collated_sensitivity.csv"))
     ),
     
     action(
@@ -5832,7 +5832,7 @@ action_finalise_infants <- function(cohort) {
                    glue("analyse_dataset_{cohort}_flu_ses_s3_specific_sensitivity"),
                    glue("analyse_dataset_{cohort}_flu_ethnicity_ses_s3_specific_sensitivity")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/sensitivity/{cohort}_flu_model_outputs_collated_sensitivity.csv"))
+        csv = glue("output/collated/analytic/sensitivity/{cohort}_flu_model_outputs_collated_sensitivity.csv"))
     )
     
   )
