@@ -16686,6 +16686,7 @@ actions:
     - analyse_dataset_older_adults_covid_s5_specific_primary
     - analyse_dataset_older_adults_covid_s6_specific_primary
     - analyse_dataset_older_adults_covid_s7_specific_primary
+    - analyse_dataset_older_adults_covid_s8_specific_primary
     - analyse_dataset_older_adults_covid_s4_sensitive_primary
     - analyse_dataset_older_adults_covid_s5_sensitive_primary
     - analyse_dataset_older_adults_covid_s6_sensitive_primary
@@ -16702,6 +16703,7 @@ actions:
     - analyse_dataset_older_adults_covid_further_s5_specific_primary
     - analyse_dataset_older_adults_covid_further_s6_specific_primary
     - analyse_dataset_older_adults_covid_further_s7_specific_primary
+    - analyse_dataset_older_adults_covid_further_s8_specific_primary
     - analyse_dataset_older_adults_covid_further_s5_sensitive_primary
     - analyse_dataset_older_adults_covid_further_s6_sensitive_primary
     - analyse_dataset_older_adults_covid_further_s7_sensitive_primary
@@ -17038,6 +17040,7 @@ actions:
     - analyse_dataset_adults_covid_s5_specific_primary
     - analyse_dataset_adults_covid_s6_specific_primary
     - analyse_dataset_adults_covid_s7_specific_primary
+    - analyse_dataset_adults_covid_s8_specific_primary
     - analyse_dataset_adults_covid_s4_sensitive_primary
     - analyse_dataset_adults_covid_s5_sensitive_primary
     - analyse_dataset_adults_covid_s6_sensitive_primary
@@ -17054,6 +17057,7 @@ actions:
     - analyse_dataset_adults_covid_further_s5_specific_primary
     - analyse_dataset_adults_covid_further_s6_specific_primary
     - analyse_dataset_adults_covid_further_s7_specific_primary
+    - analyse_dataset_adults_covid_further_s8_specific_primary
     - analyse_dataset_adults_covid_further_s5_sensitive_primary
     - analyse_dataset_adults_covid_further_s6_sensitive_primary
     - analyse_dataset_adults_covid_further_s7_sensitive_primary
@@ -17363,6 +17367,7 @@ actions:
     - analyse_dataset_children_and_adolescents_covid_s5_specific_primary
     - analyse_dataset_children_and_adolescents_covid_s6_specific_primary
     - analyse_dataset_children_and_adolescents_covid_s7_specific_primary
+    - analyse_dataset_children_and_adolescents_covid_s8_specific_primary
     - analyse_dataset_children_and_adolescents_covid_s4_sensitive_primary
     - analyse_dataset_children_and_adolescents_covid_s5_sensitive_primary
     - analyse_dataset_children_and_adolescents_covid_s6_sensitive_primary
@@ -17379,6 +17384,7 @@ actions:
     - analyse_dataset_children_and_adolescents_covid_further_s5_specific_primary
     - analyse_dataset_children_and_adolescents_covid_further_s6_specific_primary
     - analyse_dataset_children_and_adolescents_covid_further_s7_specific_primary
+    - analyse_dataset_children_and_adolescents_covid_further_s8_specific_primary
     - analyse_dataset_children_and_adolescents_covid_further_s5_sensitive_primary
     - analyse_dataset_children_and_adolescents_covid_further_s6_sensitive_primary
     - analyse_dataset_children_and_adolescents_covid_further_s7_sensitive_primary
