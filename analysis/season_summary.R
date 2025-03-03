@@ -2982,7 +2982,7 @@ fs::dir_create(here::here("output", "results", "rates"))
 if (length(args) == 0) {
   results_table <- final_results %>%
     mutate_if(is.numeric, round, digits = 4) %>%
-    select(Outcome, Characteristic, Group, Events_Midpoint10,
+    select(Outcome, Characteristic, Group, PYears, Events_Midpoint10,
            Rate_Midpoint10_Derived) %>%
     group_by(Characteristic) %>%
     gt(groupname_col = "Characteristic") %>%
@@ -2999,7 +2999,7 @@ if (length(args) == 0) {
 } else {
   results_table <- final_results %>%
     mutate_if(is.numeric, round, digits = 4) %>%
-    select(Outcome, Characteristic, Group, Events_Midpoint10,
+    select(Outcome, Characteristic, Group, PYears, Events_Midpoint10,
            Rate_Midpoint10_Derived) %>%
     group_by(Characteristic) %>%
     gt(groupname_col = "Characteristic") %>%

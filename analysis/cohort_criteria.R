@@ -59,8 +59,8 @@ not_age_count <- if (cohort == "infants" | cohort == "infants_subgroup") {
 }
 
 if (cohort == "infants_subgroup") {
-  mother_linkage_available <- sum(patients_df$mother_id_present, na.rm = TRUE)
-  mother_registered_spanning <- sum(patients_df$mother_registered, na.rm = TRUE)
+  mother_linkage_available_count <- sum(patients_df$mother_id_present, na.rm = TRUE)
+  mother_registered_spanning_count <- sum(patients_df$mother_registered, na.rm = TRUE)
 }
 
 if (cohort == "infants") {
