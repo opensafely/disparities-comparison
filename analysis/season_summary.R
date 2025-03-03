@@ -14,8 +14,8 @@ fs::dir_create(here::here("analysis"))
 source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- "2016-09-01"
-  study_end_date <- "2017-08-31"
+  study_start_date <- "2020-09-01"
+  study_end_date <- "2021-08-31"
   cohort <- "infants_subgroup"
   codelist_type <- "sensitive"
   investigation_type <- "primary"
@@ -2235,206 +2235,6 @@ if (cohort == "infants_subgroup") {
     )
   }
   
-  #calculate total person-time for each outcome type
-  #by maternal pertussis vaccination status
-  if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
-    survival_maternal_pertussis_vacc <- df_input %>%
-      group_by(maternal_pertussis_vaccination) %>%
-      transmute(
-        rsv_mild = sum(time_rsv_primary, na.rm = T),
-        rsv_severe = sum(time_rsv_secondary, na.rm = T),
-        flu_mild = sum(time_flu_primary, na.rm = T),
-        flu_severe = sum(time_flu_secondary, na.rm = T),
-        covid_mild = sum(time_covid_primary, na.rm = T),
-        covid_severe = sum(time_covid_secondary, na.rm = T),
-        overall_resp_mild = sum(time_overall_resp_primary, na.rm = T),
-        overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T)
-      )
-  } else if (study_start_date >= covid_season_min) {
-    survival_maternal_pertussis_vacc <- df_input %>%
-      group_by(maternal_pertussis_vaccination) %>%
-      transmute(
-        rsv_mild = sum(time_rsv_primary, na.rm = T),
-        rsv_severe = sum(time_rsv_secondary, na.rm = T),
-        flu_mild = sum(time_flu_primary, na.rm = T),
-        flu_severe = sum(time_flu_secondary, na.rm = T),
-        covid_mild = sum(time_covid_primary, na.rm = T),
-        covid_severe = sum(time_covid_secondary, na.rm = T)
-      )
-  } else if (codelist_type == "sensitive") {
-    survival_maternal_pertussis_vacc <- df_input %>%
-      group_by(maternal_pertussis_vaccination) %>%
-      transmute(
-        rsv_mild = sum(time_rsv_primary, na.rm = T),
-        rsv_severe = sum(time_rsv_secondary, na.rm = T),
-        flu_mild = sum(time_flu_primary, na.rm = T),
-        flu_severe = sum(time_flu_secondary, na.rm = T),
-        overall_resp_mild = sum(time_overall_resp_primary, na.rm = T),
-        overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T)
-      )
-  } else {
-    survival_maternal_pertussis_vacc <- df_input %>%
-      group_by(maternal_pertussis_vaccination) %>%
-      transmute(
-        rsv_mild = sum(time_rsv_primary, na.rm = T),
-        rsv_severe = sum(time_rsv_secondary, na.rm = T),
-        flu_mild = sum(time_flu_primary, na.rm = T),
-        flu_severe = sum(time_flu_secondary, na.rm = T)
-      )
-  }
-  
-  #get unique rows
-  survival_maternal_pertussis_vacc <- unique(survival_maternal_pertussis_vacc)
-  
-  #reshape
-  survival_maternal_pertussis_vacc <- survival_maternal_pertussis_vacc %>%
-    pivot_longer(
-      cols = !maternal_pertussis_vaccination,
-      names_to = "outcome",
-      values_to = "person_years"
-    )
-  
-  #calculate total number of events for each outcome type
-  #by maternal pertussis vaccination status
-  if (study_start_date >= covid_season_min) {
-    events_maternal_pertussis_vacc <- df_input %>%
-      group_by(maternal_pertussis_vaccination) %>%
-      transmute(
-        rsv_mild = sum(rsv_primary_inf, na.rm = T),
-        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
-        flu_mild = sum(flu_primary_inf, na.rm = T),
-        flu_severe = sum(flu_secondary_inf, na.rm = T),
-        covid_mild = sum(covid_primary_inf, na.rm = T),
-        covid_severe = sum(covid_secondary_inf, na.rm = T)
-      )
-  } else if (codelist_type == "sensitive") {
-    events_maternal_pertussis_vacc <- df_input %>%
-      group_by(maternal_pertussis_vaccination) %>%
-      transmute(
-        rsv_mild = sum(rsv_primary_inf, na.rm = T),
-        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
-        flu_mild = sum(flu_primary_inf, na.rm = T),
-        flu_severe = sum(flu_secondary_inf, na.rm = T),
-        overall_resp_mild = sum(overall_resp_primary_inf, na.rm = T),
-        overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T)
-      )
-  } else if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
-    events_maternal_pertussis_vacc <- df_input %>%
-      group_by(maternal_pertussis_vaccination) %>%
-      transmute(
-        rsv_mild = sum(rsv_primary_inf, na.rm = T),
-        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
-        flu_mild = sum(flu_primary_inf, na.rm = T),
-        flu_severe = sum(flu_secondary_inf, na.rm = T),
-        covid_mild = sum(covid_primary_inf, na.rm = T),
-        covid_severe = sum(covid_secondary_inf, na.rm = T),
-        overall_resp_mild = sum(overall_resp_primary_inf, na.rm = T),
-        overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T)
-      )
-  } else {
-    events_maternal_pertussis_vacc <- df_input %>%
-      group_by(maternal_pertussis_vaccination) %>%
-      transmute(
-        rsv_mild = sum(rsv_primary_inf, na.rm = T),
-        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
-        flu_mild = sum(flu_primary_inf, na.rm = T),
-        flu_severe = sum(flu_secondary_inf, na.rm = T)
-      )
-  }
-  
-  #get unique rows
-  events_maternal_pertussis_vacc <- unique(events_maternal_pertussis_vacc)
-  
-  #reshape
-  events_maternal_pertussis_vacc <- events_maternal_pertussis_vacc %>%
-    pivot_longer(
-      cols = !maternal_pertussis_vaccination,
-      names_to = "outcome",
-      values_to = "events"
-    )
-  
-  #overall results
-  results_maternal_pertussis_vacc <- merge(survival_maternal_pertussis_vacc,
-                                           events_maternal_pertussis_vacc)
-  
-  #calculate incidence rate per 1000 person-years
-  results_maternal_pertussis_vacc <- results_maternal_pertussis_vacc %>%
-    mutate(events = roundmid_any(events)) %>%
-    mutate(incidence_rate = events / person_years * 1000)
-  
-  #get number of groups
-  maternal_pertussis_vacc_groups <- as.numeric(length(unique(
-    results_maternal_pertussis_vacc$maternal_pertussis_vaccination)))
-  
-  #reorder rows
-  results_maternal_pertussis_vacc <- results_maternal_pertussis_vacc %>%
-    group_by(maternal_pertussis_vaccination) %>%
-    slice(match(row_order, results_maternal_pertussis_vacc$outcome))
-  
-  #add this to final results with 'Group' as maternal pertussis vaccination status
-  if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
-    final_results <- rbind(
-      final_results,
-      data.frame(
-        Outcome = rep(c("RSV Mild", "RSV Severe",
-                        "Flu Mild", "Flu Severe",
-                        "COVID Mild", "COVID Severe",
-                        "Overall Respiratory Mild",
-                        "Overall Respiratory Severe"),
-                      maternal_pertussis_vacc_groups),
-        PYears = results_maternal_pertussis_vacc$person_years,
-        Events_Midpoint10 = results_maternal_pertussis_vacc$events,
-        Rate_Midpoint10_Derived = results_maternal_pertussis_vacc$incidence_rate,
-        Characteristic = rep("Maternal Pertussis Vaccination Status",
-                             8 * maternal_pertussis_vacc_groups),
-        Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
-    )
-  } else if (study_start_date >= covid_season_min) {
-    final_results <- rbind(
-      final_results,
-      data.frame(
-        Outcome = rep(c("RSV Mild", "RSV Severe",
-                        "Flu Mild", "Flu Severe",
-                        "COVID Mild", "COVID Severe"),
-                      maternal_pertussis_vacc_groups),
-        PYears = results_maternal_pertussis_vacc$person_years,
-        Events_Midpoint10 = results_maternal_pertussis_vacc$events,
-        Rate_Midpoint10_Derived = results_maternal_pertussis_vacc$incidence_rate,
-        Characteristic = rep("Maternal Pertussis Vaccination Status",
-                             6 * maternal_pertussis_vacc_groups),
-        Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
-    )
-  } else if (codelist_type == "sensitive") {
-    final_results <- rbind(
-      final_results,
-      data.frame(
-        Outcome = rep(c("RSV Mild", "RSV Severe",
-                        "Flu Mild", "Flu Severe",
-                        "Overall Respiratory Mild",
-                        "Overall Respiratory Severe"),
-                      maternal_pertussis_vacc_groups),
-        PYears = results_maternal_pertussis_vacc$person_years,
-        Events_Midpoint10 = results_maternal_pertussis_vacc$events,
-        Rate_Midpoint10_Derived = results_maternal_pertussis_vacc$incidence_rate,
-        Characteristic = rep("Maternal Pertussis Vaccination Status",
-                             6 * maternal_pertussis_vacc_groups),
-        Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
-    )
-  } else {
-    final_results <- rbind(
-      final_results,
-      data.frame(
-        Outcome = rep(c("RSV Mild", "RSV Severe",
-                        "Flu Mild", "Flu Severe"),
-                      maternal_pertussis_vacc_groups),
-        PYears = results_maternal_pertussis_vacc$person_years,
-        Events_Midpoint10 = results_maternal_pertussis_vacc$events,
-        Rate_Midpoint10_Derived = results_maternal_pertussis_vacc$incidence_rate,
-        Characteristic = rep("Maternal Pertussis Vaccination Status",
-                             4 * maternal_pertussis_vacc_groups),
-        Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
-    )
-  }
   
   #calculate total person-time for each outcome
   #type by maternal influenza vaccination status
@@ -2618,7 +2418,7 @@ if (cohort == "infants_subgroup") {
         Events_Midpoint10 = results_maternal_flu_vacc$events,
         Rate_Midpoint10_Derived = results_maternal_flu_vacc$incidence_rate,
         Characteristic = rep("Maternal Influenza Vaccination Status",
-                            6 * maternal_flu_vacc_groups),
+                             6 * maternal_flu_vacc_groups),
         Group = results_maternal_flu_vacc$maternal_flu_vaccination)
     )
   } else {
@@ -2636,6 +2436,208 @@ if (cohort == "infants_subgroup") {
         Group = results_maternal_flu_vacc$maternal_flu_vaccination)
     )
   }
+  
+  #calculate total person-time for each outcome type
+  #by maternal pertussis vaccination status
+  if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
+    survival_maternal_pertussis_vacc <- df_input %>%
+      group_by(maternal_pertussis_vaccination) %>%
+      transmute(
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        covid_mild = sum(time_covid_primary, na.rm = T),
+        covid_severe = sum(time_covid_secondary, na.rm = T),
+        overall_resp_mild = sum(time_overall_resp_primary, na.rm = T),
+        overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T)
+      )
+  } else if (study_start_date >= covid_season_min) {
+    survival_maternal_pertussis_vacc <- df_input %>%
+      group_by(maternal_pertussis_vaccination) %>%
+      transmute(
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        covid_mild = sum(time_covid_primary, na.rm = T),
+        covid_severe = sum(time_covid_secondary, na.rm = T)
+      )
+  } else if (codelist_type == "sensitive") {
+    survival_maternal_pertussis_vacc <- df_input %>%
+      group_by(maternal_pertussis_vaccination) %>%
+      transmute(
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T),
+        overall_resp_mild = sum(time_overall_resp_primary, na.rm = T),
+        overall_resp_severe = sum(time_overall_resp_secondary, na.rm = T)
+      )
+  } else {
+    survival_maternal_pertussis_vacc <- df_input %>%
+      group_by(maternal_pertussis_vaccination) %>%
+      transmute(
+        rsv_mild = sum(time_rsv_primary, na.rm = T),
+        rsv_severe = sum(time_rsv_secondary, na.rm = T),
+        flu_mild = sum(time_flu_primary, na.rm = T),
+        flu_severe = sum(time_flu_secondary, na.rm = T)
+      )
+  }
+  
+  #get unique rows
+  survival_maternal_pertussis_vacc <- unique(survival_maternal_pertussis_vacc)
+  
+  #reshape
+  survival_maternal_pertussis_vacc <- survival_maternal_pertussis_vacc %>%
+    pivot_longer(
+      cols = !maternal_pertussis_vaccination,
+      names_to = "outcome",
+      values_to = "person_years"
+    )
+  
+  #calculate total number of events for each outcome type
+  #by maternal pertussis vaccination status
+  if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
+    events_maternal_pertussis_vacc <- df_input %>%
+      group_by(maternal_pertussis_vaccination) %>%
+      transmute(
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        covid_mild = sum(covid_primary_inf, na.rm = T),
+        covid_severe = sum(covid_secondary_inf, na.rm = T),
+        overall_resp_mild = sum(overall_resp_primary_inf, na.rm = T),
+        overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T)
+      )
+  } else if (study_start_date >= covid_season_min) {
+    events_maternal_pertussis_vacc <- df_input %>%
+      group_by(maternal_pertussis_vaccination) %>%
+      transmute(
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        covid_mild = sum(covid_primary_inf, na.rm = T),
+        covid_severe = sum(covid_secondary_inf, na.rm = T)
+      )
+  } else if (codelist_type == "sensitive") {
+    events_maternal_pertussis_vacc <- df_input %>%
+      group_by(maternal_pertussis_vaccination) %>%
+      transmute(
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T),
+        overall_resp_mild = sum(overall_resp_primary_inf, na.rm = T),
+        overall_resp_severe = sum(overall_resp_secondary_inf, na.rm = T)
+      )
+  } else {
+    events_maternal_pertussis_vacc <- df_input %>%
+      group_by(maternal_pertussis_vaccination) %>%
+      transmute(
+        rsv_mild = sum(rsv_primary_inf, na.rm = T),
+        rsv_severe = sum(rsv_secondary_inf, na.rm = T),
+        flu_mild = sum(flu_primary_inf, na.rm = T),
+        flu_severe = sum(flu_secondary_inf, na.rm = T)
+      )
+  }
+  
+  #get unique rows
+  events_maternal_pertussis_vacc <- unique(events_maternal_pertussis_vacc)
+  
+  #reshape
+  events_maternal_pertussis_vacc <- events_maternal_pertussis_vacc %>%
+    pivot_longer(
+      cols = !maternal_pertussis_vaccination,
+      names_to = "outcome",
+      values_to = "events"
+    )
+  
+  #overall results
+  results_maternal_pertussis_vacc <- merge(survival_maternal_pertussis_vacc,
+                                           events_maternal_pertussis_vacc)
+  
+  #calculate incidence rate per 1000 person-years
+  results_maternal_pertussis_vacc <- results_maternal_pertussis_vacc %>%
+    mutate(events = roundmid_any(events)) %>%
+    mutate(incidence_rate = events / person_years * 1000)
+  
+  #get number of groups
+  maternal_pertussis_vacc_groups <- as.numeric(length(unique(
+    results_maternal_pertussis_vacc$maternal_pertussis_vaccination)))
+  
+  #reorder rows
+  results_maternal_pertussis_vacc <- results_maternal_pertussis_vacc %>%
+    group_by(maternal_pertussis_vaccination) %>%
+    slice(match(row_order, results_maternal_pertussis_vacc$outcome))
+  
+  #add this to final results with 'Group' as maternal pertussis vaccination status
+  if (study_start_date >= covid_season_min & codelist_type == "sensitive") {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = rep(c("RSV Mild", "RSV Severe",
+                        "Flu Mild", "Flu Severe",
+                        "COVID Mild", "COVID Severe",
+                        "Overall Respiratory Mild",
+                        "Overall Respiratory Severe"),
+                      maternal_pertussis_vacc_groups),
+        PYears = results_maternal_pertussis_vacc$person_years,
+        Events_Midpoint10 = results_maternal_pertussis_vacc$events,
+        Rate_Midpoint10_Derived = results_maternal_pertussis_vacc$incidence_rate,
+        Characteristic = rep("Maternal Pertussis Vaccination Status",
+                             8 * maternal_pertussis_vacc_groups),
+        Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
+    )
+  } else if (study_start_date >= covid_season_min) {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = rep(c("RSV Mild", "RSV Severe",
+                        "Flu Mild", "Flu Severe",
+                        "COVID Mild", "COVID Severe"),
+                      maternal_pertussis_vacc_groups),
+        PYears = results_maternal_pertussis_vacc$person_years,
+        Events_Midpoint10 = results_maternal_pertussis_vacc$events,
+        Rate_Midpoint10_Derived = results_maternal_pertussis_vacc$incidence_rate,
+        Characteristic = rep("Maternal Pertussis Vaccination Status",
+                             6 * maternal_pertussis_vacc_groups),
+        Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
+    )
+  } else if (codelist_type == "sensitive") {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = rep(c("RSV Mild", "RSV Severe",
+                        "Flu Mild", "Flu Severe",
+                        "Overall Respiratory Mild",
+                        "Overall Respiratory Severe"),
+                      maternal_pertussis_vacc_groups),
+        PYears = results_maternal_pertussis_vacc$person_years,
+        Events_Midpoint10 = results_maternal_pertussis_vacc$events,
+        Rate_Midpoint10_Derived = results_maternal_pertussis_vacc$incidence_rate,
+        Characteristic = rep("Maternal Pertussis Vaccination Status",
+                             6 * maternal_pertussis_vacc_groups),
+        Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
+    )
+  } else {
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        Outcome = rep(c("RSV Mild", "RSV Severe",
+                        "Flu Mild", "Flu Severe"),
+                      maternal_pertussis_vacc_groups),
+        PYears = results_maternal_pertussis_vacc$person_years,
+        Events_Midpoint10 = results_maternal_pertussis_vacc$events,
+        Rate_Midpoint10_Derived = results_maternal_pertussis_vacc$incidence_rate,
+        Characteristic = rep("Maternal Pertussis Vaccination Status",
+                             4 * maternal_pertussis_vacc_groups),
+        Group = results_maternal_pertussis_vacc$maternal_pertussis_vaccination)
+    )
+  }
+
 }
 
 ##children/adolescents, adult and older adult cohort specific characteristics
@@ -2935,8 +2937,8 @@ if (study_start_date == as.Date("2020-09-01")) {
                       "IMD Quintile", "Rurality Classification",
                       "Average Maternal Age", "Maternal Smoking Status",
                       "Maternal Drinking", "Maternal Drug Usage",
-                      "Maternal Pertussis Vaccination Status",
-                      "Maternal Influenza Vaccination Status")
+                      "Maternal Influenza Vaccination Status",
+                      "Maternal Pertussis Vaccination Status")
   } else {
     table_groups <- c("Total", "Age Group", "Sex", "Ethnicity",
                       "IMD Quintile", "Household Composition Category",
@@ -2954,8 +2956,8 @@ if (study_start_date == as.Date("2020-09-01")) {
                       "IMD Quintile", "Rurality Classification",
                       "Average Maternal Age", "Maternal Smoking Status",
                       "Maternal Drinking", "Maternal Drug Usage",
-                      "Maternal Pertussis Vaccination Status",
-                      "Maternal Influenza Vaccination Status")
+                      "Maternal Influenza Vaccination Status",
+                      "Maternal Pertussis Vaccination Status")
   } else {
     if (study_start_date >= covid_prior_vacc_min) {
       table_groups <- c("Total", "Age Group", "Sex", "Ethnicity",
