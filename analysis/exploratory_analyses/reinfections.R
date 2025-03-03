@@ -424,25 +424,25 @@ if (study_start_date >= covid_season_min) {
         (covid_secondary_inf == 1 & covid_secondary_second == 1)
     ) %>%
     summarise(
-      rsv_reinfections_28_days_midpoint_10 = roundmid_any(sum(
+      rsv_reinfections_28_days_midpoint10 = roundmid_any(sum(
         rsv_secondary_inf == 1 & rsv_secondary_second == 1 &
           difftime(rsv_secondary_second_date, rsv_secondary_date,
                    units = "days") <= 28, na.rm = TRUE)),
-      flu_reinfections_28_days_midpoint_10 = roundmid_any(sum(
+      flu_reinfections_28_days_midpoint10 = roundmid_any(sum(
         flu_secondary_inf == 1 & flu_secondary_second == 1 &
           difftime(flu_secondary_second_date, flu_secondary_date,
                    units = "days") <= 28, na.rm = TRUE)),
-      covid_reinfections_28_days_midpoint_10 = roundmid_any(sum(
+      covid_reinfections_28_days_midpoint10 = roundmid_any(sum(
         covid_secondary_inf == 1 & covid_secondary_second == 1 &
           difftime(covid_secondary_second_date, covid_secondary_date,
                    units = "days") <= 28, na.rm = TRUE))
     ) %>%
     mutate(
       rsv_reinfections_28_days_midpoint10_derived =
-        rsv_reinfections_28_days_midpoint_10 /
+        rsv_reinfections_28_days_midpoint10 /
         total_reinfections$rsv_reinfection_severe_midpoint10,
       flu_reinfections_28_days_midpoint10_derived =
-        flu_reinfections_28_days_midpoint_10 /
+        flu_reinfections_28_days_midpoint10 /
         total_reinfections$flu_reinfection_severe_midpoint10,
       covid_reinfections_28_days_midpoint10_derived =
         covid_reinfections_28_days_midpoint10 /
@@ -479,10 +479,10 @@ if (study_start_date >= covid_season_min) {
     ) %>% 
     mutate(
       rsv_reinfections_28_days_midpoint10_derived =
-        rsv_reinfections_28_days_midpoint_10 /
+        rsv_reinfections_28_days_midpoint10 /
         total_reinfections$rsv_reinfection_mild_midpoint10,
       flu_reinfections_28_days_midpoint10_derived =
-        flu_reinfections_28_days_midpoint_10 /
+        flu_reinfections_28_days_midpoint10 /
         total_reinfections$flu_reinfection_mild_midpoint10,
       outcome_type = "mild"
     ) %>%
@@ -509,10 +509,10 @@ if (study_start_date >= covid_season_min) {
     ) %>%
     mutate(
       rsv_reinfections_28_days_midpoint10_derived =
-        rsv_reinfections_28_days_midpoint_10 /
+        rsv_reinfections_28_days_midpoint10 /
         total_reinfections$rsv_reinfection_severe_midpoint10,
       flu_reinfections_28_days_midpoint10_derived =
-        flu_reinfections_28_days_midpoint_10 /
+        flu_reinfections_28_days_midpoint10 /
         total_reinfections$flu_reinfection_severe_midpoint10,
       outcome_type = "severe"
     ) %>%
