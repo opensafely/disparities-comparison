@@ -20,19 +20,19 @@ fs::dir_create(here::here("output", "collated", "analytic", "sensitivity"))
 collated_model_outputs_rsv_further = rbind(
   read_csv(here::here("output", "results", "models", "rsv_sensitivity", 
                       paste0("further_rsv_ethnicity_model_outputs_", 
-                             cohort, "_2018_2019_specific_sensitivity.csv"))) 
+                             cohort, "_2017_2018_specific_sensitivity.csv"))) 
   %>% mutate(model_type = "ethnicity", codelist_type = "specific", 
-             investigation_type = "sensitivity", subset = "2018_19"),
+             investigation_type = "sensitivity", subset = "2017_18"),
   read_csv(here::here("output", "results", "models", "rsv_sensitivity", 
                       paste0("further_rsv_ses_model_outputs_", 
-                             cohort, "_2018_2019_specific_sensitivity.csv"))) 
+                             cohort, "_2017_2018_specific_sensitivity.csv"))) 
   %>% mutate(model_type = "ses", codelist_type = "specific", 
              investigation_type = "sensitivity", subset = "2018_19"),
   read_csv(here::here("output", "results", "models", "rsv_sensitivity", 
                       paste0("further_rsv_ethnicity_ses_model_outputs_", 
-                             cohort, "_2018_2019_specific_sensitivity.csv"))) 
+                             cohort, "_2017_2018_specific_sensitivity.csv"))) 
   %>% mutate(model_type = "ethnicity_ses", codelist_type = "specific", 
-             investigation_type = "sensitivity", subset = "2018_19")
+             investigation_type = "sensitivity", subset = "2017_18")
 )
 
 #save as csv
