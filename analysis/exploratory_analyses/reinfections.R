@@ -99,8 +99,6 @@ if (study_start_date >= covid_season_min) {
     ) 
 }
 
-total_patients <- nrow(df_input_specific)
-
 if (study_start_date >= covid_season_min) { 
   
   total_reinfection <- df_input_specific %>%
@@ -164,40 +162,80 @@ if (study_start_date >= covid_season_min) {
 }
 
 #round the counts
-if (study_start_date < covid_season_min) {
-  
+if (study_start_date >= covid_season_min) {
+
   total_reinfections <- total_reinfection %>%
     mutate(
+      rsv_infection_mild_midpoint10 = roundmid_any(
+        sum(df_input_specific$rsv_primary_inf == 1, na.rm = TRUE)
+      ),
       rsv_reinfection_mild_midpoint10 = roundmid_any(rsv_reinfection_mild),
+      flu_infection_mild_midpoint10 = roundmid_any(
+        sum(df_input_specific$flu_primary_inf == 1, na.rm = TRUE)
+      ),
       flu_reinfection_mild_midpoint10 = roundmid_any(flu_reinfection_mild),
+      covid_infection_mild_midpoint10 = roundmid_any(
+        sum(df_input_specific$covid_primary_inf == 1, na.rm = TRUE)
+      ),
+      covid_reinfection_mild_midpoint10 = roundmid_any(covid_reinfection_mild),
+      rsv_infection_severe_midpoint10 = roundmid_any(
+        sum(df_input_specific$rsv_secondary_inf == 1, na.rm = TRUE)
+      ),
       rsv_reinfection_severe_midpoint10 = roundmid_any(rsv_reinfection_severe),
-      flu_reinfection_severe_midpoint10 = roundmid_any(flu_reinfection_severe)
+      flu_infection_severe_midpoint10 = roundmid_any(
+        sum(df_input_specific$flu_secondary_inf == 1, na.rm = TRUE)
+      ),
+      flu_reinfection_severe_midpoint10 = roundmid_any(flu_reinfection_severe),
+      covid_infection_severe_midpoint10 = roundmid_any(
+        sum(df_input_specific$covid_secondary_inf == 1, na.rm = TRUE)
+      ),
+      covid_reinfection_severe_midpoint10 = roundmid_any(covid_reinfection_severe)
     ) %>%
     select(
+      rsv_infection_mild_midpoint10,
       rsv_reinfection_mild_midpoint10,
+      flu_infection_mild_midpoint10,
       flu_reinfection_mild_midpoint10,
+      covid_infection_mild_midpoint10,
+      covid_reinfection_mild_midpoint10,
+      rsv_infection_severe_midpoint10,
       rsv_reinfection_severe_midpoint10,
-      flu_reinfection_severe_midpoint10
+      flu_infection_severe_midpoint10,
+      flu_reinfection_severe_midpoint10,
+      covid_infection_severe_midpoint10,
+      covid_reinfection_severe_midpoint10
     )
   
 } else {
   
   total_reinfections <- total_reinfection %>%
     mutate(
+      rsv_infection_mild_midpoint10 = roundmid_any(
+        sum(df_input_specific$rsv_primary_inf == 1, na.rm = TRUE)
+      ),
       rsv_reinfection_mild_midpoint10 = roundmid_any(rsv_reinfection_mild),
+      flu_infection_mild_midpoint10 = roundmid_any(
+        sum(df_input_specific$flu_primary_inf == 1, na.rm = TRUE)
+      ),
       flu_reinfection_mild_midpoint10 = roundmid_any(flu_reinfection_mild),
-      covid_reinfection_mild_midpoint10 = roundmid_any(covid_reinfection_mild),
+      rsv_infection_severe_midpoint10 = roundmid_any(
+        sum(df_input_specific$rsv_secondary_inf == 1, na.rm = TRUE)
+      ),
       rsv_reinfection_severe_midpoint10 = roundmid_any(rsv_reinfection_severe),
-      flu_reinfection_severe_midpoint10 = roundmid_any(flu_reinfection_severe),
-      covid_reinfection_severe_midpoint10 = roundmid_any(covid_reinfection_severe)
+      flu_infection_severe_midpoint10 = roundmid_any(
+        sum(df_input_specific$flu_secondary_inf == 1, na.rm = TRUE)
+      ),
+      flu_reinfection_severe_midpoint10 = roundmid_any(flu_reinfection_severe)
     ) %>%
     select(
+      rsv_infection_mild_midpoint10,
       rsv_reinfection_mild_midpoint10,
+      flu_infection_mild_midpoint10,
       flu_reinfection_mild_midpoint10,
-      covid_reinfection_mild_midpoint10,
+      rsv_infection_severe_midpoint10,
       rsv_reinfection_severe_midpoint10,
-      flu_reinfection_severe_midpoint10,
-      covid_reinfection_severe_midpoint10
+      flu_infection_severe_midpoint10,
+      flu_reinfection_severe_midpoint10
     )
   
 }
@@ -206,108 +244,76 @@ if (study_start_date < covid_season_min) {
  if (study_start_date >= covid_season_min) {
  
   proportions_mild <- df_input_specific %>% 
-    filter(
-      (rsv_primary_inf == 1 & rsv_primary_second == 1) | 
-        (flu_primary_inf == 1 & flu_primary_second == 1) | 
-        (covid_primary_inf == 1 & covid_primary_second == 1)
-    ) %>%
-    summarise(
-      rsv_reinfections = sum(rsv_primary_inf == 1 &
-                               rsv_primary_second == 1, na.rm = TRUE),
-      flu_reinfections = sum(flu_primary_inf == 1 &
-                               flu_primary_second == 1, na.rm = TRUE),
-      covid_reinfections = sum(covid_primary_inf == 1 &
-                                 covid_primary_second == 1, na.rm = TRUE)
-    ) %>% 
     mutate(
       rsv_reinfections_midpoint10_derived =
-        roundmid_any(rsv_reinfections) / roundmid_any(total_patients),
+        total_reinfections$rsv_reinfection_mild_midpoint10 /
+        roundmid_any(sum(rsv_primary_inf == 1, na.rm = TRUE)),
       flu_reinfections_midpoint10_derived =
-        roundmid_any(flu_reinfections) / roundmid_any(total_patients),
+        total_reinfections$flu_reinfection_mild_midpoint10 /
+        roundmid_any(sum(flu_primary_inf == 1, na.rm = TRUE)),
       covid_reinfections_midpoint10_derived =
-        roundmid_any(covid_reinfections) / roundmid_any(total_patients),
+        total_reinfections$covid_reinfection_mild_midpoint10 /
+        roundmid_any(sum(covid_primary_inf == 1, na.rm = TRUE)),
       outcome_type = "mild"
     ) %>%
     select(rsv_reinfections_midpoint10_derived,
            flu_reinfections_midpoint10_derived,
            covid_reinfections_midpoint10_derived,
-           outcome_type)
+           outcome_type) %>%
+    unique()
   
   proportions_severe <- df_input_specific %>%
-    filter(
-      (rsv_secondary_inf == 1 & rsv_secondary_second == 1) | 
-        (flu_secondary_inf == 1 & flu_secondary_second == 1) | 
-        (covid_secondary_inf == 1 & covid_secondary_second == 1)
-    ) %>%
-    summarise(
-      rsv_reinfections = sum(rsv_secondary_inf == 1 &
-                               rsv_secondary_second == 1, na.rm = TRUE),
-      flu_reinfections = sum(flu_secondary_inf == 1 &
-                               flu_secondary_second == 1, na.rm = TRUE),
-      covid_reinfections = sum(covid_secondary_inf == 1 &
-                                 covid_secondary_second == 1, na.rm = TRUE)
-    ) %>%
     mutate(
       rsv_reinfections_midpoint10_derived =
-        roundmid_any(rsv_reinfections) / roundmid_any(total_patients),
+        total_reinfections$rsv_reinfection_severe_midpoint10 /
+        roundmid_any(sum(rsv_secondary_inf == 1, na.rm = TRUE)),
       flu_reinfections_midpoint10_derived =
-        roundmid_any(flu_reinfections) / roundmid_any(total_patients),
+        total_reinfections$flu_reinfection_severe_midpoint10 /
+        roundmid_any(sum(flu_secondary_inf == 1, na.rm = TRUE)),
       covid_reinfections_midpoint10_derived =
-        roundmid_any(covid_reinfections) / roundmid_any(total_patients),
+        total_reinfections$covid_reinfection_severe_midpoint10 /
+        roundmid_any(sum(covid_secondary_inf == 1, na.rm = TRUE)),
       outcome_type = "severe"
     ) %>%
     select(rsv_reinfections_midpoint10_derived,
            flu_reinfections_midpoint10_derived,
            covid_reinfections_midpoint10_derived,
-           outcome_type)
+           outcome_type) %>%
+    unique()
   
   proportions <- bind_rows(proportions_mild, proportions_severe)
   
  } else {
  
   proportions_mild <- df_input_specific %>% 
-    filter(
-      (rsv_primary_inf == 1 & rsv_primary_second == 1) | 
-        (flu_primary_inf == 1 & flu_primary_second == 1)
-    ) %>%
-    summarise(
-      rsv_reinfections = sum(rsv_primary_inf == 1 & rsv_primary_second == 1,
-                             na.rm = TRUE),
-      flu_reinfections = sum(flu_primary_inf == 1 & flu_primary_second == 1,
-                             na.rm = TRUE)
-    ) %>% 
     mutate(
       rsv_reinfections_midpoint10_derived =
-        roundmid_any(rsv_reinfections) / roundmid_any(total_patients),
+        total_reinfections$rsv_reinfection_mild_midpoint10 /
+        roundmid_any(sum(rsv_primary_inf == 1, na.rm = TRUE)),
       flu_reinfections_midpoint10_derived =
-        roundmid_any(flu_reinfections) / roundmid_any(total_patients),
+        total_reinfections$flu_reinfection_mild_midpoint10 /
+        roundmid_any(sum(flu_primary_inf == 1, na.rm = TRUE)),
       outcome_type = "mild"
     ) %>%
     select(rsv_reinfections_midpoint10_derived,
            flu_reinfections_midpoint10_derived,
-           outcome_type)
+           outcome_type) %>%
+    unique()
   
   proportions_severe <- df_input_specific %>%
-    filter(
-      (rsv_secondary_inf == 1 & rsv_secondary_second == 1) | 
-        (flu_secondary_inf == 1 & flu_secondary_second == 1)
-    ) %>%
-    summarise(
-      rsv_reinfections = sum(rsv_secondary_inf == 1 & rsv_secondary_second == 1,
-                             na.rm = TRUE),
-      flu_reinfections = sum(flu_secondary_inf == 1 & flu_secondary_second == 1,
-                             na.rm = TRUE)
-    ) %>%
     mutate(
       rsv_reinfections_midpoint10_derived =
-        roundmid_any(rsv_reinfections) / roundmid_any(total_patients),
+        total_reinfections$rsv_reinfection_severe_midpoint10 /
+        roundmid_any(sum(rsv_secondary_inf == 1, na.rm = TRUE)),
       flu_reinfections_midpoint10_derived =
-        roundmid_any(flu_reinfections) / roundmid_any(total_patients),
+        total_reinfections$flu_reinfection_severe_midpoint10 /
+        roundmid_any(sum(flu_secondary_inf == 1, na.rm = TRUE)),
       outcome_type = "severe"
     ) %>%
     select(rsv_reinfections_midpoint10_derived,
            flu_reinfections_midpoint10_derived,
-           outcome_type)
+           outcome_type) %>%
+    unique()
 
   proportions <- bind_rows(proportions_mild, proportions_severe)
   
@@ -439,11 +445,6 @@ if (study_start_date >= covid_season_min) {
 if (study_start_date >= covid_season_min) {
   
   proportions_28_days_mild <- df_input_specific %>% 
-    filter(
-      (rsv_primary_inf == 1 & rsv_primary_second == 1) | 
-        (flu_primary_inf == 1 & flu_primary_second == 1) | 
-        (covid_primary_inf == 1 & covid_primary_second == 1)
-    ) %>%
     summarise(
       rsv_reinfections_28_days_midpoint10 = roundmid_any(sum(
         rsv_primary_inf == 1 & rsv_primary_second == 1 &
@@ -479,11 +480,6 @@ if (study_start_date >= covid_season_min) {
            outcome_type)
   
   proportions_28_days_severe <- df_input_specific %>%
-    filter(
-      (rsv_secondary_inf == 1 & rsv_secondary_second == 1) | 
-        (flu_secondary_inf == 1 & flu_secondary_second == 1) | 
-        (covid_secondary_inf == 1 & covid_secondary_second == 1)
-    ) %>%
     summarise(
       rsv_reinfections_28_days_midpoint10 = roundmid_any(sum(
         rsv_secondary_inf == 1 & rsv_secondary_second == 1 &
@@ -524,10 +520,6 @@ if (study_start_date >= covid_season_min) {
 } else {
  
   proportions_28_days_mild <- df_input_specific %>%
-    filter(
-      (rsv_primary_inf == 1 & rsv_primary_second == 1) | 
-        (flu_primary_inf == 1 & flu_primary_second == 1)
-    ) %>%
     summarise(
       rsv_reinfections_28_days_midpoint10 = roundmid_any(sum(
         rsv_primary_inf == 1 & rsv_primary_second == 1 &
@@ -554,10 +546,6 @@ if (study_start_date >= covid_season_min) {
            outcome_type)
   
   proportions_28_days_severe <- df_input_specific %>%
-    filter(
-      (rsv_secondary_inf == 1 & rsv_secondary_second == 1) | 
-        (flu_secondary_inf == 1 & flu_secondary_second == 1)
-    ) %>%
     summarise(
       rsv_reinfections_28_days_midpoint10 = roundmid_any(sum(
         rsv_secondary_inf == 1 & rsv_secondary_second == 1 &
@@ -591,6 +579,19 @@ if (study_start_date >= covid_season_min) {
 #reformat wide to long 
 if (study_start_date >= covid_season_min) {
 
+  infections_long <- total_reinfections %>%
+    pivot_longer(cols = c(rsv_infection_mild_midpoint10,
+                          flu_infection_mild_midpoint10,
+                          covid_infection_mild_midpoint10,
+                          rsv_infection_severe_midpoint10,
+                          flu_infection_severe_midpoint10,
+                          covid_infection_severe_midpoint10),
+                 names_to = "infection_type",
+                 values_to = "number_infected_midpoint10") %>%
+    mutate(
+      outcome_type = c(rep("mild", 3), rep("severe", 3)),
+      infection_type = rep(c("rsv", "flu", "covid"), 2)
+    )
   reinfections_long <- total_reinfections %>% 
     pivot_longer(cols = c(rsv_reinfection_mild_midpoint10,
                           flu_reinfection_mild_midpoint10,
@@ -647,6 +648,17 @@ if (study_start_date >= covid_season_min) {
 
 } else {
   
+  infections_long <- total_reinfections %>%
+    pivot_longer(cols = c(rsv_infection_mild_midpoint10,
+                          flu_infection_mild_midpoint10,
+                          rsv_infection_severe_midpoint10,
+                          flu_infection_severe_midpoint10),
+                 names_to = "infection_type",
+                 values_to = "number_infected_midpoint10") %>%
+    mutate(
+      outcome_type = c(rep("mild", 2), rep("severe", 2)),
+      infection_type = rep(c("rsv", "flu"), 2)
+    )
   reinfections_long <- total_reinfections %>% 
     pivot_longer(cols = c(rsv_reinfection_mild_midpoint10,
                           flu_reinfection_mild_midpoint10,
@@ -698,7 +710,9 @@ if (study_start_date >= covid_season_min) {
 }
 
 #combine dataframes
-patients <- full_join(reinfections_long, proportions_long,
+patients <- full_join(infections_long, reinfections_long,
+                      by = c("outcome_type", "infection_type"))
+patients <- full_join(patients, proportions_long,
                       by = c("outcome_type", "infection_type"))
 patients <- full_join(patients, time_to_reinfection_long,
                       by = c("outcome_type", "infection_type"))
@@ -709,6 +723,7 @@ patients <- full_join(patients, proportions_28_days_long,
 
 #reorder columns
 patients <- patients[, c("infection_type", "outcome_type",
+                         "number_infected_midpoint10",
                          "number_reinfected_midpoint10", 
                          "proportion_reinfected_midpoint10_derived",
                          "median_time_to_reinfection",
