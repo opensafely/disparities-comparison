@@ -113,12 +113,18 @@ if (study_start_date >= covid_season_min) {
         (covid_secondary_inf == 1 & covid_secondary_second == 1)
     ) %>%
     mutate(
-      rsv_reinfection_mild = if_else(rsv_primary_inf == 1 & rsv_primary_second == 1, 1, 0),
-      flu_reinfection_mild = if_else(flu_primary_inf == 1 & flu_primary_second == 1, 1, 0),
-      covid_reinfection_mild = if_else(covid_primary_inf == 1 & covid_primary_second == 1, 1, 0),
-      rsv_reinfection_severe = if_else(rsv_secondary_inf == 1 & rsv_secondary_second == 1, 1, 0),
-      flu_reinfection_severe = if_else(flu_secondary_inf == 1 & flu_secondary_second == 1, 1, 0),
-      covid_reinfection_severe = if_else(covid_secondary_inf == 1 & covid_secondary_second == 1, 1, 0)
+      rsv_reinfection_mild = if_else(rsv_primary_inf == 1 &
+                                       rsv_primary_second == 1, 1, 0),
+      flu_reinfection_mild = if_else(flu_primary_inf == 1 &
+                                       flu_primary_second == 1, 1, 0),
+      covid_reinfection_mild = if_else(covid_primary_inf == 1 &
+                                         covid_primary_second == 1, 1, 0),
+      rsv_reinfection_severe = if_else(rsv_secondary_inf == 1 &
+                                         rsv_secondary_second == 1, 1, 0),
+      flu_reinfection_severe = if_else(flu_secondary_inf == 1 &
+                                         flu_secondary_second == 1, 1, 0),
+      covid_reinfection_severe = if_else(covid_secondary_inf == 1 &
+                                           covid_secondary_second == 1, 1, 0)
     ) %>%
     summarise(
       rsv_reinfection_mild = sum(rsv_reinfection_mild, na.rm = TRUE),
@@ -139,10 +145,14 @@ if (study_start_date >= covid_season_min) {
         (flu_secondary_inf == 1 & flu_secondary_second == 1)
     ) %>%
     mutate(
-      rsv_reinfection_mild = if_else(rsv_primary_inf == 1 & rsv_primary_second == 1, 1, 0),
-      flu_reinfection_mild = if_else(flu_primary_inf == 1 & flu_primary_second == 1, 1, 0),
-      rsv_reinfection_severe = if_else(rsv_secondary_inf == 1 & rsv_secondary_second == 1, 1, 0),
-      flu_reinfection_severe = if_else(flu_secondary_inf == 1 & flu_secondary_second == 1, 1, 0)
+      rsv_reinfection_mild = if_else(rsv_primary_inf == 1 &
+                                       rsv_primary_second == 1, 1, 0),
+      flu_reinfection_mild = if_else(flu_primary_inf == 1 &
+                                       flu_primary_second == 1, 1, 0),
+      rsv_reinfection_severe = if_else(rsv_secondary_inf == 1 &
+                                         rsv_secondary_second == 1, 1, 0),
+      flu_reinfection_severe = if_else(flu_secondary_inf == 1 &
+                                         flu_secondary_second == 1, 1, 0)
     ) %>%
     summarise(
       rsv_reinfection_mild = sum(rsv_reinfection_mild, na.rm = TRUE),
@@ -202,12 +212,12 @@ if (study_start_date < covid_season_min) {
         (covid_primary_inf == 1 & covid_primary_second == 1)
     ) %>%
     summarise(
-      rsv_reinfections = sum(rsv_primary_inf == 1 & rsv_primary_second == 1,
-                             na.rm = TRUE),
-      flu_reinfections = sum(flu_primary_inf == 1 & flu_primary_second == 1,
-                             na.rm = TRUE),
-      covid_reinfections = sum(covid_primary_inf == 1 & covid_primary_second == 1,
-                               na.rm = TRUE)
+      rsv_reinfections = sum(rsv_primary_inf == 1 &
+                               rsv_primary_second == 1, na.rm = TRUE),
+      flu_reinfections = sum(flu_primary_inf == 1 &
+                               flu_primary_second == 1, na.rm = TRUE),
+      covid_reinfections = sum(covid_primary_inf == 1 &
+                                 covid_primary_second == 1, na.rm = TRUE)
     ) %>% 
     mutate(
       rsv_reinfections_midpoint10_derived =
@@ -230,12 +240,12 @@ if (study_start_date < covid_season_min) {
         (covid_secondary_inf == 1 & covid_secondary_second == 1)
     ) %>%
     summarise(
-      rsv_reinfections = sum(rsv_secondary_inf == 1 & rsv_secondary_second == 1,
-                             na.rm = TRUE),
-      flu_reinfections = sum(flu_secondary_inf == 1 & flu_secondary_second == 1,
-                             na.rm = TRUE),
-      covid_reinfections = sum(covid_secondary_inf == 1 & covid_secondary_second == 1,
-                               na.rm = TRUE)
+      rsv_reinfections = sum(rsv_secondary_inf == 1 &
+                               rsv_secondary_second == 1, na.rm = TRUE),
+      flu_reinfections = sum(flu_secondary_inf == 1 &
+                               flu_secondary_second == 1, na.rm = TRUE),
+      covid_reinfections = sum(covid_secondary_inf == 1 &
+                                 covid_secondary_second == 1, na.rm = TRUE)
     ) %>%
     mutate(
       rsv_reinfections_midpoint10_derived =
@@ -308,33 +318,67 @@ if (study_start_date >= covid_season_min) {
   
   time_to_reinfection_mild <- df_input_specific %>% 
     filter(
-      (rsv_primary_inf == 1 & rsv_primary_second == 1) | 
-        (flu_primary_inf == 1 & flu_primary_second == 1) | 
-        (covid_primary_inf == 1 & covid_primary_second == 1)
+      (rsv_primary_inf == 1 & rsv_primary_second == 1)
     ) %>%
     summarise(
       rsv_time_to_reinfection = median(difftime(rsv_primary_second_date,
-                                rsv_primary_date, units = "days"), na.rm = TRUE),
-      flu_time_to_reinfection = median(difftime(flu_primary_second_date,
-                                flu_primary_date, units = "days"), na.rm = TRUE),
-      covid_time_to_reinfection = median(difftime(covid_primary_second_date,
-                                  covid_primary_date, units = "days"), na.rm = TRUE)
+                                rsv_primary_date, units = "days"),
+                                na.rm = TRUE)
+    ) %>%
+    cbind(
+      df_input_specific %>%
+        filter(
+          (flu_primary_inf == 1 & flu_primary_second == 1)
+        ) %>%
+        summarise(
+          flu_time_to_reinfection = median(difftime(flu_primary_second_date,
+                                    flu_primary_date, units = "days"),
+                                    na.rm = TRUE)
+        )
+    ) %>%
+    cbind(
+      df_input_specific %>%
+        filter(
+          (covid_primary_inf == 1 & covid_primary_second == 1)
+        ) %>%
+        summarise(
+          covid_time_to_reinfection = median(difftime(covid_primary_second_date,
+                                      covid_primary_date, units = "days"),
+                                      na.rm = TRUE)
+        )
     ) %>%
     mutate(outcome_type = "mild")
   
   time_to_reinfection_severe <- df_input_specific %>%
     filter(
-      (rsv_secondary_inf == 1 & rsv_secondary_second == 1) | 
-        (flu_secondary_inf == 1 & flu_secondary_second == 1) | 
-        (covid_secondary_inf == 1 & covid_secondary_second == 1)
+      (rsv_secondary_inf == 1 & rsv_secondary_second == 1)
     ) %>%
     summarise(
       rsv_time_to_reinfection = median(difftime(rsv_secondary_second_date,
-                                rsv_secondary_date, units = "days"), na.rm = TRUE),
-      flu_time_to_reinfection = median(difftime(flu_secondary_second_date,
-                                flu_secondary_date, units = "days"), na.rm = TRUE),
-      covid_time_to_reinfection = median(difftime(covid_secondary_second_date,
-                                  covid_secondary_date, units = "days"), na.rm = TRUE)
+                                rsv_secondary_date, units = "days"),
+                                na.rm = TRUE)
+    ) %>%
+    cbind(
+      df_input_specific %>%
+        filter(
+          (flu_secondary_inf == 1 & flu_secondary_second == 1)
+        ) %>%
+        summarise(
+          flu_time_to_reinfection = median(difftime(flu_secondary_second_date,
+                                    flu_secondary_date, units = "days"),
+                                    na.rm = TRUE)
+        )
+    ) %>%
+    cbind(
+      df_input_specific %>%
+        filter(
+          (covid_secondary_inf == 1 & covid_secondary_second == 1)
+        ) %>%
+        summarise(
+          covid_time_to_reinfection = median(difftime(covid_secondary_second_date,
+                                      covid_secondary_date, units = "days"),
+                                      na.rm = TRUE)
+        )
     ) %>%
     mutate(outcome_type = "severe")
   
@@ -345,27 +389,44 @@ if (study_start_date >= covid_season_min) {
   
   time_to_reinfection_mild <- df_input_specific %>%
     filter(
-      (rsv_primary_inf == 1 & rsv_primary_second == 1) | 
-        (flu_primary_inf == 1 & flu_primary_second == 1)
+      (rsv_primary_inf == 1 & rsv_primary_second == 1)
     ) %>%
     summarise(
       rsv_time_to_reinfection = median(difftime(rsv_primary_second_date,
-                                rsv_primary_date, units = "days"), na.rm = TRUE),
-      flu_time_to_reinfection = median(difftime(flu_primary_second_date,
-                                flu_primary_date, units = "days"), na.rm = TRUE)
+                                rsv_primary_date, units = "days"), na.rm = TRUE)
+    ) %>%
+    cbind(
+      df_input_specific %>%
+        filter(
+          (flu_primary_inf == 1 & flu_primary_second == 1)
+        ) %>%
+        summarise(
+          flu_time_to_reinfection = median(difftime(flu_primary_second_date,
+                                    flu_primary_date, units = "days"),
+                                    na.rm = TRUE)
+        )
     ) %>%
     mutate(outcome_type = "mild")
   
   time_to_reinfection_severe <- df_input_specific %>%
     filter(
-      (rsv_secondary_inf == 1 & rsv_secondary_second == 1) | 
-        (flu_secondary_inf == 1 & flu_secondary_second == 1)
+      (rsv_secondary_inf == 1 & rsv_secondary_second == 1)
     ) %>%
     summarise(
       rsv_time_to_reinfection = median(difftime(rsv_secondary_second_date,
-                                rsv_secondary_date, units = "days"), na.rm = TRUE),
-      flu_time_to_reinfection = median(difftime(flu_secondary_second_date,
-                                flu_secondary_date, units = "days"), na.rm = TRUE)
+                                rsv_secondary_date, units = "days"),
+                                na.rm = TRUE)
+    ) %>%
+    cbind(
+      df_input_specific %>%
+        filter(
+          (flu_secondary_inf == 1 & flu_secondary_second == 1)
+        ) %>%
+        summarise(
+          flu_time_to_reinfection = median(difftime(flu_secondary_second_date,
+                                    flu_secondary_date, units = "days"),
+                                    na.rm = TRUE)
+        )
     ) %>%
     mutate(outcome_type = "severe")
   
