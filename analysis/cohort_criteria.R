@@ -100,7 +100,8 @@ table <- cbind(total, non_registered_count, registered_count,
                not_age_count, age_count, excluded_count, included_count)
 
 if (cohort == "infants_subgroup") {
-  table <- cbind(table, mother_linkage_available, mother_registered_spanning)
+  table <- cbind(table, mother_linkage_available_count,
+                 mother_registered_spanning_count)
 }
 
 table <- table %>%
