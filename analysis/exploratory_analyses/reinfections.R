@@ -12,8 +12,8 @@ fs::dir_create(here::here("analysis", "exploratory_analyses"))
 source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- "2017-09-01"
-  study_end_date <- "2018-08-31"
+  study_start_date <- "2021-09-01"
+  study_end_date <- "2022-08-31"
   cohort <- "adults"
 } else {
   cohort <- args[[1]]
@@ -392,7 +392,7 @@ if (study_start_date >= covid_season_min) {
         flu_primary_inf == 1 & flu_primary_second == 1 &
           difftime(flu_primary_second_date, flu_primary_date,
                    units = "days") <= 28, na.rm = TRUE)),
-      covid_reinfections_28_days_midpoint_10 = roundmid_any(sum(
+      covid_reinfections_28_days_midpoint10 = roundmid_any(sum(
         covid_primary_inf == 1 & covid_primary_second == 1 &
           difftime(covid_primary_second_date, covid_primary_date,
                    units = "days") <= 28, na.rm = TRUE))
@@ -402,7 +402,7 @@ if (study_start_date >= covid_season_min) {
         rsv_reinfections_28_days_midpoint10 /
         total_reinfections$rsv_reinfection_mild_midpoint10,
       flu_reinfections_28_days_midpoint10_derived =
-        flu_reinfections_28_days_midpoint_10 /
+        flu_reinfections_28_days_midpoint10 /
         total_reinfections$flu_reinfection_mild_midpoint10,
       covid_reinfections_28_days_midpoint10_derived =
         covid_reinfections_28_days_midpoint10 /
