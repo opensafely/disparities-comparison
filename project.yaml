@@ -14999,6 +14999,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2016_2017.csv
 
+  ethnicity_presence_children_and_adolescents_s1_specific_primary:
+    run: r:latest analysis/exploratory_analyses/ethnicity_presence_by_age.R children_and_adolescents
+      season1_start_date season1_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s1_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/ethnicity_by_age_children_and_adolescents_2016_2017_specific_primary.csv
+        png: output/exploratory/ethnicity_by_age_children_and_adolescents_2016_2017_specific_primary.png
+
   phenotype_sensitivity_children_and_adolescents_s2:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season2_start_date season2_end_date
@@ -15026,6 +15036,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2017_2018.csv
+
+  ethnicity_presence_children_and_adolescents_s2_specific_primary:
+    run: r:latest analysis/exploratory_analyses/ethnicity_presence_by_age.R children_and_adolescents
+      season2_start_date season2_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/ethnicity_by_age_children_and_adolescents_2017_2018_specific_primary.csv
+        png: output/exploratory/ethnicity_by_age_children_and_adolescents_2017_2018_specific_primary.png
 
   phenotype_sensitivity_children_and_adolescents_s3:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -15055,6 +15075,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2018_2019.csv
 
+  ethnicity_presence_children_and_adolescents_s3_specific_primary:
+    run: r:latest analysis/exploratory_analyses/ethnicity_presence_by_age.R children_and_adolescents
+      season3_start_date season3_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s3_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/ethnicity_by_age_children_and_adolescents_2018_2019_specific_primary.csv
+        png: output/exploratory/ethnicity_by_age_children_and_adolescents_2018_2019_specific_primary.png
+
   phenotype_sensitivity_children_and_adolescents_s4:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season4_start_date season4_end_date
@@ -15082,6 +15112,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2019_2020.csv
+
+  ethnicity_presence_children_and_adolescents_s4_specific_primary:
+    run: r:latest analysis/exploratory_analyses/ethnicity_presence_by_age.R children_and_adolescents
+      season4_start_date season4_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s4_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/ethnicity_by_age_children_and_adolescents_2019_2020_specific_primary.csv
+        png: output/exploratory/ethnicity_by_age_children_and_adolescents_2019_2020_specific_primary.png
 
   phenotype_sensitivity_children_and_adolescents_s5:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -15111,6 +15151,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2020_2021.csv
 
+  ethnicity_presence_children_and_adolescents_s5_specific_primary:
+    run: r:latest analysis/exploratory_analyses/ethnicity_presence_by_age.R children_and_adolescents
+      season5_start_date season5_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s5_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/ethnicity_by_age_children_and_adolescents_2020_2021_specific_primary.csv
+        png: output/exploratory/ethnicity_by_age_children_and_adolescents_2020_2021_specific_primary.png
+
   phenotype_sensitivity_children_and_adolescents_s6:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season6_start_date season6_end_date
@@ -15138,6 +15188,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2021_2022.csv
+
+  ethnicity_presence_children_and_adolescents_s6_specific_primary:
+    run: r:latest analysis/exploratory_analyses/ethnicity_presence_by_age.R children_and_adolescents
+      season6_start_date season6_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s6_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/ethnicity_by_age_children_and_adolescents_2021_2022_specific_primary.csv
+        png: output/exploratory/ethnicity_by_age_children_and_adolescents_2021_2022_specific_primary.png
 
   phenotype_sensitivity_children_and_adolescents_s7:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -15167,6 +15227,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2022_2023.csv
 
+  ethnicity_presence_children_and_adolescents_s7_specific_primary:
+    run: r:latest analysis/exploratory_analyses/ethnicity_presence_by_age.R children_and_adolescents
+      season7_start_date season7_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/ethnicity_by_age_children_and_adolescents_2022_2023_specific_primary.csv
+        png: output/exploratory/ethnicity_by_age_children_and_adolescents_2022_2023_specific_primary.png
+
   phenotype_sensitivity_children_and_adolescents_s8:
     run: r:latest analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season8_start_date season8_end_date
@@ -15194,6 +15264,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2023_2024.csv
+
+  ethnicity_presence_children_and_adolescents_s8_specific_primary:
+    run: r:latest analysis/exploratory_analyses/ethnicity_presence_by_age.R children_and_adolescents
+      season8_start_date season8_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/ethnicity_by_age_children_and_adolescents_2023_2024_specific_primary.csv
+        png: output/exploratory/ethnicity_by_age_children_and_adolescents_2023_2024_specific_primary.png
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Infants 
