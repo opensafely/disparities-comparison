@@ -31,6 +31,9 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              codelist_type, "_", investigation_type,".arrow")))
 
+#get rounding function
+source(here::here("analysis", "functions", "redaction.R"))
+
 #look at the presence of ethnicity by age 
 df_ethnicity <- df_input %>%
   mutate(
@@ -43,15 +46,14 @@ df_ethnicity <- df_input %>%
   ) %>%
   group_by(age) %>%
   mutate(
-    proportion = n / sum(n)
+    proportion = roundmid_any(n) / roundmid_any(sum(n))
   )
 
 #plot
 plot <- df_ethnicity %>%
   ggplot(aes(x = age, y = proportion, fill = ethnicity_present)) +
   geom_bar(stat = "identity") + theme_bw() + 
-  labs(subtitle = paste0(year(study_start_date), "-",
-                         year(study_end_date)))
+  labs(subtitle = paste0(year(study_start_date), "-", year(study_end_date)))
 
 ## create output directories ----
 fs::dir_create(here::here("output", "exploratory"))
