@@ -49,7 +49,9 @@ df_ethnicity <- df_input %>%
 #plot
 plot <- df_ethnicity %>%
   ggplot(aes(x = age, y = proportion, fill = ethnicity_present)) +
-  geom_bar(stat = "identity") + theme_bw()
+  geom_bar(stat = "identity") + theme_bw() + 
+  labs(subtitle = paste0(year(study_start_date), "-",
+                         year(study_end_date)))
 
 ## create output directories ----
 fs::dir_create(here::here("output", "exploratory"))
