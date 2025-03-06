@@ -17587,6 +17587,21 @@ actions:
       moderately_sensitive:
         csv: output/collated/analytic/sensitivity/children_and_adolescents_further_flu_model_outputs_collated_sensitivity.csv
 
+  collate_ethnicity_presence_by_age_plots_children_and_adolescents:
+    run: r:latest analysis/collation_code/ethnicity_presence_by_age_plots.R children_and_adolescents
+    needs:
+    - ethnicity_presence_children_and_adolescents_s1_specific_primary
+    - ethnicity_presence_children_and_adolescents_s2_specific_primary
+    - ethnicity_presence_children_and_adolescents_s3_specific_primary
+    - ethnicity_presence_children_and_adolescents_s4_specific_primary
+    - ethnicity_presence_children_and_adolescents_s5_specific_primary
+    - ethnicity_presence_children_and_adolescents_s6_specific_primary
+    - ethnicity_presence_children_and_adolescents_s7_specific_primary
+    - ethnicity_presence_children_and_adolescents_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        png: output/collated/exploratory/ethnicity_by_age_children_and_adolescents_specific_primary.png
+
   collate_flow_chart_tables_infants:
     run: r:latest analysis/collation_code/flow_chart_table_collation.R infants
     needs:

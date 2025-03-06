@@ -3128,6 +3128,30 @@ action_finalise_infants <- function(cohort) {
   
 }
 
+action_finalise_children_and_adolescents <- function(cohort) {
+  
+  splice(
+    
+    action(
+      name = glue("collate_ethnicity_presence_by_age_plots_{cohort}"),
+      run = glue("r:latest analysis/collation_code/ethnicity_presence_by_age_plots.R {cohort}"),
+      needs = list(glue("ethnicity_presence_children_and_adolescents_s1_specific_primary"),
+                   glue("ethnicity_presence_children_and_adolescents_s2_specific_primary"),
+                   glue("ethnicity_presence_children_and_adolescents_s3_specific_primary"),
+                   glue("ethnicity_presence_children_and_adolescents_s4_specific_primary"),
+                   glue("ethnicity_presence_children_and_adolescents_s5_specific_primary"),
+                   glue("ethnicity_presence_children_and_adolescents_s6_specific_primary"),
+                   glue("ethnicity_presence_children_and_adolescents_s7_specific_primary"),
+                   glue("ethnicity_presence_children_and_adolescents_s8_specific_primary")),
+      moderately_sensitive = lst(
+        png = glue("output/collated/exploratory/ethnicity_by_age_{cohort}_specific_primary.png")
+      )
+    )
+    
+  )
+  
+}
+
 # specify project ----
 
 ## defaults ----
@@ -3708,6 +3732,7 @@ actions_list <- splice (
   action_finalise_older_adults("older_adults"),
   action_finalise("adults"),
   action_finalise("children_and_adolescents"),
+  action_finalise_children_and_adolescents("children_and_adolescents"),
   action_finalise_infants("infants"),
   action_finalise_infants("infants_subgroup"),
 
