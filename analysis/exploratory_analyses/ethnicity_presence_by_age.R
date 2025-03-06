@@ -39,7 +39,7 @@ df_ethnicity <- df_input %>%
   ) %>%
   group_by(ethnicity_present, age) %>%
   summarise(
-    n_midpoint10 = roundmid_any(n)
+    n_midpoint10 = roundmid_any(n())
   ) %>%
   group_by(age) %>%
   mutate(
