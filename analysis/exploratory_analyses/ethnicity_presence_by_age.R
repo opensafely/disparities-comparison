@@ -40,11 +40,15 @@ df_ethnicity <- df_input %>%
   group_by(ethnicity_present, age) %>%
   summarise(
     n = n()
+  ) %>%
+  group_by(age) %>%
+  mutate(
+    proportion = n / sum(n)
   )
 
 #plot
 plot <- df_ethnicity %>%
-  ggplot(aes(x = age, y = n, fill = ethnicity_present)) +
+  ggplot(aes(x = age, y = proportion, fill = ethnicity_present)) +
   geom_bar(stat = "identity") + theme_bw()
 
 ## create output directories ----
