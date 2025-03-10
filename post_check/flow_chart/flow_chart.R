@@ -18,9 +18,12 @@ fs::dir_create(here("post_check", "flow_chart", "plots"))
 cohort <- "older_adults"
 
 #import collated flow chart data
-df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs  
+df_input <- read_csv(here::here("post_check", "output", "collated", "descriptive", 
                                 paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
+names(patients_df) <- c("total", "non_registered_count", "registered_count",
+                        "not_age_count", "age_count", "excluded_count",
+                        "included_count", "subset")
 
 #pre-allocate vectors and lists outside the loop
 org_cohort_label <- vector("character", nrow(patients_df))
@@ -128,9 +131,12 @@ for (i in 1:length(flow_chart)) {
 cohort <- "adults"
 
 #import collated flow chart data
-df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs
+df_input <- read_csv(here::here("post_check", "output", "collated", "descriptive", 
                                 paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
+names(patients_df) <- c("total", "non_registered_count", "registered_count",
+                        "not_age_count", "age_count", "excluded_count",
+                        "included_count", "subset")
 
 #pre-allocate vectors and lists outside the loop
 org_cohort_label <- vector("character", nrow(patients_df))
@@ -238,9 +244,12 @@ for (i in 1:length(flow_chart)) {
 cohort <- "children_and_adolescents"
 
 #import collated flow chart data
-df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs 
+df_input <- read_csv(here::here("post_check", "output", "collated", "descriptive", 
                                 paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
+names(patients_df) <- c("total", "non_registered_count", "registered_count",
+                        "not_age_count", "age_count", "excluded_count",
+                        "included_count", "subset")
 
 #pre-allocate vectors and lists outside the loop
 org_cohort_label <- vector("character", nrow(patients_df))
@@ -348,9 +357,12 @@ for (i in 1:length(flow_chart)) {
 cohort <- "infants"
 
 #import collated flow chart data
-df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs 
+df_input <- read_csv(here::here("post_check", "output", "collated", "descriptive", 
                                 paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
+names(patients_df) <- c("total", "non_registered_count", "registered_count",
+                        "not_age_count", "age_count", "excluded_count",
+                        "included_count", "subset")
 
 #pre-allocate vectors and lists outside the loop
 org_cohort_label <- vector("character", nrow(patients_df))
@@ -444,9 +456,13 @@ for (i in 1:length(flow_chart)) {
 cohort <- "infants_subgroup"
 
 #import collated flow chart data
-df_input <- read_csv(here::here("post_check", "outputs", "test", #remove test folder once you have real outputs 
+df_input <- read_csv(here::here("post_check", "output", "collated", "descriptive",  
                                 paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
+names(patients_df) <- c("total", "non_registered_count", "registered_count",
+                        "not_age_count", "age_count", "excluded_count",
+                        "included_count", "mother_linkage_available",
+                        "mother_registered_spanning", "subset")
 
 #pre-allocate vectors and lists outside the loop
 org_cohort_label <- vector("character", nrow(patients_df))
@@ -455,9 +471,9 @@ age_excl_label <- vector("character", nrow(patients_df))
 age_cut_incl <- vector("character", nrow(patients_df))
 age_label <- vector("character", nrow(patients_df))
 maternal_linkage_label <- vector("character", nrow(patients_df))
-maternal_linkage_exclude_label <- vector("character", nrow(patients_df))
+maternal_linkage_excl_label <- vector("character", nrow(patients_df))
 maternal_registration_label <- vector("character", nrow(patients_df))
-maternal_registration_exclude_label <- vector("character", nrow(patients_df))
+maternal_registration_excl_label <- vector("character", nrow(patients_df))
 excluded_label <- vector("character", nrow(patients_df))
 included_label <- vector("character", nrow(patients_df))
 flow_chart <- vector("list", nrow(patients_df))
@@ -495,23 +511,22 @@ for (i in 1:nrow(patients_df)) {
   age_label[i] <- paste0(age_cut_incl[i], " (n = ", format(
     patients_df[i, ]$age_count, big.mark = ","), ")")
   
-  maternal_linkage_label[i] <- paste0("Maternal linkage available (n = ", format(
-    patients_df[i, ]$mother_linkage_available, big.mark = ","), ")")
+  # maternal_linkage_label[i] <- paste0("Maternal linkage available (n = ", format(
+  #   patients_df[i, ]$mother_linkage_available, big.mark = ","), ")")
+  # 
+  # maternal_linkage_excl_label[i] <- paste0("Maternal linkage not available (n = ", format(
+  #   patients_df[i, ]$age_count - patients_df[i, ]$mother_linkage_available, big.mark = ","), ")")
   
-  maternal_linkage_exclude_label[i] <- paste0("Maternal linkage not available (n = ", format(
-    patients_df[i, ]$age_count - patients_df[i, ]$mother_linkage_available, big.mark = ","), ")")
-  
-  # maternal_registration_label[i] <- paste0("Maternal registration available ",
-  #                                          "\nfor year prior to birth (n = ", format(
-  #   patients_df[i, ]$mother_registered_spanning, big.mark = ","), ")")
-  
-  # maternal_registration_exclude_label[i] <- paste0("Maternal registration not available ",
-  #                                                  "\nfor year prior to birth (n = ", format(
-  #   patients_df[i, ]$mother_linkage_available - patients_df[i, ]$mother_registered_spanning, big.mark = ","), ")")
+  maternal_registration_label[i] <- paste0("Linkage with eligible mothers available ",
+                                           "\nfor year prior to birth (n = ", format(
+    patients_df[i, ]$mother_registered_spanning, big.mark = ","), ")")
+
+  maternal_registration_excl_label[i] <- paste0("Linkage with eligible mothers not available ",
+                                                "\nfor year prior to birth (n = ", format(
+    patients_df[i, ]$age_count - patients_df[i, ]$mother_registered_spanning, big.mark = ","), ")")
   
   excluded_label[i] <- paste0("Fits exclusion criteria (n = ", format(
-    patients_df[i, ]$excluded_count - (patients_df[i, ]$age_count - 
-    patients_df[i, ]$mother_linkage_available), big.mark = ","), ")")
+    patients_df[i, ]$excluded_count, big.mark = ","), ")")
   
   included_label[i] <- paste0("Final included in study population (n = ", format(
     patients_df[i, ]$included_count, big.mark = ","), ")")
@@ -525,28 +540,29 @@ for (i in 1:nrow(patients_df)) {
         node [fontname = Helvetica, shape = box, width = 4, height = 1]
     
         org_cohort[label = "%s"]
+        maternal_registration_excl[label = "%s"]
+        maternal_registration[label = "%s"]
         age_excl[label = "%s"]
         age[label = "%s"]
-        maternal_linkage_excl[label = "%s"]
-        maternal_linkage[label = "%s"]
         included[label = "%s"]
         excluded[label = "%s"]
         
-        {rank = same; org_cohort; age_excl}
-        {rank = same; age; maternal_linkage_excl}
-        {rank = same; maternal_linkage; excluded}
+        {rank = same; org_cohort; maternal_registration_excl}
+        {rank = same; maternal_registration; age_excl}
+        {rank = same; age; excluded}
     
-        org_cohort -> age_excl
-        org_cohort -> age
-        age -> maternal_linkage_excl
-        age -> maternal_linkage
-        maternal_linkage -> included
-        maternal_linkage -> excluded
+        org_cohort -> maternal_registration_excl
+        org_cohort -> maternal_registration
+        maternal_registration -> age_excl
+        maternal_registration -> age
+        age -> included
+        age -> excluded
         
       }
-    ', org_cohort_label[i], age_excl_label[i], age_label[i],
-              maternal_linkage_exclude_label[i], maternal_linkage_label[i],
-              included_label[i], excluded_label[i])
+    ', org_cohort_label[i], maternal_registration_excl_label[i],
+              age_excl_label[i], age_label[i],
+              maternal_registration_label[i], included_label[i],
+              excluded_label[i])
     )
 }
 

@@ -159,7 +159,22 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
           TRUE ~ plot_label)
       )
     
-    cc <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+    if (investigation_type == "secondary") {
+      
+      cc <- scales::seq_gradient_pal(
+        "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 3))
+      
+    } else if (investigation_type == "sensitivity") {
+      
+      cc <- scales::seq_gradient_pal(
+        "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 2))
+      
+    } else {
+      
+      cc <- scales::seq_gradient_pal(
+        "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 8))
+      
+    }
     
     tidy_forest %>%
       mutate(
@@ -409,11 +424,11 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
               "has_cnd", "has_cancer", "immunosuppressed", "has_sickle_cell",
               "smoking_status", "hazardous_drinking", "drug_usage"),
       col = c("#f64883", "#50edb2", "#43006f", "#b1e466",
-              "#8e0077", "#42025b", "#9dc83f",
-              "#1d6ae0", "#5cb139", "#eb3f89",
-              "#e9d477", "#0282d4", "#ff9351", "#5f0041", "#ffab86",
-              "#ff92ec", "#724500", "#ff6688", "#611b00",
-              "#bf668c", "#be0439", "#720027")
+              "#8e0077", "#d66dbe", "#50873c",
+              "#b97fd4", "#cc8331", "#628bd5",
+              "#d45e46", "#38dbda", "#e1556e", "#a1863d", "#952a5e",
+              "#9b4729", "#dd6a9c", "#ad4248", "#ac4258",
+              "#6a70d7", "#81307a", "#45ba8a",)
     )
     cols_final <- cols2 %>%
       filter(var %in% unique(tidy_forest$variable)) %>%
@@ -656,7 +671,22 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
           TRUE ~ plot_label)
       )
     
-    cc <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+    if (investigation_type == "secondary") {
+      
+      cc <- scales::seq_gradient_pal(
+        "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 3))
+      
+    } else if (investigation_type == "sensitivity") {
+      
+      cc <- scales::seq_gradient_pal(
+        "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 2))
+      
+    } else {
+      
+      cc <- scales::seq_gradient_pal(
+        "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 8))
+      
+    }
     
     tidy_forest %>%
       mutate(

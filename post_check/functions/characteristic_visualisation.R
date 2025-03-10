@@ -26,24 +26,44 @@ character_viz <- function(df) {
               "Maternal Smoking Status", "Maternal Drinking",
               "Maternal Drug Usage", "Maternal Flu Vaccination",
               "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
-              "Time Since Last Covid Vaccine", "Has Asthma", "Has COPD",
-              "Has Cystic Fibrosis", "Has Other Resp. Diseases",
-              "Has Diabetes", "Has Addison's Disease", "Severely Obese",
-              "Has CHD", "Has CKD", "Has CLD", "Has CND",
-              "Had Cancer Within 3 Years", "Immunosuppressed",
-              "Has Sickle Cell Disease", "Smoking Status",
-              "Hazardous Drinking", "Drug Usage"),
-    count = c(1, age_groups, 2, 6, 5, 5, 5, 1, 4, 1, 1, 1, 1, 1, 3, 1, 1,
-              1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 1)
+              "Time Since Last Covid Vaccine", "Smoking Status",
+              "Hazardous Drinking", "Drug Usage", "Asthma", "COPD",
+              "Cystic Fibrosis", "Other Chronic Respiratory Disease",
+              "Diabetes", "Addisons", "Severe Obesity", "Chronic Heart Disease",
+              "Chronic Kidney Disease", "Chronic Liver Disease",
+              "Chronic Neurological Disease", "Cancer Within 3 Years",
+              "Immunosuppressed", "Sickle Cell Disease"),
+    count = c(1, age_groups, 2, 6, 5, 5, 5, 1, 4, 1, 1, 1, 1, 1, 3, 4, 1,
+              1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
   )
   
-  group_counts <- group_counts %>%
-    filter(group %in% unique(df$characteristic)) %>%
-    filter(group != "Household Composition") %>%
-    group_by(group) %>%
-    uncount(weights = 8) %>%
-    mutate(season = c("2016_17", "2017_18", "2018_19", "2019_20",
-                      "2020_21", "2021_22", "2022_23", "2023_24"))
+  if (investigation_type == "secondary") {
+    
+    group_counts <- group_counts %>%
+      filter(group %in% unique(df$characteristic)) %>%
+      group_by(group) %>%
+      uncount(weights = 3) %>%
+      mutate(season = c("2017_18", "2018_19", "2020_21"))
+  
+  } else if (investigation_type == "sensitivity") {
+    
+    group_counts <- group_counts %>%
+      filter(group %in% unique(df$characteristic)) %>%
+      group_by(group) %>%
+      uncount(weights = 3) %>%
+      mutate(season = c("2017_18", "2018_19"))  
+    
+  } else {
+    
+    group_counts <- group_counts %>%
+      filter(group %in% unique(df$characteristic)) %>%
+      filter(group != "Household Composition") %>%
+      group_by(group) %>%
+      uncount(weights = 8) %>%
+      mutate(season = c("2016_17", "2017_18", "2018_19", "2019_20",
+                        "2020_21", "2021_22", "2022_23", "2023_24"))
+    
+  }
   
   if (cohort != "infants" & cohort != "infants_subgroup") {
     
@@ -63,6 +83,10 @@ character_viz <- function(df) {
     cbind(df_groups)
   
   df <- df %>%
+    mutate(
+      percentage = if_else(str_detect(percentage, "<0.1%"), "0.05%",
+                           percentage)
+    ) %>%
     mutate(
       percentage = substring(percentage, 1, nchar(percentage) - 1) %>%
         as.numeric(),
@@ -121,13 +145,13 @@ character_viz <- function(df) {
     
   } else if (cohort == "older_adults" & investigation_type == "secondary") {
     
-    levels <- c("Has Asthma", "Has COPD", "Has Cystic Fibrosis",
-                "Has Other Resp. Diseases", "Has Diabetes",
-                "Has Addison's Disease", "Severely Obese", "Has CHD",
-                "Has CKD", "Has CLD", "Has CND", "Had Cancer Within 3 Years",
-                "Immunosuppressed", "Has Sickle Cell Disease", "Smoking Status",
-                "Hazardous Drinking", "Drug Usage", "Never", "Current",
-                "Former", "Unknown")
+    levels <- c("Never", "Current", "Former", "Unknown", "Hazardous Drinking",
+                "Drug Usage", "Asthma", "COPD", "Cystic Fibrosis",
+                "Other Chronic Respiratory Disease", "Diabetes",
+                "Addisons", "Severe Obesity", "Chronic Heart Disease",
+                "Chronic Kidney Disease", "Chronic Liver Disease",
+                "Chronic Neurological Disease", "Cancer Within 3 Years",
+                "Immunosuppressed", "Sickle Cell Disease")
     
   } else {
     
@@ -143,7 +167,23 @@ character_viz <- function(df) {
     
   }
   
-  cc <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+  if (investigation_type == "secondary") {
+    
+    cc <- scales::seq_gradient_pal(
+      "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 3))
+    
+  } else if (investigation_type == "sensitivity") {
+    
+    cc <- scales::seq_gradient_pal(
+      "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 2))
+    
+  } else {
+    
+    cc <- scales::seq_gradient_pal(
+      "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 8))
+    
+  }
+  
   
   df %>%
     filter(group != "Total") %>%
@@ -173,6 +213,8 @@ character_viz <- function(df) {
 #define a function to plot a characteristic over time - different formatting
 character_viz_mult <- function(df) {
   
+  df <- df_input
+  
   names(df) <- c("characteristic", "count", "percentage", "subset")
   
   age_groups <- case_when(
@@ -188,24 +230,44 @@ character_viz_mult <- function(df) {
               "Maternal Smoking Status", "Maternal Drinking",
               "Maternal Drug Usage", "Maternal Flu Vaccination",
               "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
-              "Time Since Last Covid Vaccine", "Has Asthma", "Has COPD",
-              "Has Cystic Fibrosis", "Has Other Resp. Diseases",
-              "Has Diabetes", "Has Addison's Disease", "Severely Obese",
-              "Has CHD", "Has CKD", "Has CLD", "Has CND",
-              "Had Cancer Within 3 Years", "Immunosuppressed",
-              "Has Sickle Cell Disease", "Smoking Status",
-              "Hazardous Drinking", "Drug Usage"),
-    count = c(1, age_groups, 2, 6, 5, 5, 5, 1, 4, 1, 1, 1, 1, 1, 3, 1, 1,
-              1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 1)
+              "Time Since Last Covid Vaccine", "Smoking Status",
+              "Hazardous Drinking", "Drug Usage", "Asthma", "COPD",
+              "Cystic Fibrosis", "Other Chronic Respiratory Disease",
+              "Diabetes", "Addisons", "Severe Obesity", "Chronic Heart Disease",
+              "Chronic Kidney Disease", "Chronic Liver Disease",
+              "Chronic Neurological Disease", "Cancer Within 3 Years",
+              "Immunosuppressed", "Sickle Cell Disease"),
+    count = c(1, age_groups, 2, 6, 5, 5, 5, 1, 4, 1, 1, 1, 1, 1, 3, 4, 1,
+              1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
   )
   
-  group_counts <- group_counts %>%
-    filter(group %in% unique(df$characteristic)) %>%
-    filter(group != "Household Composition") %>%
-    group_by(group) %>%
-    uncount(weights = 8) %>%
-    mutate(season = c("2016_17", "2017_18", "2018_19", "2019_20",
-                      "2020_21", "2021_22", "2022_23", "2023_24"))
+  if (investigation_type == "secondary") {
+    
+    group_counts <- group_counts %>%
+      filter(group %in% unique(df$characteristic)) %>%
+      group_by(group) %>%
+      uncount(weights = 3) %>%
+      mutate(season = c("2017_18", "2018_19", "2020_21"))
+    
+  } else if (investigation_type == "sensitivity") {
+    
+    group_counts <- group_counts %>%
+      filter(group %in% unique(df$characteristic)) %>%
+      group_by(group) %>%
+      uncount(weights = 3) %>%
+      mutate(season = c("2017_18", "2018_19"))
+    
+  } else {
+    
+    group_counts <- group_counts %>%
+      filter(group %in% unique(df$characteristic)) %>%
+      filter(group != "Household Composition") %>%
+      group_by(group) %>%
+      uncount(weights = 8) %>%
+      mutate(season = c("2016_17", "2017_18", "2018_19", "2019_20",
+                        "2020_21", "2021_22", "2022_23", "2023_24"))
+    
+  }
   
   if (cohort != "infants" & cohort != "infants_subgroup") {
     
@@ -225,6 +287,10 @@ character_viz_mult <- function(df) {
     cbind(df_groups)
   
   df <- df %>%
+    mutate(
+      percentage = if_else(str_detect(percentage, "<0.1%"), "0.05%",
+                           percentage)
+    ) %>%
     mutate(
       percentage = substring(percentage, 1, nchar(percentage) - 1) %>%
         as.numeric(),
@@ -283,13 +349,13 @@ character_viz_mult <- function(df) {
     
   } else if (cohort == "older_adults" & investigation_type == "secondary") {
     
-    levels <- c("Has Asthma", "Has COPD", "Has Cystic Fibrosis",
-                "Has Other Resp. Diseases", "Has Diabetes",
-                "Has Addison's Disease", "Severely Obese", "Has CHD",
-                "Has CKD", "Has CLD", "Has CND", "Had Cancer Within 3 Years",
-                "Immunosuppressed", "Has Sickle Cell Disease",
-                "Smoking Status", "Hazardous Drinking", "Drug Usage",
-                "Never", "Current", "Former", "Unknown")
+    levels <- c("Never", "Current", "Former", "Unknown", "Hazardous Drinking",
+                "Drug Usage", "Asthma", "COPD", "Cystic Fibrosis",
+                "Other Chronic Respiratory Disease", "Diabetes",
+                "Addisons", "Severe Obesity", "Chronic Heart Disease",
+                "Chronic Kidney Disease", "Chronic Liver Disease",
+                "Chronic Neurological Disease", "Cancer Within 3 Years",
+                "Immunosuppressed", "Sickle Cell Disease")
     
   } else {
     
@@ -330,20 +396,28 @@ character_viz_mult <- function(df) {
             "Rurality", "Household Composition", "Maternal Age",
             "Maternal Smoking Status", "Maternal Drinking",
             "Maternal Drug Usage", "Maternal Flu Vaccination",
-            "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
-            "Time Since Last Covid Vaccine", "Has Asthma", "Has COPD",
-            "Has Cystic Fibrosis", "Has Other Resp. Diseases",
-            "Has Diabetes", "Has Addison's Disease", "Severely Obese",
-            "Has CHD", "Has CKD", "Has CLD", "Has CND",
-            "Had Cancer Within 3 Years", "Immunosuppressed",
-            "Has Sickle Cell Disease", "Smoking Status",
-            "Hazardous Drinking", "Drug Usage"),
-    col = c("#50edb2", "#f64883", "#43006f", "#b1e466", "#8e0077", "#227e00",
-            "#ff62ab", "#004e13", "#e1b1ff", "#ae9500", "#004194", "#d98116",
-            "#bb1782", "#bb1782", "#42025b", "#9dc83f", "#1d6ae0", "#5cb139",
-            "#eb3f89", "#e9d477", "#0282d4", "#ff9351", "#5f0041", "#ffab86",
-            "#ff92ec", "#724500", "#ff6688", "#611b00", "#bf668c", "#be0439",
-            "#720027")
+            "Maternal Pertussis Vaccination",
+            "Prior Flu Vaccine", "Time Since Last Covid Vaccine",
+            "Smoking Status", "Hazardous Drinking",
+            "Drug Usage", "Asthma", "COPD", "Cystic Fibrosis",
+            "Other Chronic Respiratory Disease", "Diabetes",
+            "Addisons", "Severe Obesity", "Chronic Heart Disease",
+            "Chronic Kidney Disease", "Chronic Liver Disease",
+            "Chronic Neurological Disease", "Cancer Within 3 Years",
+            "Immunosuppressed", "Sickle Cell Disease"),
+    col = c("#50edb2", "#f64883", "#43006f", "#b1e466",
+            "#8e0077", "#227e00", "#ff62ab",
+            "#004e13", "#e1b1ff",
+            "#ae9500", "#004194",
+            "#d98116",
+            "#bb1782", "#bb1782",
+            "#6a70d7", "#81307a",
+            "#45ba8a", "#d66dbe", "#50873c", "#b97fd4",
+            "#cc8331", "#628bd5",
+            "#d45e46", "#38dbda", "#e1556e",
+            "#a1863d", "#952a5e",
+            "#9b4729", "#dd6a9c",
+            "#ad4248", "#ac4258")
     )
   
   #cols2 <- cols2 %>% filter(var %in% all_groups)
@@ -384,8 +458,22 @@ character_viz_mult <- function(df) {
       plot.margin = margin(0, 0, 0, 7)
     )
   
-  plot_row <- plot_grid(plotlist = plot_list, nrow = 2)
-  
-  plot_grid(title, plot_row, ncol = 1, rel_heights = c(0.1, 1))
+  if (investigation_type == "secondary") {
+    
+    plot_row1 <- plot_grid(plotlist = plot_list[1:9], nrow = 2)
+    plot_row2 <- plot_grid(plotlist = plot_list[10:18], nrow = 2)
+    
+    one <- plot_grid(title, plot_row1, ncol = 1, rel_heights = c(0.1, 1))
+    two <- plot_grid(title, plot_row2, ncol = 1, rel_heights = c(0.1, 1))
+    
+    return(list(one, two))
+    
+  } else {
+    
+    plot_row <- plot_grid(plotlist = plot_list, nrow = 2)
+    
+    plot_grid(title, plot_row, ncol = 1, rel_heights = c(0.1, 1))
+    
+  }
   
 }
