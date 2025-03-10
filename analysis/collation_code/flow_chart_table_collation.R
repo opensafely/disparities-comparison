@@ -41,7 +41,8 @@ collated_flow_chart = rbind(
 
 #perform redaction and rounding
 collated_flow_chart <- collated_flow_chart %>% 
-  mutate_at(vars(contains("count")), ~roundmid_any(as.numeric(.))) 
+  mutate_at(vars(contains("count")), ~roundmid_any(as.numeric(.)))  %>%
+  mutate(total = roundmid_any(total))
 
 #rename count column
 collated_flow_chart <- collated_flow_chart %>%
