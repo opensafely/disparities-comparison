@@ -27,12 +27,12 @@ args = sys.argv
 study_start_date = datetime.strptime(study_dates[args[1]], "%Y-%m-%d").date()
 study_end_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
 
-#define patients age
-age_at_start_months = (study_start_date - patients.date_of_birth).months
-is_appropriate_age = (age_at_start_months <= 23) & (age_at_start_months >= 0)
+# #define patients age
+# age_at_start_months = (study_start_date - patients.date_of_birth).months
+# is_appropriate_age = (age_at_start_months <= 23) & (age_at_start_months >= 0)
 
 #define population
-dataset.define_population(is_appropriate_age)
+dataset.define_population(practice_registrations.exists_for_patient())
 
 #maternal linkage available
 dataset.mother_id = parents.mother_id
