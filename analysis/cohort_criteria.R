@@ -11,7 +11,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2016-09-01"
   study_end_date <- "2017-08-31"
-  cohort <- "infants"
+  cohort <- "infants_subgroup"
 } else {
   study_start_date <- study_dates[[args[[2]]]]
   study_end_date <- study_dates[[args[[3]]]]
@@ -90,29 +90,21 @@ if (cohort == "infants") {
 }
 
 # Define the base population for exclusion: Only consider registered and appropriate age patients
-if (cohort != "infants" & cohort != "infants_subgroup") { 
-  eligible_for_exclusion <- patients_df %>%
-    filter(registered == TRUE & is_appropriate_age == TRUE)
-} else {
+if (cohort == "infants") { 
   eligible_for_exclusion <- patients_df %>%
     filter(is_appropriate_age == TRUE)
+} else if (cohort == "infants_subgroup") {
+  eligible_for_exclusion <- patients_df %>%
+    filter(is_appropriate_age == TRUE & mother_registered == TRUE)
+} else {
+  eligible_for_exclusion <- patients_df %>%
+    filter(registered == TRUE & is_appropriate_age == TRUE)
 }
 
 if (cohort == "infants") {
   excluded_count <- sum(
     !eligible_for_exclusion$is_female_or_male |
       !eligible_for_exclusion$has_imd |
-      eligible_for_exclusion$risk_group_infants |
-      eligible_for_exclusion$care_home |
-      eligible_for_exclusion$severe_immunodeficiency,
-    na.rm = TRUE
-  )
-} else if (cohort == "infants_subgroup") {
-  excluded_count <- sum(
-    !eligible_for_exclusion$is_female_or_male |
-      !eligible_for_exclusion$has_imd |
-      !eligible_for_exclusion$mother_id_present |
-      !eligible_for_exclusion$mother_registered |
       eligible_for_exclusion$risk_group_infants |
       eligible_for_exclusion$care_home |
       eligible_for_exclusion$severe_immunodeficiency,
