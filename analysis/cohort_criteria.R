@@ -29,9 +29,11 @@ if (study_start_date == as.Date("2020-09-01") &
     here::here("output", "data", paste0("input_household_processed_", 
                year(study_start_date), "_", year(study_end_date), ".arrow")))
   
-  household_comp_vars <- tibble("patient_id" = df_household$patient_id,
-                                "num_generations"= df_household$num_generations, 
-                                "composition_category" = df_household$composition_category)
+  household_comp_vars <- tibble(
+    "patient_id" = df_household$patient_id,
+    "num_generations"= df_household$num_generations,
+    "composition_category" = df_household$composition_category
+  )
   
   patients_df <- merge(patients_df, household_comp_vars, by = "patient_id")
   
@@ -40,7 +42,8 @@ if (study_start_date == as.Date("2020-09-01") &
 patients_df <- patients_df %>%
   mutate(
     has_imd = if_else(is.na(patients_df$imd_rounded), F, T),
-    is_female_or_male = if_else(patients_df$sex == "female" | patients_df$sex == "male", T, F)
+    is_female_or_male = if_else(patients_df$sex == "female" |
+                                  patients_df$sex == "male", T, F)
   ) 
 
 # Define counts based on inclusion and exclusion criteria
@@ -59,38 +62,71 @@ not_age_count <- if (cohort == "infants" | cohort == "infants_subgroup") {
 }
 
 if (cohort == "infants_subgroup") {
-  mother_linkage_available_count <- sum(patients_df$mother_id_present, na.rm = TRUE)
-  mother_registered_spanning_count <- sum(patients_df$mother_registered, na.rm = TRUE)
+  mother_linkage_available_count <- sum(patients_df$mother_id_present,
+                                        na.rm = TRUE)
+  mother_registered_spanning_count <- sum(patients_df$mother_registered,
+                                          na.rm = TRUE)
 }
 
 if (cohort == "infants") {
-  included_count <- sum(!patients_df$severe_immunodeficiency
-                        & patients_df$is_appropriate_age & patients_df$has_imd 
-                        & patients_df$is_female_or_male & !patients_df$care_home
-                        & !patients_df$risk_group_infants, na.rm = TRUE)
-  excluded_count <- sum(!patients_df$is_female_or_male|!patients_df$is_appropriate_age
-                        |!patients_df$has_imd|patients_df$risk_group_infants
-                        |patients_df$care_home |patients_df$severe_immunodeficiency,
-                        na.rm = TRUE) 
+  included_count <- sum(!patients_df$severe_immunodeficiency &
+                        patients_df$is_appropriate_age & patients_df$has_imd &
+                        patients_df$is_female_or_male & !patients_df$care_home &
+                        !patients_df$risk_group_infants, na.rm = TRUE)
 } else if (cohort == "infants_subgroup") {
-  included_count <- sum(!patients_df$severe_immunodeficiency & patients_df$is_appropriate_age
-                        & patients_df$has_imd & patients_df$is_female_or_male 
-                        & patients_df$mother_id_present & patients_df$mother_registered
-                        & !patients_df$care_home & !patients_df$risk_group_infants, 
+  included_count <- sum(!patients_df$severe_immunodeficiency &
+                        patients_df$is_appropriate_age &
+                        patients_df$has_imd &
+                        patients_df$is_female_or_male &
+                        patients_df$mother_id_present &
+                        patients_df$mother_registered &
+                        !patients_df$care_home &
+                        !patients_df$risk_group_infants, 
                         na.rm = TRUE)
-  excluded_count <- sum(!patients_df$is_female_or_male|!patients_df$is_appropriate_age
-                        |!patients_df$has_imd|!patients_df$mother_id_present
-                        |!patients_df$mother_registered|patients_df$risk_group_infants
-                        |patients_df$care_home|patients_df$severe_immunodeficiency,
-                        na.rm = TRUE) 
 } else {
-  included_count <- sum(patients_df$registered & patients_df$is_female_or_male 
-                        & patients_df$is_appropriate_age & patients_df$has_imd 
-                        & !patients_df$care_home, na.rm = TRUE)
-  excluded_count <- sum(!patients_df$is_female_or_male|!patients_df$is_appropriate_age
-                        |!patients_df$has_imd|patients_df$care_home, 
-                        na.rm = TRUE)
+  included_count <- sum(patients_df$registered & patients_df$is_female_or_male &
+                        patients_df$is_appropriate_age & patients_df$has_imd &
+                        !patients_df$care_home, na.rm = TRUE)
 }
+
+# Define the base population for exclusion: Only consider registered and appropriate age patients
+if (cohort != "infants" & cohort != "infants_subgroup") { 
+  eligible_for_exclusion <- patients_df %>%
+    filter(registered == TRUE & is_appropriate_age == TRUE)
+} else {
+  eligible_for_exclusion <- patients_df %>%
+    filter(is_appropriate_age == TRUE)
+}
+
+if (cohort == "infants") {
+  excluded_count <- sum(
+    !eligible_for_exclusion$is_female_or_male |
+      !eligible_for_exclusion$has_imd |
+      eligible_for_exclusion$risk_group_infants |
+      eligible_for_exclusion$care_home |
+      eligible_for_exclusion$severe_immunodeficiency,
+    na.rm = TRUE
+  )
+} else if (cohort == "infants_subgroup") {
+  excluded_count <- sum(
+    !eligible_for_exclusion$is_female_or_male |
+      !eligible_for_exclusion$has_imd |
+      !eligible_for_exclusion$mother_id_present |
+      !eligible_for_exclusion$mother_registered |
+      eligible_for_exclusion$risk_group_infants |
+      eligible_for_exclusion$care_home |
+      eligible_for_exclusion$severe_immunodeficiency,
+    na.rm = TRUE
+  )
+} else {
+  excluded_count <- sum(
+    !eligible_for_exclusion$is_female_or_male |
+      !eligible_for_exclusion$has_imd |
+      eligible_for_exclusion$care_home,
+    na.rm = TRUE
+  )
+}
+
 
 ## create output directories ----
 fs::dir_create(here::here("output", "flow_chart"))
