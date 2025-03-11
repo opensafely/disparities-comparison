@@ -1956,7 +1956,7 @@ action_finalise <- function(cohort) {
                    glue("calculate_rates_rolling_{cohort}_s7_sensitive_primary"),
                    glue("calculate_rates_rolling_{cohort}_s8_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/over_time/{cohort}_rates_over_time_*.csv"))
+        csv = glue("output/collated/descriptive/over_time/{cohort}_*_rates_over_time_*.csv"))
     ),
     
     action(
@@ -2303,7 +2303,7 @@ action_finalise_older_adults <- function(cohort) {
                    glue("calculate_rates_rolling_{cohort}_s7_sensitive_primary"),
                    glue("calculate_rates_rolling_{cohort}_s8_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/over_time/{cohort}_rates_over_time_*.csv"))
+        csv = glue("output/collated/descriptive/over_time/{cohort}_*_rates_over_time_*.csv"))
     ),
     
     action(
@@ -2652,7 +2652,7 @@ action_finalise_infants <- function(cohort) {
                    glue("calculate_rates_rolling_{cohort}_s7_sensitive_primary"),
                    glue("calculate_rates_rolling_{cohort}_s8_sensitive_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/over_time/{cohort}_rates_over_time_*.csv"))
+        csv = glue("output/collated/descriptive/over_time/{cohort}_*_rates_over_time_*.csv"))
     ),
     
     action(
