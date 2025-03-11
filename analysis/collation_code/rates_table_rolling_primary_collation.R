@@ -113,11 +113,23 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
     
   }
   
-  write_csv(df_group, here::here("output", "collated", "descriptive",
-            "over_time", paste0(cohort, "_rates_over_time_", pathogen, "_",
-                                characteristic, "_collated.csv")))
+  df_group_primary <- df_group %>%
+    filter(
+      event == paste0(pathogen, "_primary")
+    )
   
-  return(df_group)
+  df_group_secondary <- df_group %>%
+    filter(
+      event == paste0(pathogen, "_secondary")
+    )
+  
+  write_csv(df_group_primary, here::here("output", "collated", "descriptive",
+            "over_time", paste0(cohort, "_primary_rates_over_time_", pathogen,
+                                "_", characteristic, "_collated.csv")))
+  
+  write_csv(df_group, here::here("output", "collated", "descriptive",
+            "over_time", paste0(cohort, "_secondary_rates_over_time_", pathogen,
+                                "_", characteristic, "_collated.csv")))
   
 }
 
