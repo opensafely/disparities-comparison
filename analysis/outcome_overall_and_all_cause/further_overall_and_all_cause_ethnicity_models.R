@@ -15,9 +15,9 @@ is_being_sourced <- sys.nframe() > 0
 if (is_being_sourced == FALSE) {
   args <- commandArgs(trailingOnly = TRUE)
   if (length(args) == 0) {
-    study_start_date <- "2016-09-01"
-    study_end_date <- "2017-08-31"
-    cohort <- "infants"
+    study_start_date <- "2017-09-01"
+    study_end_date <- "2018-08-31"
+    cohort <- "infants_subgroup"
     codelist_type <- "sensitive"
     investigation_type <- "primary"
   } else {
@@ -92,7 +92,7 @@ if (too_few_events_mild) {
 if (too_few_events_severe) {
   
   #create data frame with same columns as model output creates
-  overall_resp_severe_ses_hh_comp_further_output <- data.frame(
+  overall_resp_severe_ethnicity_further_output <- data.frame(
     term = "too few events", estimate = NA, std.error = NA,
     statistic = NA, p.value = NA, conf.low = NA, conf.high = NA)
   
