@@ -17,7 +17,7 @@ fs::dir_create(here::here("output", "collated", "descriptive", "over_time"))
 
 collate_rates_season <- function(seasons, pathogen, characteristic) {
   
-  df_group <- tibble()
+  df_group <- NULL
   
   for (i in 1:length(seasons)) {
     
@@ -28,8 +28,30 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
                           paste0("rates_over_time_", pathogen, "_", cohort, "_",
                                  season, "_specific_primary.csv")))
       
+      df_spec <- df_spec %>%
+        mutate(
+          characteristic = group,
+          group = case_when(
+            characteristic == str_detect(characteristic, "-") ~ "Age Group",
+            characteristic %in% c("Female", "Male") ~ "Sex",
+            characteristic %in% c("Asian or Asian British",
+                                  "Black or Black British", "Mixed",
+                                  "Other Ethnic Groups", "White",
+                                  "Unknown") ~ "Ethnicity",
+            characteristic %in% c("1 (least deprived)", "2", "3", "4",
+                                  "5 (most deprived)") ~ "IMD",
+            characteristic %in% c("Rural", "Urban") ~ "Rurality",
+            characteristic %in% c("Living Alone",
+                                  "Multiple of the Same Generation",
+                                  "One Other Generation",
+                                  "Three Other Generations",
+                                  "Two Other Generations") ~
+              "Household Composition"
+          )[[1]]
+        )
+      
       df_characteristic_spec <- df_spec %>%
-        filter(group == characteristic) %>%
+        filter(group == !!characteristic) %>%
         mutate(
           codelist_type = "specific",
           season = gsub("_(\\d{2})\\d{2}", "_\\1", season)
@@ -41,8 +63,30 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
                         paste0("rates_over_time_", pathogen, "_", cohort, "_",
                                season, "_sensitive_primary.csv")))
     
+    df_sens <- df_sens %>%
+      mutate(
+        characteristic = group,
+        group = case_when(
+          characteristic == str_detect(characteristic, "-") ~ "Age Group",
+          characteristic %in% c("Female", "Male") ~ "Sex",
+          characteristic %in% c("Asian or Asian British",
+                                "Black or Black British", "Mixed",
+                                "Other Ethnic Groups", "White",
+                                "Unknown") ~ "Ethnicity",
+          characteristic %in% c("1 (least deprived)", "2", "3", "4",
+                                "5 (most deprived)") ~ "IMD",
+          characteristic %in% c("Rural", "Urban") ~ "Rurality",
+          characteristic %in% c("Living Alone",
+                                "Multiple of the Same Generation",
+                                "One Other Generation",
+                                "Three Other Generations",
+                                "Two Other Generations") ~
+            "Household Composition"
+        )[[1]]
+      )
+    
     df_characteristic_sens <- df_sens %>%
-      filter(group == characteristic) %>%
+      filter(group == !!characteristic) %>%
       mutate(
         codelist_type = "sensitive",
         season = gsub("_(\\d{2})\\d{2}", "_\\1", season)
@@ -55,13 +99,15 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
       df_characteristic <- df_characteristic_sens
     }
     
+    df_group <- bind_rows(df_group, df_characteristic)
+    
   }
-  
-  df_group <- bind_rows(df_group, df_characteristic)
   
   write_csv(df_group, here::here("output", "collated", "descriptive",
             "over_time", paste0(cohort, "_rates_over_time_", pathogen, "_",
                                 characteristic, "_collated.csv")))
+  
+  return(df_group)
   
 }
 
@@ -84,11 +130,7 @@ collate_rates_characteristic <- function(characteristics, pathogens) {
       
     }
     
-    if (pathogen == "covid") {
-      collate_rates_season(seasons_covid, pathogen, "composition_category")
-    } else {
-      collate_rates_season(seasons, pathogen, "composition_category")
-    }
+    collate_rates_season("2020_2021", pathogen, "Household Composition")
     
   }
   
@@ -104,8 +146,7 @@ seasons_covid <- c("2019_2020", "2020_2021", "2021_2022", "2022_2023",
                    "2023_2024")
 
 #define characteristics
-characteristics <- c("age_band", "sex", "latest_ethnicity_group",
-                     "imd_quintile", "rurality_classification")
+characteristics <- c("Age Group", "Sex", "Ethnicity", "IMD", "Rurality")
 
 #run function
 collate_rates_characteristic(characteristics, pathogens)
