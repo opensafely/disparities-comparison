@@ -19,6 +19,11 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
   
   df_group <- NULL
   
+  pathogen <- "rsv"
+  seasons <- c("2016_2017", "2017_2018", "2018_2019", "2019_2020", "2020_2021",
+               "2021_2022", "2022_2023", "2023_2024")
+  characteristic <- "Sex"
+  
   for (i in 1:length(seasons)) {
     
     season <- seasons[i]
@@ -50,7 +55,7 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
                                   "One Other Generation",
                                   "Three Other Generations",
                                   "Two Other Generations") ~
-              "Household Composition"
+              "Household_Composition"
           )
         )
       
@@ -91,7 +96,7 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
                                 "One Other Generation",
                                 "Three Other Generations",
                                 "Two Other Generations") ~
-            "Household Composition"
+            "Household_Composition"
         )
       )
     
@@ -115,19 +120,19 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
   
   df_group_primary <- df_group %>%
     filter(
-      event == paste0(pathogen, "_primary")
+      event == paste0(pathogen, "_primary_date")
     )
   
   df_group_secondary <- df_group %>%
     filter(
-      event == paste0(pathogen, "_secondary")
+      event == paste0(pathogen, "_secondary_date")
     )
   
   write_csv(df_group_primary, here::here("output", "collated", "descriptive",
             "over_time", paste0(cohort, "_primary_rates_over_time_", pathogen,
                                 "_", characteristic, "_collated.csv")))
   
-  write_csv(df_group, here::here("output", "collated", "descriptive",
+  write_csv(df_group_secondary, here::here("output", "collated", "descriptive",
             "over_time", paste0(cohort, "_secondary_rates_over_time_", pathogen,
                                 "_", characteristic, "_collated.csv")))
   
@@ -152,7 +157,7 @@ collate_rates_characteristic <- function(characteristics, pathogens) {
       
     }
     
-    collate_rates_season("2020_2021", pathogen, "Household Composition")
+    collate_rates_season("2020_2021", pathogen, "Household_Composition")
     
   }
   
