@@ -82,7 +82,10 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
                                 "Unknown") ~ "Ethnicity",
           characteristic %in% c("1 (least deprived)", "2", "3", "4",
                                 "5 (most deprived)") ~ "IMD",
-          characteristic %in% c("Rural", "Urban") ~ "Rurality",
+          characteristic %in% c(
+            "Rural Town and Fringe", "Rural Village and Dispersed",
+            "Urban City and Town", "Urban Major Conurbation",
+            "Urban Minor Conurbation") ~ "Rurality",
           characteristic %in% c("Living Alone",
                                 "Multiple of the Same Generation",
                                 "One Other Generation",
