@@ -145,13 +145,14 @@ character_viz <- function(df) {
     
   } else if (cohort == "older_adults" & investigation_type == "secondary") {
     
-    levels <- c("Never", "Current", "Former", "Unknown", "Hazardous Drinking",
-                "Drug Usage", "Asthma", "COPD", "Cystic Fibrosis",
+    levels <- c("Asthma", "COPD", "Cystic Fibrosis",
                 "Other Chronic Respiratory Disease", "Diabetes",
                 "Addisons", "Severe Obesity", "Chronic Heart Disease",
                 "Chronic Kidney Disease", "Chronic Liver Disease",
                 "Chronic Neurological Disease", "Cancer Within 3 Years",
-                "Immunosuppressed", "Sickle Cell Disease")
+                "Immunosuppressed", "Sickle Cell Disease",
+                "Never", "Current", "Former", "Unknown", "Hazardous Drinking",
+                "Drug Usage")
     
   } else {
     
@@ -167,30 +168,56 @@ character_viz <- function(df) {
     
   }
   
-  if (investigation_type == "secondary") {
-    
-    cc <- scales::seq_gradient_pal(
-      "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 3))
-    
-  } else if (investigation_type == "sensitivity") {
-    
-    cc <- scales::seq_gradient_pal(
-      "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 2))
-    
-  } else {
+  if (investigation_type == "primary") {
     
     cc <- scales::seq_gradient_pal(
       "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 8))
     
+  } else if (investigation_type == "secondary") {
+    
+    cc_full <- scales::seq_gradient_pal(
+      "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 8))
+    
+    cc <- c(cc_full[2], cc_full[3], cc_full[5])
+    
+  } else {
+    
+        cc_full <- scales::seq_gradient_pal(
+      "#F05039", "#1F449c", "Lab")(seq(0, 1, length.out = 8))
+    
+    cc <- c(cc_full[2], cc_full[3], cc_full[5])
+    
   }
   
+  if (investigation_type == "secondary") {
+    
+    group_order <- c("Asthma", "COPD", "Cystic Fibrosis",
+                     "Other Chronic Respiratory Disease", "Diabetes",
+                     "Addisons", "Severe Obesity", "Chronic Heart Disease",
+                     "Chronic Kidney Disease", "Chronic Liver Disease",
+                     "Chronic Neurological Disease", "Cancer Within 3 Years",
+                     "Immunosuppressed", "Sickle Cell Disease",
+                     "Smoking Status", "Hazardous Drinking",
+                     "Drug Usage")
+    
+  } else {
+    
+    group_order <- c("Age Group", "Sex", "Ethnicity", "IMD",
+                     "Rurality", "Household Composition", "Maternal Age",
+                     "Maternal Smoking Status", "Maternal Drinking",
+                     "Maternal Drug Usage", "Maternal Flu Vaccination",
+                     "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
+                     "Time Since Last Covid Vaccine")
+    
+  }
   
   df %>%
     filter(group != "Total") %>%
     mutate(
       characteristic = forcats::fct_relevel(factor(characteristic),
                                             levels),
-      subset = str_to_title(gsub("_", "-", subset))
+      subset = str_to_title(gsub("_", "-", subset)),
+      group = factor(group, levels = group_order)
     ) %>%
     mutate(
       across(characteristic, \(x) factor(
@@ -199,6 +226,20 @@ character_viz <- function(df) {
         labels = str_wrap(levels(x), width = 15)
       ))
     ) %>%
+    mutate(
+      across(group, \(x) factor(
+        x,
+        levels = levels(x),
+        labels = str_wrap(levels(x), width = 15)
+      ))
+    ) %>%
+    mutate(
+      characteristic = if_else(
+        group %in% c("Age Group", "Sex", "Ethnicity", "IMD", "Rurality",
+                     "Household Composition", "Maternal Age",
+                     "Maternal Smoking Status", "Time Since Last Covid Vaccine",
+                     "Smoking Status"), characteristic, "Yes")
+    ) %>%
     ggplot(aes(fill = subset, y = percentage, x = characteristic)) +
     geom_bar(stat = "identity", position = "dodge", color = "white") +
     facet_wrap(~group, scales = "free") +
@@ -206,14 +247,16 @@ character_viz <- function(df) {
     theme_bw() + scale_fill_manual(values = cc) +
     labs(title = "Participant Characteristics", x = "Characteristic",
          y = "Percentage (%)") +
-    guides(fill = guide_legend(title = "Season")) 
+    guides(fill = guide_legend(title = "Season")) +
+    theme(
+      strip.text = element_text(size = 8),
+      axis.text = element_text(size = 7)
+    )
   
 }
 
 #define a function to plot a characteristic over time - different formatting
 character_viz_mult <- function(df) {
-  
-  df <- df_input
   
   names(df) <- c("characteristic", "count", "percentage", "subset")
   
@@ -293,7 +336,7 @@ character_viz_mult <- function(df) {
     ) %>%
     mutate(
       percentage = substring(percentage, 1, nchar(percentage) - 1) %>%
-        as.numeric(),
+        as.numeric()
     )
   
   #define levels
@@ -349,13 +392,14 @@ character_viz_mult <- function(df) {
     
   } else if (cohort == "older_adults" & investigation_type == "secondary") {
     
-    levels <- c("Never", "Current", "Former", "Unknown", "Hazardous Drinking",
-                "Drug Usage", "Asthma", "COPD", "Cystic Fibrosis",
+    levels <- c("Asthma", "COPD", "Cystic Fibrosis",
                 "Other Chronic Respiratory Disease", "Diabetes",
                 "Addisons", "Severe Obesity", "Chronic Heart Disease",
                 "Chronic Kidney Disease", "Chronic Liver Disease",
                 "Chronic Neurological Disease", "Cancer Within 3 Years",
-                "Immunosuppressed", "Sickle Cell Disease")
+                "Immunosuppressed", "Sickle Cell Disease",
+                "Never", "Current", "Former", "Unknown", "Hazardous Drinking",
+                "Drug Usage")
     
   } else {
     
@@ -369,6 +413,28 @@ character_viz_mult <- function(df) {
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
                 "Prior Flu Vaccine", "0-6m", "6-12m", "12m+")
+    
+  }
+  
+  if (investigation_type == "secondary") {
+    
+    group_order <- c("Asthma", "COPD", "Cystic Fibrosis",
+                     "Other Chronic Respiratory Disease", "Diabetes",
+                     "Addisons", "Severe Obesity", "Chronic Heart Disease",
+                     "Chronic Kidney Disease", "Chronic Liver Disease",
+                     "Chronic Neurological Disease", "Cancer Within 3 Years",
+                     "Immunosuppressed", "Sickle Cell Disease",
+                     "Smoking Status", "Hazardous Drinking",
+                     "Drug Usage")
+    
+  } else {
+    
+    group_order <- c("Age Group", "Sex", "Ethnicity", "IMD",
+                     "Rurality", "Household Composition", "Maternal Age",
+                     "Maternal Smoking Status", "Maternal Drinking",
+                     "Maternal Drug Usage", "Maternal Flu Vaccination",
+                     "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
+                     "Time Since Last Covid Vaccine")
     
   }
   
@@ -387,7 +453,8 @@ character_viz_mult <- function(df) {
       ))
     )
   
-  all_groups <- unique(df$group)
+  all_groups <- group_order[group_order %in% unique(df$group)]
+  print(all_groups)
   
   plot_list <- list()
   
@@ -398,26 +465,26 @@ character_viz_mult <- function(df) {
             "Maternal Drug Usage", "Maternal Flu Vaccination",
             "Maternal Pertussis Vaccination",
             "Prior Flu Vaccine", "Time Since Last Covid Vaccine",
-            "Smoking Status", "Hazardous Drinking",
-            "Drug Usage", "Asthma", "COPD", "Cystic Fibrosis",
+            "Asthma", "COPD", "Cystic Fibrosis",
             "Other Chronic Respiratory Disease", "Diabetes",
             "Addisons", "Severe Obesity", "Chronic Heart Disease",
             "Chronic Kidney Disease", "Chronic Liver Disease",
             "Chronic Neurological Disease", "Cancer Within 3 Years",
-            "Immunosuppressed", "Sickle Cell Disease"),
+            "Immunosuppressed", "Sickle Cell Disease",
+            "Smoking Status", "Hazardous Drinking", "Drug Usage"),
     col = c("#50edb2", "#f64883", "#43006f", "#b1e466",
             "#8e0077", "#227e00", "#ff62ab",
             "#004e13", "#e1b1ff",
             "#ae9500", "#004194",
             "#d98116",
             "#bb1782", "#bb1782",
-            "#6a70d7", "#81307a",
-            "#45ba8a", "#d66dbe", "#50873c", "#b97fd4",
+            "#d66dbe", "#50873c", "#b97fd4",
             "#cc8331", "#628bd5",
             "#d45e46", "#38dbda", "#e1556e",
             "#a1863d", "#952a5e",
             "#9b4729", "#dd6a9c",
-            "#ad4248", "#ac4258")
+            "#ad4248", "#ac4258",
+            "#6a70d7", "#81307a", "#45ba8a")
     )
   
   #cols2 <- cols2 %>% filter(var %in% all_groups)
@@ -432,6 +499,16 @@ character_viz_mult <- function(df) {
       filter(group == !!group)
     alpha_length <-  length(unique(alpha_length$characteristic))
     
+    df <-  df %>%
+      mutate(
+        characteristic = if_else(
+          group %in% c("Age Group", "Sex", "Ethnicity", "IMD",
+                                "Rurality", "Household Composition",
+                                "Maternal Age", "Maternal Smoking Status",
+                                "Time Since Last Covid Vaccine",
+                                "Smoking Status"), characteristic, "Yes")
+      )
+    
     plot_list[[group]] <- df %>%
       filter(group == !!group) %>%
       ggplot(aes(alpha = characteristic, y = percentage,
@@ -439,40 +516,59 @@ character_viz_mult <- function(df) {
       geom_bar(stat = "identity", position = "dodge",
                color = "white", fill = fill_col) +
       theme_bw() + scale_alpha_manual(
-        values = c(seq(0.25, 1, length.out = alpha_length))) +
-      labs(x = "Season", y = "Percentage (%)") + #, title = group) +
-      guides(fill = guide_legend(
-        title = str_to_title(group),
-        theme = theme(legend.text = element_text(size = 8),
-                      legend.key.height = unit(1, "cm")))) 
+        values = c(seq(1, 0.25, length.out = alpha_length))) +
+      labs(x = "Season", y = "Percentage (%)") + 
+      guides(alpha = guide_legend(
+               title = str_wrap(group, width = 10),
+               theme = theme(legend.title = element_text(size = 8))))
     
   }
   
-  plot_title <- title <- ggdraw() + 
-    draw_label(
-      "Participant Characteristics",
-      x = 0,
-      hjust = 0
-    ) +
-    theme(
-      plot.margin = margin(0, 0, 0, 7)
-    )
-  
   if (investigation_type == "secondary") {
     
-    plot_row1 <- plot_grid(plotlist = plot_list[1:9], nrow = 2)
-    plot_row2 <- plot_grid(plotlist = plot_list[10:18], nrow = 2)
+    plot_title <- ggdraw() + 
+        draw_label(
+          "Participant Characteristics by Season",
+          x = 0,
+          hjust = 0
+        ) + theme_bw() +
+        theme(
+          plot.margin = margin(0, 0, 0, 7),
+          panel.border = element_blank(),
+        )
     
-    one <- plot_grid(title, plot_row1, ncol = 1, rel_heights = c(0.1, 1))
-    two <- plot_grid(title, plot_row2, ncol = 1, rel_heights = c(0.1, 1))
+    title1 <- "Participant Characteristics by Season (Panel A)"
+    title2 <- "Participant Characteristics by Season (Panel B)"
+    title3 <- "Participant Characteristics by Season (Panel C)"
     
-    return(list(one, two))
+    plot_row1 <- plot_grid(plotlist = plot_list[1:6], nrow = 2)
+    plot_row2 <- plot_grid(plotlist = plot_list[7:12], nrow = 2)
+    plot_row3 <- plot_grid(plotlist = plot_list[13:17], nrow = 2)
+    
+    one <- plot_grid(plot_title, plot_row1, ncol = 1,
+                     rel_heights = c(0.1, 1))
+    two <- plot_grid(plot_title, plot_row2, ncol = 1,
+                     rel_heights = c(0.1, 1))
+    three <- plot_grid(plot_title, plot_row3, ncol = 1,
+                       rel_heights = c(0.1, 1))
+    
+    return(list(one, two, three, title1, title2, title3))
     
   } else {
     
+    plot_title <- ggdraw() + 
+      draw_label(
+        "Participant Characteristics by Season",
+        x = 0,
+        hjust = 0
+      ) +
+      theme(
+        plot.margin = margin(0, 0, 0, 7)
+      )
+    
     plot_row <- plot_grid(plotlist = plot_list, nrow = 2)
     
-    plot_grid(title, plot_row, ncol = 1, rel_heights = c(0.1, 1))
+    plot_grid(plot_title, plot_row, ncol = 1, rel_heights = c(0.1, 1))
     
   }
   
