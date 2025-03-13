@@ -19,3 +19,4 @@ filtered_actions.txt
 /example-data/*
 analysis/old_model_files/*
 /post_check/output/*
+/post_check/plots/*
