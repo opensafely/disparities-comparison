@@ -5,9 +5,6 @@ library(ggplot2)
 library(stringr)
 library(khroma)
 
-## create output directories ----
-fs::dir_create(here::here("post_check", "functions"))
-
 #define a function to plot a characteristic over time
 character_viz <- function(df) {
   
@@ -22,7 +19,7 @@ character_viz <- function(df) {
   # Define mapping of characteristic to number of categories
   group_counts <- tibble(
     group = c("Total", "Age Group", "Sex", "Ethnicity", "IMD",
-              "Rurality", "Household Composition", "Maternal Age",
+              "Household Composition", "Rurality", "Maternal Age",
               "Maternal Smoking Status", "Maternal Drinking",
               "Maternal Drug Usage", "Maternal Flu Vaccination",
               "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
@@ -39,25 +36,26 @@ character_viz <- function(df) {
   
   if (investigation_type == "secondary") {
     
-    group_counts <- group_counts %>%
+    group_counts2 <- group_counts %>%
       filter(group %in% unique(df$characteristic)) %>%
       group_by(group) %>%
       uncount(weights = 3) %>%
       mutate(season = c("2017_18", "2018_19", "2020_21"))
-  
+    
   } else if (investigation_type == "sensitivity") {
     
-    group_counts <- group_counts %>%
+    group_counts2 <- group_counts %>%
       filter(group %in% unique(df$characteristic)) %>%
       group_by(group) %>%
-      uncount(weights = 3) %>%
+      uncount(weights = 2) %>%
       mutate(season = c("2017_18", "2018_19"))  
     
   } else {
     
-    group_counts <- group_counts %>%
+    group_counts2 <- group_counts %>%
       filter(group %in% unique(df$characteristic)) %>%
-      filter(group != "Household Composition") %>%
+      filter(group != "Household Composition",
+             group != "Time Since Last Covid Vaccine") %>%
       group_by(group) %>%
       uncount(weights = 8) %>%
       mutate(season = c("2016_17", "2017_18", "2018_19", "2019_20",
@@ -65,18 +63,48 @@ character_viz <- function(df) {
     
   }
   
-  if (cohort != "infants" & cohort != "infants_subgroup") {
+  if (cohort != "infants" & cohort != "infants_subgroup" &
+      investigation_type == "primary") {
     
     group_counts_hh <- group_counts %>%
       filter(group == "Household Composition") %>%
       mutate(season = "2020_21") 
     
-    group_counts <- bind_rows(group_counts, group_counts_hh)
-  
+    group_counts_covid <- group_counts %>%
+      filter(group == "Time Since Last Covid Vaccine") %>%
+      uncount(weights = 3) %>%
+      mutate(season = c("2021_22", "2022_23", "2023_24"))
+    
+    group_counts <- bind_rows(group_counts2, group_counts_hh,
+                              group_counts_covid)
+    
+    group_counts <- group_counts %>%
+      arrange(season)
+    
+  } else {
+    
+    group_counts <- group_counts2
+    
   }
   
   df_groups <- uncount(group_counts, weights = count) %>%
-    arrange(season)
+    arrange(season) %>%
+    mutate(
+      group = factor(group, levels = c(
+        "Total", "Age Group", "Sex", "Ethnicity", "IMD",
+        "Household Composition", "Rurality", "Maternal Age",
+        "Maternal Smoking Status", "Maternal Drinking",
+        "Maternal Drug Usage", "Maternal Flu Vaccination",
+        "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
+        "Time Since Last Covid Vaccine", "Smoking Status",
+        "Hazardous Drinking", "Drug Usage", "Asthma", "COPD",
+        "Cystic Fibrosis", "Other Chronic Respiratory Disease",
+        "Diabetes", "Addisons", "Severe Obesity", "Chronic Heart Disease",
+        "Chronic Kidney Disease", "Chronic Liver Disease",
+        "Chronic Neurological Disease", "Cancer Within 3 Years",
+        "Immunosuppressed", "Sickle Cell Disease"))
+    ) %>%
+    arrange(season, factor(group, levels = levels(group)))  
   
   df <- df %>%
     filter(!is.na(percentage)) %>%
@@ -203,14 +231,14 @@ character_viz <- function(df) {
   } else {
     
     group_order <- c("Age Group", "Sex", "Ethnicity", "IMD",
-                     "Rurality", "Household Composition", "Maternal Age",
+                     "Household Composition", "Rurality", "Maternal Age",
                      "Maternal Smoking Status", "Maternal Drinking",
                      "Maternal Drug Usage", "Maternal Flu Vaccination",
                      "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
                      "Time Since Last Covid Vaccine")
     
   }
-  
+
   df %>%
     filter(group != "Total") %>%
     mutate(
@@ -223,22 +251,23 @@ character_viz <- function(df) {
       across(characteristic, \(x) factor(
         x,
         levels = levels(x),
-        labels = str_wrap(levels(x), width = 15)
+        labels = str_wrap(levels(x), width = 12)
       ))
+    ) %>%
+    mutate(
+      characteristic = if_else(
+        group %in% c(
+          "Age Group", "Sex", "Ethnicity", "IMD", "Household Composition",
+          "Rurality", "Maternal Age", "Maternal Smoking Status",
+          "Time Since Last Covid Vaccine", "Smoking Status"),
+        characteristic, "Yes")
     ) %>%
     mutate(
       across(group, \(x) factor(
         x,
         levels = levels(x),
-        labels = str_wrap(levels(x), width = 15)
+        labels = str_wrap(levels(x), width = 20)
       ))
-    ) %>%
-    mutate(
-      characteristic = if_else(
-        group %in% c("Age Group", "Sex", "Ethnicity", "IMD", "Rurality",
-                     "Household Composition", "Maternal Age",
-                     "Maternal Smoking Status", "Time Since Last Covid Vaccine",
-                     "Smoking Status"), characteristic, "Yes")
     ) %>%
     ggplot(aes(fill = subset, y = percentage, x = characteristic)) +
     geom_bar(stat = "identity", position = "dodge", color = "white") +
@@ -269,7 +298,7 @@ character_viz_mult <- function(df) {
   # Define mapping of characteristic to number of categories
   group_counts <- tibble(
     group = c("Total", "Age Group", "Sex", "Ethnicity", "IMD",
-              "Rurality", "Household Composition", "Maternal Age",
+              "Household Composition", "Rurality", "Maternal Age",
               "Maternal Smoking Status", "Maternal Drinking",
               "Maternal Drug Usage", "Maternal Flu Vaccination",
               "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
@@ -286,7 +315,7 @@ character_viz_mult <- function(df) {
   
   if (investigation_type == "secondary") {
     
-    group_counts <- group_counts %>%
+    group_counts2 <- group_counts %>%
       filter(group %in% unique(df$characteristic)) %>%
       group_by(group) %>%
       uncount(weights = 3) %>%
@@ -294,17 +323,18 @@ character_viz_mult <- function(df) {
     
   } else if (investigation_type == "sensitivity") {
     
-    group_counts <- group_counts %>%
+    group_counts2 <- group_counts %>%
       filter(group %in% unique(df$characteristic)) %>%
       group_by(group) %>%
-      uncount(weights = 3) %>%
-      mutate(season = c("2017_18", "2018_19"))
+      uncount(weights = 2) %>%
+      mutate(season = c("2017_18", "2018_19"))  
     
   } else {
     
-    group_counts <- group_counts %>%
+    group_counts2 <- group_counts %>%
       filter(group %in% unique(df$characteristic)) %>%
-      filter(group != "Household Composition") %>%
+      filter(group != "Household Composition",
+             group != "Time Since Last Covid Vaccine") %>%
       group_by(group) %>%
       uncount(weights = 8) %>%
       mutate(season = c("2016_17", "2017_18", "2018_19", "2019_20",
@@ -312,18 +342,48 @@ character_viz_mult <- function(df) {
     
   }
   
-  if (cohort != "infants" & cohort != "infants_subgroup") {
+  if (cohort != "infants" & cohort != "infants_subgroup" &
+      investigation_type == "primary") {
     
     group_counts_hh <- group_counts %>%
       filter(group == "Household Composition") %>%
       mutate(season = "2020_21") 
     
-    group_counts <- bind_rows(group_counts, group_counts_hh)
+    group_counts_covid <- group_counts %>%
+      filter(group == "Time Since Last Covid Vaccine") %>%
+      uncount(weights = 3) %>%
+      mutate(season = c("2021_22", "2022_23", "2023_24"))
+    
+    group_counts <- bind_rows(group_counts2, group_counts_hh,
+                              group_counts_covid)
+    
+    group_counts <- group_counts %>%
+      arrange(season)
+    
+  } else {
+    
+    group_counts <- group_counts2
     
   }
   
   df_groups <- uncount(group_counts, weights = count) %>%
-    arrange(season)
+    arrange(season) %>%
+    mutate(
+      group = factor(group, levels = c(
+        "Total", "Age Group", "Sex", "Ethnicity", "IMD",
+        "Household Composition", "Rurality", "Maternal Age",
+        "Maternal Smoking Status", "Maternal Drinking",
+        "Maternal Drug Usage", "Maternal Flu Vaccination",
+        "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
+        "Time Since Last Covid Vaccine", "Smoking Status",
+        "Hazardous Drinking", "Drug Usage", "Asthma", "COPD",
+        "Cystic Fibrosis", "Other Chronic Respiratory Disease",
+        "Diabetes", "Addisons", "Severe Obesity", "Chronic Heart Disease",
+        "Chronic Kidney Disease", "Chronic Liver Disease",
+        "Chronic Neurological Disease", "Cancer Within 3 Years",
+        "Immunosuppressed", "Sickle Cell Disease"))
+    ) %>%
+    arrange(season, factor(group, levels = levels(group)))  
   
   df <- df %>%
     filter(!is.na(percentage)) %>%
@@ -430,7 +490,7 @@ character_viz_mult <- function(df) {
   } else {
     
     group_order <- c("Age Group", "Sex", "Ethnicity", "IMD",
-                     "Rurality", "Household Composition", "Maternal Age",
+                     "Household Composition", "Rurality", "Maternal Age",
                      "Maternal Smoking Status", "Maternal Drinking",
                      "Maternal Drug Usage", "Maternal Flu Vaccination",
                      "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
@@ -454,13 +514,12 @@ character_viz_mult <- function(df) {
     )
   
   all_groups <- group_order[group_order %in% unique(df$group)]
-  print(all_groups)
   
   plot_list <- list()
   
   cols2 <- tibble(
     var = c("Age Group", "Sex", "Ethnicity", "IMD",
-            "Rurality", "Household Composition", "Maternal Age",
+            "Household Composition", "Rurality", "Maternal Age",
             "Maternal Smoking Status", "Maternal Drinking",
             "Maternal Drug Usage", "Maternal Flu Vaccination",
             "Maternal Pertussis Vaccination",
@@ -502,11 +561,11 @@ character_viz_mult <- function(df) {
     df <-  df %>%
       mutate(
         characteristic = if_else(
-          group %in% c("Age Group", "Sex", "Ethnicity", "IMD",
-                                "Rurality", "Household Composition",
-                                "Maternal Age", "Maternal Smoking Status",
-                                "Time Since Last Covid Vaccine",
-                                "Smoking Status"), characteristic, "Yes")
+          as.character(group) %in% c(
+            "Age Group", "Sex", "Ethnicity", "IMD", "Household Composition",
+            "Rurality", "Maternal Age", "Maternal Smoking Status",
+            "Time Since Last Covid Vaccine", "Smoking Status"),
+          characteristic, "Yes")
       )
     
     plot_list[[group]] <- df %>%
@@ -566,9 +625,16 @@ character_viz_mult <- function(df) {
         plot.margin = margin(0, 0, 0, 7)
       )
     
-    plot_row <- plot_grid(plotlist = plot_list, nrow = 2)
+    title1 <- "Participant Characteristics by Season (Panel A)"
+    title2 <- "Participant Characteristics by Season (Panel B)"
     
-    plot_grid(plot_title, plot_row, ncol = 1, rel_heights = c(0.1, 1))
+    plot_row1 <- plot_grid(plotlist = plot_list[1:3], nrow = 2)
+    plot_row2 <- plot_grid(plotlist = plot_list[4:6], nrow = 2)
+    
+    one <- plot_grid(plot_title, plot_row1, ncol = 1, rel_heights = c(0.1, 1))
+    two <- plot_grid(plot_title, plot_row2, ncol = 1, rel_heights = c(0.1, 1))
+    
+    return(list(one, two, title1, title2))
     
   }
   

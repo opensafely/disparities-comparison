@@ -207,7 +207,7 @@ rate_viz <- function(df, pathogen, outcome_type) {
     mutate(
       Group = if_else(Characteristic %in% c( "Total",
         "Age Group", "Sex", "Ethnicity", "IMD Quintile",
-        "Rurality Classification", "Household Composition Category",
+        "Household Composition Category", "Rurality Classification",
         "Maternal Age", "Maternal Smoking Status",
         "Time Since Last Covid Vaccine", "Smoking Status"), Group,
         paste0(Characteristic, " (", Group, ")"))
@@ -474,7 +474,7 @@ rate_viz_season <- function(df, pathogen, outcome_type) {
     mutate(
       Group = if_else(Characteristic %in% c( "Total",
         "Age Group", "Sex", "Ethnicity", "IMD Quintile",
-        "Rurality Classification", "Household Composition Category",
+        "Household Composition Category", "Rurality Classification",
         "Maternal Age", "Maternal Smoking Status",
         "Time Since Last Covid Vaccine", "Smoking Status"), Group,
         paste0(Characteristic, " (", Group, ")"))
@@ -683,7 +683,7 @@ rate_viz_mult <- function(df, pathogen, outcome_type) {
     mutate(
       Group = if_else(Characteristic %in% c( "Total",
         "Age Group", "Sex", "Ethnicity", "IMD Quintile",
-        "Rurality Classification", "Household Composition Category",
+        "Household Composition Category", "Rurality Classification",
         "Maternal Age", "Maternal Smoking Status",
         "Time Since Last Covid Vaccine", "Smoking Status"), Group,
         paste0(Characteristic, " (", Group, ")"))
@@ -733,11 +733,11 @@ rate_viz_mult <- function(df, pathogen, outcome_type) {
       scale_alpha_manual(name = "Season and Phenotype",
                          values = c(rep(c(1, 0.5), 8))) +
       labs(title = paste0("Rates of ", outcome_type, " ", pathogen,
-                          " by ", group), x = "Season",
+                          " by ", group, " Over Seasons"), x = "Season",
            y = "Rate per 1000 person-years")
     
   }
   
-  return(list(plot_list))
+  return(plot_list)
   
 }
