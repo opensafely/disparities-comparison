@@ -7,9 +7,6 @@ library(lubridate)
 library(cowplot)
 library(stringr)
 
-## create output directories ----
-fs::dir_create(here("post_check", "primary_analyses"))
-
 cohort <- "infants"
 pathogen <- "rsv"
 investigation_type <- "primary"
@@ -23,6 +20,13 @@ df_dummy <- read_feather(
 
 #import plot function
 source(here::here("post_check", "functions", "forest.R"))
+
+#extract models for which there were too few events
+df_few <- df_input %>%
+  filter(term == "too few events")
+
+df_input <- df_input %>%
+  filter(term != "too few events")
 
 ##create relevant forest plots - mild
 
@@ -67,7 +71,6 @@ rsv_ethnicity_ses_mild_spec_alt <- forest_year(
 rsv_ethnicity_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )$sens
-
 
 ##create relevant forest plots - severe
 
@@ -115,35 +118,30 @@ rsv_ethnicity_ses_severe_sens_alt <- forest_year(
 
 #create list of plots
 plotlist <- list(
-  rsv_ethnicity_mild_spec,
-  rsv_ethnicity_mild_spec_alt,
-  rsv_ethnicity_mild_sens,
-  rsv_ethnicity_mild_sens_alt,
-  rsv_ethnicity_severe_spec,
-  rsv_ethnicity_severe_spec_alt,
-  rsv_ethnicity_severe_sens,
-  rsv_ethnicity_severe_sens_alt,
-  rsv_ses_mild_spec,
-  rsv_ses_mild_spec_alt,
-  rsv_ses_mild_sens,
-  rsv_ses_mild_sens_alt,
-  rsv_ses_severe_spec,
-  rsv_ses_severe_spec_alt,
-  rsv_ses_severe_sens,
-  rsv_ses_severe_sens_alt,
-  rsv_ethnicity_ses_mild_spec,
-  rsv_ethnicity_ses_mild_spec_alt,
-  rsv_ethnicity_ses_mild_sens,
-  rsv_ethnicity_ses_mild_sens_alt,
-  rsv_ethnicity_ses_severe_spec,
-  rsv_ethnicity_ses_severe_spec_alt,
-  rsv_ethnicity_ses_severe_sens,
-  rsv_ethnicity_ses_severe_sens_alt
+  rsv_ethnicity_mild_spec, rsv_ethnicity_mild_spec_alt,
+  rsv_ethnicity_mild_sens, rsv_ethnicity_mild_sens_alt,
+  rsv_ethnicity_severe_spec, rsv_ethnicity_severe_spec_alt,
+  rsv_ethnicity_severe_sens, rsv_ethnicity_severe_sens_alt,
+  rsv_ses_mild_spec, rsv_ses_mild_spec_alt,
+  rsv_ses_mild_sens, rsv_ses_mild_sens_alt,
+  rsv_ses_severe_spec, rsv_ses_severe_spec_alt,
+  rsv_ses_severe_sens, rsv_ses_severe_sens_alt,
+  rsv_ethnicity_ses_mild_spec, rsv_ethnicity_ses_mild_spec_alt,
+  rsv_ethnicity_ses_mild_sens, rsv_ethnicity_ses_mild_sens_alt,
+  rsv_ethnicity_ses_severe_spec, rsv_ethnicity_ses_severe_spec_alt,
+  rsv_ethnicity_ses_severe_sens, rsv_ethnicity_ses_severe_sens_alt
 )
 
 #plot all
 for(p in plotlist) {
   
   print(p)
+  title_name <- p$labels$title
+  subtitle_name <- p$labels$subtitle
+  saveas <- paste0(gsub(" ", "_", title_name), "_",
+                   gsub(" ", "_", subtitle_name))
+  ggsave(here("post_check", "plots", "primary_analyses", "models",
+              paste0(str_to_title(cohort), "_", saveas, ".png")),
+         p, height = 8, width = 15)
   
 }

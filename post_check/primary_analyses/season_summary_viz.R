@@ -5,8 +5,10 @@ library(lubridate)
 library(cowplot)
 library(stringr)
 
-## create output directories ----
-fs::dir_create(here("post_check", "primary_analyses"))
+#import plot function
+source(here::here("post_check", "functions", "rates_visualisation.R"))
+
+###infants 
 
 cohort <- "infants"
 investigation_type <- "primary"
@@ -14,9 +16,6 @@ investigation_type <- "primary"
 #import collated table 1 outputs
 df_input <- read_csv(here::here("post_check", "output", "collated", "descriptive",
                                 paste0(cohort, "_rates_primary_collated.csv")))
-
-#import plot function
-source(here::here("post_check", "functions", "rates_visualisation.R"))
 
 ##plot rates for infants
 
@@ -56,24 +55,187 @@ infants_season_overall_severe <- rate_viz_season(df_input, "Overall Respiratory"
 infants_characters_overall_severe <- rate_viz_mult(df_input, "Overall Respiratory",
                                                    "Severe")
 
-
 #create list of plots
-plotlist <- list(
-  infants_rsv_mild, infants_season_rsv_mild, infants_characters_rsv_mild,
-  infants_rsv_severe, infants_season_rsv_severe, infants_characters_rsv_severe,
-  infants_flu_mild, infants_season_flu_mild, infants_characters_flu_mild,
-  infants_flu_severe, infants_season_flu_severe, infants_characters_flu_severe,
-  infants_covid_mild, infants_season_covid_mild, infants_characters_covid_mild,
-  infants_covid_severe, infants_season_covid_severe,
-  infants_characters_covid_severe, infants_overall_mild,
-  infants_season_overall_mild, infants_characters_overall_mild,
-  infants_overall_severe, infants_season_overall_severe,
-  infants_characters_overall_severe
+plotlist1 <- list(
+  infants_rsv_mild, infants_rsv_severe,
+  infants_flu_mild, infants_flu_severe,
+  infants_covid_mild, infants_covid_severe,
+  infants_overall_mild, infants_overall_severe
+)
+
+plotlist2 <- list(
+  infants_season_rsv_mild, infants_season_rsv_severe,
+  infants_season_flu_mild, infants_season_flu_severe,
+  infants_season_covid_mild, infants_season_covid_severe,
+  infants_season_overall_mild, infants_season_overall_severe
+)
+plotlist3 <- list(
+  infants_characters_rsv_mild, infants_characters_rsv_severe,
+  infants_characters_flu_mild, infants_characters_flu_severe,
+  infants_characters_covid_mild, infants_characters_covid_severe,
+  infants_characters_overall_mild, infants_characters_overall_severe
 )
 
 #plot all
-for(p in plotlist) {
+for(p in plotlist1) {
   
   print(p)
+  title_name <- p$labels$title
+  saveas <- paste0(gsub(" ", "_", title_name))
+  ggsave(here("post_check", "plots", "primary_analyses", "rates",
+              paste0(str_to_title(cohort), "_", saveas, ".png")),
+         p, height = 8, width = 15)
+  
+}
+
+for(p in 1:length(plotlist2)) {
+  
+  plots <- plotlist2[[p]]
+  
+  for (i in 1:length(plots)) {
+    
+    p1 <- plots[[i]]
+    print(p1)
+    title_name <- p1$labels$title
+    saveas <- paste0(gsub(" ", "_", title_name))
+    ggsave(here("post_check", "plots", "primary_analyses", "rates",
+                paste0(str_to_title(cohort), "_", saveas, ".png")),
+           p1, height = 8, width = 15)
+    
+  }
+  
+}
+
+for(p in 1:length(plotlist3)) {
+  
+  plots <- plotlist3[[p]]
+  
+  for (i in 1:length(plots)) {
+    
+    p1 <- plots[[i]]
+    print(p1)
+    title_name <- p1$labels$title
+    saveas <- paste0(gsub(" ", "_", title_name))
+    ggsave(here("post_check", "plots", "primary_analyses", "rates",
+                paste0(str_to_title(cohort), "_", saveas, ".png")),
+           p1, height = 8, width = 15)
+    
+  }
+  
+}
+
+###older adults
+
+cohort <- "older_adults"
+investigation_type <- "primary"
+
+#import collated table 1 outputs
+df_input <- read_csv(here::here("post_check", "output", "collated", "descriptive",
+                                paste0(cohort, "_rates_primary_collated.csv")))
+
+##plot rates for older_adults
+
+#rsv
+older_adults_rsv_mild <- rate_viz(df_input, "RSV", "Mild")
+older_adults_season_rsv_mild <- rate_viz_season(df_input, "RSV", "Mild")
+older_adults_characters_rsv_mild <- rate_viz_mult(df_input, "RSV", "Mild")
+older_adults_rsv_severe <- rate_viz(df_input, "RSV", "Severe")
+older_adults_season_rsv_severe <- rate_viz_season(df_input, "RSV", "Severe")
+older_adults_characters_rsv_severe <- rate_viz_mult(df_input, "RSV", "Severe")
+
+#flu
+older_adults_flu_mild <- rate_viz(df_input, "Flu", "Mild")
+older_adults_season_flu_mild <- rate_viz_season(df_input, "Flu", "Mild")
+older_adults_characters_flu_mild <- rate_viz_mult(df_input, "Flu", "Mild")
+older_adults_flu_severe <- rate_viz(df_input, "Flu", "Severe")
+older_adults_season_flu_severe <- rate_viz_season(df_input, "Flu", "Severe")
+older_adults_characters_flu_severe <- rate_viz_mult(df_input, "Flu", "Severe")
+
+#covid
+older_adults_covid_mild <- rate_viz(df_input, "COVID", "Mild")
+older_adults_season_covid_mild <- rate_viz_season(df_input, "COVID", "Mild")
+older_adults_characters_covid_mild <- rate_viz_mult(df_input, "COVID", "Mild")
+older_adults_covid_severe <- rate_viz(df_input, "COVID", "Severe")
+older_adults_season_covid_severe <- rate_viz_season(df_input, "COVID", "Severe")
+older_adults_characters_covid_severe <- rate_viz_mult(df_input, "COVID", "Severe")
+
+#overall
+older_adults_overall_mild <- rate_viz(df_input, "Overall Respiratory", "Mild")
+older_adults_season_overall_mild <- rate_viz_season(df_input, "Overall Respiratory",
+                                               "Mild")
+older_adults_characters_overall_mild <- rate_viz_mult(df_input, "Overall Respiratory",
+                                                 "Mild")
+older_adults_overall_severe <- rate_viz(df_input, "Overall Respiratory", "Severe")
+older_adults_season_overall_severe <- rate_viz_season(df_input, "Overall Respiratory",
+                                                 "Severe")
+older_adults_characters_overall_severe <- rate_viz_mult(df_input, "Overall Respiratory",
+                                                   "Severe")
+
+#create list of plots
+plotlist1 <- list(
+  older_adults_rsv_mild, older_adults_rsv_severe,
+  older_adults_flu_mild, older_adults_flu_severe,
+  older_adults_covid_mild, older_adults_covid_severe,
+  older_adults_overall_mild, older_adults_overall_severe
+)
+
+plotlist2 <- list(
+  older_adults_season_rsv_mild, older_adults_season_rsv_severe,
+  older_adults_season_flu_mild, older_adults_season_flu_severe,
+  older_adults_season_covid_mild, older_adults_season_covid_severe,
+  older_adults_season_overall_mild, older_adults_season_overall_severe
+)
+plotlist3 <- list(
+  older_adults_characters_rsv_mild, older_adults_characters_rsv_severe,
+  older_adults_characters_flu_mild, older_adults_characters_flu_severe,
+  older_adults_characters_covid_mild, older_adults_characters_covid_severe,
+  older_adults_characters_overall_mild, older_adults_characters_overall_severe
+)
+
+#plot all
+for(p in plotlist1) {
+  
+  print(p)
+  title_name <- p$labels$title
+  saveas <- paste0(gsub(" ", "_", title_name))
+  ggsave(here("post_check", "plots", "primary_analyses", "rates",
+              paste0(str_to_title(cohort), "_", saveas, ".png")),
+         p, height = 8, width = 15)
+  
+}
+
+for(p in 1:length(plotlist2)) {
+  
+  plots <- plotlist2[[p]]
+  
+  for (i in 1:length(plots)) {
+    
+    p1 <- plots[[i]]
+    print(p1)
+    title_name <- p1$labels$title
+    saveas <- paste0(gsub(" ", "_", title_name))
+    ggsave(here("post_check", "plots", "primary_analyses", "rates",
+                paste0(str_to_title(cohort), "_", saveas, ".png")),
+           p1, height = 8, width = 15)
+    
+  }
+  
+}
+
+for(p in 1:length(plotlist3)) {
+  
+  plots <- plotlist3[[p]]
+  
+  for (i in 1:length(plots)) {
+    
+    p1 <- plots[[i]]
+    print(p1)
+    title_name <- p1$labels$title
+    saveas <- paste0(gsub(" ", "_", title_name))
+    ggsave(here("post_check", "plots", "primary_analyses", "rates",
+                paste0(str_to_title(cohort), "_", saveas, ".png")),
+           p1, height = 8, width = 15)
+    
+  }
   
 }
