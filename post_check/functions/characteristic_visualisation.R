@@ -6,7 +6,7 @@ library(stringr)
 library(khroma)
 
 #define a function to plot a characteristic over time
-character_viz <- function(df) {
+character_viz <- function(df, scaling) {
   
   names(df) <- c("characteristic", "count", "percentage", "subset")
   
@@ -19,7 +19,7 @@ character_viz <- function(df) {
   # Define mapping of characteristic to number of categories
   group_counts <- tibble(
     group = c("Total", "Age Group", "Sex", "Ethnicity", "IMD",
-              "Household Composition", "Rurality", "Maternal Age",
+              "Household Composition", "Rurality", 
               "Maternal Smoking Status", "Maternal Drinking",
               "Maternal Drug Usage", "Maternal Flu Vaccination",
               "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
@@ -30,7 +30,7 @@ character_viz <- function(df) {
               "Chronic Kidney Disease", "Chronic Liver Disease",
               "Chronic Neurological Disease", "Cancer Within 3 Years",
               "Immunosuppressed", "Sickle Cell Disease"),
-    count = c(1, age_groups, 2, 6, 5, 5, 5, 1, 4, 1, 1, 1, 1, 1, 3, 4, 1,
+    count = c(1, age_groups, 2, 6, 5, 5, 5, 4, 1, 1, 1, 1, 1, 3, 4, 1,
               1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
   )
   
@@ -92,7 +92,7 @@ character_viz <- function(df) {
     mutate(
       group = factor(group, levels = c(
         "Total", "Age Group", "Sex", "Ethnicity", "IMD",
-        "Household Composition", "Rurality", "Maternal Age",
+        "Household Composition", "Rurality", 
         "Maternal Smoking Status", "Maternal Drinking",
         "Maternal Drug Usage", "Maternal Flu Vaccination",
         "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
@@ -140,9 +140,9 @@ character_viz <- function(df) {
                 "3", "4", "5 (most deprived)", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
-                "Maternal Age", "Never", "Former", "Current", "Unknown",
+                "Never", "Former", "Current", 
                 "Maternal Drug Usage", "Maternal Drinking",
-                "Maternal Flu Vaccine", "Maternal Pertussis Vaccine")
+                "Maternal Flu Vaccination", "Maternal Pertussis Vaccination")
     
   } else if (cohort == "children_and_adolescents") {
     
@@ -231,11 +231,21 @@ character_viz <- function(df) {
   } else {
     
     group_order <- c("Age Group", "Sex", "Ethnicity", "IMD",
-                     "Household Composition", "Rurality", "Maternal Age",
+                     "Household Composition", "Rurality", 
                      "Maternal Smoking Status", "Maternal Drinking",
                      "Maternal Drug Usage", "Maternal Flu Vaccination",
                      "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
                      "Time Since Last Covid Vaccine")
+    
+  }
+  
+  if (scaling == "yes") {
+    
+    scales <- "free_x"
+    
+  } else {
+    
+    scales <- "free"
     
   }
 
@@ -258,7 +268,7 @@ character_viz <- function(df) {
       characteristic = if_else(
         group %in% c(
           "Age Group", "Sex", "Ethnicity", "IMD", "Household Composition",
-          "Rurality", "Maternal Age", "Maternal Smoking Status",
+          "Rurality", "Maternal Smoking Status",
           "Time Since Last Covid Vaccine", "Smoking Status"),
         characteristic, "Yes")
     ) %>%
@@ -271,8 +281,9 @@ character_viz <- function(df) {
     ) %>%
     ggplot(aes(fill = subset, y = percentage, x = characteristic)) +
     geom_bar(stat = "identity", position = "dodge", color = "white") +
-    facet_wrap(~group, scales = "free") +
-    #scale_fill_viridis_d(option = "mako") + 
+    geom_hline(yintercept = 0.095, linetype = "dashed", color = "black",
+               alpha = 0.5) +
+    facet_wrap(~group, scales = scales) +
     theme_bw() + scale_fill_manual(values = cc) +
     labs(title = "Participant Characteristics", x = "Characteristic",
          y = "Percentage (%)") +
@@ -285,7 +296,7 @@ character_viz <- function(df) {
 }
 
 #define a function to plot a characteristic over time - different formatting
-character_viz_mult <- function(df) {
+character_viz_mult <- function(df, scaling) {
   
   names(df) <- c("characteristic", "count", "percentage", "subset")
   
@@ -298,7 +309,7 @@ character_viz_mult <- function(df) {
   # Define mapping of characteristic to number of categories
   group_counts <- tibble(
     group = c("Total", "Age Group", "Sex", "Ethnicity", "IMD",
-              "Household Composition", "Rurality", "Maternal Age",
+              "Household Composition", "Rurality", 
               "Maternal Smoking Status", "Maternal Drinking",
               "Maternal Drug Usage", "Maternal Flu Vaccination",
               "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
@@ -309,7 +320,7 @@ character_viz_mult <- function(df) {
               "Chronic Kidney Disease", "Chronic Liver Disease",
               "Chronic Neurological Disease", "Cancer Within 3 Years",
               "Immunosuppressed", "Sickle Cell Disease"),
-    count = c(1, age_groups, 2, 6, 5, 5, 5, 1, 4, 1, 1, 1, 1, 1, 3, 4, 1,
+    count = c(1, age_groups, 2, 6, 5, 5, 5, 4, 1, 1, 1, 1, 1, 3, 4, 1,
               1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
   )
   
@@ -371,7 +382,7 @@ character_viz_mult <- function(df) {
     mutate(
       group = factor(group, levels = c(
         "Total", "Age Group", "Sex", "Ethnicity", "IMD",
-        "Household Composition", "Rurality", "Maternal Age",
+        "Household Composition", "Rurality", 
         "Maternal Smoking Status", "Maternal Drinking",
         "Maternal Drug Usage", "Maternal Flu Vaccination",
         "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
@@ -419,9 +430,9 @@ character_viz_mult <- function(df) {
                 "3", "4", "5 (most deprived)", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
-                "Maternal Age", "Never", "Former", "Current", "Unknown",
+                "Never", "Former", "Current",
                 "Maternal Drug Usage", "Maternal Drinking",
-                "Maternal Flu Vaccine", "Maternal Pertussis Vaccine")
+                "Maternal Flu Vaccination", "Maternal Pertussis Vaccination")
     
   } else if (cohort == "children_and_adolescents") {
     
@@ -490,7 +501,7 @@ character_viz_mult <- function(df) {
   } else {
     
     group_order <- c("Age Group", "Sex", "Ethnicity", "IMD",
-                     "Household Composition", "Rurality", "Maternal Age",
+                     "Household Composition", "Rurality", 
                      "Maternal Smoking Status", "Maternal Drinking",
                      "Maternal Drug Usage", "Maternal Flu Vaccination",
                      "Maternal Pertussis Vaccination", "Prior Flu Vaccine",
@@ -519,7 +530,7 @@ character_viz_mult <- function(df) {
   
   cols2 <- tibble(
     var = c("Age Group", "Sex", "Ethnicity", "IMD",
-            "Household Composition", "Rurality", "Maternal Age",
+            "Household Composition", "Rurality", 
             "Maternal Smoking Status", "Maternal Drinking",
             "Maternal Drug Usage", "Maternal Flu Vaccination",
             "Maternal Pertussis Vaccination",
@@ -532,7 +543,7 @@ character_viz_mult <- function(df) {
             "Immunosuppressed", "Sickle Cell Disease",
             "Smoking Status", "Hazardous Drinking", "Drug Usage"),
     col = c("#50edb2", "#f64883", "#43006f", "#b1e466",
-            "#8e0077", "#227e00", "#ff62ab",
+            "#8e0077", "#227e00",
             "#004e13", "#e1b1ff",
             "#ae9500", "#004194",
             "#d98116",
@@ -546,7 +557,17 @@ character_viz_mult <- function(df) {
             "#6a70d7", "#81307a", "#45ba8a")
     )
   
-  #cols2 <- cols2 %>% filter(var %in% all_groups)
+  if (scaling == "yes") {
+
+    lower <- min(df$percentage)
+    upper <- max(df$percentage)
+
+  } else {
+
+    lower <- NA
+    upper <- NA
+
+  }
   
   for (group in all_groups) {
     
@@ -563,7 +584,7 @@ character_viz_mult <- function(df) {
         characteristic = if_else(
           as.character(group) %in% c(
             "Age Group", "Sex", "Ethnicity", "IMD", "Household Composition",
-            "Rurality", "Maternal Age", "Maternal Smoking Status",
+            "Rurality", "Maternal Smoking Status",
             "Time Since Last Covid Vaccine", "Smoking Status"),
           characteristic, "Yes")
       )
@@ -571,9 +592,11 @@ character_viz_mult <- function(df) {
     plot_list[[group]] <- df %>%
       filter(group == !!group) %>%
       ggplot(aes(alpha = characteristic, y = percentage,
-                 x = subset)) +
+                 x = subset)) + coord_cartesian(ylim = c(lower, upper)) +
       geom_bar(stat = "identity", position = "dodge",
                color = "white", fill = fill_col) +
+      geom_hline(yintercept = 0.095, linetype = "dashed", color = "black",
+                 alpha = 0.5) +
       theme_bw() + scale_alpha_manual(
         values = c(seq(1, 0.25, length.out = alpha_length))) +
       labs(x = "Season", y = "Percentage (%)") + 

@@ -8,9 +8,6 @@ library(RColorBrewer)
 library(khroma)
 library(paletteer)
 
-## create output directories ----
-fs::dir_create(here::here("post_check", "functions"))
-
 #import model functions
 source(here::here("post_check", "functions", "model.R"))
 
@@ -372,18 +369,12 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
   
   if (investigation_type == "secondary") {
     
-    levels <- c(levels, "Asthma (No)", "Asthma (Yes)", "COPD (No)",
-                "COPD (Yes)", "Cystic Fibrosis (No)", "Cystic Fibrosis (Yes)",
-                "Other Resp (No)", "Other Resp (Yes)", "Diabetes (No)",
-                "Diabetes (Yes)", "Addisons (No)", "Addisons (Yes)",
-                "Severe Obesity (No)", "Severe Obesity (Yes)", "CHD (No)",
-                "CHD (Yes)", "CLD (No)", "CLD (Yes)", "CKD (No)", "CKD (Yes)",
-                "CND (No)", "CND (Yes)", "Cancer Within 3 Yrs (No)",
-                "Cancer Within 3 Yrs (Yes)", "Immunosuppressed (No)",
-                "Immunosuppressed (Yes)", "Sickle Cell (No)",
-                "Sickle Cell (Yes)", "Never", "Current", "Former",
-                "Hazardous Drinking (No)", "Hazardous Drinking (Yes)",
-                "Drug Usage (No)", "Drug Usage (Yes)")
+    levels <- c(levels, "Binary Variables (No)", "Asthma", "COPD",
+                "Cystic Fibrosis", "Other Resp", "Diabetes", "Addisons",
+                "Severe Obesity", "CHD", "CLD", "CKD", "CND",
+                "Cancer Within 3 Yrs", "Immunosuppressed", "Sickle Cell",
+                "Hazardous Drinking", "Drug Usage", "Never", "Current",
+                "Former")
     
   }
   
@@ -426,24 +417,16 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
   
   if (investigation_type == "secondary") {
     
-    group_order <- c(group_order,
-                     "Has Asthma (False)", "Has Asthma (True)",
-                     "Has COPD (False)", "Has COPD (True)",
-                     "Has Cystic Fibrosis (False)", "Has Cystic Fibrosis (True)",
-                     "Has Other Resp (False)", "Has Other Resp (True)",
-                     "Has Diabetes (False)", "Has Diabetes (True)",
-                     "Has Addisons (False)", "Has Addisons (True)",
-                     "Severe Obesity (False)", "Severe Obesity (True)",
-                     "Has CHD (False)", "Has CHD (True)", "Has CLD (False)",
-                     "Has CLD (True)", "Has CKD (False)", "Has CKD (True)",
-                     "Has CND (False)", "Has CND (True)",
-                     "Cancer Within 3 Yrs (False)",
-                     "Cancer Within 3 Yrs (True)", "Immunosuppressed (False)",
-                     "Immunosuppressed (True)", "Has Sickle Cell (False)",
-                     "Has Sickle Cell (True)", "Smoking Status (False)",
-                     "Smoking Status (True)", "Hazardous Drinking (False)",
-                     "Hazardous Drinking (True)", "Drug Usage (False)",
-                     "Drug Usage (True)")
+    group_order <- c(group_order, "Binary Variables (True)",
+                     "Asthma (False)", "COPD (False)",
+                     "Cystic Fibrosis (False)", "Other Resp (False)",
+                     "Diabetes (False)", "Addisons (False)",
+                     "Severe Obesity (False)", "CHD (False)",
+                     "CLD (False)", "CKD (False)", "CND (False)",
+                     "Cancer Within 3 Yrs (False)", "Immunosuppressed (False)",
+                     "Sickle Cell (False)", "Hazardous Drinking (False)",
+                     "Drug Usage (False)", "Smoking Status (False)",
+                     "Smoking Status (True)")
     
   }
   
@@ -464,13 +447,8 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       )
     
     binaries <- tidy_forest %>%
-      filter(label %in% c("Yes", "No")) %>%
+      filter(str_detect(term, "Yes")) %>%
       rowwise() %>%
-      mutate(
-        label = paste0(unique(str_to_title(gsub("_", " ",
-                       gsub("has_", "", variable)))),
-                       " (", label, ")")
-      ) %>%
       mutate(
         label = case_when(
           str_detect(label, "Chd") ~ gsub("Chd", "CHD", label),
@@ -481,10 +459,34 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
           str_detect(label, "Cancer") ~ gsub("Cancer",
                                              "Cancer Within 3 Yrs", label),
           TRUE ~ str_to_title(label))
-      )
+      ) %>%
+      rbind(tibble(
+          term = "are_binary_variablesYes",
+          variable = "binary_variables",
+          var_label = "binary_variables",
+          var_class = "factor",
+          var_type = "dichotomous",
+          var_nlevels = 2,
+          contrasts = "contr.treatment",
+          contrasts_type = "treatment",
+          reference_row = TRUE,
+          label = "Binary Variables (No)",
+          model_name = NA,
+          estimate = 1,
+          std.error = 0,
+          statistic = NA,
+          p.value = NA,
+          conf.low = 1,
+          conf.high = 1,
+          model_type = !!model_type,
+          codelist_type = !!codelist_filter,
+          investigation_type = investigation_type,
+          subset = NA)
+      ) 
     
     tidy_forest <- tidy_forest %>%
-      filter(!(label %in% c("Yes", "No"))) %>%
+      filter(!(str_detect(term, "Yes"))) %>%
+      filter(!(str_detect(term, "No"))) %>%
       bind_rows(binaries)
     
     if (investigation_type == "primary") {
@@ -532,33 +534,74 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       bind_rows(reference_rows)
     
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
+    refs <- length(legend_labels) - nrow(binaries) + 1
+    other <- length(legend_labels) - refs
     
     cols2 <- tibble(
       var = c("sex", "age_band", "latest_ethnicity_group", "imd_quintile",
-              "composition_category", "has_asthma", "has_copd",
-              "has_cystic_fibrosis", "has_other_resp", "has_diabetes",
-              "has_addisons", "severe_obesity", "has_chd", "has_ckd", "has_cld",
-              "has_cnd", "has_cancer", "immunosuppressed", "has_sickle_cell",
-              "smoking_status", "hazardous_drinking", "drug_usage"),
+              "composition_category", "binary_variables", "has_asthma",
+              "has_copd", "has_cystic_fibrosis", "has_other_resp",
+              "has_diabetes", "has_addisons", "severe_obesity", "has_chd",
+              "has_ckd", "has_cld", "has_cnd", "has_cancer", "immunosuppressed",
+              "has_sickle_cell", "hazardous_drinking", "drug_usage",
+              "smoking_status"),
       col = c("#f64883", "#50edb2", "#43006f", "#b1e466",
-              "#8e0077", "#d66dbe", "#50873c",
-              "#b97fd4", "#cc8331", "#628bd5",
-              "#d45e46", "#38dbda", "#e1556e", "#a1863d", "#952a5e",
-              "#9b4729", "#dd6a9c", "#ad4248", "#ac4258",
-              "#6a70d7", "#81307a", "#45ba8a")
+              "#8e0077", "#4e3f2c", "#d66dbe",
+              "#50873c", "#b97fd4", "#cc8331",
+              "#628bd5", "#d45e46", "#38dbda", "#e1556e",
+              "#a1863d", "#952a5e", "#9b4729", "#dd6a9c", "#ad4248",
+              "#ac4258", "#81307a", "#45ba8a",
+              "#6a70d7")
     )
     
     cols_final <- cols2 %>%
       filter(var %in% unique(tidy_forest$variable)) %>%
-      select(col) %>%
+      filter(var %in% c("sex", "age_band", "latest_ethnicity_group",
+                        "imd_quintile", "composition_category")) %>%
       slice(rep(1:n(), each = 2))
+    
+    cols_final <- rbind(
+      cols_final,
+      cols2 %>% 
+        filter(var %in% unique(tidy_forest$variable)) %>%
+        filter(!(var %in% c("sex", "age_band", "latest_ethnicity_group",
+                            "imd_quintile", "composition_category")))
+    )
+    
+    cols_final <- rbind(
+      cols_final,
+      cols2 %>% 
+        filter(var %in% unique(tidy_forest$variable)) %>%
+        filter(var == "smoking_status") %>%
+        slice(rep(1:n(), each = 1))
+    )
+    
+    shapes <- tibble(
+      var = c("sex", "sex", "age_band", "age_band", "latest_ethnicity_group",
+              "latest_ethnicity_group", "imd_quintile", "imd_quintile",
+              "composition_category", "composition_category", "binary_variables",
+              "has_asthma", "has_copd", "has_cystic_fibrosis", "has_other_resp",
+              "has_diabetes", "has_addisons", "severe_obesity", "has_chd",
+              "has_ckd", "has_cld", "has_cnd", "has_cancer", "immunosuppressed",
+              "has_sickle_cell", "hazardous_drinking", "drug_usage",
+              "smoking_status", "smoking_status"),
+      shape = c(c(shape_value, 8), c(shape_value, 8), c(shape_value, 8),
+                 c(shape_value, 8), c(shape_value, 8), 8, shape_value,
+                 shape_value, shape_value, shape_value, shape_value,
+                 shape_value, shape_value, shape_value, shape_value,
+                 shape_value, shape_value, shape_value, shape_value,
+                 shape_value, shape_value, shape_value, c(shape_value, 8))
+    )
+    
+    shapes_final <- shapes %>%
+      filter(var %in% unique(tidy_forest$variable)) %>%
+      select(shape)
     
     if (investigation_type == "secondary") {
       
       tidy_forest %>%
         mutate(
-          plot_label = str_to_title(gsub("_", " ", variable)),
-          label = forcats::fct_relevel(label, levels),
+          plot_label = str_to_title(gsub("has ", "", gsub("_", " ", variable))),
           faceting = case_when(
             variable %in% c("age_band", "sex", "latest_ethnicity_group",
                             "imd_quintile", "composition_category") ~ "Baseline",
@@ -572,12 +615,18 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
             str_detect(plot_label, "Latest") ~ "Ethnicity",
             str_detect(plot_label, "Cancer") ~ "Cancer Within 3 Yrs",
             str_detect(plot_label, "Comp") ~ "Household Composition",
-            str_detect(plot_label, "Chd") ~ "Has CHD",
-            str_detect(plot_label, "Ckd") ~ "Has CKD",
-            str_detect(plot_label, "Cld") ~ "Has CLD",
-            str_detect(plot_label, "Cnd") ~ "Has CND",
-            str_detect(plot_label, "Copd") ~ "Has COPD",
+            str_detect(plot_label, "Chd") ~ "CHD",
+            str_detect(plot_label, "Ckd") ~ "CKD",
+            str_detect(plot_label, "Cld") ~ "CLD",
+            str_detect(plot_label, "Cnd") ~ "CND",
+            str_detect(plot_label, "Copd") ~ "COPD",
             TRUE ~ plot_label)
+        ) %>%
+        mutate(
+          label = if_else(label == "Yes", plot_label, label)
+        ) %>%
+        mutate(
+          label = forcats::fct_relevel(label, levels)
         ) %>%
         mutate(
           plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
@@ -590,19 +639,19 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
         scale_color_manual(values = cols_final$col,
                            name = "Characteristic (Reference)") +
         scale_shape_manual(name = "Characteristic (Reference)",
-                           values = c(rep(c(shape_value, 8),
-                                          length(legend_labels)))) +
+                           values = shapes_final$shape) +
         geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
         geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
-        guides(color = guide_legend("Characteristic (Reference)", nrow = 22),
-               shape = guide_legend("Characteristic (Reference)", nrow = 22)) +
+        guides(color = guide_legend("Characteristic (Reference)", nrow = 30),
+               shape = guide_legend("Characteristic (Reference)", nrow = 30)) +
         facet_wrap(~ faceting, scales = "free_y", ncol = 2) + 
         labs(x = "Rate Ratio", y = " ", title = title_label,
              subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
         theme_bw() + theme(title = element_text(size = 12),
                            axis.text = element_text(size = 10),
                            axis.title = element_text(size = 10),
-                           legend.text = element_text(size = 10))
+                           legend.text = element_text(size = 8),
+                           legend.title = element_text(size = 10))
       
     } else {
       
