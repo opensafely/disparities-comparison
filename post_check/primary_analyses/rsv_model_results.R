@@ -422,7 +422,7 @@ for(p in plotlist) {
   subtitle_name <- p$labels$subtitle
   saveas <- paste0(gsub(" ", "_", title_name), "_",
                    gsub(" ", "_", subtitle_name))
-  ggsave(here("post_check", "plots", "primary_analyses", "models",
+  ggsave(here("post_check", "plots", "primary_analyses", "models", cohort,
               paste0(str_to_title(cohort), "_", saveas, ".png")),
          p, height = 8, width = 15)
   
