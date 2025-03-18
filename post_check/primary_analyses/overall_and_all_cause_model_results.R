@@ -19,7 +19,8 @@ cohort <- "older_adults"
 
 #import collated model outputs
 df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
-                     paste0(cohort, "_", pathogen, "_model_outputs_collated.csv")))
+                     paste0(cohort, "_", pathogen,
+                            "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2016_2017_sensitive_primary.arrow"))) 
@@ -107,7 +108,7 @@ for(p in plotlist) {
   subtitle_name <- p$labels$subtitle
   saveas <- paste0(gsub(" ", "_", title_name), "_",
                    gsub(" ", "_", subtitle_name))
-  ggsave(here("post_check", "plots", "primary_analyses", "models",
+  ggsave(here("post_check", "plots", "primary_analyses", "models", cohort,
               paste0(str_to_title(cohort), "_", saveas, ".png")),
          p, height = 8, width = 15)
   
@@ -119,7 +120,8 @@ cohort <- "adults"
 
 #import collated model outputs
 df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
-                     paste0(cohort, "_", pathogen, "_model_outputs_collated.csv")))
+                     paste0(cohort, "_", pathogen,
+                            "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2016_2017_sensitive_primary.arrow")))
@@ -211,7 +213,7 @@ for(p in plotlist) {
   subtitle_name <- p$labels$subtitle
   saveas <- paste0(gsub(" ", "_", title_name), "_",
                    gsub(" ", "_", subtitle_name))
-  ggsave(here("post_check", "plots", "primary_analyses", "models",
+  ggsave(here("post_check", "plots", "primary_analyses", "models", cohort,
               paste0(str_to_title(cohort), "_", saveas, ".png")),
          p, height = 8, width = 15)
   
@@ -223,7 +225,8 @@ cohort <- "children_and_adolescents"
 
 #import collated model outputs
 df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
-                     paste0(cohort, "_", pathogen, "_model_outputs_collated.csv")))
+                     paste0(cohort, "_", pathogen,
+                            "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2016_2017_sensitive_primary.arrow"))) 
@@ -311,7 +314,7 @@ for(p in plotlist) {
   subtitle_name <- p$labels$subtitle
   saveas <- paste0(gsub(" ", "_", title_name), "_",
                    gsub(" ", "_", subtitle_name))
-  ggsave(here("post_check", "plots", "primary_analyses", "models",
+  ggsave(here("post_check", "plots", "primary_analyses", "models", cohort,
               paste0(str_to_title(cohort), "_", saveas, ".png")),
          p, height = 8, width = 15)
   
@@ -323,7 +326,8 @@ cohort <- "infants"
 
 #import collated model outputs
 df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
-                     paste0(cohort, "_", pathogen, "_model_outputs_collated.csv")))
+                     paste0(cohort, "_", pathogen,
+                            "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2016_2017_sensitive_primary.arrow"))) 
@@ -411,7 +415,7 @@ for(p in plotlist) {
   subtitle_name <- p$labels$subtitle
   saveas <- paste0(gsub(" ", "_", title_name), "_",
                    gsub(" ", "_", subtitle_name))
-  ggsave(here("post_check", "plots", "primary_analyses", "models",
+  ggsave(here("post_check", "plots", "primary_analyses", "models", cohort,
               paste0(str_to_title(cohort), "_", saveas, ".png")),
          p, height = 8, width = 15)
   
@@ -423,7 +427,8 @@ cohort <- "infants_subgroup"
 
 #import collated model outputs
 df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
-                     paste0(cohort, "_", pathogen, "_model_outputs_collated.csv")))
+                     paste0(cohort, "_", pathogen,
+                            "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2016_2017_sensitive_primary.arrow"))) 
@@ -511,7 +516,7 @@ for(p in plotlist) {
   subtitle_name <- p$labels$subtitle
   saveas <- paste0(gsub(" ", "_", title_name), "_",
                    gsub(" ", "_", subtitle_name))
-  ggsave(here("post_check", "plots", "primary_analyses", "models",
+  ggsave(here("post_check", "plots", "primary_analyses", "models", cohort,
               paste0(str_to_title(cohort), "_", saveas, ".png")),
          p, height = 8, width = 15)
   
