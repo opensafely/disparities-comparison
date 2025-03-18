@@ -14,6 +14,9 @@ source(here::here("post_check", "functions", "model.R"))
 #create function to filter collated results to models wanted and then plot
 forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
   
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
+                      pathogen)
+  
   df_model <- df %>%
     filter(model_type == !!model_type,
            str_detect(model_name, outcome_type)) %>%
@@ -61,18 +64,46 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     
   }
   
-  tidy_forest_spec <- process_forest(df_model, "specific")
+  if (pathogen != "overall_resp") {
+    
+    tidy_forest_spec <- process_forest(df_model, "specific")
+    
+  }
   
   if (investigation_type == "primary") {
     
     tidy_forest_sens <- process_forest(df_model, "sensitive")
-    conf_low <- min(tidy_forest_spec$conf.low, tidy_forest_sens$conf.low)
-    conf_high <- max(tidy_forest_spec$conf.high, tidy_forest_sens$conf.high)
+    
+    if (pathogen == "overall_resp") {
+      
+      sens <- tidy_forest_sens %>%
+        filter(conf.low != 0, conf.high != 0)
+      
+      conf_low <- min(tidy_forest_sens$estimate, sens$conf.low)
+      conf_high <- max(tidy_forest_sens$estimate, sens$conf.high)
+      
+    } else {
+      
+      spec <- tidy_forest_spec %>%
+        filter(conf.low != 0, conf.high != 0)
+      
+      sens <- tidy_forest_sens %>%
+        filter(conf.low != 0, conf.high != 0)
+      
+      conf_low <- min(tidy_forest_spec$estimate, tidy_forest_sens$estimate,
+                      spec$conf.low, sens$conf.low)
+      conf_high <- max(tidy_forest_spec$estimate, tidy_forest_sens$estimate,
+                       spec$conf.high, sens$conf.high)
+      
+    }
     
   } else {
     
-    conf_low <- min(tidy_forest_spec$conf.low)
-    conf_high <- max(tidy_forest_spec$conf.high)
+    spec <- tidy_forest_spec %>%
+      filter(conf.low != 0, conf.high != 0)
+    
+    conf_low <- min(tidy_forest_spec$estimate, spec$conf.low)
+    conf_high <- max(tidy_forest_spec$estimate,spec$conf.high)
     
   }
   
@@ -146,7 +177,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     pathogen_title <- case_when(
       pathogen == "rsv" ~ "RSV",
       pathogen == "flu" ~ "Influenza",
-      pathogen == "covid" ~ "COVID-19"
+      pathogen == "covid" ~ "COVID-19",
+      pathogen == "overall_resp" ~ "Overall Respiratory Viruses"
     )
     
     plot_label_order <- case_when(
@@ -231,8 +263,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
                  xmax = conf.high, color = subset)) +
       scale_color_manual(values = cc, na.translate = F) +
       geom_vline(xintercept = 1, linetype = 2) + 
-      geom_pointrange(position = position_dodge(width = 0.5), size = 0.45,
-                      shape = shape_value) +
+      geom_point(position = position_dodge(width = 0.5), shape = shape_value) +
+      geom_linerange(position = position_dodge(width = 0.5)) +
       geom_point(data = references, aes(y = label, x = estimate,
                                         shape = as.factor(estimate)),
                  size = 1, stroke = 1, color = "#4e3f2c") +
@@ -245,7 +277,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
            title = paste0("Rate Ratios of ", outcome_type, " ", 
                           pathogen_title, " by Group (", title_suffix, ")"),
            subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) + 
-      scale_x_log10(limits = c(conf_low, conf_high)) +
+      scale_x_log10() + coord_cartesian(xlim = c(conf_low, conf_high)) +
       theme_bw() + theme(title = element_text(size = 12),
                          axis.text = element_text(size = 10),
                          axis.title = element_text(size = 10),
@@ -255,15 +287,27 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     
   }
   
-  spec_plot <- make_forest_plot(tidy_forest_spec, shape_value = 16, 
-                                title_suffix = "Specific Phenotype")
+  if (pathogen != "overall_resp") {
+    
+    spec_plot <- make_forest_plot(tidy_forest_spec, shape_value = 16, 
+                                  title_suffix = "Specific Phenotype")
+    
+  }
 
   if (investigation_type == "primary") {
     
     sens_plot <- make_forest_plot(tidy_forest_sens, shape_value = 17, 
                                   title_suffix = "Sensitive Phenotype")
     
-    return(list(spec_plot = spec_plot, sens_plot = sens_plot))
+    if (pathogen == "overall_resp") {
+      
+      return(list(sens_plot = sens_plot))
+      
+    } else {
+      
+      return(list(spec_plot = spec_plot, sens_plot = sens_plot))
+      
+    }
     
   } else {
     
@@ -274,6 +318,9 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
 }
 
 forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
+  
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
+                      pathogen)
   
   df_model <- df %>%
     filter(model_type == !!model_type,
@@ -446,48 +493,52 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
         conf.high = if_else(reference_row, 1, conf.high)
       )
     
-    binaries <- tidy_forest %>%
-      filter(str_detect(term, "Yes")) %>%
-      rowwise() %>%
-      mutate(
-        label = case_when(
-          str_detect(label, "Chd") ~ gsub("Chd", "CHD", label),
-          str_detect(label, "Ckd") ~ gsub("Ckd", "CKD", label),
-          str_detect(label, "Cld") ~ gsub("Cld", "CLD", label),
-          str_detect(label, "Cnd") ~ gsub("Cnd", "CND", label),
-          str_detect(label, "Copd") ~ gsub("Copd", "COPD", label),
-          str_detect(label, "Cancer") ~ gsub("Cancer",
-                                             "Cancer Within 3 Yrs", label),
-          TRUE ~ str_to_title(label))
-      ) %>%
-      rbind(tibble(
-          term = "are_binary_variablesYes",
-          variable = "binary_variables",
-          var_label = "binary_variables",
-          var_class = "factor",
-          var_type = "dichotomous",
-          var_nlevels = 2,
-          contrasts = "contr.treatment",
-          contrasts_type = "treatment",
-          reference_row = TRUE,
-          label = "Binary Variables (No)",
-          model_name = NA,
-          estimate = 1,
-          std.error = 0,
-          statistic = NA,
-          p.value = NA,
-          conf.low = 1,
-          conf.high = 1,
-          model_type = !!model_type,
-          codelist_type = !!codelist_filter,
-          investigation_type = investigation_type,
-          subset = NA)
-      ) 
+    if (investigation_type == "secondary") {
     
-    tidy_forest <- tidy_forest %>%
-      filter(!(str_detect(term, "Yes"))) %>%
-      filter(!(str_detect(term, "No"))) %>%
-      bind_rows(binaries)
+      binaries <- tidy_forest %>%
+        filter(str_detect(term, "Yes")) %>%
+        rowwise() %>%
+        mutate(
+          label = case_when(
+            str_detect(label, "Chd") ~ gsub("Chd", "CHD", label),
+            str_detect(label, "Ckd") ~ gsub("Ckd", "CKD", label),
+            str_detect(label, "Cld") ~ gsub("Cld", "CLD", label),
+            str_detect(label, "Cnd") ~ gsub("Cnd", "CND", label),
+            str_detect(label, "Copd") ~ gsub("Copd", "COPD", label),
+            str_detect(label, "Cancer") ~ gsub("Cancer",
+                                               "Cancer Within 3 Yrs", label),
+            TRUE ~ str_to_title(label))
+        ) %>%
+        rbind(tibble(
+            term = "are_binary_variablesYes",
+            variable = "binary_variables",
+            var_label = "binary_variables",
+            var_class = "factor",
+            var_type = "dichotomous",
+            var_nlevels = 2,
+            contrasts = "contr.treatment",
+            contrasts_type = "treatment",
+            reference_row = TRUE,
+            label = "Binary Variables (No)",
+            model_name = NA,
+            estimate = 1,
+            std.error = 0,
+            statistic = NA,
+            p.value = NA,
+            conf.low = 1,
+            conf.high = 1,
+            model_type = !!model_type,
+            codelist_type = !!codelist_filter,
+            investigation_type = investigation_type,
+            subset = NA)
+        ) 
+      
+      tidy_forest <- tidy_forest %>%
+        filter(!(str_detect(term, "Yes"))) %>%
+        filter(!(str_detect(term, "No"))) %>%
+        bind_rows(binaries)
+      
+    }
     
     if (investigation_type == "primary") {
       
@@ -534,8 +585,6 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       bind_rows(reference_rows)
     
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
-    refs <- length(legend_labels) - nrow(binaries) + 1
-    other <- length(legend_labels) - refs
     
     cols2 <- tibble(
       var = c("sex", "age_band", "latest_ethnicity_group", "imd_quintile",
@@ -655,50 +704,103 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       
     } else {
       
-      tidy_forest %>%
-        mutate(
-          plot_label = str_to_title(gsub("_", " ", variable)),
-          label = forcats::fct_relevel(label, levels),
-          subset = str_to_title(gsub("_", "-", subset))
-        ) %>%
-        mutate(
-          plot_label = case_when(
-            str_detect(plot_label, "Age") ~ "Age Group",
-            str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
-            str_detect(plot_label, "Latest") ~ "Ethnicity",
-            str_detect(plot_label, "Cancer") ~ "Cancer Within 3 Yrs",
-            str_detect(plot_label, "Comp") ~ "Household Composition",
-            str_detect(plot_label, "Chd") ~ "Has CHD",
-            str_detect(plot_label, "Ckd") ~ "Has CKD",
-            str_detect(plot_label, "Cld") ~ "Has CLD",
-            str_detect(plot_label, "Cnd") ~ "Has CND",
-            str_detect(plot_label, "Copd") ~ "Has COPD",
-            TRUE ~ plot_label)
-        ) %>%
-        mutate(
-          plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
-        ) %>%
-        mutate(
-          plot_label2 = factor(plot_label2, levels = group_order)
-        ) %>%
-        ggplot(aes(y = label, x = estimate, xmin = conf.low,
-                   xmax = conf.high, color = plot_label2, shape = plot_label2)) +
-        scale_color_manual(values = cols_final$col,
-                           name = "Characteristic (Reference)") +
-        scale_shape_manual(name = "Characteristic (Reference)",
-                           values = c(rep(c(shape_value, 8),
-                                          length(legend_labels)))) +
-        geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
-        geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
-        guides(color = guide_legend("Characteristic (Reference)"),
-               shape = guide_legend("Characteristic (Reference)")) +
-        facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
-        labs(x = "Rate Ratio", y = " ", title = title_label,
-             subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-        theme_bw() + theme(title = element_text(size = 12),
-                           axis.text = element_text(size = 10),
-                           axis.title = element_text(size = 10),
-                           legend.text = element_text(size = 10))
+      if (pathogen == "covid") {
+        
+        tidy_forest %>%
+          mutate(
+            plot_label = str_to_title(gsub("_", " ", variable)),
+            label = forcats::fct_relevel(label, levels),
+            subset = str_to_title(gsub("_", "-", subset))
+          ) %>%
+          mutate(
+            plot_label = case_when(
+              str_detect(plot_label, "Age") ~ "Age Group",
+              str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
+              str_detect(plot_label, "Latest") ~ "Ethnicity",
+              str_detect(plot_label, "Cancer") ~ "Cancer Within 3 Yrs",
+              str_detect(plot_label, "Comp") ~ "Household Composition",
+              str_detect(plot_label, "Chd") ~ "Has CHD",
+              str_detect(plot_label, "Ckd") ~ "Has CKD",
+              str_detect(plot_label, "Cld") ~ "Has CLD",
+              str_detect(plot_label, "Cnd") ~ "Has CND",
+              str_detect(plot_label, "Copd") ~ "Has COPD",
+              TRUE ~ plot_label)
+          ) %>%
+          mutate(
+            plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
+          ) %>%
+          mutate(
+            plot_label2 = factor(plot_label2, levels = group_order)
+          ) %>%
+          filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23",
+                               "2023-24")) %>%
+          ggplot(aes(y = label, x = estimate, xmin = conf.low,
+                     xmax = conf.high, color = plot_label2, shape = plot_label2)) +
+          scale_color_manual(values = cols_final$col,
+                             name = "Characteristic (Reference)") +
+          scale_shape_manual(name = "Characteristic (Reference)",
+                             values = c(rep(c(shape_value, 8),
+                                            length(legend_labels)))) +
+          geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
+          geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
+          guides(color = guide_legend("Characteristic (Reference)"),
+                 shape = guide_legend("Characteristic (Reference)")) +
+          facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
+          labs(x = "Rate Ratio", y = " ", title = title_label,
+               subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
+          theme_bw() + theme(title = element_text(size = 12),
+                             axis.text = element_text(size = 10),
+                             axis.title = element_text(size = 10),
+                             legend.text = element_text(size = 10))
+        
+      } else {
+      
+        tidy_forest %>%
+          mutate(
+            plot_label = str_to_title(gsub("_", " ", variable)),
+            label = forcats::fct_relevel(label, levels),
+            subset = str_to_title(gsub("_", "-", subset))
+          ) %>%
+          mutate(
+            plot_label = case_when(
+              str_detect(plot_label, "Age") ~ "Age Group",
+              str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
+              str_detect(plot_label, "Latest") ~ "Ethnicity",
+              str_detect(plot_label, "Cancer") ~ "Cancer Within 3 Yrs",
+              str_detect(plot_label, "Comp") ~ "Household Composition",
+              str_detect(plot_label, "Chd") ~ "Has CHD",
+              str_detect(plot_label, "Ckd") ~ "Has CKD",
+              str_detect(plot_label, "Cld") ~ "Has CLD",
+              str_detect(plot_label, "Cnd") ~ "Has CND",
+              str_detect(plot_label, "Copd") ~ "Has COPD",
+              TRUE ~ plot_label)
+          ) %>%
+          mutate(
+            plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
+          ) %>%
+          mutate(
+            plot_label2 = factor(plot_label2, levels = group_order)
+          ) %>%
+          ggplot(aes(y = label, x = estimate, xmin = conf.low,
+                     xmax = conf.high, color = plot_label2, shape = plot_label2)) +
+          scale_color_manual(values = cols_final$col,
+                             name = "Characteristic (Reference)") +
+          scale_shape_manual(name = "Characteristic (Reference)",
+                             values = c(rep(c(shape_value, 8),
+                                            length(legend_labels)))) +
+          geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
+          geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
+          guides(color = guide_legend("Characteristic (Reference)"),
+                 shape = guide_legend("Characteristic (Reference)")) +
+          facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
+          labs(x = "Rate Ratio", y = " ", title = title_label,
+               subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
+          theme_bw() + theme(title = element_text(size = 12),
+                             axis.text = element_text(size = 10),
+                             axis.title = element_text(size = 10),
+                             legend.text = element_text(size = 10))
+        
+      }
       
     }
     
@@ -707,14 +809,19 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
   pathogen_title <- case_when(
     pathogen == "rsv" ~ "RSV",
     pathogen == "flu" ~ "Influenza",
-    pathogen == "covid" ~ "COVID-19"
+    pathogen == "covid" ~ "COVID-19",
+    pathogen == "overall_resp" ~ "Overall Respiratory Viruses"
   )
   
-  # Generate plots separately
-  spec_plot <- process_forest_plot(
-    df_model, "specific", shape_value = 16,
-    title_label = paste0("Rate Ratios of ", outcome_type, " ", pathogen_title,
-                         " (Specific Phenotype)"))
+  if (pathogen != "overall_resp") {
+    
+    # Generate plots separately
+    spec_plot <- process_forest_plot(
+      df_model, "specific", shape_value = 16,
+      title_label = paste0("Rate Ratios of ", outcome_type, " ", pathogen_title,
+                           " (Specific Phenotype)"))
+    
+  }
 
   if (investigation_type == "primary") {
     
@@ -723,7 +830,15 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     title_label = paste0("Rate Ratios of ", outcome_type, " ", pathogen_title,
                          " (Sensitive Phenotype)"))  
     
-    return(list(spec = spec_plot, sens = sens_plot))
+    if (pathogen == "overall_resp") {
+      
+      return(list(sens = sens_plot))
+      
+    } else {
+      
+      return(list(spec = spec_plot, sens = sens_plot))
+      
+    }
     
   } else {
     
@@ -735,6 +850,9 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
 
 #create function to filter collated results to models wanted and then plot
 forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
+  
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
+                      pathogen)
   
   df_model <- df %>%
     filter(model_type == !!model_type,
@@ -795,11 +913,33 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     
   }
   
-  tidy_forest_spec <- process_forest(df_model, "specific")
-  tidy_forest_sens <- process_forest(df_model, "sensitive")
-  
-  conf_low <- min(tidy_forest_spec$conf.low, tidy_forest_sens$conf.low)
-  conf_high <- max(tidy_forest_spec$conf.high, tidy_forest_sens$conf.high)
+  if (pathogen != "overall_resp") {
+    
+    tidy_forest_spec <- process_forest(df_model, "specific")
+    tidy_forest_sens <- process_forest(df_model, "sensitive")
+    
+    spec <- tidy_forest_spec %>%
+      filter(conf.low != 0, conf.high != 0)
+    
+    sens <- tidy_forest_sens %>%
+      filter(conf.low != 0, conf.high != 0)
+    
+    conf_low <- min(tidy_forest_spec$estimate, tidy_forest_sens$estimate,
+                    spec$conf.low, sens$conf.low)
+    conf_high <- max(tidy_forest_spec$estimate, tidy_forest_sens$estimate,
+                     spec$conf.high, sens$conf.high)
+    
+  } else {
+    
+    tidy_forest_sens <- process_forest(df_model, "sensitive")
+    
+    sens <- tidy_forest_sens %>%
+      filter(conf.low != 0, conf.high != 0)
+    
+    conf_low <- min(tidy_forest_sens$estimate, sens$conf.low)
+    conf_high <- max(tidy_forest_sens$estimate, sens$conf.high)
+    
+  }
   
   #define levels
   levels <- list()
@@ -889,7 +1029,8 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     pathogen_title <- case_when(
       pathogen == "rsv" ~ "RSV",
       pathogen == "flu" ~ "Influenza",
-      pathogen == "covid" ~ "COVID-19"
+      pathogen == "covid" ~ "COVID-19",
+      pathogen == "overall_resp" ~ "Overall Respiratory Viruses"
     )
     
     references <- tidy_forest %>%
@@ -974,17 +1115,31 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     
   }
   
-  spec_plot <- make_forest_plot(tidy_forest_spec, shape_value = 16, 
-                                title_suffix = "Specific Phenotype")
-  sens_plot <- make_forest_plot(tidy_forest_sens, shape_value = 17, 
-                                title_suffix = "Sensitive Phenotype")
-  
-  return(list(spec_plot = spec_plot, sens_plot = sens_plot))
+  if (pathogen == "overall_resp") {
+    
+    sens_plot <- make_forest_plot(tidy_forest_sens, shape_value = 17, 
+                                  title_suffix = "Sensitive Phenotype")
+    
+    return(list(sens_plot = sens_plot))
+    
+  } else {
+    
+    spec_plot <- make_forest_plot(tidy_forest_spec, shape_value = 16, 
+                                  title_suffix = "Specific Phenotype")
+    sens_plot <- make_forest_plot(tidy_forest_sens, shape_value = 17, 
+                                  title_suffix = "Sensitive Phenotype")
+    
+    return(list(spec_plot = spec_plot, sens_plot = sens_plot))
+    
+  }
   
 }
 
 forest_year_further <- function(df, df_dummy, pathogen, model_type,
                                 outcome_type) {
+  
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
+                      pathogen)
   
   df_model <- df %>%
     filter(model_type == !!model_type,
@@ -1297,63 +1452,125 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
       select(col) %>%
       slice(rep(1:n(), each = 2))
     
-    tidy_forest %>%
-      mutate(
-        plot_label = str_to_title(gsub("_", " ", variable)),
-        label = forcats::fct_relevel(label, levels),
-        subset = str_to_title(gsub("_", "-", subset))
-      ) %>%
-      mutate(
-        plot_label = case_when(
-          str_detect(plot_label, "Age") ~ "Age Group",
-          str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
-          str_detect(plot_label, "Latest") ~ "Ethnicity",
-          str_detect(plot_label, "Comp") ~ "Household Composition",
-          TRUE ~ plot_label)
-      ) %>%
-      mutate(
-        plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
-      ) %>%
-      mutate(
-        plot_label2 = factor(plot_label2, levels = group_order)
-      ) %>%
-      ggplot(aes(y = label, x = estimate, xmin = conf.low,
-                 xmax = conf.high, color = plot_label2, shape = plot_label2)) +
-      scale_color_manual(values = rep(cols, 2),
-                         name = "Characteristic (Reference)") +
-      scale_shape_manual(name = "Characteristic (Reference)",
-                         values = c(rep(shape_value, length(legend_labels)),
-                                    rep(8, length(legend_labels)))) +
-      geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
-      geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
-      guides(color = guide_legend("Characteristic (Reference)"),
-             shape = guide_legend("Characteristic (Reference)")) +
-      facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
-      labs(x = "Rate Ratio", y = " ", title = title_label,
-           subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-      theme_bw() + theme(title = element_text(size = 12),
-                         axis.text = element_text(size = 10),
-                         axis.title = element_text(size = 10),
-                         legend.text = element_text(size = 10))
+    if (pathogen == "covid") {
+      
+      tidy_forest %>%
+        mutate(
+          plot_label = str_to_title(gsub("_", " ", variable)),
+          label = forcats::fct_relevel(label, levels),
+          subset = str_to_title(gsub("_", "-", subset))
+        ) %>%
+        mutate(
+          plot_label = case_when(
+            str_detect(plot_label, "Age") ~ "Age Group",
+            str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
+            str_detect(plot_label, "Latest") ~ "Ethnicity",
+            str_detect(plot_label, "Comp") ~ "Household Composition",
+            TRUE ~ plot_label)
+        ) %>%
+        mutate(
+          plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
+        ) %>%
+        mutate(
+          plot_label2 = factor(plot_label2, levels = group_order)
+        ) %>%
+        filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23",
+                             "2023-24")) %>%
+        ggplot(aes(y = label, x = estimate, xmin = conf.low,
+                   xmax = conf.high, color = plot_label2, shape = plot_label2)) +
+        scale_color_manual(values = rep(cols, 2),
+                           name = "Characteristic (Reference)") +
+        scale_shape_manual(name = "Characteristic (Reference)",
+                           values = c(rep(shape_value, length(legend_labels)),
+                                      rep(8, length(legend_labels)))) +
+        geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
+        geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
+        guides(color = guide_legend("Characteristic (Reference)"),
+               shape = guide_legend("Characteristic (Reference)")) +
+        facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
+        labs(x = "Rate Ratio", y = " ", title = title_label,
+             subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
+        theme_bw() + theme(title = element_text(size = 12),
+                           axis.text = element_text(size = 10),
+                           axis.title = element_text(size = 10),
+                           legend.text = element_text(size = 10))
+      
+    } else {
+      
+      tidy_forest %>%
+        mutate(
+          plot_label = str_to_title(gsub("_", " ", variable)),
+          label = forcats::fct_relevel(label, levels),
+          subset = str_to_title(gsub("_", "-", subset))
+        ) %>%
+        mutate(
+          plot_label = case_when(
+            str_detect(plot_label, "Age") ~ "Age Group",
+            str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
+            str_detect(plot_label, "Latest") ~ "Ethnicity",
+            str_detect(plot_label, "Comp") ~ "Household Composition",
+            TRUE ~ plot_label)
+        ) %>%
+        mutate(
+          plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
+        ) %>%
+        mutate(
+          plot_label2 = factor(plot_label2, levels = group_order)
+        ) %>%
+        ggplot(aes(y = label, x = estimate, xmin = conf.low,
+                   xmax = conf.high, color = plot_label2, shape = plot_label2)) +
+        scale_color_manual(values = rep(cols, 2),
+                           name = "Characteristic (Reference)") +
+        scale_shape_manual(name = "Characteristic (Reference)",
+                           values = c(rep(shape_value, length(legend_labels)),
+                                      rep(8, length(legend_labels)))) +
+        geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
+        geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
+        guides(color = guide_legend("Characteristic (Reference)"),
+               shape = guide_legend("Characteristic (Reference)")) +
+        facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
+        labs(x = "Rate Ratio", y = " ", title = title_label,
+             subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
+        theme_bw() + theme(title = element_text(size = 12),
+                           axis.text = element_text(size = 10),
+                           axis.title = element_text(size = 10),
+                           legend.text = element_text(size = 10))
+      
+    }
     
   }
   
   pathogen_title <- case_when(
     pathogen == "rsv" ~ "RSV",
     pathogen == "flu" ~ "Influenza",
-    pathogen == "covid" ~ "COVID-19"
+    pathogen == "covid" ~ "COVID-19",
+    overall_resp ~ "Overall Respiratory Viruses"
   )
   
-  # Generate plots separately
-  spec_plot <- process_forest_plot(
-    df_model, "specific", shape_value = 16,
-    title_label = paste0("Rate Ratios of ", outcome_type, " ", pathogen_title,
-                         " (Specific Phenotype)"))
-  sens_plot <- process_forest_plot(
-    df_model, "sensitive", shape_value = 17,
-    title_label = paste0("Rate Ratios of ", outcome_type, " ", pathogen_title,
-                         " (Sensitive Phenotype)"))
-  
-  return(list(spec = spec_plot, sens = sens_plot))
+  if (pathogen == "overall_resp") {
+    
+    # Generate plots separately
+    sens_plot <- process_forest_plot(
+      df_model, "sensitive", shape_value = 17,
+      title_label = paste0("Rate Ratios of ", outcome_type, " ", pathogen_title,
+                           " (Sensitive Phenotype)"))
+    
+    return(list(sens = sens_plot))
+    
+  } else {
+    
+    # Generate plots separately
+    spec_plot <- process_forest_plot(
+      df_model, "specific", shape_value = 16,
+      title_label = paste0("Rate Ratios of ", outcome_type, " ", pathogen_title,
+                           " (Specific Phenotype)"))
+    sens_plot <- process_forest_plot(
+      df_model, "sensitive", shape_value = 17,
+      title_label = paste0("Rate Ratios of ", outcome_type, " ", pathogen_title,
+                           " (Sensitive Phenotype)"))
+    
+    return(list(spec = spec_plot, sens = sens_plot))
+    
+  }
   
 }
