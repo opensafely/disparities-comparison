@@ -45,7 +45,7 @@ title_name <- older_adults_season_scaled$labels$title
 saveas <- paste0(gsub(" ", "_", title_name), "_scaled")
 ggsave(here("post_check", "plots", "primary_analyses",
             paste0(str_to_title(cohort), "_", saveas, ".png")),
-       older_adults_season, height = 8, width = 15)
+       older_adults_season_scaled, height = 8, width = 15)
 
 t <- 2
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
@@ -116,7 +116,7 @@ title_name <- adults_season_scaled$labels$title
 saveas <- paste0(gsub(" ", "_", title_name), "_scaled")
 ggsave(here("post_check", "plots", "primary_analyses",
             paste0(str_to_title(cohort), "_", saveas, ".png")),
-       adults_season, height = 8, width = 15)
+       adults_season_scaled, height = 8, width = 15)
 
 t <- 2
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
@@ -183,7 +183,7 @@ title_name <- children_and_adolescents_season_scaled$labels$title
 saveas <- paste0(gsub(" ", "_", title_name), "_scaled")
 ggsave(here("post_check", "plots", "primary_analyses",
             paste0(str_to_title(cohort), "_", saveas, ".png")),
-       children_and_adolescents_season, height = 8, width = 15)
+       children_and_adolescents_season_scaled, height = 8, width = 15)
 
 t <- 2
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
@@ -249,7 +249,7 @@ title_name <- infants_season_scaled$labels$title
 saveas <- paste0(gsub(" ", "_", title_name), "_scaled")
 ggsave(here("post_check", "plots", "primary_analyses",
             paste0(str_to_title(cohort), "_", saveas, ".png")),
-       infants_season, height = 8, width = 15)
+       infants_season_scaled, height = 8, width = 15)
 
 t <- 2
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
@@ -302,9 +302,11 @@ infants_subgroup_characters_scaled <- character_viz_mult(df_input, "yes")
 
 #create list of plots
 plotlist1 <- list(infants_subgroup_characters_scaled[[1]],
-                  infants_subgroup_characters_scaled[[2]])
+                  infants_subgroup_characters_scaled[[2]],
+                  infants_subgroup_characters_scaled[[3]])
 plotlist2 <- list(infants_subgroup_characters[[1]],
-                  infants_subgroup_characters[[2]])
+                  infants_subgroup_characters[[2]],
+                  infants_subgroup_characters[[3]])
 
 #plot all
 print(infants_subgroup_season)
@@ -318,9 +320,9 @@ title_name <- infants_subgroup_season_scaled$labels$title
 saveas <- paste0(gsub(" ", "_", title_name), "_scaled")
 ggsave(here("post_check", "plots", "primary_analyses",
             paste0(str_to_title(cohort), "_", saveas, ".png")),
-       infants_subgroup_season, height = 8, width = 15)
+       infants_subgroup_season_scaled, height = 8, width = 15)
 
-t <- 2
+t <- 3
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 for(p in plotlist1) {
   
@@ -334,7 +336,7 @@ for(p in plotlist1) {
   
 }
 
-u <- 2
+u <- 3
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 for(p in plotlist2) {
   

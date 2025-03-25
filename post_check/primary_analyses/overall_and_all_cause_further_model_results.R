@@ -35,116 +35,116 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-overall_and_all_cause_ethnicity_mild_sens <- forest(
+overall_and_all_cause_ethnicity_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity", "Mild"
 )$sens
 
 #ses
-overall_and_all_cause_ses_mild_sens <- forest(
+overall_and_all_cause_ses_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
-overall_and_all_cause_ses_mild_sens_alt <- forest_year(
+overall_and_all_cause_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
 #composition
-overall_and_all_cause_composition_mild_sens <- forest(
+overall_and_all_cause_composition_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "composition", "Mild"
 )$sens
-overall_and_all_cause_composition_mild_sens_alt <- forest_year(
+overall_and_all_cause_composition_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "composition", "Mild"
 )$sens
 
 #ethnicity & ses
-overall_and_all_cause_ethnicity_ses_mild_sens <- forest(
+overall_and_all_cause_ethnicity_ses_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_ses_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )$sens
 
 #ethnicity & composition
-overall_and_all_cause_ethnicity_composition_mild_sens <- forest(
+overall_and_all_cause_ethnicity_composition_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_composition_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_composition_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
 )$sens
 
 #ses & composition
-overall_and_all_cause_ses_composition_mild_sens <- forest(
+overall_and_all_cause_ses_composition_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses_composition", "Mild"
 )$sens
-overall_and_all_cause_ses_composition_mild_sens_alt <- forest_year(
+overall_and_all_cause_ses_composition_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses_composition", "Mild"
 )$sens
 
 #full
-overall_and_all_cause_full_mild_sens <- forest(
+overall_and_all_cause_full_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "full", "Mild"
 )$sens
-overall_and_all_cause_full_mild_sens_alt <- forest_year(
+overall_and_all_cause_full_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "full", "Mild"
 )$sens
 
 ##create relevant forest plots - severe
 
 #ethnicity
-overall_and_all_cause_ethnicity_severe_sens <- forest(
+overall_and_all_cause_ethnicity_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
 )$sens
 
 #ses
-overall_and_all_cause_ses_severe_sens <- forest(
+overall_and_all_cause_ses_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
-overall_and_all_cause_ses_severe_sens_alt <- forest_year(
+overall_and_all_cause_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
 #composition
-overall_and_all_cause_composition_severe_sens <- forest(
+overall_and_all_cause_composition_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "composition", "Severe"
 )$sens
-overall_and_all_cause_composition_severe_sens_alt <- forest_year(
+overall_and_all_cause_composition_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "composition", "Severe"
 )$sens
 
 #ethnicity & ses
-overall_and_all_cause_ethnicity_ses_severe_sens <- forest(
+overall_and_all_cause_ethnicity_ses_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_ses_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
 
 #ethnicity & composition
-overall_and_all_cause_ethnicity_composition_severe_sens <- forest(
+overall_and_all_cause_ethnicity_composition_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_composition_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_composition_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
 )$sens
 
 #ses & composition
-overall_and_all_cause_ses_composition_severe_sens <- forest(
+overall_and_all_cause_ses_composition_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses_composition", "Severe"
 )$sens
-overall_and_all_cause_ses_composition_severe_sens_alt <- forest_year(
+overall_and_all_cause_ses_composition_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses_composition", "Severe"
 )$sens
 
 #full
-overall_and_all_cause_full_severe_sens <- forest(
+overall_and_all_cause_full_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "full", "Severe"
 )$sens
-overall_and_all_cause_full_severe_sens_alt <- forest_year(
+overall_and_all_cause_full_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "full", "Severe"
 )$sens
 
@@ -200,7 +200,7 @@ cohort <- "adults"
 
 #import collated model outputs
 df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
-                     paste0(cohort, "_", pathogen,
+                     paste0(cohort, "_further_", pathogen,
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
@@ -220,116 +220,116 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-overall_and_all_cause_ethnicity_mild_sens <- forest(
+overall_and_all_cause_ethnicity_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity", "Mild"
 )$sens
 
 #ses
-overall_and_all_cause_ses_mild_sens <- forest(
+overall_and_all_cause_ses_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
-overall_and_all_cause_ses_mild_sens_alt <- forest_year(
+overall_and_all_cause_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
 #composition
-overall_and_all_cause_composition_mild_sens <- forest(
+overall_and_all_cause_composition_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "composition", "Mild"
 )$sens
-overall_and_all_cause_composition_mild_sens_alt <- forest_year(
+overall_and_all_cause_composition_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "composition", "Mild"
 )$sens
 
 #ethnicity & ses
-overall_and_all_cause_ethnicity_ses_mild_sens <- forest(
+overall_and_all_cause_ethnicity_ses_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_ses_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )$sens
 
 #ethnicity & composition
-overall_and_all_cause_ethnicity_composition_mild_sens <- forest(
+overall_and_all_cause_ethnicity_composition_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_composition_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_composition_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
 )$sens
 
 #ses & composition
-overall_and_all_cause_ses_composition_mild_sens <- forest(
+overall_and_all_cause_ses_composition_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses_composition", "Mild"
 )$sens
-overall_and_all_cause_ses_composition_mild_sens_alt <- forest_year(
+overall_and_all_cause_ses_composition_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses_composition", "Mild"
 )$sens
 
 #full
-overall_and_all_cause_full_mild_sens <- forest(
+overall_and_all_cause_full_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "full", "Mild"
 )$sens
-overall_and_all_cause_full_mild_sens_alt <- forest_year(
+overall_and_all_cause_full_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "full", "Mild"
 )$sens
 
 ##create relevant forest plots - severe
 
 #ethnicity
-overall_and_all_cause_ethnicity_severe_sens <- forest(
+overall_and_all_cause_ethnicity_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
 )$sens
 
 #ses
-overall_and_all_cause_ses_severe_sens <- forest(
+overall_and_all_cause_ses_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
-overall_and_all_cause_ses_severe_sens_alt <- forest_year(
+overall_and_all_cause_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
 #composition
-overall_and_all_cause_composition_severe_sens <- forest(
+overall_and_all_cause_composition_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "composition", "Severe"
 )$sens
-overall_and_all_cause_composition_severe_sens_alt <- forest_year(
+overall_and_all_cause_composition_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "composition", "Severe"
 )$sens
 
 #ethnicity & ses
-overall_and_all_cause_ethnicity_ses_severe_sens <- forest(
+overall_and_all_cause_ethnicity_ses_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_ses_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
 
 #ethnicity & composition
-overall_and_all_cause_ethnicity_composition_severe_sens <- forest(
+overall_and_all_cause_ethnicity_composition_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_composition_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_composition_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
 )$sens
 
 #ses & composition
-overall_and_all_cause_ses_composition_severe_sens <- forest(
+overall_and_all_cause_ses_composition_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses_composition", "Severe"
 )$sens
-overall_and_all_cause_ses_composition_severe_sens_alt <- forest_year(
+overall_and_all_cause_ses_composition_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses_composition", "Severe"
 )$sens
 
 #full
-overall_and_all_cause_full_severe_sens <- forest(
+overall_and_all_cause_full_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "full", "Severe"
 )$sens
-overall_and_all_cause_full_severe_sens_alt <- forest_year(
+overall_and_all_cause_full_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "full", "Severe"
 )$sens
 
@@ -385,7 +385,7 @@ cohort <- "children_and_adolescents"
 
 #import collated model outputs
 df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
-                     paste0(cohort, "_", pathogen,
+                     paste0(cohort, "_further_", pathogen,
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
@@ -401,116 +401,116 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-overall_and_all_cause_ethnicity_mild_sens <- forest(
+overall_and_all_cause_ethnicity_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity", "Mild"
 )$sens
 
 #ses
-overall_and_all_cause_ses_mild_sens <- forest(
+overall_and_all_cause_ses_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
-overall_and_all_cause_ses_mild_sens_alt <- forest_year(
+overall_and_all_cause_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
 #composition
-overall_and_all_cause_composition_mild_sens <- forest(
+overall_and_all_cause_composition_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "composition", "Mild"
 )$sens
-overall_and_all_cause_composition_mild_sens_alt <- forest_year(
+overall_and_all_cause_composition_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "composition", "Mild"
 )$sens
 
 #ethnicity & ses
-overall_and_all_cause_ethnicity_ses_mild_sens <- forest(
+overall_and_all_cause_ethnicity_ses_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_ses_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )$sens
 
 #ethnicity & composition
-overall_and_all_cause_ethnicity_composition_mild_sens <- forest(
+overall_and_all_cause_ethnicity_composition_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_composition_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_composition_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
 )$sens
 
 #ses & composition
-overall_and_all_cause_ses_composition_mild_sens <- forest(
+overall_and_all_cause_ses_composition_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses_composition", "Mild"
 )$sens
-overall_and_all_cause_ses_composition_mild_sens_alt <- forest_year(
+overall_and_all_cause_ses_composition_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses_composition", "Mild"
 )$sens
 
 #full
-overall_and_all_cause_full_mild_sens <- forest(
+overall_and_all_cause_full_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "full", "Mild"
 )$sens
-overall_and_all_cause_full_mild_sens_alt <- forest_year(
+overall_and_all_cause_full_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "full", "Mild"
 )$sens
 
 ##create relevant forest plots - severe
 
 #ethnicity
-overall_and_all_cause_ethnicity_severe_sens <- forest(
+overall_and_all_cause_ethnicity_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
 )$sens
 
 #ses
-overall_and_all_cause_ses_severe_sens <- forest(
+overall_and_all_cause_ses_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
-overall_and_all_cause_ses_severe_sens_alt <- forest_year(
+overall_and_all_cause_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
 #composition
-overall_and_all_cause_composition_severe_sens <- forest(
+overall_and_all_cause_composition_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "composition", "Severe"
 )$sens
-overall_and_all_cause_composition_severe_sens_alt <- forest_year(
+overall_and_all_cause_composition_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "composition", "Severe"
 )$sens
 
 #ethnicity & ses
-overall_and_all_cause_ethnicity_ses_severe_sens <- forest(
+overall_and_all_cause_ethnicity_ses_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_ses_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
 
 #ethnicity & composition
-overall_and_all_cause_ethnicity_composition_severe_sens <- forest(
+overall_and_all_cause_ethnicity_composition_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_composition_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_composition_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
 )$sens
 
 #ses & composition
-overall_and_all_cause_ses_composition_severe_sens <- forest(
+overall_and_all_cause_ses_composition_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses_composition", "Severe"
 )$sens
-overall_and_all_cause_ses_composition_severe_sens_alt <- forest_year(
+overall_and_all_cause_ses_composition_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses_composition", "Severe"
 )$sens
 
 #full
-overall_and_all_cause_full_severe_sens <- forest(
+overall_and_all_cause_full_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "full", "Severe"
 )$sens
-overall_and_all_cause_full_severe_sens_alt <- forest_year(
+overall_and_all_cause_full_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "full", "Severe"
 )$sens
 
@@ -566,7 +566,7 @@ cohort <- "infants"
 
 #import collated model outputs
 df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
-                     paste0(cohort, "_", pathogen,
+                     paste0(cohort, "_further_", pathogen,
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
@@ -582,52 +582,52 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-overall_and_all_cause_ethnicity_mild_sens <- forest(
+overall_and_all_cause_ethnicity_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity", "Mild"
 )$sens
 
 #ses
-overall_and_all_cause_ses_mild_sens <- forest(
+overall_and_all_cause_ses_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
-overall_and_all_cause_ses_mild_sens_alt <- forest_year(
+overall_and_all_cause_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
 #ethnicity & ses
-overall_and_all_cause_ethnicity_ses_mild_sens <- forest(
+overall_and_all_cause_ethnicity_ses_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_ses_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )$sens
 
 ##create relevant forest plots - severe
 
 #ethnicity
-overall_and_all_cause_ethnicity_severe_sens <- forest(
+overall_and_all_cause_ethnicity_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
 )$sens
 
 #ses
-overall_and_all_cause_ses_severe_sens <- forest(
+overall_and_all_cause_ses_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
-overall_and_all_cause_ses_severe_sens_alt <- forest_year(
+overall_and_all_cause_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
 #ethnicity & ses
-overall_and_all_cause_ethnicity_ses_severe_sens <- forest(
+overall_and_all_cause_ethnicity_ses_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_ses_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
 
@@ -667,7 +667,7 @@ cohort <- "infants_subgroup"
 
 #import collated model outputs
 df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
-                     paste0(cohort, "_", pathogen,
+                     paste0(cohort, "_further_", pathogen,
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
@@ -683,52 +683,52 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-overall_and_all_cause_ethnicity_mild_sens <- forest(
+overall_and_all_cause_ethnicity_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity", "Mild"
 )$sens
 
 #ses
-overall_and_all_cause_ses_mild_sens <- forest(
+overall_and_all_cause_ses_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
-overall_and_all_cause_ses_mild_sens_alt <- forest_year(
+overall_and_all_cause_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
 #ethnicity & ses
-overall_and_all_cause_ethnicity_ses_mild_sens <- forest(
+overall_and_all_cause_ethnicity_ses_mild_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )$sens
-overall_and_all_cause_ethnicity_ses_mild_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )$sens
 
 ##create relevant forest plots - severe
 
 #ethnicity
-overall_and_all_cause_ethnicity_severe_sens <- forest(
+overall_and_all_cause_ethnicity_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
 )$sens
 
 #ses
-overall_and_all_cause_ses_severe_sens <- forest(
+overall_and_all_cause_ses_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
-overall_and_all_cause_ses_severe_sens_alt <- forest_year(
+overall_and_all_cause_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
 #ethnicity & ses
-overall_and_all_cause_ethnicity_ses_severe_sens <- forest(
+overall_and_all_cause_ethnicity_ses_severe_sens <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
-overall_and_all_cause_ethnicity_ses_severe_sens_alt <- forest_year(
+overall_and_all_cause_ethnicity_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
 

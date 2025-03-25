@@ -43,7 +43,7 @@ print(older_adults_season_scaled)
 title_name <- older_adults_season_scaled$labels$title
 saveas <- paste0(gsub(" ", "_", title_name), "_scaled")
 ggsave(here("post_check", "plots", "secondary_analyses",
-            paste0(saveas, ".png")), older_adults_season,
+            paste0(saveas, ".png")), older_adults_season_scaled,
        height = 8, width = 15)
 print(older_adults_season)
 title_name <- older_adults_season$labels$title

@@ -25,8 +25,6 @@ df_input <- read_csv(here::here("post_check", "output", "collated",
 for (i in 1:length(seasons)) {
   bar_stack(df_input, seasons[i], "mild")
   bar_stack(df_input, seasons[i], "severe")
-  # bar_stack(df_input, seasons[i], "mild_overall")
-  # bar_stack(df_input, seasons[i], "severe_overall")
 }
 
 ##  infants
@@ -40,6 +38,4 @@ df_input <- read_csv(here::here("post_check", "output", "collated",
 for (i in 1:length(seasons)) {
   bar_stack(df_input, seasons[i], "mild")
   bar_stack(df_input, seasons[i], "severe")
-  # bar_stack(df_input, seasons[i], "mild_overall")
-  # bar_stack(df_input, seasons[i], "severe_overall")
 }

@@ -23,7 +23,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2016_2017_specific_primary.arrow"))) 
+             "_2020_2021_specific_primary.arrow"))) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -160,7 +160,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2016_2017_specific_primary.arrow")))
+             "_2020_2021_specific_primary.arrow")))
 df_dummy <- df_dummy %>%
   mutate(
     age_band = if_else(age_band == "18-29y", "18-39y", age_band)
@@ -301,7 +301,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2016_2017_specific_primary.arrow"))) 
+             "_2020_2021_specific_primary.arrow"))) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -438,7 +438,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2016_2017_specific_primary.arrow"))) 
+             "_2020_2021_specific_primary.arrow"))) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -575,7 +575,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2016_2017_specific_primary.arrow"))) 
+             "_2020_2021_specific_primary.arrow"))) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
