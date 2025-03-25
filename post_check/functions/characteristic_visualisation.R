@@ -140,9 +140,7 @@ character_viz <- function(df, scaling) {
                 "3", "4", "5 (most deprived)", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
-                "Never", "Former", "Current", 
-                "Maternal Drug Usage", "Maternal Drinking",
-                "Maternal Flu Vaccination", "Maternal Pertussis Vaccination")
+                "Yes", "Never", "Former", "Current")
     
   } else if (cohort == "children_and_adolescents") {
     
@@ -155,7 +153,7 @@ character_viz <- function(df, scaling) {
                 "Two Other Generations", "Three Other Generations",
                 "Urban Major Conurbation", "Urban Minor Conurbation",
                 "Urban City and Town", "Rural Town and Fringe",
-                "Rural Village and Dispersed", "Prior Flu Vaccine",
+                "Rural Village and Dispersed", "Yes",
                 "0-6m", "6-12m", "12m+")
     
   } else if (cohort == "adults") {
@@ -169,18 +167,11 @@ character_viz <- function(df, scaling) {
                 "Three Other Generations", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
-                "Prior Flu Vaccine", "0-6m", "6-12m", "12m+")
+                "Yes", "0-6m", "6-12m", "12m+")
     
   } else if (cohort == "older_adults" & investigation_type == "secondary") {
     
-    levels <- c("Asthma", "COPD", "Cystic Fibrosis",
-                "Other Chronic Respiratory Disease", "Diabetes",
-                "Addisons", "Severe Obesity", "Chronic Heart Disease",
-                "Chronic Kidney Disease", "Chronic Liver Disease",
-                "Chronic Neurological Disease", "Cancer Within 3 Years",
-                "Immunosuppressed", "Sickle Cell Disease",
-                "Never", "Current", "Former", "Unknown", "Hazardous Drinking",
-                "Drug Usage")
+    levels <- c("Yes", "Never", "Current", "Former", "Unknown")
     
   } else {
     
@@ -192,7 +183,7 @@ character_viz <- function(df, scaling) {
                 "Three Other Generations", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
-                "Prior Flu Vaccine", "0-6m", "6-12m", "12m+")
+                "Yes", "0-6m", "6-12m", "12m+")
     
   }
   
@@ -225,8 +216,7 @@ character_viz <- function(df, scaling) {
                      "Chronic Kidney Disease", "Chronic Liver Disease",
                      "Chronic Neurological Disease", "Cancer Within 3 Years",
                      "Immunosuppressed", "Sickle Cell Disease",
-                     "Smoking Status", "Hazardous Drinking",
-                     "Drug Usage")
+                     "Hazardous Drinking", "Drug Usage", "Smoking Status")
     
   } else {
     
@@ -252,19 +242,6 @@ character_viz <- function(df, scaling) {
   df %>%
     filter(group != "Total") %>%
     mutate(
-      characteristic = forcats::fct_relevel(factor(characteristic),
-                                            levels),
-      subset = str_to_title(gsub("_", "-", subset)),
-      group = factor(group, levels = group_order)
-    ) %>%
-    mutate(
-      across(characteristic, \(x) factor(
-        x,
-        levels = levels(x),
-        labels = str_wrap(levels(x), width = 12)
-      ))
-    ) %>%
-    mutate(
       characteristic = if_else(
         group %in% c(
           "Age Group", "Sex", "Ethnicity", "IMD", "Household Composition",
@@ -273,11 +250,11 @@ character_viz <- function(df, scaling) {
         characteristic, "Yes")
     ) %>%
     mutate(
-      across(group, \(x) factor(
-        x,
-        levels = levels(x),
-        labels = str_wrap(levels(x), width = 20)
-      ))
+      characteristic = factor(characteristic, levels = levels,
+                              labels = str_wrap(levels, width = 12)),
+      subset = str_to_title(gsub("_", "-", subset)),
+      group = factor(group, levels = group_order, 
+                     labels = str_wrap(group_order, width = 20))
     ) %>%
     ggplot(aes(fill = subset, y = percentage, x = characteristic)) +
     geom_bar(stat = "identity", position = "dodge", color = "white") +
@@ -430,9 +407,7 @@ character_viz_mult <- function(df, scaling) {
                 "3", "4", "5 (most deprived)", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
-                "Never", "Former", "Current",
-                "Maternal Drug Usage", "Maternal Drinking",
-                "Maternal Flu Vaccination", "Maternal Pertussis Vaccination")
+                "Yes", "Never", "Former", "Current")
     
   } else if (cohort == "children_and_adolescents") {
     
@@ -445,7 +420,7 @@ character_viz_mult <- function(df, scaling) {
                 "Two Other Generations", "Three Other Generations",
                 "Urban Major Conurbation", "Urban Minor Conurbation",
                 "Urban City and Town", "Rural Town and Fringe",
-                "Rural Village and Dispersed", "Prior Flu Vaccine",
+                "Rural Village and Dispersed", "Yes",
                 "0-6m", "6-12m", "12m+")
     
   } else if (cohort == "adults") {
@@ -459,31 +434,23 @@ character_viz_mult <- function(df, scaling) {
                 "Three Other Generations", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
-                "Prior Flu Vaccine", "0-6m", "6-12m", "12m+")
+                "Yes", "0-6m", "6-12m", "12m+")
     
   } else if (cohort == "older_adults" & investigation_type == "secondary") {
     
-    levels <- c("Asthma", "COPD", "Cystic Fibrosis",
-                "Other Chronic Respiratory Disease", "Diabetes",
-                "Addisons", "Severe Obesity", "Chronic Heart Disease",
-                "Chronic Kidney Disease", "Chronic Liver Disease",
-                "Chronic Neurological Disease", "Cancer Within 3 Years",
-                "Immunosuppressed", "Sickle Cell Disease",
-                "Never", "Current", "Former", "Unknown", "Hazardous Drinking",
-                "Drug Usage")
+    levels <- c("Yes", "Never", "Current", "Former", "Unknown")
     
   } else {
     
     levels <- c("65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (least deprived)",
-                "2", "3", "4", "5 (most deprived)",
-                "Multiple of the Same Generation", "Living Alone",
-                "One Other Generation", "Two Other Generations",
+                "Other Ethnic Groups", "Unknown", "1 (least deprived)", "2",
+                "3", "4", "5 (most deprived)", "Multiple of the Same Generation",
+                "Living Alone", "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
-                "Prior Flu Vaccine", "0-6m", "6-12m", "12m+")
+                "Yes", "0-6m", "6-12m", "12m+")
     
   }
   
@@ -495,8 +462,7 @@ character_viz_mult <- function(df, scaling) {
                      "Chronic Kidney Disease", "Chronic Liver Disease",
                      "Chronic Neurological Disease", "Cancer Within 3 Years",
                      "Immunosuppressed", "Sickle Cell Disease",
-                     "Smoking Status", "Hazardous Drinking",
-                     "Drug Usage")
+                     "Hazardous Drinking", "Drug Usage", "Smoking Status")
     
   } else {
     
@@ -512,19 +478,21 @@ character_viz_mult <- function(df, scaling) {
   df <- df %>% 
     filter(group != "Total") %>%
     mutate(
-      characteristic = forcats::fct_relevel(factor(characteristic),
-                                            levels),
-      subset = str_to_title(gsub("_", "-", subset))
+      characteristic = if_else(
+        group %in% c(
+          "Age Group", "Sex", "Ethnicity", "IMD", "Household Composition",
+          "Rurality", "Maternal Smoking Status",
+          "Time Since Last Covid Vaccine", "Smoking Status"),
+        characteristic, "Yes")
     ) %>%
     mutate(
-      across(characteristic, \(x) factor(
-        x,
-        levels = levels(x),
-        labels = str_wrap(levels(x), width = 12)
-      ))
+      characteristic = factor(characteristic, levels = levels,
+                              labels = str_wrap(levels, width = 12)),
+      subset = str_to_title(gsub("_", "-", subset)),
+      group = factor(group, levels = group_order)
     )
   
-  all_groups <- group_order[group_order %in% unique(df$group)]
+  all_groups <- group_order[group_order %in% levels(df$group)]
   
   plot_list <- list()
   
@@ -541,20 +509,20 @@ character_viz_mult <- function(df, scaling) {
             "Chronic Kidney Disease", "Chronic Liver Disease",
             "Chronic Neurological Disease", "Cancer Within 3 Years",
             "Immunosuppressed", "Sickle Cell Disease",
-            "Smoking Status", "Hazardous Drinking", "Drug Usage"),
-    col = c("#50edb2", "#f64883", "#43006f", "#b1e466",
-            "#8e0077", "#227e00",
-            "#004e13", "#e1b1ff",
-            "#ae9500", "#004194",
-            "#d98116",
-            "#bb1782", "#bb1782",
-            "#d66dbe", "#50873c", "#b97fd4",
-            "#cc8331", "#628bd5",
-            "#d45e46", "#38dbda", "#e1556e",
-            "#a1863d", "#952a5e",
-            "#9b4729", "#dd6a9c",
-            "#ad4248", "#ac4258",
-            "#6a70d7", "#81307a", "#45ba8a")
+            "Hazardous Drinking", "Drug Usage", "Smoking Status"),
+    col = c('#1f77b4', '#ffbb78', '#2ca02c', '#ff9896',
+            '#aec7e8', '#ff7f0e',
+            '#c49c94', '#e377c2',
+            '#c5b0d5', '#8c564b',
+            '#f7b6d2',
+            '#98df8a', '#98df8a',
+            '#d177f4', '#7b98f4', '#37aabe',
+            '#bcbd22', '#c5b0d5',
+            '#dbdb8d', '#17becf', '#9edae5',
+            '#b884f4', '#ec62f4',
+            '#38a8cb', '#9d8ff4',
+            '#98df8a', '#43a1f4',
+            '#8c564b', '#e377c2', '#9467bd')
     )
   
   if (scaling == "yes") {
@@ -578,16 +546,6 @@ character_viz_mult <- function(df, scaling) {
     alpha_length <- df %>%
       filter(group == !!group)
     alpha_length <-  length(unique(alpha_length$characteristic))
-    
-    df <-  df %>%
-      mutate(
-        characteristic = if_else(
-          as.character(group) %in% c(
-            "Age Group", "Sex", "Ethnicity", "IMD", "Household Composition",
-            "Rurality", "Maternal Smoking Status",
-            "Time Since Last Covid Vaccine", "Smoking Status"),
-          characteristic, "Yes")
-      )
     
     plot_list[[group]] <- df %>%
       filter(group == !!group) %>%
@@ -626,6 +584,36 @@ character_viz_mult <- function(df, scaling) {
     plot_row1 <- plot_grid(plotlist = plot_list[1:6], nrow = 2)
     plot_row2 <- plot_grid(plotlist = plot_list[7:12], nrow = 2)
     plot_row3 <- plot_grid(plotlist = plot_list[13:17], nrow = 2)
+    
+    one <- plot_grid(plot_title, plot_row1, ncol = 1,
+                     rel_heights = c(0.1, 1))
+    two <- plot_grid(plot_title, plot_row2, ncol = 1,
+                     rel_heights = c(0.1, 1))
+    three <- plot_grid(plot_title, plot_row3, ncol = 1,
+                       rel_heights = c(0.1, 1))
+    
+    return(list(one, two, three, title1, title2, title3))
+    
+  } else if (investigation_type == "primary" & cohort == "infants_subgroup") {
+    
+    plot_title <- ggdraw() + 
+      draw_label(
+        "Participant Characteristics by Season",
+        x = 0,
+        hjust = 0
+      ) + theme_bw() +
+      theme(
+        plot.margin = margin(0, 0, 0, 7),
+        panel.border = element_blank(),
+      )
+    
+    title1 <- "Participant Characteristics by Season (Panel A)"
+    title2 <- "Participant Characteristics by Season (Panel B)"
+    title3 <- "Participant Characteristics by Season (Panel C)"
+    
+    plot_row1 <- plot_grid(plotlist = plot_list[1:3], nrow = 2)
+    plot_row2 <- plot_grid(plotlist = plot_list[4:6], nrow = 2)
+    plot_row3 <- plot_grid(plotlist = plot_list[7:10], nrow = 2)
     
     one <- plot_grid(plot_title, plot_row1, ncol = 1,
                      rel_heights = c(0.1, 1))
