@@ -545,7 +545,7 @@ character_viz_mult <- function(df, scaling) {
     
     alpha_length <- df %>%
       filter(group == !!group)
-    alpha_length <-  length(unique(alpha_length$characteristic))
+    alpha_length <- length(unique(alpha_length$characteristic))
     
     plot_list[[group]] <- df %>%
       filter(group == !!group) %>%
