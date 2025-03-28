@@ -9,7 +9,8 @@ library(stringr)
 source(here::here("post_check", "functions", "model.R"))
 
 #create function to filter collated results to models wanted and then plot
-forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
+forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
+                   interest = "no") {
   
   pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
                       pathogen)
@@ -307,6 +308,16 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
         
       }
       
+      if (interest == "yes") {
+        
+        cc <- case_when(
+          pathogen == "rsv" ~ cc[2],
+          pathogen == "flu" ~ cc[3],
+          pathogen == "covid" ~ cc[5]
+        )
+        
+      }
+      
     } else {
       
       cc_full <- scales::seq_gradient_pal(
@@ -361,12 +372,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
                           pathogen_title, " by Group (", title_suffix, ")"),
            subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) + 
       scale_x_log10() + coord_cartesian(xlim = c(conf_low, conf_high)) +
-      theme_bw() + theme(title = element_text(size = 12),
-                         axis.text = element_text(size = 10),
-                         axis.title = element_text(size = 10),
-                         legend.text = element_text(size = 10),
-                         plot.tag.position = "topright",
-                         plot.tag = element_text(hjust = 0, size = 9))
+      theme_bw() + theme(text = element_text(size = 12),
+                         plot.tag.position = "topright")
     
   }
   
@@ -400,7 +407,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type) {
   
 }
 
-forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
+forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
+                        interest = "no") {
   
   pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
                       pathogen)
@@ -728,6 +736,19 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
           ungroup() %>%
           select(-rn)
         
+        if (interest == "yes") {
+          
+          season <- case_when(
+            pathogen == "rsv" ~ "2017_18",
+            pathogen == "flu" ~ "2018_19",
+            pathogen == "covid" ~ "2020_21"
+          )
+          
+          reference_rows <- reference_rows %>%
+            filter(subset == season)
+          
+        }
+        
       }
       
     } else {
@@ -872,11 +893,7 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
         facet_wrap(~ faceting, scales = "free_y", ncol = 2) + 
         labs(x = "Rate Ratio", y = " ", title = title_label,
              subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-        theme_bw() + theme(title = element_text(size = 12),
-                           axis.text = element_text(size = 10),
-                           axis.title = element_text(size = 10),
-                           legend.text = element_text(size = 8),
-                           legend.title = element_text(size = 10))
+        theme_bw() + theme(text = element_text(size = 12))
       
     } else {
       
@@ -908,8 +925,8 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
           mutate(
             plot_label2 = factor(plot_label2, levels = group_order)
           ) %>%
-          filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23",
-                               "2023-24")) %>%
+          filter(subset %in% c("2019_20", "2020_21", "2021_22", "2022_23",
+                               "2023_24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low,
                      xmax = conf.high, color = plot_label2, shape = plot_label2)) +
           scale_color_manual(values = cols_final$col,
@@ -924,10 +941,7 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
           facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
           labs(x = "Rate Ratio", y = " ", title = title_label,
                subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-          theme_bw() + theme(title = element_text(size = 12),
-                             axis.text = element_text(size = 10),
-                             axis.title = element_text(size = 10),
-                             legend.text = element_text(size = 10))
+          theme_bw() + theme(text = element_text(size = 12))
         
       } else {
       
@@ -971,10 +985,7 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
           facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
           labs(x = "Rate Ratio", y = " ", title = title_label,
                subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-          theme_bw() + theme(title = element_text(size = 12),
-                             axis.text = element_text(size = 10),
-                             axis.title = element_text(size = 10),
-                             legend.text = element_text(size = 10))
+          theme_bw() + theme(text = element_text(size = 12))
         
       }
       
@@ -1025,7 +1036,8 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type) {
 }
 
 #create function to filter collated results to models wanted and then plot
-forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
+forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type,
+                           interest = "no") {
   
   pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
                       pathogen)
@@ -1302,8 +1314,8 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
     
   } else if (cohort != "infants" & pathogen == "covid") {
     
-    levels <- c(levels, "Prior Covid Vaccination (No)",
-                "Prior Covid Vaccination (Yes)", "0-6m", "6-12m", "12m+")
+    levels <- c(levels, "Covid Vaccination (No)", "Covid Vaccination (Yes)",
+                "0-6m", "6-12m", "12m+")
     
   }
   
@@ -1323,10 +1335,19 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
           "Maternal Smoking Status", "Maternal Drinking",
           "Maternal Drug Usage", "Maternal Flu Vaccination",
           "Maternal Pertussis Vaccination")),
+      cohort != "infants" & cohort != "infants_subgroup" &
+        pathogen == "flu" ~ list(
+          c("Sex", "Age Group", "Ethnicity", "IMD Quintile",
+            "Household Composition", "Rurality", "Prior Flu Vaccination",
+            "Flu Vaccination")),
+      cohort != "infants" & cohort != "infants_subgroup" &
+        pathogen == "covid" ~ list(
+          c("Sex", "Age Group", "Ethnicity", "IMD Quintile",
+            "Household Composition", "Rurality",
+            "Time Since Last Covid Vaccination", "Covid Vaccination")),
       TRUE ~ list(
         c("Sex", "Age Group", "Ethnicity", "IMD Quintile",
-          "Household Composition", "Rurality", "Prior Flu Vaccination",
-          "Flu Vaccination", "Prior Covid Vaccination", "Covid Vaccination"))
+          "Household Composition", "Rurality"))
     )[[1]]
     
     references <- tidy_forest %>%
@@ -1354,7 +1375,8 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
           str_detect(plot_label, "Rurality" ) ~ "Rurality",
           TRUE ~ plot_label)
       ) %>%
-      mutate(across(plot_label, ~factor(., levels = plot_label_order)))
+      mutate(plot_label = factor(plot_label, levels = plot_label_order,
+                          labels = str_wrap(plot_label_order, width = 20)))
     
     if (investigation_type == "primary") {
       
@@ -1365,6 +1387,16 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
         "composition", "ethnicity_composition", "ses_composition", "full")) {
         
         cc <- cc[5]
+        
+      }
+      
+      if (interest == "yes") {
+        
+        cc <- case_when(
+          pathogen == "rsv" ~ cc[2],
+          pathogen == "flu" ~ cc[3],
+          pathogen == "covid" ~ cc[5]
+        )
         
       }
       
@@ -1394,7 +1426,7 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
       mutate(
         plot_label = str_to_title(gsub("_", " ", variable)),
         label = if_else(variable %in% c("prior_flu_vaccination",
-                        "flu_vaccination", "prior_covid_vaccination"),
+                        "flu_vaccination", "covid_vaccination"),
                         paste0(plot_label, " (", label,")"), label),
         label = forcats::fct_relevel(label, levels),
         subset = str_to_title(gsub("_", "-", subset))
@@ -1408,7 +1440,8 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
           str_detect(plot_label, "Rurality" ) ~ "Rurality",
           TRUE ~ plot_label)
       ) %>%
-      mutate(across(plot_label, ~factor(., levels = plot_label_order))) %>%
+      mutate(plot_label = factor(plot_label, levels = plot_label_order,
+                          labels = str_wrap(plot_label_order, width = 20))) %>%
       mutate(reference_row = NA) %>%
       ggplot(aes(y = label, x = estimate, xmin = conf.low,
                  xmax = conf.high, color = subset)) +
@@ -1429,12 +1462,8 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
                           pathogen_title, " by Group (", title_suffix, ")"),
            subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) + 
       scale_x_log10(limits = c(conf_low, conf_high)) +
-      theme_bw() + theme(title = element_text(size = 12),
-                         axis.text = element_text(size = 10),
-                         axis.title = element_text(size = 10),
-                         legend.text = element_text(size = 10),
-                         plot.tag.position = "topright",
-                         plot.tag = element_text(hjust = 0, size = 9))
+      theme_bw() + theme(text = element_text(size = 12),
+                         plot.tag.position = "topright")
     
   }
   
@@ -1459,7 +1488,7 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type) {
 }
 
 forest_year_further <- function(df, df_dummy, pathogen, model_type,
-                                outcome_type) {
+                                outcome_type, interest = "no") {
   
   pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
                       pathogen)
@@ -1629,8 +1658,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
       
   } else if (cohort != "infants" & pathogen == "covid") {
       
-    levels <- c(levels, "Prior Covid Vaccination (No)",
-                "Prior Covid Vaccination (Yes)", "0-6m", "6-12m", "12m+")
+    levels <- c(levels, "Covid Vaccination (No)", "Covid Vaccination (Yes)",
+                "0-6m", "6-12m", "12m+")
       
   }
   
@@ -1874,6 +1903,19 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           ungroup() %>%
           select(-rn)
         
+        if (interest == "yes") {
+          
+          season <- case_when(
+            pathogen == "rsv" ~ "2017_18",
+            pathogen == "flu" ~ "2018_19",
+            pathogen == "covid" ~ "2020_21"
+          )
+          
+          reference_rows <- reference_rows %>%
+            filter(subset == season)
+          
+        }
+        
       }
       
     } else {
@@ -2001,8 +2043,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
             plot_label2 = factor(plot_label2, levels = rev(group_order)),
             label = forcats::fct_relevel(label, levels)
           ) %>%
-          filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23",
-                               "2023-24")) %>%
+          filter(subset %in% c("2019_20", "2020_21", "2021_22", "2022_23",
+                               "2023_24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low,
                      xmax = conf.high, color = plot_label2, shape = plot_label2)) +
           scale_color_manual(values = cols_final$col,
@@ -2016,10 +2058,7 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           facet_grid(faceting ~ subset, scales = "free") + 
           labs(x = "Rate Ratio", y = " ", title = title_label,
                subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-          theme_bw() + theme(title = element_text(size = 12),
-                             axis.text = element_text(size = 10),
-                             axis.title = element_text(size = 10),
-                             legend.text = element_text(size = 10))
+          theme_bw() + theme(text = element_text(size = 12))
         
       } else {
       
@@ -2067,11 +2106,7 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           facet_grid(faceting ~ subset, scales = "free") + 
           labs(x = "Rate Ratio", y = " ", title = title_label,
                subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-          theme_bw() + theme(title = element_text(size = 12),
-                             axis.text = element_text(size = 10),
-                             axis.title = element_text(size = 10),
-                             legend.text = element_text(size = 8),
-                             legend.title = element_text(size = 10))
+          theme_bw() + theme(text = element_text(size = 12))
         
       }
       
@@ -2106,8 +2141,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
             plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels)
           ) %>%
-          filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23",
-                               "2023-24")) %>%
+          filter(subset %in% c("2019_20", "2020_21", "2021_22", "2022_23",
+                               "2023_24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low,
                      xmax = conf.high, color = plot_label2, shape = plot_label2)) +
           scale_color_manual(values = cols_final$col,
@@ -2122,10 +2157,7 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
           labs(x = "Rate Ratio", y = " ", title = title_label,
                subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-          theme_bw() + theme(title = element_text(size = 12),
-                             axis.text = element_text(size = 10),
-                             axis.title = element_text(size = 10),
-                             legend.text = element_text(size = 10))
+          theme_bw() + theme(text = element_text(size = 12))
         
       } else {
         
@@ -2171,10 +2203,7 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
           labs(x = "Rate Ratio", y = " ", title = title_label,
                subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-          theme_bw() + theme(title = element_text(size = 12),
-                             axis.text = element_text(size = 10),
-                             axis.title = element_text(size = 10),
-                             legend.text = element_text(size = 10))
+          theme_bw() + theme(text = element_text(size = 12))
         
       }
       

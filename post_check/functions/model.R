@@ -83,11 +83,11 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
       
     } else if (y == "covid_primary_inf") {
       
-      if (study_start_date == as.Date("2020-09-01")) {
+      if (unique(df$subset) %in% c("2020_21")) {
         
         predictors <- c(predictors, vacc_mild)
         
-      } else if (study_start_date >= as.Date("2021-09-01")) {
+      } else if (unique(df$subset) %in% c("2021_22", "2022_23", "2023_24")) {
         
         predictors <- c(predictors, prior_vacc, vacc_mild)
         
@@ -95,11 +95,11 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
       
     } else if (y == "covid_secondary_inf") {
       
-      if (study_start_date == as.Date("2020-09-01")) {
+      if (unique(df$subset) %in% c("2020_21")) {
         
         predictors <- c(predictors, vacc_severe)
         
-      } else if (study_start_date >= as.Date("2021-09-01")) {
+      } else if (unique(df$subset) %in% c("2021_22", "2022_23", "2023_24")) {
         
         predictors <- c(predictors, prior_vacc, vacc_severe)
         

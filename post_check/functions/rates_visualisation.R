@@ -3,18 +3,26 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(stringr)
-library(khroma)
-library(RColorBrewer)
-
-## create output directories ----
-fs::dir_create(here::here("post_check", "functions"))
 
 #define a function to plot a characteristic over time
-rate_viz <- function(df, pathogen, outcome_type) {
+rate_viz <- function(df, pathogen, outcome_type, interest = "no") {
   
   df_rates <- df %>%
     filter(str_detect(Outcome, pathogen),
            str_detect(Outcome, outcome_type)) 
+  
+  if (interest == "yes") {
+    
+    filt <- case_when(
+      pathogen == "RSV" ~ "2017_18",
+      pathogen == "Flu" ~ "2018_19",
+      pathogen == "COVID" ~ "2020_21"
+    )
+    
+    df_rates <- df_rates %>%
+      filter(subset == !!filt)
+    
+  }
   
   #define levels
   levels <- list()
@@ -121,24 +129,42 @@ rate_viz <- function(df, pathogen, outcome_type) {
   }
   
   if (investigation_type == "primary") {
-
-    cols <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
-    cols <- c(
-      cols[1], cols[1], cols[2], cols[2], cols[3], cols[3], cols[4], cols[4],
-      cols[5], cols[5], cols[6], cols[6], cols[7], cols[7], cols[8], cols[8]
-    )
     
-    if (pathogen == "COVID") cols <- cols[7:16]
-    
-    if (pathogen == "Overall Respiratory") {
+    if (interest == "yes") {
       
-      cols <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+      cols <- scales::seq_gradient_pal(
+        "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+      
+      cols <- case_when(
+        pathogen == "RSV" ~ c(cols[2], cols[2]),
+        pathogen == "Flu" ~ c(cols[3], cols[3]),
+        pathogen == "COVID" ~ c(cols[5], cols[5])
+      )
+      
+    } else {
+      
+      cols <- scales::seq_gradient_pal(
+        "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+      cols <- c(
+        cols[1], cols[1], cols[2], cols[2], cols[3], cols[3], cols[4], cols[4],
+        cols[5], cols[5], cols[6], cols[6], cols[7], cols[7], cols[8], cols[8]
+      )
+      
+      if (pathogen == "COVID") cols <- cols[7:16]
+      
+      if (pathogen == "Overall Respiratory") {
+        
+        cols <- scales::seq_gradient_pal(
+          "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+        
+      }
       
     }
     
   } else {
     
-    cols <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+    cols <- scales::seq_gradient_pal(
+      "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
     
     if (pathogen == "RSV") cols <- cols[2]
     if (pathogen == "Flu") cols <- cols[3]
@@ -146,7 +172,15 @@ rate_viz <- function(df, pathogen, outcome_type) {
     
   }
   
-  if (investigation_type == "primary" & pathogen %in% c("RSV", "Flu")) {
+  if (interest == "yes") {
+    
+    orders <- case_when(
+      pathogen == "RSV" ~ c("2017-18, Specific", "2017-18, Sensitive"),
+      pathogen == "Flu" ~ c("2018-19, Specific", "2018-19, Sensitive"),
+      pathogen == "COVID" ~ c("2020-21, Specific", "2020-21, Sensitive")
+    )
+    
+  } else if (investigation_type == "primary" & pathogen %in% c("RSV", "Flu")) {
     
     orders <- c(
       "2016-17, Specific",
@@ -228,7 +262,7 @@ rate_viz <- function(df, pathogen, outcome_type) {
         "Age Group", "Sex", "Ethnicity", "IMD Quintile",
         "Household Composition Category", "Rurality Classification",
         "Average Maternal Age", "Maternal Smoking Status",
-        "Time Since Last Covid Vaccine", "Smoking Status"), Group,
+        "Time Since Last COVID-19 Vaccination", "Smoking Status"), Group,
         paste0(Characteristic, " (", Group, ")"))
     ) %>%
     ungroup() %>%
@@ -261,7 +295,7 @@ rate_viz <- function(df, pathogen, outcome_type) {
     df_rates %>%
       ggplot(aes(fill = fill_type, y = Rate_Midpoint10_Derived,
                  x = Group, alpha = fill_type)) +
-      geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
+      geom_bar(stat = "identity", position = "dodge") +
       facet_wrap(~Characteristic, scales = "free_x") +
       theme_bw() + scale_fill_manual(name = "Season and Phenotype",
                                      values = cols) +
@@ -269,9 +303,7 @@ rate_viz <- function(df, pathogen, outcome_type) {
                          values = c(rep(c(1, 0.5), 8))) +
       labs(title = paste0("Rates of ", outcome_type, " ", pathogen),
            x = "Characteristic", y = "Rate per 1000 person-years") +
-      theme(axis.text = element_text(size = 7),
-            legend.title = element_text(size = 10),
-            legend.text = element_text(size = 8))
+      theme(text = element_text(size = 12))
     
   } else {
     
@@ -279,7 +311,7 @@ rate_viz <- function(df, pathogen, outcome_type) {
       filter(Characteristic != "Rurality Classification") %>%
       ggplot(aes(fill = fill_type, y = Rate_Midpoint10_Derived,
                  x = Group, alpha = fill_type)) +
-      geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
+      geom_bar(stat = "identity", position = "dodge") +
       facet_wrap(~Characteristic, scales = "free_x", ncol = 4) +
       theme_bw() + scale_fill_manual(name = "Season and Phenotype",
                                      values = cols) +
@@ -287,18 +319,31 @@ rate_viz <- function(df, pathogen, outcome_type) {
                          values = c(rep(c(1, 0.5), 8))) +
       labs(title = paste0("Rates of ", outcome_type, " ", pathogen),
            x = "Characteristic", y = "Rate per 1000 person-years") +
-      theme(axis.text = element_text(size = 7), legend.position = "none")
+      theme(text = element_text(size = 12), legend.position = "none")
     
   }
   
 }
 
 #define a function to plot a characteristic over time - different formatting
-rate_viz_season <- function(df, pathogen, outcome_type) {
+rate_viz_season <- function(df, pathogen, outcome_type, interest = "no") {
   
   df_rates <- df %>%
     filter(str_detect(Outcome, pathogen),
            str_detect(Outcome, outcome_type)) 
+  
+  if (interest == "yes") {
+    
+    filt <- case_when(
+      pathogen == "RSV" ~ "2017_18",
+      pathogen == "Flu" ~ "2018_19",
+      pathogen == "COVID" ~ "2020_21"
+    )
+    
+    df_rates <- df_rates %>%
+      filter(subset == !!filt)
+    
+  }
   
   #define levels
   levels <- list()
@@ -406,23 +451,41 @@ rate_viz_season <- function(df, pathogen, outcome_type) {
  
   if (investigation_type == "primary") {
     
-    cols <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
-    cols <- c(
-      cols[1], cols[1], cols[2], cols[2], cols[3], cols[3], cols[4], cols[4],
-      cols[5], cols[5], cols[6], cols[6], cols[7], cols[7], cols[8], cols[8]
-    )
-    
-    if (pathogen == "COVID") cols <- cols[7:16]
-    
-    if (pathogen == "Overall Respiratory") {
+    if (interest == "yes") {
       
-      cols <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+      cols <- scales::seq_gradient_pal(
+        "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+      
+      cols <- case_when(
+        pathogen == "RSV" ~ c(cols[2], cols[2]),
+        pathogen == "Flu" ~ c(cols[3], cols[3]),
+        pathogen == "COVID" ~ c(cols[5], cols[5])
+      )
+      
+    } else {
+      
+      cols <- scales::seq_gradient_pal(
+        "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+      cols <- c(
+        cols[1], cols[1], cols[2], cols[2], cols[3], cols[3], cols[4], cols[4],
+        cols[5], cols[5], cols[6], cols[6], cols[7], cols[7], cols[8], cols[8]
+      )
+      
+      if (pathogen == "COVID") cols <- cols[7:16]
+      
+      if (pathogen == "Overall Respiratory") {
+        
+        cols <- scales::seq_gradient_pal(
+          "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+        
+      }
       
     }
     
   } else {
     
-    cols <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+    cols <- scales::seq_gradient_pal(
+      "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
     
     if (pathogen == "RSV") cols <- cols[2]
     if (pathogen == "Flu") cols <- cols[3]
@@ -430,7 +493,15 @@ rate_viz_season <- function(df, pathogen, outcome_type) {
     
   }
   
-  if (investigation_type == "primary" & pathogen %in% c("RSV", "Flu")) {
+  if (interest == "yes") {
+    
+    orders <- case_when(
+      pathogen == "RSV" ~ c("2017-18, Specific", "2017-18, Sensitive"),
+      pathogen == "Flu" ~ c("2018-19, Specific", "2018-19, Sensitive"),
+      pathogen == "COVID" ~ c("2020-21, Specific", "2020-21, Sensitive")
+    )
+    
+  } else if (investigation_type == "primary" & pathogen %in% c("RSV", "Flu")) {
     
     orders <- c(
       "2016-17, Specific",
@@ -494,7 +565,7 @@ rate_viz_season <- function(df, pathogen, outcome_type) {
         "Age Group", "Sex", "Ethnicity", "IMD Quintile",
         "Household Composition Category", "Rurality Classification",
         "Average Maternal Age", "Maternal Smoking Status",
-        "Time Since Last Covid Vaccine", "Smoking Status"), Group,
+        "Time Since Last COVID-19 Vaccination", "Smoking Status"), Group,
         paste0(Characteristic, " (", Group, ")"))
     ) %>%
     ungroup() %>%
@@ -529,7 +600,7 @@ rate_viz_season <- function(df, pathogen, outcome_type) {
     filter(Characteristic == !!group) %>%
     ggplot(aes(y = Rate_Midpoint10_Derived, x = Group,
                alpha = fill_type, fill = fill_type)) +
-    geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
+    geom_bar(stat = "identity", position = "dodge") +
     facet_wrap(~subset, scales = "free_x") +
     theme_bw() + scale_fill_manual(name = "Season and Phenotype",
                                    values = cols) +
@@ -537,7 +608,8 @@ rate_viz_season <- function(df, pathogen, outcome_type) {
                        values = c(rep(c(1, 0.5), 8))) +
     labs(title = paste0("Rates of ", outcome_type, " ", pathogen,
                         " by ", group), x = "Group",
-         y = "Rate per 1000 person-years")
+         y = "Rate per 1000 person-years") +
+    theme(text = element_text(size = 12))
     
   }
 
@@ -546,11 +618,24 @@ rate_viz_season <- function(df, pathogen, outcome_type) {
 }
 
 #define a function to plot a characteristic over time - different formatting
-rate_viz_mult <- function(df, pathogen, outcome_type) {
+rate_viz_mult <- function(df, pathogen, outcome_type, interest = "no") {
   
   df_rates <- df %>%
     filter(str_detect(Outcome, pathogen),
            str_detect(Outcome, outcome_type)) 
+  
+  if (interest == "yes") {
+    
+    filt <- case_when(
+      pathogen == "RSV" ~ "2017_18",
+      pathogen == "Flu" ~ "2018_19",
+      pathogen == "COVID" ~ "2020_21"
+    )
+    
+    df_rates <- df_rates %>%
+      filter(subset == !!filt)
+    
+  }
   
   #define levels
   levels <- list()
@@ -659,23 +744,41 @@ rate_viz_mult <- function(df, pathogen, outcome_type) {
   
   if (investigation_type == "primary") {
     
-    cols <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
-    cols <- c(
-      cols[1], cols[1], cols[2], cols[2], cols[3], cols[3], cols[4], cols[4],
-      cols[5], cols[5], cols[6], cols[6], cols[7], cols[7], cols[8], cols[8]
-    )
-    
-    if (pathogen == "COVID") cols <- cols[7:16]
-    
-    if (pathogen == "Overall Respiratory") {
+    if (interest == "yes") {
       
-      cols <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+      cols <- scales::seq_gradient_pal(
+        "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+      
+      cols <- case_when(
+        pathogen == "RSV" ~ c(cols[2], cols[2]),
+        pathogen == "Flu" ~ c(cols[3], cols[3]),
+        pathogen == "COVID" ~ c(cols[5], cols[5])
+      )
+      
+    } else {
+      
+      cols <- scales::seq_gradient_pal(
+        "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+      cols <- c(
+        cols[1], cols[1], cols[2], cols[2], cols[3], cols[3], cols[4], cols[4],
+        cols[5], cols[5], cols[6], cols[6], cols[7], cols[7], cols[8], cols[8]
+      )
+      
+      if (pathogen == "COVID") cols <- cols[7:16]
+      
+      if (pathogen == "Overall Respiratory") {
+        
+        cols <- scales::seq_gradient_pal(
+          "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+        
+      }
       
     }
     
   } else {
     
-    cols <- scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
+    cols <- scales::seq_gradient_pal(
+      "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
     
     if (pathogen == "RSV") cols <- cols[2]
     if (pathogen == "Flu") cols <- cols[3]
@@ -683,7 +786,15 @@ rate_viz_mult <- function(df, pathogen, outcome_type) {
     
   }
   
-  if (pathogen %in% c("RSV", "Flu")) {
+  if (interest == "yes") {
+    
+    orders <- case_when(
+      pathogen == "RSV" ~ c("2017-18, Specific", "2017-18, Sensitive"),
+      pathogen == "Flu" ~ c("2018-19, Specific", "2018-19, Sensitive"),
+      pathogen == "COVID" ~ c("2020-21, Specific", "2020-21, Sensitive")
+    )
+    
+  } else if (pathogen %in% c("RSV", "Flu")) {
     
     orders <- c(
       "2016-17, Specific",
@@ -741,7 +852,7 @@ rate_viz_mult <- function(df, pathogen, outcome_type) {
         "Age Group", "Sex", "Ethnicity", "IMD Quintile",
         "Household Composition Category", "Rurality Classification",
         "Maternal Smoking Status",
-        "Time Since Last Covid Vaccine", "Smoking Status"), Group,
+        "Time Since Last COVID-19 Vaccination", "Smoking Status"), Group,
         paste0(Characteristic, " (", Group, ")"))
     ) %>%
     ungroup() %>%
@@ -776,7 +887,7 @@ rate_viz_mult <- function(df, pathogen, outcome_type) {
       filter(Characteristic == !!group) %>%
       ggplot(aes(y = Rate_Midpoint10_Derived, x = subset,
                  alpha = fill_type, fill = fill_type)) +
-      geom_bar(stat = "identity", position = position_stack(reverse = TRUE)) +
+      geom_bar(stat = "identity", position = "dodge") +
       facet_wrap(~Group, scales = "free_x") +
       theme_bw() + scale_fill_manual(name = "Season and Phenotype",
                                     values = cols) +
@@ -784,7 +895,8 @@ rate_viz_mult <- function(df, pathogen, outcome_type) {
                          values = c(rep(c(1, 0.5), 8))) +
       labs(title = paste0("Rates of ", outcome_type, " ", pathogen,
                           " by ", group, " Over Seasons"), x = "Season",
-           y = "Rate per 1000 person-years")
+           y = "Rate per 1000 person-years") +
+      theme(text = element_text(size = 12))
     
   }
   

@@ -260,15 +260,12 @@ character_viz <- function(df, scaling) {
     geom_bar(stat = "identity", position = "dodge", color = "white") +
     geom_hline(yintercept = 0.095, linetype = "dashed", color = "black",
                alpha = 0.5) +
-    facet_wrap(~group, scales = scales) +
+    facet_wrap(~group, scales = scales, ncol = 3) +
     theme_bw() + scale_fill_manual(values = cc) +
     labs(title = "Participant Characteristics", x = "Characteristic",
          y = "Percentage (%)") +
     guides(fill = guide_legend(title = "Season")) +
-    theme(
-      strip.text = element_text(size = 8),
-      axis.text = element_text(size = 7)
-    )
+    theme(text = element_text(size = 12))
   
 }
 
@@ -559,8 +556,8 @@ character_viz_mult <- function(df, scaling) {
         values = c(seq(1, 0.25, length.out = alpha_length))) +
       labs(x = "Season", y = "Percentage (%)") + 
       guides(alpha = guide_legend(
-               title = str_wrap(group, width = 10),
-               theme = theme(legend.title = element_text(size = 8))))
+               title = str_wrap(group, width = 10))) +
+      theme(text = element_text(size = 12))
     
   }
   
