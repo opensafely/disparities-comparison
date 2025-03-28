@@ -85,7 +85,10 @@ covid_ethnicity_ses_mild_sens_alt <- forest_year_further(
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2020_2021_specific_primary.arrow"))) %>%
-  mutate(subset = "2020_21")
+  mutate(subset = "2020_21",
+         time_since_last_covid_vaccination = case_when(
+           is.na(covid_vaccination_immunity_date) ~ "6-12m",
+           TRUE ~ "12m+"))
 
 #composition
 covid_composition_mild_spec <- forest_further(
@@ -148,7 +151,12 @@ covid_full_mild_sens_alt <- forest_year_further(
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2021_2022_specific_primary.arrow"))) %>%
-  mutate(subset = "2021_22")
+  mutate(
+    subset = "2021_22",
+    time_since_last_covid_vaccination = if_else(
+      is.na(covid_vaccination_immunity_date), "6-12m",
+      time_since_last_covid_vaccination)
+  )
 
 #ethnicity
 covid_ethnicity_severe_spec <- forest_further(
@@ -195,7 +203,10 @@ covid_ethnicity_ses_severe_sens_alt <- forest_year_further(
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2020_2021_specific_primary.arrow"))) %>%
-  mutate(subset = "2020_21")
+  mutate(subset = "2020_21",
+         time_since_last_covid_vaccination = case_when(
+           is.na(covid_vaccination_immunity_date) ~ "6-12m",
+           TRUE ~ "12m+"))
 
 #composition
 covid_composition_severe_spec <- forest_further(
@@ -308,7 +319,12 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2021_2022_specific_primary.arrow"))) %>%
-  mutate(subset = "2021_22")
+  mutate(
+    subset = "2021_22",
+    time_since_last_covid_vaccination = if_else(
+      is.na(covid_vaccination_immunity_date), "6-12m",
+      time_since_last_covid_vaccination)
+  )
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -364,7 +380,10 @@ covid_ethnicity_ses_mild_sens_alt <- forest_year_further(
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2020_2021_specific_primary.arrow"))) %>%
-  mutate(subset = "2020_21")
+  mutate(subset = "2020_21",
+         time_since_last_covid_vaccination = case_when(
+           is.na(covid_vaccination_immunity_date) ~ "6-12m",
+           TRUE ~ "12m+"))
 
 #composition
 covid_composition_mild_spec <- forest_further(
@@ -427,7 +446,12 @@ covid_full_mild_sens_alt <- forest_year_further(
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2021_2022_specific_primary.arrow"))) %>%
-  mutate(subset = "2021_22")
+  mutate(
+    subset = "2021_22",
+    time_since_last_covid_vaccination = if_else(
+      is.na(covid_vaccination_immunity_date), "6-12m",
+      time_since_last_covid_vaccination)
+  )
 
 #ethnicity
 covid_ethnicity_severe_spec <- forest_further(
@@ -474,7 +498,10 @@ covid_ethnicity_ses_severe_sens_alt <- forest_year_further(
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2020_2021_specific_primary.arrow"))) %>%
-  mutate(subset = "2020_21")
+  mutate(subset = "2020_21",
+         time_since_last_covid_vaccination = case_when(
+           is.na(covid_vaccination_immunity_date) ~ "6-12m",
+           TRUE ~ "12m+"))
 
 #composition
 covid_composition_severe_spec <- forest_further(
@@ -587,7 +614,12 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2021_2022_specific_primary.arrow"))) %>%
-  mutate(subset = "2021_22")
+  mutate(
+    subset = "2021_22",
+    time_since_last_covid_vaccination = if_else(
+      is.na(covid_vaccination_immunity_date), "6-12m",
+      time_since_last_covid_vaccination)
+  )
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -643,7 +675,10 @@ covid_ethnicity_ses_mild_sens_alt <- forest_year_further(
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2020_2021_specific_primary.arrow"))) %>%
-  mutate(subset = "2020_21")
+  mutate(subset = "2020_21",
+         time_since_last_covid_vaccination = case_when(
+           is.na(covid_vaccination_immunity_date) ~ "6-12m",
+           TRUE ~ "12m+"))
 
 #composition
 covid_composition_mild_spec <- forest_further(
@@ -706,7 +741,12 @@ covid_full_mild_sens_alt <- forest_year_further(
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2021_2022_specific_primary.arrow"))) %>%
-  mutate(subset = "2021_22")
+  mutate(
+    subset = "2021_22",
+    time_since_last_covid_vaccination = if_else(
+      is.na(covid_vaccination_immunity_date), "6-12m",
+      time_since_last_covid_vaccination)
+  )
 
 #ethnicity
 covid_ethnicity_severe_spec <- forest_further(
@@ -753,7 +793,10 @@ covid_ethnicity_ses_severe_sens_alt <- forest_year_further(
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2020_2021_specific_primary.arrow"))) %>%
-  mutate(subset = "2020_21")
+  mutate(subset = "2020_21",
+         time_since_last_covid_vaccination = case_when(
+           is.na(covid_vaccination_immunity_date) ~ "6-12m",
+           TRUE ~ "12m+"))
 
 #composition
 covid_composition_severe_spec <- forest_further(
