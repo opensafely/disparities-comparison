@@ -62,6 +62,20 @@ rsv_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
+#composition
+rsv_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+rsv_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+rsv_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+rsv_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+
 #ethnicity & ses
 rsv_ethnicity_ses_mild_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
@@ -74,6 +88,48 @@ rsv_ethnicity_ses_mild_spec_alt <- forest_year(
 )$spec
 rsv_ethnicity_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)$sens
+
+#ethnicity & composition - too few events
+rsv_ethnicity_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$spec
+rsv_ethnicity_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$sens
+rsv_ethnicity_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$spec
+rsv_ethnicity_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$sens
+
+#ses & composition
+rsv_ses_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$spec
+rsv_ses_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$sens
+rsv_ses_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$spec
+rsv_ses_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$sens
+
+#full
+rsv_full_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$spec
+rsv_full_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$sens
+rsv_full_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$spec
+rsv_full_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Mild"
 )$sens
 
 ##create relevant forest plots - severe
@@ -106,6 +162,20 @@ rsv_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
+#composition
+rsv_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+rsv_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+rsv_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+rsv_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+
 #ethnicity & ses
 rsv_ethnicity_ses_severe_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
@@ -120,6 +190,48 @@ rsv_ethnicity_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
 
+#ethnicity & composition
+rsv_ethnicity_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$spec
+rsv_ethnicity_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$sens
+rsv_ethnicity_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$spec
+rsv_ethnicity_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$sens
+
+#ses & composition
+rsv_ses_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$spec
+rsv_ses_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$sens
+rsv_ses_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$spec
+rsv_ses_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$sens
+
+#full
+rsv_full_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$spec
+rsv_full_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$sens
+rsv_full_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$spec
+rsv_full_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$sens
+
 #create list of plots
 plotlist <- list(
   rsv_ethnicity_mild_spec, rsv_ethnicity_mild_spec_alt,
@@ -130,10 +242,24 @@ plotlist <- list(
   rsv_ses_mild_sens, rsv_ses_mild_sens_alt,
   rsv_ses_severe_spec, rsv_ses_severe_spec_alt,
   rsv_ses_severe_sens, rsv_ses_severe_sens_alt,
+  rsv_composition_mild_spec, rsv_composition_mild_spec_alt,
+  rsv_composition_mild_sens, rsv_composition_mild_sens_alt,
   rsv_ethnicity_ses_mild_spec, rsv_ethnicity_ses_mild_spec_alt,
   rsv_ethnicity_ses_mild_sens, rsv_ethnicity_ses_mild_sens_alt,
   rsv_ethnicity_ses_severe_spec, rsv_ethnicity_ses_severe_spec_alt,
-  rsv_ethnicity_ses_severe_sens, rsv_ethnicity_ses_severe_sens_alt
+  rsv_ethnicity_ses_severe_sens, rsv_ethnicity_ses_severe_sens_alt,
+  rsv_ethnicity_composition_mild_spec, rsv_ethnicity_composition_mild_spec_alt,
+  rsv_ethnicity_composition_mild_sens, rsv_ethnicity_composition_mild_sens_alt,
+  rsv_ethnicity_composition_severe_spec, rsv_ethnicity_composition_severe_spec_alt,
+  rsv_ethnicity_composition_severe_sens, rsv_ethnicity_composition_severe_sens_alt,
+  rsv_ses_composition_mild_spec, rsv_ses_composition_mild_spec_alt,
+  rsv_ses_composition_mild_sens, rsv_ses_composition_mild_sens_alt,
+  rsv_ses_composition_severe_spec, rsv_ses_composition_severe_spec_alt,
+  rsv_ses_composition_severe_sens, rsv_ses_composition_severe_sens_alt,
+  rsv_full_mild_spec, rsv_full_mild_spec_alt,
+  rsv_full_mild_sens, rsv_full_mild_sens_alt,
+  rsv_full_severe_spec, rsv_full_severe_spec_alt,
+  rsv_full_severe_sens, rsv_full_severe_sens_alt
 )
 
 #plot all
@@ -203,6 +329,20 @@ rsv_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
+#composition
+rsv_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+rsv_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+rsv_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+rsv_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+
 #ethnicity & ses
 rsv_ethnicity_ses_mild_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
@@ -215,6 +355,48 @@ rsv_ethnicity_ses_mild_spec_alt <- forest_year(
 )$spec
 rsv_ethnicity_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)$sens
+
+#ethnicity & composition
+rsv_ethnicity_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$spec
+rsv_ethnicity_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$sens
+rsv_ethnicity_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$spec
+rsv_ethnicity_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$sens
+
+#ses & composition
+rsv_ses_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$spec
+rsv_ses_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$sens
+rsv_ses_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$spec
+rsv_ses_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$sens
+
+#full
+rsv_full_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$spec
+rsv_full_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$sens
+rsv_full_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$spec
+rsv_full_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Mild"
 )$sens
 
 ##create relevant forest plots - severe
@@ -247,6 +429,20 @@ rsv_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
+#composition
+rsv_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+rsv_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+rsv_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+rsv_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+
 #ethnicity & ses
 rsv_ethnicity_ses_severe_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
@@ -261,6 +457,48 @@ rsv_ethnicity_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
 
+#ethnicity & composition
+rsv_ethnicity_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$spec
+rsv_ethnicity_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$sens
+rsv_ethnicity_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$spec
+rsv_ethnicity_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$sens
+
+#ses & composition
+rsv_ses_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$spec
+rsv_ses_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$sens
+rsv_ses_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$spec
+rsv_ses_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$sens
+
+#full
+rsv_full_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$spec
+rsv_full_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$sens
+rsv_full_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$spec
+rsv_full_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$sens
+
 #create list of plots
 plotlist <- list(
   rsv_ethnicity_mild_spec, rsv_ethnicity_mild_spec_alt,
@@ -271,10 +509,24 @@ plotlist <- list(
   rsv_ses_mild_sens, rsv_ses_mild_sens_alt,
   rsv_ses_severe_spec, rsv_ses_severe_spec_alt,
   rsv_ses_severe_sens, rsv_ses_severe_sens_alt,
+  rsv_composition_mild_spec, rsv_composition_mild_spec_alt,
+  rsv_composition_mild_sens, rsv_composition_mild_sens_alt,
   rsv_ethnicity_ses_mild_spec, rsv_ethnicity_ses_mild_spec_alt,
   rsv_ethnicity_ses_mild_sens, rsv_ethnicity_ses_mild_sens_alt,
   rsv_ethnicity_ses_severe_spec, rsv_ethnicity_ses_severe_spec_alt,
-  rsv_ethnicity_ses_severe_sens, rsv_ethnicity_ses_severe_sens_alt
+  rsv_ethnicity_ses_severe_sens, rsv_ethnicity_ses_severe_sens_alt,
+  rsv_ethnicity_composition_mild_spec, rsv_ethnicity_composition_mild_spec_alt,
+  rsv_ethnicity_composition_mild_sens, rsv_ethnicity_composition_mild_sens_alt,
+  rsv_ethnicity_composition_severe_spec, rsv_ethnicity_composition_severe_spec_alt,
+  rsv_ethnicity_composition_severe_sens, rsv_ethnicity_composition_severe_sens_alt,
+  rsv_ses_composition_mild_spec, rsv_ses_composition_mild_spec_alt,
+  rsv_ses_composition_mild_sens, rsv_ses_composition_mild_sens_alt,
+  rsv_ses_composition_severe_spec, rsv_ses_composition_severe_spec_alt,
+  rsv_ses_composition_severe_sens, rsv_ses_composition_severe_sens_alt,
+  rsv_full_mild_spec, rsv_full_mild_spec_alt,
+  rsv_full_mild_sens, rsv_full_mild_sens_alt,
+  rsv_full_severe_spec, rsv_full_severe_spec_alt,
+  rsv_full_severe_sens, rsv_full_severe_sens_alt
 )
 
 #plot all
@@ -340,6 +592,20 @@ rsv_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
+#composition
+rsv_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+rsv_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+rsv_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+rsv_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+
 #ethnicity & ses
 rsv_ethnicity_ses_mild_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
@@ -352,6 +618,48 @@ rsv_ethnicity_ses_mild_spec_alt <- forest_year(
 )$spec
 rsv_ethnicity_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)$sens
+
+#ethnicity & composition
+rsv_ethnicity_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$spec
+rsv_ethnicity_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$sens
+rsv_ethnicity_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$spec
+rsv_ethnicity_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$sens
+
+#ses & composition
+rsv_ses_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$spec
+rsv_ses_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$sens
+rsv_ses_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$spec
+rsv_ses_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$sens
+
+#full
+rsv_full_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$spec
+rsv_full_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$sens
+rsv_full_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$spec
+rsv_full_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Mild"
 )$sens
 
 ##create relevant forest plots - severe
@@ -384,6 +692,20 @@ rsv_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
+#composition
+rsv_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+rsv_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+rsv_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+rsv_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+
 #ethnicity & ses
 rsv_ethnicity_ses_severe_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
@@ -398,6 +720,48 @@ rsv_ethnicity_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
 
+#ethnicity & composition
+rsv_ethnicity_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$spec
+rsv_ethnicity_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$sens
+rsv_ethnicity_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$spec
+rsv_ethnicity_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$sens
+
+#ses & composition
+rsv_ses_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$spec
+rsv_ses_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$sens
+rsv_ses_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$spec
+rsv_ses_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$sens
+
+#full
+rsv_full_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$spec
+rsv_full_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$sens
+rsv_full_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$spec
+rsv_full_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$sens
+
 #create list of plots
 plotlist <- list(
   rsv_ethnicity_mild_spec, rsv_ethnicity_mild_spec_alt,
@@ -408,10 +772,24 @@ plotlist <- list(
   rsv_ses_mild_sens, rsv_ses_mild_sens_alt,
   rsv_ses_severe_spec, rsv_ses_severe_spec_alt,
   rsv_ses_severe_sens, rsv_ses_severe_sens_alt,
+  rsv_composition_mild_spec, rsv_composition_mild_spec_alt,
+  rsv_composition_mild_sens, rsv_composition_mild_sens_alt,
   rsv_ethnicity_ses_mild_spec, rsv_ethnicity_ses_mild_spec_alt,
   rsv_ethnicity_ses_mild_sens, rsv_ethnicity_ses_mild_sens_alt,
   rsv_ethnicity_ses_severe_spec, rsv_ethnicity_ses_severe_spec_alt,
-  rsv_ethnicity_ses_severe_sens, rsv_ethnicity_ses_severe_sens_alt
+  rsv_ethnicity_ses_severe_sens, rsv_ethnicity_ses_severe_sens_alt,
+  rsv_ethnicity_composition_mild_spec, rsv_ethnicity_composition_mild_spec_alt,
+  rsv_ethnicity_composition_mild_sens, rsv_ethnicity_composition_mild_sens_alt,
+  rsv_ethnicity_composition_severe_spec, rsv_ethnicity_composition_severe_spec_alt,
+  rsv_ethnicity_composition_severe_sens, rsv_ethnicity_composition_severe_sens_alt,
+  rsv_ses_composition_mild_spec, rsv_ses_composition_mild_spec_alt,
+  rsv_ses_composition_mild_sens, rsv_ses_composition_mild_sens_alt,
+  rsv_ses_composition_severe_spec, rsv_ses_composition_severe_spec_alt,
+  rsv_ses_composition_severe_sens, rsv_ses_composition_severe_sens_alt,
+  rsv_full_mild_spec, rsv_full_mild_spec_alt,
+  rsv_full_mild_sens, rsv_full_mild_sens_alt,
+  rsv_full_severe_spec, rsv_full_severe_spec_alt,
+  rsv_full_severe_sens, rsv_full_severe_sens_alt
 )
 
 #plot all

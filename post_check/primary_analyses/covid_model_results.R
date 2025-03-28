@@ -62,6 +62,20 @@ covid_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
+#composition
+covid_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+covid_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+covid_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+covid_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+
 #ethnicity & ses
 covid_ethnicity_ses_mild_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
@@ -74,6 +88,48 @@ covid_ethnicity_ses_mild_spec_alt <- forest_year(
 )$spec
 covid_ethnicity_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)$sens
+
+#ethnicity & composition - too few events
+covid_ethnicity_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$spec
+covid_ethnicity_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$sens
+covid_ethnicity_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$spec
+covid_ethnicity_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$sens
+
+#ses & composition
+covid_ses_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$spec
+covid_ses_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$sens
+covid_ses_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$spec
+covid_ses_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$sens
+
+#full
+covid_full_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$spec
+covid_full_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$sens
+covid_full_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$spec
+covid_full_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Mild"
 )$sens
 
 ##create relevant forest plots - severe
@@ -106,6 +162,20 @@ covid_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
+#composition
+covid_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+covid_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+covid_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+covid_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+
 #ethnicity & ses
 covid_ethnicity_ses_severe_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
@@ -120,6 +190,48 @@ covid_ethnicity_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
 
+#ethnicity & composition
+covid_ethnicity_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$spec
+covid_ethnicity_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$sens
+covid_ethnicity_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$spec
+covid_ethnicity_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$sens
+
+#ses & composition
+covid_ses_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$spec
+covid_ses_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$sens
+covid_ses_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$spec
+covid_ses_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$sens
+
+#full
+covid_full_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$spec
+covid_full_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$sens
+covid_full_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$spec
+covid_full_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$sens
+
 #create list of plots
 plotlist <- list(
   covid_ethnicity_mild_spec, covid_ethnicity_mild_spec_alt,
@@ -130,10 +242,24 @@ plotlist <- list(
   covid_ses_mild_sens, covid_ses_mild_sens_alt,
   covid_ses_severe_spec, covid_ses_severe_spec_alt,
   covid_ses_severe_sens, covid_ses_severe_sens_alt,
+  covid_composition_mild_spec, covid_composition_mild_spec_alt,
+  covid_composition_mild_sens, covid_composition_mild_sens_alt,
   covid_ethnicity_ses_mild_spec, covid_ethnicity_ses_mild_spec_alt,
   covid_ethnicity_ses_mild_sens, covid_ethnicity_ses_mild_sens_alt,
   covid_ethnicity_ses_severe_spec, covid_ethnicity_ses_severe_spec_alt,
-  covid_ethnicity_ses_severe_sens, covid_ethnicity_ses_severe_sens_alt
+  covid_ethnicity_ses_severe_sens, covid_ethnicity_ses_severe_sens_alt,
+  covid_ethnicity_composition_mild_spec, covid_ethnicity_composition_mild_spec_alt,
+  covid_ethnicity_composition_mild_sens, covid_ethnicity_composition_mild_sens_alt,
+  covid_ethnicity_composition_severe_spec, covid_ethnicity_composition_severe_spec_alt,
+  covid_ethnicity_composition_severe_sens, covid_ethnicity_composition_severe_sens_alt,
+  covid_ses_composition_mild_spec, covid_ses_composition_mild_spec_alt,
+  covid_ses_composition_mild_sens, covid_ses_composition_mild_sens_alt,
+  covid_ses_composition_severe_spec, covid_ses_composition_severe_spec_alt,
+  covid_ses_composition_severe_sens, covid_ses_composition_severe_sens_alt,
+  covid_full_mild_spec, covid_full_mild_spec_alt,
+  covid_full_mild_sens, covid_full_mild_sens_alt,
+  covid_full_severe_spec, covid_full_severe_spec_alt,
+  covid_full_severe_sens, covid_full_severe_sens_alt
 )
 
 #plot all
@@ -203,6 +329,20 @@ covid_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
+#composition
+covid_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+covid_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+covid_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+covid_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+
 #ethnicity & ses
 covid_ethnicity_ses_mild_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
@@ -215,6 +355,48 @@ covid_ethnicity_ses_mild_spec_alt <- forest_year(
 )$spec
 covid_ethnicity_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)$sens
+
+#ethnicity & composition
+covid_ethnicity_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$spec
+covid_ethnicity_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$sens
+covid_ethnicity_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$spec
+covid_ethnicity_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$sens
+
+#ses & composition
+covid_ses_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$spec
+covid_ses_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$sens
+covid_ses_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$spec
+covid_ses_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$sens
+
+#full
+covid_full_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$spec
+covid_full_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$sens
+covid_full_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$spec
+covid_full_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Mild"
 )$sens
 
 ##create relevant forest plots - severe
@@ -247,6 +429,20 @@ covid_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
+#composition
+covid_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+covid_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+covid_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+covid_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+
 #ethnicity & ses
 covid_ethnicity_ses_severe_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
@@ -261,6 +457,48 @@ covid_ethnicity_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
 
+#ethnicity & composition
+covid_ethnicity_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$spec
+covid_ethnicity_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$sens
+covid_ethnicity_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$spec
+covid_ethnicity_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$sens
+
+#ses & composition
+covid_ses_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$spec
+covid_ses_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$sens
+covid_ses_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$spec
+covid_ses_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$sens
+
+#full
+covid_full_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$spec
+covid_full_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$sens
+covid_full_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$spec
+covid_full_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$sens
+
 #create list of plots
 plotlist <- list(
   covid_ethnicity_mild_spec, covid_ethnicity_mild_spec_alt,
@@ -271,10 +509,24 @@ plotlist <- list(
   covid_ses_mild_sens, covid_ses_mild_sens_alt,
   covid_ses_severe_spec, covid_ses_severe_spec_alt,
   covid_ses_severe_sens, covid_ses_severe_sens_alt,
+  covid_composition_mild_spec, covid_composition_mild_spec_alt,
+  covid_composition_mild_sens, covid_composition_mild_sens_alt,
   covid_ethnicity_ses_mild_spec, covid_ethnicity_ses_mild_spec_alt,
   covid_ethnicity_ses_mild_sens, covid_ethnicity_ses_mild_sens_alt,
   covid_ethnicity_ses_severe_spec, covid_ethnicity_ses_severe_spec_alt,
-  covid_ethnicity_ses_severe_sens, covid_ethnicity_ses_severe_sens_alt
+  covid_ethnicity_ses_severe_sens, covid_ethnicity_ses_severe_sens_alt,
+  covid_ethnicity_composition_mild_spec, covid_ethnicity_composition_mild_spec_alt,
+  covid_ethnicity_composition_mild_sens, covid_ethnicity_composition_mild_sens_alt,
+  covid_ethnicity_composition_severe_spec, covid_ethnicity_composition_severe_spec_alt,
+  covid_ethnicity_composition_severe_sens, covid_ethnicity_composition_severe_sens_alt,
+  covid_ses_composition_mild_spec, covid_ses_composition_mild_spec_alt,
+  covid_ses_composition_mild_sens, covid_ses_composition_mild_sens_alt,
+  covid_ses_composition_severe_spec, covid_ses_composition_severe_spec_alt,
+  covid_ses_composition_severe_sens, covid_ses_composition_severe_sens_alt,
+  covid_full_mild_spec, covid_full_mild_spec_alt,
+  covid_full_mild_sens, covid_full_mild_sens_alt,
+  covid_full_severe_spec, covid_full_severe_spec_alt,
+  covid_full_severe_sens, covid_full_severe_sens_alt
 )
 
 #plot all
@@ -340,6 +592,20 @@ covid_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
+#composition
+covid_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+covid_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+covid_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+covid_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+
 #ethnicity & ses
 covid_ethnicity_ses_mild_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
@@ -352,6 +618,48 @@ covid_ethnicity_ses_mild_spec_alt <- forest_year(
 )$spec
 covid_ethnicity_ses_mild_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)$sens
+
+#ethnicity & composition
+covid_ethnicity_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$spec
+covid_ethnicity_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$sens
+covid_ethnicity_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$spec
+covid_ethnicity_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)$sens
+
+#ses & composition
+covid_ses_composition_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$spec
+covid_ses_composition_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$sens
+covid_ses_composition_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$spec
+covid_ses_composition_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)$sens
+
+#full
+covid_full_mild_spec <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$spec
+covid_full_mild_sens <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$sens
+covid_full_mild_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)$spec
+covid_full_mild_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Mild"
 )$sens
 
 ##create relevant forest plots - severe
@@ -384,6 +692,20 @@ covid_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
+#composition
+covid_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+covid_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+covid_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+covid_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+
 #ethnicity & ses
 covid_ethnicity_ses_severe_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
@@ -398,6 +720,48 @@ covid_ethnicity_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
 
+#ethnicity & composition
+covid_ethnicity_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$spec
+covid_ethnicity_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$sens
+covid_ethnicity_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$spec
+covid_ethnicity_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)$sens
+
+#ses & composition
+covid_ses_composition_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$spec
+covid_ses_composition_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$sens
+covid_ses_composition_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$spec
+covid_ses_composition_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)$sens
+
+#full
+covid_full_severe_spec <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$spec
+covid_full_severe_sens <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$sens
+covid_full_severe_spec_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$spec
+covid_full_severe_sens_alt <- forest_year(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)$sens
+
 #create list of plots
 plotlist <- list(
   covid_ethnicity_mild_spec, covid_ethnicity_mild_spec_alt,
@@ -408,10 +772,24 @@ plotlist <- list(
   covid_ses_mild_sens, covid_ses_mild_sens_alt,
   covid_ses_severe_spec, covid_ses_severe_spec_alt,
   covid_ses_severe_sens, covid_ses_severe_sens_alt,
+  covid_composition_mild_spec, covid_composition_mild_spec_alt,
+  covid_composition_mild_sens, covid_composition_mild_sens_alt,
   covid_ethnicity_ses_mild_spec, covid_ethnicity_ses_mild_spec_alt,
   covid_ethnicity_ses_mild_sens, covid_ethnicity_ses_mild_sens_alt,
   covid_ethnicity_ses_severe_spec, covid_ethnicity_ses_severe_spec_alt,
-  covid_ethnicity_ses_severe_sens, covid_ethnicity_ses_severe_sens_alt
+  covid_ethnicity_ses_severe_sens, covid_ethnicity_ses_severe_sens_alt,
+  covid_ethnicity_composition_mild_spec, covid_ethnicity_composition_mild_spec_alt,
+  covid_ethnicity_composition_mild_sens, covid_ethnicity_composition_mild_sens_alt,
+  covid_ethnicity_composition_severe_spec, covid_ethnicity_composition_severe_spec_alt,
+  covid_ethnicity_composition_severe_sens, covid_ethnicity_composition_severe_sens_alt,
+  covid_ses_composition_mild_spec, covid_ses_composition_mild_spec_alt,
+  covid_ses_composition_mild_sens, covid_ses_composition_mild_sens_alt,
+  covid_ses_composition_severe_spec, covid_ses_composition_severe_spec_alt,
+  covid_ses_composition_severe_sens, covid_ses_composition_severe_sens_alt,
+  covid_full_mild_spec, covid_full_mild_spec_alt,
+  covid_full_mild_sens, covid_full_mild_sens_alt,
+  covid_full_severe_spec, covid_full_severe_spec_alt,
+  covid_full_severe_sens, covid_full_severe_sens_alt
 )
 
 #plot all

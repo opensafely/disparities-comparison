@@ -19,7 +19,7 @@ cohort <- "older_adults"
 
 #import collated model outputs
 df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
-                     paste0(cohort, "_", pathogen,
+                     paste0(cohort, "_further_", pathogen,
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 

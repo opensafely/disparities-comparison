@@ -23,7 +23,13 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) 
+             "_2021_2022_specific_primary.arrow"))) %>%
+  mutate(
+    subset = "2021_22",
+    time_since_last_covid_vaccination = if_else(
+      is.na(covid_vaccination_immunity_date), "6-12m",
+      time_since_last_covid_vaccination)
+    )
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -62,20 +68,6 @@ covid_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
-#composition
-covid_composition_mild_spec <- forest_further(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)$spec
-covid_composition_mild_sens <- forest_further(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)$sens
-covid_composition_mild_spec_alt <- forest_year_further(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)$spec
-covid_composition_mild_sens_alt <- forest_year_further(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)$sens
-
 #ethnicity & ses
 covid_ethnicity_ses_mild_spec <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
@@ -90,7 +82,26 @@ covid_ethnicity_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )$sens
 
-#ethnicity & composition - too few events
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2020_2021_specific_primary.arrow"))) %>%
+  mutate(subset = "2020_21")
+
+#composition
+covid_composition_mild_spec <- forest_further(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+covid_composition_mild_sens <- forest_further(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+covid_composition_mild_spec_alt <- forest_year_further(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+covid_composition_mild_sens_alt <- forest_year_further(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+
+#ethnicity & composition
 covid_ethnicity_composition_mild_spec <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
 )$spec
@@ -134,6 +145,11 @@ covid_full_mild_sens_alt <- forest_year_further(
 
 ##create relevant forest plots - severe
 
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2021_2022_specific_primary.arrow"))) %>%
+  mutate(subset = "2021_22")
+
 #ethnicity
 covid_ethnicity_severe_spec <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
@@ -162,20 +178,6 @@ covid_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
-#composition
-covid_composition_severe_spec <- forest_further(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)$spec
-covid_composition_severe_sens <- forest_further(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)$sens
-covid_composition_severe_spec_alt <- forest_year_further(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)$spec
-covid_composition_severe_sens_alt <- forest_year_further(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)$sens
-
 #ethnicity & ses
 covid_ethnicity_ses_severe_spec <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
@@ -188,6 +190,25 @@ covid_ethnicity_ses_severe_spec_alt <- forest_year_further(
 )$spec
 covid_ethnicity_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
+)$sens
+
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2020_2021_specific_primary.arrow"))) %>%
+  mutate(subset = "2020_21")
+
+#composition
+covid_composition_severe_spec <- forest_further(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+covid_composition_severe_sens <- forest_further(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+covid_composition_severe_spec_alt <- forest_year_further(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+covid_composition_severe_sens_alt <- forest_year_further(
+  df_input, df_dummy, pathogen, "composition", "Severe"
 )$sens
 
 #ethnicity & composition
@@ -286,11 +307,8 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow")))
-df_dummy <- df_dummy %>%
-  mutate(
-    age_band = if_else(age_band == "18-29y", "18-39y", age_band)
-  )
+             "_2021_2022_specific_primary.arrow"))) %>%
+  mutate(subset = "2021_22")
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -329,20 +347,6 @@ covid_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
-#composition
-covid_composition_mild_spec <- forest_further(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)$spec
-covid_composition_mild_sens <- forest_further(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)$sens
-covid_composition_mild_spec_alt <- forest_year_further(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)$spec
-covid_composition_mild_sens_alt <- forest_year_further(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)$sens
-
 #ethnicity & ses
 covid_ethnicity_ses_mild_spec <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
@@ -355,6 +359,25 @@ covid_ethnicity_ses_mild_spec_alt <- forest_year_further(
 )$spec
 covid_ethnicity_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)$sens
+
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2020_2021_specific_primary.arrow"))) %>%
+  mutate(subset = "2020_21")
+
+#composition
+covid_composition_mild_spec <- forest_further(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+covid_composition_mild_sens <- forest_further(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+covid_composition_mild_spec_alt <- forest_year_further(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+covid_composition_mild_sens_alt <- forest_year_further(
+  df_input, df_dummy, pathogen, "composition", "Mild"
 )$sens
 
 #ethnicity & composition
@@ -401,6 +424,11 @@ covid_full_mild_sens_alt <- forest_year_further(
 
 ##create relevant forest plots - severe
 
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2021_2022_specific_primary.arrow"))) %>%
+  mutate(subset = "2021_22")
+
 #ethnicity
 covid_ethnicity_severe_spec <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
@@ -429,20 +457,6 @@ covid_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
-#composition
-covid_composition_severe_spec <- forest_further(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)$spec
-covid_composition_severe_sens <- forest_further(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)$sens
-covid_composition_severe_spec_alt <- forest_year_further(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)$spec
-covid_composition_severe_sens_alt <- forest_year_further(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)$sens
-
 #ethnicity & ses
 covid_ethnicity_ses_severe_spec <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
@@ -455,6 +469,25 @@ covid_ethnicity_ses_severe_spec_alt <- forest_year_further(
 )$spec
 covid_ethnicity_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
+)$sens
+
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2020_2021_specific_primary.arrow"))) %>%
+  mutate(subset = "2020_21")
+
+#composition
+covid_composition_severe_spec <- forest_further(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+covid_composition_severe_sens <- forest_further(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+covid_composition_severe_spec_alt <- forest_year_further(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+covid_composition_severe_sens_alt <- forest_year_further(
+  df_input, df_dummy, pathogen, "composition", "Severe"
 )$sens
 
 #ethnicity & composition
@@ -553,7 +586,8 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) 
+             "_2021_2022_specific_primary.arrow"))) %>%
+  mutate(subset = "2021_22")
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -592,20 +626,6 @@ covid_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )$sens
 
-#composition
-covid_composition_mild_spec <- forest_further(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)$spec
-covid_composition_mild_sens <- forest_further(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)$sens
-covid_composition_mild_spec_alt <- forest_year_further(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)$spec
-covid_composition_mild_sens_alt <- forest_year_further(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)$sens
-
 #ethnicity & ses
 covid_ethnicity_ses_mild_spec <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
@@ -618,6 +638,25 @@ covid_ethnicity_ses_mild_spec_alt <- forest_year_further(
 )$spec
 covid_ethnicity_ses_mild_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)$sens
+
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2020_2021_specific_primary.arrow"))) %>%
+  mutate(subset = "2020_21")
+
+#composition
+covid_composition_mild_spec <- forest_further(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+covid_composition_mild_sens <- forest_further(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$sens
+covid_composition_mild_spec_alt <- forest_year_further(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)$spec
+covid_composition_mild_sens_alt <- forest_year_further(
+  df_input, df_dummy, pathogen, "composition", "Mild"
 )$sens
 
 #ethnicity & composition
@@ -664,6 +703,11 @@ covid_full_mild_sens_alt <- forest_year_further(
 
 ##create relevant forest plots - severe
 
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2021_2022_specific_primary.arrow"))) %>%
+  mutate(subset = "2021_22")
+
 #ethnicity
 covid_ethnicity_severe_spec <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
@@ -692,20 +736,6 @@ covid_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )$sens
 
-#composition
-covid_composition_severe_spec <- forest_further(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)$spec
-covid_composition_severe_sens <- forest_further(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)$sens
-covid_composition_severe_spec_alt <- forest_year_further(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)$spec
-covid_composition_severe_sens_alt <- forest_year_further(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)$sens
-
 #ethnicity & ses
 covid_ethnicity_ses_severe_spec <- forest_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
@@ -718,6 +748,25 @@ covid_ethnicity_ses_severe_spec_alt <- forest_year_further(
 )$spec
 covid_ethnicity_ses_severe_sens_alt <- forest_year_further(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
+)$sens
+
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2020_2021_specific_primary.arrow"))) %>%
+  mutate(subset = "2020_21")
+
+#composition
+covid_composition_severe_spec <- forest_further(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+covid_composition_severe_sens <- forest_further(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$sens
+covid_composition_severe_spec_alt <- forest_year_further(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)$spec
+covid_composition_severe_sens_alt <- forest_year_further(
+  df_input, df_dummy, pathogen, "composition", "Severe"
 )$sens
 
 #ethnicity & composition
