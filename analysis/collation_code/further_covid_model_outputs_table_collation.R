@@ -1,7 +1,6 @@
 library(tidyverse)
 library(here)
 library(arrow)
-library(ggplot2)
 
 #define cohort
 args <- commandArgs(trailingOnly = TRUE)
@@ -21,6 +20,21 @@ fs::dir_create(here::here("output", "collated", "analytic"))
 if (cohort == "infants" | cohort == "infants_subgroup") {
   
   collated_model_outputs_covid_further = rbind(
+    read_csv(here::here("output", "results", "models", "covid_primary", 
+                        paste0("further_covid_ethnicity_model_outputs_", 
+                               cohort, "_2019_2020_specific_primary.csv"))) 
+    %>% mutate(model_type = "ethnicity", codelist_type = "specific", 
+               investigation_type = "primary", subset = "2019_20"),
+    read_csv(here::here("output", "results", "models", "covid_primary", 
+                        paste0("further_covid_ses_model_outputs_", 
+                               cohort, "_2019_2020_specific_primary.csv"))) 
+    %>% mutate(model_type = "ses", codelist_type = "specific", 
+               investigation_type = "primary", subset = "2019_20"),
+    read_csv(here::here("output", "results", "models", "covid_primary", 
+                        paste0("further_covid_ethnicity_ses_model_outputs_", 
+                               cohort, "_2019_2020_specific_primary.csv"))) 
+    %>% mutate(model_type = "ethnicity_ses", codelist_type = "specific", 
+               investigation_type = "primary", subset = "2019_20"),
     read_csv(here::here("output", "results", "models", "covid_primary", 
                         paste0("further_covid_ethnicity_model_outputs_", 
                                cohort, "_2020_2021_specific_primary.csv"))) 
@@ -146,6 +160,21 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
 } else {
   
   collated_model_outputs_covid_further = rbind(
+    read_csv(here::here("output", "results", "models", "covid_primary", 
+                        paste0("further_covid_ethnicity_model_outputs_", 
+                               cohort, "_2019_2020_specific_primary.csv"))) 
+    %>% mutate(model_type = "ethnicity", codelist_type = "specific", 
+               investigation_type = "primary", subset = "2019_20"),
+    read_csv(here::here("output", "results", "models", "covid_primary", 
+                        paste0("further_covid_ses_model_outputs_", 
+                               cohort, "_2019_2020_specific_primary.csv"))) 
+    %>% mutate(model_type = "ses", codelist_type = "specific", 
+               investigation_type = "primary", subset = "2019_20"),
+    read_csv(here::here("output", "results", "models", "covid_primary", 
+                        paste0("further_covid_ethnicity_ses_model_outputs_", 
+                               cohort, "_2019_2020_specific_primary.csv"))) 
+    %>% mutate(model_type = "ethnicity_ses", codelist_type = "specific", 
+               investigation_type = "primary", subset = "2019_20"),
     read_csv(here::here("output", "results", "models", "covid_primary", 
                         paste0("further_covid_ethnicity_model_outputs_", 
                                cohort, "_2020_2021_specific_primary.csv"))) 
