@@ -190,7 +190,7 @@ rsv_ethnicity_ses_severe_sens_alt <- forest_year(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )$sens
 
-#ethnicity & composition
+#ethnicity & composition - too few events
 rsv_ethnicity_composition_severe_spec <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
 )$spec
