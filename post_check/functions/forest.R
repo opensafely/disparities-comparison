@@ -8,6 +8,8 @@ library(stringr)
 #import model functions
 source(here::here("post_check", "functions", "model.R"))
 
+options(scipen = 999)
+
 #create function to filter collated results to models wanted and then plot
 forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                    interest = "no") {
@@ -335,7 +337,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       mutate(
         plot_label = str_to_title(gsub("_", " ", variable)),
         label = forcats::fct_relevel(label, levels),
-        subset = str_to_title(gsub("_", "-", subset))
+        subset = gsub("_", "-", subset)
       ) %>%
       mutate(
         plot_label = case_when(
@@ -852,7 +854,8 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
             variable %in% c("age_band", "sex", "latest_ethnicity_group",
                             "imd_quintile", "composition_category") ~ "Baseline",
             TRUE ~ "Secondary"
-          )
+          ),
+          subset = gsub("_", "-", subset)
         ) %>%
         mutate(
           plot_label = case_when(
@@ -903,7 +906,7 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
           mutate(
             plot_label = str_to_title(gsub("_", " ", variable)),
             label = forcats::fct_relevel(label, levels),
-            subset = str_to_title(gsub("_", "-", subset))
+            subset = gsub("_", "-", subset)
           ) %>%
           mutate(
             plot_label = case_when(
@@ -925,15 +928,14 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
           mutate(
             plot_label2 = factor(plot_label2, levels = group_order)
           ) %>%
-          filter(subset %in% c("2019_20", "2020_21", "2021_22", "2022_23",
-                               "2023_24")) %>%
+          filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23",
+                               "2023-24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low,
                      xmax = conf.high, color = plot_label2, shape = plot_label2)) +
           scale_color_manual(values = cols_final$col,
                              name = "Characteristic (Reference)") +
           scale_shape_manual(name = "Characteristic (Reference)",
-                             values = c(rep(c(shape_value, 8),
-                                            length(legend_labels)))) +
+                             values = shapes_final$shape) +
           geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
           geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
           guides(color = guide_legend("Characteristic (Reference)"),
@@ -976,8 +978,7 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
           scale_color_manual(values = cols_final$col,
                              name = "Characteristic (Reference)") +
           scale_shape_manual(name = "Characteristic (Reference)",
-                             values = c(rep(c(shape_value, 8),
-                                            length(legend_labels)))) +
+                             values = shapes_final$shape) +
           geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
           geom_pointrange(position = position_dodge(width = 0.5), size = 0.2) +
           guides(color = guide_legend("Characteristic (Reference)"),
@@ -1429,7 +1430,7 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type,
                         "flu_vaccination", "covid_vaccination"),
                         paste0(plot_label, " (", label,")"), label),
         label = forcats::fct_relevel(label, levels),
-        subset = str_to_title(gsub("_", "-", subset))
+        subset = gsub("_", "-", subset)
       ) %>%
       mutate(
         plot_label = case_when(
@@ -2023,7 +2024,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
               variable %in% c("age_band", "sex", "latest_ethnicity_group",
                               "imd_quintile", "composition_category") ~ "Infant",
               TRUE ~ "Maternal"
-            )
+            ),
+            subset = gsub("_", "-", subset)
           ) %>%
           mutate(
             plot_label = case_when(
@@ -2043,8 +2045,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
             plot_label2 = factor(plot_label2, levels = rev(group_order)),
             label = forcats::fct_relevel(label, levels)
           ) %>%
-          filter(subset %in% c("2019_20", "2020_21", "2021_22", "2022_23",
-                               "2023_24")) %>%
+          filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23",
+                               "2023-24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low,
                      xmax = conf.high, color = plot_label2, shape = plot_label2)) +
           scale_color_manual(values = cols_final$col,
@@ -2069,7 +2071,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
               variable %in% c("age_band", "sex", "latest_ethnicity_group",
                               "imd_quintile", "composition_category") ~ "Baseline",
               TRUE ~ "Maternal"
-            )
+            ),
+            subset = gsub("_", "-", subset)
           ) %>%
           mutate(
             plot_label = case_when(
@@ -2123,7 +2126,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
             ),
             plot_label = str_to_title(gsub("_", " ", variable)),
             label = if_else(variable == "covid_vaccination",
-                            paste0(plot_label, " (", label,")"), label)
+                            paste0(plot_label, " (", label,")"), label),
+            subset = gsub("_", "-", subset)
           ) %>%
           mutate(
             plot_label = case_when(
@@ -2141,8 +2145,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
             plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels)
           ) %>%
-          filter(subset %in% c("2019_20", "2020_21", "2021_22", "2022_23",
-                               "2023_24")) %>%
+          filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23",
+                               "2023-24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low,
                      xmax = conf.high, color = plot_label2, shape = plot_label2)) +
           scale_color_manual(values = cols_final$col,
@@ -2171,7 +2175,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
             plot_label = str_to_title(gsub("_", " ", variable)),
             label = if_else(variable %in% c("prior_flu_vaccination",
                             "flu_vaccination"), paste0(plot_label,
-                            " (", label,")"), label)
+                            " (", label,")"), label),
+            subset = gsub("_", "-", subset)
           ) %>%
           mutate(
             plot_label = case_when(
@@ -2243,5 +2248,327 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
     return(list(spec = spec_plot, sens = sens_plot))
     
   }
+  
+}
+
+
+#---
+
+forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
+                             interest = "no") {
+  
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
+                      pathogen)
+  
+  df_model <- df %>%
+    filter(model_type == !!model_type,
+           str_detect(model_name, outcome_type)) %>%
+    group_by(codelist_type, subset)
+  
+  outcome <- if_else(outcome_type == "Mild",
+                     paste0(pathogen, "_primary_inf"),
+                     paste0(pathogen, "_secondary_inf"))
+  
+  exposure <- case_when(
+    model_type == "ethnicity" ~ list("latest_ethnicity_group"),
+    model_type == "ses" ~ list("imd_quintile"),
+    model_type == "composition" ~ list("composition_category"),
+    model_type == "ethnicity_ses" ~ list(c("latest_ethnicity_group",
+                                           "imd_quintile")),
+    model_type == "ethnicity_composition" ~ list(c("latest_ethnicity_group",
+                                                   "composition_category")),
+    model_type == "ses_composition" ~ list(c("imd_quintile",
+                                             "composition_category")),
+    model_type == "full" ~ list(c("latest_ethnicity_group",
+                                  "imd_quintile",
+                                  "composition_category"))
+  )[[1]]
+  
+  offset <- case_when(
+    outcome_type == "Mild" ~ paste0("time_", pathogen, "_primary"),
+    outcome_type == "Severe" ~ paste0("time_", pathogen, "_secondary")
+  )
+  
+  dummy_model <- glm_poisson(
+    df_dummy, exposure, outcome, offset
+  )
+  
+  #define levels
+  levels <- list()
+  
+  if (cohort == "infants" | cohort == "infants_subgroup") {
+    
+    levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male")
+    
+  } else {
+    
+    levels <- c("65-74y", "75-89y", "90y+", "Female", "Male")
+    
+  }
+  
+  if (model_type == "ethnicity") {
+    
+    levels <- c(c("White", "Mixed", "Asian or Asian British",
+                  "Black or Black British", "Other Ethnic Groups"),
+                levels)
+    
+  } else if (model_type == "ses") {
+    
+    levels <- c(c("1 (least deprived)", "2", "3", "4",
+                  "5 (most deprived)"), levels)
+    
+  } else if (model_type == "composition" & cohort != "infants" &
+             cohort != "infants_subgroup") {
+    
+    levels <- c(c("Multiple of the Same Generation",
+                  "Living Alone", "One Other Generation",
+                  "Two Other Generations", "Three Other Generations"),
+                levels)
+    
+  } else if (model_type == "ethnicity_ses") {
+    
+    levels <- c(c("1 (least deprived)", "2", "3", "4",
+                  "5 (most deprived)", "White", "Mixed",
+                  "Asian or Asian British", "Black or Black British",
+                  "Other Ethnic Groups"), levels)
+    
+  } else if (model_type == "ethnicity_composition" & cohort != "infants" &
+             cohort != "infants_subgroup") {
+    
+    levels <- c(c("Multiple of the Same Generation",
+                  "Living Alone", "One Other Generation",
+                  "Two Other Generations", "Three Other Generations",
+                  "White", "Mixed", "Asian or Asian British",
+                  "Black or Black British", "Other Ethnic Groups"), levels)
+    
+  } else if (model_type == "ses_composition" & cohort != "infants" &
+             cohort != "infants_subgroup") {
+    
+    levels <- c(c("Multiple of the Same Generation",
+                  "Living Alone", "One Other Generation",
+                  "Two Other Generations", "Three Other Generations",
+                  "1 (least deprived)", "2", "3", "4",
+                  "5 (most deprived)"), levels)
+    
+  } else if (model_type == "full" & cohort != "infants" &
+             cohort != "infants_subgroup") {
+    
+    levels <- c(c("Multiple of the Same Generation",
+                  "Living Alone", "One Other Generation",
+                  "Two Other Generations", "Three Other Generations",
+                  "1 (least deprived)", "2", "3", "4", "5 (most deprived)",
+                  "White", "Mixed", "Asian or Asian British",
+                  "Black or Black British", "Other Ethnic Groups"), levels)
+    
+  }
+  
+  group_order <- case_when(
+    
+    model_type == "ethnicity" ~ list(c(
+      "Sex (Specific)", "Sex (Sensitive)", "Sex (Reference)",
+      "Age Group (Specific)", "Age Group (Sensitive)", "Age Group (Reference)",
+      "Ethnicity (Specific)", "Ethnicity (Sensitive)", "Ethnicity (Reference)")),
+    model_type == "ses" ~ list(c(
+      "Sex (Specific)", "Sex (Sensitive)", "Sex (Reference)",
+      "Age Group (Specific)", "Age Group (Sensitive)", "Age Group (Reference)",
+      "IMD Quintile (Specific)", "IMD Quintile (Sensitive)",
+      "IMD Quintile (Reference)")),
+    model_type == "composition" ~ list(c(
+      "Sex (Specific)", "Sex (Sensitive)", "Sex (Reference)",
+      "Age Group (Specific)", "Age Group (Sensitive)", "Age Group (Reference)",
+      "Household Composition (Specific)", "Household Composition (Sensitive)",
+      "Household Composition (Reference)")),
+    model_type == "ethnicity_ses" ~ list(c(
+      "Sex (Specific)", "Sex (Sensitive)", "Sex (Reference)",
+      "Age Group (Specific)", "Age Group (Sensitive)", "Age Group (Reference)",
+      "Ethnicity (Specific)", "Ethnicity (Sensitive)", "Ethnicity (Reference)",
+      "IMD Quintile (Specific)", "IMD Quintile (Sensitive)",
+      "IMD Quintile (Reference)")),
+    model_type == "ethnicity_composition" ~ list(c(
+      "Sex (Specific)", "Sex (Sensitive)", "Sex (Reference)",
+      "Age Group (Specific)", "Age Group (Sensitive)", "Age Group (Reference)",
+      "Ethnicity (Specific)", "Ethnicity (Sensitive)", "Ethnicity (Reference)",
+      "Household Composition (Specific)", "Household Composition (Sensitive)",
+      "Household Composition (Reference)")),
+    model_type == "ses_composition" ~ list(c(
+      "Sex (Specific)", "Sex (Sensitive)", "Sex (Reference)",
+      "Age Group (Specific)", "Age Group (Sensitive)", "Age Group (Reference)",
+      "IMD Quintile (Specific)", "IMD Quintile (Sensitive)",
+      "Household Composition (Specific)", "Household Composition (Sensitive)",
+      "Household Composition (Reference)")),
+    model_type == "full" ~ list(c(
+      "Sex (Specific)", "Sex (Sensitive)", "Sex (Reference)",
+      "Age Group (Specific)", "Age Group (Sensitive)", "Age Group (Reference)",
+      "Ethnicity (Specific)", "Ethnicity (Sensitive)", "Ethnicity (Reference)",
+      "IMD Quintile (Specific)", "IMD Quintile (Sensitive)",
+      "IMD Quintile (Reference)", "Household Composition (Specific)",
+      "Household Composition (Sensitive)", "Household Composition (Reference)"))
+    
+  )[[1]]
+  
+  process_forest_plot <- function(df_model, title_label) {
+    
+    tidy_forest <- df_model %>%
+      filter(subset %in% c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
+      tidy_attach_model(dummy_model) %>%
+      tidy_add_reference_rows() %>%
+      tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
+                                          conf.level = 95) %>%
+      tidy_add_term_labels() %>%
+      tidy_remove_intercept() %>%
+      mutate(
+        conf.low = if_else(reference_row, 1, conf.low),
+        conf.high = if_else(reference_row, 1, conf.high)
+      ) %>%
+      mutate(
+        conf.low = if_else(conf.low < 1e-100, NA, conf.low),
+        conf.high = if_else(conf.high < 1e-100, NA, conf.high)
+      )
+    
+    if (model_type %in% c(
+      "composition", "ethnicity_composition", "ses_composition", "full")) {
+      
+      # Expand reference rows
+      reference_rows <- tidy_forest %>%
+        filter(reference_row) %>%
+        mutate(subset = c("2020_21")) %>%
+        slice(rep(1:n(), each = 2)) %>%
+        mutate(codelist_type = "reference")
+      
+    } else {
+      
+      # Expand reference rows
+      reference_rows <- tidy_forest %>%
+        filter(reference_row) %>%
+        mutate(rn = row_number()) %>%
+        slice(rep(1:n(), each = 4)) %>%
+        group_by(rn) %>%
+        mutate(subset = c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
+        ungroup() %>%
+        select(-rn) %>%
+        slice(rep(1:n(), each = 2)) %>%
+        mutate(codelist_type = "reference")
+      
+    }
+    
+    tidy_forest <- tidy_forest %>%
+      filter(!reference_row) %>%
+      bind_rows(reference_rows)
+    
+    legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
+    
+    cols2 <- tibble(
+      var = c("sex", "age_band", "latest_ethnicity_group", "imd_quintile",
+              "composition_category"),
+      col = c('#1f77b4', '#ffbb78', '#2ca02c', '#ff9896',
+              '#aec7e8')
+    )
+    
+    cols_final <- cols2 %>%
+      filter(var %in% unique(tidy_forest$variable)) %>%
+      slice(rep(1:n(), each = 3))
+    
+    shapes <- tibble(
+      var = c("sex", "sex", "sex", "age_band", "age_band", "age_band",
+              "latest_ethnicity_group", "latest_ethnicity_group",
+              "latest_ethnicity_group", "imd_quintile", "imd_quintile",
+              "imd_quintile", "composition_category", "composition_category",
+              "composition_category"),
+      shape = c(rep(c(16, 17, 8), 5))
+    )
+    
+    shapes_final <- shapes %>%
+      filter(var %in% unique(tidy_forest$variable))
+      
+    if (pathogen == "covid") {
+      
+      tidy_forest %>%
+        mutate(
+          plot_label = str_to_title(gsub("_", " ", variable)),
+          label = forcats::fct_relevel(label, levels),
+          subset = str_to_title(gsub("_", "-", subset))
+        ) %>%
+        mutate(
+          plot_label = case_when(
+            str_detect(plot_label, "Age Band") ~ "Age Group",
+            str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
+            str_detect(plot_label, "Latest") ~ "Ethnicity",
+            str_detect(plot_label, "Comp") ~ "Household Composition",
+            TRUE ~ plot_label)
+        ) %>%
+        mutate(
+          plot_label2 = paste0(plot_label, " (", str_to_title(codelist_type), ")")
+        ) %>%
+        mutate(
+          plot_label2 = factor(plot_label2, levels = group_order),
+          shape_order = factor(str_to_title(codelist_type), levels = c(
+            "Specific", "Sensitive", "Reference"))
+        ) %>%
+        filter(subset %in% c("2020-21", "2023-24")) %>%
+        ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
+                   color = plot_label2, shape = shape_order)) +
+        scale_color_manual(values = cols_final$col) +
+        scale_shape_manual(name = "Est. Type",
+                           values = shapes_final$shape) +
+        geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
+        geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
+        guides(color = "none",
+               shape = guide_legend("Est. Type")) +
+        facet_wrap(~ subset, nrow = 1, scales = "free_x") + 
+        labs(x = "Rate Ratio", y = " ") +
+        theme_bw() + theme(text = element_text(size = 12))
+      
+    } else {
+      
+      tidy_forest %>%
+        mutate(
+          plot_label = str_to_title(gsub("_", " ", variable)),
+          label = forcats::fct_relevel(label, levels),
+          subset = str_to_title(gsub("_", "-", subset))
+        ) %>%
+        mutate(
+          plot_label = case_when(
+            str_detect(plot_label, "Age Band") ~ "Age Group",
+            str_detect(plot_label, "Imd") ~ gsub("Imd", "IMD", plot_label),
+            str_detect(plot_label, "Latest") ~ "Ethnicity",
+            str_detect(plot_label, "Comp") ~ "Household Composition",
+            TRUE ~ plot_label)
+        ) %>%
+        mutate(
+          plot_label2 = paste0(plot_label, " (", str_to_title(codelist_type), ")")
+        ) %>%
+        mutate(
+          plot_label2 = factor(plot_label2, levels = group_order),
+          shape_order = factor(str_to_title(codelist_type), levels = c(
+            "Specific", "Sensitive", "Reference"))
+        ) %>%
+        ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
+                   color = plot_label2, shape = shape_order)) +
+        scale_color_manual(values = cols_final$col) +
+        scale_shape_manual(name = "Est. Type",
+                           values = shapes_final$shape) +
+        geom_vline(xintercept = 1, linetype = 2) + scale_x_log10() +
+        geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
+        guides(color = "none",
+               shape = guide_legend("Est. Type")) +
+        facet_wrap(~ subset, nrow = 1, scales = "free_x") + 
+        labs(x = "Rate Ratio", y = " ") +
+        theme_bw() + theme(text = element_text(size = 12))
+      
+    }
+      
+  }
+  
+  pathogen_title <- case_when(
+    pathogen == "rsv" ~ "RSV",
+    pathogen == "flu" ~ "Influenza",
+    pathogen == "covid" ~ "COVID-19"
+  )
+
+  plot <- process_forest_plot(
+    df_model, title_label = paste0("Rate Ratios of ",
+                                   outcome_type, " ", pathogen_title))
+  
+  return(plot)
   
 }
