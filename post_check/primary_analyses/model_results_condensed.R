@@ -337,7 +337,7 @@ ethnicity_ses <- annotate_figure(
                    just = "left", face = "bold")
 )
 
-ggsave(here("post_check", "plots", "primary_analyses", "models", "condensed",
+ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
        paste0(cohort, "_mild_ethnicity_ses", ".png")),
        ethnicity_ses, height = 12, width = 15)
 
@@ -588,7 +588,7 @@ ethnicity_ses <- annotate_figure(
                    just = "left", face = "bold")
 )
 
-ggsave(here("post_check", "plots", "primary_analyses", "models", "condensed",
+ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
             paste0(cohort, "_mild_ethnicity_ses", ".png")),
        ethnicity_ses, height = 12, width = 15)
 

@@ -211,11 +211,13 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                                        "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-                                      "_2020_2021_specific_primary.arrow"))) %>%
-  mutate(subset = "2020_21",
-         time_since_last_covid_vaccination = case_when(
-           is.na(covid_vaccination_immunity_date) ~ "6-12m",
-           TRUE ~ "12m+"))
+                                      "_2021_2022_specific_primary.arrow"))) %>%
+  mutate(
+    subset = "2021_22",
+    time_since_last_covid_vaccination = if_else(
+      is.na(covid_vaccination_immunity_date), "6-12m",
+      time_since_last_covid_vaccination)
+  )
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -237,13 +239,21 @@ covid_ses_mild <- forest_year_further_mult(
 )
 
 #plot both phenotypes together
-covid_composition_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)
-
-#plot both phenotypes together
 covid_ethnicity_ses_mild <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)
+
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2020_2021_specific_primary.arrow"))) %>%
+  mutate(subset = "2020_21",
+         time_since_last_covid_vaccination = case_when(
+           is.na(covid_vaccination_immunity_date) ~ "6-12m",
+           TRUE ~ "12m+"))
+
+#plot both phenotypes together
+covid_composition_mild <- forest_year_further_mult(
+  df_input, df_dummy, pathogen, "composition", "Mild"
 )
 
 #plot both phenotypes together
@@ -263,6 +273,16 @@ covid_full_mild <- forest_year_further_mult(
 
 ##create relevant forest plots - severe
 
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2021_2022_specific_primary.arrow"))) %>%
+  mutate(
+    subset = "2021_22",
+    time_since_last_covid_vaccination = if_else(
+      is.na(covid_vaccination_immunity_date), "6-12m",
+      time_since_last_covid_vaccination)
+  )
+
 #plot both phenotypes together
 covid_ethnicity_severe <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity", "Severe"
@@ -274,13 +294,21 @@ covid_ses_severe <- forest_year_further_mult(
 )
 
 #plot both phenotypes together
-covid_composition_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)
-
-#plot both phenotypes together
 covid_ethnicity_ses_severe <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
+)
+
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2020_2021_specific_primary.arrow"))) %>%
+  mutate(subset = "2020_21",
+         time_since_last_covid_vaccination = case_when(
+           is.na(covid_vaccination_immunity_date) ~ "6-12m",
+           TRUE ~ "12m+"))
+
+#plot both phenotypes together
+covid_composition_severe <- forest_year_further_mult(
+  df_input, df_dummy, pathogen, "composition", "Severe"
 )
 
 #plot both phenotypes together
@@ -315,7 +343,7 @@ legend <- get_legend(rsv_ethnicity_ses_mild)
 bottom_row <- plot_grid(
   legend, 
   covid_plot, 
-  rel_widths = c(1, 2.18), 
+  rel_widths = c(1, 2.525), 
   nrow = 1
 )
 
@@ -341,7 +369,7 @@ ethnicity_ses <- annotate_figure(
                    just = "left", face = "bold")
 )
 
-ggsave(here("post_check", "plots", "primary_analyses", "models", "condensed",
+ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
        paste0(cohort, "_mild_ethnicity_ses_further", ".png")),
        ethnicity_ses, height = 12, width = 15)
 
@@ -359,7 +387,7 @@ legend <- get_legend(rsv_ethnicity_ses_severe)
 bottom_row <- plot_grid(
   legend, 
   covid_plot, 
-  rel_widths = c(1, 2.18), 
+  rel_widths = c(1, 2.525), 
   nrow = 1
 )
 
@@ -566,7 +594,7 @@ legend <- get_legend(rsv_ethnicity_ses_mild)
 bottom_row <- plot_grid(
   legend, 
   covid_plot, 
-  rel_widths = c(1, 2.18), 
+  rel_widths = c(1, 2), 
   nrow = 1
 )
 
@@ -592,7 +620,7 @@ ethnicity_ses <- annotate_figure(
                    just = "left", face = "bold")
 )
 
-ggsave(here("post_check", "plots", "primary_analyses", "models", "condensed",
+ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
             paste0(cohort, "_mild_ethnicity_ses_further", ".png")),
        ethnicity_ses, height = 12, width = 15)
 
@@ -610,7 +638,7 @@ legend <- get_legend(rsv_ethnicity_ses_severe)
 bottom_row <- plot_grid(
   legend, 
   covid_plot, 
-  rel_widths = c(1, 2.18), 
+  rel_widths = c(1, 2), 
   nrow = 1
 )
 
