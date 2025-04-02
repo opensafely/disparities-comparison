@@ -20,5 +20,4 @@ filtered_actions.txt
 analysis/old_model_files/*
 /post_check/output/*
 /post_check/plots/*
-.RDataTmp
-.RDataTmp1
+.RDataTmp*
