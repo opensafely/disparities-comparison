@@ -83,7 +83,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
       
     } else if (y == "covid_primary_inf") {
       
-      if (unique(df$subset) %in% c("2020_21")) {
+      if (unique(df$subset) == "2020_21") {
         
         predictors <- c(predictors, vacc_mild)
         
@@ -95,7 +95,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
       
     } else if (y == "covid_secondary_inf") {
       
-      if (unique(df$subset) %in% c("2020_21")) {
+      if (unique(df$subset) == "2020_21") {
         
         predictors <- c(predictors, vacc_severe)
         
