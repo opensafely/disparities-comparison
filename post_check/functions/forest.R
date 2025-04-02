@@ -2665,8 +2665,8 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
   
 }
 
-forest_year_further_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
-                             interest = "no") {
+forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
+                                     outcome_type, interest = "no") {
   
   pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
                       pathogen)
@@ -2826,18 +2826,15 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type, outcome
     
   } else if (cohort != "infants" & pathogen == "flu") {
     
-    levels <- c("Prior Flu Vaccination (Specific)",
-                "Prior Flu Vaccination (Sensitive)",
-                "Prior Flu Vaccination (Reference)",
-                "Flu Vaccination (Specific)", "Flu Vaccination (Sensitive)",
-                "Flu Vaccination (Reference)", levels)
+    levels <- c("Prior Flu Vaccination (Yes)", "Prior Flu Vaccination (No)",
+                "Flu Vaccination (Yes)", "Flu Vaccination (No)", levels)
       
   } else if (cohort != "infants" & pathogen == "covid") {
       
-    levels <- c("Covid Vaccination (Specific)",
-                "Covid Vaccination (Sensitive)",
-                "Covid Vaccination (Reference)",
-                "12m+", "6-12m", "0-6m", levels)
+    levels <- c("Covid Vaccination (Yes)", "Covid Vaccination (No)",
+                "12m+ Since Last Covid Vaccination",
+                "6-12m Since Last Covid Vaccination",
+                "0-6m Since Last Covid Vaccination", levels)
       
   }
   
@@ -2882,10 +2879,11 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type, outcome
     model_type == "ses" & cohort == "infants_subgroup" ~ list(c(
       "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
       "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)", "IMD Quintile (Sensitive)",
-      "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
-      "Maternal Age (Specific)", "Maternal Age (Sensitive)",
-      "Maternal Smoking Status (Reference)", "Maternal Smoking Status (Specific)",
+      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
+      "IMD Quintile (Sensitive)", "Rurality (Reference)", "Rurality (Specific)",
+      "Rurality (Sensitive)", "Maternal Age (Specific)",
+      "Maternal Age (Sensitive)", "Maternal Smoking Status (Reference)",
+      "Maternal Smoking Status (Specific)",
       "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
       "Maternal Drinking (Sensitive)", "Maternal Drug Usage (Specific)",
       "Maternal Drug Usage (Sensitive)", "Maternal Flu Vaccination (Specific)",
@@ -2898,10 +2896,11 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type, outcome
       "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
       "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
       "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)", "IMD Quintile (Sensitive)",
-      "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
-      "Maternal Age (Specific)", "Maternal Age (Sensitive)",
-      "Maternal Smoking Status (Reference)", "Maternal Smoking Status (Specific)",
+      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
+      "IMD Quintile (Sensitive)", "Rurality (Reference)", "Rurality (Specific)",
+      "Rurality (Sensitive)", "Maternal Age (Specific)",
+      "Maternal Age (Sensitive)", "Maternal Smoking Status (Reference)",
+      "Maternal Smoking Status (Specific)",
       "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
       "Maternal Drinking (Sensitive)", "Maternal Drug Usage (Specific)",
       "Maternal Drug Usage (Sensitive)", "Maternal Flu Vaccination (Specific)",
@@ -2948,9 +2947,9 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type, outcome
         "IMD Quintile (Sensitive)", "Household Composition (Reference)",
         "Household Composition (Specific)", "Household Composition (Sensitive)",
         "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
-        "Time Since Last Covid Vaccine (Reference)",
-        "Time Since Last Covid Vaccine (Specific)",
-        "Time Since Last Covid Vaccine (Sensitive)",
+        "Time Since Last Covid Vaccination (Reference)",
+        "Time Since Last Covid Vaccination (Specific)",
+        "Time Since Last Covid Vaccination (Sensitive)",
         "Covid Vaccination (Reference)", "Covid Vaccination (Specific)",
         "Covid Vaccination (Sensitive)"))
     
@@ -3253,9 +3252,13 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type, outcome
               TRUE ~ variable
             ),
             plot_label = str_to_title(gsub("_", " ", variable)),
-            label = if_else(variable == "covid_vaccination",
-                            paste0(plot_label, " (",
-                                   str_to_title(codelist_type),")"), label),
+            label = case_when(
+              variable == "covid_vaccination" ~ paste0(
+                plot_label, " (", str_to_title(label),")"),
+              variable == "time_since_last_covid_vaccination" ~ paste0(
+                label, " Since Last Covid Vaccination"),
+              TRUE ~ label
+              ),
             subset = gsub("_", "-", subset)
           ) %>%
           mutate(
@@ -3312,7 +3315,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type, outcome
             plot_label = str_to_title(gsub("_", " ", variable)),
             label = if_else(variable %in% c(
               "prior_flu_vaccination", "flu_vaccination"), paste0(
-                plot_label, " (", str_to_title(codelist_type),")"), label),
+                plot_label, " (", str_to_title(label),")"), label),
             subset = gsub("_", "-", subset)
           ) %>%
           mutate(
