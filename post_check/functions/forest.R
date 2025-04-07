@@ -2526,7 +2526,6 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
       reference_rows <- tidy_forest %>%
         filter(reference_row) %>%
         mutate(subset = c("2020_21")) %>%
-        slice(rep(1:n(), each = 2)) %>%
         mutate(codelist_type = "reference")
       
     } else {
@@ -2540,7 +2539,6 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
         mutate(subset = c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
         ungroup() %>%
         select(-rn) %>%
-        slice(rep(1:n(), each = 2)) %>%
         mutate(codelist_type = "reference")
       
     }
@@ -2552,28 +2550,31 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
     
     cols2 <- tibble(
-      var = c("sex", "age_band", "latest_ethnicity_group", "imd_quintile",
-              "composition_category"),
+      variable = c("sex", "age_band", "latest_ethnicity_group",
+                   "imd_quintile", "composition_category"),
       col = c('#1f77b4', '#ffbb78', '#2ca02c', '#ff9896',
               '#aec7e8')
     )
     
     cols_final <- cols2 %>%
-      filter(var %in% unique(tidy_forest$variable)) %>%
-      slice(rep(1:n(), each = 3))
+      filter(variable %in% unique(tidy_forest$variable))
     
-    shapes <- tibble(
-      var = c("sex", "sex", "sex", "age_band", "age_band", "age_band",
-              "latest_ethnicity_group", "latest_ethnicity_group",
-              "latest_ethnicity_group", "imd_quintile", "imd_quintile",
-              "imd_quintile", "composition_category", "composition_category",
-              "composition_category"),
-      shape = c(rep(c(16, 17, 15), 5))
-    )
+    cols_final2 <- full_join(cols_final, tidy_forest, by = "variable",
+                             relationship = "one-to-many") %>%
+      select(variable, subset, col)
     
-    shapes_final <- shapes %>%
-      filter(var %in% unique(tidy_forest$variable))
-      
+    tidy_forest <- merge(tidy_forest, cols_final2,
+                         by = c("variable", "subset"))
+    
+    tidy_forest <- tidy_forest %>%
+      mutate(
+        shape = case_when(
+          codelist_type == "reference" ~ 16,
+          codelist_type == "specific" ~ 17,
+          codelist_type == "sensitive" ~ 15,
+        )
+      )
+    
     if (pathogen == "covid") {
       
       tidy_forest %>%
@@ -2609,10 +2610,11 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
         ) %>%
         filter(subset %in% c("2020-21", "2023-24")) %>%
         ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
-                   color = plot_label2, shape = shape_order)) +
-        scale_color_manual(values = cols_final$col) +
-        scale_shape_manual(name = "Est. Type",
-                           values = shapes_final$shape) +
+                   color = col, shape = shape)) +
+        scale_color_identity() +
+        scale_shape_identity(name = "Est. Type", guide = "legend",
+                             breaks = c(16, 17, 15), labels = c(
+                               "Reference", "Specific", "Sensitive")) +
         geom_vline(xintercept = 1, linetype = 2) +
         scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
         geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
@@ -2655,10 +2657,11 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
             "Reference", "Specific", "Sensitive"))
         ) %>%
         ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
-                   color = plot_label2, shape = shape_order)) +
-        scale_color_manual(values = cols_final$col) +
-        scale_shape_manual(name = "Est. Type",
-                           values = shapes_final$shape) +
+                   color = col, shape = shape)) +
+        scale_color_identity() +
+        scale_shape_identity(name = "Est. Type", guide = "legend",
+                             breaks = c(16, 17, 15), labels = c(
+                               "Reference", "Specific", "Sensitive")) +
         geom_vline(xintercept = 1, linetype = 2) +
         scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
         geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
@@ -3036,7 +3039,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       reference_rows <- tidy_forest %>%
         filter(reference_row) %>%
         mutate(subset = c("2020_21")) %>%
-        slice(rep(1:n(), each = 2)) %>%
         mutate(codelist_type = "reference")
       
     } else {
@@ -3050,7 +3052,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
         mutate(subset = c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
         ungroup() %>%
         select(-rn) %>%
-        slice(rep(1:n(), each = 2)) %>%
         mutate(codelist_type = "reference")
       
     }
@@ -3062,12 +3063,12 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
     
     cols2 <- tibble(
-      var = c("sex", "age_band", "latest_ethnicity_group", "imd_quintile",
-              "composition_category", "rurality_classification",
-              vacc_prev, vacc_current, "maternal_age",
-              "maternal_smoking_status", "maternal_drinking",
-              "maternal_drug_usage", "maternal_flu_vaccination",
-              "maternal_pertussis_vaccination", "binary_variables"),
+      variable = c("sex", "age_band", "latest_ethnicity_group", "imd_quintile",
+                   "composition_category", "rurality_classification",
+                   vacc_prev, vacc_current, "maternal_age",
+                   "maternal_smoking_status", "maternal_drinking",
+                   "maternal_drug_usage", "maternal_flu_vaccination",
+                   "maternal_pertussis_vaccination", "binary_variables"),
       col = c('#1f77b4', '#ffbb78', '#2ca02c', '#ff9896',
               '#aec7e8', '#ff7f0e',
               '#98df8a', '#d62728', '#9467bd',
@@ -3077,60 +3078,23 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     )
     
     cols_final <- cols2 %>%
-      filter(var %in% unique(tidy_forest$variable)) %>%
-      filter(var %in% c("sex", "age_band", "latest_ethnicity_group",
-                        "imd_quintile", "composition_category",
-                        "rurality_classification",
-                        vacc_prev, vacc_current)) %>%
-      slice(rep(1:n(), each = 3))
+      filter(variable %in% unique(tidy_forest$variable))
     
-    if (cohort == "infants_subgroup") {
-      
-      cols_final <- rbind(
-        cols_final,
-        tibble(
-          var = c("maternal_age", "maternal_age",
-                  "maternal_smoking_status", "maternal_smoking_status",
-                  "maternal_smoking_status"),
-          col = c('#9467bd', '#9467bd', '#c49c94', '#c49c94', '#c49c94')
+    cols_final2 <- full_join(cols_final, tidy_forest, by = "variable",
+                             relationship = "one-to-many") %>%
+      select(variable, subset, col)
+    
+    tidy_forest <- merge(tidy_forest, cols_final2,
+                         by = c("variable", "subset"))
+    
+    tidy_forest <- tidy_forest %>%
+      mutate(
+        shape = case_when(
+          codelist_type == "reference" ~ 16,
+          codelist_type == "specific" ~ 17,
+          codelist_type == "sensitive" ~ 15,
         )
       )
-      
-    }
-    
-    cols_final <- rbind(
-      cols_final,
-      cols2 %>% 
-        filter(var %in% unique(tidy_forest$variable)) %>%
-        filter(!(var %in% c("sex", "age_band", "latest_ethnicity_group",
-                            "imd_quintile", "composition_category",
-                            "rurality_classification", "maternal_age",
-                            "maternal_smoking_status", vacc_prev,
-                            vacc_current))) %>%
-        slice(rep(1:n(), each = 2))
-    ) 
-    
-    shapes <- tibble(
-      var = c("sex", "sex", "sex", "age_band", "age_band", "age_band",
-              "latest_ethnicity_group", "latest_ethnicity_group",
-              "latest_ethnicity_group", "imd_quintile", "imd_quintile",
-              "imd_quintile", "composition_category", "composition_category",
-              "composition_category", "rurality_classification",
-              "rurality_classification", "rurality_classification",
-              vacc_prev, vacc_prev, vacc_prev, vacc_current, vacc_current,
-              vacc_current, "maternal_age", "maternal_age",
-              "maternal_smoking_status", "maternal_smoking_status",
-              "maternal_smoking_status", "maternal_drinking",
-              "maternal_drinking", "maternal_drug_usage",
-              "maternal_drug_usage", "maternal_flu_vaccination",
-              "maternal_flu_vaccination", "maternal_pertussis_vaccination",
-              "maternal_pertussis_vaccination", "binary_variables"),
-      shape = c(rep(c(16, 17, 15), 8), 16, 17, 16, 17, 15,
-                rep(c(16, 17), 4), 15)
-    )
-    
-    shapes_final <- shapes %>%
-      filter(var %in% unique(tidy_forest$variable))
     
     if (cohort == "infants_subgroup") {
       
@@ -3186,10 +3150,11 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           ) %>%
           filter(subset %in% c("2020-21", "2023-24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
-                     color = plot_label2, shape = shape_order)) +
-          scale_color_manual(values = cols_final$col) +
-          scale_shape_manual(name = "Est. Type",
-                             values = shapes_final$shape) +
+                     color = col, shape = shape)) +
+          scale_color_identity() +
+          scale_shape_identity(name = "Est. Type", guide = "legend",
+                               breaks = c(16, 17, 15), labels = c(
+                                 "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
@@ -3247,10 +3212,11 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               "Reference", "Specific", "Sensitive"))
           ) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
-                     color = plot_label2, shape = shape_order)) +
-          scale_color_manual(values = cols_final$col) +
-          scale_shape_manual(name = "Est. Type",
-                             values = shapes_final$shape) +
+                     color = col, shape = shape)) +
+          scale_color_identity() +
+          scale_shape_identity(name = "Est. Type", guide = "legend",
+                               breaks = c(16, 17, 15), labels = c(
+                                 "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
@@ -3312,10 +3278,11 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           ) %>%
           filter(subset %in% c("2020-21", "2023-24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
-                     color = plot_label2, shape = shape_order)) +
-          scale_color_manual(values = cols_final$col) +
-          scale_shape_manual(name = "Est. Type",
-                             values = shapes_final$shape) +
+                     color = col, shape = shape)) +
+          scale_color_identity() +
+          scale_shape_identity(name = "Est. Type", guide = "legend",
+                               breaks = c(16, 17, 15), labels = c(
+                                 "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
@@ -3368,10 +3335,11 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               "Reference", "Specific", "Sensitive"))
           ) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
-                     color = plot_label2, shape = shape_order)) +
-          scale_color_manual(values = cols_final$col) +
-          scale_shape_manual(name = "Est. Type",
-                             values = shapes_final$shape) +
+                     color = col, shape = shape)) +
+          scale_color_identity() +
+          scale_shape_identity(name = "Est. Type", guide = "legend",
+                               breaks = c(16, 17, 15), labels = c(
+                                 "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
