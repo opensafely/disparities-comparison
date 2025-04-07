@@ -2831,10 +2831,11 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   
   if (cohort == "infants_subgroup") {
     
-    levels <- c(levels, "Maternal Age", "Never Smoker", "Former Smoker",
-                "Current Smoker", "Maternal Drinking", "Maternal Drug Usage",
-                "Maternal Flu Vaccination", "Maternal Pertussis Vaccination",
-                "Binary Variables (Reference)")
+    levels <- c(levels, "Maternal Pertussis Vaccination",
+                "Maternal Flu Vaccination", "Maternal Drug Usage",
+                "Maternal Drinking", "Binary Variables (Reference)",
+                "Current Smoker", "Former Smoker", "Never Smoker",
+                "Maternal Age")
     
   } else if (cohort != "infants" & pathogen == "flu") {
     
@@ -3079,9 +3080,23 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       filter(var %in% unique(tidy_forest$variable)) %>%
       filter(var %in% c("sex", "age_band", "latest_ethnicity_group",
                         "imd_quintile", "composition_category",
-                        "rurality_classification", "maternal_smoking_status",
+                        "rurality_classification",
                         vacc_prev, vacc_current)) %>%
       slice(rep(1:n(), each = 3))
+    
+    if (cohort == "infants_subgroup") {
+      
+      cols_final <- rbind(
+        cols_final,
+        tibble(
+          var = c("maternal_age", "maternal_age",
+                  "maternal_smoking_status", "maternal_smoking_status",
+                  "maternal_smoking_status"),
+          col = c('#9467bd', '#9467bd', '#c49c94', '#c49c94', '#c49c94')
+        )
+      )
+      
+    }
     
     cols_final <- rbind(
       cols_final,
@@ -3089,10 +3104,11 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
         filter(var %in% unique(tidy_forest$variable)) %>%
         filter(!(var %in% c("sex", "age_band", "latest_ethnicity_group",
                             "imd_quintile", "composition_category",
-                            "rurality_classification", "maternal_smoking_status",
-                            vacc_prev, vacc_current))) %>%
+                            "rurality_classification", "maternal_age",
+                            "maternal_smoking_status", vacc_prev,
+                            vacc_current))) %>%
         slice(rep(1:n(), each = 2))
-    )
+    ) 
     
     shapes <- tibble(
       var = c("sex", "sex", "sex", "age_band", "age_band", "age_band",
@@ -3178,7 +3194,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = "none", shape = guide_legend("Est. Type")) +
-          facet_grid(faceting ~ subset, scales = "free_y", space = "free") + 
+          facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
           labs(x = "", y = "") +
           theme_bw() + theme(text = element_text(size = 12))
         
@@ -3239,7 +3255,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = "none", shape = guide_legend("Est. Type")) +
-          facet_grid(faceting ~ subset, scales = "free_y", space = "free") + 
+          facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
           labs(x = "", y = "") +
           theme_bw() + theme(text = element_text(size = 12))
         
