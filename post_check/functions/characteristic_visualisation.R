@@ -10,6 +10,17 @@ character_viz <- function(df, scaling) {
   
   names(df) <- c("characteristic", "count", "percentage", "subset")
   
+  df <- df %>%
+    mutate(
+      characteristic = case_when(
+        characteristic == "1 (least deprived)" ~ "5 (least deprived)",
+        characteristic == "2" ~ "4",
+        characteristic == "4" ~ "2",
+        characteristic == "5 (most deprived)" ~ "1 (most deprived)",
+        TRUE ~ characteristic
+      )
+    )
+  
   age_groups <- case_when(
     cohort == "adults" ~ 2,
     cohort == "older_adults" ~ 3,
@@ -127,8 +138,8 @@ character_viz <- function(df, scaling) {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (least deprived)",
-                "2", "3", "4", "5 (most deprived)", "Urban Major Conurbation",
+                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "2", "3", "4", "5 (least deprived)", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed")
     
@@ -136,8 +147,8 @@ character_viz <- function(df, scaling) {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (least deprived)", "2",
-                "3", "4", "5 (most deprived)", "Urban Major Conurbation",
+                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "2", "3", "4", "5 (least deprived)", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
                 "Yes", "Never", "Former", "Current")
@@ -147,8 +158,8 @@ character_viz <- function(df, scaling) {
     levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Female",
                 "Male", "White", "Mixed", "Asian or Asian British",
                 "Black or Black British", "Other Ethnic Groups",
-                "Unknown", "1 (least deprived)", "2", "3", "4",
-                "5 (most deprived)", "Multiple of the Same Generation",
+                "Unknown", "1 (most deprived)", "2", "3", "4",
+                "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation",
                 "Two Other Generations", "Three Other Generations",
                 "Urban Major Conurbation", "Urban Minor Conurbation",
@@ -160,8 +171,8 @@ character_viz <- function(df, scaling) {
     
     levels <- c("18-39y", "40-64y", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (least deprived)",
-                "2", "3", "4", "5 (most deprived)",
+                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "2", "3", "4", "5 (least deprived)",
                 "Multiple of the Same Generation", "Living Alone",
                 "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
@@ -177,8 +188,8 @@ character_viz <- function(df, scaling) {
     
     levels <- c("65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (least deprived)", "2",
-                "3", "4", "5 (most deprived)", "Multiple of the Same Generation",
+                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2", "3",
+                "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
@@ -273,6 +284,17 @@ character_viz <- function(df, scaling) {
 character_viz_mult <- function(df, scaling) {
   
   names(df) <- c("characteristic", "count", "percentage", "subset")
+  
+  df <- df %>%
+    mutate(
+      characteristic = case_when(
+        characteristic == "1 (least deprived)" ~ "5 (least deprived)",
+        characteristic == "2" ~ "4",
+        characteristic == "4" ~ "2",
+        characteristic == "5 (most deprived)" ~ "1 (most deprived)",
+        TRUE ~ characteristic
+      )
+    )
   
   age_groups <- case_when(
     cohort == "adults" ~ 2,
@@ -391,8 +413,8 @@ character_viz_mult <- function(df, scaling) {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (least deprived)",
-                "2", "3", "4", "5 (most deprived)", "Urban Major Conurbation",
+                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "2", "3", "4", "5 (least deprived)", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed")
     
@@ -400,8 +422,8 @@ character_viz_mult <- function(df, scaling) {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (least deprived)", "2",
-                "3", "4", "5 (most deprived)", "Urban Major Conurbation",
+                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "2", "3", "4", "5 (least deprived)", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
                 "Yes", "Never", "Former", "Current")
@@ -411,8 +433,8 @@ character_viz_mult <- function(df, scaling) {
     levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Female",
                 "Male", "White", "Mixed", "Asian or Asian British",
                 "Black or Black British", "Other Ethnic Groups",
-                "Unknown", "1 (least deprived)", "2", "3", "4",
-                "5 (most deprived)", "Multiple of the Same Generation",
+                "Unknown", "1 (most deprived)", "2", "3", "4",
+                "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation",
                 "Two Other Generations", "Three Other Generations",
                 "Urban Major Conurbation", "Urban Minor Conurbation",
@@ -424,8 +446,8 @@ character_viz_mult <- function(df, scaling) {
     
     levels <- c("18-39y", "40-64y", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (least deprived)",
-                "2", "3", "4", "5 (most deprived)",
+                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "2", "3", "4", "5 (least deprived)",
                 "Multiple of the Same Generation", "Living Alone",
                 "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
@@ -441,8 +463,8 @@ character_viz_mult <- function(df, scaling) {
     
     levels <- c("65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (least deprived)", "2",
-                "3", "4", "5 (most deprived)", "Multiple of the Same Generation",
+                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2", "3",
+                "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",

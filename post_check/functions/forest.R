@@ -871,8 +871,8 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
           plot_label = str_to_title(gsub("has ", "", gsub("_", " ", variable))),
           faceting = case_when(
             variable %in% c("age_band", "sex", "latest_ethnicity_group",
-                            "imd_quintile", "composition_category") ~ "Baseline",
-            TRUE ~ "Secondary"
+                            "imd_quintile", "composition_category") ~
+              "Baseline", TRUE ~ "Secondary"
           ),
           subset = gsub("_", "-", subset)
         ) %>%
@@ -897,13 +897,15 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
           label = forcats::fct_relevel(label, levels)
         ) %>%
         mutate(
-          plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
+          plot_label2 = paste0(
+            plot_label, " (", str_to_title(reference_row), ")")
         ) %>%
         mutate(
           plot_label2 = factor(plot_label2, levels = group_order)
         ) %>%
         ggplot(aes(y = label, x = estimate, xmin = conf.low,
-                   xmax = conf.high, color = plot_label2, shape = plot_label2)) +
+                   xmax = conf.high, color = plot_label2,
+                   shape = plot_label2)) +
         scale_color_manual(values = cols_final$col,
                            name = "Characteristic (Reference)") +
         scale_shape_manual(name = "Characteristic (Reference)",
@@ -951,7 +953,8 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
+            plot_label2 = paste0(
+              plot_label, " (", str_to_title(reference_row), ")")
           ) %>%
           mutate(
             plot_label2 = factor(plot_label2, levels = group_order)
@@ -959,7 +962,8 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
           filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23",
                                "2023-24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low,
-                     xmax = conf.high, color = plot_label2, shape = plot_label2)) +
+                     xmax = conf.high, color = plot_label2,
+                     shape = plot_label2)) +
           scale_color_manual(values = cols_final$col,
                              name = "Characteristic (Reference)") +
           scale_shape_manual(name = "Characteristic (Reference)",
@@ -1005,13 +1009,15 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
+            plot_label2 = paste0(
+              plot_label, " (", str_to_title(reference_row), ")")
           ) %>%
           mutate(
             plot_label2 = factor(plot_label2, levels = group_order)
           ) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low,
-                     xmax = conf.high, color = plot_label2, shape = plot_label2)) +
+                     xmax = conf.high, color = plot_label2,
+                     shape = plot_label2)) +
           scale_color_manual(values = cols_final$col,
                              name = "Characteristic (Reference)") +
           scale_shape_manual(name = "Characteristic (Reference)",
@@ -1994,7 +2000,7 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
     }
     
     tidy_forest <- tidy_forest %>%
-      filter(!reference_row |is.na(reference_row)) %>%
+      filter(!reference_row | is.na(reference_row)) %>%
       bind_rows(reference_rows)
     
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
@@ -2077,11 +2083,12 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
             )
           ) %>%
           mutate(
-            plot_label = str_to_title(gsub("has ", "", gsub("_", " ", variable))),
+            plot_label = str_to_title(
+              gsub("has ", "", gsub("_", " ", variable))),
             faceting = case_when(
               variable %in% c("age_band", "sex", "latest_ethnicity_group",
-                              "imd_quintile", "composition_category") ~ "Infant",
-              TRUE ~ "Maternal"
+                              "imd_quintile", "rurality_classification") ~
+                "Infant", TRUE ~ "Maternal"
             ),
             subset = gsub("_", "-", subset)
           ) %>%
@@ -2106,7 +2113,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23",
                                "2023-24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low,
-                     xmax = conf.high, color = plot_label2, shape = plot_label2)) +
+                     xmax = conf.high, color = plot_label2,
+                     shape = plot_label2)) +
           scale_color_manual(values = cols_final$col,
                              name = "Characteristic (Reference)") +
           scale_shape_manual(name = "Characteristic (Reference)",
@@ -2133,11 +2141,12 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
             )
           ) %>%
           mutate(
-            plot_label = str_to_title(gsub("has ", "", gsub("_", " ", variable))),
+            plot_label = str_to_title(
+              gsub("has ", "", gsub("_", " ", variable))),
             faceting = case_when(
               variable %in% c("age_band", "sex", "latest_ethnicity_group",
-                              "imd_quintile", "composition_category") ~ "Baseline",
-              TRUE ~ "Maternal"
+                              "imd_quintile", "rurality_classification") ~
+                "Infant", TRUE ~ "Maternal"
             ),
             subset = gsub("_", "-", subset)
           ) %>%
@@ -2164,7 +2173,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
             plot_label2 = factor(plot_label2, levels = group_order)
           ) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low,
-                     xmax = conf.high, color = plot_label2, shape = plot_label2)) +
+                     xmax = conf.high, color = plot_label2,
+                     shape = plot_label2)) +
           scale_color_manual(values = cols_final$col,
                              name = "Characteristic (Reference)") +
           scale_shape_manual(name = "Characteristic (Reference)",
@@ -2215,7 +2225,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            plot_label2 = paste0(plot_label, " (", str_to_title(reference_row), ")")
+            plot_label2 = paste0(
+              plot_label, " (", str_to_title(reference_row), ")")
           ) %>%
           mutate(
             plot_label2 = factor(plot_label2, levels = group_order),
@@ -2224,7 +2235,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23",
                                "2023-24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low,
-                     xmax = conf.high, color = plot_label2, shape = plot_label2)) +
+                     xmax = conf.high, color = plot_label2,
+                     shape = plot_label2)) +
           scale_color_manual(values = cols_final$col,
                              name = "Characteristic (Reference)") +
           scale_shape_manual(name = "Characteristic (Reference)",
@@ -2602,11 +2614,11 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
         scale_shape_manual(name = "Est. Type",
                            values = shapes_final$shape) +
         geom_vline(xintercept = 1, linetype = 2) +
-        scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
+        scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
         geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
         guides(color = "none", shape = guide_legend("Est. Type")) +
         facet_wrap(~ subset, nrow = 1, ncol = 4) + 
-        labs(x = "Rate Ratio", y = "") +
+        labs(x = "", y = "") +
         theme_bw() + theme(text = element_text(size = 12))
       
     } else {
@@ -2648,11 +2660,11 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
         scale_shape_manual(name = "Est. Type",
                            values = shapes_final$shape) +
         geom_vline(xintercept = 1, linetype = 2) +
-        scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
+        scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
         geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
         guides(color = "none", shape = guide_legend("Est. Type")) +
         facet_wrap(~ subset, nrow = 1) + 
-        labs(x = "Rate Ratio", y = " ") +
+        labs(x = "", y = " ") +
         theme_bw() + theme(text = element_text(size = 12))
       
     }
@@ -2819,10 +2831,10 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   
   if (cohort == "infants_subgroup") {
     
-    levels <- c("Binary Variables (No)", "Maternal Pertussis Vaccination",
-                "Maternal Flu Vaccination", "Maternal Drug Usage",
-                "Maternal Drinking", "Current", "Former", "Never", 
-                "Maternal Age", levels)
+    levels <- c(levels, "Maternal Age", "Never Smoker", "Former Smoker",
+                "Current Smoker", "Maternal Drinking", "Maternal Drug Usage",
+                "Maternal Flu Vaccination", "Maternal Pertussis Vaccination",
+                "Binary Variables (Reference)")
     
   } else if (cohort != "infants" & pathogen == "flu") {
     
@@ -2967,7 +2979,10 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       tidy_remove_intercept() %>%
       mutate(
         conf.low = if_else(reference_row, 1, conf.low),
-        conf.high = if_else(reference_row, 1, conf.high)
+        conf.high = if_else(reference_row, 1, conf.high),
+        label = if_else(label == "maternal_age", "Maternal Age", label),
+        reference_row = if_else(
+          label == "Maternal Age", FALSE, reference_row)
       ) %>%
       mutate(
         conf.low = if_else(conf.low < 1e-100, NA, conf.low),
@@ -3064,9 +3079,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       filter(var %in% unique(tidy_forest$variable)) %>%
       filter(var %in% c("sex", "age_band", "latest_ethnicity_group",
                         "imd_quintile", "composition_category",
-                        "rurality_classification", "maternal_age",
-                        "maternal_smoking_status", vacc_prev,
-                        vacc_current)) %>%
+                        "rurality_classification", "maternal_smoking_status",
+                        vacc_prev, vacc_current)) %>%
       slice(rep(1:n(), each = 3))
     
     cols_final <- rbind(
@@ -3075,20 +3089,10 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
         filter(var %in% unique(tidy_forest$variable)) %>%
         filter(!(var %in% c("sex", "age_band", "latest_ethnicity_group",
                             "imd_quintile", "composition_category",
-                            "rurality_classification", "maternal_age",
-                            "maternal_smoking_status", vacc_prev,
-                            vacc_current))) %>%
+                            "rurality_classification", "maternal_smoking_status",
+                            vacc_prev, vacc_current))) %>%
         slice(rep(1:n(), each = 2))
     )
-    
-    if (cohort == "infants_subgroup") {
-      
-      cols_final <- cols_final %>%
-        filter(!(var == "maternal_age" &
-                   row_number() == min(which(var == "maternal_age")))) %>%
-        slice(rep(1:n(), each = 2))
-      
-    }
     
     shapes <- tibble(
       var = c("sex", "sex", "sex", "age_band", "age_band", "age_band",
@@ -3123,17 +3127,21 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               str_detect(term, "imd_quintile4") ~ "2",
               str_detect(term, "imd_quintile2") ~ "4",
               str_detect(term, "imd_quintile1") ~ "5 (least deprived)",
+              label == "Current" ~ "Current Smoker",
+              label == "Former" ~ "Former Smoker",
+              label == "Never" ~ "Never Smoker",
               TRUE ~ label
             )
           ) %>%
           mutate(
-            plot_label = str_to_title(gsub("has ", "", gsub("_", " ", variable))),
+            plot_label = str_to_title(
+              gsub("has ", "", gsub("_", " ", variable))),
+            subset = gsub("_", "-", subset),
             faceting = case_when(
               variable %in% c("age_band", "sex", "latest_ethnicity_group",
-                              "imd_quintile", "composition_category") ~ "Infant",
-              TRUE ~ "Maternal"
-            ),
-            subset = gsub("_", "-", subset)
+                              "imd_quintile", "rurality_classification") ~
+                "Infant", TRUE ~ "Maternal"
+            )
           ) %>%
           mutate(
             plot_label = case_when(
@@ -3145,13 +3153,17 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            plot_label2 = if_else(
-              plot_label != "Maternal Age", paste0(
-                plot_label, " (", str_to_title(codelist_type), ")"),
-              "Maternal Age")
+            label = if_else(label == "Yes", plot_label, label)
           ) %>%
           mutate(
-            plot_label2 = factor(plot_label2, levels = rev(group_order)),
+            label = forcats::fct_relevel(label, levels)
+          ) %>%
+          mutate(
+            plot_label2 = paste0(
+              plot_label, " (", str_to_title(codelist_type), ")")
+          ) %>%
+          mutate(
+            plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive"))
@@ -3163,11 +3175,11 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           scale_shape_manual(name = "Est. Type",
                              values = shapes_final$shape) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
+          scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = "none", shape = guide_legend("Est. Type")) +
-          facet_grid(faceting ~ subset) + 
-          labs(x = "Rate Ratio", y = "") +
+          facet_grid(faceting ~ subset, scales = "free_y", space = "free") + 
+          labs(x = "", y = "") +
           theme_bw() + theme(text = element_text(size = 12))
         
       } else {
@@ -3179,17 +3191,21 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               str_detect(term, "imd_quintile4") ~ "2",
               str_detect(term, "imd_quintile2") ~ "4",
               str_detect(term, "imd_quintile1") ~ "5 (least deprived)",
+              label == "Current" ~ "Current Smoker",
+              label == "Former" ~ "Former Smoker",
+              label == "Never" ~ "Never Smoker",
               TRUE ~ label
             )
           ) %>%
           mutate(
-            plot_label = str_to_title(gsub("has ", "", gsub("_", " ", variable))),
+            plot_label = str_to_title(
+              gsub("has ", "", gsub("_", " ", variable))),
+            subset = gsub("_", "-", subset),
             faceting = case_when(
               variable %in% c("age_band", "sex", "latest_ethnicity_group",
-                              "imd_quintile", "composition_category") ~ "Baseline",
-              TRUE ~ "Maternal"
-            ),
-            subset = gsub("_", "-", subset)
+                              "imd_quintile", "rurality_classification") ~
+                "Infant", TRUE ~ "Maternal"
+            )
           ) %>%
           mutate(
             plot_label = case_when(
@@ -3206,10 +3222,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             label = forcats::fct_relevel(label, levels)
           ) %>%
           mutate(
-            plot_label2 = if_else(
-              plot_label != "Maternal Age", paste0(
-                plot_label, " (", str_to_title(codelist_type), ")"),
-              "Maternal Age")
+            plot_label2 = paste0(
+                plot_label, " (", str_to_title(codelist_type), ")")
           ) %>%
           mutate(
             plot_label2 = factor(plot_label2, levels = group_order),
@@ -3222,11 +3236,11 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           scale_shape_manual(name = "Est. Type",
                              values = shapes_final$shape) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
+          scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = "none", shape = guide_legend("Est. Type")) +
-          facet_grid(faceting ~ subset) + 
-          labs(x = "Rate Ratio", y = "") +
+          facet_grid(faceting ~ subset, scales = "free_y", space = "free") + 
+          labs(x = "", y = "") +
           theme_bw() + theme(text = element_text(size = 12))
         
       }
@@ -3287,11 +3301,11 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           scale_shape_manual(name = "Est. Type",
                              values = shapes_final$shape) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
+          scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = "none", shape = guide_legend("Est. Type")) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
-          labs(x = "Rate Ratio", y = "") +
+          labs(x = "", y = "") +
           theme_bw() + theme(text = element_text(size = 12))
         
       } else {
@@ -3343,11 +3357,11 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           scale_shape_manual(name = "Est. Type",
                              values = shapes_final$shape) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
+          scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = "none", shape = guide_legend("Est. Type")) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
-          labs(x = "Rate Ratio", y = "") +
+          labs(x = "", y = "") +
           theme_bw() + theme(text = element_text(size = 12))
         
       }
