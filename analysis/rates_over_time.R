@@ -87,6 +87,11 @@ calculate_rolling_rates <- function(df, pathogen, characteristic,
     select(all_of(columns_needed), all_of(characteristic),
            starts_with(pathogen) & ends_with("_date"))
   
+  # Calculate total patients BY GROUP
+  total_patients_by_group <- df %>%
+    group_by(across(all_of(characteristic))) %>%
+    summarise(total_patients = n(), .groups = "drop")
+  
   df_long <- df %>%
     pivot_longer(cols = starts_with(pathogen) & ends_with("date"),
                  names_to = "event", values_to = "date") %>%
@@ -124,6 +129,7 @@ calculate_rolling_rates <- function(df, pathogen, characteristic,
     }
     
     df_expanded <- df_expanded %>%
+      left_join(total_patients_by_group, by = c("group" = characteristic)) %>%
       #calculate the number of patients still at risk in interval
       mutate(
         patients_remaining = total_patients - before
