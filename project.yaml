@@ -992,6 +992,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2016_2017_specific_primary.csv
 
+  calculate_all_rates_over_time_older_adults_s1_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season1_start_date season1_end_date
+      specific primary
+    needs:
+    - process_dataset_older_adults_s1_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2016_2017_specific_primary.csv
+
   analyse_dataset_older_adults_rsv_s1_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season1_start_date
       season1_end_date specific primary
@@ -1064,6 +1073,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2017_2018_specific_primary.csv
+
+  calculate_all_rates_over_time_older_adults_s2_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season2_start_date season2_end_date
+      specific primary
+    needs:
+    - process_dataset_older_adults_s2_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2017_2018_specific_primary.csv
 
   analyse_dataset_older_adults_rsv_s2_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season2_start_date
@@ -1138,6 +1156,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2018_2019_specific_primary.csv
 
+  calculate_all_rates_over_time_older_adults_s3_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season3_start_date season3_end_date
+      specific primary
+    needs:
+    - process_dataset_older_adults_s3_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2018_2019_specific_primary.csv
+
   analyse_dataset_older_adults_rsv_s3_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season3_start_date
       season3_end_date specific primary
@@ -1210,6 +1237,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2019_2020_specific_primary.csv
+
+  calculate_all_rates_over_time_older_adults_s4_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season4_start_date season4_end_date
+      specific primary
+    needs:
+    - process_dataset_older_adults_s4_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2019_2020_specific_primary.csv
 
   analyse_dataset_older_adults_rsv_s4_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season4_start_date
@@ -1303,6 +1339,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2020_2021_specific_primary.csv
 
+  calculate_all_rates_over_time_older_adults_s5_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season5_start_date season5_end_date
+      specific primary
+    needs:
+    - process_dataset_older_adults_s5_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2020_2021_specific_primary.csv
+
   analyse_dataset_older_adults_rsv_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season5_start_date
       season5_end_date specific primary
@@ -1393,6 +1438,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2021_2022_specific_primary.csv
+
+  calculate_all_rates_over_time_older_adults_s6_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season6_start_date season6_end_date
+      specific primary
+    needs:
+    - process_dataset_older_adults_s6_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2021_2022_specific_primary.csv
 
   analyse_dataset_older_adults_rsv_s6_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season6_start_date
@@ -1485,6 +1539,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2022_2023_specific_primary.csv
 
+  calculate_all_rates_over_time_older_adults_s7_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season7_start_date season7_end_date
+      specific primary
+    needs:
+    - process_dataset_older_adults_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2022_2023_specific_primary.csv
+
   analyse_dataset_older_adults_rsv_s7_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season7_start_date
       season7_end_date specific primary
@@ -1575,6 +1638,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2023_2024_specific_primary.csv
+
+  calculate_all_rates_over_time_older_adults_s8_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season8_start_date season8_end_date
+      specific primary
+    needs:
+    - process_dataset_older_adults_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2023_2024_specific_primary.csv
 
   analyse_dataset_older_adults_rsv_s8_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season8_start_date
@@ -1672,6 +1744,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2016_2017_specific_primary.csv
 
+  calculate_all_rates_over_time_adults_s1_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season1_start_date season1_end_date
+      specific primary
+    needs:
+    - process_dataset_adults_s1_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2016_2017_specific_primary.csv
+
   analyse_dataset_adults_rsv_s1_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season1_start_date
       season1_end_date specific primary
@@ -1744,6 +1825,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2017_2018_specific_primary.csv
+
+  calculate_all_rates_over_time_adults_s2_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season2_start_date season2_end_date
+      specific primary
+    needs:
+    - process_dataset_adults_s2_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2017_2018_specific_primary.csv
 
   analyse_dataset_adults_rsv_s2_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season2_start_date
@@ -1818,6 +1908,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2018_2019_specific_primary.csv
 
+  calculate_all_rates_over_time_adults_s3_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season3_start_date season3_end_date
+      specific primary
+    needs:
+    - process_dataset_adults_s3_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2018_2019_specific_primary.csv
+
   analyse_dataset_adults_rsv_s3_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season3_start_date
       season3_end_date specific primary
@@ -1890,6 +1989,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2019_2020_specific_primary.csv
+
+  calculate_all_rates_over_time_adults_s4_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season4_start_date season4_end_date
+      specific primary
+    needs:
+    - process_dataset_adults_s4_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2019_2020_specific_primary.csv
 
   analyse_dataset_adults_rsv_s4_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season4_start_date
@@ -1983,6 +2091,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2020_2021_specific_primary.csv
 
+  calculate_all_rates_over_time_adults_s5_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season5_start_date season5_end_date
+      specific primary
+    needs:
+    - process_dataset_adults_s5_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2020_2021_specific_primary.csv
+
   analyse_dataset_adults_rsv_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season5_start_date
       season5_end_date specific primary
@@ -2073,6 +2190,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2021_2022_specific_primary.csv
+
+  calculate_all_rates_over_time_adults_s6_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season6_start_date season6_end_date
+      specific primary
+    needs:
+    - process_dataset_adults_s6_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2021_2022_specific_primary.csv
 
   analyse_dataset_adults_rsv_s6_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season6_start_date
@@ -2165,6 +2291,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2022_2023_specific_primary.csv
 
+  calculate_all_rates_over_time_adults_s7_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season7_start_date season7_end_date
+      specific primary
+    needs:
+    - process_dataset_adults_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2022_2023_specific_primary.csv
+
   analyse_dataset_adults_rsv_s7_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season7_start_date
       season7_end_date specific primary
@@ -2255,6 +2390,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2023_2024_specific_primary.csv
+
+  calculate_all_rates_over_time_adults_s8_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season8_start_date season8_end_date
+      specific primary
+    needs:
+    - process_dataset_adults_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2023_2024_specific_primary.csv
 
   analyse_dataset_adults_rsv_s8_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season8_start_date
@@ -2352,6 +2496,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2016_2017_specific_primary.csv
 
+  calculate_all_rates_over_time_children_and_adolescents_s1_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season1_start_date
+      season1_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s1_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2016_2017_specific_primary.csv
+
   analyse_dataset_children_and_adolescents_rsv_s1_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
       season1_start_date season1_end_date specific primary
@@ -2424,6 +2577,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2017_2018_specific_primary.csv
+
+  calculate_all_rates_over_time_children_and_adolescents_s2_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season2_start_date
+      season2_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s2_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2017_2018_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s2_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
@@ -2498,6 +2660,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2018_2019_specific_primary.csv
 
+  calculate_all_rates_over_time_children_and_adolescents_s3_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season3_start_date
+      season3_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s3_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2018_2019_specific_primary.csv
+
   analyse_dataset_children_and_adolescents_rsv_s3_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
       season3_start_date season3_end_date specific primary
@@ -2570,6 +2741,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2019_2020_specific_primary.csv
+
+  calculate_all_rates_over_time_children_and_adolescents_s4_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season4_start_date
+      season4_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s4_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2019_2020_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s4_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
@@ -2663,6 +2843,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2020_2021_specific_primary.csv
 
+  calculate_all_rates_over_time_children_and_adolescents_s5_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season5_start_date
+      season5_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s5_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2020_2021_specific_primary.csv
+
   analyse_dataset_children_and_adolescents_rsv_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
       season5_start_date season5_end_date specific primary
@@ -2753,6 +2942,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2021_2022_specific_primary.csv
+
+  calculate_all_rates_over_time_children_and_adolescents_s6_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season6_start_date
+      season6_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s6_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2021_2022_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s6_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
@@ -2845,6 +3043,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2022_2023_specific_primary.csv
 
+  calculate_all_rates_over_time_children_and_adolescents_s7_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season7_start_date
+      season7_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2022_2023_specific_primary.csv
+
   analyse_dataset_children_and_adolescents_rsv_s7_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
       season7_start_date season7_end_date specific primary
@@ -2935,6 +3142,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2023_2024_specific_primary.csv
+
+  calculate_all_rates_over_time_children_and_adolescents_s8_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season8_start_date
+      season8_end_date specific primary
+    needs:
+    - process_dataset_children_and_adolescents_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2023_2024_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s8_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
@@ -3031,6 +3247,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2016_2017_specific_primary.csv
+
+  calculate_all_rates_over_time_infants_s1_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season1_start_date season1_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s1_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2016_2017_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_s1_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season1_start_date
@@ -3177,6 +3402,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2017_2018_specific_primary.csv
 
+  calculate_all_rates_over_time_infants_s2_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season2_start_date season2_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s2_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2017_2018_specific_primary.csv
+
   analyse_dataset_infants_rsv_ethnicity_s2_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season2_start_date
       season2_end_date specific primary
@@ -3322,6 +3556,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2018_2019_specific_primary.csv
 
+  calculate_all_rates_over_time_infants_s3_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season3_start_date season3_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s3_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2018_2019_specific_primary.csv
+
   analyse_dataset_infants_rsv_ethnicity_s3_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season3_start_date
       season3_end_date specific primary
@@ -3466,6 +3709,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2019_2020_specific_primary.csv
+
+  calculate_all_rates_over_time_infants_s4_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season4_start_date season4_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s4_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_s4_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season4_start_date
@@ -3666,6 +3918,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2020_2021_specific_primary.csv
 
+  calculate_all_rates_over_time_infants_s5_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season5_start_date season5_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s5_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2020_2021_specific_primary.csv
+
   analyse_dataset_infants_rsv_ethnicity_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season5_start_date
       season5_end_date specific primary
@@ -3864,6 +4125,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2021_2022_specific_primary.csv
+
+  calculate_all_rates_over_time_infants_s6_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season6_start_date season6_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s6_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_s6_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season6_start_date
@@ -4064,6 +4334,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2022_2023_specific_primary.csv
 
+  calculate_all_rates_over_time_infants_s7_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season7_start_date season7_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2022_2023_specific_primary.csv
+
   analyse_dataset_infants_rsv_ethnicity_s7_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season7_start_date
       season7_end_date specific primary
@@ -4262,6 +4541,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2023_2024_specific_primary.csv
+
+  calculate_all_rates_over_time_infants_s8_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season8_start_date season8_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_s8_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season8_start_date
@@ -4491,6 +4779,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2016_2017_specific_primary.csv
 
+  calculate_all_rates_over_time_infants_s1_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season1_start_date season1_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s1_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2016_2017_specific_primary.csv
+
   analyse_dataset_infants_subgroup_rsv_ethnicity_s1_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season1_start_date
       season1_end_date specific primary
@@ -4659,6 +4956,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2017_2018_specific_primary.csv
+
+  calculate_all_rates_over_time_infants_s2_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season2_start_date season2_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s2_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2017_2018_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s2_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season2_start_date
@@ -4829,6 +5135,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2018_2019_specific_primary.csv
 
+  calculate_all_rates_over_time_infants_s3_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season3_start_date season3_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s3_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2018_2019_specific_primary.csv
+
   analyse_dataset_infants_subgroup_rsv_ethnicity_s3_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season3_start_date
       season3_end_date specific primary
@@ -4997,6 +5312,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2019_2020_specific_primary.csv
+
+  calculate_all_rates_over_time_infants_s4_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season4_start_date season4_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s4_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s4_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season4_start_date
@@ -5221,6 +5545,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2020_2021_specific_primary.csv
 
+  calculate_all_rates_over_time_infants_s5_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season5_start_date season5_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s5_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2020_2021_specific_primary.csv
+
   analyse_dataset_infants_subgroup_rsv_ethnicity_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season5_start_date
       season5_end_date specific primary
@@ -5443,6 +5776,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2021_2022_specific_primary.csv
+
+  calculate_all_rates_over_time_infants_s6_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season6_start_date season6_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s6_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s6_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season6_start_date
@@ -5667,6 +6009,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2022_2023_specific_primary.csv
 
+  calculate_all_rates_over_time_infants_s7_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season7_start_date season7_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s7_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2022_2023_specific_primary.csv
+
   analyse_dataset_infants_subgroup_rsv_ethnicity_s7_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season7_start_date
       season7_end_date specific primary
@@ -5890,6 +6241,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2023_2024_specific_primary.csv
 
+  calculate_all_rates_over_time_infants_s8_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season8_start_date season8_end_date
+      specific primary
+    needs:
+    - process_dataset_infants_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2023_2024_specific_primary.csv
+
   analyse_dataset_infants_subgroup_rsv_ethnicity_s8_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season8_start_date
       season8_end_date specific primary
@@ -6097,6 +6457,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2016_2017_sensitive_primary.csv
 
+  calculate_all_rates_over_time_older_adults_s1_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season1_start_date season1_end_date
+      sensitive primary
+    needs:
+    - process_dataset_older_adults_s1_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2016_2017_sensitive_primary.csv
+
   analyse_dataset_older_adults_rsv_s1_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season1_start_date
       season1_end_date sensitive primary
@@ -6187,6 +6556,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2017_2018_sensitive_primary.csv
+
+  calculate_all_rates_over_time_older_adults_s2_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season2_start_date season2_end_date
+      sensitive primary
+    needs:
+    - process_dataset_older_adults_s2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2017_2018_sensitive_primary.csv
 
   analyse_dataset_older_adults_rsv_s2_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season2_start_date
@@ -6279,6 +6657,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2018_2019_sensitive_primary.csv
 
+  calculate_all_rates_over_time_older_adults_s3_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season3_start_date season3_end_date
+      sensitive primary
+    needs:
+    - process_dataset_older_adults_s3_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2018_2019_sensitive_primary.csv
+
   analyse_dataset_older_adults_rsv_s3_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season3_start_date
       season3_end_date sensitive primary
@@ -6369,6 +6756,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2019_2020_sensitive_primary.csv
+
+  calculate_all_rates_over_time_older_adults_s4_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season4_start_date season4_end_date
+      sensitive primary
+    needs:
+    - process_dataset_older_adults_s4_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2019_2020_sensitive_primary.csv
 
   analyse_dataset_older_adults_rsv_s4_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season4_start_date
@@ -6480,6 +6876,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2020_2021_sensitive_primary.csv
 
+  calculate_all_rates_over_time_older_adults_s5_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season5_start_date season5_end_date
+      sensitive primary
+    needs:
+    - process_dataset_older_adults_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2020_2021_sensitive_primary.csv
+
   analyse_dataset_older_adults_rsv_s5_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season5_start_date
       season5_end_date sensitive primary
@@ -6588,6 +6993,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2021_2022_sensitive_primary.csv
+
+  calculate_all_rates_over_time_older_adults_s6_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season6_start_date season6_end_date
+      sensitive primary
+    needs:
+    - process_dataset_older_adults_s6_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2021_2022_sensitive_primary.csv
 
   analyse_dataset_older_adults_rsv_s6_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season6_start_date
@@ -6698,6 +7112,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2022_2023_sensitive_primary.csv
 
+  calculate_all_rates_over_time_older_adults_s7_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season7_start_date season7_end_date
+      sensitive primary
+    needs:
+    - process_dataset_older_adults_s7_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2022_2023_sensitive_primary.csv
+
   analyse_dataset_older_adults_rsv_s7_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season7_start_date
       season7_end_date sensitive primary
@@ -6806,6 +7229,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2023_2024_sensitive_primary.csv
+
+  calculate_all_rates_over_time_older_adults_s8_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season8_start_date season8_end_date
+      sensitive primary
+    needs:
+    - process_dataset_older_adults_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2023_2024_sensitive_primary.csv
 
   analyse_dataset_older_adults_rsv_s8_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season8_start_date
@@ -6921,6 +7353,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2016_2017_sensitive_primary.csv
 
+  calculate_all_rates_over_time_adults_s1_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season1_start_date season1_end_date
+      sensitive primary
+    needs:
+    - process_dataset_adults_s1_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2016_2017_sensitive_primary.csv
+
   analyse_dataset_adults_rsv_s1_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season1_start_date
       season1_end_date sensitive primary
@@ -7011,6 +7452,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2017_2018_sensitive_primary.csv
+
+  calculate_all_rates_over_time_adults_s2_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season2_start_date season2_end_date
+      sensitive primary
+    needs:
+    - process_dataset_adults_s2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2017_2018_sensitive_primary.csv
 
   analyse_dataset_adults_rsv_s2_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season2_start_date
@@ -7103,6 +7553,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2018_2019_sensitive_primary.csv
 
+  calculate_all_rates_over_time_adults_s3_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season3_start_date season3_end_date
+      sensitive primary
+    needs:
+    - process_dataset_adults_s3_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2018_2019_sensitive_primary.csv
+
   analyse_dataset_adults_rsv_s3_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season3_start_date
       season3_end_date sensitive primary
@@ -7193,6 +7652,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2019_2020_sensitive_primary.csv
+
+  calculate_all_rates_over_time_adults_s4_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season4_start_date season4_end_date
+      sensitive primary
+    needs:
+    - process_dataset_adults_s4_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2019_2020_sensitive_primary.csv
 
   analyse_dataset_adults_rsv_s4_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season4_start_date
@@ -7304,6 +7772,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2020_2021_sensitive_primary.csv
 
+  calculate_all_rates_over_time_adults_s5_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season5_start_date season5_end_date
+      sensitive primary
+    needs:
+    - process_dataset_adults_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2020_2021_sensitive_primary.csv
+
   analyse_dataset_adults_rsv_s5_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season5_start_date
       season5_end_date sensitive primary
@@ -7412,6 +7889,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2021_2022_sensitive_primary.csv
+
+  calculate_all_rates_over_time_adults_s6_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season6_start_date season6_end_date
+      sensitive primary
+    needs:
+    - process_dataset_adults_s6_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2021_2022_sensitive_primary.csv
 
   analyse_dataset_adults_rsv_s6_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season6_start_date
@@ -7522,6 +8008,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2022_2023_sensitive_primary.csv
 
+  calculate_all_rates_over_time_adults_s7_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season7_start_date season7_end_date
+      sensitive primary
+    needs:
+    - process_dataset_adults_s7_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2022_2023_sensitive_primary.csv
+
   analyse_dataset_adults_rsv_s7_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season7_start_date
       season7_end_date sensitive primary
@@ -7630,6 +8125,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_adults_2023_2024_sensitive_primary.csv
+
+  calculate_all_rates_over_time_adults_s8_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R adults season8_start_date season8_end_date
+      sensitive primary
+    needs:
+    - process_dataset_adults_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2023_2024_sensitive_primary.csv
 
   analyse_dataset_adults_rsv_s8_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R adults season8_start_date
@@ -7745,6 +8249,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2016_2017_sensitive_primary.csv
 
+  calculate_all_rates_over_time_children_and_adolescents_s1_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season1_start_date
+      season1_end_date sensitive primary
+    needs:
+    - process_dataset_children_and_adolescents_s1_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2016_2017_sensitive_primary.csv
+
   analyse_dataset_children_and_adolescents_rsv_s1_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
       season1_start_date season1_end_date sensitive primary
@@ -7835,6 +8348,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2017_2018_sensitive_primary.csv
+
+  calculate_all_rates_over_time_children_and_adolescents_s2_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season2_start_date
+      season2_end_date sensitive primary
+    needs:
+    - process_dataset_children_and_adolescents_s2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2017_2018_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s2_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
@@ -7927,6 +8449,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2018_2019_sensitive_primary.csv
 
+  calculate_all_rates_over_time_children_and_adolescents_s3_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season3_start_date
+      season3_end_date sensitive primary
+    needs:
+    - process_dataset_children_and_adolescents_s3_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2018_2019_sensitive_primary.csv
+
   analyse_dataset_children_and_adolescents_rsv_s3_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
       season3_start_date season3_end_date sensitive primary
@@ -8017,6 +8548,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2019_2020_sensitive_primary.csv
+
+  calculate_all_rates_over_time_children_and_adolescents_s4_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season4_start_date
+      season4_end_date sensitive primary
+    needs:
+    - process_dataset_children_and_adolescents_s4_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2019_2020_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s4_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
@@ -8128,6 +8668,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2020_2021_sensitive_primary.csv
 
+  calculate_all_rates_over_time_children_and_adolescents_s5_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season5_start_date
+      season5_end_date sensitive primary
+    needs:
+    - process_dataset_children_and_adolescents_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2020_2021_sensitive_primary.csv
+
   analyse_dataset_children_and_adolescents_rsv_s5_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
       season5_start_date season5_end_date sensitive primary
@@ -8236,6 +8785,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2021_2022_sensitive_primary.csv
+
+  calculate_all_rates_over_time_children_and_adolescents_s6_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season6_start_date
+      season6_end_date sensitive primary
+    needs:
+    - process_dataset_children_and_adolescents_s6_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2021_2022_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s6_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
@@ -8346,6 +8904,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2022_2023_sensitive_primary.csv
 
+  calculate_all_rates_over_time_children_and_adolescents_s7_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season7_start_date
+      season7_end_date sensitive primary
+    needs:
+    - process_dataset_children_and_adolescents_s7_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2022_2023_sensitive_primary.csv
+
   analyse_dataset_children_and_adolescents_rsv_s7_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
       season7_start_date season7_end_date sensitive primary
@@ -8454,6 +9021,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_children_and_adolescents_2023_2024_sensitive_primary.csv
+
+  calculate_all_rates_over_time_children_and_adolescents_s8_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R children_and_adolescents season8_start_date
+      season8_end_date sensitive primary
+    needs:
+    - process_dataset_children_and_adolescents_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2023_2024_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s8_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
@@ -8568,6 +9144,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2016_2017_sensitive_primary.csv
+
+  calculate_all_rates_over_time_infants_s1_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season1_start_date season1_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s1_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2016_2017_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_s1_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season1_start_date
@@ -8768,6 +9353,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2017_2018_sensitive_primary.csv
 
+  calculate_all_rates_over_time_infants_s2_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season2_start_date season2_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2017_2018_sensitive_primary.csv
+
   analyse_dataset_infants_rsv_ethnicity_s2_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season2_start_date
       season2_end_date sensitive primary
@@ -8967,6 +9561,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2018_2019_sensitive_primary.csv
 
+  calculate_all_rates_over_time_infants_s3_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season3_start_date season3_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s3_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2018_2019_sensitive_primary.csv
+
   analyse_dataset_infants_rsv_ethnicity_s3_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season3_start_date
       season3_end_date sensitive primary
@@ -9165,6 +9768,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2019_2020_sensitive_primary.csv
+
+  calculate_all_rates_over_time_infants_s4_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season4_start_date season4_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s4_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_s4_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season4_start_date
@@ -9419,6 +10031,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2020_2021_sensitive_primary.csv
 
+  calculate_all_rates_over_time_infants_s5_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season5_start_date season5_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2020_2021_sensitive_primary.csv
+
   analyse_dataset_infants_rsv_ethnicity_s5_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season5_start_date
       season5_end_date sensitive primary
@@ -9671,6 +10292,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2021_2022_sensitive_primary.csv
+
+  calculate_all_rates_over_time_infants_s6_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season6_start_date season6_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s6_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_s6_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season6_start_date
@@ -9925,6 +10555,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2022_2023_sensitive_primary.csv
 
+  calculate_all_rates_over_time_infants_s7_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season7_start_date season7_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s7_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2022_2023_sensitive_primary.csv
+
   analyse_dataset_infants_rsv_ethnicity_s7_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season7_start_date
       season7_end_date sensitive primary
@@ -10177,6 +10816,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_2023_2024_sensitive_primary.csv
+
+  calculate_all_rates_over_time_infants_s8_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season8_start_date season8_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2023_2024_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_s8_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants season8_start_date
@@ -10460,6 +11108,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2016_2017_sensitive_primary.csv
 
+  calculate_all_rates_over_time_infants_s1_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season1_start_date season1_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s1_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2016_2017_sensitive_primary.csv
+
   analyse_dataset_infants_subgroup_rsv_ethnicity_s1_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season1_start_date
       season1_end_date sensitive primary
@@ -10682,6 +11339,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2017_2018_sensitive_primary.csv
+
+  calculate_all_rates_over_time_infants_s2_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season2_start_date season2_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2017_2018_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s2_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season2_start_date
@@ -10906,6 +11572,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2018_2019_sensitive_primary.csv
 
+  calculate_all_rates_over_time_infants_s3_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season3_start_date season3_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s3_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2018_2019_sensitive_primary.csv
+
   analyse_dataset_infants_subgroup_rsv_ethnicity_s3_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season3_start_date
       season3_end_date sensitive primary
@@ -11128,6 +11803,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2019_2020_sensitive_primary.csv
+
+  calculate_all_rates_over_time_infants_s4_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season4_start_date season4_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s4_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s4_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season4_start_date
@@ -11406,6 +12090,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2020_2021_sensitive_primary.csv
 
+  calculate_all_rates_over_time_infants_s5_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season5_start_date season5_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2020_2021_sensitive_primary.csv
+
   analyse_dataset_infants_subgroup_rsv_ethnicity_s5_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season5_start_date
       season5_end_date sensitive primary
@@ -11682,6 +12375,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2021_2022_sensitive_primary.csv
+
+  calculate_all_rates_over_time_infants_s6_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season6_start_date season6_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s6_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s6_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season6_start_date
@@ -11960,6 +12662,15 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2022_2023_sensitive_primary.csv
 
+  calculate_all_rates_over_time_infants_s7_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season7_start_date season7_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s7_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2022_2023_sensitive_primary.csv
+
   analyse_dataset_infants_subgroup_rsv_ethnicity_s7_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season7_start_date
       season7_end_date sensitive primary
@@ -12236,6 +12947,15 @@ actions:
     outputs:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2023_2024_sensitive_primary.csv
+
+  calculate_all_rates_over_time_infants_s8_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants season8_start_date season8_end_date
+      sensitive primary
+    needs:
+    - process_dataset_infants_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2023_2024_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s8_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season8_start_date
@@ -16665,6 +17385,29 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/over_time/older_adults_*_rates_over_time_*.csv
 
+  collate_rates_over_time_all_tables_primary_older_adults:
+    run: r:latest analysis/collation_code/rates_over_time_all_table_collation.R older_adults
+    needs:
+    - calculate_all_rates_over_time_s1_specific_primary
+    - calculate_all_rates_over_time_s2_specific_primary
+    - calculate_all_rates_over_time_s3_specific_primary
+    - calculate_all_rates_over_time_s4_specific_primary
+    - calculate_all_rates_over_time_s5_specific_primary
+    - calculate_all_rates_over_time_s6_specific_primary
+    - calculate_all_rates_over_time_s7_specific_primary
+    - calculate_all_rates_over_time_s8_specific_primary
+    - calculate_all_rates_over_time_s1_sensitive_primary
+    - calculate_all_rates_over_time_s2_sensitive_primary
+    - calculate_all_rates_over_time_s3_sensitive_primary
+    - calculate_all_rates_over_time_s4_sensitive_primary
+    - calculate_all_rates_over_time_s5_sensitive_primary
+    - calculate_all_rates_over_time_s6_sensitive_primary
+    - calculate_all_rates_over_time_s7_sensitive_primary
+    - calculate_all_rates_over_time_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/over_time/older_adults_*_rates_over_time_all_*.csv
+
   collate_rsv_model_outputs_tables_older_adults:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R older_adults
     needs:
@@ -17021,6 +17764,29 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/over_time/adults_*_rates_over_time_*.csv
 
+  collate_rates_over_time_all_tables_primary_adults:
+    run: r:latest analysis/collation_code/rates_over_time_all_table_collation.R adults
+    needs:
+    - calculate_all_rates_over_time_s1_specific_primary
+    - calculate_all_rates_over_time_s2_specific_primary
+    - calculate_all_rates_over_time_s3_specific_primary
+    - calculate_all_rates_over_time_s4_specific_primary
+    - calculate_all_rates_over_time_s5_specific_primary
+    - calculate_all_rates_over_time_s6_specific_primary
+    - calculate_all_rates_over_time_s7_specific_primary
+    - calculate_all_rates_over_time_s8_specific_primary
+    - calculate_all_rates_over_time_s1_sensitive_primary
+    - calculate_all_rates_over_time_s2_sensitive_primary
+    - calculate_all_rates_over_time_s3_sensitive_primary
+    - calculate_all_rates_over_time_s4_sensitive_primary
+    - calculate_all_rates_over_time_s5_sensitive_primary
+    - calculate_all_rates_over_time_s6_sensitive_primary
+    - calculate_all_rates_over_time_s7_sensitive_primary
+    - calculate_all_rates_over_time_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/over_time/adults_*_rates_over_time_all_*.csv
+
   collate_rsv_model_outputs_tables_adults:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R adults
     needs:
@@ -17349,6 +18115,29 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/over_time/children_and_adolescents_*_rates_over_time_*.csv
+
+  collate_rates_over_time_all_tables_primary_children_and_adolescents:
+    run: r:latest analysis/collation_code/rates_over_time_all_table_collation.R children_and_adolescents
+    needs:
+    - calculate_all_rates_over_time_s1_specific_primary
+    - calculate_all_rates_over_time_s2_specific_primary
+    - calculate_all_rates_over_time_s3_specific_primary
+    - calculate_all_rates_over_time_s4_specific_primary
+    - calculate_all_rates_over_time_s5_specific_primary
+    - calculate_all_rates_over_time_s6_specific_primary
+    - calculate_all_rates_over_time_s7_specific_primary
+    - calculate_all_rates_over_time_s8_specific_primary
+    - calculate_all_rates_over_time_s1_sensitive_primary
+    - calculate_all_rates_over_time_s2_sensitive_primary
+    - calculate_all_rates_over_time_s3_sensitive_primary
+    - calculate_all_rates_over_time_s4_sensitive_primary
+    - calculate_all_rates_over_time_s5_sensitive_primary
+    - calculate_all_rates_over_time_s6_sensitive_primary
+    - calculate_all_rates_over_time_s7_sensitive_primary
+    - calculate_all_rates_over_time_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/over_time/children_and_adolescents_*_rates_over_time_all_*.csv
 
   collate_rsv_model_outputs_tables_children_and_adolescents:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R children_and_adolescents
@@ -17693,6 +18482,29 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/over_time/infants_*_rates_over_time_*.csv
+
+  collate_rates_over_time_all_tables_primary_infants:
+    run: r:latest analysis/collation_code/rates_over_time_all_table_collation.R infants
+    needs:
+    - calculate_all_rates_over_time_s1_specific_primary
+    - calculate_all_rates_over_time_s2_specific_primary
+    - calculate_all_rates_over_time_s3_specific_primary
+    - calculate_all_rates_over_time_s4_specific_primary
+    - calculate_all_rates_over_time_s5_specific_primary
+    - calculate_all_rates_over_time_s6_specific_primary
+    - calculate_all_rates_over_time_s7_specific_primary
+    - calculate_all_rates_over_time_s8_specific_primary
+    - calculate_all_rates_over_time_s1_sensitive_primary
+    - calculate_all_rates_over_time_s2_sensitive_primary
+    - calculate_all_rates_over_time_s3_sensitive_primary
+    - calculate_all_rates_over_time_s4_sensitive_primary
+    - calculate_all_rates_over_time_s5_sensitive_primary
+    - calculate_all_rates_over_time_s6_sensitive_primary
+    - calculate_all_rates_over_time_s7_sensitive_primary
+    - calculate_all_rates_over_time_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/over_time/infants_*_rates_over_time_all_*.csv
 
   collate_rsv_model_outputs_tables_infants:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R infants
@@ -18253,6 +19065,29 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/over_time/infants_subgroup_*_rates_over_time_*.csv
+
+  collate_rates_over_time_all_tables_primary_infants_subgroup:
+    run: r:latest analysis/collation_code/rates_over_time_all_table_collation.R infants_subgroup
+    needs:
+    - calculate_all_rates_over_time_s1_specific_primary
+    - calculate_all_rates_over_time_s2_specific_primary
+    - calculate_all_rates_over_time_s3_specific_primary
+    - calculate_all_rates_over_time_s4_specific_primary
+    - calculate_all_rates_over_time_s5_specific_primary
+    - calculate_all_rates_over_time_s6_specific_primary
+    - calculate_all_rates_over_time_s7_specific_primary
+    - calculate_all_rates_over_time_s8_specific_primary
+    - calculate_all_rates_over_time_s1_sensitive_primary
+    - calculate_all_rates_over_time_s2_sensitive_primary
+    - calculate_all_rates_over_time_s3_sensitive_primary
+    - calculate_all_rates_over_time_s4_sensitive_primary
+    - calculate_all_rates_over_time_s5_sensitive_primary
+    - calculate_all_rates_over_time_s6_sensitive_primary
+    - calculate_all_rates_over_time_s7_sensitive_primary
+    - calculate_all_rates_over_time_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/over_time/infants_subgroup_*_rates_over_time_all_*.csv
 
   collate_rsv_model_outputs_tables_infants_subgroup:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R infants_subgroup

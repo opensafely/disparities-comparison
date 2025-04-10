@@ -236,6 +236,15 @@ action_specified <- function(cohort, season, dates, codelist_type,
     ),
     
     action(
+      name = glue("calculate_all_rates_over_time_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/rates_over_time_all.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        dataset = glue("output/results/rates/weekly/all/rates_over_time_all_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
+      )
+    ),
+    
+    action(
       name = glue("analyse_dataset_{cohort}_rsv_{season}_{codelist_type}_{investigation_type}"),
       run = glue("r:latest analysis/outcome_rsv/rsv_models_master.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -316,6 +325,15 @@ action_specified_sensitive <- function(cohort, season, dates, codelist_type,
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
         dataset = glue("output/results/rates/weekly/rates_over_time_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
+      )
+    ),
+    
+    action(
+      name = glue("calculate_all_rates_over_time_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/rates_over_time_all.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        dataset = glue("output/results/rates/weekly/all/rates_over_time_all_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
       )
     ),
     
@@ -413,6 +431,15 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
         dataset = glue("output/results/rates/weekly/rates_over_time_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
+      )
+    ),
+    
+    action(
+      name = glue("calculate_all_rates_over_time_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/rates_over_time_all.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        dataset = glue("output/results/rates/weekly/all/rates_over_time_all_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
       )
     ),
     
@@ -559,6 +586,15 @@ action_specified_infants_sensitive <- function(cohort, season, dates,
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
         dataset = glue("output/results/rates/weekly/rates_over_time_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
+      )
+    ),
+    
+    action(
+      name = glue("calculate_all_rates_over_time_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/rates_over_time_all.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        dataset = glue("output/results/rates/weekly/all/rates_over_time_all_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
       )
     ),
     
@@ -778,6 +814,15 @@ action_specified_infants_sub <- function(season, dates, codelist_type,
     ),
     
     action(
+      name = glue("calculate_all_rates_over_time_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/rates_over_time_all.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        dataset = glue("output/results/rates/weekly/all/rates_over_time_all_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
+      )
+    ),
+    
+    action(
       name = glue("analyse_dataset_infants_subgroup_rsv_ethnicity_{season}_{codelist_type}_{investigation_type}"),
       run = glue("r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = list(glue("process_dataset_infants_subgroup_{season}_{codelist_type}_{investigation_type}")),
@@ -942,6 +987,15 @@ action_specified_infants_sub_sensitive <- function(season, dates, codelist_type,
       needs = list(glue("process_dataset_infants_subgroup_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
         dataset = glue("output/results/rates/weekly/rates_over_time_*_infants_subgroup_{dates}_{codelist_type}_{investigation_type}.csv")
+      )
+    ),
+    
+    action(
+      name = glue("calculate_all_rates_over_time_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/rates_over_time_all.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        dataset = glue("output/results/rates/weekly/all/rates_over_time_all_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
       )
     ),
     
@@ -1935,7 +1989,7 @@ action_finalise <- function(cohort) {
       moderately_sensitive = lst(
         csv = glue("output/collated/descriptive/{cohort}_rates_sensitivity_collated.csv"))
     ),
-
+    
     action(
       name = glue("collate_rates_tables_rolling_primary_{cohort}"),
       run = glue("r:latest analysis/collation_code/rates_table_rolling_primary_collation.R {cohort}"),
@@ -1957,6 +2011,29 @@ action_finalise <- function(cohort) {
                    glue("calculate_rates_rolling_{cohort}_s8_sensitive_primary")),
       moderately_sensitive = lst(
         csv = glue("output/collated/descriptive/over_time/{cohort}_*_rates_over_time_*.csv"))
+    ),
+    
+    action(
+      name = glue("collate_rates_over_time_all_tables_primary_{cohort}"),
+      run = glue("r:latest analysis/collation_code/rates_over_time_all_table_collation.R {cohort}"),
+      needs = list(glue("calculate_all_rates_over_time_s1_specific_primary"),
+                   glue("calculate_all_rates_over_time_s2_specific_primary"),
+                   glue("calculate_all_rates_over_time_s3_specific_primary"),
+                   glue("calculate_all_rates_over_time_s4_specific_primary"),
+                   glue("calculate_all_rates_over_time_s5_specific_primary"),
+                   glue("calculate_all_rates_over_time_s6_specific_primary"),
+                   glue("calculate_all_rates_over_time_s7_specific_primary"),
+                   glue("calculate_all_rates_over_time_s8_specific_primary"),
+                   glue("calculate_all_rates_over_time_s1_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s2_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s3_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s4_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s5_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s6_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s7_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s8_sensitive_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/over_time/{cohort}_*_rates_over_time_all_*.csv"))
     ),
     
     action(
@@ -2309,6 +2386,29 @@ action_finalise_older_adults <- function(cohort) {
     ),
     
     action(
+      name = glue("collate_rates_over_time_all_tables_primary_{cohort}"),
+      run = glue("r:latest analysis/collation_code/rates_over_time_all_table_collation.R {cohort}"),
+      needs = list(glue("calculate_all_rates_over_time_s1_specific_primary"),
+                   glue("calculate_all_rates_over_time_s2_specific_primary"),
+                   glue("calculate_all_rates_over_time_s3_specific_primary"),
+                   glue("calculate_all_rates_over_time_s4_specific_primary"),
+                   glue("calculate_all_rates_over_time_s5_specific_primary"),
+                   glue("calculate_all_rates_over_time_s6_specific_primary"),
+                   glue("calculate_all_rates_over_time_s7_specific_primary"),
+                   glue("calculate_all_rates_over_time_s8_specific_primary"),
+                   glue("calculate_all_rates_over_time_s1_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s2_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s3_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s4_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s5_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s6_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s7_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s8_sensitive_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/over_time/{cohort}_*_rates_over_time_all_*.csv"))
+    ),
+    
+    action(
       name = glue("collate_rsv_model_outputs_tables_{cohort}"),
       run = glue("r:latest analysis/collation_code/rsv_model_outputs_table_collation.R {cohort}"),
       needs = list(glue("analyse_dataset_{cohort}_rsv_s1_specific_primary"),
@@ -2657,6 +2757,29 @@ action_finalise_infants <- function(cohort) {
                    glue("calculate_rates_rolling_{cohort}_s8_sensitive_primary")),
       moderately_sensitive = lst(
         csv = glue("output/collated/descriptive/over_time/{cohort}_*_rates_over_time_*.csv"))
+    ),
+    
+    action(
+      name = glue("collate_rates_over_time_all_tables_primary_{cohort}"),
+      run = glue("r:latest analysis/collation_code/rates_over_time_all_table_collation.R {cohort}"),
+      needs = list(glue("calculate_all_rates_over_time_s1_specific_primary"),
+                   glue("calculate_all_rates_over_time_s2_specific_primary"),
+                   glue("calculate_all_rates_over_time_s3_specific_primary"),
+                   glue("calculate_all_rates_over_time_s4_specific_primary"),
+                   glue("calculate_all_rates_over_time_s5_specific_primary"),
+                   glue("calculate_all_rates_over_time_s6_specific_primary"),
+                   glue("calculate_all_rates_over_time_s7_specific_primary"),
+                   glue("calculate_all_rates_over_time_s8_specific_primary"),
+                   glue("calculate_all_rates_over_time_s1_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s2_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s3_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s4_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s5_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s6_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s7_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_s8_sensitive_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/over_time/{cohort}_*_rates_over_time_all_*.csv"))
     ),
     
     action(
