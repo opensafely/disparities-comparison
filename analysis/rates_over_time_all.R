@@ -148,7 +148,7 @@ calculate_rolling_rates_all <- function(df, pathogen, start = study_start_date,
   
   #save the files
   write_csv(df_rates, here::here("output", "results", "rates", "weekly",
-            "all", paste0("rates_over_time_", pathogen, "_", cohort,
+            "all", paste0("rates_over_time_all_", pathogen, "_", cohort,
             "_", year(study_start_date), "_", year(study_end_date),
             "_", codelist_type, "_", investigation_type, ".csv")))
   
