@@ -150,12 +150,15 @@ calculate_rolling_rates <- function(df, pathogen, characteristic,
     group_by(interval, event, group) %>%
     summarise(
       #time at risk is interval width, then times number of patients
-      total_survival_time = (as.numeric(difftime(int_end(intervals_list[interval]),
-                             int_start(intervals_list[interval]))) * patients_remaining),
+      total_survival_time = (as.numeric(difftime(
+        int_end(intervals_list[interval]),
+        int_start(intervals_list[interval]))) * patients_remaining),
       total_patients_remaining_midpoint10 = roundmid_any(patients_remaining),
       total_events_midpoint10 = roundmid_any(during),
-      rate_1000_py_midpoint10_derived = (total_events_midpoint10 / total_survival_time) * 1000,
-      rate_midpoint10_derived = total_events_midpoint10 / total_patients_remaining_midpoint10
+      rate_1000_py_midpoint10_derived = (
+        total_events_midpoint10 / total_survival_time) * 1000,
+      rate_midpoint10_derived = (
+        total_events_midpoint10 / total_patients_remaining_midpoint10)
     )
   
   #get interval start date 
