@@ -814,11 +814,11 @@ action_specified_infants_sub <- function(season, dates, codelist_type,
     ),
     
     action(
-      name = glue("calculate_all_rates_over_time_{cohort}_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rates_over_time_all.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      name = glue("calculate_all_rates_over_time_infants_subgroup_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/rates_over_time_all.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_infants_subgroup_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        dataset = glue("output/results/rates/weekly/all/rates_over_time_all_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
+        dataset = glue("output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_{dates}_{codelist_type}_{investigation_type}.csv")
       )
     ),
     
@@ -991,11 +991,11 @@ action_specified_infants_sub_sensitive <- function(season, dates, codelist_type,
     ),
     
     action(
-      name = glue("calculate_all_rates_over_time_{cohort}_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/rates_over_time_all.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      name = glue("calculate_all_rates_over_time_infants_subgroup_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/rates_over_time_all.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_infants_subgroup_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        dataset = glue("output/results/rates/weekly/all/rates_over_time_all_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
+        dataset = glue("output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_{dates}_{codelist_type}_{investigation_type}.csv")
       )
     ),
     

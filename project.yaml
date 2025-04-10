@@ -4779,14 +4779,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2016_2017_specific_primary.csv
 
-  calculate_all_rates_over_time_infants_s1_specific_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season1_start_date season1_end_date
-      specific primary
+  calculate_all_rates_over_time_infants_subgroup_s1_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season1_start_date
+      season1_end_date specific primary
     needs:
-    - process_dataset_infants_s1_specific_primary
+    - process_dataset_infants_subgroup_s1_specific_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2016_2017_specific_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2016_2017_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s1_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season1_start_date
@@ -4957,14 +4957,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2017_2018_specific_primary.csv
 
-  calculate_all_rates_over_time_infants_s2_specific_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season2_start_date season2_end_date
-      specific primary
+  calculate_all_rates_over_time_infants_subgroup_s2_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season2_start_date
+      season2_end_date specific primary
     needs:
-    - process_dataset_infants_s2_specific_primary
+    - process_dataset_infants_subgroup_s2_specific_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2017_2018_specific_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2017_2018_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s2_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season2_start_date
@@ -5135,14 +5135,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2018_2019_specific_primary.csv
 
-  calculate_all_rates_over_time_infants_s3_specific_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season3_start_date season3_end_date
-      specific primary
+  calculate_all_rates_over_time_infants_subgroup_s3_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season3_start_date
+      season3_end_date specific primary
     needs:
-    - process_dataset_infants_s3_specific_primary
+    - process_dataset_infants_subgroup_s3_specific_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2018_2019_specific_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2018_2019_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s3_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season3_start_date
@@ -5313,14 +5313,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2019_2020_specific_primary.csv
 
-  calculate_all_rates_over_time_infants_s4_specific_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season4_start_date season4_end_date
-      specific primary
+  calculate_all_rates_over_time_infants_subgroup_s4_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season4_start_date
+      season4_end_date specific primary
     needs:
-    - process_dataset_infants_s4_specific_primary
+    - process_dataset_infants_subgroup_s4_specific_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2019_2020_specific_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s4_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season4_start_date
@@ -5545,14 +5545,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2020_2021_specific_primary.csv
 
-  calculate_all_rates_over_time_infants_s5_specific_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season5_start_date season5_end_date
-      specific primary
+  calculate_all_rates_over_time_infants_subgroup_s5_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season5_start_date
+      season5_end_date specific primary
     needs:
-    - process_dataset_infants_s5_specific_primary
+    - process_dataset_infants_subgroup_s5_specific_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2020_2021_specific_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s5_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season5_start_date
@@ -5777,14 +5777,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2021_2022_specific_primary.csv
 
-  calculate_all_rates_over_time_infants_s6_specific_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season6_start_date season6_end_date
-      specific primary
+  calculate_all_rates_over_time_infants_subgroup_s6_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season6_start_date
+      season6_end_date specific primary
     needs:
-    - process_dataset_infants_s6_specific_primary
+    - process_dataset_infants_subgroup_s6_specific_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2021_2022_specific_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s6_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season6_start_date
@@ -6009,14 +6009,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2022_2023_specific_primary.csv
 
-  calculate_all_rates_over_time_infants_s7_specific_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season7_start_date season7_end_date
-      specific primary
+  calculate_all_rates_over_time_infants_subgroup_s7_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season7_start_date
+      season7_end_date specific primary
     needs:
-    - process_dataset_infants_s7_specific_primary
+    - process_dataset_infants_subgroup_s7_specific_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2022_2023_specific_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s7_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season7_start_date
@@ -6241,14 +6241,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2023_2024_specific_primary.csv
 
-  calculate_all_rates_over_time_infants_s8_specific_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season8_start_date season8_end_date
-      specific primary
+  calculate_all_rates_over_time_infants_subgroup_s8_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season8_start_date
+      season8_end_date specific primary
     needs:
-    - process_dataset_infants_s8_specific_primary
+    - process_dataset_infants_subgroup_s8_specific_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2023_2024_specific_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s8_specific_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season8_start_date
@@ -11108,14 +11108,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2016_2017_sensitive_primary.csv
 
-  calculate_all_rates_over_time_infants_s1_sensitive_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season1_start_date season1_end_date
-      sensitive primary
+  calculate_all_rates_over_time_infants_subgroup_s1_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season1_start_date
+      season1_end_date sensitive primary
     needs:
-    - process_dataset_infants_s1_sensitive_primary
+    - process_dataset_infants_subgroup_s1_sensitive_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2016_2017_sensitive_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2016_2017_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s1_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season1_start_date
@@ -11340,14 +11340,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2017_2018_sensitive_primary.csv
 
-  calculate_all_rates_over_time_infants_s2_sensitive_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season2_start_date season2_end_date
-      sensitive primary
+  calculate_all_rates_over_time_infants_subgroup_s2_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season2_start_date
+      season2_end_date sensitive primary
     needs:
-    - process_dataset_infants_s2_sensitive_primary
+    - process_dataset_infants_subgroup_s2_sensitive_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2017_2018_sensitive_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2017_2018_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s2_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season2_start_date
@@ -11572,14 +11572,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2018_2019_sensitive_primary.csv
 
-  calculate_all_rates_over_time_infants_s3_sensitive_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season3_start_date season3_end_date
-      sensitive primary
+  calculate_all_rates_over_time_infants_subgroup_s3_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season3_start_date
+      season3_end_date sensitive primary
     needs:
-    - process_dataset_infants_s3_sensitive_primary
+    - process_dataset_infants_subgroup_s3_sensitive_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2018_2019_sensitive_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2018_2019_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s3_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season3_start_date
@@ -11804,14 +11804,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2019_2020_sensitive_primary.csv
 
-  calculate_all_rates_over_time_infants_s4_sensitive_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season4_start_date season4_end_date
-      sensitive primary
+  calculate_all_rates_over_time_infants_subgroup_s4_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season4_start_date
+      season4_end_date sensitive primary
     needs:
-    - process_dataset_infants_s4_sensitive_primary
+    - process_dataset_infants_subgroup_s4_sensitive_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2019_2020_sensitive_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s4_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season4_start_date
@@ -12090,14 +12090,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2020_2021_sensitive_primary.csv
 
-  calculate_all_rates_over_time_infants_s5_sensitive_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season5_start_date season5_end_date
-      sensitive primary
+  calculate_all_rates_over_time_infants_subgroup_s5_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season5_start_date
+      season5_end_date sensitive primary
     needs:
-    - process_dataset_infants_s5_sensitive_primary
+    - process_dataset_infants_subgroup_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2020_2021_sensitive_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2020_2021_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s5_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season5_start_date
@@ -12376,14 +12376,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2021_2022_sensitive_primary.csv
 
-  calculate_all_rates_over_time_infants_s6_sensitive_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season6_start_date season6_end_date
-      sensitive primary
+  calculate_all_rates_over_time_infants_subgroup_s6_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season6_start_date
+      season6_end_date sensitive primary
     needs:
-    - process_dataset_infants_s6_sensitive_primary
+    - process_dataset_infants_subgroup_s6_sensitive_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2021_2022_sensitive_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s6_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season6_start_date
@@ -12662,14 +12662,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2022_2023_sensitive_primary.csv
 
-  calculate_all_rates_over_time_infants_s7_sensitive_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season7_start_date season7_end_date
-      sensitive primary
+  calculate_all_rates_over_time_infants_subgroup_s7_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season7_start_date
+      season7_end_date sensitive primary
     needs:
-    - process_dataset_infants_s7_sensitive_primary
+    - process_dataset_infants_subgroup_s7_sensitive_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2022_2023_sensitive_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2022_2023_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s7_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season7_start_date
@@ -12948,14 +12948,14 @@ actions:
       moderately_sensitive:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2023_2024_sensitive_primary.csv
 
-  calculate_all_rates_over_time_infants_s8_sensitive_primary:
-    run: r:latest analysis/rates_over_time_all.R infants season8_start_date season8_end_date
-      sensitive primary
+  calculate_all_rates_over_time_infants_subgroup_s8_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R infants_subgroup season8_start_date
+      season8_end_date sensitive primary
     needs:
-    - process_dataset_infants_s8_sensitive_primary
+    - process_dataset_infants_subgroup_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_2023_2024_sensitive_primary.csv
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_infants_subgroup_2023_2024_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_s8_sensitive_primary:
     run: r:latest analysis/outcome_rsv/rsv_ethnicity_models.R infants_subgroup season8_start_date
