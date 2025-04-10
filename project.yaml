@@ -17406,7 +17406,7 @@ actions:
     - calculate_all_rates_over_time_older_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/over_time/older_adults_*_rates_over_time_all_*.csv
+        csv: output/collated/descriptive/over_time/older_adults_rates_over_time_all_*.csv
 
   collate_rsv_model_outputs_tables_older_adults:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R older_adults
@@ -17785,7 +17785,7 @@ actions:
     - calculate_all_rates_over_time_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/over_time/adults_*_rates_over_time_all_*.csv
+        csv: output/collated/descriptive/over_time/adults_rates_over_time_all_*.csv
 
   collate_rsv_model_outputs_tables_adults:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R adults
@@ -18137,7 +18137,7 @@ actions:
     - calculate_all_rates_over_time_children_and_adolescents_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/over_time/children_and_adolescents_*_rates_over_time_all_*.csv
+        csv: output/collated/descriptive/over_time/children_and_adolescents_rates_over_time_all_*.csv
 
   collate_rsv_model_outputs_tables_children_and_adolescents:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R children_and_adolescents
@@ -18504,7 +18504,7 @@ actions:
     - calculate_all_rates_over_time_infants_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/over_time/infants_*_rates_over_time_all_*.csv
+        csv: output/collated/descriptive/over_time/infants_rates_over_time_all_*.csv
 
   collate_rsv_model_outputs_tables_infants:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R infants
@@ -19087,7 +19087,7 @@ actions:
     - calculate_all_rates_over_time_infants_subgroup_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/over_time/infants_subgroup_*_rates_over_time_all_*.csv
+        csv: output/collated/descriptive/over_time/infants_subgroup_rates_over_time_all_*.csv
 
   collate_rsv_model_outputs_tables_infants_subgroup:
     run: r:latest analysis/collation_code/rsv_model_outputs_table_collation.R infants_subgroup
