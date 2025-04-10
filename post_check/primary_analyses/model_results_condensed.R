@@ -11,6 +11,7 @@ library(ggpubr)
 
 #import plot function
 source(here::here("post_check", "functions", "forest.R"))
+ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 
 investigation_type <- "primary"
 
@@ -293,9 +294,6 @@ covid_full_severe <- forest_year_mult(
   df_input, df_dummy, pathogen, "full", "Severe"
 )
 
-#--- patch pathogens together
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
-
 ##mild
 
 # Create versions of your plots without legends
@@ -543,9 +541,6 @@ covid_ethnicity_ses_severe <- forest_year_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )
 
-#--- patch pathogens together
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
-
 ##mild
 
 # Create versions of your plots without legends
@@ -792,9 +787,6 @@ covid_ses_severe <- forest_year_mult(
 covid_ethnicity_ses_severe <- forest_year_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )
-
-#--- patch pathogens together
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 
 ##mild
 
