@@ -124,11 +124,12 @@ create_rolling_plots <- function(season, phenotype) {
 }
 
 #helper function to create and save plots
-create_rolling_plots_overall <- function(df, pathogen, phenotype) {
+create_rolling_plots_overall <- function(df) {
   
   cols <- scales::seq_gradient_pal(
     "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
-  cols <- c(cols[2], cols[3], cols[5], cols[8])
+  
+  if (pathogen == "covid") cols <- cols[4:8]
   
   pathogen_print <- case_when(
     pathogen == "rsv" ~ "RSV",
@@ -149,14 +150,39 @@ create_rolling_plots_overall <- function(df, pathogen, phenotype) {
   
   options(scipen = 999)
   
+  alpha_type <- df %>%
+    mutate(
+      codelist_type = factor(str_to_title(codelist_type),
+                             levels = c("Specific", "Sensitive"))
+    ) %>% pull(codelist_type)
+  
+  df <- df %>%
+    mutate(
+      season_start = case_when(
+        str_detect(subset, "_") ~ as.Date(
+          paste0(substr(subset, 1, 4), "-09-01"))
+      ),
+      days_since_season_start = difftime(interval_start, season_start,
+                                         units = "days") + 1,
+      month_label = format(interval_start, "%b"),
+      subset = gsub("_", " ", subset)
+    )
+  
   plot <- df %>%
-    ggplot(aes(x = interval_start, y = rate_py)) +
-    geom_line(stat = "smooth", method = "loess", span = 0.25, se = FALSE,
-              col = cols, lwd = 1, alpha = codelist_type) + theme_bw() +
-    labs(x = "Date", y = "Rate per 1000 person-years\n(Midpoint 10 Derived)",
-         col = "Season", alpha = "Phenotype") + facet_wrap(~ outcome, ncol = 2) +
-    ggtitle(paste0("30-Day Rolling Rate of ", str_to_title(gsub("_", " ",
-            pathogen_print))))
+    ggplot(aes(x = days_since_season_start,
+               y = rate_1000_py_midpoint10_derived,
+               col = subset, alpha = alpha_type)) +
+    geom_line(stat = "smooth", method = "loess",
+              span = 0.25, se = FALSE, lwd = 1) +  theme_bw() +
+    scale_color_manual(values = cols) +
+    scale_alpha_manual(values = c(1, 0.5)) +
+    labs(x = "", y = "", col = "Season", alpha = "Phenotype") +
+    facet_wrap(~ outcome, ncol = 2, scales = "free") +
+    scale_x_continuous(
+      breaks = cumsum(c(0, 30, 31, 30, 31, 28, 31, 30, 31, 30, 31, 31)) - 15,
+      labels = c("Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar",
+                 "Apr", "May", "Jun", "Jul", "Aug")
+    )
   
   return(plot)
   
