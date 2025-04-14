@@ -2396,6 +2396,14 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
     
     levels <- c("12-23m", "6-11m", "3-5m", "0-2m", "Male", "Female")
     
+  } else if (cohort == "children_and_adolescents") {
+    
+    levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Female", "Male")
+    
+  } else if (cohort == "adults") {
+    
+    levels <- c("18-39y", "40-64y", "Female", "Male")
+    
   } else {
     
     levels <- c("90y+", "75-89y", "65-74y", "Male", "Female")
@@ -2755,6 +2763,14 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   if (cohort == "infants" | cohort == "infants_subgroup") {
     
     levels <- c("12-23m", "6-11m", "3-5m", "0-2m", "Male", "Female")
+    
+  } else if (cohort == "children_and_adolescents") {
+    
+    levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Female", "Male")
+    
+  } else if (cohort == "adults") {
+    
+    levels <- c("18-39y", "40-64y", "Female", "Male")
     
   } else {
     
