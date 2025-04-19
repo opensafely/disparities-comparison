@@ -1,3 +1,4 @@
+library(tidyverse)
 library(here)
 library(broom)
 library(rlang)
@@ -1180,13 +1181,13 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type,
       )
       
       vars <- case_when(
-        model_type == "ethnicity" ~ list("Female", age, "White", 
-                                         "Rural Town and Fringe"),
-        model_type == "ses" ~ list("Female", age, "5 (least deprived)",
-                                   "Rural Town and Fringe"),
-        model_type == "composition" ~ list("Female", age,
-                                           "Multiple of the Same Generation",
-                                           "Rural Town and Fringe"),
+        model_type == "ethnicity" ~ list(c("Female", age, "White", 
+                                           "Rural Town and Fringe")),
+        model_type == "ses" ~ list(c("Female", age, "5 (least deprived)",
+                                     "Rural Town and Fringe")),
+        model_type == "composition" ~ list(c("Female", age,
+                                             "Multiple of the Same Generation",
+                                             "Rural Town and Fringe")),
         model_type == "ethnicity_ses" ~ list(c(
           "Female", age, "White", "5 (least deprived)",
           "Rural Town and Fringe")),
@@ -1201,17 +1202,17 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type,
           "Multiple of the Same Generation", "Rural Town and Fringe"))
       )[[1]]
       
-      tibble(
+      tidy_forest <- tibble(
         term = NA,
-        variable = vars,
-        var_label = vars,
+        variable = rep(vars, length(unique(df_model$subset))),
+        var_label = rep(vars, length(unique(df_model$subset))),
         var_class = NA,
         var_type = NA,
         var_nlevels = NA,
         contrasts = NA,
         contrasts_type = NA,
         reference_row = TRUE,
-        label = vars,
+        label = rep(vars, length(unique(df_model$subset))),
         estimate = 1,
         std.error = NA,
         statistic = NA,
@@ -1221,7 +1222,7 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type,
         model_type = !!model_type,
         codelist_type = !!codelist_filter,
         investigation_type = investigation_type,
-        subset = unique(df_model$subset)
+        subset = rep(unique(df_model$subset), length(vars)),
       )
       
     }
@@ -1849,13 +1850,13 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
       )
       
       vars <- case_when(
-        model_type == "ethnicity" ~ list("Female", age, "White", 
-                                         "Rural Town and Fringe"),
-        model_type == "ses" ~ list("Female", age, "5 (least deprived)",
-                                   "Rural Town and Fringe"),
-        model_type == "composition" ~ list("Female", age,
-                                           "Multiple of the Same Generation",
-                                           "Rural Town and Fringe"),
+        model_type == "ethnicity" ~ list(c("Female", age, "White", 
+                                          "Rural Town and Fringe")),
+        model_type == "ses" ~ list(c("Female", age, "5 (least deprived)",
+                                     "Rural Town and Fringe")),
+        model_type == "composition" ~ list(c("Female", age,
+                                             "Multiple of the Same Generation",
+                                             "Rural Town and Fringe")),
         model_type == "ethnicity_ses" ~ list(c(
           "Female", age, "White", "5 (least deprived)",
           "Rural Town and Fringe")),
@@ -1870,17 +1871,23 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           "Multiple of the Same Generation", "Rural Town and Fringe"))
       )[[1]]
       
+      if (cohort == "infants_subgroup") {
+        
+        vars <- c(vars, "No")
+        
+      }
+      
       tidy_forest <- tibble(
         term = NA,
-        variable = vars,
-        var_label = vars,
+        variable = rep(vars, length(unique(df_model$subset))),
+        var_label = rep(vars, length(unique(df_model$subset))),
         var_class = NA,
         var_type = NA,
         var_nlevels = NA,
         contrasts = NA,
         contrasts_type = NA,
         reference_row = TRUE,
-        label = vars,
+        label = rep(vars, length(unique(df_model$subset))),
         estimate = 1,
         std.error = NA,
         statistic = NA,
@@ -1890,12 +1897,12 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
         model_type = !!model_type,
         codelist_type = !!codelist_filter,
         investigation_type = investigation_type,
-        subset = unique(df_model$subset)
+        subset = rep(unique(df_model$subset), length(vars)),
       )
       
     }
     
-    if (cohort == "infants_subgroup") {
+    if (cohort == "infants_subgroup" & nrow(df_type != 0)) {
       
       binaries <- tidy_forest %>%
         filter(str_detect(term, "Yes")) %>%
@@ -1924,8 +1931,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           model_type = !!model_type,
           codelist_type = !!codelist_filter,
           investigation_type = investigation_type,
-          subset = NA)
-        ) 
+          subset = unique(df_type$subset))
+        )
       
       tidy_forest <- tidy_forest %>%
         filter(!(str_detect(term, "Yes"))) %>%
