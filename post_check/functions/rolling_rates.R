@@ -5,6 +5,7 @@ library(lubridate)
 library(ggplot2)
 library(zoo)
 
+#get study dates
 source(here("analysis", "design", "design.R"))
 
 #helper function to create and save plots
@@ -19,7 +20,16 @@ create_rolling_plots <- function(season, phenotype) {
   df <- read_csv(here::here("post_check", "output", "results", "rates",
                  "weekly", paste0("rates_over_time_", pathogen, "_",
                  cohort, "_", start, "_", end, "_", phenotype, "_",
-                 investigation_type, ".csv")))
+                 investigation_type, ".csv"))) %>%
+    mutate(
+      group = case_when(
+        group == "1 (least deprived)" ~ "5 (least deprived)",
+        group == "2" ~ "4",
+        group == "4" ~ "2",
+        group == "5 (most deprived)" ~ "1 (most deprived)",
+        TRUE ~ group
+      )
+    )
   
   #define levels
   levels <- list()
@@ -28,8 +38,8 @@ create_rolling_plots <- function(season, phenotype) {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (least deprived)",
-                "2", "3", "4", "5 (most deprived)", "Urban Major Conurbation",
+                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "2", "3", "4", "5 (least deprived)", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed")
     
@@ -37,8 +47,8 @@ create_rolling_plots <- function(season, phenotype) {
     
     levels <- c("65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (least deprived)", "2",
-                "3", "4", "5 (most deprived)", "Multiple of the Same Generation",
+                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2",
+                "3", "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
@@ -56,8 +66,8 @@ create_rolling_plots <- function(season, phenotype) {
         group %in% c("White", "Mixed", "Asian or Asian British",
                      "Black or Black British", "Other Ethnic Groups",
                      "Unknown") ~ "Ethnicity",
-        group %in% c("1 (least deprived)", "2", "3", "4",
-                     "5 (most deprived)") ~ "IMD Quintile",
+        group %in% c("1 (most deprived)", "2", "3", "4",
+                     "5 (least deprived)") ~ "IMD Quintile",
         group %in% c("Multiple of the Same Generation", "Living Alone",
                      "One Other Generation", "Two Other Generations",
                      "Three Other Generations") ~ "Household Composition",
