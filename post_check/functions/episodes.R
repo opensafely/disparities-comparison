@@ -1,8 +1,10 @@
 library(gtsummary)
 library(tidyr)
+library(stringr)
+library(purrr)
 
 #create function to summarise reinfections
-reinfections <- function(df, pathogen, severity) {
+reinfections <- function(df, pathogen, seasons) {
   
   pathogen_label <- case_when(
     pathogen == "rsv" ~ "RSV",
@@ -10,37 +12,66 @@ reinfections <- function(df, pathogen, severity) {
     pathogen == "covid" ~ "COVID-19"
   )
   
-  tbl_sum <- df %>%
-    filter(infection_type == pathogen) %>%
-    mutate_all(~replace(., is.na(.), 0)) %>%
-    select(-c(infection_type, subset)) %>%
-    tbl_summary(
-      by = outcome_type,
-      type = list(
-        number_infected_midpoint10 = "continuous",
-        number_reinfected_midpoint10 = "continuous",
-        proportion_reinfected_midpoint10_derived = "continuous",
-        median_time_to_reinfection = "continuous",
-        number_reinfected_28_days_midpoint10 = "continuous",
-        proportion_reinfected_in_28_days_midpoint10_derived = "continuous"
-      ),
-      statistic = list(all_continuous() ~ "{mean} ({sd})"),
-      label = list(
-        number_infected_midpoint10 = paste0(
-          "Number of ", pathogen_label, " infections"),
-        number_reinfected_midpoint10 = paste0(
-          "Number of ", pathogen_label, " reinfections"),
-        proportion_reinfected_midpoint10_derived = paste0(
-          "Proportion of ", pathogen_label, " reinfections"),
-        median_time_to_reinfection = "Median time to reinfection (days)",
-        number_reinfected_28_days_midpoint10 = paste0(
-          "Number of ", pathogen_label, " reinfections within 28 days"),
-        proportion_reinfected_in_28_days_midpoint10_derived = paste0(
-          "Proportion of ", pathogen_label, " reinfections within 28 days")
-      )
-    )
+  if (pathogen == "covid") {
+    
+    seasons <- seasons[
+      seasons %in% c("2019_20", "2020_21", "2021_22", "2022_23", "2023_24")]
+    
+  }
   
-  return(tbl_sum)  
+  tbl_sum <- list()
+  
+  for (season in seasons) {
+    
+    tbl_sum[[season]] <- df %>%
+      filter(infection_type == pathogen, subset == !!season) %>%
+      mutate_all(~replace(., is.na(.), 0)) %>%
+      select(-c(infection_type, subset)) %>%
+      tbl_summary(
+        by = outcome_type,
+        type = list(
+          number_infected_midpoint10 = "continuous",
+          number_reinfected_midpoint10 = "continuous",
+          proportion_reinfected_midpoint10_derived = "continuous",
+          median_time_to_reinfection = "continuous",
+          number_reinfected_28_days_midpoint10 = "continuous",
+          proportion_reinfected_in_28_days_midpoint10_derived = "continuous"
+        ),
+        statistic = list(all_continuous() ~ "{mean}"),
+        label = list(
+          number_infected_midpoint10 = paste0(
+            "Number of infections"),
+          number_reinfected_midpoint10 = paste0(
+            "Number of reinfections"),
+          proportion_reinfected_midpoint10_derived = paste0(
+            "Proportion of reinfections"),
+          median_time_to_reinfection = "Median time to reinfection (days)",
+          number_reinfected_28_days_midpoint10 = paste0(
+            "Number of reinfections within 28 days"),
+          proportion_reinfected_in_28_days_midpoint10_derived = paste0(
+            "Proportion of reinfections within 28 days")
+        )
+      ) %>%
+      modify_header(
+        label = "**Characteristic**",
+        stat_1 = "**Mild**", stat_2 = "**Severe**"
+      ) %>%
+      modify_footnote_header(
+        footnote = "Across full season",
+        columns = all_stat_cols(),
+        replace = TRUE
+      )
+    
+  }
+  
+  tbl_sum_all <- tbl_merge(
+    tbls = tbl_sum,
+    tab_spanner = gsub("_", "-", seasons)
+    ) %>%
+    as_gt() %>%
+    gt::tab_header(title = paste0(pathogen_label, " Infections by Season"))
+  
+  return(tbl_sum_all)
   
 }
 
