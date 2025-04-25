@@ -8,7 +8,7 @@ reinfections <- function(df, pathogen, seasons) {
   
   pathogen_label <- case_when(
     pathogen == "rsv" ~ "RSV",
-    pathogen == "flu" ~ "influenza",
+    pathogen == "flu" ~ "Influenza",
     pathogen == "covid" ~ "COVID-19"
   )
   
