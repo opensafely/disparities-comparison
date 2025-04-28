@@ -3279,6 +3279,25 @@ action_finalise_children_and_adolescents <- function(cohort) {
   
 }
 
+##investigations
+action_investigate <- function(cohort, season, dates, season_start_date,
+                               season_end_date, codelist_type, 
+                               investigation_type) {
+  
+  splice(
+    
+    action(
+      name = glue("investigate_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/vacc_cases_investigations.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        png = glue("output/testing/*_{cohort}_{dates}_{codelist_type}_{investigation_type}.png"))
+    )
+    
+  )
+  
+}
+
 # specify project ----
 
 ## defaults ----
@@ -3872,6 +3891,10 @@ actions_list <- splice (
   action_finalise_children_and_adolescents("children_and_adolescents"),
   action_finalise_infants("infants"),
   action_finalise_infants("infants_subgroup"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Investigations", "# # # # # # # # # # # # # # # # # # #"),
+  action_investigate("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "specific", "primary"),
+  action_investigate("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "sensitive", "primary"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "End", "# # # # # # # # # # # # # # # # # # #")
 

@@ -19838,6 +19838,28 @@ actions:
         csv: output/collated/analytic/sensitivity/infants_subgroup_flu_model_outputs_collated_sensitivity.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
+  ## Investigations 
+  ## # # # # # # # # # # # # # # # # # # # 
+
+  investigate_older_adults_s5_specific_primary:
+    run: r:latest analysis/vacc_cases_investigations.R older_adults season5_start_date
+      season5_end_date specific primary
+    needs:
+    - process_dataset_older_adults_s5_specific_primary
+    outputs:
+      moderately_sensitive:
+        png: output/testing/*_older_adults_2020_2021_specific_primary.png
+
+  investigate_older_adults_s5_sensitive_primary:
+    run: r:latest analysis/vacc_cases_investigations.R older_adults season5_start_date
+      season5_end_date sensitive primary
+    needs:
+    - process_dataset_older_adults_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        png: output/testing/*_older_adults_2020_2021_sensitive_primary.png
+
+  ## # # # # # # # # # # # # # # # # # # # 
   ## End 
   ## # # # # # # # # # # # # # # # # # # # 
 
