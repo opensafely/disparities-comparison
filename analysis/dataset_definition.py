@@ -410,23 +410,23 @@ if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_ado
   
   #extract covid vaccination in previous season if applicable
   if study_start_date >= covid_prior_vacc_min :
-    if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
-      dataset.last_covid_vaccination_date = (
-        vaccinations.where(vaccinations.target_disease
-        .is_in(["SARS-2 Coronavirus"])).sort_by(vaccinations.date)
-        .where(vaccinations.date.is_on_or_before(index_date))
-        .last_for_patient().date
-      )
+    
+    dataset.last_covid_vaccination_date = (
+      vaccinations.where(vaccinations.target_disease
+      .is_in(["SARS-2 Coronavirus"])).sort_by(vaccinations.date)
+      .where(vaccinations.date.is_on_or_before(index_date))
+      .last_for_patient().date
+    )
   
   #extract covid vaccination in current season if applicable
   if study_start_date >= covid_current_vacc_min :
-    if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
-      dataset.covid_vaccination_date = (
-        vaccinations.where(vaccinations.target_disease
-        .is_in(["SARS-2 Coronavirus"])).sort_by(vaccinations.date)
-        .where(vaccinations.date.is_on_or_between(index_date,
-        followup_end_date)).first_for_patient().date
-      )
+    
+    dataset.covid_vaccination_date = (
+      vaccinations.where(vaccinations.target_disease
+      .is_in(["SARS-2 Coronavirus"])).sort_by(vaccinations.date)
+      .where(vaccinations.date.is_on_or_between(index_date,
+      followup_end_date)).first_for_patient().date
+    )
 
 ##define outcomes - rsv
 
