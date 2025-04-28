@@ -80,8 +80,8 @@ plt1 <- ggplot(ci_df_primary, aes(x = time, y = est, color = group)) +
   labs(
     x = "Time", 
     y = "Cumulative Incidence", 
-    title = "Cumulative Incidence by Group",
-    color = "Group"
+    title = "Mild COVID-19 by Ethnicity",
+    color = "Ethnicity"
   ) +
   theme_bw()
 
@@ -122,8 +122,8 @@ plt2 <- ggplot(ci_df_primary_vacc, aes(x = time, y = est, color = group)) +
   labs(
     x = "Time", 
     y = "Cumulative Incidence", 
-    title = "Cumulative Incidence by Group",
-    color = "Group"
+    title = "COVID Vaccination for Mild Disease by Ethnicity",
+    color = "Ethnicity"
   ) +
   theme_bw()
 
@@ -163,8 +163,8 @@ plt3 <- ggplot(ci_df_secondary, aes(x = time, y = est, color = group)) +
   labs(
     x = "Time", 
     y = "Cumulative Incidence", 
-    title = "Cumulative Incidence by Group",
-    color = "Group"
+    title = "Severe COVID-19 by Ethnicity",
+    color = "Ethnicity"
   ) +
   theme_bw()
 
@@ -205,8 +205,8 @@ plt4 <- ggplot(ci_df_secondary_vacc, aes(x = time, y = est, color = group)) +
   labs(
     x = "Time", 
     y = "Cumulative Incidence", 
-    title = "Cumulative Incidence by Group",
-    color = "Group"
+    title = "COVID Vaccination for Severe Disease by Ethnicity",
+    color = "Ethnicity"
   ) +
   theme_bw()
 
