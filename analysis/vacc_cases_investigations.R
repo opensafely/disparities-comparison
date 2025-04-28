@@ -86,7 +86,7 @@ plt1 <- ggplot(ci_df_primary, aes(x = time, y = est, color = group)) +
   theme_bw()
 
 ggsave(
-  here::here("output", "exploratory", paste0("cumulative_incidence_primary_", 
+  here::here("output", "testing", paste0("cumulative_incidence_primary_", 
   cohort, "_", year(study_start_date), "_", year(study_end_date), "_", 
   codelist_type, "_", investigation_type,".png")),
   width = 8, height = 6, dpi = 300, plt1)
@@ -128,7 +128,7 @@ plt2 <- ggplot(ci_df_primary_vacc, aes(x = time, y = est, color = group)) +
   theme_bw()
 
 ggsave(
-  here::here("output", "exploratory", paste0("cumulative_incidence_primary_vacc_", 
+  here::here("output", "testing", paste0("cumulative_incidence_primary_vacc_", 
   cohort, "_", year(study_start_date), "_", year(study_end_date), "_", 
   codelist_type, "_", investigation_type,".png")),
   width = 8, height = 6, dpi = 300, plt2)
@@ -169,7 +169,7 @@ plt3 <- ggplot(ci_df_secondary, aes(x = time, y = est, color = group)) +
   theme_bw()
 
 ggsave(
-  here::here("output", "exploratory", paste0("cumulative_incidence_secondary_", 
+  here::here("output", "testing", paste0("cumulative_incidence_secondary_", 
   cohort, "_", year(study_start_date), "_", year(study_end_date), "_", 
   codelist_type, "_", investigation_type,".png")),
   width = 8, height = 6, dpi = 300, plt3)
