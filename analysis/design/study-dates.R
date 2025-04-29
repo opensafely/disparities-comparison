@@ -26,6 +26,7 @@ study_dates <- tibble::lst(
   season4_end_date = ymd("2020-08-31"), #end of fourth season
   season5_start_date = ymd("2020-09-01"), #start of fifth season
   season5_test_end_date = ymd("2020-12-31"), #end of fifth season for testing
+  season5_test_start_date = ymd("2021-01-01"), #start of fifth season for testing 2
   season5_end_date = ymd("2021-08-31"), #end of fifth season
   season6_start_date = ymd("2021-09-01"), #start of sixth season
   season6_end_date = ymd("2022-08-31"), #end of sixth season
