@@ -49,12 +49,12 @@ df_filt <- df_input %>%
       covid_vaccination_primary == 1,
       time_length(
         difftime(covid_vaccination_immunity_date, patient_index_date - days(1),
-                 "weeks"), "years"), 0),
+                 "weeks"), "years"), 1),
     time_covid_vaccination_secondary = if_else(
       covid_vaccination_secondary == 1,
       time_length(
         difftime(covid_vaccination_immunity_date, patient_index_date - days(1),
-                 "weeks"), "years"), 0)
+                 "weeks"), "years"), 1)
   )
 
 # Sort data by time_to_event
