@@ -138,17 +138,17 @@ alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {
             max(rsv_primary_date, flu_primary_date, covid_primary_date) -
               min(rsv_primary_date, flu_primary_date, covid_primary_date)) <= 14,
           primary_rsv_flu_overall_within_14 =  (
-            max(rsv_primary_date, flu_primary_date, overall_primary_date) -
-              min(rsv_primary_date, flu_primary_date, overall_primary_date)) <= 14,
+            max(rsv_primary_date, flu_primary_date, overall_resp_primary_date) -
+              min(rsv_primary_date, flu_primary_date, overall_resp_primary_date)) <= 14,
           primary_rsv_covid_overall_within_14 =  (
-            max(rsv_primary_date, covid_primary_date, overall_primary_date) -
-              min(rsv_primary_date, covid_primary_date, overall_primary_date)) <= 14,
+            max(rsv_primary_date, covid_primary_date, overall_resp_primary_date) -
+              min(rsv_primary_date, covid_primary_date, overall_resp_primary_date)) <= 14,
           primary_flu_covid_overall_within_14 =  (
-            max(flu_primary_date, covid_primary_date, overall_primary_date) -
-              min(flu_primary_date, covid_primary_date, overall_primary_date)) <= 14,
+            max(flu_primary_date, covid_primary_date, overall_resp_primary_date) -
+              min(flu_primary_date, covid_primary_date, overall_resp_primary_date)) <= 14,
           primary_rsv_flu_covid_overall_within_14 =  (
-            max(rsv_primary_date, flu_primary_date, covid_primary_date, overall_primary_date) -
-              min(rsv_primary_date, flu_primary_date, covid_primary_date, overall_primary_date)) <= 14,
+            max(rsv_primary_date, flu_primary_date, covid_primary_date, overall_resp_primary_date) -
+              min(rsv_primary_date, flu_primary_date, covid_primary_date, overall_resp_primary_date)) <= 14,
           secondary_rsv_flu_within_14 = abs(rsv_secondary_date - flu_secondary_date) <= 14,
           secondary_rsv_covid_within_14 = abs(rsv_secondary_date - covid_secondary_date) <= 14,
           secondary_flu_covid_within_14 = abs(flu_secondary_date - covid_secondary_date) <= 14,
@@ -159,17 +159,17 @@ alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {
             max(rsv_secondary_date, flu_secondary_date, covid_secondary_date) -
               min(rsv_secondary_date, flu_secondary_date, covid_secondary_date)) <= 14,
           secondary_rsv_flu_overall_within_14 =  (
-            max(rsv_secondary_date, flu_secondary_date, overall_secondary_date) -
-              min(rsv_secondary_date, flu_secondary_date, overall_secondary_date)) <= 14,
+            max(rsv_secondary_date, flu_secondary_date, overall_resp_secondary_date) -
+              min(rsv_secondary_date, flu_secondary_date, overall_resp_secondary_date)) <= 14,
           secondary_rsv_covid_overall_within_14 =  (
-            max(rsv_secondary_date, covid_secondary_date, overall_secondary_date) -
-              min(rsv_secondary_date, covid_secondary_date, overall_secondary_date)) <= 14,
+            max(rsv_secondary_date, covid_secondary_date, overall_resp_secondary_date) -
+              min(rsv_secondary_date, covid_secondary_date, overall_resp_secondary_date)) <= 14,
           secondary_flu_covid_overall_within_14 =  (
-            max(flu_secondary_date, covid_secondary_date, overall_secondary_date) -
-              min(flu_secondary_date, covid_secondary_date, overall_secondary_date)) <= 14,
+            max(flu_secondary_date, covid_secondary_date, overall_resp_secondary_date) -
+              min(flu_secondary_date, covid_secondary_date, overall_resp_secondary_date)) <= 14,
           secondary_rsv_flu_covid_overall_within_14 =  (
-            max(rsv_secondary_date, flu_secondary_date, covid_secondary_date, overall_secondary_date) -
-              min(rsv_secondary_date, flu_secondary_date, covid_secondary_date, overall_secondary_date)) <= 14,
+            max(rsv_secondary_date, flu_secondary_date, covid_secondary_date, overall_resp_secondary_date) -
+              min(rsv_secondary_date, flu_secondary_date, covid_secondary_date, overall_resp_secondary_date)) <= 14,
           across(contains("_within_14"), ~if_else(is.na(.x), FALSE, .x))
         ) %>%
         mutate(
