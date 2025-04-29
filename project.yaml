@@ -965,6 +965,24 @@ actions:
       highly_sensitive:
         arrow: output/data/input_household_processed_2020_2020.arrow
 
+  extract_household_information_s5test2:
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition_household.py
+      --output output/data/input_household_2021_2021.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_household_2021_2021.arrow
+      -- season5_test_start_date season5_end_date
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_household_2021_2021.arrow
+
+  process_household_information_s5test2:
+    run: r:latest analysis/data_processing_household.R season5_test_start_date season5_end_date
+    needs:
+    - extract_household_information_s5test2
+    outputs:
+      highly_sensitive:
+        arrow: output/data/input_household_processed_2021_2021.arrow
+
   ## # # # # # # # # # # # # # # # # # # # 
   ## PRIMARY ANALYSES 
   ## # # # # # # # # # # # # # # # # # # # 
@@ -1520,6 +1538,107 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/covid_primary/further_*_older_adults_2020_2020_specific_*.csv
+
+  generate_dataset_older_adults_s5test2_specific_primary:
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition.py
+      --output output/data/input_older_adults_2021_2021_specific_primary.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2021_2021.arrow
+      -- older_adults season5_test_start_date season5_end_date specific primary
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_older_adults_2021_2021_specific_primary.arrow
+
+  process_dataset_older_adults_s5test2_specific_primary:
+    run: r:latest analysis/data_processing.R older_adults season5_test_start_date
+      season5_end_date specific primary
+    needs:
+    - generate_dataset_older_adults_s5test2_specific_primary
+    - process_household_information_s5test2
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_processed_older_adults_2021_2021_specific_primary.arrow
+
+  describe_dataset_older_adults_s5test2_specific_primary:
+    run: r:latest analysis/season_summary.R older_adults season5_test_start_date season5_end_date
+      specific primary
+    needs:
+    - process_dataset_older_adults_s5test2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/rates/rates_older_adults_2021_2021_specific_primary.csv
+
+  calculate_rates_rolling_older_adults_s5test2_specific_primary:
+    run: r:latest analysis/rates_over_time.R older_adults season5_test_start_date
+      season5_end_date specific primary
+    needs:
+    - process_dataset_older_adults_s5test2_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2021_2021_specific_primary.csv
+
+  calculate_all_rates_over_time_older_adults_s5test2_specific_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season5_test_start_date
+      season5_end_date specific primary
+    needs:
+    - process_dataset_older_adults_s5test2_specific_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2021_2021_specific_primary.csv
+
+  analyse_dataset_older_adults_rsv_s5test2_specific_primary:
+    run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season5_test_start_date
+      season5_end_date specific primary
+    needs:
+    - process_dataset_older_adults_s5test2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_primary/*_older_adults_2021_2021_specific_*.csv
+
+  analyse_dataset_older_adults_rsv_further_s5test2_specific_primary:
+    run: r:latest analysis/outcome_rsv/further_rsv_models_master.R older_adults season5_test_start_date
+      season5_end_date specific primary
+    needs:
+    - process_dataset_older_adults_s5test2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_primary/further_*_older_adults_2021_2021_specific_*.csv
+
+  analyse_dataset_older_adults_flu_s5test2_specific_primary:
+    run: r:latest analysis/outcome_flu/flu_models_master.R older_adults season5_test_start_date
+      season5_end_date specific primary
+    needs:
+    - process_dataset_older_adults_s5test2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_primary/*_older_adults_2021_2021_specific_*.csv
+
+  analyse_dataset_older_adults_flu_further_s5test2_specific_primary:
+    run: r:latest analysis/outcome_flu/further_flu_models_master.R older_adults season5_test_start_date
+      season5_end_date specific primary
+    needs:
+    - process_dataset_older_adults_s5test2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_primary/further_*_older_adults_2021_2021_specific_*.csv
+
+  analyse_dataset_older_adults_covid_s5test2_specific_primary:
+    run: r:latest analysis/outcome_covid/covid_models_master.R older_adults season5_test_start_date
+      season5_end_date specific primary
+    needs:
+    - process_dataset_older_adults_s5test2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_primary/*_older_adults_2021_2021_specific_*.csv
+
+  analyse_dataset_older_adults_covid_further_s5test2_specific_primary:
+    run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults
+      season5_test_start_date season5_end_date specific primary
+    needs:
+    - process_dataset_older_adults_s5test2_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_primary/further_*_older_adults_2021_2021_specific_*.csv
 
   generate_dataset_older_adults_s6_specific_primary:
     run: |-
@@ -7194,6 +7313,107 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/results/models/covid_primary/further_*_older_adults_2020_2020_sensitive_*.csv
+
+  generate_dataset_older_adults_s5test2_sensitive_primary:
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition.py
+      --output output/data/input_older_adults_2021_2021_sensitive_primary.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2021_2021.arrow
+      -- older_adults season5_test_start_date season5_end_date sensitive primary
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_older_adults_2021_2021_sensitive_primary.arrow
+
+  process_dataset_older_adults_s5test2_sensitive_primary:
+    run: r:latest analysis/data_processing.R older_adults season5_test_start_date
+      season5_end_date sensitive primary
+    needs:
+    - generate_dataset_older_adults_s5test2_sensitive_primary
+    - process_household_information_s5test2
+    outputs:
+      highly_sensitive:
+        dataset: output/data/input_processed_older_adults_2021_2021_sensitive_primary.arrow
+
+  describe_dataset_older_adults_s5test2_sensitive_primary:
+    run: r:latest analysis/season_summary.R older_adults season5_test_start_date season5_end_date
+      sensitive primary
+    needs:
+    - process_dataset_older_adults_s5test2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/rates/rates_older_adults_2021_2021_sensitive_primary.csv
+
+  calculate_rates_rolling_older_adults_s5test2_sensitive_primary:
+    run: r:latest analysis/rates_over_time.R older_adults season5_test_start_date
+      season5_end_date sensitive primary
+    needs:
+    - process_dataset_older_adults_s5test2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/rates_over_time_*_older_adults_2021_2021_sensitive_primary.csv
+
+  calculate_all_rates_over_time_older_adults_s5test2_sensitive_primary:
+    run: r:latest analysis/rates_over_time_all.R older_adults season5_test_start_date
+      season5_end_date sensitive primary
+    needs:
+    - process_dataset_older_adults_s5test2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        dataset: output/results/rates/weekly/all/rates_over_time_all_*_older_adults_2021_2021_sensitive_primary.csv
+
+  analyse_dataset_older_adults_rsv_s5test2_sensitive_primary:
+    run: r:latest analysis/outcome_rsv/rsv_models_master.R older_adults season5_test_start_date
+      season5_end_date sensitive primary
+    needs:
+    - process_dataset_older_adults_s5test2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_primary/*_older_adults_2021_2021_sensitive_*.csv
+
+  analyse_dataset_older_adults_rsv_further_s5test2_sensitive_primary:
+    run: r:latest analysis/outcome_rsv/further_rsv_models_master.R older_adults season5_test_start_date
+      season5_end_date sensitive primary
+    needs:
+    - process_dataset_older_adults_s5test2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/rsv_primary/further_*_older_adults_2021_2021_sensitive_*.csv
+
+  analyse_dataset_older_adults_flu_s5test2_sensitive_primary:
+    run: r:latest analysis/outcome_flu/flu_models_master.R older_adults season5_test_start_date
+      season5_end_date sensitive primary
+    needs:
+    - process_dataset_older_adults_s5test2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_primary/*_older_adults_2021_2021_sensitive_*.csv
+
+  analyse_dataset_older_adults_flu_further_s5test2_sensitive_primary:
+    run: r:latest analysis/outcome_flu/further_flu_models_master.R older_adults season5_test_start_date
+      season5_end_date sensitive primary
+    needs:
+    - process_dataset_older_adults_s5test2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_primary/further_*_older_adults_2021_2021_sensitive_*.csv
+
+  analyse_dataset_older_adults_covid_s5test2_sensitive_primary:
+    run: r:latest analysis/outcome_covid/covid_models_master.R older_adults season5_test_start_date
+      season5_end_date sensitive primary
+    needs:
+    - process_dataset_older_adults_s5test2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_primary/*_older_adults_2021_2021_sensitive_*.csv
+
+  analyse_dataset_older_adults_covid_further_s5test2_sensitive_primary:
+    run: r:latest analysis/outcome_covid/further_covid_models_master.R older_adults
+      season5_test_start_date season5_end_date sensitive primary
+    needs:
+    - process_dataset_older_adults_s5test2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_primary/further_*_older_adults_2021_2021_sensitive_*.csv
 
   generate_dataset_older_adults_s6_sensitive_primary:
     run: |-
@@ -13633,6 +13853,42 @@ actions:
     outputs:
       moderately_sensitive:
         txt: output/data/*processed*older_adults_2020_2020_sensitive_primary*.txt
+
+  skim_dataset_older_adults_s5test2_specific_primary:
+    run: r:latest analysis/data_skim.R output/data/input_older_adults_2021_2021_specific_primary.arrow
+      output/data/
+    needs:
+    - generate_dataset_older_adults_s5test2_specific_primary
+    outputs:
+      moderately_sensitive:
+        txt: output/data/*older_adults_2021_2021_specific_primary*.txt
+
+  skim_processed_dataset_older_adults_s5test2_specific_primary:
+    run: r:latest analysis/data_skim.R output/data/input_processed_older_adults_2021_2021_specific_primary.arrow
+      output/data/
+    needs:
+    - process_dataset_older_adults_s5test2_specific_primary
+    outputs:
+      moderately_sensitive:
+        txt: output/data/*processed*older_adults_2021_2021_specific_primary*.txt
+
+  skim_dataset_older_adults_s5test2_sensitive_primary:
+    run: r:latest analysis/data_skim.R output/data/input_older_adults_2021_2021_sensitive_primary.arrow
+      output/data/
+    needs:
+    - generate_dataset_older_adults_s5test2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        txt: output/data/*older_adults_2021_2021_sensitive_primary*.txt
+
+  skim_processed_dataset_older_adults_s5test2_sensitive_primary:
+    run: r:latest analysis/data_skim.R output/data/input_processed_older_adults_2021_2021_sensitive_primary.arrow
+      output/data/
+    needs:
+    - process_dataset_older_adults_s5test2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        txt: output/data/*processed*older_adults_2021_2021_sensitive_primary*.txt
 
   skim_dataset_older_adults_s6_specific_primary:
     run: r:latest analysis/data_skim.R output/data/input_older_adults_2021_2022_specific_primary.arrow
