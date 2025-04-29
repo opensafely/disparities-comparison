@@ -45,9 +45,16 @@ df_filt <- df_input %>%
   mutate(
     covid_vaccination_primary = if_else(covid_vaccination_mild == "Yes", 1, 0),
     covid_vaccination_secondary = if_else(covid_vaccination_severe == "Yes", 1, 0),
-    time_covid_vaccination = time_length(
-      difftime(covid_vaccination_immunity_date, patient_index_date - days(1),
-               "weeks"), "years")
+    time_covid_vaccination_primary = if_else(
+      covid_vaccination_primary == 1,
+      time_length(
+        difftime(covid_vaccination_immunity_date, patient_index_date - days(1),
+                 "weeks"), "years"), 0),
+    time_covid_vaccination_secondary = if_else(
+      covid_vaccination_secondary == 1,
+      time_length(
+        difftime(covid_vaccination_immunity_date, patient_index_date - days(1),
+                 "weeks"), "years"), 0)
   )
 
 # Sort data by time_to_event
@@ -92,11 +99,11 @@ ggsave(
   width = 8, height = 6, dpi = 300, plt1)
 
 # Sort data by time_to_event
-data_primary_vacc <- df_filt[order(df_filt$time_covid_vaccination), ]
+data_primary_vacc <- df_filt[order(df_filt$time_covid_vaccination_primary), ]
 
 # Calculate cumulative incidence for a specific event type (e.g., event_type == 1)
 cum_incidence_primary_vacc <- cuminc(
-  data_primary_vacc$time_covid_vaccination,
+  data_primary_vacc$time_covid_vaccination_primary,
   data_primary_vacc$covid_vaccination_primary == 1,
   group = data_primary_vacc$latest_ethnicity_group)
 
@@ -175,11 +182,11 @@ ggsave(
   width = 8, height = 6, dpi = 300, plt3)
 
 # Sort data by time_to_event
-data_secondary_vacc <- df_filt[order(df_filt$time_covid_vaccination), ]
+data_secondary_vacc <- df_filt[order(df_filt$time_covid_vaccination_secondary), ]
 
 # Calculate cumulative incidence for a specific event type (e.g., event_type == 1)
 cum_incidence_secondary_vacc <- cuminc(
-  data_secondary_vacc$time_covid_vaccination,
+  data_secondary_vacc$time_covid_vaccination_secondary,
   data_secondary_vacc$covid_vaccination_secondary == 1,
   group = data_secondary_vacc$latest_ethnicity_group)
 
