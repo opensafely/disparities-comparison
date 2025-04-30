@@ -99,7 +99,8 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
       
     } else if (y == "covid_secondary_inf") {
       
-      if (study_start_date == as.Date("2020-09-01")) {
+      if (study_start_date >= as.Date("2020-09-01") &
+          study_start_date < as.Date("2021-09-01")) {
         
         predictors <- c(predictors, vacc_severe)
         
