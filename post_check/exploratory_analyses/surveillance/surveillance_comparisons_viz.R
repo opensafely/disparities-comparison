@@ -2,6 +2,8 @@ library(tidyverse)
 library(here)
 library(lubridate)
 
+ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
+
 cohort <- "older_adults"
 
 #import data
