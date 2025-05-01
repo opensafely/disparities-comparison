@@ -1,5 +1,6 @@
 ##libraries
 library(data.table)
+library(plyr)
 library(ggplot2)
 library(stringr)
 library(lubridate)
@@ -40,7 +41,8 @@ data_new <- data_new[COUNTRY_AREA_TERRITORY %in% c(
 data_new <- data_new[order(as.Date(ISO_WEEKSTARTDATE, format = "%Y-%M-%D"))]
 data_new <- data_new[, RSV_new := 
                ifelse(str_starts(data_new$OTHER_RESPVIRUS_DETAILS, "RSV"), 1, 
-                      ifelse(str_starts(data_new$OTHER_RESPVIRUS_DETAILS, "rsv"), 1, RSV))]
+                      ifelse(str_starts(data_new$OTHER_RESPVIRUS_DETAILS, "rsv"),
+                             1, RSV))]
 data_new <- data_new[, INF_new := INF_A + INF_B]
 data_new <- data_new[, Date := ymd(ISO_WEEKSTARTDATE)]
 data_new <- data_new[, week := floor_date(Date, unit = "week")]
@@ -121,3 +123,7 @@ ggplot(data = all) + geom_line(aes(x = week, y = total_flu, col = "Influenza")) 
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
                   "seasonality_weekly.png"), width = 12, height = 8)
+
+#export data
+write.csv(all, here::here("post_check", "exploratory_analyses", "surveillance",
+            "seasonality_weekly.csv"), row.names = FALSE)
