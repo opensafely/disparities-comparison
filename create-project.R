@@ -3918,6 +3918,8 @@ actions_list <- splice (
   comment("# # # # # # # # # # # # # # # # # # #", "Investigations", "# # # # # # # # # # # # # # # # # # #"),
   action_investigate("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "specific", "primary"),
   action_investigate("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "sensitive", "primary"),
+  action_investigate("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "specific", "primary"),
+  action_investigate("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "sensitive", "primary"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "End", "# # # # # # # # # # # # # # # # # # #")
 

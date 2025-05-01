@@ -20151,6 +20151,60 @@ actions:
       moderately_sensitive:
         csv: output/results/models/covid_primary/further2_*_older_adults_2020_2021_sensitive_*.csv
 
+  investigate_older_adults_s8_specific_primary:
+    run: r:latest analysis/vacc_cases_investigations.R older_adults season8_start_date
+      season8_end_date specific primary
+    needs:
+    - process_dataset_older_adults_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        png: output/testing/*_older_adults_2023_2024_specific_primary.png
+
+  analyse_dataset_older_adults_flu_further2_s8_specific_primary:
+    run: r:latest analysis/outcome_flu/further2_flu_models_master.R older_adults season8_start_date
+      season8_end_date specific primary
+    needs:
+    - process_dataset_older_adults_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_primary/further2_*_older_adults_2023_2024_specific_*.csv
+
+  analyse_dataset_older_adults_covid_further2_s8_specific_primary:
+    run: r:latest analysis/outcome_covid/further2_covid_models_master.R older_adults
+      season8_start_date season8_end_date specific primary
+    needs:
+    - process_dataset_older_adults_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_primary/further2_*_older_adults_2023_2024_specific_*.csv
+
+  investigate_older_adults_s8_sensitive_primary:
+    run: r:latest analysis/vacc_cases_investigations.R older_adults season8_start_date
+      season8_end_date sensitive primary
+    needs:
+    - process_dataset_older_adults_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        png: output/testing/*_older_adults_2023_2024_sensitive_primary.png
+
+  analyse_dataset_older_adults_flu_further2_s8_sensitive_primary:
+    run: r:latest analysis/outcome_flu/further2_flu_models_master.R older_adults season8_start_date
+      season8_end_date sensitive primary
+    needs:
+    - process_dataset_older_adults_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/flu_primary/further2_*_older_adults_2023_2024_sensitive_*.csv
+
+  analyse_dataset_older_adults_covid_further2_s8_sensitive_primary:
+    run: r:latest analysis/outcome_covid/further2_covid_models_master.R older_adults
+      season8_start_date season8_end_date sensitive primary
+    needs:
+    - process_dataset_older_adults_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/results/models/covid_primary/further2_*_older_adults_2023_2024_sensitive_*.csv
+
   ## # # # # # # # # # # # # # # # # # # # 
   ## End 
   ## # # # # # # # # # # # # # # # # # # # 
