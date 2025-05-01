@@ -142,4 +142,6 @@ df_combined %>%
   theme_minimal() +
   theme(legend.position = "bottom")
 
-
+#save
+ggsave(here::here("post_check", "plots", "exploratory_analyses",
+                  "seasonality_comparisons.png"), width = 12, height = 8)
