@@ -6,7 +6,7 @@ library(ggplot2)
 library(zoo)
 
 #get study dates
-source(here("analysis", "design", "design.R"))
+source(here::here("analysis", "design", "design.R"))
 
 #helper function to create and save plots
 create_rolling_plots <- function(season, phenotype) {

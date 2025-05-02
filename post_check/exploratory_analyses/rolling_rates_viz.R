@@ -32,7 +32,7 @@ cohort <- "older_adults"
 pathogen <- "rsv"
 
 #import data
-df_input <- read_csv(here::here(#"post_check",
+df_input <- read_csv(here::here("post_check",
                      "output", "collated", "descriptive",
                      "over_time", paste0(cohort, "_",
                      "rates_over_time_all_all_", pathogen, ".csv")))
@@ -44,7 +44,7 @@ rsv <- create_rolling_plots_overall(df_input)
 pathogen <- "flu"
 
 #import data
-df_input <- read_csv(here::here(#"post_check",
+df_input <- read_csv(here::here("post_check",
                      "output", "collated", "descriptive",
                      "over_time", paste0(cohort, "_",
                      "rates_over_time_all_all_", pathogen, ".csv")))
@@ -56,7 +56,7 @@ flu <- create_rolling_plots_overall(df_input)
 pathogen <- "covid"
 
 #import data
-df_input <- read_csv(here::here(#"post_check",
+df_input <- read_csv(here::here("post_check",
                      "output", "collated", "descriptive",
                      "over_time", paste0(cohort, "_",
                      "rates_over_time_all_all_", pathogen, ".csv")))
@@ -95,8 +95,8 @@ plot_an <- annotate_figure(
                    rot = 90, vjust = 1.75)
 )
 
-ggsave(here("post_check", "plots", "exploratory_analyses", "condensed",
-            paste0(cohort, "_rates_over_time_all", ".png")),
+ggsave(here::here("post_check", "plots", "exploratory_analyses",
+      "condensed", paste0(cohort, "_rates_over_time_all", ".png")),
        plot_an, height = 10, width = 15)
 
 ###infants 
@@ -109,7 +109,7 @@ cohort <- "infants"
 pathogen <- "rsv"
 
 #import data
-df_input <- read_csv(here::here(#"post_check",
+df_input <- read_csv(here::here("post_check",
                      "output", "collated", "descriptive",
                      "over_time", paste0(cohort, "_",
                      "rates_over_time_all_all_", pathogen, ".csv")))
@@ -121,7 +121,7 @@ rsv <- create_rolling_plots_overall(df_input)
 pathogen <- "flu"
 
 #import data
-df_input <- read_csv(here::here(#"post_check",
+df_input <- read_csv(here::here("post_check",
                      "output", "collated", "descriptive",
                      "over_time", paste0(cohort, "_",
                      "rates_over_time_all_all_", pathogen, ".csv")))
@@ -133,7 +133,7 @@ flu <- create_rolling_plots_overall(df_input)
 pathogen <- "covid"
 
 #import data
-df_input <- read_csv(here::here(#"post_check",
+df_input <- read_csv(here::here("post_check",
                      "output", "collated", "descriptive",
                      "over_time", paste0(cohort, "_",
                      "rates_over_time_all_all_", pathogen, ".csv")))
@@ -172,6 +172,6 @@ plot_an <- annotate_figure(
                    rot = 90, vjust = 1.75)
 )
 
-ggsave(here("post_check", "plots", "exploratory_analyses", "condensed",
-            paste0(cohort, "_rates_over_time_all", ".png")),
+ggsave(here::here("post_check", "plots", "exploratory_analyses",
+       "condensed", paste0(cohort, "_rates_over_time_all", ".png")),
        plot_an, height = 10, width = 15)
