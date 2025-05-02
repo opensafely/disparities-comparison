@@ -162,7 +162,7 @@ df_combined %>%
                               ymin = ymin, ymax = ymax),
             fill = "grey", alpha = 0.25, col = NA) +
   annotate(label = "Usual Transmission Period (Nov-Mar)",
-           x = as.Date("2019-12-15"), 
+           x = as.Date("2020-12-15"), 
            y = 5000, geom = "text", col = "black", size = 4) +
   facet_wrap(~event, nrow = 1, scales = "free") +
   scale_y_continuous(
@@ -181,7 +181,7 @@ df_combined %>%
                    str_to_title(gsub("_", " ", cohort))),
     x = "Year", colour = "Disease", alpha = "Phenotype Used"
   ) +
-  theme_minimal() +
+  theme_bw() +
   theme(legend.position = "bottom")
 
 #save
@@ -189,55 +189,125 @@ ggsave(here::here("post_check", "plots", "exploratory_analyses",
                   paste0(cohort, "_seasonality_comparisons.png")),
                   width = 18, height = 6)
 
-# df_combined_sep_spec <- df_combined %>%
-#   filter(codelist_type != "sensitive") %>%
-#   pivot_wider(
-#     names_from = type,
-#     values_from = total_events
-#   )
-# df_combined_sep_sens <- df_combined %>%
-#   filter(codelist_type != "specific") %>%
-#   pivot_wider(
-#     names_from = type,
-#     values_from = total_events
-#   )
-# 
-# 
-# df_combined_sep_sens %>%
-#   filter(virus != "Overall Respiratory Viruses") %>%
-#   ggplot() +
-#   # Primary axis viruses
-#   geom_line(data = ~filter(.x, virus != "COVID-19"),
-#             aes(x = week, y = total_events, color = virus, alpha = codelist_type)) +
-#   # Secondary axis virus (COVID-19)
-#   geom_line(data = ~filter(.x, virus == "COVID-19"),
-#             aes(x = week, y = total_events, color = virus, alpha = codelist_type)) +
-#   geom_rect(data = rects, aes(xmin = xmin, xmax = xmax,
-#                               ymin = ymin, ymax = ymax),
-#             fill = "grey", alpha = 0.25, col = NA) +
-#   annotate(label = "Usual Transmission Period (Nov-Mar)",
-#            x = as.Date("2019-12-15"), 
-#            y = 5000, geom = "text", col = "black", size = 4) +
-#   facet_wrap(~event, nrow = 1, scales = "free") +
-#   scale_y_continuous(
-#     name = "RSV/Influenza Weekly Events",
-#     sec.axis = sec_axis(~.*coeff, name = "COVID-19 Weekly Events")
-#   ) +
-#   scale_x_date(date_breaks = "1 years", date_labels = "%Y") + 
-#   scale_color_manual(values = c("RSV" = "#377EB8", "Influenza" = "#4DAF4A",
-#                                 "COVID-19" = "#E41A1C" )) +
-#   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-#                      labels = c("sensitive" = "Sensitive",
-#                                 "specific" = "Specific"),
-#                      na.translate = FALSE) +
-#   labs(
-#     title = paste0("Weekly counts of RSV, Flu and COVID-19 in ",
-#                    str_to_title(gsub("_", " ", cohort))),
-#     x = "Year", colour = "Disease", alpha = "Phenotype Used"
-#   ) +
-#   theme_minimal() +
-#   theme(legend.position = "bottom")
-# 
+#visual comparisons of surveillance and EHR data per virus
+# Define the 4 combinations you want for Surveillance
+event_combinations <- crossing(
+  event = c("Mild", "Severe"),
+  codelist_type = c("specific", "sensitive")
+)
+
+# Separate Surveillance and EHR rows
+surv_expanded <- df_combined %>%
+  filter(type == "Surveillance") %>%
+  mutate(event = NA) %>%
+  select(-event, -codelist_type) %>%
+  crossing(event_combinations)
+
+ehr_rows <- df_combined %>%
+  filter(type == "EHR")
+
+# Combine both
+df_combined_expanded <- bind_rows(ehr_rows, surv_expanded) %>%
+  arrange(week) %>%
+  mutate(total_events = if_else(virus == "COVID-19",
+                                total_events * coeff, total_events))
+
+df_comp <- df_combined_expanded %>%
+  pivot_wider(
+    names_from = type,
+    values_from = total_events,
+    values_fill = 0
+  ) %>%
+  mutate(week = ymd(week))
+
+rsv <- df_comp %>%
+  filter(virus == "RSV", week >= as.Date("2016-09-01")) %>%
+  arrange(week) %>%
+  ggplot() +
+  # Primary axis viruses
+  geom_line(aes(x = EHR, y = Surveillance, alpha = codelist_type),
+            color = "#377EB8") +
+  facet_wrap(~event, nrow = 1, scales = "free_x") +
+  # scale_y_continuous(
+  #   name = "RSV/Influenza Weekly Events",
+  #   sec.axis = sec_axis(~.*coeff, name = "COVID-19 Weekly Events")
+  # ) +
+  # scale_x_date(date_breaks = "1 years", date_labels = "%Y") +
+  # scale_color_manual(values = c("RSV" = "#377EB8", "Influenza" = "#4DAF4A",
+  #                               "COVID-19" = "#E41A1C" )) +
+  # scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
+  #                    labels = c("sensitive" = "Sensitive",
+  #                               "specific" = "Specific"),
+  #                    na.translate = FALSE) +
+  labs(x = "", y = "", alpha = "Phenotype Used") + theme_bw() +
+  theme(legend.position = "none")
+
+flu <- df_comp %>%
+  filter(virus == "Influenza", week >= as.Date("2016-09-01")) %>%
+  arrange(week) %>%
+  ggplot() +
+  # Primary axis viruses
+  geom_line(aes(x = EHR, y = Surveillance, alpha = codelist_type),
+            color = "#4DAF4A") +
+  facet_wrap(~event, nrow = 1, scales = "free_x") +
+  # scale_y_continuous(
+  #   name = "RSV/Influenza Weekly Events",
+  #   sec.axis = sec_axis(~.*coeff, name = "COVID-19 Weekly Events")
+  # ) +
+  # scale_x_date(date_breaks = "1 years", date_labels = "%Y") +
+  # scale_color_manual(values = c("RSV" = "#377EB8", "Influenza" = "#4DAF4A",
+  #                               "COVID-19" = "#E41A1C" )) +
+  # scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
+  #                    labels = c("sensitive" = "Sensitive",
+  #                               "specific" = "Specific"),
+  #                    na.translate = FALSE) +
+  labs(x = "", y = "", alpha = "Phenotype Used") + theme_bw() +
+  theme(legend.position = "none")
+
+covid <- df_comp %>%
+  filter(virus == "COVID-19", week >= as.Date("2020-03-01")) %>%
+  arrange(week) %>%
+  ggplot() +
+  # Primary axis viruses
+  geom_line(aes(x = EHR, y = Surveillance, alpha = codelist_type),
+            color = "#E41A1C") +
+  facet_wrap(~event, nrow = 1, scales = "free_x") +
+  # scale_y_continuous(
+  #   name = "RSV/Influenza Weekly Events",
+  #   sec.axis = sec_axis(~.*coeff, name = "COVID-19 Weekly Events")
+  # ) +
+  # scale_x_date(date_breaks = "1 years", date_labels = "%Y") +
+  # scale_color_manual(values = c("RSV" = "#377EB8", "Influenza" = "#4DAF4A",
+  #                               "COVID-19" = "#E41A1C" )) +
+  # scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
+  #                    labels = c("sensitive" = "Sensitive",
+  #                               "specific" = "Specific"),
+  #                    na.translate = FALSE) +
+  labs(x = "", y = "", alpha = "Phenotype Used") + theme_bw() +
+  theme(legend.position = "none")
+
+legend <- get_legend(
+  rsv + theme(legend.position = "bottom",
+             legend.box = "horizontal",
+             legend.title = element_text())
+)
+
+plot <- plot_grid(
+  rsv,
+  flu,
+  covid, 
+  nrow = 1
+) %>% annotate_figure(
+  left = text_grob("Surveillance", rot = 90, vjust = 1),
+  bottom = text_grob("EHR"),
+  top = text_grob(paste0("Weekly counts of RSV, Influenza and COVID-19 in ",
+                         str_to_title(gsub("_", " ", cohort))),
+                  face = "bold", size = 14))
+plot_grid(plot, legend, ncol = 1, rel_heights = c(1, .1)) +
+  theme(plot.margin = margin(0, 0, 0, 0),
+        plot.title = element_text(hjust = 0.5)
+)
+
 # #save
 # ggsave(here::here("post_check", "plots", "exploratory_analyses",
 #                   paste0(cohort, "_seasonality_comparisons.png")),
