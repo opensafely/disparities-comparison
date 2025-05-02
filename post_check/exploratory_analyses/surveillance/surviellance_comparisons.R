@@ -1,87 +1,98 @@
 library(tidyverse)
 library(here)
-library(lubridate)
+library(lmtest)
 
 cohort <- "older_adults"
 
 #import data
 df_rsv <- read_csv(here::here(#"post_check",
   "output", "collated", "descriptive", "over_time", paste0(cohort,
-                                                           "_", "rates_over_time_all_all_rsv.csv"))) %>%
+  "_", "rates_over_time_all_all_rsv.csv"))) %>%
   mutate(virus = "RSV") %>%
-  select(c(interval_start, event, total_events = total_events_midpoint10,
-           rate_1000_py_midpoint10_derived, codelist_type, virus))
-
-#import data
-df_flu <- read_csv(here::here(#"post_check",
-  "output", "collated", "descriptive", "over_time", paste0(cohort,
-                                                           "_", "rates_over_time_all_all_flu.csv"))) %>%
-  mutate(virus = "Influenza") %>%
-  select(c(interval_start, event, total_events = total_events_midpoint10,
-           rate_1000_py_midpoint10_derived, codelist_type, virus))
-
-#import data
-df_covid <- read_csv(here::here(#"post_check",
-  "output", "collated", "descriptive", "over_time", paste0(cohort,
-                                                           "_", "rates_over_time_all_all_covid.csv"))) %>%
-  mutate(virus = "COVID-19") %>%
-  select(c(interval_start, event, total_events = total_events_midpoint10,
-           rate_1000_py_midpoint10_derived, codelist_type, virus))
-
-#import data
-df_overall <- read_csv(here::here(#"post_check",
-  "output", "collated", "descriptive", "over_time", paste0(cohort,
-                                                           "_", "rates_over_time_all_all_overall_resp.csv"))) %>%
-  mutate(virus = "Overall Respiratory Viruses") %>%
-  select(c(interval_start, event, total_events = total_events_midpoint10,
-           rate_1000_py_midpoint10_derived, codelist_type, virus))
-
-
-#collate
-df_all <- bind_rows(df_rsv, df_flu, df_covid, df_overall) %>%
   arrange(interval_start) %>%
   mutate(
-    week = floor_date(interval_start, unit = "week"),
-    type = "EHR",
+    week = ymd(floor_date(interval_start, unit = "week")),
     event = case_when(
       str_detect(event, "primary") ~ "Mild",
       str_detect(event, "secondary") ~ "Severe"
     )
-  )
+  ) %>%
+  select(c(week, event, total_events = total_events_midpoint10,
+           codelist_type, virus)) %>%
+  filter(week >= "2016-09-01")
 
-df_all_rates <- df_all %>%
-  select(week, event, rate_1000_py_midpoint10_derived,
-         codelist_type, virus, type)
+#separate by mild/severe and specifc/sensitive
+df_rsv_spec_mild <- df_rsv %>%
+  filter(event == "Mild", codelist_type == "specific")
+df_rsv_spec_severe <- df_rsv %>%
+  filter(event == "Severe", codelist_type == "specific")
+df_rsv_sens_mild <- df_rsv %>%
+  filter(event == "Mild", codelist_type == "sensitive")
+df_rsv_sens_severe <- df_rsv %>%
+  filter(event == "Severe", codelist_type == "sensitive")
 
-coeff <- 200
-df_all_covid <- df_all %>%
-  select(-c(interval_start, rate_1000_py_midpoint10_derived)) %>%
-  filter(virus == "COVID-19") %>%
+#import data
+df_flu <- read_csv(here::here(#"post_check",
+  "output", "collated", "descriptive", "over_time", paste0(cohort,
+  "_", "rates_over_time_all_all_flu.csv"))) %>%
+  mutate(virus = "Influenza") %>%
+  arrange(interval_start) %>%
   mutate(
-    total_events = if_else(is.na(total_events), 0, total_events/coeff),
-  )
+    week = ymd(floor_date(interval_start, unit = "week")),
+    event = case_when(
+      str_detect(event, "primary") ~ "Mild",
+      str_detect(event, "secondary") ~ "Severe"
+    )
+  ) %>%
+  select(c(week, event, total_events = total_events_midpoint10,
+           codelist_type, virus)) %>%
+  filter(week >= "2016-09-01")
 
-df_all <- rbind(df_all %>%
-                  select(-c(interval_start, rate_1000_py_midpoint10_derived)) %>%
-                  filter(virus != "COVID-19"),
-                df_all_covid
-) %>%
-  arrange(week)
+#separate by mild/severe and specifc/sensitive
+df_flu_spec_mild <- df_flu %>%
+  filter(event == "Mild", codelist_type == "specific")
+df_flu_spec_severe <- df_flu %>%
+  filter(event == "Severe", codelist_type == "specific")
+df_flu_sens_mild <- df_flu %>%
+  filter(event == "Mild", codelist_type == "sensitive")
+df_flu_sens_severe <- df_flu %>%
+  filter(event == "Severe", codelist_type == "sensitive")
 
-df_all <- df_all[, c("week", "event", "total_events",
-                     "codelist_type", "virus", "type")]
+#import data
+df_covid <- read_csv(here::here(#"post_check",
+  "output", "collated", "descriptive", "over_time", paste0(cohort,
+  "_", "rates_over_time_all_all_covid.csv"))) %>%
+  mutate(virus = "COVID-19") %>%
+  arrange(interval_start) %>%
+  mutate(
+    week = ymd(floor_date(interval_start, unit = "week")),
+    event = case_when(
+      str_detect(event, "primary") ~ "Mild",
+      str_detect(event, "secondary") ~ "Severe"
+    )
+  ) %>%
+  select(c(week, event, total_events = total_events_midpoint10,
+           codelist_type, virus)) %>%
+  filter(week >= "2016-09-01")
+
+#separate by mild/severe and specifc/sensitive
+df_covid_spec_mild <- df_covid %>%
+  filter(event == "Mild", codelist_type == "specific")
+df_covid_spec_severe <- df_covid %>%
+  filter(event == "Severe", codelist_type == "specific")
+df_covid_sens_mild <- df_covid %>%
+  filter(event == "Mild", codelist_type == "sensitive")
+df_covid_sens_severe <- df_covid %>%
+  filter(event == "Severe", codelist_type == "sensitive")
 
 #import surveillance data
 df_surv <- read_csv(here::here(
   "post_check", "exploratory_analyses", "surveillance",
   "seasonality_weekly.csv")) %>%
   arrange(week) %>%
-  mutate(
-    total_overall = total_rsv + total_flu + total_covid,
-    type = "Surveillance") %>%
-  select(-total_covid) %>%
+  select(-covid_scaled) %>%
   pivot_longer(
-    cols = c(total_rsv, total_flu, covid_scaled, total_overall),
+    cols = c(total_rsv, total_flu, total_covid),
     names_to = "virus",
     values_to = "total_events"
   ) %>%
@@ -89,16 +100,94 @@ df_surv <- read_csv(here::here(
     virus = case_when(
       virus == "total_rsv" ~ "RSV",
       virus == "total_flu" ~ "Influenza",
-      virus == "covid_scaled" ~ "COVID-19",
-      virus == "total_overall" ~ "Overall Respiratory Viruses"
-    ),
-    event = "Surveillance"
+      virus == "total_covid" ~ "COVID-19"
+    )
   )
 
-df_surv <- df_surv[, c("week", "event", "total_events", "virus", "type")]
+df_surv <- df_surv[, c("week", "total_events", "virus")]
 
-#combine
-df_combined <- full_join(
-  df_all, df_surv, by = c("week", "event", "total_events", "virus", "type")) %>%
-  arrange(week) %>%
-  mutate(week = ymd(week))
+df_surv_rsv <- df_surv %>%
+  filter(virus == "RSV", week %in% df_rsv$week)
+df_surv_flu <- df_surv %>%
+  filter(virus == "Influenza", week %in% df_flu$week)
+df_surv_covid <- df_surv %>%
+  filter(virus == "COVID-19") %>%
+  filter(week >= "2020-03-01", week %in% df_covid$week)
+
+#granger tests
+granger_test_rsv_mild_spec <- lmtest::grangertest(
+  df_rsv_spec_mild$total_events ~ df_surv_rsv$total_events,
+  order = 1
+)
+granger_test_rsv_mild_sens <- lmtest::grangertest(
+  df_rsv_sens_mild$total_events ~ df_surv_rsv$total_events,
+  order = 1
+)
+granger_test_rsv_severe_spec <- lmtest::grangertest(
+  df_rsv_spec_severe$total_events ~ df_surv_rsv$total_events,
+  order = 1
+)
+granger_test_rsv_severe_sens <- lmtest::grangertest(
+  df_rsv_sens_severe$total_events ~ df_surv_rsv$total_events,
+  order = 1
+)
+granger_test_flu_mild_spec <- lmtest::grangertest(
+  df_flu_spec_mild$total_events ~ df_surv_flu$total_events,
+  order = 1
+)
+granger_test_flu_mild_sens <- lmtest::grangertest(
+  df_flu_sens_mild$total_events ~ df_surv_flu$total_events,
+  order = 1
+)
+granger_test_flu_severe_spec <- lmtest::grangertest(
+  df_flu_spec_severe$total_events ~ df_surv_flu$total_events,
+  order = 1
+)
+granger_test_flu_severe_sens <- lmtest::grangertest(
+  df_flu_sens_severe$total_events ~ df_surv_flu$total_events,
+  order = 1
+)
+granger_test_covid_mild_spec <- lmtest::grangertest(
+  df_covid_spec_mild$total_events ~ df_surv_covid$total_events,
+  order = 1
+)
+granger_test_covid_mild_sens <- lmtest::grangertest(
+  df_covid_sens_mild$total_events ~ df_surv_covid$total_events,
+  order = 1
+)
+granger_test_covid_severe_spec <- lmtest::grangertest(
+  df_covid_spec_severe$total_events ~ df_surv_covid$total_events,
+  order = 1
+)
+granger_test_covid_severe_sens <- lmtest::grangertest(
+  df_covid_sens_severe$total_events ~ df_surv_covid$total_events,
+  order = 1
+)
+#save granger test results
+granger_test_results <- data.frame(
+  test = c("RSV Mild Specific", "RSV Mild Sensitive", "RSV Severe Specific",
+           "RSV Severe Sensitive", "Flu Mild Specific", "Flu Mild Sensitive",
+           "Flu Severe Specific", "Flu Severe Sensitive", "COVID-19 Mild Specific",
+           "COVID-19 Mild Sensitive", "COVID-19 Severe Specific",
+           "COVID-19 Severe Sensitive"),
+  granger_test = c(granger_test_rsv_mild_spec$F[2], granger_test_rsv_mild_sens$F[2],
+                   granger_test_rsv_severe_spec$F[2], granger_test_rsv_severe_sens$F[2],
+                   granger_test_flu_mild_spec$F[2], granger_test_flu_mild_sens$F[2],
+                   granger_test_flu_severe_spec$F[2], granger_test_flu_severe_sens$F[2],
+                   granger_test_covid_mild_spec$F[2], granger_test_covid_mild_sens$F[2],
+                   granger_test_covid_severe_spec$F[2], granger_test_covid_severe_sens$F[2])
+) %>%
+  mutate(
+    p_value = c(granger_test_rsv_mild_spec$`Pr(>F)`[2],
+                granger_test_rsv_mild_sens$`Pr(>F)`[2],
+                granger_test_rsv_severe_spec$`Pr(>F)`[2],
+                granger_test_rsv_severe_sens$`Pr(>F)`[2],
+                granger_test_flu_mild_spec$`Pr(>F)`[2],
+                granger_test_flu_mild_sens$`Pr(>F)`[2],
+                granger_test_flu_severe_spec$`Pr(>F)`[2],
+                granger_test_flu_severe_sens$`Pr(>F)`[2],
+                granger_test_covid_mild_spec$`Pr(>F)`[2],
+                granger_test_covid_mild_sens$`Pr(>F)`[2],
+                granger_test_covid_severe_spec$`Pr(>F)`[2],
+                granger_test_covid_severe_sens$`Pr(>F)`[2])
+  )
