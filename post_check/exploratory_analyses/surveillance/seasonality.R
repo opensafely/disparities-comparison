@@ -96,7 +96,6 @@ all <- all %>%
   subset(month >= as.Date("2016-09-01") & month <= as.Date("2024-08-31"))
 
 ##plot
-
 rects <- tibble(
   xmin = seq(as.Date("2016-11-01"), as.Date("2023-11-01"), by = "year"),
   xmax = seq(as.Date("2017-03-01"), as.Date("2024-03-01"), by = "year"),
@@ -122,3 +121,7 @@ ggplot(data = all) + geom_line(aes(x = month, y = total_flu, col = "Influenza"))
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
                   "seasonality.png"), width = 12, height = 8)
+
+#export data
+write.csv(all, here::here("post_check", "exploratory_analyses", "surveillance",
+          "seasonality.csv"), row.names = FALSE)
