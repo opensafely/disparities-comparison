@@ -18,15 +18,17 @@ import <- function(pathogen, cohort) {
     mutate(virus = pathogen_title) %>%
     arrange(interval_start) %>%
     mutate(
-      week = ymd(floor_date(interval_start, unit = "week")),
+      month = ymd(floor_date(interval_start, unit = "month")),
       event = case_when(
         str_detect(event, "primary") ~ "Mild",
         str_detect(event, "secondary") ~ "Severe"
       )
     ) %>%
-    select(c(week, event, total_events = total_events_midpoint10,
+    select(c(interval_start, month, event, total_events = total_events_midpoint10,
              codelist_type, virus)) %>%
-    filter(week >= "2016-09-01")
+    filter(month >= "2016-09-01") %>%
+    slice_min(order_by = interval_start, n = 1, by = c("month", "event")) %>%
+    select(-interval_start)
   
   return(df)
 }
@@ -43,9 +45,9 @@ df_rsv <- as.data.table(bind_rows(
   df_rsv_children,
   df_rsv_infants
 )) %>%
-  arrange(week)
+  arrange(month)
 df_rsv <- df_rsv[, total_events := sum(total_events, na.rm = T),
-       by = .(week, event, codelist_type, virus)] %>%
+       by = .(month, event, codelist_type, virus)] %>%
   unique()
 
 #separate by mild/severe and specifc/sensitive
@@ -70,9 +72,9 @@ df_flu <- as.data.table(bind_rows(
   df_flu_children,
   df_flu_infants
 )) %>%
-  arrange(week)
+  arrange(month)
 df_flu <- df_flu[, total_events := sum(total_events, na.rm = T),
-                 by = .(week, event, codelist_type, virus)] %>%
+                 by = .(month, event, codelist_type, virus)] %>%
   unique()
 
 #separate by mild/severe and specifc/sensitive
@@ -97,9 +99,9 @@ df_covid <- as.data.table(bind_rows(
   df_covid_children,
   df_covid_infants
 )) %>%
-  arrange(week)
+  arrange(month)
 df_covid <- df_covid[, total_events := sum(total_events, na.rm = T),
-                 by = .(week, event, codelist_type, virus)] %>%
+                 by = .(month, event, codelist_type, virus)] %>%
   unique()
 
 #separate by mild/severe and specifc/sensitive
@@ -115,8 +117,8 @@ df_covid_sens_severe <- df_covid %>%
 #import surveillance data
 df_surv <- read_csv(here::here(
   "post_check", "exploratory_analyses", "surveillance",
-  "seasonality_weekly.csv")) %>%
-  arrange(week) %>%
+  "seasonality.csv")) %>%
+  arrange(month) %>%
   select(-covid_scaled) %>%
   pivot_longer(
     cols = c(total_rsv, total_flu, total_covid),
@@ -131,17 +133,17 @@ df_surv <- read_csv(here::here(
     )
   )
 
-df_surv <- df_surv[, c("week", "total_events", "virus")]
+df_surv <- df_surv[, c("month", "total_events", "virus")]
 
 df_surv_rsv <- df_surv %>%
-  filter(virus == "RSV", week %in% df_rsv$week)
+  filter(virus == "RSV", month %in% df_rsv$month)
 df_surv_flu <- df_surv %>%
-  filter(virus == "Influenza", week %in% df_flu$week)
+  filter(virus == "Influenza", month %in% df_flu$month)
 df_surv_flu_spec_severe <- df_surv %>%
-  filter(virus == "Influenza", week %in% df_flu_spec_severe$week) 
+  filter(virus == "Influenza", month %in% df_flu_spec_severe$month) 
 df_surv_covid <- df_surv %>%
   filter(virus == "COVID-19") %>%
-  filter(week >= "2020-03-01", week %in% df_covid$week)
+  filter(month >= "2020-03-01", month %in% df_covid$month)
 
 #granger tests
 granger_test_rsv_mild_spec <- lmtest::grangertest(
