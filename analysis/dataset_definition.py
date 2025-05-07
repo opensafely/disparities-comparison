@@ -821,6 +821,34 @@ else :
     .admission_date.minimum_for_patient()
   )
   
+  #get info for separate inclusion criteria
+  dataset.rsv_secondary_spec_criteria = (
+    apcs.sort_by(apcs.admission_date)
+    .where((apcs.primary_diagnosis
+    .is_in(codelists.rsv_secondary_codelist)) 
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.rsv_secondary_codelist)))
+    .where(apcs.admission_date.is_on_or_between(
+    index_date, followup_end_date))
+    .first_for_patient().admission_date
+  )
+  dataset.rsv_secondary_criteria_one = (
+    apcs.sort_by(apcs.admission_date).where(
+    (hospitalisation_diagnosis_matches(codelists
+    .rsv_secondary_codelist).exists_for_patient()))
+    .where(apcs.admission_date.is_on_or_between(
+    index_date, followup_end_date))
+    .admission_date.minimum_for_patient()
+  )
+  dataset.rsv_secondary_criteria_two = (
+    apcs.sort_by(apcs.admission_date).where(
+    (hospitalisation_diagnosis_matches(codelists
+    .unspecified_lrti).exists_for_patient()))
+    .where(apcs.admission_date.is_on_or_between(
+    index_date, followup_end_date))
+    .admission_date.minimum_for_patient()
+  )
+  
   #get occurrence of event in exclusion list within one month of an occurrence 
   #of rsv_secondary_sens_date 
   rsv_exclusion_secondary = (case(
@@ -1133,6 +1161,34 @@ else :
     .where((hospitalisation_diagnosis_matches(codelists
     .flu_secondary_codelist).exists_for_patient())
     |(hospitalisation_diagnosis_matches(codelists
+    .ari_secondary_codelist).exists_for_patient()))
+    .where(apcs.admission_date.is_on_or_between(
+    index_date, followup_end_date)).admission_date
+    .minimum_for_patient()
+  )
+  
+  #get info for separate inclusion criteria
+  dataset.flu_secondary_spec_criteria = (
+    apcs.sort_by(apcs.admission_date)
+    .where(apcs.primary_diagnosis
+    .is_in(codelists.flu_secondary_codelist) 
+    |apcs.secondary_diagnosis
+    .is_in(codelists.flu_secondary_codelist))
+    .where(apcs.admission_date.is_on_or_between(
+    index_date, followup_end_date)).admission_date
+    .minimum_for_patient()
+  )
+  dataset.flu_secondary_criteria_one = (
+    apcs.sort_by(apcs.admission_date)
+    .where((hospitalisation_diagnosis_matches(codelists
+    .flu_secondary_codelist).exists_for_patient()))
+    .where(apcs.admission_date.is_on_or_between(
+    index_date, followup_end_date)).admission_date
+    .minimum_for_patient()
+  )
+  dataset.flu_secondary_criteria_two = (
+    apcs.sort_by(apcs.admission_date)
+    .where((hospitalisation_diagnosis_matches(codelists
     .ari_secondary_codelist).exists_for_patient()))
     .where(apcs.admission_date.is_on_or_between(
     index_date, followup_end_date)).admission_date
