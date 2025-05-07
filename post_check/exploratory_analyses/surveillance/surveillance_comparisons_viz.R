@@ -92,19 +92,25 @@ df_all_rates <- df_all %>%
   select(month, event, rate_1000_py_midpoint10_derived,
          codelist_type, virus, type)
 
-coeff <- 200
-df_all_covid <- df_all %>%
+coeff <- 20
+df_all_covid_severe <- df_all %>%
   select(-c(interval_start, rate_1000_py_midpoint10_derived)) %>%
-  filter(virus == "COVID-19") %>%
+  filter(virus == "COVID-19" & event == "Mild") %>%
   mutate(
     total_events = if_else(is.na(total_events), 0, total_events/coeff),
   )
   
+df_all_covid <- rbind(df_all %>%
+  select(-c(interval_start, rate_1000_py_midpoint10_derived)) %>%
+  filter(virus != "COVID-19" & event != "Mild"),
+  df_all_covid_severe
+  )
+
 df_all <- rbind(df_all %>%
   select(-c(interval_start, rate_1000_py_midpoint10_derived)) %>%
-  filter(virus != "COVID-19"),
+    filter(virus != "COVID-19"),
   df_all_covid
-  ) %>%
+) %>%
   arrange(month)
   
 df_all <- df_all[, c("month", "event", "total_events",
