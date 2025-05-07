@@ -12,6 +12,33 @@ glm_poisson <- function(df, x, y, offset_var) {
   #define the base predictors
   predictors <- c(x, "age_band", "sex")
   
+  #filter data
+  if (str_detect(x, "rsv")) {
+    
+    df <- df %>%
+      group_by(patient_id) %>%
+      slice_head(n = 1) %>%
+      ungroup()
+    
+  } else if (str_detect(x, "flu")) {
+    
+    df <- df %>%
+      filter(vaccine %in% c("none", "pre_flu", "post_flu"))
+    
+  } else if (str_dectect(x, "covid")) {
+    
+    df <- df %>%
+      filter(vaccine %in% c("none", "pre_covid", "post_covid"))
+    
+  } else if (str_detect(x, "overall_resp")) {
+    
+    df <- df %>%
+      group_by(patient_id) %>%
+      slice_head(n = 1) %>%
+      ungroup()
+    
+  }
+  
   #update predictors based on cohort and investigation type
   if (cohort == "older_adults" & investigation_type == "secondary") {
     
@@ -50,8 +77,8 @@ glm_poisson <- function(df, x, y, offset_var) {
 }
 
 #create function for poisson regression with further adjustment
-glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
-                                vacc_severe, offset_var) {
+glm_poisson_further <- function(df, x, y, prior_vacc, current_vacc,
+                                offset_var) {
   
   #define minimum dates for covid seasons
   covid_season_min <- as.Date("2019-09-01")
@@ -60,6 +87,33 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
   
   #combine predictors
   predictors <- c(x, "age_band", "sex", "rurality_classification")
+  
+  #filter data
+  if (str_detect(x, "rsv")) {
+    
+    df <- df %>%
+      group_by(patient_id) %>%
+      slice_head(n = 1) %>%
+      ungroup()
+    
+  } else if (str_detect(x, "flu")) {
+    
+    df <- df %>%
+      filter(vaccine %in% c("none", "pre_flu", "post_flu"))
+    
+  } else if (str_dectect(x, "covid")) {
+    
+    df <- df %>%
+      filter(vaccine %in% c("none", "pre_covid", "post_covid"))
+    
+  } else if (str_detect(x, "overall_resp")) {
+    
+    df <- df %>%
+      group_by(patient_id) %>%
+      slice_head(n = 1) %>%
+      ungroup()
+    
+  }
   
   #update predictors based on the outcome, cohort, and study start date
   if (cohort == "infants_subgroup") {
@@ -78,11 +132,11 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
     
     if (y == "flu_primary_inf") {
       
-      predictors <- c(predictors, prior_vacc, vacc_mild)
+      predictors <- c(predictors, prior_vacc, current_vacc)
       
     } else if (y == "flu_secondary_inf") {
       
-      predictors <- c(predictors, prior_vacc, vacc_severe)
+      predictors <- c(predictors, prior_vacc, current_vacc)
       
     } else if (y == "covid_primary_inf") {
       
@@ -93,7 +147,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
         
       } else if (study_start_date >= as.Date("2021-09-01")) {
         
-        predictors <- c(predictors, prior_vacc, vacc_mild)
+        predictors <- c(predictors, prior_vacc, current_vacc)
         
       }
       
@@ -102,11 +156,11 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
       if (study_start_date >= as.Date("2020-09-01") &
           study_start_date < as.Date("2021-09-01")) {
         
-        predictors <- c(predictors, vacc_severe)
+        predictors <- c(predictors, current_vacc)
         
       } else if (study_start_date >= as.Date("2021-09-01")) {
         
-        predictors <- c(predictors, prior_vacc, vacc_severe)
+        predictors <- c(predictors, prior_vacc, current_vacc)
         
       }
       
