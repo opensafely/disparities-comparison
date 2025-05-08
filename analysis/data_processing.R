@@ -13,8 +13,8 @@ fs::dir_create(here::here("analysis"))
 source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- as.Date("2019-09-01")
-  study_end_date <- as.Date("2020-08-31")
+  study_start_date <- as.Date("2016-09-01")
+  study_end_date <- as.Date("2017-08-31")
   cohort <- "older_adults"
   codelist_type <- "specific"
   investigation_type <- "primary"
@@ -250,50 +250,26 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
     )
 }
 
-#create multiple rows per patient for different vaccination statuses
-if (cohort != "infants" & cohort != "infants_subgroup" &
-    study_start_date < covid_season_min) {
-  
-  # 1. Start with the full data
-  patients <- df_input
-  
-  # 2. Unvaccinated: no flu or covid
-  unvaccinated <- patients %>%
-    filter(is.na(flu_vaccination_immunity_date)) %>%
+#define two vaccinations categories for each outcome type, set vaccination to null
+#if immunity date occurs after outcome date 
+if (cohort != "infants" & cohort != "infants_subgroup") {
+  df_input <- df_input %>%
     mutate(
-      start = patient_index_date,
-      end = patient_end_date,
-      vaccine = "none"
+      #define flu_vaccination_mild
+      flu_vaccination_mild = relevel(factor(case_when(
+        flu_vaccination_immunity_date > flu_primary_date ~ "No",
+        is.na(flu_vaccination_immunity_date) ~ "No",
+        TRUE ~ "Yes")), ref = "No"),
+      #define flu_vaccination severe 
+      flu_vaccination_severe = relevel(factor(case_when(
+        flu_vaccination_immunity_date > flu_secondary_date ~ "No",
+        is.na(flu_vaccination_immunity_date) ~ "No",
+        TRUE ~ "Yes")), ref = "No")
     )
-  
-  # 3. Flu: pre- and post-vaccination rows
-  flu_vaccinated <- patients %>% filter(!is.na(flu_vaccination_immunity_date))
-  
-  flu_pre <- flu_vaccinated %>%
-    mutate(
-      start = patient_index_date,
-      end = flu_vaccination_immunity_date - days(1),
-      vaccine = "pre_flu"
-    )
-  
-  flu_post <- flu_vaccinated %>%
-    mutate(
-      start = flu_vaccination_immunity_date,
-      end = patient_end_date,
-      vaccine = "post_flu"
-    )
-  
-  # 4. Combine all, select consistent columns
-  final_data <- bind_rows(unvaccinated, flu_pre, flu_post) %>%
-    select(patient_id, start, end, vaccine, everything()) %>%  # reorder if desired
-    arrange(patient_id, start)
-  
 }
 
 #covid vaccination 
-if (study_start_date >= covid_prior_vacc_min &
-    cohort != "infants" & cohort != "infants_subgroup") {
-  
+if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
   df_input <- df_input %>%
     mutate(
       time_since_last_covid_vaccination = relevel(factor(case_when(
@@ -309,112 +285,33 @@ if (study_start_date >= covid_prior_vacc_min &
                              units = "days"), "months") >= 12 ~ "12m+",
         TRUE ~ "12m+")), ref = "0-6m")
     )
-  
 }
-
-#create multiple rows per patient for different vaccination statuses
-if (cohort != "infants" & cohort != "infants_subgroup" &
-    study_start_date >= covid_season_min) {
-
-  if (study_start_date < covid_current_vacc_min) {
-    
-    df_input <- df_input %>%
-      mutate(covid_vaccination_date = NA_Date_)
-    
-  }
-  
-  df_input <- df_input %>%
+if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
+  df_input <- df_input %>% 
     mutate(
       covid_vaccination_immunity_date = if_else(
         covid_vaccination_date + days(10) < patient_end_date,
         covid_vaccination_date + days(10), NA_Date_)
     )
-
-  # 1. Start with the full data
-  patients <- df_input
-  
-  # 2. Unvaccinated: no flu or covid
-  unvaccinated <- patients %>%
-    filter(is.na(flu_vaccination_immunity_date) &
-             is.na(covid_vaccination_immunity_date)) %>%
-    mutate(
-      start = patient_index_date,
-      end = patient_end_date,
-      vaccine = "none"
-    )
-  
-  # 3. Flu: pre- and post-vaccination rows
-  flu_vaccinated <- patients %>% filter(!is.na(flu_vaccination_immunity_date))
-  
-  flu_pre <- flu_vaccinated %>%
-    mutate(
-      start = patient_index_date,
-      end = flu_vaccination_immunity_date - days(1),
-      vaccine = "pre_flu"
-    )
-  
-  flu_post <- flu_vaccinated %>%
-    mutate(
-      start = flu_vaccination_immunity_date,
-      end = patient_end_date,
-      vaccine = "post_flu"
-    )
-  
-  # 4. COVID: pre- and post-vaccination rows
-  covid_vaccinated <- patients %>%
-    filter(!is.na(covid_vaccination_immunity_date))
-
-  covid_pre <- covid_vaccinated %>%
-    mutate(
-      start = patient_index_date,
-      end = covid_vaccination_immunity_date - days(1),
-      vaccine = "pre_covid"
-    )
-  
-  covid_post <- covid_vaccinated %>%
-    mutate(
-      start = covid_vaccination_immunity_date,
-      end = patient_end_date,
-      vaccine = "post_covid"
-    )
-  
-  # 5. Combine all, select consistent columns
-  final_data <- bind_rows(unvaccinated, flu_pre, flu_post, covid_pre, covid_post) %>%
-    select(patient_id, start, end, vaccine, everything()) %>%  # reorder if desired
-    arrange(patient_id, start)
-  
-  if (study_start_date < covid_current_vacc_min) {
-    final_data <- final_data %>%
-      select(-c(covid_vaccination_date, covid_vaccination_immunity_date))
-  }
-  
 }
 
-if (cohort == "infants" | cohort == "infants_subgroup") {
-  
-  final_data <- df_input %>%
+#define two vaccinations categories for each outcome type, set vaccination to null
+#if immunity date occurs after outcome date 
+if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
+  df_input <- df_input %>%
     mutate(
-      #create new patient index date
-      start = patient_index_date,
-      #create new patient end date
-      end = patient_end_date,
-      #assign vaccine status
-      vaccine = "none"
-    ) %>%
-    select(patient_id, start, end, vaccine, everything()) %>%  # reorder if desired
-    arrange(patient_id, start)
-  
+      #define covid_vaccination_mild
+      covid_vaccination_mild = relevel(factor(case_when(
+        covid_vaccination_immunity_date > covid_primary_date ~ "No",
+        is.na(covid_vaccination_immunity_date) ~ "No",
+        TRUE ~ "Yes")), ref = "No"),
+      #define covid_vaccination severe 
+      covid_vaccination_severe = relevel(factor(case_when(
+        covid_vaccination_immunity_date > covid_secondary_date ~ "No",
+        is.na(covid_vaccination_immunity_date) ~ "No",
+        TRUE ~ "Yes")), ref = "No")
+    )
 }
-
-#now assign new patient dates
-df_input <- final_data %>%
-  mutate(
-    patient_index_date = start,
-    patient_end_date = end
-  ) %>%
-  select(patient_id, patient_index_date, patient_end_date, vaccine,
-         everything()) %>%
-  select(-c(start, end))
 
 #set covid date to missing if existing date occurs before March 1st 2020
 if (study_start_date >= covid_season_min) {
@@ -503,333 +400,226 @@ if (codelist_type == "sensitive") {
 #define event time 
 if (study_start_date < covid_season_min) {
   df_input <- df_input %>%
-    group_by(patient_id) %>%
     mutate(
-      # For RSV: use global min/max across all rows per patient
-      rsv_index = min(patient_index_date),
-      rsv_end = max(patient_end_date),
-      
+      #infer mild case date for rsv 
       rsv_primary_inf_date = pmin(
         rsv_primary_date, rsv_secondary_date, deregistration_date,
-        death_date, rsv_end, na.rm = TRUE),
-      
+        death_date, patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
       rsv_primary_censor = if_else(
         rsv_primary_inf_date < rsv_primary_date, 1, 0, missing = 1),
-      
-      rsv_primary_inf = if_else(
-        rsv_primary_censor == 0 & !is.na(rsv_primary_censor), 1, 0),
-      
+      #infer mild rsv outcome 
+      rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
+      #infer severe case date for rsv
       rsv_secondary_inf_date = pmin(
-        rsv_secondary_date, deregistration_date, death_date, rsv_end,
-        na.rm = TRUE),
-      
+        rsv_secondary_date, deregistration_date, death_date,
+        patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
       rsv_secondary_censor = if_else(
-        rsv_secondary_inf_date < rsv_secondary_date, 1, 0,
-        missing = 1),
-      
-      rsv_secondary_inf = if_else(
-        rsv_secondary_censor == 0 & !is.na(rsv_secondary_censor), 1, 0),
-      
-      # For flu: only calculate in rows relevant to flu
-      flu_primary_inf_date = case_when(
-        vaccine %in% c("pre_flu", "post_flu", "none") ~
-          pmin(flu_primary_date, flu_secondary_date, deregistration_date,
-               death_date, patient_end_date, na.rm = TRUE),
-        flu_primary_date >= patient_index_date ~ patient_index_date,
-        TRUE ~ NA_Date_
-      ),
+        rsv_secondary_inf_date < rsv_secondary_date, 1, 0, missing = 1),
+      #infer severe rsv outcome
+      rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
+      #infer mild case date for flu
+      flu_primary_inf_date = pmin(
+        flu_primary_date, flu_secondary_date, deregistration_date,
+        death_date, patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
       flu_primary_censor = if_else(
-        vaccine %in% c("pre_flu", "post_flu", "none") &
-          flu_primary_inf_date < flu_primary_date, 1, 0, missing = 1
-      ),
-      flu_primary_inf = if_else(
-        flu_primary_censor == 0 & !is.na(flu_primary_censor), 1, 0),
-      
-      flu_secondary_inf_date = case_when(
-        vaccine %in% c("pre_flu", "post_flu", "none") ~
-          pmin(flu_secondary_date, deregistration_date,
-               death_date, patient_end_date, na.rm = TRUE),
-        flu_secondary_date >= patient_index_date ~ patient_index_date,
-        TRUE ~ NA_Date_
-      ),
+        flu_primary_inf_date < flu_primary_date, 1, 0, missing = 1),
+      #infer mild flu outcome
+      flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
+      #infer severe case date for flu
+      flu_secondary_inf_date = pmin(
+        flu_secondary_date, deregistration_date, death_date,
+        patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
       flu_secondary_censor = if_else(
-        vaccine %in% c("pre_flu", "post_flu", "none") &
-          flu_secondary_inf_date < flu_secondary_date, 1, 0, missing = 1
-      ),
-      flu_secondary_inf = if_else(
-        flu_secondary_censor == 0 & !is.na(flu_secondary_censor), 1, 0),
-    ) %>%
-    ungroup()
+        flu_secondary_inf_date < flu_secondary_date, 1, 0, missing = 1),
+      #infer severe flu outcome
+      flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0)
+    )
   #for sensitive analyses define overall respiratory outcomes
   if (codelist_type == "sensitive") {
     df_input <- df_input %>%
-      group_by(patient_id) %>%
       mutate(
-        # For overall respiratory infections: use full follow-up window
-        overall_resp_index = min(patient_index_date),
-        overall_resp_end = max(patient_end_date),
-        
+        #infer mild case date for overall respiratory
         overall_resp_primary_inf_date = pmin(
           overall_resp_primary_date, overall_resp_secondary_date,
-          deregistration_date, death_date, overall_resp_end, na.rm = TRUE),
-        
+          deregistration_date, death_date, patient_end_date, na.rm = TRUE),
+        #assign censoring indicator
         overall_resp_primary_censor = if_else(
           overall_resp_primary_inf_date < overall_resp_primary_date, 1, 0,
           missing = 1),
-        
+        #infer mild overall respiratory outcome
         overall_resp_primary_inf = if_else(
-          overall_resp_primary_censor == 0 & !is.na(overall_resp_primary_censor),
-          1, 0),
-        
+          overall_resp_primary_censor == 0, 1, 0),
+        #infer severe case date for overall respiratory
         overall_resp_secondary_inf_date = pmin(
-          overall_resp_secondary_date, deregistration_date, death_date,
-          overall_resp_end, na.rm = TRUE),
-        
+          overall_resp_secondary_date, deregistration_date,
+          death_date, patient_end_date, na.rm = TRUE),
+        #assign censoring indicator
         overall_resp_secondary_censor = if_else(
-          overall_resp_secondary_inf_date < overall_resp_secondary_date, 1, 0,
-          missing = 1),
-        
+          overall_resp_secondary_inf_date < overall_resp_secondary_date,
+          1, 0, missing = 1),
+        #infer severe overall respiratory outcome
         overall_resp_secondary_inf = if_else(
-          overall_resp_secondary_censor == 0 & !is.na(overall_resp_secondary_censor),
-          1, 0)
-      ) %>%
-      ungroup()
+          overall_resp_secondary_censor == 0, 1, 0)
+      )
   }
 } else {
   df_input <- df_input %>%
-    group_by(patient_id) %>%
     mutate(
-      # For RSV: use global min/max across all rows per patient
-      rsv_index = min(patient_index_date),
-      rsv_end = max(patient_end_date),
-      
+      #infer mild case date for rsv
       rsv_primary_inf_date = pmin(
         rsv_primary_date, rsv_secondary_date, deregistration_date,
-        death_date, rsv_end, na.rm = TRUE),
+        death_date, patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
       rsv_primary_censor = if_else(
         rsv_primary_inf_date < rsv_primary_date, 1, 0, missing = 1),
+      #infer mild rsv outcome 
       rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
-      
+      #infer severe case date for rsv
       rsv_secondary_inf_date = pmin(
-        rsv_secondary_date, deregistration_date, death_date, rsv_end,
-        na.rm = TRUE),
+        rsv_secondary_date, deregistration_date, death_date,
+        patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
       rsv_secondary_censor = if_else(
         rsv_secondary_inf_date < rsv_secondary_date, 1, 0, missing = 1),
+      #infer severe rsv outcome
       rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
-      
-      # For flu: only calculate in rows relevant to flu
-      flu_primary_inf_date = case_when(
-        vaccine %in% c("pre_flu", "post_flu", "none") ~
-          pmin(flu_primary_date, flu_secondary_date, deregistration_date,
-               death_date, patient_end_date, na.rm = TRUE),
-        flu_primary_date >= patient_index_date ~ patient_index_date,
-        TRUE ~ NA_Date_
-      ),
+      #infer mild case date for flu
+      flu_primary_inf_date = pmin(
+        flu_primary_date, flu_secondary_date, deregistration_date,
+        death_date, patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
       flu_primary_censor = if_else(
-        vaccine %in% c("pre_flu", "post_flu", "none") &
-          flu_primary_inf_date < flu_primary_date, 1, 0, missing = 1
-      ),
-      flu_primary_inf = if_else(
-        flu_primary_censor == 0 & !is.na(flu_primary_censor), 1, 0),
-      
-      flu_secondary_inf_date = case_when(
-        vaccine %in% c("pre_flu", "post_flu", "none") ~
-          pmin(flu_secondary_date, deregistration_date,
-               death_date, patient_end_date, na.rm = TRUE),
-        flu_secondary_date >= patient_index_date ~ patient_index_date,
-        TRUE ~ NA_Date_
-      ),
+        flu_primary_inf_date < flu_primary_date, 1, 0, missing = 1),
+      #infer mild flu outcome
+      flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
+      #infer severe case date for flu
+      flu_secondary_inf_date = pmin(
+        flu_secondary_date, deregistration_date, death_date,
+        patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
       flu_secondary_censor = if_else(
-        vaccine %in% c("pre_flu", "post_flu", "none") &
-          flu_secondary_inf_date < flu_secondary_date, 1, 0, missing = 1
-      ),
-      flu_secondary_inf = if_else(
-        flu_secondary_censor == 0 & !is.na(flu_secondary_censor), 1, 0),
-      
-      # For COVID: only calculate in rows relevant to covid
-      covid_primary_inf_date = case_when(
-        vaccine %in% c("pre_covid", "post_covid", "none")  ~
-          pmin(covid_primary_date, covid_secondary_date, deregistration_date,
-               death_date, patient_end_date, na.rm = TRUE),
-        covid_primary_date >= patient_index_date ~ patient_index_date,
-        TRUE ~ NA_Date_
-      ),
+        flu_secondary_inf_date < flu_secondary_date, 1, 0, missing = 1),
+      #infer severe flu outcome
+      flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0),
+      #infer mild case date for covid
+      covid_primary_inf_date = pmin(
+        covid_primary_date, covid_secondary_date, deregistration_date,
+        death_date, patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
       covid_primary_censor = if_else(
-        vaccine %in% c("pre_covid", "post_covid", "none") &
-          covid_primary_inf_date < covid_primary_date, 1, 0, missing = 1
-      ),
-      covid_primary_inf = if_else(
-        covid_primary_censor == 0 & !is.na(covid_primary_censor), 1, 0),
-      
-      covid_secondary_inf_date = case_when(
-        vaccine %in% c("pre_covid", "post_covid", "none")  ~
-          pmin(covid_secondary_date, deregistration_date,
-               death_date, patient_end_date, na.rm = TRUE),
-        covid_secondary_date >= patient_index_date ~ patient_index_date,
-        TRUE ~ NA_Date_
-      ),
+        covid_primary_inf_date < covid_primary_date, 1, 0, missing = 1),
+      #infer mild covid outcome
+      covid_primary_inf = if_else(covid_primary_censor == 0, 1, 0),
+      #infer severe case date for covid
+      covid_secondary_inf_date = pmin(
+        covid_secondary_date, deregistration_date, death_date,
+        patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
       covid_secondary_censor = if_else(
-        vaccine %in% c("pre_covid", "post_covid", "none") &
-          covid_secondary_inf_date < covid_secondary_date, 1, 0, missing = 1
-      ),
-      covid_secondary_inf = if_else(
-        covid_secondary_censor == 0 & !is.na(covid_secondary_censor), 1, 0)
-    ) %>%
-    ungroup()
+        covid_secondary_inf_date < covid_secondary_date, 1, 0, missing = 1),
+      #infer severe covid outcome
+      covid_secondary_inf = if_else(covid_secondary_censor == 0, 1, 0)
+    )
   #for sensitive analyses define overall respiratory outcomes
   if (codelist_type == "sensitive") {
     df_input <- df_input %>%
-      group_by(patient_id) %>%
       mutate(
-        # For overall respiratory infections: use full follow-up window
-        overall_resp_index = min(patient_index_date),
-        overall_resp_end = max(patient_end_date),
-        
+        #infer mild case date for overall respiratory
         overall_resp_primary_inf_date = pmin(
           overall_resp_primary_date, overall_resp_secondary_date,
-          deregistration_date, death_date, overall_resp_end, na.rm = TRUE),
-        
+          deregistration_date, death_date, patient_end_date, na.rm = TRUE),
+        #assign censoring indicator
         overall_resp_primary_censor = if_else(
           overall_resp_primary_inf_date < overall_resp_primary_date, 1, 0,
           missing = 1),
-        
+        #infer overall respiratory outcome
         overall_resp_primary_inf = if_else(
-          overall_resp_primary_censor == 0 & !is.na(overall_resp_primary_censor),
-          1, 0),
-        
+          overall_resp_primary_censor == 0, 1, 0),
+        #infer severe case date for overall respiratory
         overall_resp_secondary_inf_date = pmin(
-          overall_resp_secondary_date, deregistration_date, death_date,
-          overall_resp_end, na.rm = TRUE),
-        
+          overall_resp_secondary_date, deregistration_date,
+          death_date, patient_end_date, na.rm = TRUE),
+        #assign censoring indicator
         overall_resp_secondary_censor = if_else(
-          overall_resp_secondary_inf_date < overall_resp_secondary_date, 1, 0,
-          missing = 1),
-        
+          overall_resp_secondary_inf_date < overall_resp_secondary_date,
+          1, 0, missing = 1),
+        #infer severe overall respiratory outcome
         overall_resp_secondary_inf = if_else(
-          overall_resp_secondary_censor == 0 & !is.na(overall_resp_secondary_censor),
-          1, 0)
-      ) %>%
-      ungroup()
+          overall_resp_secondary_censor == 0, 1, 0)
+      )
   }
 }
 
 #calculate time to event
 if (study_start_date < covid_season_min) {
   df_input <- df_input %>%
-    group_by(patient_id) %>%
     mutate(
-      # RSV: full patient follow-up
-      rsv_index = min(patient_index_date),
-      rsv_end = max(patient_end_date),
-      
-      # RSV: applies to everyone
-      time_rsv_primary = time_length(
-        difftime(rsv_primary_inf_date, rsv_index - days(1), "weeks"), "years"
-      ),
-      time_rsv_secondary = time_length(
-        difftime(rsv_secondary_inf_date, rsv_index - days(1), "weeks"), "years"
-      ),
-      
-      # Flu outcomes: include "none", "pre-flu", "post-flu"
-      time_flu_primary = time_length(
-        difftime(flu_primary_inf_date, patient_index_date - days(1),
-                 "weeks"), "years"
-      ),
-      time_flu_secondary = time_length(
-        difftime(flu_secondary_inf_date, patient_index_date - days(1),
-                 "weeks"), "years"
-      )
-    ) %>%
-    ungroup()
+      #time until mild rsv outcome
+      time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
+                         patient_index_date - days(1), "weeks"), "years"),
+      #time until severe rsv outcome
+      time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
+                           patient_index_date - days(1), "weeks"), "years"),
+      #time until mild flu outcome
+      time_flu_primary = time_length(difftime(flu_primary_inf_date, 
+                         patient_index_date - days(1), "weeks"), "years"),
+      #time until severe flu outcome
+      time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
+                           patient_index_date - days(1), "weeks"), "years")
+    )
   if (codelist_type == "sensitive") {
     df_input <- df_input %>%
-      group_by(patient_id) %>%
       mutate(
-        # Overall Respiratory: full patient follow-up
-        overall_resp_index = min(patient_index_date),
-        overall_resp_end = max(patient_end_date),
         #time until mild overall respiratory outcome
         time_overall_resp_primary = time_length(
-          difftime(overall_resp_primary_inf_date, overall_resp_index - days(1),
-                   "weeks"), "years"
-        ),
+          difftime(overall_resp_primary_inf_date, patient_index_date - days(1),
+                   "weeks"), "years"),
         #time until severe overall respiratory outcome
         time_overall_resp_secondary = time_length(
-          difftime(overall_resp_secondary_inf_date, overall_resp_index - days(1),
-                   "weeks"), "years"
-        )
-      ) %>%
-      ungroup()
+          difftime(overall_resp_secondary_inf_date, patient_index_date - days(1),
+                   "weeks"), "years")
+      )
   }
 } else {
   df_input <- df_input %>%
-    group_by(patient_id) %>%
     mutate(
-      # RSV: full patient follow-up
-      rsv_index = min(patient_index_date),
-      rsv_end = max(patient_end_date),
-      
-      # RSV: applies to everyone
-      time_rsv_primary = time_length(
-        difftime(rsv_primary_inf_date, rsv_index - days(1), "weeks"), "years"
-      ),
-      time_rsv_secondary = time_length(
-        difftime(rsv_secondary_inf_date, rsv_index - days(1), "weeks"), "years"
-      ),
-      
-      # Flu outcomes: include "none", "pre-flu", "post-flu"
-      time_flu_primary = time_length(
-        difftime(flu_primary_inf_date, patient_index_date - days(1),
-                 "weeks"), "years"
-      ),
-      time_flu_secondary = time_length(
-        difftime(flu_secondary_inf_date, patient_index_date - days(1),
-                 "weeks"), "years"
-      ),
-      
-      # Covid outcomes: include "none", "pre-covid", "post-covid"
-      time_covid_primary = time_length(
-        difftime(covid_primary_inf_date, patient_index_date - days(1),
-                 "weeks"), "years"
-      ),
-      time_covid_secondary = time_length(
-        difftime(covid_secondary_inf_date, patient_index_date - days(1),
-                             "weeks"), "years"
-      )
-    ) %>%
-    ungroup()
+      #time until mild rsv outcome
+      time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
+                         patient_index_date - days(1), "weeks"), "years"),
+      #time until severe rsv outcome
+      time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
+                           patient_index_date - days(1), "weeks"), "years"),
+      #time until mild flu outcome
+      time_flu_primary = time_length(difftime(flu_primary_inf_date, 
+                         patient_index_date - days(1), "weeks"), "years"),
+      #time until severe flu outcome
+      time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
+                           patient_index_date - days(1), "weeks"), "years"),
+      #time until mild covid outcome
+      time_covid_primary = time_length(difftime(covid_primary_inf_date, 
+                           patient_index_date - days(1), "weeks"), "years"),
+      #time until severe covid outcome
+      time_covid_secondary = time_length(difftime(covid_secondary_inf_date, 
+                             patient_index_date - days(1), "weeks"), "years")
+    )
   if (codelist_type == "sensitive") {
     df_input <- df_input %>%
-      group_by(patient_id) %>%
       mutate(
-        # Overall Respiratory: full patient follow-up
-        overall_resp_index = min(patient_index_date),
-        overall_resp_end = max(patient_end_date),
         #time until mild overall respiratory outcome
         time_overall_resp_primary = time_length(
-          difftime(overall_resp_primary_inf_date, overall_resp_index - days(1),
-                   "weeks"), "years"
-        ),
+          difftime(overall_resp_primary_inf_date, patient_index_date - days(1),
+                   "weeks"), "years"),
         #time until severe overall respiratory outcome
         time_overall_resp_secondary = time_length(
-          difftime(overall_resp_secondary_inf_date, overall_resp_index - days(1),
-                   "weeks"), "years"
-        )
-      ) %>%
-      ungroup()
+          difftime(overall_resp_secondary_inf_date, patient_index_date - days(1),
+                   "weeks"), "years")
+      )
   }
 }
-
-# filt <- df_input %>% 
-#   select(c(patient_id, patient_index_date, patient_end_date, vaccine,
-#            rsv_primary_date, rsv_primary_inf_date, time_rsv_primary,
-#            rsv_secondary_date, rsv_secondary_inf_date, time_rsv_secondary,
-#            flu_vaccination_date, flu_vaccination_immunity_date,
-#            flu_primary_date, flu_primary_inf_date, time_flu_primary,
-#            flu_secondary_date, flu_secondary_inf_date, time_flu_secondary,
-#            covid_vaccination_date, covid_vaccination_immunity_date,
-#            covid_primary_date, covid_primary_inf_date, time_covid_primary,
-#            covid_secondary_date, covid_secondary_inf_date, time_covid_secondary))
 
 ## create output directories ----
 fs::dir_create(here::here("output", "data"))
