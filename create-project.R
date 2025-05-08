@@ -3495,8 +3495,8 @@ actions_list <- splice (
   comment("# # # # # # # # # # # # # # # # # # #", "Household Information Actions", "# # # # # # # # # # # # # # # # # # #"),
   
   action_household("s5", "2020_2021", "season5_start_date", "season5_end_date"),
-  action_household("s5test", "2020_2020", "season5_start_date", "season5_test_end_date"),
-  action_household("s5test2", "2021_2021", "season5_test_start_date", "season5_end_date"),
+  # action_household("s5test", "2020_2020", "season5_start_date", "season5_test_end_date"),
+  # action_household("s5test2", "2021_2021", "season5_test_start_date", "season5_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "PRIMARY ANALYSES", "# # # # # # # # # # # # # # # # # # #"),
   
@@ -3509,11 +3509,11 @@ actions_list <- splice (
   action_covid("older_adults", "s4", "2019_2020", "specific", "primary", "season4_start_date", "season4_end_date"),
   action_specified("older_adults", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
   action_covid("older_adults", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
-  #test
-  action_specified("older_adults", "s5test", "2020_2020", "specific", "primary", "season5_start_date", "season5_test_end_date"),
-  action_covid("older_adults", "s5test", "2020_2020", "specific", "primary", "season5_start_date", "season5_test_end_date"),
-  action_specified("older_adults", "s5test2", "2021_2021", "specific", "primary", "season5_test_start_date", "season5_end_date"),
-  action_covid("older_adults", "s5test2", "2021_2021", "specific", "primary", "season5_test_start_date", "season5_end_date"),
+  # #test
+  # action_specified("older_adults", "s5test", "2020_2020", "specific", "primary", "season5_start_date", "season5_test_end_date"),
+  # action_covid("older_adults", "s5test", "2020_2020", "specific", "primary", "season5_start_date", "season5_test_end_date"),
+  # action_specified("older_adults", "s5test2", "2021_2021", "specific", "primary", "season5_test_start_date", "season5_end_date"),
+  # action_covid("older_adults", "s5test2", "2021_2021", "specific", "primary", "season5_test_start_date", "season5_end_date"),
   action_specified("older_adults", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
   action_covid("older_adults", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
   action_specified("older_adults", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
@@ -3596,11 +3596,11 @@ actions_list <- splice (
   action_covid("older_adults", "s4", "2019_2020", "sensitive", "primary", "season4_start_date", "season4_end_date"),
   action_specified_sensitive("older_adults", "s5", "2020_2021", "sensitive", "primary", "season5_start_date", "season5_end_date"),
   action_covid("older_adults", "s5", "2020_2021", "sensitive", "primary", "season5_start_date", "season5_end_date"),
-  #test
-  action_specified_sensitive("older_adults", "s5test", "2020_2020", "sensitive", "primary", "season5_start_date", "season5_test_end_date"),
-  action_covid("older_adults", "s5test", "2020_2020", "sensitive", "primary", "season5_start_date", "season5_test_end_date"),
-  action_specified("older_adults", "s5test2", "2021_2021", "sensitive", "primary", "season5_test_start_date", "season5_end_date"),
-  action_covid("older_adults", "s5test2", "2021_2021", "sensitive", "primary", "season5_test_start_date", "season5_end_date"),
+  # #test
+  # action_specified_sensitive("older_adults", "s5test", "2020_2020", "sensitive", "primary", "season5_start_date", "season5_test_end_date"),
+  # action_covid("older_adults", "s5test", "2020_2020", "sensitive", "primary", "season5_start_date", "season5_test_end_date"),
+  # action_specified("older_adults", "s5test2", "2021_2021", "sensitive", "primary", "season5_test_start_date", "season5_end_date"),
+  # action_covid("older_adults", "s5test2", "2021_2021", "sensitive", "primary", "season5_test_start_date", "season5_end_date"),
   action_specified_sensitive("older_adults", "s6", "2021_2022", "sensitive", "primary", "season6_start_date", "season6_end_date"),
   action_covid("older_adults", "s6", "2021_2022", "sensitive", "primary", "season6_start_date", "season6_end_date"),
   action_specified_sensitive("older_adults", "s7", "2022_2023", "sensitive", "primary", "season7_start_date", "season7_end_date"),
@@ -3686,11 +3686,11 @@ actions_list <- splice (
   action_skimming("older_adults", "s4", "2019_2020", "sensitive", "primary", "season4_start_date", "season4_end_date"),
   action_skimming("older_adults", "s5", "2020_2021", "specific", "primary", "season5_start_date", "season5_end_date"),
   action_skimming("older_adults", "s5", "2020_2021", "sensitive", "primary", "season5_start_date", "season5_end_date"),
-  #test
-  action_skimming("older_adults", "s5test", "2020_2020", "specific", "primary", "season5_start_date", "season5_test_end_date"),
-  action_skimming("older_adults", "s5test", "2020_2020", "sensitive", "primary", "season5_start_date", "season5_test_end_date"),
-  action_skimming("older_adults", "s5test2", "2021_2021", "specific", "primary", "season5_test_start_date", "season5_end_date"),
-  action_skimming("older_adults", "s5test2", "2021_2021", "sensitive", "primary", "season5_test_start_date", "season5_end_date"),
+  # #test
+  # action_skimming("older_adults", "s5test", "2020_2020", "specific", "primary", "season5_start_date", "season5_test_end_date"),
+  # action_skimming("older_adults", "s5test", "2020_2020", "sensitive", "primary", "season5_start_date", "season5_test_end_date"),
+  # action_skimming("older_adults", "s5test2", "2021_2021", "specific", "primary", "season5_test_start_date", "season5_end_date"),
+  # action_skimming("older_adults", "s5test2", "2021_2021", "sensitive", "primary", "season5_test_start_date", "season5_end_date"),
   action_skimming("older_adults", "s6", "2021_2022", "specific", "primary", "season6_start_date", "season6_end_date"),
   action_skimming("older_adults", "s6", "2021_2022", "sensitive", "primary", "season6_start_date", "season6_end_date"),
   action_skimming("older_adults", "s7", "2022_2023", "specific", "primary", "season7_start_date", "season7_end_date"),
