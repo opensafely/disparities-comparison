@@ -15,10 +15,12 @@ if (length(args) == 0) {
   study_start_date <- "2021-09-01"
   study_end_date <- "2022-08-31"
   cohort <- "adults"
+  codelist_type <- "specific"
 } else {
   cohort <- args[[1]]
   study_start_date <- study_dates[[args[[2]]]]
   study_end_date <- study_dates[[args[[3]]]]
+  codelist_type <- args[[4]]
 }
 covid_season_min <- as.Date("2019-09-01")
 covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
@@ -30,7 +32,7 @@ source(here::here("analysis", "functions", "redaction.R"))
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
              year(study_start_date), "_", year(study_end_date), "_", 
-             "specific", "_", "primary",".arrow")))
+             codelist_type, "_", "primary",".arrow")))
 
 #select necessary columns
 if (study_start_date >= covid_season_min) {
@@ -736,4 +738,4 @@ fs::dir_create(here::here("output", "exploratory"))
 #write to file
 write_csv(patients, paste0(here::here("output", "exploratory"),
           "/", "reinfections_", cohort, "_", year(study_start_date), "_", 
-          year(study_end_date), ".csv"))
+          year(study_end_date), "_", codelist_type, ".csv"))
