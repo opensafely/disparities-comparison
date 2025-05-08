@@ -84,7 +84,7 @@ if (too_few_events_mild) {
   #flu by socioeconomic status
   flu_mild_ses_further_output <- glm_poisson_further(
     df_input, "imd_quintile", "flu_primary_inf", "prior_flu_vaccination",
-    "flu_vaccination_mild", "flu_vaccination_severe", "time_flu_primary")
+    "time_flu_primary")
   
 }
 
@@ -101,7 +101,7 @@ if (too_few_events_severe) {
   #flu by socioeconomic status
   flu_severe_ses_further_output <- glm_poisson_further(
     df_input, "imd_quintile", "flu_secondary_inf", "prior_flu_vaccination",
-    "flu_vaccination_mild", "flu_vaccination_severe", "time_flu_secondary")
+    "time_flu_secondary")
   
 }
 

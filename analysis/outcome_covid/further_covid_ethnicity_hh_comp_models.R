@@ -74,7 +74,6 @@ if (too_few_events_mild) {
   covid_mild_ethnicity_hh_comp_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "composition_category"),
     "covid_primary_inf", "time_since_last_covid_vaccination",
-    "covid_vaccination_mild", "covid_vaccination_severe",
     "time_covid_primary")
   
 }
@@ -93,7 +92,6 @@ if (too_few_events_severe) {
   covid_severe_ethnicity_hh_comp_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "composition_category"),
     "covid_secondary_inf", "time_since_last_covid_vaccination",
-    "covid_vaccination_mild", "covid_vaccination_severe",
     "time_covid_secondary")
   
 }

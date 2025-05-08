@@ -75,7 +75,7 @@ if (too_few_events_mild) {
   flu_mild_full_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "imd_quintile",
     "composition_category"), "flu_primary_inf", "prior_flu_vaccination",
-    "flu_vaccination_mild", "flu_vaccination_severe", "time_flu_primary")
+    "time_flu_primary")
   
 }
 
@@ -93,7 +93,7 @@ if (too_few_events_severe) {
   flu_severe_full_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "imd_quintile",
     "composition_category"), "flu_secondary_inf", "prior_flu_vaccination",
-    "flu_vaccination_mild", "flu_vaccination_severe", "time_flu_secondary")
+    "time_flu_secondary")
   
 }
 

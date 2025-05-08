@@ -71,8 +71,8 @@ if (too_few_events_mild) {
   
   #flu by household composition
   flu_mild_hh_comp_further_output <- glm_poisson_further(
-    df_input, "composition_category", "flu_primary_inf", "prior_flu_vaccination",
-    "flu_vaccination_mild", "flu_vaccination_severe", "time_flu_primary")
+    df_input, "composition_category", "flu_primary_inf",
+    "prior_flu_vaccination", "time_flu_primary")
   
 }
 
@@ -89,8 +89,7 @@ if (too_few_events_severe) {
   #flu by household composition
   flu_severe_hh_comp_further_output <- glm_poisson_further(
     df_input, "composition_category", "flu_secondary_inf",
-    "prior_flu_vaccination", "flu_vaccination_mild",
-    "flu_vaccination_severe", "time_flu_secondary")
+    "prior_flu_vaccination", "time_flu_secondary")
   
 }
 

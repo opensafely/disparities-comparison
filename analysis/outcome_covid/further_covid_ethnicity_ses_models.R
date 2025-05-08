@@ -44,7 +44,8 @@ if (cohort == "infants_subgroup") {
            !is.na(age_band), !is.na(sex), !is.na(rurality_classification),
            !is.na(maternal_age), !is.na(maternal_smoking_status),
            !is.na(maternal_drinking), !is.na(maternal_drug_usage),
-           !is.na(maternal_flu_vaccination), !is.na(maternal_pertussis_vaccination))
+           !is.na(maternal_flu_vaccination),
+           !is.na(maternal_pertussis_vaccination))
   
 } else {
   
@@ -87,7 +88,7 @@ if (too_few_events_mild) {
   covid_mild_ethnicity_ses_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "imd_quintile"),
     "covid_primary_inf", "time_since_last_covid_vaccination",
-    "covid_vaccination_mild", "covid_vaccination_severe", "time_covid_primary")
+    "time_covid_primary")
   
 }
 
@@ -105,7 +106,6 @@ if (too_few_events_severe) {
   covid_severe_ethnicity_ses_further_output <- glm_poisson_further(
     df_input, c("latest_ethnicity_group", "imd_quintile"),
     "covid_secondary_inf", "time_since_last_covid_vaccination",
-    "covid_vaccination_mild", "covid_vaccination_severe",
     "time_covid_secondary")
   
 }

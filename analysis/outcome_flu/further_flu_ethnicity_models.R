@@ -85,8 +85,7 @@ if (too_few_events_mild) {
   #flu by ethnicity
   flu_mild_ethnicity_further_output <- glm_poisson_further(
     df_input, "latest_ethnicity_group", "flu_primary_inf",
-    "prior_flu_vaccination", "flu_vaccination_mild", "flu_vaccination_severe",
-    "time_flu_primary")
+    "prior_flu_vaccination", "time_flu_primary")
   
 }
 
@@ -103,8 +102,7 @@ if (too_few_events_severe) {
   #flu by ethnicity
   flu_severe_ethnicity_further_output <- glm_poisson_further(
     df_input, "latest_ethnicity_group", "flu_secondary_inf",
-    "prior_flu_vaccination", "flu_vaccination_mild", "flu_vaccination_severe",
-    "time_flu_secondary")
+    "prior_flu_vaccination", "time_flu_secondary")
   
 }
 

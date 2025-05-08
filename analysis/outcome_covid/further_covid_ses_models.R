@@ -15,10 +15,10 @@ is_being_sourced <- sys.nframe() > 0
 if (is_being_sourced == FALSE) {
   args <- commandArgs(trailingOnly = TRUE)
   if (length(args) == 0) {
-    study_start_date <- "2016-09-01"
-    study_end_date <- "2017-08-31"
-    cohort <- "infants"
-    codelist_type <- "sensitive"
+    study_start_date <- "2021-09-01"
+    study_end_date <- "2022-08-31"
+    cohort <- "older_adults"
+    codelist_type <- "specific"
     investigation_type <- "primary"
   } else {
     study_start_date <- study_dates[[args[[2]]]]
@@ -86,8 +86,7 @@ if (too_few_events_mild) {
   #covid by socioeconomic status
   covid_mild_ses_further_output <- glm_poisson_further(
     df_input, "imd_quintile", "covid_primary_inf",
-    "time_since_last_covid_vaccination", "covid_vaccination_mild",
-    "covid_vaccination_severe", "time_covid_primary")
+    "time_since_last_covid_vaccination", "time_covid_primary")
   
 }
 
@@ -104,8 +103,7 @@ if (too_few_events_severe) {
   #covid by socioeconomic status
   covid_severe_ses_further_output <- glm_poisson_further(
     df_input, "imd_quintile", "covid_secondary_inf",
-    "time_since_last_covid_vaccination", "covid_vaccination_mild",
-    "covid_vaccination_severe", "time_covid_secondary")
+    "time_since_last_covid_vaccination", "time_covid_secondary")
   
 }
 
