@@ -46,7 +46,7 @@ collated_reinfections = rbind(
     mutate(subset = "2022_23", codelist_type = codelist_type),
   read_csv(here::here("output", "exploratory", paste0("reinfections_",
            cohort, "_2023_2024", "_", codelist_type, ".csv"))) %>%
-    mutate(subset = "2023_24", codelist_type = codelist_type),
+    mutate(subset = "2023_24", codelist_type = codelist_type)
 )
 
 #save as csv
