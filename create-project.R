@@ -2234,18 +2234,33 @@ action_finalise <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_reinfections_tables_{cohort}"),
-      run = glue("r:latest analysis/collation_code/reinfections_table_collation.R {cohort}"),
-      needs = list(glue("reinfections_{cohort}_s1"),
-                   glue("reinfections_{cohort}_s2"),
-                   glue("reinfections_{cohort}_s3"),
-                   glue("reinfections_{cohort}_s4"),
-                   glue("reinfections_{cohort}_s5"),
-                   glue("reinfections_{cohort}_s6"),
-                   glue("reinfections_{cohort}_s7"),
-                   glue("reinfections_{cohort}_s8")),
+      name = glue("collate_reinfections_tables_{cohort}_specific"),
+      run = glue("r:latest analysis/collation_code/reinfections_table_collation.R {cohort} specific"),
+      needs = list(glue("reinfections_{cohort}_s1_specific"),
+                   glue("reinfections_{cohort}_s2_specific"),
+                   glue("reinfections_{cohort}_s3_specific"),
+                   glue("reinfections_{cohort}_s4_specific"),
+                   glue("reinfections_{cohort}_s5_specific"),
+                   glue("reinfections_{cohort}_s6_specific"),
+                   glue("reinfections_{cohort}_s7_specific"),
+                   glue("reinfections_{cohort}_s8_specific")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/{cohort}_reinfections_collated.csv"))
+        csv = glue("output/collated/descriptive/{cohort}_reinfections_specific_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_reinfections_tables_{cohort}_sensitive"),
+      run = glue("r:latest analysis/collation_code/reinfections_table_collation.R {cohort} sensitive"),
+      needs = list(glue("reinfections_{cohort}_s1_sensitive"),
+                   glue("reinfections_{cohort}_s2_sensitive"),
+                   glue("reinfections_{cohort}_s3_sensitive"),
+                   glue("reinfections_{cohort}_s4_sensitive"),
+                   glue("reinfections_{cohort}_s5_sensitive"),
+                   glue("reinfections_{cohort}_s6_sensitive"),
+                   glue("reinfections_{cohort}_s7_sensitive"),
+                   glue("reinfections_{cohort}_s8_sensitive")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_reinfections_sensitive_collated.csv"))
     ),
     
     action(
@@ -2628,18 +2643,33 @@ action_finalise_older_adults <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_reinfections_tables_{cohort}"),
-      run = glue("r:latest analysis/collation_code/reinfections_table_collation.R {cohort}"),
-      needs = list(glue("reinfections_{cohort}_s1"),
-                   glue("reinfections_{cohort}_s2"),
-                   glue("reinfections_{cohort}_s3"),
-                   glue("reinfections_{cohort}_s4"),
-                   glue("reinfections_{cohort}_s5"),
-                   glue("reinfections_{cohort}_s6"),
-                   glue("reinfections_{cohort}_s7"),
-                   glue("reinfections_{cohort}_s8")),
+      name = glue("collate_reinfections_tables_{cohort}_specific"),
+      run = glue("r:latest analysis/collation_code/reinfections_table_collation.R {cohort} specific"),
+      needs = list(glue("reinfections_{cohort}_s1_specific"),
+                   glue("reinfections_{cohort}_s2_specific"),
+                   glue("reinfections_{cohort}_s3_specific"),
+                   glue("reinfections_{cohort}_s4_specific"),
+                   glue("reinfections_{cohort}_s5_specific"),
+                   glue("reinfections_{cohort}_s6_specific"),
+                   glue("reinfections_{cohort}_s7_specific"),
+                   glue("reinfections_{cohort}_s8_specific")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/{cohort}_reinfections_collated.csv"))
+        csv = glue("output/collated/descriptive/{cohort}_reinfections_specific_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_reinfections_tables_{cohort}_sensitive"),
+      run = glue("r:latest analysis/collation_code/reinfections_table_collation.R {cohort} sensitive"),
+      needs = list(glue("reinfections_{cohort}_s1_sensitive"),
+                   glue("reinfections_{cohort}_s2_sensitive"),
+                   glue("reinfections_{cohort}_s3_sensitive"),
+                   glue("reinfections_{cohort}_s4_sensitive"),
+                   glue("reinfections_{cohort}_s5_sensitive"),
+                   glue("reinfections_{cohort}_s6_sensitive"),
+                   glue("reinfections_{cohort}_s7_sensitive"),
+                   glue("reinfections_{cohort}_s8_sensitive")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_reinfections_sensitive_collated.csv"))
     ),
     
     action(
@@ -3205,18 +3235,33 @@ action_finalise_infants <- function(cohort) {
     ),
     
     action(
-      name = glue("collate_reinfections_tables_{cohort}"),
-      run = glue("r:latest analysis/collation_code/reinfections_table_collation.R {cohort}"),
-      needs = list(glue("reinfections_{cohort}_s1"),
-                   glue("reinfections_{cohort}_s2"),
-                   glue("reinfections_{cohort}_s3"),
-                   glue("reinfections_{cohort}_s4"),
-                   glue("reinfections_{cohort}_s5"),
-                   glue("reinfections_{cohort}_s6"),
-                   glue("reinfections_{cohort}_s7"),
-                   glue("reinfections_{cohort}_s8")),
+      name = glue("collate_reinfections_tables_{cohort}_specific"),
+      run = glue("r:latest analysis/collation_code/reinfections_table_collation.R {cohort} specific"),
+      needs = list(glue("reinfections_{cohort}_s1_specific"),
+                   glue("reinfections_{cohort}_s2_specific"),
+                   glue("reinfections_{cohort}_s3_specific"),
+                   glue("reinfections_{cohort}_s4_specific"),
+                   glue("reinfections_{cohort}_s5_specific"),
+                   glue("reinfections_{cohort}_s6_specific"),
+                   glue("reinfections_{cohort}_s7_specific"),
+                   glue("reinfections_{cohort}_s8_specific")),
       moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/{cohort}_reinfections_collated.csv"))
+        csv = glue("output/collated/descriptive/{cohort}_reinfections_specific_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_reinfections_tables_{cohort}_sensitive"),
+      run = glue("r:latest analysis/collation_code/reinfections_table_collation.R {cohort} sensitive"),
+      needs = list(glue("reinfections_{cohort}_s1_sensitive"),
+                   glue("reinfections_{cohort}_s2_sensitive"),
+                   glue("reinfections_{cohort}_s3_sensitive"),
+                   glue("reinfections_{cohort}_s4_sensitive"),
+                   glue("reinfections_{cohort}_s5_sensitive"),
+                   glue("reinfections_{cohort}_s6_sensitive"),
+                   glue("reinfections_{cohort}_s7_sensitive"),
+                   glue("reinfections_{cohort}_s8_sensitive")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/{cohort}_reinfections_sensitive_collated.csv"))
     ),
     
     action(
