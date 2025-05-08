@@ -2,6 +2,7 @@ library(here)
 library(broom)
 library(rlang)
 library(purrr)
+library(survival)
 
 ## create output directories ----
 fs::dir_create(here::here("analysis", "functions"))
@@ -11,33 +12,6 @@ glm_poisson <- function(df, x, y, offset_var) {
   
   #define the base predictors
   predictors <- c(x, "age_band", "sex")
-  
-  #filter data
-  if (str_detect(x, "rsv")) {
-    
-    df <- df %>%
-      group_by(patient_id) %>%
-      slice_head(n = 1) %>%
-      ungroup()
-    
-  } else if (str_detect(x, "flu")) {
-    
-    df <- df %>%
-      filter(vaccine %in% c("none", "pre_flu", "post_flu"))
-    
-  } else if (str_dectect(x, "covid")) {
-    
-    df <- df %>%
-      filter(vaccine %in% c("none", "pre_covid", "post_covid"))
-    
-  } else if (str_detect(x, "overall_resp")) {
-    
-    df <- df %>%
-      group_by(patient_id) %>%
-      slice_head(n = 1) %>%
-      ungroup()
-    
-  }
   
   #update predictors based on cohort and investigation type
   if (cohort == "older_adults" & investigation_type == "secondary") {
@@ -77,8 +51,10 @@ glm_poisson <- function(df, x, y, offset_var) {
 }
 
 #create function for poisson regression with further adjustment
-glm_poisson_further <- function(df, x, y, prior_vacc, current_vacc,
-                                offset_var) {
+glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
+  
+  #source tmerge alt
+  source(here::here("analysis", "functions", "tmerge_alt.R"))
   
   #define minimum dates for covid seasons
   covid_season_min <- as.Date("2019-09-01")
@@ -87,33 +63,6 @@ glm_poisson_further <- function(df, x, y, prior_vacc, current_vacc,
   
   #combine predictors
   predictors <- c(x, "age_band", "sex", "rurality_classification")
-  
-  #filter data
-  if (str_detect(x, "rsv")) {
-    
-    df <- df %>%
-      group_by(patient_id) %>%
-      slice_head(n = 1) %>%
-      ungroup()
-    
-  } else if (str_detect(x, "flu")) {
-    
-    df <- df %>%
-      filter(vaccine %in% c("none", "pre_flu", "post_flu"))
-    
-  } else if (str_dectect(x, "covid")) {
-    
-    df <- df %>%
-      filter(vaccine %in% c("none", "pre_covid", "post_covid"))
-    
-  } else if (str_detect(x, "overall_resp")) {
-    
-    df <- df %>%
-      group_by(patient_id) %>%
-      slice_head(n = 1) %>%
-      ungroup()
-    
-  }
   
   #update predictors based on the outcome, cohort, and study start date
   if (cohort == "infants_subgroup") {
@@ -132,35 +81,49 @@ glm_poisson_further <- function(df, x, y, prior_vacc, current_vacc,
     
     if (y == "flu_primary_inf") {
       
-      predictors <- c(predictors, prior_vacc, current_vacc)
+      df <- tmerge_alt(df, "flu_primary")
+      
+      predictors <- c(predictors, prior_vacc, "vax_status")
       
     } else if (y == "flu_secondary_inf") {
       
-      predictors <- c(predictors, prior_vacc, current_vacc)
+      df <- tmerge_alt(df, "flu_secondary")
+      
+      predictors <- c(predictors, prior_vacc, "vax_status")
       
     } else if (y == "covid_primary_inf") {
       
-      if (study_start_date >= as.Date("2020-09-01") &
-          study_start_date < as.Date("2021-09-01")) {
+      if (study_start_date >= covid_current_vacc_min) {
+        
+        df <- tmerge_alt(df, "covid_primary")
+        
+      }
+      
+      if (study_start_date == covid_current_vacc_min) {
         
         predictors <- c(predictors, vacc_mild)
         
-      } else if (study_start_date >= as.Date("2021-09-01")) {
+      } else if (study_start_date >= covid_prior_vacc_min) {
         
-        predictors <- c(predictors, prior_vacc, current_vacc)
+        predictors <- c(predictors, prior_vacc, "vax_status")
         
       }
       
     } else if (y == "covid_secondary_inf") {
       
-      if (study_start_date >= as.Date("2020-09-01") &
-          study_start_date < as.Date("2021-09-01")) {
+      if (study_start_date >= covid_current_vacc_min) {
         
-        predictors <- c(predictors, current_vacc)
+        df <- tmerge_alt(df, "covid_secondary")
         
-      } else if (study_start_date >= as.Date("2021-09-01")) {
+      }
+      
+      if (study_start_date == covid_current_vacc_min) {
         
-        predictors <- c(predictors, prior_vacc, current_vacc)
+        predictors <- c(predictors, "vax_status")
+        
+      } else if (study_start_date >= covid_prior_vacc_min) {
+        
+        predictors <- c(predictors, prior_vacc, "vax_status")
         
       }
       
