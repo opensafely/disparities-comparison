@@ -8,8 +8,10 @@ library(ggplot2)
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   cohort <- "adults"
+  codelist_type <- "specific"
 } else {
   cohort <- args[[1]]
+  codelist_type <- args[[2]]
 }
 
 source(here::here("analysis", "functions", "redaction.R"))
@@ -22,30 +24,32 @@ fs::dir_create(here::here("output", "collated", "descriptive"))
 # import phenotype sensitivity by cohort
 collated_reinfections = rbind(
   read_csv(here::here("output", "exploratory", paste0("reinfections_", 
-           cohort, "_2016_2017.csv"))) %>% mutate(subset = "2016_17"),
+           cohort, "_2016_2017", "_", codelist_type, ".csv"))) %>%
+    mutate(subset = "2016_17", codelist_type = codelist_type),
   read_csv(here::here("output", "exploratory", paste0("reinfections_", 
-           cohort, "_2017_2018.csv"))) %>% mutate(subset = "2017_18"),
+           cohort, "_2017_2018", "_", codelist_type, ".csv"))) %>%
+    mutate(subset = "2017_18", codelist_type = codelist_type),
   read_csv(here::here("output", "exploratory", paste0("reinfections_", 
-           cohort, "_2018_2019.csv"))) %>% mutate(subset = "2018_19"),
+           cohort, "_2018_2019", "_", codelist_type, ".csv"))) %>%
+    mutate(subset = "2018_19", codelist_type = codelist_type),
   read_csv(here::here("output", "exploratory", paste0("reinfections_", 
-           cohort, "_2019_2020.csv"))) %>% mutate(subset = "2019_20"),
+           cohort, "_2019_2020", "_", codelist_type, ".csv"))) %>%
+    mutate(subset = "2019_20", codelist_type = codelist_type),
   read_csv(here::here("output", "exploratory", paste0("reinfections_", 
-           cohort, "_2020_2021.csv"))) %>% mutate(subset = "2020_21"),
+           cohort, "_2020_2021", "_", codelist_type, ".csv"))) %>%
+    mutate(subset = "2020_21", codelist_type = codelist_type),
   read_csv(here::here("output", "exploratory", paste0("reinfections_", 
-           cohort, "_2021_2022.csv"))) %>% mutate(subset = "2021_22"),
+           cohort, "_2021_2022", "_", codelist_type, ".csv"))) %>%
+    mutate(subset = "2021_22", codelist_type = codelist_type),
   read_csv(here::here("output", "exploratory", paste0("reinfections_", 
-           cohort, "_2022_2023.csv"))) %>% mutate(subset = "2022_23"),
+           cohort, "_2022_2023", "_", codelist_type, ".csv"))) %>%
+    mutate(subset = "2022_23", codelist_type = codelist_type),
   read_csv(here::here("output", "exploratory", paste0("reinfections_",
-           cohort, "_2023_2024.csv"))) %>% mutate(subset = "2023_24")
+           cohort, "_2023_2024", "_", codelist_type, ".csv"))) %>%
+    mutate(subset = "2023_24", codelist_type = codelist_type),
 )
 
-# #perform redaction and rounding 
-# collated_reinfections <- collated_reinfections %>% 
-#   mutate(n = roundmid_any(as.numeric(n)))
-# 
-# #rename n column
-# colnames(collated_reinfections)[colnames(collated_reinfections) == "n"] <- "n (midpoint 10 rounded)"
-
 #save as csv
-write_csv(collated_reinfections, paste0(here::here("output", "collated", "descriptive"), 
-          "/", cohort, "_reinfections_collated.csv"))
+write_csv(collated_reinfections, paste0(here::here("output", "collated",
+          "descriptive"), "/", cohort, "_reinfections_", codelist_type,
+          "_collated.csv"))
