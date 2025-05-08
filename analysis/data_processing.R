@@ -66,7 +66,8 @@ if (cohort == "infants_subgroup") {
 df_input <- df_input %>%
   mutate(
     patient_end_date = pmin(patient_end_date, death_date, deregistration_date,
-                            na.rm = TRUE)
+                            na.rm = TRUE),
+    patient_index_date = patient_index_date - days(1)
   )
 
 #create time dependency
@@ -250,38 +251,43 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
     )
 }
 
-# #define two vaccinations categories for each outcome type, set vaccination to null
-# #if immunity date occurs after outcome date 
-# if (cohort != "infants" & cohort != "infants_subgroup") {
-#   df_input <- df_input %>%
-#     mutate(
-#       #define flu_vaccination_mild
-#       flu_vaccination_mild = relevel(factor(case_when(
-#         flu_vaccination_immunity_date > flu_primary_date ~ "No",
-#         is.na(flu_vaccination_immunity_date) ~ "No",
-#         TRUE ~ "Yes")), ref = "No"),
-#       #define flu_vaccination severe 
-#       flu_vaccination_severe = relevel(factor(case_when(
-#         flu_vaccination_immunity_date > flu_secondary_date ~ "No",
-#         is.na(flu_vaccination_immunity_date) ~ "No",
-#         TRUE ~ "Yes")), ref = "No")
-#     )
-# }
+#define two vaccinations categories for each outcome type, set vaccination to null
+#if immunity date occurs after outcome date
+if (cohort != "infants" & cohort != "infants_subgroup") {
+  df_input <- df_input %>%
+    mutate(
+      #define flu_vaccination_mild
+      flu_vaccination_mild = relevel(factor(case_when(
+        flu_vaccination_immunity_date > flu_primary_date ~ "No",
+        is.na(flu_vaccination_immunity_date) ~ "No",
+        TRUE ~ "Yes")), ref = "No"),
+      #define flu_vaccination severe
+      flu_vaccination_severe = relevel(factor(case_when(
+        flu_vaccination_immunity_date > flu_secondary_date ~ "No",
+        is.na(flu_vaccination_immunity_date) ~ "No",
+        TRUE ~ "Yes")), ref = "No")
+    )
+}
 
 #covid vaccination 
 if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
   df_input <- df_input %>%
     mutate(
       time_since_last_covid_vaccination = relevel(factor(case_when(
-        time_length(difftime(patient_index_date, last_covid_vaccination_date, 
+        time_length(difftime(patient_index_date + days(1),
+                             last_covid_vaccination_date, 
                              units = "days"), "months") >= 0 &
-          time_length(difftime(patient_index_date, last_covid_vaccination_date,
+          time_length(difftime(patient_index_date + days(1),
+                               last_covid_vaccination_date,
                                units = "days"), "months") < 6 ~ "0-6m",
-        time_length(difftime(patient_index_date, last_covid_vaccination_date,
+        time_length(difftime(patient_index_date + days(1),
+                             last_covid_vaccination_date,
                              units = "days"), "months") >= 6 &
-          time_length(difftime(patient_index_date, last_covid_vaccination_date, 
+          time_length(difftime(patient_index_date + days(1),
+                               last_covid_vaccination_date, 
                                units = "days"), "months") < 12 ~ "6-12m",
-        time_length(difftime(patient_index_date, last_covid_vaccination_date,
+        time_length(difftime(patient_index_date + days(1),
+                             last_covid_vaccination_date,
                              units = "days"), "months") >= 12 ~ "12m+",
         TRUE ~ "12m+")), ref = "0-6m")
     )
@@ -295,23 +301,23 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
     )
 }
 
-# #define two vaccinations categories for each outcome type, set vaccination to null
-# #if immunity date occurs after outcome date 
-# if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
-#   df_input <- df_input %>%
-#     mutate(
-#       #define covid_vaccination_mild
-#       covid_vaccination_mild = relevel(factor(case_when(
-#         covid_vaccination_immunity_date > covid_primary_date ~ "No",
-#         is.na(covid_vaccination_immunity_date) ~ "No",
-#         TRUE ~ "Yes")), ref = "No"),
-#       #define covid_vaccination severe 
-#       covid_vaccination_severe = relevel(factor(case_when(
-#         covid_vaccination_immunity_date > covid_secondary_date ~ "No",
-#         is.na(covid_vaccination_immunity_date) ~ "No",
-#         TRUE ~ "Yes")), ref = "No")
-#     )
-# }
+#define two vaccinations categories for each outcome type, set vaccination to null
+#if immunity date occurs after outcome date
+if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
+  df_input <- df_input %>%
+    mutate(
+      #define covid_vaccination_mild
+      covid_vaccination_mild = relevel(factor(case_when(
+        covid_vaccination_immunity_date > covid_primary_date ~ "No",
+        is.na(covid_vaccination_immunity_date) ~ "No",
+        TRUE ~ "Yes")), ref = "No"),
+      #define covid_vaccination severe
+      covid_vaccination_severe = relevel(factor(case_when(
+        covid_vaccination_immunity_date > covid_secondary_date ~ "No",
+        is.na(covid_vaccination_immunity_date) ~ "No",
+        TRUE ~ "Yes")), ref = "No")
+    )
+}
 
 #set covid date to missing if existing date occurs before March 1st 2020
 if (study_start_date >= covid_season_min) {
