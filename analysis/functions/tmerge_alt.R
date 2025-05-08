@@ -50,54 +50,6 @@ tmerge_alt <- function(df, outcome) {
       persontime = tstop - tstart + 1
     )
   
-  # #  reformat to one row per vax_status using standard dplyr/tidyverse tools
-  # dat_timevarying_info <-
-  #   # create dataset with one row per person per day
-  #   expand_grid(
-  #     patient_id = df$patient_id, 
-  #     date = seq(ymd(study_start_date), ymd(study_end_date), 1L)
-  #   ) |>
-  #   # join on dates that indicate the start of a row
-  #   left_join(df |> transmute(patient_id, patient_index_date, start=1L), by=c("patient_id", date="patient_index_date")) |>
-  #   full_join(df |> transmute(patient_id, flu_vaccination_immunity_date, flu_vax=1L), by=c("patient_id", date="flu_vaccination_immunity_date")) |>
-  #   # join on dates that indicate the end of follow-up
-  #   full_join(df |> transmute(patient_id, flu_primary_date, outcome=1L), by=c("patient_id", date="flu_primary_date")) |>
-  #   full_join(df |> transmute(patient_id, flu_primary_inf_date, censor=1L), by=c("patient_id", date="flu_primary_inf_date")) |>
-  #   filter(
-  #     start | flu_vax | outcome | censor
-  #   ) |>
-  #   arrange(patient_id, date)
-  # 
-  # # join time-varying info onto non-time-varying info
-  # dat_1rpe_dplyr <-
-  #   df |>
-  #   left_join(dat_timevarying_info, by="patient_id") |>
-  #   group_by(patient_id) |>
-  #   # create time-stamps and time-varying variables
-  #   mutate(
-  #     tstart = date,
-  #     tstop = lead(date, 1),
-  #     persontime = tstop - tstart + 1,
-  #     flu_vax_status = 1-cumprod(1-replace_na(flu_vax,0L)),
-  #     censor_status = 1-cumprod(1-replace_na(censor,0L)),
-  #     outcome_event = replace_na(lead(outcome, 1), 0L),
-  #   ) |>
-  #   # remove rows after occurrence of censoring and before start date
-  #   filter(
-  #     censor_status==0,
-  #     tstart >= patient_index_date
-  #   )
-  # 
-  # 
-  # # check equivalence
-  # # should be a row of zeros
-  # map2(
-  #   dat_1rpe_dplyr |> select(patient_id, tstart, tstop, persontime, age, flu_vax_status, outcome_event),
-  #   dat_1rpe_tmerge |> select(patient_id, tstart, tstop, persontime, age, flu_vax_status, outcome_event),
-  #   setdiff
-  # ) |> 
-  #   map_int(length)
-  
   return(dat_1rpe_tmerge)
   
 }
