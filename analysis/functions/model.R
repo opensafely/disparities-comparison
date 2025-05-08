@@ -83,7 +83,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
       
       df <- tmerge_alt(df, "flu_primary")
       
-      offset_var <- "persontime"
+      offset_var <- "persontime_years"
       
       predictors <- c(predictors, prior_vacc, "vax_status")
       
@@ -91,7 +91,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
       
       df <- tmerge_alt(df, "flu_secondary")
       
-      offset_var <- "persontime"
+      offset_var <- "persontime_years"
       
       predictors <- c(predictors, prior_vacc, "vax_status")
       
@@ -101,7 +101,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
         
         df <- tmerge_alt(df, "covid_primary")
         
-        offset_var <- "persontime"
+        offset_var <- "persontime_years"
         
       }
       
@@ -121,7 +121,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
         
         df <- tmerge_alt(df, "covid_secondary")
         
-        offset_var <- "persontime"
+        offset_var <- "persontime_years"
         
       }
       
