@@ -13,8 +13,8 @@ fs::dir_create(here::here("analysis"))
 source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- as.Date("2016-09-01")
-  study_end_date <- as.Date("2017-08-31")
+  study_start_date <- as.Date("2021-09-01")
+  study_end_date <- as.Date("2022-08-31")
   cohort <- "older_adults"
   codelist_type <- "specific"
   investigation_type <- "primary"
@@ -250,23 +250,23 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
     )
 }
 
-#define two vaccinations categories for each outcome type, set vaccination to null
-#if immunity date occurs after outcome date 
-if (cohort != "infants" & cohort != "infants_subgroup") {
-  df_input <- df_input %>%
-    mutate(
-      #define flu_vaccination_mild
-      flu_vaccination_mild = relevel(factor(case_when(
-        flu_vaccination_immunity_date > flu_primary_date ~ "No",
-        is.na(flu_vaccination_immunity_date) ~ "No",
-        TRUE ~ "Yes")), ref = "No"),
-      #define flu_vaccination severe 
-      flu_vaccination_severe = relevel(factor(case_when(
-        flu_vaccination_immunity_date > flu_secondary_date ~ "No",
-        is.na(flu_vaccination_immunity_date) ~ "No",
-        TRUE ~ "Yes")), ref = "No")
-    )
-}
+# #define two vaccinations categories for each outcome type, set vaccination to null
+# #if immunity date occurs after outcome date 
+# if (cohort != "infants" & cohort != "infants_subgroup") {
+#   df_input <- df_input %>%
+#     mutate(
+#       #define flu_vaccination_mild
+#       flu_vaccination_mild = relevel(factor(case_when(
+#         flu_vaccination_immunity_date > flu_primary_date ~ "No",
+#         is.na(flu_vaccination_immunity_date) ~ "No",
+#         TRUE ~ "Yes")), ref = "No"),
+#       #define flu_vaccination severe 
+#       flu_vaccination_severe = relevel(factor(case_when(
+#         flu_vaccination_immunity_date > flu_secondary_date ~ "No",
+#         is.na(flu_vaccination_immunity_date) ~ "No",
+#         TRUE ~ "Yes")), ref = "No")
+#     )
+# }
 
 #covid vaccination 
 if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
@@ -295,23 +295,23 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
     )
 }
 
-#define two vaccinations categories for each outcome type, set vaccination to null
-#if immunity date occurs after outcome date 
-if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
-  df_input <- df_input %>%
-    mutate(
-      #define covid_vaccination_mild
-      covid_vaccination_mild = relevel(factor(case_when(
-        covid_vaccination_immunity_date > covid_primary_date ~ "No",
-        is.na(covid_vaccination_immunity_date) ~ "No",
-        TRUE ~ "Yes")), ref = "No"),
-      #define covid_vaccination severe 
-      covid_vaccination_severe = relevel(factor(case_when(
-        covid_vaccination_immunity_date > covid_secondary_date ~ "No",
-        is.na(covid_vaccination_immunity_date) ~ "No",
-        TRUE ~ "Yes")), ref = "No")
-    )
-}
+# #define two vaccinations categories for each outcome type, set vaccination to null
+# #if immunity date occurs after outcome date 
+# if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {
+#   df_input <- df_input %>%
+#     mutate(
+#       #define covid_vaccination_mild
+#       covid_vaccination_mild = relevel(factor(case_when(
+#         covid_vaccination_immunity_date > covid_primary_date ~ "No",
+#         is.na(covid_vaccination_immunity_date) ~ "No",
+#         TRUE ~ "Yes")), ref = "No"),
+#       #define covid_vaccination severe 
+#       covid_vaccination_severe = relevel(factor(case_when(
+#         covid_vaccination_immunity_date > covid_secondary_date ~ "No",
+#         is.na(covid_vaccination_immunity_date) ~ "No",
+#         TRUE ~ "Yes")), ref = "No")
+#     )
+# }
 
 #set covid date to missing if existing date occurs before March 1st 2020
 if (study_start_date >= covid_season_min) {
