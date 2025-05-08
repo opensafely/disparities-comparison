@@ -2,7 +2,6 @@ library(here)
 library(broom)
 library(rlang)
 library(purrr)
-library(survival)
 
 ## create output directories ----
 fs::dir_create(here::here("analysis", "functions"))
