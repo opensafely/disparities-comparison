@@ -1469,11 +1469,19 @@ action_exploratory <- function(cohort, season, dates, season_start_date,
     ),
     
     action(
-      name = glue("reinfections_{cohort}_{season}"),
-      run = glue("r:latest analysis/exploratory_analyses/reinfections.R {cohort} {season_start_date} {season_end_date}"),
+      name = glue("reinfections_{cohort}_{season}_specific"),
+      run = glue("r:latest analysis/exploratory_analyses/reinfections.R {cohort} {season_start_date} {season_end_date} specific"),
       needs = list(glue("process_dataset_{cohort}_{season}_specific_primary")),
       moderately_sensitive = lst(
-        csv = glue("output/exploratory/reinfections_{cohort}_{dates}.csv"))
+        csv = glue("output/exploratory/reinfections_{cohort}_{dates}_specific.csv"))
+    ),
+    
+    action(
+      name = glue("reinfections_{cohort}_{season}_sensitive"),
+      run = glue("r:latest analysis/exploratory_analyses/reinfections.R {cohort} {season_start_date} {season_end_date} sensitive"),
+      needs = list(glue("process_dataset_{cohort}_{season}_sensitive_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/exploratory/reinfections_{cohort}_{dates}_sensitive.csv"))
     )
     
   )
