@@ -47,9 +47,11 @@ tmerge_alt <- function(df, outcome) {
       outcome_event = event(outcome_event)
     ) |>
     mutate(
-      persontime = tstop - tstart + 1
+      persontime = tstop - tstart + 1,
+      persontime_years = time_length(persontime, "years")
     )
   
+  #return
   return(dat_1rpe_tmerge)
   
 }
