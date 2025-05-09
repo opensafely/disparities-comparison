@@ -50,10 +50,8 @@ glm_poisson <- function(df, x, y, offset_var) {
 glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
                                 vacc_severe, offset_var) {
   
-  #define minimum dates for covid seasons
-  covid_season_min <- as.Date("2019-09-01")
-  covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
-  covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
+  #source tmerge alt
+  source(here::here("post_check", "functions", "tmerge_alt.R"))
   
   #combine predictors
   predictors <- c(x, "age_band", "sex", "rurality_classification")
@@ -75,33 +73,59 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
     
     if (y == "flu_primary_inf") {
       
-      predictors <- c(predictors, prior_vacc, vacc_mild)
+      df <- tmerge_alt(df, "flu_primary")
+      
+      offset_var <- "persontime_years"
+      
+      predictors <- c(predictors, prior_vacc, "vax_status")
       
     } else if (y == "flu_secondary_inf") {
       
-      predictors <- c(predictors, prior_vacc, vacc_severe)
+      df <- tmerge_alt(df, "flu_secondary")
+      
+      offset_var <- "persontime_years"
+      
+      predictors <- c(predictors, prior_vacc, "vax_status")
       
     } else if (y == "covid_primary_inf") {
       
+      if (unique(df$subset) %in% c("2020_21", "2021_22", "2022_23",
+                                   "2023_24")) {
+        
+        df <- tmerge_alt(df, "covid_primary")
+        
+        offset_var <- "persontime_years"
+        
+      }
+      
       if (unique(df$subset) == "2020_21") {
         
-        predictors <- c(predictors, vacc_mild)
+        predictors <- c(predictors, "vacc_status")
         
       } else if (unique(df$subset) %in% c("2021_22", "2022_23", "2023_24")) {
         
-        predictors <- c(predictors, prior_vacc, vacc_mild)
+        predictors <- c(predictors, prior_vacc, "vax_status")
         
       }
       
     } else if (y == "covid_secondary_inf") {
       
+      if (unique(df$subset) %in% c("2020_21", "2021_22", "2022_23",
+                                   "2023_24")) {
+        
+        df <- tmerge_alt(df, "covid_secondary")
+        
+        offset_var <- "persontime_years"
+        
+      }
+      
       if (unique(df$subset) == "2020_21") {
         
-        predictors <- c(predictors, vacc_severe)
+        predictors <- c(predictors, "vax_status")
         
       } else if (unique(df$subset) %in% c("2021_22", "2022_23", "2023_24")) {
         
-        predictors <- c(predictors, prior_vacc, vacc_severe)
+        predictors <- c(predictors, prior_vacc, "vax_status")
         
       }
       
