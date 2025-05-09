@@ -136,6 +136,8 @@ create_rolling_plots <- function(season, phenotype) {
 #helper function to create and save plots
 create_rolling_plots_overall <- function(df) {
   
+  scaleFUN <- function(x) sprintf("%.3f", signif(x, digits = 1))
+  
   cols <- scales::seq_gradient_pal(
     "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
   
@@ -160,11 +162,11 @@ create_rolling_plots_overall <- function(df) {
   
   options(scipen = 999)
   
-  alpha_type <- df %>%
+  df <- df %>%
     mutate(
       codelist_type = factor(str_to_title(codelist_type),
                              levels = c("Specific", "Sensitive"))
-    ) %>% pull(codelist_type)
+    )
   
   df <- df %>%
     mutate(
@@ -175,25 +177,81 @@ create_rolling_plots_overall <- function(df) {
       days_since_season_start = difftime(interval_start, season_start,
                                          units = "days") + 1,
       month_label = format(interval_start, "%b"),
-      subset = gsub("_", " ", subset)
+      subset = gsub("_", "-", subset)
     )
   
-  plot <- df %>%
+  my_breaks <- function(x) {
+    
+    seq <- seq(0, max(x), length.out = 4)
+    
+    seq[1] <- 0
+    
+    return(seq)
+    
+  }
+  
+  get_consistent_limits <- function(x, bottom_pad_percent = 0.025,
+                                    top_pad_percent = 0) {
+    
+    data_range <- max(x) - 0
+    bottom_pad <- data_range * bottom_pad_percent
+    top_pad <- data_range * top_pad_percent
+    
+    # Return the limits with consistent padding
+    return(c(0 - bottom_pad, max(x) + top_pad))
+    
+  }
+  
+  plot_mild <- df %>%
+    filter(str_detect(outcome, "Mild")) %>%
     ggplot(aes(x = days_since_season_start,
                y = rate_1000_py_midpoint10_derived,
-               col = subset, alpha = alpha_type)) +
-    geom_line(stat = "smooth", method = "loess",
-              span = 0.25, se = FALSE, lwd = 1) +  theme_bw() +
+               col = subset, alpha = codelist_type)) +
+    geom_line(lwd = 1) +  theme_bw() +
     scale_color_manual(values = cols) +
     scale_alpha_manual(values = c(1, 0.5)) +
-    labs(x = "", y = "", col = "Season", alpha = "Phenotype") +
-    facet_wrap(~ outcome, ncol = 2, scales = "free") +
+    labs(x = "", y = "", col = "Season", alpha = "Phenotype",
+         subtitle = paste0("Mild ", pathogen_print)) +
+    facet_wrap(~ codelist_type, ncol = 2, scales = "free") +
     scale_x_continuous(
       breaks = cumsum(c(0, 30, 31, 30, 31, 28, 31, 30, 31, 30, 31, 31)) - 15,
       labels = c("Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar",
-                 "Apr", "May", "Jun", "Jul", "Aug")
-    )
+                 "Apr", "May", "Jun", "Jul", "Aug")) +
+    scale_y_continuous(labels = scaleFUN, breaks = my_breaks,
+                       limits = get_consistent_limits) +
+    theme(legend.position = "none")
   
-  return(plot)
+  plot_severe <- df %>%
+    filter(str_detect(outcome, "Severe")) %>%
+    ggplot(aes(x = days_since_season_start,
+               y = rate_1000_py_midpoint10_derived,
+               col = subset, alpha = codelist_type)) +
+    geom_line(lwd = 1) +  theme_bw() +
+    scale_color_manual(values = cols) +
+    scale_alpha_manual(values = c(1, 0.5)) +
+    labs(x = "", y = "", col = "Season", alpha = "Phenotype",
+         subtitle = paste0("Severe ", pathogen_print)) +
+    facet_wrap(~ codelist_type, ncol = 2, scales = "free") +
+    scale_x_continuous(
+      breaks = cumsum(c(0, 30, 31, 30, 31, 28, 31, 30, 31, 30, 31, 31)) - 15,
+      labels = c("Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar",
+                 "Apr", "May", "Jun", "Jul", "Aug")) +
+    scale_y_continuous(labels = scaleFUN, breaks = my_breaks,
+                       limits = get_consistent_limits) +
+    theme(legend.position = "none")
+  
+  legend <- get_legend(plot_mild +
+               theme(legend.position = "right",
+                     legend.box = "verticle",
+                     legend.key.size = unit(0.5, "cm"),
+                     legend.text = element_text(size = 10),
+                     legend.title = element_text(size = 10)))
+  
+  plot <- plot_grid(
+    plot_mild, plot_severe,
+    nrow = 1
+  )
+  
+  return(list(plot = plot, legend = legend))
   
 }
