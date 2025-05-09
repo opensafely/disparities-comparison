@@ -207,7 +207,8 @@ create_rolling_plots_overall <- function(df) {
     ggplot(aes(x = days_since_season_start,
                y = rate_1000_py_midpoint10_derived,
                col = subset, alpha = codelist_type)) +
-    geom_line(lwd = 1) +  theme_bw() +
+    geom_line(stat = "smooth", method = "loess",
+              span = 0.15, se = FALSE, lwd = 1) +  theme_bw() +
     scale_color_manual(values = cols) +
     scale_alpha_manual(values = c(1, 0.5)) +
     labs(x = "", y = "", col = "Season", alpha = "Phenotype",
@@ -226,7 +227,8 @@ create_rolling_plots_overall <- function(df) {
     ggplot(aes(x = days_since_season_start,
                y = rate_1000_py_midpoint10_derived,
                col = subset, alpha = codelist_type)) +
-    geom_line(lwd = 1) +  theme_bw() +
+    geom_line(stat = "smooth", method = "loess",
+              span = 0.15, se = FALSE, lwd = 1) +  theme_bw() +
     scale_color_manual(values = cols) +
     scale_alpha_manual(values = c(1, 0.5)) +
     labs(x = "", y = "", col = "Season", alpha = "Phenotype",
