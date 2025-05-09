@@ -100,7 +100,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
       
       if (unique(df$subset) == "2020_21") {
         
-        predictors <- c(predictors, "vacc_status")
+        predictors <- c(predictors, "vax_status")
         
       } else if (unique(df$subset) %in% c("2021_22", "2022_23", "2023_24")) {
         
