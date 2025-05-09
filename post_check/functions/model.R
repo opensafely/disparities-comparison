@@ -51,7 +51,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
                                 vacc_severe, offset_var) {
   
   #source tmerge alt
-  source(here::here("post_check", "functions", "tmerge_alt.R"))
+  source(here::here("post_check", "functions", "expand_with_tmerge.R"))
   
   #combine predictors
   predictors <- c(x, "age_band", "sex", "rurality_classification")
@@ -73,7 +73,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
     
     if (y == "flu_primary_inf") {
       
-      df <- tmerge_alt(df, "flu_primary")
+      df <- expand_with_tmerge(df, "flu_primary")
       
       offset_var <- "persontime_years"
       
@@ -81,7 +81,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
       
     } else if (y == "flu_secondary_inf") {
       
-      df <- tmerge_alt(df, "flu_secondary")
+      df <- expand_with_tmerge(df, "flu_secondary")
       
       offset_var <- "persontime_years"
       
@@ -92,7 +92,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
       if (unique(df$subset) %in% c("2020_21", "2021_22", "2022_23",
                                    "2023_24")) {
         
-        df <- tmerge_alt(df, "covid_primary")
+        df <- expand_with_tmerge(df, "covid_primary")
         
         offset_var <- "persontime_years"
         
@@ -113,7 +113,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
       if (unique(df$subset) %in% c("2020_21", "2021_22", "2022_23",
                                    "2023_24")) {
         
-        df <- tmerge_alt(df, "covid_secondary")
+        df <- expand_with_tmerge(df, "covid_secondary")
         
         offset_var <- "persontime_years"
         

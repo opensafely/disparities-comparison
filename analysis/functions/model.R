@@ -53,7 +53,7 @@ glm_poisson <- function(df, x, y, offset_var) {
 glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
   
   #source tmerge alt
-  source(here::here("analysis", "functions", "tmerge_alt.R"))
+  source(here::here("analysis", "functions", "expand_with_tmerge.R"))
   
   #define minimum dates for covid seasons
   covid_season_min <- as.Date("2019-09-01")
@@ -80,7 +80,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
     
     if (y == "flu_primary_inf") {
       
-      df <- tmerge_alt(df, "flu_primary")
+      df <- expand_with_tmerge(df, "flu_primary")
       
       offset_var <- "persontime_years"
       
@@ -88,7 +88,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
       
     } else if (y == "flu_secondary_inf") {
       
-      df <- tmerge_alt(df, "flu_secondary")
+      df <- expand_with_tmerge(df, "flu_secondary")
       
       offset_var <- "persontime_years"
       
@@ -98,7 +98,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
       
       if (study_start_date >= covid_current_vacc_min) {
         
-        df <- tmerge_alt(df, "covid_primary")
+        df <- expand_with_tmerge(df, "covid_primary")
         
         offset_var <- "persontime_years"
         
@@ -118,7 +118,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
       
       if (study_start_date >= covid_current_vacc_min) {
         
-        df <- tmerge_alt(df, "covid_secondary")
+        df <- expand_with_tmerge(df, "covid_secondary")
         
         offset_var <- "persontime_years"
         

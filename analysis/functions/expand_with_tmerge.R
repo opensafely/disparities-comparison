@@ -5,7 +5,7 @@ library(here)
 ## create output directories ----
 fs::dir_create(here::here("analysis", "functions"))
 
-tmerge_alt <- function(df, outcome) {
+expand_with_tmerge <- function(df, outcome) {
   
   tstop <- case_when(
     outcome == "flu_primary" ~ "flu_primary_inf_date",
