@@ -106,7 +106,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
       
       if (study_start_date == covid_current_vacc_min) {
         
-        predictors <- c(predictors, vacc_mild)
+        predictors <- c(predictors, "vacc_status")
         
       } else if (study_start_date >= covid_prior_vacc_min) {
         
