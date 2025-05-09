@@ -9,11 +9,9 @@ library(ggpubr)
 
 #import plot function
 source(here::here("post_check", "functions", "rolling_rates.R"))
-scaleFUN <- function(x) sprintf("%.4f", x)
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 
 investigation_type <- "primary"
-
 seasons <- function(pathogen) {
   case_when(
     pathogen == "rsv" ~ "season2",
@@ -38,7 +36,10 @@ df_input <- read_csv(here::here("post_check",
                      "rates_over_time_all_all_", pathogen, ".csv")))
 
 #create plot
-rsv <- create_rolling_plots_overall(df_input)
+rsv <- create_rolling_plots_overall(df_input)$plot
+
+#pull legend
+legend <- create_rolling_plots_overall(df_input)$legend
 
 #flu
 pathogen <- "flu"
@@ -50,7 +51,7 @@ df_input <- read_csv(here::here("post_check",
                      "rates_over_time_all_all_", pathogen, ".csv")))
 
 #create plot
-flu <- create_rolling_plots_overall(df_input)
+flu <- create_rolling_plots_overall(df_input)$plot
 
 #covid
 pathogen <- "covid"
@@ -62,20 +63,14 @@ df_input <- read_csv(here::here("post_check",
                      "rates_over_time_all_all_", pathogen, ".csv")))
 
 #create plot
-covid <- create_rolling_plots_overall(df_input)
+covid <- create_rolling_plots_overall(df_input)$plot
 
 ##plot together 
 
-#pull legend
-legend <- get_legend(rsv)
-
 plot_col <- plot_grid(
-  rsv + scale_y_continuous(labels = scaleFUN) +
-    theme(legend.position = "none"),
-  flu + scale_y_continuous(labels = scaleFUN) +
-    theme(legend.position = "none"),
-  covid + scale_y_continuous(labels = scaleFUN) +
-    theme(legend.position = "none"),
+  rsv,
+  flu,
+  covid,
   nrow = 3
 )
 
@@ -97,7 +92,7 @@ plot_an <- annotate_figure(
 
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
       "condensed", paste0(cohort, "_rates_over_time_all", ".png")),
-       plot_an, height = 10, width = 15)
+       plot_an, height = 10, width = 16)
 
 ###infants 
 
@@ -115,7 +110,10 @@ df_input <- read_csv(here::here("post_check",
                      "rates_over_time_all_all_", pathogen, ".csv")))
 
 #create plot
-rsv <- create_rolling_plots_overall(df_input)
+rsv <- create_rolling_plots_overall(df_input)$plot
+
+#pull legend
+legend <- create_rolling_plots_overall(df_input)$legend
 
 #flu
 pathogen <- "flu"
@@ -127,7 +125,7 @@ df_input <- read_csv(here::here("post_check",
                      "rates_over_time_all_all_", pathogen, ".csv")))
 
 #create plot
-flu <- create_rolling_plots_overall(df_input)
+flu <- create_rolling_plots_overall(df_input)$plot
 
 #covid
 pathogen <- "covid"
@@ -139,20 +137,14 @@ df_input <- read_csv(here::here("post_check",
                      "rates_over_time_all_all_", pathogen, ".csv")))
 
 #create plot
-covid <- create_rolling_plots_overall(df_input)
+covid <- create_rolling_plots_overall(df_input)$plot
 
 ##plot together 
 
-#pull legend
-legend <- get_legend(rsv)
-
 plot_col <- plot_grid(
-  rsv + scale_y_continuous(labels = scaleFUN) +
-    theme(legend.position = "none"),
-  flu + scale_y_continuous(labels = scaleFUN) +
-    theme(legend.position = "none"),
-  covid + scale_y_continuous(labels = scaleFUN) +
-    theme(legend.position = "none"),
+  rsv,
+  flu,
+  covid,
   nrow = 3
 )
 
@@ -173,5 +165,5 @@ plot_an <- annotate_figure(
 )
 
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
-       "condensed", paste0(cohort, "_rates_over_time_all", ".png")),
-       plot_an, height = 10, width = 15)
+      "condensed", paste0(cohort, "_rates_over_time_all", ".png")),
+       plot_an, height = 10, width = 16)
