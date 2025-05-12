@@ -189,13 +189,13 @@ dataset.define_population(
 
 #registration and sex
 dataset.registered = registered_patients
-dataset.sex = patients.sex
+dataset.is_female_or_male = is_female_or_male
 
 # #age
 # dataset.is_appropriate_age = is_appropriate_age
 
-#get patients IMD rank
-dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
+#get patients IMD
+dataset.has_imd = has_imd
 
 ##exclusion criteria
 
