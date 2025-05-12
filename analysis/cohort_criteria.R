@@ -41,6 +41,16 @@ if (study_start_date == as.Date("2020-09-01") &
   
 }
 
+patients_df <- patients_df %>% 
+  mutate(
+    is_female_or_male = case_when(
+      sex == "female" ~ TRUE,
+      sex == "male" ~ TRUE,
+      TRUE ~ FALSE
+    ),
+    has_imd = if_else(is.na(imd_rounded), FALSE, TRUE)
+  )
+
 # Define the base population for exclusion: Only consider registered and appropriate age patients
 if (cohort == "infants" | cohort == "infants_subgroup") {
   population <- patients_df %>%
@@ -86,8 +96,6 @@ population_summary <- population %>%
 ## create output directories ----
 fs::dir_create(here::here("output", "flow_chart"))
 
-table <- table %>%
-  as.data.frame() %>%
-  write_csv(path = paste0(here::here("output", "flow_chart"), "/", 
-            "flow_chart_processed_", cohort, "_", year(study_start_date), "_", 
-            year(study_end_date), ".csv"))
+write_csv(population_summary, path = paste0(
+  here::here("output", "flow_chart"), "/", "flow_chart_processed_", cohort,
+  "_", year(study_start_date), "_", year(study_end_date), ".csv"))
