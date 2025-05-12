@@ -3,7 +3,9 @@ from pathlib import Path
 
 from datetime import date, datetime
 from ehrql.tables import table_from_file, PatientFrame, Series
-from ehrql import Dataset, case, when, maximum_of, minimum_of, years, days
+from ehrql import (
+  Dataset, create_dataset, case, when, maximum_of, minimum_of, years, days
+)
 from ehrql.tables.tpp import ( 
   patients, 
   medications,
@@ -29,7 +31,9 @@ from variable_lib import (
 
 import codelists
 
-dataset = Dataset()
+# dataset = Dataset()
+dataset = create_dataset()
+dataset.configure_dummy_data(population_size = 10000)
 
 #######################################################################################
 # Import study dates defined in "./analysis/design/study-dates.R" script and then exported
@@ -53,6 +57,12 @@ registration_date = index_date - years(1)
 #define dataset definition settings from command line arguments
 start_year = study_start_date.year
 end_year = study_end_date.year
+
+#define patients status: alive/dead
+was_alive = (
+  (patients.date_of_death.is_after(index_date))
+  |(patients.date_of_death.is_null())
+)
 
 #define patients age
 age_at_start = patients.age_on(study_start_date)
@@ -174,6 +184,23 @@ def first_infection_event(codelist, where = True):
         .first_for_patient()
     )
 
+#define population
+dataset.define_population(
+  was_alive
+  & is_appropriate_age
+  & practice_registrations.exists_for_patient()
+)
+
+#registration and sex
+dataset.registered = registered_patients
+dataset.is_female_or_male = is_female_or_male
+
+# #age
+# dataset.is_appropriate_age = is_appropriate_age
+
+#get patients IMD
+dataset.has_imd = has_imd
+
 ##exclusion criteria
 
 #combined severe immunodeficiency syndrome
@@ -207,19 +234,6 @@ care_home_tpp = (
 )
 care_home_code = (has_prior_event(codelists.carehome_codelist))
 dataset.care_home = care_home_tpp | care_home_code
-
-#define population
-dataset.define_population(practice_registrations.exists_for_patient())
-
-#registration and sex
-dataset.registered = registered_patients
-dataset.sex = patients.sex
-
-#age
-dataset.is_appropriate_age = is_appropriate_age
-
-#get patients IMD rank
-dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
 
 if cohort == "infants_subgroup" :
   
