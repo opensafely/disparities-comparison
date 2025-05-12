@@ -3,7 +3,9 @@ from pathlib import Path
 
 from datetime import date, datetime
 from ehrql.tables import table_from_file, PatientFrame, Series
-from ehrql import Dataset, case, when, maximum_of, minimum_of, years, days
+from ehrql import (
+  Dataset, create_dataset, case, when, maximum_of, minimum_of, years, days
+)
 from ehrql.tables.tpp import ( 
   patients, 
   medications,
@@ -29,7 +31,9 @@ from variable_lib import (
 
 import codelists
 
-dataset = Dataset()
+# dataset = Dataset()
+dataset = create_dataset()
+dataset.configure_dummy_data(population_size = 10000)
 
 #######################################################################################
 # Import study dates defined in "./analysis/design/study-dates.R" script and then exported
