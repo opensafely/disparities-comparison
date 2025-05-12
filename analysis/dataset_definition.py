@@ -778,11 +778,8 @@ else :
       when(~rsv_exclusion_primary).then(
       minimum_of((first_infection_event(codelists
       .rsv_primary_codelist).date), (rsv_codes_date),
-      case(when(rsv_code_number >= 1).then(medications
-      .where(medications.dmd_code.is_in(codelists
-      .rsv_prescriptions_codelist)).where(medications
-      .date.is_on_or_between(index_date, followup_end_date))
-      .date.minimum_for_patient())))))
+      case(when(rsv_code_number >= 1)
+      .then(rsv_med_inclusion_date)))))
     )
     
     #count number of distinct codes in RSV sensitive codelist which occur
@@ -857,11 +854,7 @@ else :
       .where(clinical_events.date.is_on_or_after(dataset
       .rsv_primary_date + days(14))).sort_by(clinical_events.date)
       .first_for_patient().date), (case(when(rsv_code_number_second > 1)
-      .then(rsv_med_inclusion_second_date))), (medications.where(medications
-      .dmd_code.is_in(codelists.rsv_prescriptions_codelist))
-      .where(medications.date.is_on_or_between(dataset
-      .rsv_primary_date + days(14), followup_end_date))
-      .date.minimum_for_patient()))))
+      .then(rsv_med_inclusion_second_date))))))
     )
 
 #extract rsv secondary care dates for primary analysis ('specific' phenotype)
