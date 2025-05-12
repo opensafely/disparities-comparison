@@ -54,6 +54,12 @@ registration_date = index_date - years(1)
 start_year = study_start_date.year
 end_year = study_end_date.year
 
+#define patients status: alive/dead
+was_alive = (
+  (patients.date_of_death.is_after(index_date))
+  |(patients.date_of_death.is_null())
+)
+
 #define patients age
 age_at_start = patients.age_on(study_start_date)
 age_at_end = patients.age_on(study_end_date)
@@ -174,6 +180,23 @@ def first_infection_event(codelist, where = True):
         .first_for_patient()
     )
 
+#define population
+dataset.define_population(
+  was_alive
+  & is_appropriate_age
+  & practice_registrations.exists_for_patient()
+)
+
+#registration and sex
+dataset.registered = registered_patients
+dataset.sex = patients.sex
+
+# #age
+# dataset.is_appropriate_age = is_appropriate_age
+
+#get patients IMD rank
+dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
+
 ##exclusion criteria
 
 #combined severe immunodeficiency syndrome
@@ -207,19 +230,6 @@ care_home_tpp = (
 )
 care_home_code = (has_prior_event(codelists.carehome_codelist))
 dataset.care_home = care_home_tpp | care_home_code
-
-#define population
-dataset.define_population(practice_registrations.exists_for_patient())
-
-#registration and sex
-dataset.registered = registered_patients
-dataset.sex = patients.sex
-
-#age
-dataset.is_appropriate_age = is_appropriate_age
-
-#get patients IMD rank
-dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
 
 if cohort == "infants_subgroup" :
   
