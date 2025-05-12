@@ -41,16 +41,6 @@ if (study_start_date == as.Date("2020-09-01") &
   
 }
 
-patients_df <- patients_df %>% 
-  mutate(
-    is_female_or_male = case_when(
-      sex == "female" ~ TRUE,
-      sex == "male" ~ TRUE,
-      TRUE ~ FALSE
-    ),
-    has_imd = if_else(is.na(imd_rounded), FALSE, TRUE)
-  )
-
 # Define the base population for exclusion: Only consider registered and appropriate age patients
 if (cohort == "infants" | cohort == "infants_subgroup") {
   population <- patients_df %>%
