@@ -3,6 +3,10 @@ library(here)
 library(lubridate)
 library(data.table)
 library(RColorBrewer)
+library(ggplot2)
+library(cowplot)
+library(ggpubr)
+
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 
 ##-- comparing overall cases
@@ -242,7 +246,7 @@ plot_grid(
   top = text_grob(
     "Monthly Counts of RSV, Influenza and COVID-19 in All Cohorts ",
     face = "bold", size = 14),
-  bottom = text_grob("Year (2016-2024)", vjust = -6)
+  bottom = text_grob("Year (2016-2024)", vjust = -4)
 )
 
 #save
