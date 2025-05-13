@@ -66,7 +66,6 @@ action_flow <- function(cohort, season, dates, season_start_date,
       name = glue("generate_flow_chart_data_{cohort}_{season}"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/{cohort}_{dates}_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
       -- {cohort} {season_start_date} {season_end_date}"),
       needs = NULL,
       highly_sensitive = lst(
@@ -106,7 +105,6 @@ action_flow_infants_sub <- function(cohort, season, dates, season_start_date,
       name = glue("generate_flow_chart_data_{cohort}_{season}"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/{cohort}_{dates}_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
       -- {cohort} {season_start_date} {season_end_date}"),
       needs = list(glue("process_flow_chart_data_mothers_{season}")),
       highly_sensitive = lst(
