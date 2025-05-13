@@ -8,25 +8,16 @@ from ehrql import (
 )
 from ehrql.tables.tpp import ( 
   patients, 
-  medications,
-  ons_deaths,
   addresses, 
   clinical_events,
   practice_registrations,
-  household_memberships_2020,
-  vaccinations,
   apcs,
-  emergency_care_attendances,
   parents
 )
 
 from variable_lib import (
   has_a_continuous_practice_registration_spanning,
-  most_recent_bmi,
-  practice_registration_as_of,
-  emergency_care_diagnosis_matches,
   hospitalisation_diagnosis_matches,
-  cause_of_death_matches
 )
 
 import codelists
@@ -51,8 +42,37 @@ cohort = args[1]
 # Change these in ./analysis/design/study-dates.R if necessary
 study_start_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
 study_end_date = datetime.strptime(study_dates[args[3]], "%Y-%m-%d").date()
-index_date = study_start_date
+
+#get date patient ages into cohort 
+if cohort == "infants" or cohort == "infants_subgroup" :
+  age_date = patients.date_of_birth
+  age_out_date = patients.date_of_birth + years(2)
+elif cohort == "children_and_adolescents" :
+  age_date = patients.date_of_birth + years(2) 
+  age_out_date = patients.date_of_birth + years(18)
+elif cohort == "adults" :
+  age_date = patients.date_of_birth + years(18)
+  age_out_date = patients.date_of_birth + years(65)
+else :
+  age_date = patients.date_of_birth + years(65)
+  age_out_date = patients.date_of_birth + years(110)
+
+#set index date (and registration date) as last date of either start date or age date
+#so that patients are the correct age for the cohort when looking at records
+if cohort == "infants" or cohort == "infants_subgroup" :
+  index_date = maximum_of(study_start_date, study_start_date)
+else : 
+  index_date = maximum_of(study_start_date, age_date)
+
 registration_date = index_date - years(1)
+
+#set end date as first date of either end date or age out date 
+#so that patients are the correct age for the cohort when looking at records
+followup_end_date = minimum_of(study_end_date, age_out_date)
+
+#extract patient specific follow up dates
+dataset.patient_index_date = index_date
+dataset.patient_end_date = followup_end_date
 
 #define dataset definition settings from command line arguments
 start_year = study_start_date.year
@@ -79,6 +99,7 @@ else :
 
 is_female_or_male = patients.sex.is_in(["female", "male"])
 
+#has age
 if cohort == "infants" or cohort == "infants_subgroup" :
   is_appropriate_age = (age_at_start_months < 24) & (age_at_end_months >= 0)
 elif cohort == "children_and_adolescents" :
@@ -87,7 +108,8 @@ elif cohort == "adults" :
   is_appropriate_age = (age_at_start < 65) & (age_at_end >= 18)
 else :
   is_appropriate_age = (age_at_start < 110) & (age_at_end >= 65)
-
+  
+#has IMD  
 has_imd = (addresses.for_patient_on(index_date).imd_rounded.is_not_null())
 
 ##define functions for queries
@@ -101,87 +123,6 @@ def has_prior_event(codelist, where = True):
         prior_events.where(where)
         .where(prior_events.snomedct_code.is_in(codelist))
         .exists_for_patient()
-    )
-
-#query prior_events for date of most recent event-in-codelist
-def last_prior_event(codelist, where = True):
-    return (
-        prior_events.where(where)
-        .where(prior_events.snomedct_code.is_in(codelist))
-        .sort_by(clinical_events.date)
-        .last_for_patient()
-    )
-    
-#query prior_events for date of earliest event-in-codelist
-def first_prior_event(codelist, where = True):
-    return (
-        prior_events.where(where)
-        .where(prior_events.snomedct_code.is_in(codelist))
-        .sort_by(clinical_events.date)
-        .first_for_patient()
-    )
-
-#meds occurring before booster date
-prior_meds = medications.where(medications.date.is_on_or_before(index_date))
-
-#query prior_meds for existence of event-in-codelist
-def has_prior_meds(codelist, where = True):
-    return (
-        prior_meds.where(where)
-        .where(prior_meds.dmd_code.is_in(codelist))
-        .exists_for_patient()
-    )
-
-#query prior meds for date of most recent med-in-codelist
-def last_prior_meds(codelist, where = True):
-    return (
-        prior_meds.where(where)
-        .where(prior_meds.dmd_code.is_in(codelist))
-        .sort_by(medications.date)
-        .last_for_patient()
-    )
-
-#query prior_events for date of earliest event-in-codelist
-def first_prior_meds(codelist, where = True):
-    return (
-        prior_meds.where(where)
-        .where(prior_meds.dmd_code.is_in(codelist))
-        .sort_by(medications.date)
-        .first_for_patient()
-    )
-
-#infections occuring after index date but before study end date
-infection_events = (
-  clinical_events.where(clinical_events.date
-  .is_on_or_between(index_date, study_end_date))
-)
-
-#query infection_events for existence of event-in-codelist (get first of these)
-def has_infection_event(codelist, where = True):
-    return (
-        infection_events.where(where)
-        .where(infection_events.snomedct_code.is_in(codelist))
-        .sort_by(clinical_events.date)
-        .first_for_patient()
-        .exists_for_patient()
-    )
-
-#query infection_events for date of most recent event-in-codelist
-def last_infection_event(codelist, where = True):
-    return (
-        infection_events.where(where)
-        .where(infection_events.snomedct_code.is_in(codelist))
-        .sort_by(clinical_events.date)
-        .last_for_patient()
-    )
-  
-#query infection_events for date of earliest event-in-codelist
-def first_infection_event(codelist, where = True):
-    return (
-        infection_events.where(where)
-        .where(infection_events.snomedct_code.is_in(codelist))
-        .sort_by(clinical_events.date)
-        .first_for_patient()
     )
 
 #define population
