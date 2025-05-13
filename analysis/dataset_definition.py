@@ -502,6 +502,7 @@ else :
     .is_in(codelists.rsv_sensitive_codelist)))
     .snomedct_code.count_distinct_for_patient()
   )
+  dataset.rsv_code_number_date1 = rsv_code_number_date1
 
   dataset.rsv_code2 = (case(
     when(rsv_code_number_date1 > 1).then(None),
@@ -523,6 +524,7 @@ else :
     .is_in(codelists.rsv_sensitive_codelist)))
     .snomedct_code.count_distinct_for_patient()
   )
+  dataset.rsv_code_number_date2 = rsv_code_number_date2
 
   dataset.rsv_code3 = (case(
     when(rsv_code_number_date2 > 1).then(None),
@@ -544,6 +546,7 @@ else :
     .is_in(codelists.rsv_sensitive_codelist)))
     .snomedct_code.count_distinct_for_patient()
   )
+  dataset.rsv_code_number_date3 = rsv_code_number_date3
 
   dataset.rsv_code4 = (case(
     when(rsv_code_number_date3 > 1).then(None),
@@ -560,11 +563,12 @@ else :
   )
   rsv_code_number_date4 = (
     (clinical_events.where(clinical_events
-    .date.is_on_or_between(dataset.rsv_code3_date, dataset.rsv_code4_date))
+    .date.is_on_or_between(dataset.rsv_code4_date, dataset.rsv_code4_date))
     .where(clinical_events.snomedct_code
     .is_in(codelists.rsv_sensitive_codelist)))
     .snomedct_code.count_distinct_for_patient()
   )
+  dataset.rsv_code_number_date4 = rsv_code_number_date4
 
   rsv_code_number = (case(
     when(rsv_code_number_date1 > 1)
@@ -684,32 +688,178 @@ else :
       .is_on_or_between(index_date, followup_end_date))
       .arrival_date.minimum_for_patient())))))
     )
-    
-    #count number of distinct codes in RSV sensitive codelist which occur 
-    #within 2 weeks - looking at the second episode
-    rsv_code_number_second = (
-      (clinical_events.where(clinical_events
-      .date.is_on_or_between(is_infection_event(codelists
-      .rsv_sensitive_codelist).where(clinical_events.date
-      .is_on_or_after(dataset.rsv_primary_date + days(14)))
-      .sort_by(clinical_events.date).first_for_patient().date, 
+
+    #get dates of events and corresponding codes 
+    dataset.rsv_code1_second = (
       is_infection_event(codelists.rsv_sensitive_codelist)
-      .where(clinical_events.date.is_on_or_after(dataset
-      .rsv_primary_date + days(14))).sort_by(clinical_events.date)
-      .first_for_patient().date + days(14)))).snomedct_code
-      .is_in(codelists.rsv_sensitive_codelist)
-      .count_distinct_for_patient()
+      .where(clinical_events.date.is_on_or_after(
+      dataset.rsv_primary_date + days(14)))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code
     )
+    dataset.rsv_code1_second_date = (
+      is_infection_event(codelists.rsv_sensitive_codelist)
+      .where(clinical_events.date.is_on_or_after(
+      dataset.rsv_primary_date + days(14)))
+      .sort_by(clinical_events.date).first_for_patient()
+      .date
+    )
+    rsv_code_number_second_date1 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.rsv_code1_second_date,
+      dataset.rsv_code1_second_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.rsv_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.rsv_code_number_second_date1 = rsv_code_number_second_date1
+
+    dataset.rsv_code2_second = (case(
+      when(rsv_code_number_second_date1 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .rsv_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.rsv_code1_second_date))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code)
+    )
+    dataset.rsv_code2_second_date = (case(
+      when(rsv_code_number_second_date1 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .rsv_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.rsv_code1_second_date))
+      .sort_by(clinical_events.date).first_for_patient().date)
+    )
+    rsv_code_number_second_date2 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.rsv_code2_second_date,
+      dataset.rsv_code2_second_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.rsv_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.rsv_code_number_second_date2 = rsv_code_number_second_date2
+
+    dataset.rsv_second_code3 = (case(
+      when(rsv_code_number_second_date2 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .rsv_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.rsv_code2_second_date))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code)
+    )
+    dataset.rsv_code3_second_date = (case(
+      when(rsv_code_number_second_date2 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .rsv_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.rsv_code2_second_date))
+      .sort_by(clinical_events.date).first_for_patient().date)
+    )
+    rsv_code_number_second_date3 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.rsv_code3_second_date,
+      dataset.rsv_code3_second_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.rsv_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.rsv_code_number_second_date3 = rsv_code_number_second_date3
+
+    dataset.rsv_second_code4 = (case(
+      when(rsv_code_number_date3 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .rsv_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.rsv_code3_second_date))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code)
+    )
+    dataset.rsv_code4_second_date = (case(
+      when(rsv_code_number_second_date3 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .rsv_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.rsv_code3_second_date))
+      .sort_by(clinical_events.date).first_for_patient().date)
+    )
+    rsv_code_number_second_date4 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.rsv_code4_second_date,
+      dataset.rsv_code4_second_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.rsv_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.rsv_code_number_second_date4 = rsv_code_number_second_date4
+
+    rsv_code_number_second = (case(
+      when(rsv_code_number_second_date1 > 1)
+      .then(rsv_code_number_second_date1),
+      when(rsv_code_number_second_date2 > 1)
+      .then(rsv_code_number_second_date2),
+      when(rsv_code_number_second_date3 > 1)
+      .then(rsv_code_number_second_date3),
+      when(rsv_code_number_second_date4 > 1)
+      .then(rsv_code_number_second_date4),
+      when(diff_dates_days(dataset.rsv_code1_second_date,
+      dataset.rsv_code2_second_date) <= 14).then(2),
+      when(diff_dates_days(dataset.rsv_code2_second_date,
+      dataset.rsv_code3_second_date) <= 14).then(2),
+      when(diff_dates_days(dataset.rsv_code3_second_date,
+      dataset.rsv_code4_second_date) <= 14).then(2),
+      otherwise = rsv_code_number_second_date1)
+    )
+
+    dataset.rsv_code_number_second = rsv_code_number_second
+
+    rsv_codes_second_date = (case(
+      when(rsv_code_number_second_date1 > 1)
+      .then(dataset.rsv_code1_second_date),
+      when(rsv_code_number_second_date2 > 1)
+      .then(dataset.rsv_code2_second_date),
+      when(rsv_code_number_second_date3 > 1)
+      .then(dataset.rsv_code3_second_date),
+      when(rsv_code_number_second_date4 > 1)
+      .then(dataset.rsv_code4_second_date),
+      when((rsv_code_number_second > 1) &
+      (diff_dates_days(dataset.rsv_code1_second_date,
+      dataset.rsv_code2_second_date) <= 14))
+      .then(dataset.rsv_code1_second_date),
+      when((rsv_code_number_second > 1) &
+      (diff_dates_days(dataset.rsv_code2_second_date,
+      dataset.rsv_code3_second_date) <= 14))
+      .then(dataset.rsv_code2_second_date),
+      when((rsv_code_number_second > 1) &
+      (diff_dates_days(dataset.rsv_code3_second_date,
+      dataset.rsv_code4_second_date) <= 14))
+      .then(dataset.rsv_code3_second_date),
+      otherwise = None)
+    )
+
+    dataset.rsv_codes_second_date = rsv_codes_second_date
     
-    #get the date of first occurrence a code above, if at least 2 codes are present
-    # - looking at the second episode
-    rsv_codes_second_date = (
-      case(when(rsv_code_number_second > 1)
-      .then(is_infection_event(codelists
-      .rsv_sensitive_codelist).where(clinical_events.date
-      .is_on_or_after(dataset.rsv_primary_date + days(14)))
-      .sort_by(clinical_events.date).first_for_patient().date))
-    )
+    # #count number of distinct codes in RSV sensitive codelist which occur 
+    # #within 2 weeks - looking at the second episode
+    # rsv_code_number_second = (
+    #   (clinical_events.where(clinical_events
+    #   .date.is_on_or_between(is_infection_event(codelists
+    #   .rsv_sensitive_codelist).where(clinical_events.date
+    #   .is_on_or_after(dataset.rsv_primary_date + days(14)))
+    #   .sort_by(clinical_events.date).first_for_patient().date, 
+    #   is_infection_event(codelists.rsv_sensitive_codelist)
+    #   .where(clinical_events.date.is_on_or_after(dataset
+    #   .rsv_primary_date + days(14))).sort_by(clinical_events.date)
+    #   .first_for_patient().date + days(14)))).snomedct_code
+    #   .is_in(codelists.rsv_sensitive_codelist)
+    #   .count_distinct_for_patient()
+    # )
+    
+    # #get the date of first occurrence a code above, if at least 2 codes are present
+    # # - looking at the second episode
+    # rsv_codes_second_date = (
+    #   case(when(rsv_code_number_second > 1)
+    #   .then(is_infection_event(codelists
+    #   .rsv_sensitive_codelist).where(clinical_events.date
+    #   .is_on_or_after(dataset.rsv_primary_date + days(14)))
+    #   .sort_by(clinical_events.date).first_for_patient().date))
+    # )
     
     #get the date of the occurrence of first relevant prescription
     # - looking at the second episode
@@ -782,33 +932,177 @@ else :
       .then(rsv_med_inclusion_date)))))
     )
     
-    #count number of distinct codes in RSV sensitive codelist which occur
-    #within 2 weeks - looking at the second episode
-    rsv_code_number_second = (
+    #get dates of events and corresponding codes 
+    dataset.rsv_code1_second = (
+      is_infection_event(codelists.rsv_sensitive_codelist)
+      .where(clinical_events.date.is_on_or_after(
+      dataset.rsv_primary_date + days(14)))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code
+    )
+    dataset.rsv_code1_second_date = (
+      is_infection_event(codelists.rsv_sensitive_codelist)
+      .where(clinical_events.date.is_on_or_after(
+      dataset.rsv_primary_date + days(14)))
+      .sort_by(clinical_events.date).first_for_patient()
+      .date
+    )
+    rsv_code_number_second_date1 = (
       (clinical_events.where(clinical_events
-      .date.is_on_or_between(is_infection_event(codelists
-      .rsv_sensitive_codelist).where(clinical_events.date
-      .is_on_or_after(dataset.rsv_primary_date + days(14)))
-      .sort_by(clinical_events.date).first_for_patient()
-      .date, is_infection_event(codelists
-      .rsv_sensitive_codelist).where(clinical_events.date
-      .is_on_or_after(dataset.rsv_primary_date + days(14)))
-      .sort_by(clinical_events.date).first_for_patient()
-      .date + days(14)))).snomedct_code
-      .is_in(codelists.rsv_sensitive_codelist)
-      .count_distinct_for_patient()
+      .date.is_on_or_between(dataset.rsv_code1_second_date,
+      dataset.rsv_code1_second_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.rsv_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
     )
+    dataset.rsv_code_number_second_date1 = rsv_code_number_second_date1
+
+    dataset.rsv_code2_second = (case(
+      when(rsv_code_number_second_date1 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .rsv_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.rsv_code1_second_date))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code)
+    )
+    dataset.rsv_code2_second_date = (case(
+      when(rsv_code_number_second_date1 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .rsv_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.rsv_code1_second_date))
+      .sort_by(clinical_events.date).first_for_patient().date)
+    )
+    rsv_code_number_second_date2 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.rsv_code2_second_date,
+      dataset.rsv_code2_second_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.rsv_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.rsv_code_number_second_date2 = rsv_code_number_second_date2
+
+    dataset.rsv_second_code3 = (case(
+      when(rsv_code_number_second_date2 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .rsv_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.rsv_code2_second_date))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code)
+    )
+    dataset.rsv_code3_second_date = (case(
+      when(rsv_code_number_second_date2 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .rsv_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.rsv_code2_second_date))
+      .sort_by(clinical_events.date).first_for_patient().date)
+    )
+    rsv_code_number_second_date3 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.rsv_code3_second_date,
+      dataset.rsv_code3_second_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.rsv_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.rsv_code_number_second_date3 = rsv_code_number_second_date3
+
+    dataset.rsv_second_code4 = (case(
+      when(rsv_code_number_date3 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .rsv_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.rsv_code3_second_date))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code)
+    )
+    dataset.rsv_code4_second_date = (case(
+      when(rsv_code_number_second_date3 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .rsv_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.rsv_code3_second_date))
+      .sort_by(clinical_events.date).first_for_patient().date)
+    )
+    rsv_code_number_second_date4 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.rsv_code4_second_date,
+      dataset.rsv_code4_second_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.rsv_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.rsv_code_number_second_date4 = rsv_code_number_second_date4
+
+    rsv_code_number_second = (case(
+      when(rsv_code_number_second_date1 > 1)
+      .then(rsv_code_number_second_date1),
+      when(rsv_code_number_second_date2 > 1)
+      .then(rsv_code_number_second_date2),
+      when(rsv_code_number_second_date3 > 1)
+      .then(rsv_code_number_second_date3),
+      when(rsv_code_number_second_date4 > 1)
+      .then(rsv_code_number_second_date4),
+      when(diff_dates_days(dataset.rsv_code1_second_date,
+      dataset.rsv_code2_second_date) <= 14).then(2),
+      when(diff_dates_days(dataset.rsv_code2_second_date,
+      dataset.rsv_code3_second_date) <= 14).then(2),
+      when(diff_dates_days(dataset.rsv_code3_second_date,
+      dataset.rsv_code4_second_date) <= 14).then(2),
+      otherwise = rsv_code_number_second_date1)
+    )
+
+    dataset.rsv_code_number_second = rsv_code_number_second
+
+    rsv_codes_second_date = (case(
+      when(rsv_code_number_second_date1 > 1)
+      .then(dataset.rsv_code1_second_date),
+      when(rsv_code_number_second_date2 > 1)
+      .then(dataset.rsv_code2_second_date),
+      when(rsv_code_number_second_date3 > 1)
+      .then(dataset.rsv_code3_second_date),
+      when(rsv_code_number_second_date4 > 1)
+      .then(dataset.rsv_code4_second_date),
+      when((rsv_code_number_second > 1) &
+      (diff_dates_days(dataset.rsv_code1_second_date,
+      dataset.rsv_code2_second_date) <= 14))
+      .then(dataset.rsv_code1_second_date),
+      when((rsv_code_number_second > 1) &
+      (diff_dates_days(dataset.rsv_code2_second_date,
+      dataset.rsv_code3_second_date) <= 14))
+      .then(dataset.rsv_code2_second_date),
+      when((rsv_code_number_second > 1) &
+      (diff_dates_days(dataset.rsv_code3_second_date,
+      dataset.rsv_code4_second_date) <= 14))
+      .then(dataset.rsv_code3_second_date),
+      otherwise = None)
+    )
+
+    dataset.rsv_codes_second_date = rsv_codes_second_date
     
-    #get the date of first occurrence a code above, if at least 2 codes are present
-    # - looking at the second episode
-    rsv_codes_second_date = (
-      case(when(rsv_code_number_second > 1)
-      .then(is_infection_event(codelists
-      .rsv_sensitive_codelist).where(clinical_events.date
-      .is_on_or_after(dataset.rsv_primary_date + days(14)))
-      .sort_by(clinical_events.date).first_for_patient()
-      .date))
-    )
+    # #count number of distinct codes in RSV sensitive codelist which occur 
+    # #within 2 weeks - looking at the second episode
+    # rsv_code_number_second = (
+    #   (clinical_events.where(clinical_events
+    #   .date.is_on_or_between(is_infection_event(codelists
+    #   .rsv_sensitive_codelist).where(clinical_events.date
+    #   .is_on_or_after(dataset.rsv_primary_date + days(14)))
+    #   .sort_by(clinical_events.date).first_for_patient().date, 
+    #   is_infection_event(codelists.rsv_sensitive_codelist)
+    #   .where(clinical_events.date.is_on_or_after(dataset
+    #   .rsv_primary_date + days(14))).sort_by(clinical_events.date)
+    #   .first_for_patient().date + days(14)))).snomedct_code
+    #   .is_in(codelists.rsv_sensitive_codelist)
+    #   .count_distinct_for_patient()
+    # )
+    
+    # #get the date of first occurrence a code above, if at least 2 codes are present
+    # # - looking at the second episode
+    # rsv_codes_second_date = (
+    #   case(when(rsv_code_number_second > 1)
+    #   .then(is_infection_event(codelists
+    #   .rsv_sensitive_codelist).where(clinical_events.date
+    #   .is_on_or_after(dataset.rsv_primary_date + days(14)))
+    #   .sort_by(clinical_events.date).first_for_patient().date))
+    # )
     
     #get the date of the occurrence of first relevant prescription
     # - looking at the second episode
@@ -1081,23 +1375,140 @@ if codelist_type == "specific" :
 else :
   
   #get date of first case of either ARI or fever for first episode
-  ari_date = first_infection_event(codelists.ari_primary_codelist).date
-  fever_date = first_infection_event(codelists.fever_codelist).date
+  dataset.ari_date1 = first_infection_event(codelists.ari_primary_codelist).date
+  dataset.ari_date2 = (
+    is_infection_event(codelists.ari_primary_codelist)
+    .where(clinical_events.date.is_after(dataset.ari_date1))
+    .sort_by(clinical_events.date)
+    .first_for_patient().date
+  )
+  dataset.ari_date3 = (
+    is_infection_event(codelists.ari_primary_codelist)
+    .where(clinical_events.date.is_after(dataset.ari_date2))
+    .sort_by(clinical_events.date)
+    .first_for_patient().date
+  )
+  dataset.ari_date4 = (
+    is_infection_event(codelists.ari_primary_codelist)
+    .where(clinical_events.date.is_after(dataset.ari_date3))
+    .sort_by(clinical_events.date)
+    .first_for_patient().date
+  )
+  dataset.fever_date1 = first_infection_event(codelists.fever_codelist).date
+  dataset.fever_date2 = (
+    is_infection_event(codelists.fever_codelist)
+    .where(clinical_events.date.is_after(dataset.fever_date1))
+    .sort_by(clinical_events.date)
+    .first_for_patient().date
+  )
+  dataset.fever_date3 = (
+    is_infection_event(codelists.fever_codelist)
+    .where(clinical_events.date.is_after(dataset.fever_date2))
+    .sort_by(clinical_events.date)
+    .first_for_patient().date
+  )
+  dataset.fever_date4 = (
+    is_infection_event(codelists.fever_codelist)
+    .where(clinical_events.date.is_after(dataset.fever_date3))
+    .sort_by(clinical_events.date)
+    .first_for_patient().date
+  )
   
   #define an occurence of ILI (adapted from WHO definition) - look at the 
   #presence of a code in the ARI primary codelist and the fever codelist, 
   #at least one code from each must be present within 14 days of each other
   #to be considered an ILI case 
   ILI_case = (case(
-    when((diff_dates_days(ari_date, fever_date) <= 14)
-    & (diff_dates_days(ari_date, fever_date) >= -14))
-    .then(True), otherwise = False)
+    when(diff_dates_days(dataset.ari_date1,
+    dataset.fever_date1) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date1,
+    dataset.fever_date2) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date1,
+    dataset.fever_date3) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date1,
+    dataset.fever_date4) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date2,
+    dataset.fever_date1) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date2,
+    dataset.fever_date2) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date2,
+    dataset.fever_date3) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date2,
+    dataset.fever_date4) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date3,
+    dataset.fever_date1) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date3,
+    dataset.fever_date2) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date3,
+    dataset.fever_date3) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date3,
+    dataset.fever_date4) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date4,
+    dataset.fever_date1) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date4,
+    dataset.fever_date2) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date4,
+    dataset.fever_date3) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_date4,
+    dataset.fever_date4) <= abs(14)).then(True),
+    otherwise = False)
   )
+
+  dataset.ILI_case = ILI_case
   
   #get date of first occurence of ILI
   ILI_date = (case(
-    when(ILI_case).then(minimum_of(ari_date, fever_date)))
+    when(diff_dates_days(dataset.ari_date1,
+    dataset.fever_date1) <= abs(14))
+    .then(minimum_of(dataset.ari_date1, dataset.fever_date1)),
+    when(diff_dates_days(dataset.ari_date1,
+    dataset.fever_date2) <= abs(14))
+    .then(minimum_of(dataset.ari_date1, dataset.fever_date2)),
+    when(diff_dates_days(dataset.ari_date1,
+    dataset.fever_date3) <= abs(14))
+    .then(minimum_of(dataset.ari_date1, dataset.fever_date3)),
+    when(diff_dates_days(dataset.ari_date1,
+    dataset.fever_date4) <= abs(14))
+    .then(minimum_of(dataset.ari_date1, dataset.fever_date4)),
+    when(diff_dates_days(dataset.ari_date2,
+    dataset.fever_date1) <= abs(14))
+    .then(minimum_of(dataset.ari_date2, dataset.fever_date1)),
+    when(diff_dates_days(dataset.ari_date2,
+    dataset.fever_date2) <= abs(14))
+    .then(minimum_of(dataset.ari_date2, dataset.fever_date2)),
+    when(diff_dates_days(dataset.ari_date2,
+    dataset.fever_date3) <= abs(14))
+    .then(minimum_of(dataset.ari_date2, dataset.fever_date3)),
+    when(diff_dates_days(dataset.ari_date2,
+    dataset.fever_date4) <= abs(14))
+    .then(minimum_of(dataset.ari_date2, dataset.fever_date4)),
+    when(diff_dates_days(dataset.ari_date3,
+    dataset.fever_date1) <= abs(14))
+    .then(minimum_of(dataset.ari_date3, dataset.fever_date1)),
+    when(diff_dates_days(dataset.ari_date3,
+    dataset.fever_date2) <= abs(14))
+    .then(minimum_of(dataset.ari_date3, dataset.fever_date2)),
+    when(diff_dates_days(dataset.ari_date3,
+    dataset.fever_date3) <= abs(14))
+    .then(minimum_of(dataset.ari_date3, dataset.fever_date3)),
+    when(diff_dates_days(dataset.ari_date3,
+    dataset.fever_date4) <= abs(14))
+    .then(minimum_of(dataset.ari_date3, dataset.fever_date4)),
+    when(diff_dates_days(dataset.ari_date4,
+    dataset.fever_date1) <= abs(14))
+    .then(minimum_of(dataset.ari_date4, dataset.fever_date1)),
+    when(diff_dates_days(dataset.ari_date4,
+    dataset.fever_date2) <= abs(14))
+    .then(minimum_of(dataset.ari_date4, dataset.fever_date2)),
+    when(diff_dates_days(dataset.ari_date4,
+    dataset.fever_date3) <= abs(14))
+    .then(minimum_of(dataset.ari_date4, dataset.fever_date3)),
+    when(diff_dates_days(dataset.ari_date4,
+    dataset.fever_date4) <= abs(14))
+    .then(minimum_of(dataset.ari_date4, dataset.fever_date4)))
   )
+
+  dataset.ILI_date = ILI_date
   
   #get date of occurrence of first relevant prescription
   flu_med_date = (
@@ -1129,32 +1540,186 @@ else :
     (flu_med_date))))
   )
   
-  #get date of first case of either ARI or fever for second episode
-  ari_second_date = (
+  #get date of first case of either ARI or fever for first episode
+  dataset.ari_second_date1 = (
     is_infection_event(codelists.ari_primary_codelist)
-    .where(clinical_events.date.is_on_or_after(dataset
-    .flu_primary_date + days(14))).sort_by(clinical_events.date)
+    .where(clinical_events.date.is_on_or_after(
+    dataset.flu_primary_date + days(14)))
+    .sort_by(clinical_events.date)
     .first_for_patient().date
   )
-  fever_second_date = (
+  dataset.ari_second_date2 = (
+    is_infection_event(codelists.ari_primary_codelist)
+    .where(clinical_events.date
+    .is_after(dataset.ari_second_date1))
+    .sort_by(clinical_events.date)
+    .first_for_patient().date
+  )
+  dataset.ari_second_date3 = (
+    is_infection_event(codelists.ari_primary_codelist)
+    .where(clinical_events.date
+    .is_after(dataset.ari_second_date2))
+    .sort_by(clinical_events.date)
+    .first_for_patient().date
+  )
+  dataset.ari_second_date4 = (
+    is_infection_event(codelists.ari_primary_codelist)
+    .where(clinical_events.date
+    .is_after(dataset.ari_second_date3))
+    .sort_by(clinical_events.date)
+    .first_for_patient().date
+  )
+  dataset.fever_second_date1 = (
     is_infection_event(codelists.fever_codelist)
-    .where(clinical_events.date.is_on_or_after(dataset
-    .flu_primary_date + days(14))).sort_by(clinical_events.date)
+    .where(clinical_events.date.is_on_or_after(
+    dataset.flu_primary_date + days(14)))
+    .sort_by(clinical_events.date)
+    .first_for_patient().date
+  )
+  dataset.fever_second_date2 = (
+    is_infection_event(codelists.fever_codelist)
+    .where(clinical_events.date
+    .is_after(dataset.fever_second_date1))
+    .sort_by(clinical_events.date)
+    .first_for_patient().date
+  )
+  dataset.fever_second_date3 = (
+    is_infection_event(codelists.fever_codelist)
+    .where(clinical_events.date
+    .is_after(dataset.fever_second_date2))
+    .sort_by(clinical_events.date)
+    .first_for_patient().date
+  )
+  dataset.fever_second_date4 = (
+    is_infection_event(codelists.fever_codelist)
+    .where(clinical_events.date
+    .is_after(dataset.fever_second_date3))
+    .sort_by(clinical_events.date)
     .first_for_patient().date
   )
   
-  #define second occurrence of ILI using same criteria as first episode
+  #define an occurence of ILI (adapted from WHO definition) - look at the 
+  #presence of a code in the ARI primary codelist and the fever codelist, 
+  #at least one code from each must be present within 14 days of each other
+  #to be considered an ILI case 
   ILI_case_second = (case(
-    when((diff_dates_days(ari_second_date, fever_second_date) <= 14)
-    & (diff_dates_days(ari_second_date, fever_second_date) >= -14))
-    .then(True), otherwise = False)
+    when(diff_dates_days(dataset.ari_second_date1,
+    dataset.fever_second_date1) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date1,
+    dataset.fever_second_date2) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date1,
+    dataset.fever_second_date3) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date1,
+    dataset.fever_second_date4) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date2,
+    dataset.fever_second_date1) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date2,
+    dataset.fever_second_date2) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date2,
+    dataset.fever_second_date3) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date2,
+    dataset.fever_second_date4) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date3,
+    dataset.fever_second_date1) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date3,
+    dataset.fever_second_date2) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date3,
+    dataset.fever_second_date3) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date3,
+    dataset.fever_second_date4) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date4,
+    dataset.fever_second_date1) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date4,
+    dataset.fever_second_date2) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date4,
+    dataset.fever_second_date3) <= abs(14)).then(True),
+    when(diff_dates_days(dataset.ari_second_date4,
+    dataset.fever_second_date4) <= abs(14)).then(True),
+    otherwise = False)
   )
+
+  dataset.ILI_case_second = ILI_case_second
   
-  #get date of second occurence of ILI
+  #get date of first occurence of ILI
   ILI_second_date = (case(
-    when(ILI_case_second).then(minimum_of(ari_second_date,
-    fever_second_date)))
+    when(diff_dates_days(dataset.ari_date1,
+    dataset.fever_date1) <= abs(14))
+    .then(minimum_of(dataset.ari_date1, dataset.fever_date1)),
+    when(diff_dates_days(dataset.ari_date1,
+    dataset.fever_date2) <= abs(14))
+    .then(minimum_of(dataset.ari_date1, dataset.fever_date2)),
+    when(diff_dates_days(dataset.ari_date1,
+    dataset.fever_date3) <= abs(14))
+    .then(minimum_of(dataset.ari_date1, dataset.fever_date3)),
+    when(diff_dates_days(dataset.ari_date1,
+    dataset.fever_date4) <= abs(14))
+    .then(minimum_of(dataset.ari_date1, dataset.fever_date4)),
+    when(diff_dates_days(dataset.ari_date2,
+    dataset.fever_date1) <= abs(14))
+    .then(minimum_of(dataset.ari_date2, dataset.fever_date1)),
+    when(diff_dates_days(dataset.ari_date2,
+    dataset.fever_date2) <= abs(14))
+    .then(minimum_of(dataset.ari_date2, dataset.fever_date2)),
+    when(diff_dates_days(dataset.ari_date2,
+    dataset.fever_date3) <= abs(14))
+    .then(minimum_of(dataset.ari_date2, dataset.fever_date3)),
+    when(diff_dates_days(dataset.ari_date2,
+    dataset.fever_date4) <= abs(14))
+    .then(minimum_of(dataset.ari_date2, dataset.fever_date4)),
+    when(diff_dates_days(dataset.ari_date3,
+    dataset.fever_date1) <= abs(14))
+    .then(minimum_of(dataset.ari_date3, dataset.fever_date1)),
+    when(diff_dates_days(dataset.ari_date3,
+    dataset.fever_date2) <= abs(14))
+    .then(minimum_of(dataset.ari_date3, dataset.fever_date2)),
+    when(diff_dates_days(dataset.ari_date3,
+    dataset.fever_date3) <= abs(14))
+    .then(minimum_of(dataset.ari_date3, dataset.fever_date3)),
+    when(diff_dates_days(dataset.ari_date3,
+    dataset.fever_date4) <= abs(14))
+    .then(minimum_of(dataset.ari_date3, dataset.fever_date4)),
+    when(diff_dates_days(dataset.ari_date4,
+    dataset.fever_date1) <= abs(14))
+    .then(minimum_of(dataset.ari_date4, dataset.fever_date1)),
+    when(diff_dates_days(dataset.ari_date4,
+    dataset.fever_date2) <= abs(14))
+    .then(minimum_of(dataset.ari_date4, dataset.fever_date2)),
+    when(diff_dates_days(dataset.ari_date4,
+    dataset.fever_date3) <= abs(14))
+    .then(minimum_of(dataset.ari_date4, dataset.fever_date3)),
+    when(diff_dates_days(dataset.ari_date4,
+    dataset.fever_date4) <= abs(14))
+    .then(minimum_of(dataset.ari_date4, dataset.fever_date4)))
   )
+
+  dataset.ILI_second_date = ILI_second_date
+
+  # #get date of first case of either ARI or fever for second episode
+  # dataset.ari_second_date = (
+  #   is_infection_event(codelists.ari_primary_codelist)
+  #   .where(clinical_events.date.is_on_or_after(dataset
+  #   .flu_primary_date + days(14))).sort_by(clinical_events.date)
+  #   .first_for_patient().date
+  # )
+  # dataset.fever_second_date = (
+  #   is_infection_event(codelists.fever_codelist)
+  #   .where(clinical_events.date.is_on_or_after(dataset
+  #   .flu_primary_date + days(14))).sort_by(clinical_events.date)
+  #   .first_for_patient().date
+  # )
+  
+  # #define second occurrence of ILI using same criteria as first episode
+  # ILI_case_second = (case(
+  #   when((diff_dates_days(dataset.ari_second_date, dataset.fever_second_date) <= 14)
+  #   & (diff_dates_days(dataset.ari_second_date, dataset.fever_second_date) >= -14))
+  #   .then(True), otherwise = False)
+  # )
+  
+  # #get date of second occurence of ILI
+  # ILI_second_date = (case(
+  #   when(ILI_case_second).then(minimum_of(dataset.ari_second_date,
+  #   dataset.fever_second_date)))
+  # )
   
   #get date of occurrence of first relevant prescription
   flu_med_second_date = (
@@ -1424,25 +1989,157 @@ if study_start_date >= covid_season_min :
     )
     
   else :
-    
+
     #count number of clinical codes in covid symptom list which occur within 14 days
     #looking at the first episode
-    covid_code_number = (
+
+    #get dates of events and corresponding codes 
+    dataset.covid_code1 = (
+      first_infection_event(codelists.covid_sensitive_codelist)
+      .snomedct_code
+    )
+    dataset.covid_code1_date = (
+      first_infection_event(codelists.covid_sensitive_codelist)
+      .date
+    )
+    covid_code_number_date1 = (
       (clinical_events.where(clinical_events
-      .date.is_on_or_between(first_infection_event(codelists
-      .covid_sensitive_codelist).date, first_infection_event(codelists
-      .covid_sensitive_codelist).date + days(14)))
+      .date.is_on_or_between(dataset.covid_code1_date, dataset.covid_code1_date))
       .where(clinical_events.snomedct_code
       .is_in(codelists.covid_sensitive_codelist)))
       .snomedct_code.count_distinct_for_patient()
     )
-    
-    #date of first occurrence of two of the above codes within 2 weeks
-    covid_codes_date = (
-      case(when(covid_code_number > 1)
-      .then(first_infection_event(codelists
-      .covid_sensitive_codelist).date))
+    dataset.covid_code_number_date1 = covid_code_number_date1
+
+    dataset.covid_code2 = (case(
+      when(covid_code_number_date1 > 1).then(None),
+      otherwise = is_infection_event(codelists.covid_sensitive_codelist)
+      .where(clinical_events.date.is_after(dataset.covid_code1_date))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code)
     )
+    dataset.covid_code2_date = (case(
+      when(covid_code_number_date1 > 1).then(None),
+      otherwise = is_infection_event(codelists.covid_sensitive_codelist)
+      .where(clinical_events.date.is_after(dataset.covid_code1_date))
+      .sort_by(clinical_events.date).first_for_patient().date)
+    )
+    covid_code_number_date2 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.covid_code2_date, dataset.covid_code2_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.covid_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.covid_code_number_date2 = covid_code_number_date2
+
+    dataset.covid_code3 = (case(
+      when(covid_code_number_date2 > 1).then(None),
+      otherwise = is_infection_event(codelists.covid_sensitive_codelist)
+      .where(clinical_events.date.is_after(dataset.covid_code2_date))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code)
+    )
+    dataset.covid_code3_date = (case(
+      when(covid_code_number_date2 > 1).then(None),
+      otherwise = is_infection_event(codelists.covid_sensitive_codelist)
+      .where(clinical_events.date.is_after(dataset.covid_code2_date))
+      .sort_by(clinical_events.date).first_for_patient().date)
+    )
+    covid_code_number_date3 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.covid_code3_date, dataset.covid_code3_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.covid_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.covid_code_number_date3 = covid_code_number_date3
+
+    dataset.covid_code4 = (case(
+      when(covid_code_number_date3 > 1).then(None),
+      otherwise = is_infection_event(codelists.covid_sensitive_codelist)
+      .where(clinical_events.date.is_after(dataset.covid_code3_date))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code)
+    )
+    dataset.covid_code4_date = (case(
+      when(covid_code_number_date3 > 1).then(None),
+      otherwise = is_infection_event(codelists.covid_sensitive_codelist)
+      .where(clinical_events.date.is_after(dataset.covid_code3_date))
+      .sort_by(clinical_events.date).first_for_patient().date)
+    )
+    covid_code_number_date4 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.covid_code4_date, dataset.covid_code4_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.covid_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.covid_code_number_date4 = covid_code_number_date4
+
+    covid_code_number = (case(
+      when(covid_code_number_date1 > 1)
+      .then(covid_code_number_date1),
+      when(covid_code_number_date2 > 1)
+      .then(covid_code_number_date2),
+      when(covid_code_number_date3 > 1)
+      .then(covid_code_number_date3),
+      when(covid_code_number_date4 > 1)
+      .then(covid_code_number_date4),
+      when(diff_dates_days(dataset.covid_code1_date,
+      dataset.covid_code2_date) <= 14).then(2),
+      when(diff_dates_days(dataset.covid_code2_date,
+      dataset.covid_code3_date) <= 14).then(2),
+      when(diff_dates_days(dataset.covid_code3_date,
+      dataset.covid_code4_date) <= 14).then(2),
+      otherwise = covid_code_number_date1)
+    )
+
+    dataset.covid_code_number = covid_code_number
+
+    covid_codes_date = (case(
+      when(covid_code_number_date1 > 1)
+      .then(dataset.covid_code1_date),
+      when(covid_code_number_date2 > 1)
+      .then(dataset.covid_code2_date),
+      when(covid_code_number_date3 > 1)
+      .then(dataset.covid_code3_date),
+      when(covid_code_number_date4 > 1)
+      .then(dataset.covid_code4_date),
+      when((covid_code_number > 1) &
+      (diff_dates_days(dataset.covid_code1_date,
+      dataset.covid_code2_date) <= 14))
+      .then(dataset.covid_code1_date),
+      when((covid_code_number > 1) &
+      (diff_dates_days(dataset.covid_code2_date,
+      dataset.covid_code3_date) <= 14))
+      .then(dataset.covid_code2_date),
+      when((covid_code_number > 1) &
+      (diff_dates_days(dataset.covid_code3_date,
+      dataset.covid_code4_date) <= 14))
+      .then(dataset.covid_code3_date),
+      otherwise = None)
+    )
+
+    dataset.covid_codes_date = covid_codes_date
+
+
+    # covid_code_number = (
+    #   (clinical_events.where(clinical_events
+    #   .date.is_on_or_between(first_infection_event(codelists
+    #   .covid_sensitive_codelist).date, first_infection_event(codelists
+    #   .covid_sensitive_codelist).date + days(14)))
+    #   .where(clinical_events.snomedct_code
+    #   .is_in(codelists.covid_sensitive_codelist)))
+    #   .snomedct_code.count_distinct_for_patient()
+    # )
+    
+    # #date of first occurrence of two of the above codes within 2 weeks
+    # covid_codes_date = (
+    #   case(when(covid_code_number > 1)
+    #   .then(first_infection_event(codelists
+    #   .covid_sensitive_codelist).date))
+    # )
     
     #get date of first occurrence of relevant prescription
     covid_med_date = (
@@ -1482,30 +2179,177 @@ if study_start_date >= covid_season_min :
     )
     
     #count number of clinical codes in covid symptom list for second episode
-    covid_code_number_second = (
+
+    #get dates of events and corresponding codes 
+    dataset.covid_code1_second = (
+      is_infection_event(codelists.covid_sensitive_codelist)
+      .where(clinical_events.date.is_on_or_after(
+      dataset.covid_primary_date + days(14)))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code
+    )
+    dataset.covid_code1_second_date = (
+      is_infection_event(codelists.covid_sensitive_codelist)
+      .where(clinical_events.date.is_on_or_after(
+      dataset.covid_primary_date + days(14)))
+      .sort_by(clinical_events.date).first_for_patient()
+      .date
+    )
+    covid_code_number_second_date1 = (
       (clinical_events.where(clinical_events
-      .date.is_on_or_between(is_infection_event(codelists
-      .covid_sensitive_codelist).where(clinical_events.date
-      .is_on_or_after(dataset.covid_primary_date + days(14)))
-      .sort_by(clinical_events.date).first_for_patient()
-      .date, is_infection_event(codelists
-      .covid_sensitive_codelist).where(clinical_events.date
-      .is_on_or_after(dataset.covid_primary_date + days(14)))
-      .sort_by(clinical_events.date).first_for_patient()
-      .date + days(14)))).snomedct_code
-      .is_in(codelists.covid_sensitive_codelist)
-      .count_distinct_for_patient()
+      .date.is_on_or_between(dataset.covid_code1_second_date,
+      dataset.covid_code1_second_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.covid_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
     )
-    
-    #date of first occurrence of two of the above codes within 2 weeks - for second episode
-    covid_codes_second_date = (
-      case(when(covid_code_number_second > 1)
-      .then(is_infection_event(codelists
+    dataset.covid_code_number_second_date1 = covid_code_number_second_date1
+
+    dataset.covid_code2_second = (case(
+      when(covid_code_number_second_date1 > 1).then(None),
+      otherwise = is_infection_event(codelists
       .covid_sensitive_codelist).where(clinical_events
-      .date.is_on_or_after(dataset.covid_primary_date + days(14)))
+      .date.is_after(dataset.covid_code1_second_date))
       .sort_by(clinical_events.date).first_for_patient()
-      .date))
+      .snomedct_code)
     )
+    dataset.covid_code2_second_date = (case(
+      when(covid_code_number_second_date1 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .covid_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.covid_code1_second_date))
+      .sort_by(clinical_events.date).first_for_patient().date)
+    )
+    covid_code_number_second_date2 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.covid_code2_second_date,
+      dataset.covid_code2_second_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.covid_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.covid_code_number_second_date2 = covid_code_number_second_date2
+
+    dataset.covid_second_code3 = (case(
+      when(covid_code_number_second_date2 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .covid_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.covid_code2_second_date))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code)
+    )
+    dataset.covid_code3_second_date = (case(
+      when(covid_code_number_second_date2 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .covid_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.covid_code2_second_date))
+      .sort_by(clinical_events.date).first_for_patient().date)
+    )
+    covid_code_number_second_date3 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.covid_code3_second_date,
+      dataset.covid_code3_second_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.covid_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.covid_code_number_second_date3 = covid_code_number_second_date3
+
+    dataset.covid_second_code4 = (case(
+      when(covid_code_number_date3 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .covid_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.covid_code3_second_date))
+      .sort_by(clinical_events.date).first_for_patient()
+      .snomedct_code)
+    )
+    dataset.covid_code4_second_date = (case(
+      when(covid_code_number_second_date3 > 1).then(None),
+      otherwise = is_infection_event(codelists
+      .covid_sensitive_codelist).where(clinical_events
+      .date.is_after(dataset.covid_code3_second_date))
+      .sort_by(clinical_events.date).first_for_patient().date)
+    )
+    covid_code_number_second_date4 = (
+      (clinical_events.where(clinical_events
+      .date.is_on_or_between(dataset.covid_code4_second_date,
+      dataset.covid_code4_second_date))
+      .where(clinical_events.snomedct_code
+      .is_in(codelists.covid_sensitive_codelist)))
+      .snomedct_code.count_distinct_for_patient()
+    )
+    dataset.covid_code_number_second_date4 = covid_code_number_second_date4
+
+    covid_code_number_second = (case(
+      when(covid_code_number_second_date1 > 1)
+      .then(covid_code_number_second_date1),
+      when(covid_code_number_second_date2 > 1)
+      .then(covid_code_number_second_date2),
+      when(covid_code_number_second_date3 > 1)
+      .then(covid_code_number_second_date3),
+      when(covid_code_number_second_date4 > 1)
+      .then(covid_code_number_second_date4),
+      when(diff_dates_days(dataset.covid_code1_second_date,
+      dataset.covid_code2_second_date) <= 14).then(2),
+      when(diff_dates_days(dataset.covid_code2_second_date,
+      dataset.covid_code3_second_date) <= 14).then(2),
+      when(diff_dates_days(dataset.covid_code3_second_date,
+      dataset.covid_code4_second_date) <= 14).then(2),
+      otherwise = covid_code_number_second_date1)
+    )
+
+    dataset.covid_code_number_second = covid_code_number_second
+
+    covid_codes_second_date = (case(
+      when(covid_code_number_second_date1 > 1)
+      .then(dataset.covid_code1_second_date),
+      when(covid_code_number_second_date2 > 1)
+      .then(dataset.covid_code2_second_date),
+      when(covid_code_number_second_date3 > 1)
+      .then(dataset.covid_code3_second_date),
+      when(covid_code_number_second_date4 > 1)
+      .then(dataset.covid_code4_second_date),
+      when((covid_code_number_second > 1) &
+      (diff_dates_days(dataset.covid_code1_second_date,
+      dataset.covid_code2_second_date) <= 14))
+      .then(dataset.covid_code1_second_date),
+      when((covid_code_number_second > 1) &
+      (diff_dates_days(dataset.covid_code2_second_date,
+      dataset.covid_code3_second_date) <= 14))
+      .then(dataset.covid_code2_second_date),
+      when((covid_code_number_second > 1) &
+      (diff_dates_days(dataset.covid_code3_second_date,
+      dataset.covid_code4_second_date) <= 14))
+      .then(dataset.covid_code3_second_date),
+      otherwise = None)
+    )
+
+    dataset.covid_codes_second_date = covid_codes_second_date
+
+    # covid_code_number_second = (
+    #   (clinical_events.where(clinical_events
+    #   .date.is_on_or_between(is_infection_event(codelists
+    #   .covid_sensitive_codelist).where(clinical_events.date
+    #   .is_on_or_after(dataset.covid_primary_date + days(14)))
+    #   .sort_by(clinical_events.date).first_for_patient()
+    #   .date, is_infection_event(codelists
+    #   .covid_sensitive_codelist).where(clinical_events.date
+    #   .is_on_or_after(dataset.covid_primary_date + days(14)))
+    #   .sort_by(clinical_events.date).first_for_patient()
+    #   .date + days(14)))).snomedct_code
+    #   .is_in(codelists.covid_sensitive_codelist)
+    #   .count_distinct_for_patient()
+    # )
+    
+    # #date of first occurrence of two of the above codes within 2 weeks - for second episode
+    # covid_codes_second_date = (
+    #   case(when(covid_code_number_second > 1)
+    #   .then(is_infection_event(codelists
+    #   .covid_sensitive_codelist).where(clinical_events
+    #   .date.is_on_or_after(dataset.covid_primary_date + days(14)))
+    #   .sort_by(clinical_events.date).first_for_patient()
+    #   .date))
+    # )
     
     #get date of first occurrence of relevant prescription - for second episode
     covid_med_second_date = (
@@ -1551,6 +2395,7 @@ if study_start_date >= covid_season_min :
     
   #extract covid secondary care dates for primary analysis ('specific' phenotype)
   if codelist_type == "specific" :
+
     #extract date of first episode - looking at the first date for which there is
     #a code in the covid secondary codelist as the primary or secondary diagnosis
     dataset.covid_secondary_date = (
@@ -1723,22 +2568,170 @@ if study_start_date >= covid_season_min :
 if codelist_type == "sensitive" :
   
   #count number of clinical codes in overall respiratory symptom list which occur within 14 days
-  overall_resp_code_number = (
+  #get dates of events and corresponding codes 
+  dataset.overall_resp_code1 = (
+    first_infection_event(codelists
+    .respiratory_virus_primary_codelist)
+    .snomedct_code
+  )
+  dataset.overall_resp_code1_date = (
+    first_infection_event(codelists
+    .respiratory_virus_primary_codelist)
+    .date
+  )
+  overall_resp_code_number_date1 = (
     (clinical_events.where(clinical_events
-    .date.is_on_or_between(first_infection_event(codelists
-    .respiratory_virus_primary_codelist).date,
-    first_infection_event(codelists.respiratory_virus_primary_codelist)
-    .date + days(14))).where(clinical_events.snomedct_code
+    .date.is_on_or_between(dataset.overall_resp_code1_date,
+    dataset.overall_resp_code1_date))
+    .where(clinical_events.snomedct_code
     .is_in(codelists.respiratory_virus_primary_codelist)))
     .snomedct_code.count_distinct_for_patient()
   )
-  
-  #date of first occurrence of two of the above codes within 2 weeks
-  overall_resp_codes_date = (
-    case(when(overall_resp_code_number > 1)
-    .then(first_infection_event(codelists
-    .respiratory_virus_primary_codelist).date))
+  dataset.overall_resp_code_number_date1 = overall_resp_code_number_date1
+
+  dataset.overall_resp_code2 = (case(
+    when(overall_resp_code_number_date1 > 1).then(None),
+    otherwise = is_infection_event(codelists
+    .respiratory_virus_primary_codelist)
+    .where(clinical_events.date.is_after(dataset
+    .overall_resp_code1_date))
+    .sort_by(clinical_events.date).first_for_patient()
+    .snomedct_code)
   )
+  dataset.overall_resp_code2_date = (case(
+    when(overall_resp_code_number_date1 > 1).then(None),
+    otherwise = is_infection_event(codelists
+    .respiratory_virus_primary_codelist)
+    .where(clinical_events.date.is_after(dataset
+    .overall_resp_code1_date))
+    .sort_by(clinical_events.date).first_for_patient().date)
+  )
+  overall_resp_code_number_date2 = (
+    (clinical_events.where(clinical_events
+    .date.is_on_or_between(dataset.overall_resp_code2_date,
+    dataset.overall_resp_code2_date))
+    .where(clinical_events.snomedct_code
+    .is_in(codelists.respiratory_virus_primary_codelist)))
+    .snomedct_code.count_distinct_for_patient()
+  )
+  dataset.overall_resp_code_number_date2 = overall_resp_code_number_date2
+
+  dataset.overall_resp_code3 = (case(
+    when(overall_resp_code_number_date2 > 1).then(None),
+    otherwise = is_infection_event(codelists
+    .respiratory_virus_primary_codelist)
+    .where(clinical_events.date.is_after(dataset
+    .overall_resp_code2_date))
+    .sort_by(clinical_events.date).first_for_patient()
+    .snomedct_code)
+  )
+  dataset.overall_resp_code3_date = (case(
+    when(overall_resp_code_number_date2 > 1).then(None),
+    otherwise = is_infection_event(codelists
+    .respiratory_virus_primary_codelist)
+    .where(clinical_events.date.is_after(dataset
+    .overall_resp_code2_date))
+    .sort_by(clinical_events.date).first_for_patient().date)
+  )
+  overall_resp_code_number_date3 = (
+    (clinical_events.where(clinical_events
+    .date.is_on_or_between(dataset.overall_resp_code3_date,
+    dataset.overall_resp_code3_date))
+    .where(clinical_events.snomedct_code
+    .is_in(codelists.respiratory_virus_primary_codelist)))
+    .snomedct_code.count_distinct_for_patient()
+  )
+  dataset.overall_resp_code_number_date3 = overall_resp_code_number_date3
+
+  dataset.overall_resp_code4 = (case(
+    when(overall_resp_code_number_date3 > 1).then(None),
+    otherwise = is_infection_event(codelists
+    .respiratory_virus_primary_codelist)
+    .where(clinical_events.date.is_after(dataset
+    .overall_resp_code3_date))
+    .sort_by(clinical_events.date).first_for_patient()
+    .snomedct_code)
+  )
+  dataset.overall_resp_code4_date = (case(
+    when(overall_resp_code_number_date3 > 1).then(None),
+    otherwise = is_infection_event(codelists
+    .respiratory_virus_primary_codelist)
+    .where(clinical_events.date.is_after(dataset
+    .overall_resp_code3_date))
+    .sort_by(clinical_events.date).first_for_patient().date)
+  )
+  overall_resp_code_number_date4 = (
+    (clinical_events.where(clinical_events
+    .date.is_on_or_between(dataset.overall_resp_code4_date,
+    dataset.overall_resp_code4_date))
+    .where(clinical_events.snomedct_code
+    .is_in(codelists.respiratory_virus_primary_codelist)))
+    .snomedct_code.count_distinct_for_patient()
+  )
+  dataset.overall_resp_code_number_date4 = overall_resp_code_number_date4
+
+  overall_resp_code_number = (case(
+    when(overall_resp_code_number_date1 > 1)
+    .then(overall_resp_code_number_date1),
+    when(overall_resp_code_number_date2 > 1)
+    .then(overall_resp_code_number_date2),
+    when(overall_resp_code_number_date3 > 1)
+    .then(overall_resp_code_number_date3),
+    when(overall_resp_code_number_date4 > 1)
+    .then(overall_resp_code_number_date4),
+    when(diff_dates_days(dataset.overall_resp_code1_date,
+    dataset.overall_resp_code2_date) <= 14).then(2),
+    when(diff_dates_days(dataset.overall_resp_code2_date,
+    dataset.overall_resp_code3_date) <= 14).then(2),
+    when(diff_dates_days(dataset.overall_resp_code3_date,
+    dataset.overall_resp_code4_date) <= 14).then(2),
+    otherwise = overall_resp_code_number_date1)
+  )
+
+  dataset.overall_resp_code_number = overall_resp_code_number
+
+  overall_resp_codes_date = (case(
+    when(overall_resp_code_number_date1 > 1)
+    .then(dataset.overall_resp_code1_date),
+    when(overall_resp_code_number_date2 > 1)
+    .then(dataset.overall_resp_code2_date),
+    when(overall_resp_code_number_date3 > 1)
+    .then(dataset.overall_resp_code3_date),
+    when(overall_resp_code_number_date4 > 1)
+    .then(dataset.overall_resp_code4_date),
+    when((overall_resp_code_number > 1) &
+    (diff_dates_days(dataset.overall_resp_code1_date,
+    dataset.overall_resp_code2_date) <= 14))
+    .then(dataset.overall_resp_code1_date),
+    when((overall_resp_code_number > 1) &
+    (diff_dates_days(dataset.overall_resp_code2_date,
+    dataset.overall_resp_code3_date) <= 14))
+    .then(dataset.overall_resp_code2_date),
+    when((overall_resp_code_number > 1) &
+    (diff_dates_days(dataset.overall_resp_code3_date,
+    dataset.overall_resp_code4_date) <= 14))
+    .then(dataset.overall_resp_code3_date),
+    otherwise = None)
+  )
+
+  dataset.overall_resp_codes_date = overall_resp_codes_date
+  
+  # overall_resp_code_number = (
+  #   (clinical_events.where(clinical_events
+  #   .date.is_on_or_between(first_infection_event(codelists
+  #   .respiratory_virus_primary_codelist).date,
+  #   first_infection_event(codelists.respiratory_virus_primary_codelist)
+  #   .date + days(14))).where(clinical_events.snomedct_code
+  #   .is_in(codelists.respiratory_virus_primary_codelist)))
+  #   .snomedct_code.count_distinct_for_patient()
+  # )
+  
+  # #date of first occurrence of two of the above codes within 2 weeks
+  # overall_resp_codes_date = (
+  #   case(when(overall_resp_code_number > 1)
+  #   .then(first_infection_event(codelists
+  #   .respiratory_virus_primary_codelist).date))
+  # )
   
   #occurrence of event in exclusion list within one month of overall_resp_codes_date
   # - looking at the first date for which there is a code in the respiratory virus
@@ -1781,29 +2774,179 @@ if codelist_type == "sensitive" :
       
       #count number of clinical codes in overall respiratory symptom list
       # - for second episode
-      overall_resp_code_number_second = (
+
+      #get dates of events and corresponding codes 
+      dataset.overall_resp_code1_second = (
+        is_infection_event(codelists
+        .respiratory_virus_primary_codelist)
+        .where(clinical_events.date.is_on_or_after(
+        dataset.overall_resp_primary_date + days(14)))
+        .sort_by(clinical_events.date).first_for_patient()
+        .snomedct_code
+      )
+      dataset.overall_resp_code1_second_date = (
+        is_infection_event(codelists
+        .respiratory_virus_primary_codelist)
+        .where(clinical_events.date.is_on_or_after(
+        dataset.overall_resp_primary_date + days(14)))
+        .sort_by(clinical_events.date).first_for_patient()
+        .date
+      )
+      overall_resp_code_number_second_date1 = (
         (clinical_events.where(clinical_events
-        .date.is_on_or_between(is_infection_event(codelists
-        .respiratory_virus_primary_codelist).where(clinical_events.date
-        .is_on_or_after(dataset.overall_resp_primary_date + days(14)))
-        .sort_by(clinical_events.date).first_for_patient()
-        .date, is_infection_event(codelists
-        .respiratory_virus_primary_codelist).where(clinical_events.date
-        .is_on_or_after(dataset.overall_resp_primary_date + days(14)))
-        .sort_by(clinical_events.date).first_for_patient()
-        .date + days(14)))).snomedct_code
-        .is_in(codelists.respiratory_virus_primary_codelist)
-        .count_distinct_for_patient()
+        .date.is_on_or_between(dataset
+        .overall_resp_code1_second_date,
+        dataset.overall_resp_code1_second_date))
+        .where(clinical_events.snomedct_code
+        .is_in(codelists.respiratory_virus_primary_codelist)))
+        .snomedct_code.count_distinct_for_patient()
       )
+      dataset.overall_resp_code_number_second_date1 = overall_resp_code_number_second_date1
+
+      dataset.overall_resp_code2_second = (case(
+        when(overall_resp_code_number_second_date1 > 1).then(None),
+        otherwise = is_infection_event(codelists
+        .respiratory_virus_primary_codelist).where(clinical_events
+        .date.is_after(dataset.overall_resp_code1_second_date))
+        .sort_by(clinical_events.date).first_for_patient()
+        .snomedct_code)
+      )
+      dataset.overall_resp_code2_second_date = (case(
+        when(overall_resp_code_number_second_date1 > 1).then(None),
+        otherwise = is_infection_event(codelists
+        .respiratory_virus_primary_codelist).where(clinical_events
+        .date.is_after(dataset.overall_resp_code1_second_date))
+        .sort_by(clinical_events.date).first_for_patient().date)
+      )
+      overall_resp_code_number_second_date2 = (
+        (clinical_events.where(clinical_events
+        .date.is_on_or_between(dataset.overall_resp_code2_second_date,
+        dataset.overall_resp_code2_second_date))
+        .where(clinical_events.snomedct_code
+        .is_in(codelists.respiratory_virus_primary_codelist)))
+        .snomedct_code.count_distinct_for_patient()
+      )
+      dataset.overall_resp_code_number_second_date2 = overall_resp_code_number_second_date2
+
+      dataset.overall_resp_second_code3 = (case(
+        when(overall_resp_code_number_second_date2 > 1).then(None),
+        otherwise = is_infection_event(codelists
+        .respiratory_virus_primary_codelist).where(clinical_events
+        .date.is_after(dataset.overall_resp_code2_second_date))
+        .sort_by(clinical_events.date).first_for_patient()
+        .snomedct_code)
+      )
+      dataset.overall_resp_code3_second_date = (case(
+        when(overall_resp_code_number_second_date2 > 1).then(None),
+        otherwise = is_infection_event(codelists
+        .respiratory_virus_primary_codelist).where(clinical_events
+        .date.is_after(dataset.overall_resp_code2_second_date))
+        .sort_by(clinical_events.date).first_for_patient().date)
+      )
+      overall_resp_code_number_second_date3 = (
+        (clinical_events.where(clinical_events
+        .date.is_on_or_between(dataset.overall_resp_code3_second_date,
+        dataset.overall_resp_code3_second_date))
+        .where(clinical_events.snomedct_code
+        .is_in(codelists.respiratory_virus_primary_codelist)))
+        .snomedct_code.count_distinct_for_patient()
+      )
+      dataset.overall_resp_code_number_second_date3 = overall_resp_code_number_second_date3
+
+      dataset.overall_resp_second_code4 = (case(
+        when(overall_resp_code_number_date3 > 1).then(None),
+        otherwise = is_infection_event(codelists
+        .respiratory_virus_primary_codelist).where(clinical_events
+        .date.is_after(dataset.overall_resp_code3_second_date))
+        .sort_by(clinical_events.date).first_for_patient()
+        .snomedct_code)
+      )
+      dataset.overall_resp_code4_second_date = (case(
+        when(overall_resp_code_number_second_date3 > 1).then(None),
+        otherwise = is_infection_event(codelists
+        .respiratory_virus_primary_codelist).where(clinical_events
+        .date.is_after(dataset.overall_resp_code3_second_date))
+        .sort_by(clinical_events.date).first_for_patient().date)
+      )
+      overall_resp_code_number_second_date4 = (
+        (clinical_events.where(clinical_events
+        .date.is_on_or_between(dataset.overall_resp_code4_second_date,
+        dataset.overall_resp_code4_second_date))
+        .where(clinical_events.snomedct_code
+        .is_in(codelists.respiratory_virus_primary_codelist)))
+        .snomedct_code.count_distinct_for_patient()
+      )
+      dataset.overall_resp_code_number_second_date4 = overall_resp_code_number_second_date4
+
+      overall_resp_code_number_second = (case(
+        when(overall_resp_code_number_second_date1 > 1)
+        .then(overall_resp_code_number_second_date1),
+        when(overall_resp_code_number_second_date2 > 1)
+        .then(overall_resp_code_number_second_date2),
+        when(overall_resp_code_number_second_date3 > 1)
+        .then(overall_resp_code_number_second_date3),
+        when(overall_resp_code_number_second_date4 > 1)
+        .then(overall_resp_code_number_second_date4),
+        when(diff_dates_days(dataset.overall_resp_code1_second_date,
+        dataset.overall_resp_code2_second_date) <= 14).then(2),
+        when(diff_dates_days(dataset.overall_resp_code2_second_date,
+        dataset.overall_resp_code3_second_date) <= 14).then(2),
+        when(diff_dates_days(dataset.overall_resp_code3_second_date,
+        dataset.overall_resp_code4_second_date) <= 14).then(2),
+        otherwise = overall_resp_code_number_second_date1)
+      )
+
+      dataset.overall_resp_code_number_second = overall_resp_code_number_second
+
+      overall_resp_codes_second_date = (case(
+        when(overall_resp_code_number_second_date1 > 1)
+        .then(dataset.overall_resp_code1_second_date),
+        when(overall_resp_code_number_second_date2 > 1)
+        .then(dataset.overall_resp_code2_second_date),
+        when(overall_resp_code_number_second_date3 > 1)
+        .then(dataset.overall_resp_code3_second_date),
+        when(overall_resp_code_number_second_date4 > 1)
+        .then(dataset.overall_resp_code4_second_date),
+        when((overall_resp_code_number_second > 1) &
+        (diff_dates_days(dataset.overall_resp_code1_second_date,
+        dataset.overall_resp_code2_second_date) <= 14))
+        .then(dataset.overall_resp_code1_second_date),
+        when((overall_resp_code_number_second > 1) &
+        (diff_dates_days(dataset.overall_resp_code2_second_date,
+        dataset.overall_resp_code3_second_date) <= 14))
+        .then(dataset.overall_resp_code2_second_date),
+        when((overall_resp_code_number_second > 1) &
+        (diff_dates_days(dataset.overall_resp_code3_second_date,
+        dataset.overall_resp_code4_second_date) <= 14))
+        .then(dataset.overall_resp_code3_second_date),
+        otherwise = None)
+      )
+
+      dataset.overall_resp_codes_second_date = overall_resp_codes_second_date
+
+      # overall_resp_code_number_second = (
+      #   (clinical_events.where(clinical_events
+      #   .date.is_on_or_between(is_infection_event(codelists
+      #   .respiratory_virus_primary_codelist).where(clinical_events.date
+      #   .is_on_or_after(dataset.overall_resp_primary_date + days(14)))
+      #   .sort_by(clinical_events.date).first_for_patient()
+      #   .date, is_infection_event(codelists
+      #   .respiratory_virus_primary_codelist).where(clinical_events.date
+      #   .is_on_or_after(dataset.overall_resp_primary_date + days(14)))
+      #   .sort_by(clinical_events.date).first_for_patient()
+      #   .date + days(14)))).snomedct_code
+      #   .is_in(codelists.respiratory_virus_primary_codelist)
+      #   .count_distinct_for_patient()
+      # )
       
-      #date of first occurrence of two of the above codes within 2 weeks - for second episode
-      overall_resp_codes_second_date = (
-        case(when(overall_resp_code_number_second > 1)
-        .then(is_infection_event(codelists.respiratory_virus_primary_codelist)
-        .where(clinical_events.date.is_on_or_after(dataset
-        .overall_resp_primary_date + days(14))).sort_by(clinical_events
-        .date).first_for_patient().date))
-      )
+      # #date of first occurrence of two of the above codes within 2 weeks - for second episode
+      # overall_resp_codes_second_date = (
+      #   case(when(overall_resp_code_number_second > 1)
+      #   .then(is_infection_event(codelists.respiratory_virus_primary_codelist)
+      #   .where(clinical_events.date.is_on_or_after(dataset
+      #   .overall_resp_primary_date + days(14))).sort_by(clinical_events
+      #   .date).first_for_patient().date))
+      # )
       
       #occurrence of event in exclusion list within one month of overall_resp_codes_second_date
       # - using the same criteria as the first episode
