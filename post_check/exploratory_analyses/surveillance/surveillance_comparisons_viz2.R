@@ -120,12 +120,35 @@ df_surv <- read_csv(here::here(
 
 df_surv <- df_surv[, c("month", "event", "total_events", "virus")]
 
+df_surv_mute <- bind_rows(
+  df_surv %>%
+    select(-event) %>%
+    mutate(event = "Mild"),
+  df_surv %>%
+    select(-event) %>%
+    mutate(event = "Severe")
+)
+
 df_surv <- bind_rows(
   df_surv %>%
     mutate(codelist_type = "specific"),
   df_surv %>%
-    mutate(codelist_type = "sensitive")
+    mutate(codelist_type = "specific")
 )
+
+df_surv_mute <- df_surv_mute %>%
+  mutate(
+    coeff = case_when(
+      virus == "RSV" & event == "Mild" ~ 20,
+      virus == "RSV" & event == "Severe" ~ 10,
+      virus == "Influenza" & event == "Mild" ~ 1,
+      virus == "Influenza" & event == "Severe" ~ 1,
+      virus == "COVID-19" & event == "Mild" ~ 0.5,
+      virus == "COVID-19" & event == "Severe" ~ 0.01,
+    ),
+    total_events = if_else(is.na(total_events), 0, total_events*coeff)
+  ) %>%
+  arrange(month)
 
 df_all <- bind_rows(
   df_rsv,
@@ -133,16 +156,6 @@ df_all <- bind_rows(
   df_covid
 ) %>%
   arrange(month)
-
-#combine
-df_combined <- full_join(
-  df_all, df_surv, by = c("month", "event", "total_events", "virus",
-                          "codelist_type")) %>%
-  arrange(month) %>%
-  mutate(
-    total_events = if_else(is.na(total_events), 0 , total_events)
-  )
-
 
 #plot together 
 rects <- tibble(
@@ -158,25 +171,88 @@ cols <- f("Set2")
 
 plot_combined <- function(df, pathogen, phenotype) {
   
-  df_combined %>%
+  coeff_mild <- df_surv_mute %>%
+    filter(virus == !!pathogen, event == "Mild") %>%
+    select(coeff) %>%
+    pull() %>%
+    unique()
+  
+  coeff_severe <- df_surv_mute %>%
+    filter(virus == !!pathogen, event == "Severe") %>%
+    select(coeff) %>%
+    pull() %>%
+    unique()
+  
+  surv_filt <- df_surv_mute %>%
+    filter(virus == !!pathogen) %>%
+    mutate(type = "Surveillance")
+  
+  all_filt <- df %>%
     filter(virus == !!pathogen,
            codelist_type == !!phenotype) %>%
+    mutate(type = "EHR")
+  
+  df_plot <- bind_rows(
+    all_filt,
+    surv_filt %>%
+      select(-coeff) %>%
+      mutate(codelist_type = "surveillance")
+  ) %>%
+    arrange(month)
+  
+  mild <- df_plot %>%
+    filter(event == "Mild") %>%
     ggplot() +
-    geom_line(aes(x = month, y = total_events, color = virus)) +
+    geom_line(aes(x = month, y = total_events, color = virus,
+                  alpha = type)) +
     geom_rect(data = rects, aes(xmin = xmin, xmax = xmax,
                                 ymin = ymin, ymax = ymax),
               fill = "grey", alpha = 0.25, col = NA) +
-    facet_wrap(~event, nrow = 1, scales = "free") +
+    scale_y_continuous(
+      sec.axis = sec_axis(trans = ~./coeff_mild, name = "Surveillance Data")
+    ) +
     scale_x_date(date_breaks = "1 years", date_labels = "%y") + 
     scale_color_manual(values = c(
       "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3],
       "Overall Respiratory Viruses" = "#4C0227")) +
-    labs(x = "", y = "", colour = "Virus",
-         title = paste0(pathogen, " Events (", str_to_title(phenotype),
-                        " Phenotype)")) + theme_bw() +
+    scale_alpha_manual(values = c("Surveillance" = 0.5,
+                                  "EHR" = 1),
+                       na.translate = FALSE) +
+    labs(x = "", y = "", colour = "Virus", title = "Mild") + theme_bw() +
     theme(legend.position = "none",
           title = element_text(face = "italic", size = 8)) +
     ggeasy::easy_center_title()
+  
+  severe <- df_plot %>%
+    filter(event == "Severe") %>%
+    ggplot() +
+    geom_line(aes(x = month, y = total_events, color = virus,
+                  alpha = type)) +
+    geom_rect(data = rects, aes(xmin = xmin, xmax = xmax,
+                                ymin = ymin, ymax = ymax),
+              fill = "grey", alpha = 0.25, col = NA) +
+    scale_y_continuous(
+      sec.axis = sec_axis(trans = ~./coeff_severe, name = "Surveillance Data")
+    ) +
+    scale_x_date(date_breaks = "1 years", date_labels = "%y") + 
+    scale_color_manual(values = c(
+      "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3],
+      "Overall Respiratory Viruses" = "#4C0227")) +
+    scale_alpha_manual(values = c("Surveillance" = 0.5,
+                                  "EHR" = 1),
+                       na.translate = FALSE) +
+    labs(x = "", y = "", colour = "Virus", title = "Severe") + theme_bw() +
+    theme(legend.position = "none",
+          title = element_text(face = "italic", size = 8)) +
+    ggeasy::easy_center_title()
+  
+  plot_grid(mild, severe, nrow = 1) %>%
+    annotate_figure(
+      top = text_grob(
+        paste0(pathogen, " Events (", str_to_title(phenotype),
+               " Phenotype)"),
+        face = "bold", size = 10)
+    )
   
 }
 
@@ -187,19 +263,45 @@ sens_rsv <- plot_combined(df_combined, "RSV", "sensitive")
 sens_flu <- plot_combined(df_combined, "Influenza", "sensitive")
 sens_covid <- plot_combined(df_combined, "COVID-19", "sensitive")
 
-legend <- get_legend(
-  df_combined %>%
-    filter(virus != "Overall Respiratory Viruses") %>%
-    ggplot() +
-    geom_line(aes(x = month, y = total_events, color = factor(
-      virus, levels = c("RSV", "Influenza", "COVID-19")))) +
-    scale_color_manual(values = c(
-      "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3])) +
-    labs(x = "", y = "", colour = "Virus") + theme_bw() +
-    theme(legend.position = "bottom",
-          legend.box = "horizontal",
-          legend.title = element_text())
-)
+get_legend_2 <- function(df1, df2) {
+  
+  surv_filt <- df1 %>%
+    mutate(type = "Surveillance")
+  
+  all_filt <- df2 %>%
+    mutate(type = "EHR")
+  
+  df_plot <- bind_rows(
+    all_filt,
+    surv_filt %>%
+      select(-coeff)
+  ) %>%
+    arrange(month)
+  
+  legend <- get_legend(
+    df_plot %>%
+      filter(virus != "Overall Respiratory Viruses") %>%
+      ggplot() +
+      geom_line(aes(x = month, y = total_events, color = factor(
+        virus, levels = c("RSV", "Influenza", "COVID-19")),
+        alpha = factor(type, levels = c("EHR", "Surveillance")))) +
+      scale_color_manual(values = c(
+        "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3])) +
+      scale_alpha_manual(values = c("Surveillance" = 0.5,
+                                    "EHR" = 1),
+                         na.translate = FALSE) +
+      labs(x = "", y = "", colour = "Virus", alpha = " Data Source") +
+      theme_bw() +
+      theme(legend.position = "bottom",
+            legend.box = "horizontal",
+            legend.title = element_text())
+  )
+  
+  return(legend)
+  
+}
+
+legend <- get_legend_2(df_surv_mute, df_all)
 
 plot <- plot_grid(
   spec_rsv, sens_rsv,

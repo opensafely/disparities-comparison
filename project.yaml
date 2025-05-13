@@ -22,7 +22,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/older_adults_2016_2017_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2016_2017.arrow
       -- older_adults season1_start_date season1_end_date
     outputs:
       highly_sensitive:
@@ -40,7 +39,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/older_adults_2017_2018_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2017_2018.arrow
       -- older_adults season2_start_date season2_end_date
     outputs:
       highly_sensitive:
@@ -58,7 +56,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/older_adults_2018_2019_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2018_2019.arrow
       -- older_adults season3_start_date season3_end_date
     outputs:
       highly_sensitive:
@@ -76,7 +73,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/older_adults_2019_2020_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2019_2020.arrow
       -- older_adults season4_start_date season4_end_date
     outputs:
       highly_sensitive:
@@ -94,7 +90,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/older_adults_2020_2021_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2020_2021.arrow
       -- older_adults season5_start_date season5_end_date
     outputs:
       highly_sensitive:
@@ -113,7 +108,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/older_adults_2021_2022_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2021_2022.arrow
       -- older_adults season6_start_date season6_end_date
     outputs:
       highly_sensitive:
@@ -131,7 +125,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/older_adults_2022_2023_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2022_2023.arrow
       -- older_adults season7_start_date season7_end_date
     outputs:
       highly_sensitive:
@@ -149,7 +142,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/older_adults_2023_2024_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2023_2024.arrow
       -- older_adults season8_start_date season8_end_date
     outputs:
       highly_sensitive:
@@ -171,7 +163,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/adults_2016_2017_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2016_2017.arrow
       -- adults season1_start_date season1_end_date
     outputs:
       highly_sensitive:
@@ -189,7 +180,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/adults_2017_2018_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2017_2018.arrow
       -- adults season2_start_date season2_end_date
     outputs:
       highly_sensitive:
@@ -207,7 +197,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/adults_2018_2019_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2018_2019.arrow
       -- adults season3_start_date season3_end_date
     outputs:
       highly_sensitive:
@@ -225,7 +214,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/adults_2019_2020_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2019_2020.arrow
       -- adults season4_start_date season4_end_date
     outputs:
       highly_sensitive:
@@ -243,7 +231,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/adults_2020_2021_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2020_2021.arrow
       -- adults season5_start_date season5_end_date
     outputs:
       highly_sensitive:
@@ -262,7 +249,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/adults_2021_2022_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2021_2022.arrow
       -- adults season6_start_date season6_end_date
     outputs:
       highly_sensitive:
@@ -280,7 +266,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/adults_2022_2023_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2022_2023.arrow
       -- adults season7_start_date season7_end_date
     outputs:
       highly_sensitive:
@@ -298,7 +283,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/adults_2023_2024_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2023_2024.arrow
       -- adults season8_start_date season8_end_date
     outputs:
       highly_sensitive:
@@ -320,7 +304,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/children_and_adolescents_2016_2017_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2016_2017.arrow
       -- children_and_adolescents season1_start_date season1_end_date
     outputs:
       highly_sensitive:
@@ -339,7 +322,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/children_and_adolescents_2017_2018_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2017_2018.arrow
       -- children_and_adolescents season2_start_date season2_end_date
     outputs:
       highly_sensitive:
@@ -358,7 +340,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/children_and_adolescents_2018_2019_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2018_2019.arrow
       -- children_and_adolescents season3_start_date season3_end_date
     outputs:
       highly_sensitive:
@@ -377,7 +358,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/children_and_adolescents_2019_2020_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2019_2020.arrow
       -- children_and_adolescents season4_start_date season4_end_date
     outputs:
       highly_sensitive:
@@ -396,7 +376,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/children_and_adolescents_2020_2021_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2020_2021.arrow
       -- children_and_adolescents season5_start_date season5_end_date
     outputs:
       highly_sensitive:
@@ -416,7 +395,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/children_and_adolescents_2021_2022_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2021_2022.arrow
       -- children_and_adolescents season6_start_date season6_end_date
     outputs:
       highly_sensitive:
@@ -435,7 +413,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/children_and_adolescents_2022_2023_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2022_2023.arrow
       -- children_and_adolescents season7_start_date season7_end_date
     outputs:
       highly_sensitive:
@@ -454,7 +431,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/children_and_adolescents_2023_2024_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2023_2024.arrow
       -- children_and_adolescents season8_start_date season8_end_date
     outputs:
       highly_sensitive:
@@ -477,7 +453,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_2016_2017_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2016_2017.arrow
       -- infants season1_start_date season1_end_date
     outputs:
       highly_sensitive:
@@ -495,7 +470,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_2017_2018_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2017_2018.arrow
       -- infants season2_start_date season2_end_date
     outputs:
       highly_sensitive:
@@ -513,7 +487,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_2018_2019_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2018_2019.arrow
       -- infants season3_start_date season3_end_date
     outputs:
       highly_sensitive:
@@ -531,7 +504,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_2019_2020_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2019_2020.arrow
       -- infants season4_start_date season4_end_date
     outputs:
       highly_sensitive:
@@ -549,7 +521,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_2020_2021_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2020_2021.arrow
       -- infants season5_start_date season5_end_date
     outputs:
       highly_sensitive:
@@ -567,7 +538,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_2021_2022_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2021_2022.arrow
       -- infants season6_start_date season6_end_date
     outputs:
       highly_sensitive:
@@ -585,7 +555,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_2022_2023_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2022_2023.arrow
       -- infants season7_start_date season7_end_date
     outputs:
       highly_sensitive:
@@ -603,7 +572,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_2023_2024_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2023_2024.arrow
       -- infants season8_start_date season8_end_date
     outputs:
       highly_sensitive:
@@ -643,7 +611,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_subgroup_2016_2017_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2016_2017.arrow
       -- infants_subgroup season1_start_date season1_end_date
     needs:
     - process_flow_chart_data_mothers_s1
@@ -681,7 +648,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_subgroup_2017_2018_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2017_2018.arrow
       -- infants_subgroup season2_start_date season2_end_date
     needs:
     - process_flow_chart_data_mothers_s2
@@ -719,7 +685,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_subgroup_2018_2019_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2018_2019.arrow
       -- infants_subgroup season3_start_date season3_end_date
     needs:
     - process_flow_chart_data_mothers_s3
@@ -757,7 +722,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_subgroup_2019_2020_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2019_2020.arrow
       -- infants_subgroup season4_start_date season4_end_date
     needs:
     - process_flow_chart_data_mothers_s4
@@ -795,7 +759,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_subgroup_2020_2021_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2020_2021.arrow
       -- infants_subgroup season5_start_date season5_end_date
     needs:
     - process_flow_chart_data_mothers_s5
@@ -833,7 +796,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_subgroup_2021_2022_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2021_2022.arrow
       -- infants_subgroup season6_start_date season6_end_date
     needs:
     - process_flow_chart_data_mothers_s6
@@ -871,7 +833,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_subgroup_2022_2023_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2022_2023.arrow
       -- infants_subgroup season7_start_date season7_end_date
     needs:
     - process_flow_chart_data_mothers_s7
@@ -909,7 +870,6 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
       --output output/flow_chart/infants_subgroup_2023_2024_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2023_2024.arrow
       -- infants_subgroup season8_start_date season8_end_date
     needs:
     - process_flow_chart_data_mothers_s8
