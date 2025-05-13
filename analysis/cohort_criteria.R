@@ -49,10 +49,10 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
       stage1 = registered,
       stage2a = registered & is_female_or_male,
       stage2b = registered & has_imd,
-      stage2c = registered &
-        !(care_home | risk_group_infants | severe_immunodeficiency),
+      stage2c = registered & !care_home & !risk_group_infants &
+        !severe_immunodeficiency,
       stage2 = registered & is_female_or_male & has_imd &
-        !(care_home | risk_group_infants | severe_immunodeficiency) 
+        !care_home & !risk_group_infants & !severe_immunodeficiency
     )
 } else {
   population <- patients_df %>%
