@@ -28,6 +28,10 @@ args = sys.argv
 study_start_date = datetime.strptime(study_dates[args[1]], "%Y-%m-%d").date()
 study_end_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
 
+#define dataset definition settings from command line arguments
+start_year = study_start_date.year
+end_year = study_end_date.year
+
 #tell ehrql to use patients from process file
 @table_from_file(f"output/flow_chat/cohort_mothers_processed_{start_year}_{end_year}.arrow")
 
