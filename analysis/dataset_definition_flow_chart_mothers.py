@@ -3,6 +3,7 @@ from pathlib import Path
 
 from datetime import date, datetime
 from ehrql import Dataset
+from ehrql.tables import table_from_file, PatientFrame, Series
 from ehrql.tables.tpp import ( 
   patients, 
   parents,
@@ -27,13 +28,27 @@ args = sys.argv
 study_start_date = datetime.strptime(study_dates[args[1]], "%Y-%m-%d").date()
 study_end_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
 
-# #define patients age
-# age_at_start_months = (study_start_date - patients.date_of_birth).months
-# is_appropriate_age = (age_at_start_months <= 23) & (age_at_start_months >= 0)
+#tell ehrql to use patients from process file
+@table_from_file(f"output/flow_chat/cohort_mothers_processed_{start_year}_{end_year}.arrow")
 
-#define population
-dataset.define_population(practice_registrations.exists_for_patient())
+#extract these patients where index date is the date of birth of the linked infant
+class matched_patients(PatientFrame) :
+  index_date = Series(date)
 
-#maternal linkage available
-dataset.mother_id = parents.mother_id
-dataset.birth_date = patients.date_of_birth
+##define populations
+registered_mothers = (
+  practice_registrations.for_patient_on(matched_patients
+  .index_dateindex_date).exists_for_patient()
+)
+
+#extract mothers whose patient id matches those who were extracted with infants
+dataset.define_population(
+  registered_mothers
+)
+
+#mothers registration for 1 year prior to index date
+dataset.mother_registered = (
+  has_a_continuous_practice_registration_spanning(matched_patients
+  .index_date - years(1), matched_patients.index_date)
+)
+

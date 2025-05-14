@@ -1,10 +1,7 @@
 library(tidyverse)
 library(here)
 library(arrow)
-library(ggplot2)
-library(data.table)
 library(lubridate)
-library(magrittr)
 
 ## create output directories ----
 fs::dir_create(here::here("analysis"))
@@ -26,9 +23,8 @@ fs::dir_create(here::here("output", "flow_chart"))
 
 #import data
 df_input <- read_feather(
-  here::here("output", "flow_chart", paste0("mothers_", year(study_start_date),
-                                      "_", year(study_end_date), 
-                                      "_flow_chart.arrow")))
+  here::here("output", "flow_chart", paste0("infants_subgroup_",
+  year(study_start_date), "_", year(study_end_date), "_flow_chart.arrow")))
 
 #select the variables of interest
 df_input <- df_input %>%
@@ -43,5 +39,5 @@ fs::dir_create(here::here("output", "flow_chart"))
 
 #write the new input file
 write_feather(df_input, here::here("output", "flow_chart",
-              paste0("cohort_mothers_processed_", year(study_start_date), "_",
-                     year(study_end_date), ".arrow")))
+              paste0("cohort_mothers_processed_", year(study_start_date),
+              "_", year(study_end_date), ".arrow")))

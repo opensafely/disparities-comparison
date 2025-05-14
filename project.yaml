@@ -589,42 +589,62 @@ actions:
   ## Inclusion/Exclusion Flow Chart Actions: Infants Subgroup 
   ## # # # # # # # # # # # # # # # # # # # 
 
+  generate_flow_chart_data_infants_subgroup_s1:
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
+      --output output/flow_chart/infants_subgroup_2016_2017_flow_chart.arrow
+      -- infants_subgroup season1_start_date season1_end_date
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/infants_subgroup_2016_2017_flow_chart.arrow
+
+  process_flow_chart_data_mothers_s1:
+    run: r:latest analysis/cohort_processing_mothers.R season1_start_date season1_end_date
+    needs:
+    - generate_flow_chart_data_infants_subgroup_s1
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/cohort_mothers_processed_2016_2017.arrow
+
   generate_flow_chart_data_mothers_s1:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2016_2017_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2016_2017.arrow
       -- season1_start_date season1_end_date
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/mothers_2016_2017_flow_chart.arrow
-
-  process_flow_chart_data_mothers_s1:
-    run: r:latest analysis/cohort_processing_mothers.R season1_start_date season1_end_date
     needs:
-    - generate_flow_chart_data_mothers_s1
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/cohort_mothers_processed_2016_2017.arrow
-
-  generate_flow_chart_data_infants_subgroup_s1:
-    run: |-
-      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
-      --output output/flow_chart/infants_subgroup_2016_2017_flow_chart.arrow
-      -- infants_subgroup season1_start_date season1_end_date
-    needs:
+    - generate_flow_chart_data_infants_subgroup_s1
     - process_flow_chart_data_mothers_s1
     outputs:
       highly_sensitive:
-        dataset: output/flow_chart/infants_subgroup_2016_2017_flow_chart.arrow
+        dataset: output/flow_chart/mothers_2016_2017_flow_chart.arrow
 
   process_flow_chart_data_infants_subgroup_s1:
     run: r:latest analysis/cohort_criteria.R infants_subgroup season1_start_date season1_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s1
+    - process_flow_chart_data_mothers_s1
+    - generate_flow_chart_data_mothers_s1
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2016_2017.csv
+
+  generate_flow_chart_data_infants_subgroup_s2:
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
+      --output output/flow_chart/infants_subgroup_2017_2018_flow_chart.arrow
+      -- infants_subgroup season2_start_date season2_end_date
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/infants_subgroup_2017_2018_flow_chart.arrow
+
+  process_flow_chart_data_mothers_s2:
+    run: r:latest analysis/cohort_processing_mothers.R season2_start_date season2_end_date
+    needs:
+    - generate_flow_chart_data_infants_subgroup_s2
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/cohort_mothers_processed_2017_2018.arrow
 
   generate_flow_chart_data_mothers_s2:
     run: |-
@@ -632,36 +652,39 @@ actions:
       --output output/flow_chart/mothers_2017_2018_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2017_2018.arrow
       -- season2_start_date season2_end_date
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/mothers_2017_2018_flow_chart.arrow
-
-  process_flow_chart_data_mothers_s2:
-    run: r:latest analysis/cohort_processing_mothers.R season2_start_date season2_end_date
     needs:
-    - generate_flow_chart_data_mothers_s2
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/cohort_mothers_processed_2017_2018.arrow
-
-  generate_flow_chart_data_infants_subgroup_s2:
-    run: |-
-      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
-      --output output/flow_chart/infants_subgroup_2017_2018_flow_chart.arrow
-      -- infants_subgroup season2_start_date season2_end_date
-    needs:
+    - generate_flow_chart_data_infants_subgroup_s2
     - process_flow_chart_data_mothers_s2
     outputs:
       highly_sensitive:
-        dataset: output/flow_chart/infants_subgroup_2017_2018_flow_chart.arrow
+        dataset: output/flow_chart/mothers_2017_2018_flow_chart.arrow
 
   process_flow_chart_data_infants_subgroup_s2:
     run: r:latest analysis/cohort_criteria.R infants_subgroup season2_start_date season2_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s2
+    - process_flow_chart_data_mothers_s2
+    - generate_flow_chart_data_mothers_s2
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2017_2018.csv
+
+  generate_flow_chart_data_infants_subgroup_s3:
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
+      --output output/flow_chart/infants_subgroup_2018_2019_flow_chart.arrow
+      -- infants_subgroup season3_start_date season3_end_date
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/infants_subgroup_2018_2019_flow_chart.arrow
+
+  process_flow_chart_data_mothers_s3:
+    run: r:latest analysis/cohort_processing_mothers.R season3_start_date season3_end_date
+    needs:
+    - generate_flow_chart_data_infants_subgroup_s3
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/cohort_mothers_processed_2018_2019.arrow
 
   generate_flow_chart_data_mothers_s3:
     run: |-
@@ -669,36 +692,39 @@ actions:
       --output output/flow_chart/mothers_2018_2019_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2018_2019.arrow
       -- season3_start_date season3_end_date
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/mothers_2018_2019_flow_chart.arrow
-
-  process_flow_chart_data_mothers_s3:
-    run: r:latest analysis/cohort_processing_mothers.R season3_start_date season3_end_date
     needs:
-    - generate_flow_chart_data_mothers_s3
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/cohort_mothers_processed_2018_2019.arrow
-
-  generate_flow_chart_data_infants_subgroup_s3:
-    run: |-
-      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
-      --output output/flow_chart/infants_subgroup_2018_2019_flow_chart.arrow
-      -- infants_subgroup season3_start_date season3_end_date
-    needs:
+    - generate_flow_chart_data_infants_subgroup_s3
     - process_flow_chart_data_mothers_s3
     outputs:
       highly_sensitive:
-        dataset: output/flow_chart/infants_subgroup_2018_2019_flow_chart.arrow
+        dataset: output/flow_chart/mothers_2018_2019_flow_chart.arrow
 
   process_flow_chart_data_infants_subgroup_s3:
     run: r:latest analysis/cohort_criteria.R infants_subgroup season3_start_date season3_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s3
+    - process_flow_chart_data_mothers_s3
+    - generate_flow_chart_data_mothers_s3
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2018_2019.csv
+
+  generate_flow_chart_data_infants_subgroup_s4:
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
+      --output output/flow_chart/infants_subgroup_2019_2020_flow_chart.arrow
+      -- infants_subgroup season4_start_date season4_end_date
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/infants_subgroup_2019_2020_flow_chart.arrow
+
+  process_flow_chart_data_mothers_s4:
+    run: r:latest analysis/cohort_processing_mothers.R season4_start_date season4_end_date
+    needs:
+    - generate_flow_chart_data_infants_subgroup_s4
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/cohort_mothers_processed_2019_2020.arrow
 
   generate_flow_chart_data_mothers_s4:
     run: |-
@@ -706,36 +732,39 @@ actions:
       --output output/flow_chart/mothers_2019_2020_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2019_2020.arrow
       -- season4_start_date season4_end_date
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/mothers_2019_2020_flow_chart.arrow
-
-  process_flow_chart_data_mothers_s4:
-    run: r:latest analysis/cohort_processing_mothers.R season4_start_date season4_end_date
     needs:
-    - generate_flow_chart_data_mothers_s4
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/cohort_mothers_processed_2019_2020.arrow
-
-  generate_flow_chart_data_infants_subgroup_s4:
-    run: |-
-      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
-      --output output/flow_chart/infants_subgroup_2019_2020_flow_chart.arrow
-      -- infants_subgroup season4_start_date season4_end_date
-    needs:
+    - generate_flow_chart_data_infants_subgroup_s4
     - process_flow_chart_data_mothers_s4
     outputs:
       highly_sensitive:
-        dataset: output/flow_chart/infants_subgroup_2019_2020_flow_chart.arrow
+        dataset: output/flow_chart/mothers_2019_2020_flow_chart.arrow
 
   process_flow_chart_data_infants_subgroup_s4:
     run: r:latest analysis/cohort_criteria.R infants_subgroup season4_start_date season4_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s4
+    - process_flow_chart_data_mothers_s4
+    - generate_flow_chart_data_mothers_s4
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2019_2020.csv
+
+  generate_flow_chart_data_infants_subgroup_s5:
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
+      --output output/flow_chart/infants_subgroup_2020_2021_flow_chart.arrow
+      -- infants_subgroup season5_start_date season5_end_date
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/infants_subgroup_2020_2021_flow_chart.arrow
+
+  process_flow_chart_data_mothers_s5:
+    run: r:latest analysis/cohort_processing_mothers.R season5_start_date season5_end_date
+    needs:
+    - generate_flow_chart_data_infants_subgroup_s5
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/cohort_mothers_processed_2020_2021.arrow
 
   generate_flow_chart_data_mothers_s5:
     run: |-
@@ -743,36 +772,39 @@ actions:
       --output output/flow_chart/mothers_2020_2021_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2020_2021.arrow
       -- season5_start_date season5_end_date
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/mothers_2020_2021_flow_chart.arrow
-
-  process_flow_chart_data_mothers_s5:
-    run: r:latest analysis/cohort_processing_mothers.R season5_start_date season5_end_date
     needs:
-    - generate_flow_chart_data_mothers_s5
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/cohort_mothers_processed_2020_2021.arrow
-
-  generate_flow_chart_data_infants_subgroup_s5:
-    run: |-
-      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
-      --output output/flow_chart/infants_subgroup_2020_2021_flow_chart.arrow
-      -- infants_subgroup season5_start_date season5_end_date
-    needs:
+    - generate_flow_chart_data_infants_subgroup_s5
     - process_flow_chart_data_mothers_s5
     outputs:
       highly_sensitive:
-        dataset: output/flow_chart/infants_subgroup_2020_2021_flow_chart.arrow
+        dataset: output/flow_chart/mothers_2020_2021_flow_chart.arrow
 
   process_flow_chart_data_infants_subgroup_s5:
     run: r:latest analysis/cohort_criteria.R infants_subgroup season5_start_date season5_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s5
+    - process_flow_chart_data_mothers_s5
+    - generate_flow_chart_data_mothers_s5
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2020_2021.csv
+
+  generate_flow_chart_data_infants_subgroup_s6:
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
+      --output output/flow_chart/infants_subgroup_2021_2022_flow_chart.arrow
+      -- infants_subgroup season6_start_date season6_end_date
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/infants_subgroup_2021_2022_flow_chart.arrow
+
+  process_flow_chart_data_mothers_s6:
+    run: r:latest analysis/cohort_processing_mothers.R season6_start_date season6_end_date
+    needs:
+    - generate_flow_chart_data_infants_subgroup_s6
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/cohort_mothers_processed_2021_2022.arrow
 
   generate_flow_chart_data_mothers_s6:
     run: |-
@@ -780,36 +812,39 @@ actions:
       --output output/flow_chart/mothers_2021_2022_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2021_2022.arrow
       -- season6_start_date season6_end_date
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/mothers_2021_2022_flow_chart.arrow
-
-  process_flow_chart_data_mothers_s6:
-    run: r:latest analysis/cohort_processing_mothers.R season6_start_date season6_end_date
     needs:
-    - generate_flow_chart_data_mothers_s6
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/cohort_mothers_processed_2021_2022.arrow
-
-  generate_flow_chart_data_infants_subgroup_s6:
-    run: |-
-      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
-      --output output/flow_chart/infants_subgroup_2021_2022_flow_chart.arrow
-      -- infants_subgroup season6_start_date season6_end_date
-    needs:
+    - generate_flow_chart_data_infants_subgroup_s6
     - process_flow_chart_data_mothers_s6
     outputs:
       highly_sensitive:
-        dataset: output/flow_chart/infants_subgroup_2021_2022_flow_chart.arrow
+        dataset: output/flow_chart/mothers_2021_2022_flow_chart.arrow
 
   process_flow_chart_data_infants_subgroup_s6:
     run: r:latest analysis/cohort_criteria.R infants_subgroup season6_start_date season6_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s6
+    - process_flow_chart_data_mothers_s6
+    - generate_flow_chart_data_mothers_s6
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2021_2022.csv
+
+  generate_flow_chart_data_infants_subgroup_s7:
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
+      --output output/flow_chart/infants_subgroup_2022_2023_flow_chart.arrow
+      -- infants_subgroup season7_start_date season7_end_date
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/infants_subgroup_2022_2023_flow_chart.arrow
+
+  process_flow_chart_data_mothers_s7:
+    run: r:latest analysis/cohort_processing_mothers.R season7_start_date season7_end_date
+    needs:
+    - generate_flow_chart_data_infants_subgroup_s7
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/cohort_mothers_processed_2022_2023.arrow
 
   generate_flow_chart_data_mothers_s7:
     run: |-
@@ -817,36 +852,39 @@ actions:
       --output output/flow_chart/mothers_2022_2023_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2022_2023.arrow
       -- season7_start_date season7_end_date
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/mothers_2022_2023_flow_chart.arrow
-
-  process_flow_chart_data_mothers_s7:
-    run: r:latest analysis/cohort_processing_mothers.R season7_start_date season7_end_date
     needs:
-    - generate_flow_chart_data_mothers_s7
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/cohort_mothers_processed_2022_2023.arrow
-
-  generate_flow_chart_data_infants_subgroup_s7:
-    run: |-
-      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
-      --output output/flow_chart/infants_subgroup_2022_2023_flow_chart.arrow
-      -- infants_subgroup season7_start_date season7_end_date
-    needs:
+    - generate_flow_chart_data_infants_subgroup_s7
     - process_flow_chart_data_mothers_s7
     outputs:
       highly_sensitive:
-        dataset: output/flow_chart/infants_subgroup_2022_2023_flow_chart.arrow
+        dataset: output/flow_chart/mothers_2022_2023_flow_chart.arrow
 
   process_flow_chart_data_infants_subgroup_s7:
     run: r:latest analysis/cohort_criteria.R infants_subgroup season7_start_date season7_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s7
+    - process_flow_chart_data_mothers_s7
+    - generate_flow_chart_data_mothers_s7
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2022_2023.csv
+
+  generate_flow_chart_data_infants_subgroup_s8:
+    run: |-
+      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
+      --output output/flow_chart/infants_subgroup_2023_2024_flow_chart.arrow
+      -- infants_subgroup season8_start_date season8_end_date
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/infants_subgroup_2023_2024_flow_chart.arrow
+
+  process_flow_chart_data_mothers_s8:
+    run: r:latest analysis/cohort_processing_mothers.R season8_start_date season8_end_date
+    needs:
+    - generate_flow_chart_data_infants_subgroup_s8
+    outputs:
+      highly_sensitive:
+        dataset: output/flow_chart/cohort_mothers_processed_2023_2024.arrow
 
   generate_flow_chart_data_mothers_s8:
     run: |-
@@ -854,33 +892,19 @@ actions:
       --output output/flow_chart/mothers_2023_2024_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2023_2024.arrow
       -- season8_start_date season8_end_date
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/mothers_2023_2024_flow_chart.arrow
-
-  process_flow_chart_data_mothers_s8:
-    run: r:latest analysis/cohort_processing_mothers.R season8_start_date season8_end_date
     needs:
-    - generate_flow_chart_data_mothers_s8
-    outputs:
-      highly_sensitive:
-        dataset: output/flow_chart/cohort_mothers_processed_2023_2024.arrow
-
-  generate_flow_chart_data_infants_subgroup_s8:
-    run: |-
-      ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
-      --output output/flow_chart/infants_subgroup_2023_2024_flow_chart.arrow
-      -- infants_subgroup season8_start_date season8_end_date
-    needs:
+    - generate_flow_chart_data_infants_subgroup_s8
     - process_flow_chart_data_mothers_s8
     outputs:
       highly_sensitive:
-        dataset: output/flow_chart/infants_subgroup_2023_2024_flow_chart.arrow
+        dataset: output/flow_chart/mothers_2023_2024_flow_chart.arrow
 
   process_flow_chart_data_infants_subgroup_s8:
     run: r:latest analysis/cohort_criteria.R infants_subgroup season8_start_date season8_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s8
+    - process_flow_chart_data_mothers_s8
+    - generate_flow_chart_data_mothers_s8
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2023_2024.csv
