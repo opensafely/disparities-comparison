@@ -33,7 +33,7 @@ start_year = study_start_date.year
 end_year = study_end_date.year
 
 #tell ehrql to use patients from process file
-@table_from_file(f"output/flow_chat/cohort_mothers_processed_{start_year}_{end_year}.arrow")
+@table_from_file(f"output/flow_chart/cohort_mothers_processed_{start_year}_{end_year}.arrow")
 
 #extract these patients where index date is the date of birth of the linked infant
 class matched_patients(PatientFrame) :
