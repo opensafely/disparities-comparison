@@ -83,32 +83,43 @@ action_flow_infants_sub <- function(cohort, season, dates, season_start_date,
   splice (
     
     action(
-      name = glue("generate_flow_chart_data_mothers_{season}"),
-      run = glue("ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
-      --output output/flow_chart/mothers_{dates}_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
-      -- {season_start_date} {season_end_date}"),
+      name = glue("generate_flow_chart_data_{cohort}_{season}"),
+      run = glue("ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
+      --output output/flow_chart/{cohort}_{dates}_flow_chart.arrow
+      -- {cohort} {season_start_date} {season_end_date}"),
       needs = NULL,
       highly_sensitive = lst(
-        dataset = glue("output/flow_chart/mothers_{dates}_flow_chart.arrow"))
+        dataset = glue("output/flow_chart/{cohort}_{dates}_flow_chart.arrow"))
     ),
     
     action(
       name = glue("process_flow_chart_data_mothers_{season}"),
       run = glue("r:latest analysis/cohort_processing_mothers.R {season_start_date} {season_end_date}"),
-      needs = list(glue("generate_flow_chart_data_mothers_{season}")),
+      needs = list(glue("generate_flow_chart_data_{cohort}_{season}")),
       highly_sensitive = lst(
         dataset = glue("output/flow_chart/cohort_mothers_processed_{dates}.arrow"))
     ),
     
     action(
-      name = glue("generate_flow_chart_data_{cohort}_{season}"),
-      run = glue("ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart.py
-      --output output/flow_chart/{cohort}_{dates}_flow_chart.arrow
-      -- {cohort} {season_start_date} {season_end_date}"),
-      needs = list(glue("process_flow_chart_data_mothers_{season}")),
+      name = glue("generate_flow_chart_data_mothers_{season}"),
+      run = glue("ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
+      --output output/flow_chart/mothers_{dates}_flow_chart.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      -- {season_start_date} {season_end_date}"),
+      needs = list(glue("generate_flow_chart_data_{cohort}_{season}"),
+                   glue("process_flow_chart_data_mothers_{season}")),
       highly_sensitive = lst(
-        dataset = glue("output/flow_chart/{cohort}_{dates}_flow_chart.arrow"))
+        dataset = glue("output/flow_chart/mothers_{dates}_flow_chart.arrow"))
+    ),
+    
+    action(
+      name = glue("process_flow_chart_data_{cohort}_{season}"),
+      run = glue("r:latest analysis/cohort_processing.R {season_start_date} {season_end_date}"),
+      needs = list(glue("generate_flow_chart_data_{cohort}_{season}"),
+                   glue("process_flow_chart_data_mothers_{season}"),
+                   glue("generate_flow_chart_data_mothers_{cohort}_{season}")),
+      moderately_sensitive = lst(
+        csv = glue("output/flow_chart/flow_chart_processed_{cohort}_{dates}.csv"))
     )
     
   )
