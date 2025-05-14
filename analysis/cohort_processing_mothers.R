@@ -23,7 +23,7 @@ fs::dir_create(here::here("output", "flow_chart"))
 
 #import data
 df_input <- read_feather(
-  here::here("output", "flow_chart", paste0("infants_subgroup",
+  here::here("output", "flow_chart", paste0("infants_subgroup_",
   year(study_start_date), "_", year(study_end_date), "_flow_chart.arrow")))
 
 #select the variables of interest
