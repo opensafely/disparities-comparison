@@ -127,7 +127,7 @@ action_inclusion <- function(cohort, season, dates, season_start_date,
       needs = case_when(str_detect(cohort, "subgroup") ~ list(list(
         glue("generate_flow_chart_data_{cohort}_{season}"),
         glue("process_flow_chart_data_mothers_{season}"),
-        glue("generate_flow_chart_data_mothers_{cohort}_{season}"))), 
+        glue("generate_flow_chart_data_mothers_{season}"))), 
         .default = list(list(glue("generate_flow_chart_data_{cohort}_{season}"))))[[1]],
       moderately_sensitive = lst(
         csv = glue("output/flow_chart/flow_chart_processed_{cohort}_{dates}.csv"))

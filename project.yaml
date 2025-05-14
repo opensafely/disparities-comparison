@@ -624,7 +624,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_subgroup_s1
     - process_flow_chart_data_mothers_s1
-    - generate_flow_chart_data_mothers_infants_subgroup_s1
+    - generate_flow_chart_data_mothers_s1
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2016_2017.csv
@@ -664,7 +664,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_subgroup_s2
     - process_flow_chart_data_mothers_s2
-    - generate_flow_chart_data_mothers_infants_subgroup_s2
+    - generate_flow_chart_data_mothers_s2
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2017_2018.csv
@@ -704,7 +704,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_subgroup_s3
     - process_flow_chart_data_mothers_s3
-    - generate_flow_chart_data_mothers_infants_subgroup_s3
+    - generate_flow_chart_data_mothers_s3
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2018_2019.csv
@@ -744,7 +744,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_subgroup_s4
     - process_flow_chart_data_mothers_s4
-    - generate_flow_chart_data_mothers_infants_subgroup_s4
+    - generate_flow_chart_data_mothers_s4
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2019_2020.csv
@@ -784,7 +784,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_subgroup_s5
     - process_flow_chart_data_mothers_s5
-    - generate_flow_chart_data_mothers_infants_subgroup_s5
+    - generate_flow_chart_data_mothers_s5
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2020_2021.csv
@@ -824,7 +824,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_subgroup_s6
     - process_flow_chart_data_mothers_s6
-    - generate_flow_chart_data_mothers_infants_subgroup_s6
+    - generate_flow_chart_data_mothers_s6
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2021_2022.csv
@@ -864,7 +864,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_subgroup_s7
     - process_flow_chart_data_mothers_s7
-    - generate_flow_chart_data_mothers_infants_subgroup_s7
+    - generate_flow_chart_data_mothers_s7
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2022_2023.csv
@@ -904,7 +904,7 @@ actions:
     needs:
     - generate_flow_chart_data_infants_subgroup_s8
     - process_flow_chart_data_mothers_s8
-    - generate_flow_chart_data_mothers_infants_subgroup_s8
+    - generate_flow_chart_data_mothers_s8
     outputs:
       moderately_sensitive:
         csv: output/flow_chart/flow_chart_processed_infants_subgroup_2023_2024.csv
