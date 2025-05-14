@@ -20,19 +20,23 @@ if (length(args) == 0) {
 
 source(here::here("analysis", "functions", "redaction.R"))
 
+patients_df <- read_feather(
+  here::here("output", "flow_chart", paste0(cohort, "_",
+  year(study_start_date), "_", year(study_end_date), "_flow_chart",
+  ".arrow")))
+
 if (cohort == "infants_subgroup") {
   
-  patients_df <- read_feather(
+  mothers_df <- read_feather(
     here::here("output", "flow_chart", paste0("mothers_",
     year(study_start_date), "_", year(study_end_date), "_flow_chart",
     ".arrow")))
   
-} else {
+  mothers_df <- mothers_df %>%
+    mutate(mother_id = patient_id) %>%
+    select(-patient_id)
   
-  patients_df <- read_feather(
-    here::here("output", "flow_chart", paste0(cohort, "_",
-    year(study_start_date), "_", year(study_end_date), "_flow_chart",
-    ".arrow")))
+  patients_df <- merge(patients_df, mothers_df, by = "mother_id")
   
 }
 
