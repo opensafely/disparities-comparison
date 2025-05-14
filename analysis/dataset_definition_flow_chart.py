@@ -131,7 +131,7 @@ def has_prior_event(codelist, where = True):
 dataset.define_population(
   was_alive
   & is_appropriate_age
-  & practice_registrations.exists_for_patient()
+  & practice_registrations.for_patient_on(index_date).exists_for_patient()
 )
 
 #registration and sex
@@ -180,18 +180,24 @@ dataset.care_home = care_home_tpp | care_home_code
 
 if cohort == "infants_subgroup" :
   
+  mother_id_present = parents.mother_id.is_not_null()
+  
   #maternal linkage available
-  dataset.mother_id_present = parents.mother_id.is_not_null()
+  dataset.mother_id = parents.mother_id
+  dataset.birth_date = patients.date_of_birth
   
-  #tell ehrql to use patients from process file
-  @table_from_file(f"output/flow_chart/cohort_mothers_processed_{start_year}_{end_year}.arrow")
-  
-  #extract these patients where index date is the date of birth of the linked infant
-  class matched_patients(PatientFrame) :
-    index_date = Series(date)
-  
-  #mothers registration for 1 year prior to index date
-  dataset.mother_registered = (
-    has_a_continuous_practice_registration_spanning(matched_patients
-    .index_date - years(1), matched_patients.index_date)
-  )
+#   #maternal linkage available
+#   dataset.mother_id_present = parents.mother_id.is_not_null()
+#   
+#   #tell ehrql to use patients from process file
+#   @table_from_file(f"output/flow_chart/cohort_mothers_processed_{start_year}_{end_year}.arrow")
+#   
+#   #extract these patients where index date is the date of birth of the linked infant
+#   class matched_patients(PatientFrame) :
+#     index_date = Series(date)
+#   
+#   #mothers registration for 1 year prior to index date
+#   dataset.mother_registered = (
+#     has_a_continuous_practice_registration_spanning(matched_patients
+#     .index_date - years(1), matched_patients.index_date)
+#   )
