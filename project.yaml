@@ -7280,6 +7280,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2016_2017_sensitive_primary.arrow
+      --dummy-data-file analysis/dummydata/dummyextract_adults_2016_2017.arrow
       -- adults season1_start_date season1_end_date sensitive primary
     outputs:
       highly_sensitive:
