@@ -110,16 +110,6 @@ action_flow_infants_sub <- function(cohort, season, dates, season_start_date,
                    glue("process_flow_chart_data_mothers_{season}")),
       highly_sensitive = lst(
         dataset = glue("output/flow_chart/mothers_{dates}_flow_chart.arrow"))
-    ),
-    
-    action(
-      name = glue("process_flow_chart_data_{cohort}_{season}"),
-      run = glue("r:latest analysis/cohort_processing.R {season_start_date} {season_end_date}"),
-      needs = list(glue("generate_flow_chart_data_{cohort}_{season}"),
-                   glue("process_flow_chart_data_mothers_{season}"),
-                   glue("generate_flow_chart_data_mothers_{cohort}_{season}")),
-      moderately_sensitive = lst(
-        csv = glue("output/flow_chart/flow_chart_processed_{cohort}_{dates}.csv"))
     )
     
   )
@@ -134,7 +124,11 @@ action_inclusion <- function(cohort, season, dates, season_start_date,
     action(
       name = glue("process_flow_chart_data_{cohort}_{season}"),
       run = glue("r:latest analysis/cohort_criteria.R {cohort} {season_start_date} {season_end_date}"),
-      needs = list(glue("generate_flow_chart_data_{cohort}_{season}")),
+      needs = case_when(str_detect(cohort, "subgroup") ~ list(list(
+        glue("generate_flow_chart_data_{cohort}_{season}"),
+        glue("process_flow_chart_data_mothers_{season}"),
+        glue("generate_flow_chart_data_mothers_{cohort}_{season}"))), 
+        .default = list(list(glue("generate_flow_chart_data_{cohort}_{season}"))))[[1]],
       moderately_sensitive = lst(
         csv = glue("output/flow_chart/flow_chart_processed_{cohort}_{dates}.csv"))
     )
