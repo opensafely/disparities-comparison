@@ -29,10 +29,10 @@ from variable_lib import (
 
 import codelists
 
-# dataset = create_dataset()
-# dataset.configure_dummy_data(population_size = 10000)
+dataset = create_dataset()
+dataset.configure_dummy_data(population_size = 10000)
 
-dataset = Dataset()
+# dataset = Dataset()
 
 #######################################################################################
 # Import study dates defined in "./analysis/design/study-dates.R" script and then exported
@@ -485,148 +485,80 @@ if codelist_type == "specific" :
     
 #extract rsv primary care dates for sensitivity analysis ('sensitive' phenotype)
 else :
-  
+
+  def get_rsv_codes_dates(num_rsv_codes):
+    rsv_codes_dates = []
+    rsv_code_numbers = []
+    rsv_code_dates = []
+
+    # Loop through the number of RSV codes requested
+    for i in range(1, num_rsv_codes + 1):
+        # Determine the variables dynamically based on the loop index
+        if i == 1:
+            rsv_code_date = (
+               first_infection_event(codelists
+               .rsv_sensitive_codelist).date
+            )
+        else:
+            rsv_code_date = case(
+                when(rsv_code_numbers[i - 2] > 1).then(None),
+                otherwise=is_infection_event(codelists.rsv_sensitive_codelist)
+                .where(clinical_events.date.is_after(rsv_code_dates[i - 2]))
+                .sort_by(clinical_events.date)
+                .first_for_patient()
+                .date
+            )
+
+        rsv_code_dates.append(rsv_code_date)
+
+        # Count distinct SNOMED codes for the current date range
+        rsv_code_number_date = (
+            clinical_events.where(
+                clinical_events.date
+                .is_on_or_between(rsv_code_date, rsv_code_date)
+            )
+            .where(clinical_events.snomedct_code
+            .is_in(codelists.rsv_sensitive_codelist))
+            .snomedct_code.count_distinct_for_patient()
+        )
+        rsv_code_numbers.append(rsv_code_number_date)
+
+        # Append the results to the list
+        rsv_codes_dates.append(rsv_code_date)
+
+    # Determine the final number of RSV codes and dates based on conditions
+    rsv_code_number = case(
+        when(rsv_code_numbers[0] > 1).then(rsv_code_numbers[0]),
+        when(rsv_code_numbers[1] > 1).then(rsv_code_numbers[1]),
+        when(rsv_code_numbers[2] > 1).then(rsv_code_numbers[2]),
+        when(rsv_code_numbers[3] > 1).then(rsv_code_numbers[3]),
+        when(diff_dates_days(rsv_code_dates[0],
+         rsv_code_dates[1]) <= 14).then(2),
+        when(diff_dates_days(rsv_code_dates[1],
+         rsv_code_dates[2]) <= 14).then(2),
+        when(diff_dates_days(rsv_code_dates[2],
+         rsv_code_dates[3]) <= 14).then(2),
+        otherwise=rsv_code_numbers[0]
+    )
+
+    rsv_codes_date = case(
+        when(rsv_code_numbers[0] > 1).then(rsv_codes_dates[0]),
+        when(rsv_code_numbers[1] > 1).then(rsv_codes_dates[1]),
+        when(rsv_code_numbers[2] > 1).then(rsv_codes_dates[2]),
+        when(rsv_code_numbers[3] > 1).then(rsv_codes_dates[3]),
+        when((rsv_code_number > 1) & (diff_dates_days(rsv_codes_dates[0],
+         rsv_codes_dates[1]) <= 14)).then(rsv_codes_dates[0]),
+        when((rsv_code_number > 1) & (diff_dates_days(rsv_codes_dates[1],
+         rsv_codes_dates[2]) <= 14)).then(rsv_codes_dates[1]),
+        when((rsv_code_number > 1) & (diff_dates_days(rsv_codes_dates[2],
+         rsv_codes_dates[3]) <= 14)).then(rsv_codes_dates[2]),
+        otherwise = None
+    )
+
+    return rsv_codes_date, rsv_code_number
+
   #get dates of events and corresponding codes 
-  # rsv_code1 = (
-  #   first_infection_event(codelists.rsv_sensitive_codelist)
-  #   .snomedct_code
-  # )
-  rsv_code1_date = (
-    first_infection_event(codelists.rsv_sensitive_codelist)
-    .date
-  )
-  rsv_code_number_date1 = (
-    (clinical_events.where(clinical_events
-    .date.is_on_or_between(rsv_code1_date, rsv_code1_date))
-    .where(clinical_events.snomedct_code
-    .is_in(codelists.rsv_sensitive_codelist)))
-    .snomedct_code.count_distinct_for_patient()
-  )
-
-  # rsv_code2 = (case(
-  #   when(rsv_code_number_date1 > 1).then(None),
-  #   otherwise = is_infection_event(codelists.rsv_sensitive_codelist)
-  #   .where(clinical_events.date.is_after(rsv_code1_date))
-  #   .sort_by(clinical_events.date).first_for_patient()
-  #   .snomedct_code)
-  # )
-  rsv_code2_date = (case(
-    when(rsv_code_number_date1 > 1).then(None),
-    otherwise = is_infection_event(codelists.rsv_sensitive_codelist)
-    .where(clinical_events.date.is_after(rsv_code1_date))
-    .sort_by(clinical_events.date).first_for_patient().date)
-  )
-  rsv_code_number_date2 = (
-    (clinical_events.where(clinical_events
-    .date.is_on_or_between(rsv_code2_date, rsv_code2_date))
-    .where(clinical_events.snomedct_code
-    .is_in(codelists.rsv_sensitive_codelist)))
-    .snomedct_code.count_distinct_for_patient()
-  )
-
-  # rsv_code3 = (case(
-  #   when(rsv_code_number_date2 > 1).then(None),
-  #   otherwise = is_infection_event(codelists.rsv_sensitive_codelist)
-  #   .where(clinical_events.date.is_after(rsv_code2_date))
-  #   .sort_by(clinical_events.date).first_for_patient()
-  #   .snomedct_code)
-  # )
-  rsv_code3_date = (case(
-    when(rsv_code_number_date2 > 1).then(None),
-    otherwise = is_infection_event(codelists.rsv_sensitive_codelist)
-    .where(clinical_events.date.is_after(rsv_code2_date))
-    .sort_by(clinical_events.date).first_for_patient().date)
-  )
-  rsv_code_number_date3 = (
-    (clinical_events.where(clinical_events
-    .date.is_on_or_between(rsv_code3_date, rsv_code3_date))
-    .where(clinical_events.snomedct_code
-    .is_in(codelists.rsv_sensitive_codelist)))
-    .snomedct_code.count_distinct_for_patient()
-  )
-
-  # rsv_code4 = (case(
-  #   when(rsv_code_number_date3 > 1).then(None),
-  #   otherwise = is_infection_event(codelists.rsv_sensitive_codelist)
-  #   .where(clinical_events.date.is_after(rsv_code3_date))
-  #   .sort_by(clinical_events.date).first_for_patient()
-  #   .snomedct_code)
-  # )
-  rsv_code4_date = (case(
-    when(rsv_code_number_date3 > 1).then(None),
-    otherwise = is_infection_event(codelists.rsv_sensitive_codelist)
-    .where(clinical_events.date.is_after(rsv_code3_date))
-    .sort_by(clinical_events.date).first_for_patient().date)
-  )
-  rsv_code_number_date4 = (
-    (clinical_events.where(clinical_events
-    .date.is_on_or_between(rsv_code4_date, rsv_code4_date))
-    .where(clinical_events.snomedct_code
-    .is_in(codelists.rsv_sensitive_codelist)))
-    .snomedct_code.count_distinct_for_patient()
-  )
-
-  rsv_code_number = (case(
-    when(rsv_code_number_date1 > 1)
-    .then(rsv_code_number_date1),
-    when(rsv_code_number_date2 > 1)
-    .then(rsv_code_number_date2),
-    when(rsv_code_number_date3 > 1)
-    .then(rsv_code_number_date3),
-    when(rsv_code_number_date4 > 1)
-    .then(rsv_code_number_date4),
-    when(diff_dates_days(rsv_code1_date,
-    rsv_code2_date) <= 14).then(2),
-    when(diff_dates_days(rsv_code2_date,
-    rsv_code3_date) <= 14).then(2),
-    when(diff_dates_days(rsv_code3_date,
-    rsv_code4_date) <= 14).then(2),
-    otherwise = rsv_code_number_date1)
-  )
-
-  rsv_codes_date = (case(
-    when(rsv_code_number_date1 > 1)
-    .then(rsv_code1_date),
-    when(rsv_code_number_date2 > 1)
-    .then(rsv_code2_date),
-    when(rsv_code_number_date3 > 1)
-    .then(rsv_code3_date),
-    when(rsv_code_number_date4 > 1)
-    .then(rsv_code4_date),
-    when((rsv_code_number > 1) &
-    (diff_dates_days(rsv_code1_date,
-    rsv_code2_date) <= 14))
-    .then(rsv_code1_date),
-    when((rsv_code_number > 1) &
-    (diff_dates_days(rsv_code2_date,
-    rsv_code3_date) <= 14))
-    .then(rsv_code2_date),
-    when((rsv_code_number > 1) &
-    (diff_dates_days(rsv_code3_date,
-    rsv_code4_date) <= 14))
-    .then(rsv_code3_date),
-    otherwise = None)
-  )
-
-  #count number of distinct codes in RSV sensitive codelist which occur within 2 weeks
-  #of each other - looking at the first episode
-  # rsv_code_number = (
-  #   (clinical_events.where(clinical_events
-  #   .date.is_on_or_between(first_infection_event(codelists
-  #   .rsv_sensitive_codelist).date, first_infection_event(codelists
-  #   .rsv_sensitive_codelist).date + days(14)))
-  #   .where(clinical_events.snomedct_code
-  #   .is_in(codelists.rsv_sensitive_codelist)))
-  #   .snomedct_code.count_distinct_for_patient()
-  # )
- 
-  #get the date of first occurrence a code above, if at least 2 codes are present 
-  # - looking at the first episode
-  # rsv_codes_date = (
-  #   case(when(rsv_code_number > 1)
-  #   .then(first_infection_event(codelists
-  #   .rsv_sensitive_codelist).date))
-  # )
+  rsv_codes_date, rsv_code_number = get_rsv_codes_dates(4)
   
   #get the date of the occurrence of first relevant prescription
   rsv_med_date = (
