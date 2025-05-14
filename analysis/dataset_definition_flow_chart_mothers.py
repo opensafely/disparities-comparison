@@ -55,4 +55,3 @@ dataset.mother_registered = (
   has_a_continuous_practice_registration_spanning(matched_patients
   .index_date - years(1), matched_patients.index_date)
 )
-
