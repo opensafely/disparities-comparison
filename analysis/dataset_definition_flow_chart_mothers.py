@@ -42,7 +42,7 @@ class matched_patients(PatientFrame) :
 ##define populations
 registered_mothers = (
   practice_registrations.for_patient_on(matched_patients
-  .index_dateindex_date).exists_for_patient()
+  .index_date).exists_for_patient()
 )
 
 #extract mothers whose patient id matches those who were extracted with infants
