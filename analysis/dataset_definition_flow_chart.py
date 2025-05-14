@@ -128,11 +128,19 @@ def has_prior_event(codelist, where = True):
     )
 
 #define population
-dataset.define_population(
-  was_alive
-  & is_appropriate_age
-  & practice_registrations.for_patient_on(index_date).exists_for_patient()
-)
+if cohort == "infants_subgroup" :
+    dataset.define_population(
+    was_alive
+    & is_appropriate_age
+    & practice_registrations.for_patient_on(index_date).exists_for_patient()
+    & mother_id_present
+  )
+else :
+  dataset.define_population(
+    was_alive
+    & is_appropriate_age
+    & practice_registrations.for_patient_on(index_date).exists_for_patient()
+  )
 
 #registration and sex
 dataset.registered = registered_patients
