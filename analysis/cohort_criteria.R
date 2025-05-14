@@ -42,16 +42,32 @@ if (study_start_date == as.Date("2020-09-01") &
 }
 
 # Define the base population for exclusion: Only consider registered and appropriate age patients
-if (cohort == "infants" | cohort == "infants_subgroup") {
+if (cohort == "infants") {
   population <- patients_df %>%
     mutate(
       stage0 = 1,
       stage1 = registered,
       stage2a = registered & is_female_or_male,
       stage2b = registered & has_imd,
-      stage2c = registered & !care_home & !risk_group_infants &
-        !severe_immunodeficiency,
+      stage2c = registered & !care_home,
+      stage2d = registered & !risk_group_infants,
+      stage2e = registered & !severe_immunodeficiency,
       stage2 = registered & is_female_or_male & has_imd &
+        !care_home & !risk_group_infants & !severe_immunodeficiency
+    )
+} else if (cohort == "infants_subgroup") {
+  population <- patients_df %>%
+    mutate(
+      stage0 = 1,
+      stage1a = registered,
+      stage1b = mother_registered,
+      stage1 = registered & mother_registered,
+      stage2a = registered & mother_registered & is_female_or_male,
+      stage2b = registered & mother_registered & has_imd,
+      stage2c = registered & mother_registered & !care_home,
+      stage2d = registered & mother_registered & !risk_group_infants,
+      stage2e = registered & mother_registered & !severe_immunodeficiency,
+      stage2 = registered & mother_registered & is_female_or_male & has_imd &
         !care_home & !risk_group_infants & !severe_immunodeficiency
     )
 } else {
@@ -66,21 +82,67 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
     )
 }
 
-population_summary <- population %>%
-  summarise(
-    n0 = roundmid_any(n()),
-    n1 = roundmid_any(sum(stage1)),
-    n2a = roundmid_any(sum(stage2a)),
-    n2b = roundmid_any(sum(stage2b)),
-    n2c = roundmid_any(sum(stage2c)),
-    n2 = roundmid_any(sum(stage2)),
-    
-    pct1 = n1 / n0 * 100,
-    pct2a = n2a / n1 * 100,
-    pct2b = n2b / n1 * 100,
-    pct2c = n2c / n1 * 100,
-    pct2 = n2 / n1 * 100
-  )
+if (cohort == "infants") {
+  population_summary <- population %>%
+    summarise(
+      n0 = roundmid_any(n()),
+      n1 = roundmid_any(sum(stage1)),
+      n2a = roundmid_any(sum(stage2a)),
+      n2b = roundmid_any(sum(stage2b)),
+      n2c = roundmid_any(sum(stage2c)),
+      n2d = roundmid_any(sum(stage2d)),
+      n2e = roundmid_any(sum(stage2e)),
+      n2 = roundmid_any(sum(stage2)),
+      
+      pct1 = n1 / n0 * 100,
+      pct2a = n2a / n1 * 100,
+      pct2b = n2b / n1 * 100,
+      pct2c = n2c / n1 * 100,
+      pct2d = n2d / n1 * 100,
+      pct2e = n2e / n1 * 100,
+      pct2 = n2 / n1 * 100
+    )
+} else if (cohort == "infants_subgroup") {
+  population_summary <- population %>%
+    summarise(
+      n0 = roundmid_any(n()),
+      n1a = roundmid_any(sum(stage1a)),
+      n1b = roundmid_any(sum(stage1b)),
+      n1 = roundmid_any(sum(stage1)),
+      n2a = roundmid_any(sum(stage2a)),
+      n2b = roundmid_any(sum(stage2b)),
+      n2c = roundmid_any(sum(stage2c)),
+      n2d = roundmid_any(sum(stage2d)),
+      n2e = roundmid_any(sum(stage2e)),
+      n2 = roundmid_any(sum(stage2)),
+      
+      pct1a = n1a / n0 * 100,
+      pct1b = n1b / n0 * 100,
+      pct1 = n1 / n0 * 100,
+      pct2a = n2a / n1 * 100,
+      pct2b = n2b / n1 * 100,
+      pct2c = n2c / n1 * 100,
+      pct2d = n2d / n1 * 100,
+      pct2e = n2e / n1 * 100,
+      pct2 = n2 / n1 * 100
+    )
+} else {
+  population_summary <- population %>%
+    summarise(
+      n0 = roundmid_any(n()),
+      n1 = roundmid_any(sum(stage1)),
+      n2a = roundmid_any(sum(stage2a)),
+      n2b = roundmid_any(sum(stage2b)),
+      n2c = roundmid_any(sum(stage2c)),
+      n2 = roundmid_any(sum(stage2)),
+      
+      pct1 = n1 / n0 * 100,
+      pct2a = n2a / n1 * 100,
+      pct2b = n2b / n1 * 100,
+      pct2c = n2c / n1 * 100,
+      pct2 = n2 / n1 * 100
+    )
+}
 
 
 ## create output directories ----
