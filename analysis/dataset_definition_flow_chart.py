@@ -74,10 +74,6 @@ followup_end_date = minimum_of(study_end_date, age_out_date)
 dataset.patient_index_date = index_date
 dataset.patient_end_date = followup_end_date
 
-#define dataset definition settings from command line arguments
-start_year = study_start_date.year
-end_year = study_end_date.year
-
 #define patients status: alive/dead
 was_alive = (
   (patients.date_of_death.is_after(index_date))
@@ -91,15 +87,17 @@ age_months = (index_date - patients.date_of_birth).months
 age_at_start_months = (study_start_date - patients.date_of_birth).months
 age_at_end_months = (study_end_date - patients.date_of_birth).months
 
-#get patients who are registered, have sex, age, and imd info
+#get patients who meet registration criteria
+#(1 year continuous registration, for non-infants)
 if cohort == "infants" or cohort == "infants_subgroup" :
   registered_patients = practice_registrations.for_patient_on(index_date).exists_for_patient()
 else :
   registered_patients = practice_registrations.for_patient_on(registration_date).exists_for_patient()
 
+#have sex
 is_female_or_male = patients.sex.is_in(["female", "male"])
 
-#has age
+#have age
 if cohort == "infants" or cohort == "infants_subgroup" :
   is_appropriate_age = (age_at_start_months < 24) & (age_at_end_months >= 0)
 elif cohort == "children_and_adolescents" :
@@ -108,9 +106,13 @@ elif cohort == "adults" :
   is_appropriate_age = (age_at_start < 65) & (age_at_end >= 18)
 else :
   is_appropriate_age = (age_at_start < 110) & (age_at_end >= 65)
-  
-#has IMD  
+
+#have imd
 has_imd = (addresses.for_patient_on(index_date).imd_rounded.is_not_null())
+
+#define dataset definition settings from command line arguments
+start_year = study_start_date.year
+end_year = study_end_date.year
 
 ##define functions for queries
 
