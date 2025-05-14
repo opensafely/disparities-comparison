@@ -86,13 +86,13 @@ if (cohort == "infants") {
   population_summary <- population %>%
     summarise(
       n0 = roundmid_any(n()),
-      n1 = roundmid_any(sum(stage1)),
-      n2a = roundmid_any(sum(stage2a)),
-      n2b = roundmid_any(sum(stage2b)),
-      n2c = roundmid_any(sum(stage2c)),
-      n2d = roundmid_any(sum(stage2d)),
-      n2e = roundmid_any(sum(stage2e)),
-      n2 = roundmid_any(sum(stage2)),
+      n1 = roundmid_any(sum(stage1, na.rm = TRUE)),
+      n2a = roundmid_any(sum(stage2a, na.rm = TRUE)),
+      n2b = roundmid_any(sum(stage2b, na.rm = TRUE)),
+      n2c = roundmid_any(sum(stage2c, na.rm = TRUE)),
+      n2d = roundmid_any(sum(stage2d, na.rm = TRUE)),
+      n2e = roundmid_any(sum(stage2e, na.rm = TRUE)),
+      n2 = roundmid_any(sum(stage2, na.rm = TRUE)),
       
       pct1 = n1 / n0 * 100,
       pct2a = n2a / n1 * 100,
@@ -106,15 +106,15 @@ if (cohort == "infants") {
   population_summary <- population %>%
     summarise(
       n0 = roundmid_any(n()),
-      n1a = roundmid_any(sum(stage1a)),
-      n1b = roundmid_any(sum(stage1b)),
-      n1 = roundmid_any(sum(stage1)),
-      n2a = roundmid_any(sum(stage2a)),
-      n2b = roundmid_any(sum(stage2b)),
-      n2c = roundmid_any(sum(stage2c)),
-      n2d = roundmid_any(sum(stage2d)),
-      n2e = roundmid_any(sum(stage2e)),
-      n2 = roundmid_any(sum(stage2)),
+      n1a = roundmid_any(sum(stage1a, na.rm = TRUE)),
+      n1b = roundmid_any(sum(stage1b, na.rm = TRUE)),
+      n1 = roundmid_any(sum(stage1, na.rm = TRUE)),
+      n2a = roundmid_any(sum(stage2a, na.rm = TRUE)),
+      n2b = roundmid_any(sum(stage2b, na.rm = TRUE)),
+      n2c = roundmid_any(sum(stage2c, na.rm = TRUE)),
+      n2d = roundmid_any(sum(stage2d, na.rm = TRUE)),
+      n2e = roundmid_any(sum(stage2e, na.rm = TRUE)),
+      n2 = roundmid_any(sum(stage2, na.rm = TRUE)),
       
       pct1a = n1a / n0 * 100,
       pct1b = n1b / n0 * 100,
@@ -130,11 +130,11 @@ if (cohort == "infants") {
   population_summary <- population %>%
     summarise(
       n0 = roundmid_any(n()),
-      n1 = roundmid_any(sum(stage1)),
-      n2a = roundmid_any(sum(stage2a)),
-      n2b = roundmid_any(sum(stage2b)),
-      n2c = roundmid_any(sum(stage2c)),
-      n2 = roundmid_any(sum(stage2)),
+      n1 = roundmid_any(sum(stage1, na.rm = TRUE)),
+      n2a = roundmid_any(sum(stage2a, na.rm = TRUE)),
+      n2b = roundmid_any(sum(stage2b, na.rm = TRUE)),
+      n2c = roundmid_any(sum(stage2c, na.rm = TRUE)),
+      n2 = roundmid_any(sum(stage2, na.rm = TRUE)),
       
       pct1 = n1 / n0 * 100,
       pct2a = n2a / n1 * 100,
