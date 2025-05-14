@@ -129,7 +129,8 @@ def has_prior_event(codelist, where = True):
 
 #define population
 if cohort == "infants_subgroup" :
-    dataset.define_population(
+  mother_id_present = parents.mother_id.is_not_null()
+  dataset.define_population(
     was_alive
     & is_appropriate_age
     & practice_registrations.for_patient_on(index_date).exists_for_patient()
