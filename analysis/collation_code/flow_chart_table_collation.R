@@ -39,18 +39,6 @@ collated_flow_chart = rbind(
                       cohort, "_2023_2024.csv"))) %>% mutate(subset = "2023_24")
 )
 
-#perform redaction and rounding
-collated_flow_chart <- collated_flow_chart %>% 
-  mutate_at(vars(contains("count")), ~roundmid_any(as.numeric(.)))  %>%
-  mutate(total = roundmid_any(total))
-
-#rename count column
-collated_flow_chart <- collated_flow_chart %>%
-  rename_with(
-    ~sub("count", "n (midpoint 10 rounded)", .),
-    contains("count")
-  )
-
 #save as csv
-write_csv(collated_flow_chart, paste0(here::here("output", "collated", "descriptive"),
-          "/", cohort, "_flow_chart_collated.csv"))
+write_csv(collated_flow_chart, paste0(here::here("output", "collated",
+          "descriptive"), "/", cohort, "_flow_chart_collated.csv"))
