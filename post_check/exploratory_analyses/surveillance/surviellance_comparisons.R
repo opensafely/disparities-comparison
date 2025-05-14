@@ -146,80 +146,74 @@ df_surv_covid <- df_surv %>%
   filter(month >= "2020-03-01", month %in% df_covid$month)
 
 #granger tests
-granger_test_rsv_mild_spec <- lmtest::grangertest(
-  df_rsv_spec_mild$total_events ~ df_surv_rsv$total_events,
-  order = 1
+pearson_rsv_mild_spec <- cor.test(
+  df_rsv_spec_mild$total_event, df_surv_rsv$total_events
 )
-granger_test_rsv_mild_sens <- lmtest::grangertest(
-  df_rsv_sens_mild$total_events ~ df_surv_rsv$total_events,
-  order = 1
+pearson_rsv_mild_sens <- cor.test(
+  df_rsv_sens_mild$total_events, df_surv_rsv$total_events
 )
-granger_test_rsv_severe_spec <- lmtest::grangertest(
-  df_rsv_spec_severe$total_events ~ df_surv_rsv$total_events,
-  order = 1
+pearson_rsv_severe_spec <- cor.test(
+  df_rsv_spec_severe$total_events, df_surv_rsv$total_events
 )
-granger_test_rsv_severe_sens <- lmtest::grangertest(
-  df_rsv_sens_severe$total_events ~ df_surv_rsv$total_events,
-  order = 1
+pearson_rsv_severe_sens <- cor.test(
+  df_rsv_sens_severe$total_events, df_surv_rsv$total_events
 )
-granger_test_flu_mild_spec <- lmtest::grangertest(
-  df_flu_spec_mild$total_events ~ df_surv_flu$total_events,
-  order = 1
+pearson_flu_mild_spec <- cor.test(
+  df_flu_spec_mild$total_events, df_surv_flu$total_events
 )
-granger_test_flu_mild_sens <- lmtest::grangertest(
-  df_flu_sens_mild$total_events ~ df_surv_flu$total_events,
-  order = 1
+pearson_flu_mild_sens <- cor.test(
+  df_flu_sens_mild$total_events, df_surv_flu$total_events
 )
-granger_test_flu_severe_spec <- lmtest::grangertest(
-  df_flu_spec_severe$total_events ~ df_surv_flu_spec_severe$total_events,
-  order = 1
+pearson_flu_severe_spec <- cor.test(
+  df_flu_spec_severe$total_events, df_surv_flu_spec_severe$total_events
 )
-granger_test_flu_severe_sens <- lmtest::grangertest(
-  df_flu_sens_severe$total_events ~ df_surv_flu$total_events,
-  order = 1
+pearson_flu_severe_sens <- cor.test(
+  df_flu_sens_severe$total_events, df_surv_flu$total_events
 )
-granger_test_covid_mild_spec <- lmtest::grangertest(
-  df_covid_spec_mild$total_events ~ df_surv_covid$total_events,
-  order = 1
+pearson_covid_mild_spec <- cor.test(
+  df_covid_spec_mild$total_events, df_surv_covid$total_events
 )
-granger_test_covid_mild_sens <- lmtest::grangertest(
-  df_covid_sens_mild$total_events ~ df_surv_covid$total_events,
-  order = 1
+pearson_covid_mild_sens <- cor.test(
+  df_covid_sens_mild$total_events, df_surv_covid$total_events
 )
-granger_test_covid_severe_spec <- lmtest::grangertest(
-  df_covid_spec_severe$total_events ~ df_surv_covid$total_events,
-  order = 1
+pearson_covid_severe_spec <- cor.test(
+  df_covid_spec_severe$total_events, df_surv_covid$total_events
 )
-granger_test_covid_severe_sens <- lmtest::grangertest(
-  df_covid_sens_severe$total_events ~ df_surv_covid$total_events,
-  order = 1
+pearson_covid_severe_sens <- cor.test(
+  df_covid_sens_severe$total_events, df_surv_covid$total_events
 )
 
 #save granger test results
-granger_test_results <- data.frame(
+pearson_results <- data.frame(
   test = c("RSV Mild Specific", "RSV Mild Sensitive", "RSV Severe Specific",
            "RSV Severe Sensitive", "Flu Mild Specific", "Flu Mild Sensitive",
            "Flu Severe Specific", "Flu Severe Sensitive", "COVID-19 Mild Specific",
            "COVID-19 Mild Sensitive", "COVID-19 Severe Specific",
            "COVID-19 Severe Sensitive"),
-  granger_test = c(granger_test_rsv_mild_spec$F[2], granger_test_rsv_mild_sens$F[2],
-                   granger_test_rsv_severe_spec$F[2], granger_test_rsv_severe_sens$F[2],
-                   granger_test_flu_mild_spec$F[2], granger_test_flu_mild_sens$F[2],
-                   granger_test_flu_severe_spec$F[2], granger_test_flu_severe_sens$F[2],
-                   granger_test_covid_mild_spec$F[2], granger_test_covid_mild_sens$F[2],
-                   granger_test_covid_severe_spec$F[2], granger_test_covid_severe_sens$F[2])
+  pearson = c(pearson_rsv_mild_spec$estimate,
+              pearson_rsv_mild_sens$estimate,
+              pearson_rsv_severe_spec$estimate,
+              pearson_rsv_severe_sens$estimate,
+              pearson_flu_mild_spec$estimate,
+              pearson_flu_mild_sens$estimate,
+              pearson_flu_severe_spec$estimate,
+              pearson_flu_severe_sens$estimate,
+              pearson_covid_mild_spec$estimate,
+              pearson_covid_mild_sens$estimate,
+              pearson_covid_severe_spec$estimate,
+              pearson_covid_severe_sens$estimate)
 ) %>%
   mutate(
-    p_value = c(granger_test_rsv_mild_spec$`Pr(>F)`[2],
-                granger_test_rsv_mild_sens$`Pr(>F)`[2],
-                granger_test_rsv_severe_spec$`Pr(>F)`[2],
-                granger_test_rsv_severe_sens$`Pr(>F)`[2],
-                granger_test_flu_mild_spec$`Pr(>F)`[2],
-                granger_test_flu_mild_sens$`Pr(>F)`[2],
-                granger_test_flu_severe_spec$`Pr(>F)`[2],
-                granger_test_flu_severe_sens$`Pr(>F)`[2],
-                granger_test_covid_mild_spec$`Pr(>F)`[2],
-                granger_test_covid_mild_sens$`Pr(>F)`[2],
-                granger_test_covid_severe_spec$`Pr(>F)`[2],
-                granger_test_covid_severe_sens$`Pr(>F)`[2])
+    p_value = c(pearson_rsv_mild_spec$p.value,
+                pearson_rsv_mild_sens$p.value,
+                pearson_rsv_severe_spec$p.value,
+                pearson_rsv_severe_sens$p.value,
+                pearson_flu_mild_spec$p.value,
+                pearson_flu_mild_sens$p.value,
+                pearson_flu_severe_spec$p.value,
+                pearson_flu_severe_sens$p.value,
+                pearson_covid_mild_spec$p.value,
+                pearson_covid_mild_sens$p.value,
+                pearson_covid_severe_spec$p.value,
+                pearson_covid_severe_sens$p.value)
   )
