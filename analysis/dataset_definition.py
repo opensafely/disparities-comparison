@@ -1028,8 +1028,8 @@ else :
           ILI_second_date_cases.append(when(close_in_time)
           .then(minimum_of(ari_date, fever_date)))
 
-  ILI_case_second = case(*ILI_pairs, otherwise = False)
-  ILI_second_date = case(*ILI_date_cases, otherwise = None)
+  ILI_case_second = case(*ILI_pairs_second, otherwise = False)
+  ILI_second_date = case(*ILI_second_date_cases, otherwise = None)
   
   #get date of occurrence of first relevant prescription
   flu_med_second_date = (
