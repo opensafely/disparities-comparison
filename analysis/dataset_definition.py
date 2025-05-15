@@ -1615,7 +1615,7 @@ if codelist_type == "sensitive" :
       # codes within 2 weeks - for second episode
       overall_resp_codes_second_date, overall_resp_code_second = (
         get_codes_dates("respiratory_virus_primary_codelist", 4,
-                        dataset.overall_resp_primary_date, 2)
+                        dataset.overall_resp_primary_date + days(14), 2)
       )
       
       #occurrence of event in exclusion list within one month of overall_resp_codes_second_date
@@ -1689,7 +1689,7 @@ if codelist_type == "sensitive" :
       # codes within 2 weeks - for second episode
       overall_resp_codes_second_date, overall_resp_code_second = (
         get_codes_dates("respiratory_virus_primary_codelist", 4,
-                        dataset.overall_resp_primary_date, 2)
+                        dataset.overall_resp_primary_date + days(14), 2)
       )
       
       #occurrence of event in exclusion list within one month of overall_resp_codes_second_date
@@ -1755,7 +1755,7 @@ if codelist_type == "sensitive" :
       # codes within 2 weeks - for second episode
       overall_resp_codes_second_date, overall_resp_code_second = (
         get_codes_dates("respiratory_virus_primary_codelist", 4,
-                        dataset.overall_resp_primary_date, 2)
+                        dataset.overall_resp_primary_date + days(14), 2)
       )
       #occurrence of event in exclusion list within one month of overall_resp_codes_second_date
       # - using the same criteria as the first episode
@@ -1807,7 +1807,7 @@ if codelist_type == "sensitive" :
       # codes within 2 weeks - for second episode
       overall_resp_codes_second_date, overall_resp_code_second = (
         get_codes_dates("respiratory_virus_primary_codelist", 4,
-                        dataset.overall_resp_primary_date, 2)
+                        dataset.overall_resp_primary_date + days(14), 2)
       )
       
       #occurrence of event in exclusion list within one month of overall_resp_codes_second_date
