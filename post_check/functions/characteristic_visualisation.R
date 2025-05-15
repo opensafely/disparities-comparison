@@ -513,6 +513,21 @@ character_viz_mult <- function(df, scaling) {
   
   all_groups <- group_order[group_order %in% levels(df$group)]
   
+  if (cohort == "infants_subgroup") {
+    
+    all_groups <- all_groups[!all_groups %in% c(
+      "Household Composition", "Prior Flu Vaccine",
+      "Time Since Last Covid Vaccine")]
+    
+  } else if (cohort == "infants") {
+    
+    all_groups <- all_groups[all_groups %in% c(
+      "Age Group", "Sex", "Ethnicity", "IMD", "Rurality"
+    )]
+    
+  }
+  
+  
   plot_list <- list()
   
   cols2 <- tibble(
@@ -630,9 +645,9 @@ character_viz_mult <- function(df, scaling) {
     title2 <- "Participant Characteristics by Season (Panel B)"
     title3 <- "Participant Characteristics by Season (Panel C)"
     
-    plot_row1 <- plot_grid(plotlist = plot_list[1:3], nrow = 2)
-    plot_row2 <- plot_grid(plotlist = plot_list[4:6], nrow = 2)
-    plot_row3 <- plot_grid(plotlist = plot_list[7:10], nrow = 2)
+    plot_row1 <- plot_grid(plotlist = plot_list[1:4], nrow = 2)
+    plot_row2 <- plot_grid(plotlist = plot_list[5:8], nrow = 2)
+    plot_row3 <- plot_grid(plotlist = plot_list[9:10], nrow = 2)
     
     one <- plot_grid(plot_title, plot_row1, ncol = 1,
                      rel_heights = c(0.1, 1))
