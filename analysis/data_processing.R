@@ -60,6 +60,7 @@ if (cohort == "infants_subgroup") {
     mutate(mother_id = patient_id) %>%
     select(-patient_id)
   df_input <- merge(df_input, df_input_mothers, by = "mother_id")
+  print(nrow(df_input))
 }
 
 #adjust 'patient_end_date' to account for death and deregistration
