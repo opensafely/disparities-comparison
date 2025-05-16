@@ -9,6 +9,8 @@ library(stringr)
 source(here::here("post_check", "functions",
                   "characteristic_visualisation.R"))
 
+ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
+
 ###older adults
 
 cohort <- "older_adults"
@@ -48,7 +50,6 @@ ggsave(here("post_check", "plots", "primary_analyses",
        older_adults_season_scaled, height = 8, width = 15)
 
 t <- 2
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 for(p in plotlist1) {
   
   print(p)
@@ -62,7 +63,6 @@ for(p in plotlist1) {
 }
 
 u <- 2
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 for(p in plotlist2) {
   
   print(p)
@@ -119,7 +119,6 @@ ggsave(here("post_check", "plots", "primary_analyses",
        adults_season_scaled, height = 8, width = 15)
 
 t <- 2
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 for(p in plotlist1) {
   
   print(p)
@@ -133,7 +132,6 @@ for(p in plotlist1) {
 }
 
 u <- 2
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 for(p in plotlist2) {
   
   print(p)
@@ -186,7 +184,6 @@ ggsave(here("post_check", "plots", "primary_analyses",
        children_and_adolescents_season_scaled, height = 8, width = 15)
 
 t <- 2
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 for(p in plotlist1) {
   
   print(p)
@@ -200,7 +197,6 @@ for(p in plotlist1) {
 }
 
 u <- 2
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 for(p in plotlist2) {
   
   print(p)
@@ -252,7 +248,6 @@ ggsave(here("post_check", "plots", "primary_analyses",
        infants_season_scaled, height = 8, width = 15)
 
 t <- 2
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 for(p in plotlist1) {
   
   print(p)
@@ -266,7 +261,6 @@ for(p in plotlist1) {
 }
 
 u <- 2
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 for(p in plotlist2) {
   
   print(p)
@@ -323,7 +317,6 @@ ggsave(here("post_check", "plots", "primary_analyses",
        infants_subgroup_season_scaled, height = 8, width = 15)
 
 t <- 3
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 for(p in plotlist1) {
   
   print(p)
@@ -337,7 +330,6 @@ for(p in plotlist1) {
 }
 
 u <- 3
-ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 for(p in plotlist2) {
   
   print(p)
