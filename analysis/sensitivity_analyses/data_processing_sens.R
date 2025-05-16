@@ -1,7 +1,6 @@
 library(tidyverse)
 library(here)
 library(arrow)
-library(ggplot2)
 library(data.table)
 library(lubridate)
 library(magrittr)
@@ -54,7 +53,8 @@ if (cohort == "infants_subgroup") {
 df_input <- df_input %>%
   mutate(
     patient_end_date = pmin(patient_end_date, death_date, deregistration_date,
-                            na.rm = TRUE)
+                            na.rm = TRUE),
+    patient_index_date = patient_index_date - days(1)
   )
 
 #subset processed data to include only october-march

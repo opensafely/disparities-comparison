@@ -1,7 +1,6 @@
 library(tidyverse)
 library(here)
 library(arrow)
-library(ggplot2)
 library(data.table)
 library(lubridate)
 library(magrittr)
@@ -49,23 +48,12 @@ if (study_start_date == as.Date("2020-09-01")) {
   
 }
 
-if (cohort == "infants_subgroup") {
-  df_input_mothers <- read_feather(here::here("output", "data", 
-                                   paste0("input_maternal_infants_subgroup_",
-                                   year(study_start_date), "_",
-                                   year(study_end_date), "_", codelist_type,
-                                   "_", investigation_type,".arrow")))
-  df_input_mothers <- df_input_mothers %>%
-    mutate(mother_id = patient_id) %>%
-    select(-patient_id)
-  df_input <- merge(df_input, df_input_mothers, by = "mother_id")
-}
-
 #adjust 'patient_end_date' to account for death and deregistration
 df_input <- df_input %>%
   mutate(
     patient_end_date = pmin(patient_end_date, death_date, deregistration_date,
-                            na.rm = TRUE)
+                            na.rm = TRUE),
+    patient_index_date = patient_index_date - days(1)
   )
 
 #create time dependency
