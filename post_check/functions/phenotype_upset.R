@@ -415,7 +415,7 @@ upset_plot <- function(input, seasons) {
                     mb.ratio = c(0.8, 0.2),
                     number.angles = 0,
                     show.numbers = FALSE,
-                    text.scale = 1.2,
+                    text.scale = 1.1,
                     point.size = 2,
                     line.size = 1,
                     set_size.angles = 45,
