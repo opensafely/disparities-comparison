@@ -13,8 +13,8 @@ fs::dir_create(here::here("analysis", "sensitivity_analyses"))
 source(here::here("analysis", "design", "design.R"))
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
-  study_start_date <- as.Date("2017-09-01")
-  study_end_date <- as.Date("2018-08-31")
+  study_start_date <- as.Date("2018-09-01")
+  study_end_date <- as.Date("2019-08-31")
   cohort <- "infants"
   codelist_type <- "specific"
   investigation_type_data <- "primary"
@@ -53,8 +53,7 @@ if (cohort == "infants_subgroup") {
 df_input <- df_input %>%
   mutate(
     patient_end_date = pmin(patient_end_date, death_date, deregistration_date,
-                            na.rm = TRUE),
-    patient_index_date = patient_index_date - days(1)
+                            na.rm = TRUE)
   )
 
 #subset processed data to include only october-march
@@ -83,6 +82,12 @@ df_input_filt <- df_input_filt %>%
     TRUE ~ patient_end_date)
   ) %>%
   filter(!is.na(patient_index_date) & !is.na(patient_end_date))
+
+#set index date as one day prior so they have survived to start
+df_input_filt <- df_input_filt %>%
+  mutate(
+    patient_index_date = patient_index_date - days(1)
+  )
 
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
