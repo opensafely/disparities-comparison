@@ -37,6 +37,7 @@ if (cohort == "infants_subgroup") {
     select(-patient_id)
   
   patients_df <- merge(patients_df, mothers_df, by = "mother_id")
+  print(nrow(patients_df))
   
 }
 
