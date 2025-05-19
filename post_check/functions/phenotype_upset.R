@@ -212,6 +212,10 @@ upset_plot <- function(input, seasons) {
       )
     )
   
+  df_plot <- df_plot %>%
+    mutate(combo = gsub("COVID", "COVID-19",
+                        gsub("Flu", "Influenza", combo)))
+  
   #modify upset plot code
   NoAttBasePlot <- function (legend, size_plot_height, Main_bar_plot, Matrix_plot, 
     hratios, Size_plot, query_legend, set_metadata, set_metadata_plots, 
@@ -422,7 +426,7 @@ upset_plot <- function(input, seasons) {
                     empty.intersections = TRUE,
                     main.bar.color = col,
                     sets.bar.color = cols,
-                    sets = c("RSV", "Flu", "COVID")
+                    sets = c("RSV", "Influenza", "COVID-19")
         )
         
         plot[[phenotype]] <- plot_grid(
