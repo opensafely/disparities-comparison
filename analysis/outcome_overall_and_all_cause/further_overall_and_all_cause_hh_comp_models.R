@@ -70,7 +70,7 @@ if (too_few_events_mild) {
   
   #overall primary by household composition
   overall_resp_mild_hh_comp_further_output <- glm_poisson_further(
-    df_input, "imd_quintile", "overall_resp_primary_inf",
+    df_input, "composition_category", "overall_resp_primary_inf",
     offset_var = "time_overall_resp_primary")
   
 }
