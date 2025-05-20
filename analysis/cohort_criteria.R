@@ -57,15 +57,6 @@ if (study_start_date == as.Date("2020-09-01") &
   
 }
 
-
-if (cohort == "infants" | cohort == "infants_subgroup") {
-  
-  patients_df <- patients_df %>%
-    mutate(risk_group_infants = if_else(is.na(risk_group_infants),
-                                        FALSE, risk_group_infants))
-  
-}
-
 # Define the base population for exclusion: Only consider registered and appropriate age patients
 if (cohort == "infants") {
   population <- patients_df %>%
