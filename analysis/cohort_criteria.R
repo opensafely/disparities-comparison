@@ -57,6 +57,15 @@ if (study_start_date == as.Date("2020-09-01") &
   
 }
 
+
+if (cohort == "infants" | cohort == "infants_subgroup") {
+  
+  patients_df <- patients_df %>%
+    mutate(risk_group_infants = if_else(is.na(risk_group_infants),
+                                        FALSE, risk_group_infants))
+  
+}
+
 # Define the base population for exclusion: Only consider registered and appropriate age patients
 if (cohort == "infants") {
   population <- patients_df %>%
@@ -72,6 +81,7 @@ if (cohort == "infants") {
         !care_home & !risk_group_infants & !severe_immunodeficiency
     )
 } else if (cohort == "infants_subgroup") {
+  
   population <- patients_df %>%
     mutate(
       stage0 = 1,
@@ -86,7 +96,9 @@ if (cohort == "infants") {
       stage2 = registered & mother_registered & is_female_or_male & has_imd &
         !care_home & !risk_group_infants & !severe_immunodeficiency
     )
+  
 } else {
+  
   population <- patients_df %>%
     mutate(
       stage0 = 1,
@@ -96,9 +108,11 @@ if (cohort == "infants") {
       stage2c = registered & !care_home,
       stage2 = registered & is_female_or_male & has_imd & !care_home
     )
+  
 }
 
 if (cohort == "infants") {
+  
   population_summary <- population %>%
     summarise(
       n0 = roundmid_any(n()),
@@ -118,6 +132,7 @@ if (cohort == "infants") {
       pct2e = n2e / n1 * 100,
       pct2 = n2 / n1 * 100
     )
+  
 } else if (cohort == "infants_subgroup") {
   
   population_summary <- population %>%
@@ -143,7 +158,9 @@ if (cohort == "infants") {
       pct2e = n2e / n1 * 100,
       pct2 = n2 / n1 * 100
     )
+  
 } else {
+  
   population_summary <- population %>%
     summarise(
       n0 = roundmid_any(n()),
@@ -159,19 +176,8 @@ if (cohort == "infants") {
       pct2c = n2c / n1 * 100,
       pct2 = n2 / n1 * 100
     )
+  
 }
-
-population %>%
-  summarise(
-    na_registered = sum(is.na(registered)),
-    na_mother_registered = sum(is.na(mother_registered)),
-    na_is_female_or_male = sum(is.na(is_female_or_male)),
-    na_has_imd = sum(is.na(has_imd)),
-    na_care_home = sum(is.na(care_home)),
-    na_risk_group_infants = sum(is.na(risk_group_infants)),
-    na_severe_immunodeficiency = sum(is.na(severe_immunodeficiency))
-  )
-
 
 ## create output directories ----
 fs::dir_create(here::here("output", "flow_chart"))
