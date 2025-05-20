@@ -12,7 +12,6 @@ library(ggpubr)
 #import plot function
 source(here::here("post_check", "functions", "forest.R"))
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
-
 investigation_type <- "primary"
 
 ###--- older adults
@@ -841,28 +840,8 @@ overall_resp_ses_mild <- forest_year_further_mult(
 )
 
 #plot both phenotypes together
-overall_resp_composition_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)
-
-#plot both phenotypes together
 overall_resp_ethnicity_ses_mild <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
-)
-
-#plot both phenotypes together
-overall_resp_ethnicity_composition_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
-)
-
-#plot both phenotypes together
-overall_resp_ses_composition_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ses_composition", "Mild"
-)
-
-#plot both phenotypes together
-overall_resp_full_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "full", "Mild"
 )
 
 ##create relevant forest plots - severe
@@ -878,28 +857,8 @@ overall_resp_ses_severe <- forest_year_further_mult(
 )
 
 #plot both phenotypes together
-overall_resp_composition_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)
-
-#plot both phenotypes together
 overall_resp_ethnicity_ses_severe <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
-)
-
-#plot both phenotypes together
-overall_resp_ethnicity_composition_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
-)
-
-#plot both phenotypes together
-overall_resp_ses_composition_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ses_composition", "Severe"
-)
-
-#plot both phenotypes together
-overall_resp_full_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "full", "Severe"
 )
 
 #plot mild and severe together
@@ -1222,30 +1181,9 @@ overall_resp_ethnicity_mild <- forest_year_further_mult(
 overall_resp_ses_mild <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )
-
-#plot both phenotypes together
-overall_resp_composition_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "composition", "Mild"
-)
-
 #plot both phenotypes together
 overall_resp_ethnicity_ses_mild <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
-)
-
-#plot both phenotypes together
-overall_resp_ethnicity_composition_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
-)
-
-#plot both phenotypes together
-overall_resp_ses_composition_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ses_composition", "Mild"
-)
-
-#plot both phenotypes together
-overall_resp_full_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "full", "Mild"
 )
 
 ##create relevant forest plots - severe
@@ -1261,28 +1199,8 @@ overall_resp_ses_severe <- forest_year_further_mult(
 )
 
 #plot both phenotypes together
-overall_resp_composition_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "composition", "Severe"
-)
-
-#plot both phenotypes together
 overall_resp_ethnicity_ses_severe <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
-)
-
-#plot both phenotypes together
-overall_resp_ethnicity_composition_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
-)
-
-#plot both phenotypes together
-overall_resp_ses_composition_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ses_composition", "Severe"
-)
-
-#plot both phenotypes together
-overall_resp_full_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "full", "Severe"
 )
 
 #plot mild and severe together
