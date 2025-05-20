@@ -252,7 +252,8 @@ if cohort == "infants" or cohort == "infants_subgroup" :
     .is_in(codelists.pulmonary_hypertension_codelist))
     .exists_for_patient())))
     .then(hospitalisation_diagnosis_matches(codelists.ventilation_codes)
-    .exists_for_patient()))
+    .exists_for_patient()),
+    otherwise = False)
   )
 
 #care home resident - currently excluses anyone with a care home code or a care home flag
