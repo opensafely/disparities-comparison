@@ -3183,29 +3183,29 @@ action_finalise_infants <- function(cohort) {
         csv = glue("output/collated/analytic/{cohort}_further_overall_and_all_cause_model_outputs_collated.csv"))
     ),
     
-    action(
-      name = glue("collate_ethnicity_HES_comp_tables_{cohort}"),
-      run = glue("r:latest analysis/collation_code/ethnicity_HES_comp_collation.R {cohort}"),
-      # arguments = c(cohort),
-      needs = list(glue("ethnicity_HES_comp_{cohort}_s1_specific_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s2_specific_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s3_specific_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s4_specific_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s5_specific_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s6_specific_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s7_specific_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s8_specific_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s1_sensitive_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s2_sensitive_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s3_sensitive_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s4_sensitive_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s5_sensitive_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s6_sensitive_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s7_sensitive_primary"),
-                   glue("ethnicity_HES_comp_{cohort}_s8_sensitive_primary")),
-      moderately_sensitive = lst(
-        csv = glue("output/collated/descriptive/{cohort}_ethnicity_HES_*_collated.csv"))
-    ),
+    # action(
+    #   name = glue("collate_ethnicity_HES_comp_tables_{cohort}"),
+    #   run = glue("r:latest analysis/collation_code/ethnicity_HES_comp_collation.R {cohort}"),
+    #   # arguments = c(cohort),
+    #   needs = list(glue("ethnicity_HES_comp_{cohort}_s1_specific_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s2_specific_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s3_specific_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s4_specific_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s5_specific_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s6_specific_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s7_specific_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s8_specific_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s1_sensitive_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s2_sensitive_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s3_sensitive_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s4_sensitive_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s5_sensitive_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s6_sensitive_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s7_sensitive_primary"),
+    #                glue("ethnicity_HES_comp_{cohort}_s8_sensitive_primary")),
+    #   moderately_sensitive = lst(
+    #     csv = glue("output/collated/descriptive/{cohort}_ethnicity_HES_*_collated.csv"))
+    # ),
     
     action(
       name = glue("collate_phenotype_sensitivity_tables_{cohort}"),
@@ -3967,7 +3967,7 @@ actions_list <- splice (
   action_finalise_older_adults("older_adults"),
   action_finalise("adults"),
   action_finalise("children_and_adolescents"),
-  action_finalise_children_and_adolescents("children_and_adolescents"),
+  #action_finalise_children_and_adolescents("children_and_adolescents"),
   action_finalise_infants("infants"),
   action_finalise_infants("infants_subgroup"),
   

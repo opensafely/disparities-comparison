@@ -18407,21 +18407,6 @@ actions:
       moderately_sensitive:
         csv: output/collated/analytic/sensitivity/children_and_adolescents_further_flu_model_outputs_collated_sensitivity.csv
 
-  collate_ethnicity_presence_by_age_plots_children_and_adolescents:
-    run: r:latest analysis/collation_code/ethnicity_presence_by_age_plots.R children_and_adolescents
-    needs:
-    - ethnicity_presence_children_and_adolescents_s1_specific_primary
-    - ethnicity_presence_children_and_adolescents_s2_specific_primary
-    - ethnicity_presence_children_and_adolescents_s3_specific_primary
-    - ethnicity_presence_children_and_adolescents_s4_specific_primary
-    - ethnicity_presence_children_and_adolescents_s5_specific_primary
-    - ethnicity_presence_children_and_adolescents_s6_specific_primary
-    - ethnicity_presence_children_and_adolescents_s7_specific_primary
-    - ethnicity_presence_children_and_adolescents_s8_specific_primary
-    outputs:
-      moderately_sensitive:
-        png: output/collated/exploratory/ethnicity_by_age_children_and_adolescents_specific_primary.png
-
   collate_flow_chart_tables_infants:
     run: r:latest analysis/collation_code/flow_chart_table_collation.R infants
     needs:
@@ -18891,29 +18876,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/infants_further_overall_and_all_cause_model_outputs_collated.csv
-
-  collate_ethnicity_HES_comp_tables_infants:
-    run: r:latest analysis/collation_code/ethnicity_HES_comp_collation.R infants
-    needs:
-    - ethnicity_HES_comp_infants_s1_specific_primary
-    - ethnicity_HES_comp_infants_s2_specific_primary
-    - ethnicity_HES_comp_infants_s3_specific_primary
-    - ethnicity_HES_comp_infants_s4_specific_primary
-    - ethnicity_HES_comp_infants_s5_specific_primary
-    - ethnicity_HES_comp_infants_s6_specific_primary
-    - ethnicity_HES_comp_infants_s7_specific_primary
-    - ethnicity_HES_comp_infants_s8_specific_primary
-    - ethnicity_HES_comp_infants_s1_sensitive_primary
-    - ethnicity_HES_comp_infants_s2_sensitive_primary
-    - ethnicity_HES_comp_infants_s3_sensitive_primary
-    - ethnicity_HES_comp_infants_s4_sensitive_primary
-    - ethnicity_HES_comp_infants_s5_sensitive_primary
-    - ethnicity_HES_comp_infants_s6_sensitive_primary
-    - ethnicity_HES_comp_infants_s7_sensitive_primary
-    - ethnicity_HES_comp_infants_s8_sensitive_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/collated/descriptive/infants_ethnicity_HES_*_collated.csv
 
   collate_phenotype_sensitivity_tables_infants:
     run: r:latest analysis/collation_code/phenotype_sensitivity_table_collation.R
@@ -19489,29 +19451,6 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/analytic/infants_subgroup_further_overall_and_all_cause_model_outputs_collated.csv
-
-  collate_ethnicity_HES_comp_tables_infants_subgroup:
-    run: r:latest analysis/collation_code/ethnicity_HES_comp_collation.R infants_subgroup
-    needs:
-    - ethnicity_HES_comp_infants_subgroup_s1_specific_primary
-    - ethnicity_HES_comp_infants_subgroup_s2_specific_primary
-    - ethnicity_HES_comp_infants_subgroup_s3_specific_primary
-    - ethnicity_HES_comp_infants_subgroup_s4_specific_primary
-    - ethnicity_HES_comp_infants_subgroup_s5_specific_primary
-    - ethnicity_HES_comp_infants_subgroup_s6_specific_primary
-    - ethnicity_HES_comp_infants_subgroup_s7_specific_primary
-    - ethnicity_HES_comp_infants_subgroup_s8_specific_primary
-    - ethnicity_HES_comp_infants_subgroup_s1_sensitive_primary
-    - ethnicity_HES_comp_infants_subgroup_s2_sensitive_primary
-    - ethnicity_HES_comp_infants_subgroup_s3_sensitive_primary
-    - ethnicity_HES_comp_infants_subgroup_s4_sensitive_primary
-    - ethnicity_HES_comp_infants_subgroup_s5_sensitive_primary
-    - ethnicity_HES_comp_infants_subgroup_s6_sensitive_primary
-    - ethnicity_HES_comp_infants_subgroup_s7_sensitive_primary
-    - ethnicity_HES_comp_infants_subgroup_s8_sensitive_primary
-    outputs:
-      moderately_sensitive:
-        csv: output/collated/descriptive/infants_subgroup_ethnicity_HES_*_collated.csv
 
   collate_phenotype_sensitivity_tables_infants_subgroup:
     run: r:latest analysis/collation_code/phenotype_sensitivity_table_collation.R
