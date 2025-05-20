@@ -37,7 +37,6 @@ if (cohort == "infants_subgroup") {
     select(-patient_id)
   
   patients_df <- merge(patients_df, mothers_df, by = "mother_id")
-  print(nrow(patients_df))
   
 }
 
@@ -120,6 +119,18 @@ if (cohort == "infants") {
       pct2 = n2 / n1 * 100
     )
 } else if (cohort == "infants_subgroup") {
+  
+  population %>%
+    summarise(
+      na_registered = sum(is.na(registered)),
+      na_mother_registered = sum(is.na(mother_registered)),
+      na_is_female_or_male = sum(is.na(is_female_or_male)),
+      na_has_imd = sum(is.na(has_imd)),
+      na_care_home = sum(is.na(care_home)),
+      na_risk_group_infants = sum(is.na(risk_group_infants)),
+      na_severe_immunodeficiency = sum(is.na(severe_immunodeficiency))
+    )
+  
   population_summary <- population %>%
     summarise(
       n0 = roundmid_any(n()),
