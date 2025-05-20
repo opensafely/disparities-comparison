@@ -3348,23 +3348,23 @@ action_investigate <- function(cohort, season, dates, season_start_date,
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
         png = glue("output/testing/*_{cohort}_{dates}_{codelist_type}_{investigation_type}.png"))
-    ),
+    )#,
     
-    action(
-      name = glue("analyse_dataset_{cohort}_flu_further2_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/outcome_flu/further2_flu_models_master.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/flu_{investigation_type}/further2_*_{cohort}_{dates}_{codelist_type}_*.csv"))
-    ),
-    
-    action(
-      name = glue("analyse_dataset_{cohort}_covid_further2_{season}_{codelist_type}_{investigation_type}"),
-      run = glue("r:latest analysis/outcome_covid/further2_covid_models_master.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
-      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
-      moderately_sensitive = lst(
-        csv = glue("output/results/models/covid_{investigation_type}/further2_*_{cohort}_{dates}_{codelist_type}_*.csv"))
-    )
+    # action(
+    #   name = glue("analyse_dataset_{cohort}_flu_further2_{season}_{codelist_type}_{investigation_type}"),
+    #   run = glue("r:latest analysis/outcome_flu/further2_flu_models_master.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+    #   needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+    #   moderately_sensitive = lst(
+    #     csv = glue("output/results/models/flu_{investigation_type}/further2_*_{cohort}_{dates}_{codelist_type}_*.csv"))
+    # ),
+    # 
+    # action(
+    #   name = glue("analyse_dataset_{cohort}_covid_further2_{season}_{codelist_type}_{investigation_type}"),
+    #   run = glue("r:latest analysis/outcome_covid/further2_covid_models_master.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+    #   needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+    #   moderately_sensitive = lst(
+    #     csv = glue("output/results/models/covid_{investigation_type}/further2_*_{cohort}_{dates}_{codelist_type}_*.csv"))
+    # )
     
   )
   
