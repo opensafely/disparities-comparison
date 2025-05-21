@@ -85,10 +85,10 @@ plot_an <- annotate_figure(
   plot, 
   top = text_grob(paste0("30-Date Rolling Rates in ",
                          str_to_title(gsub("_", " ", cohort))), face = "bold",
-                  size = 14, hjust = 0.65),
-  bottom = text_grob("Month", vjust = -0.75, hjust = 1.25), 
+                  size = 16, hjust = 0.65),
+  bottom = text_grob("Month", vjust = -0.75, hjust = 1.25, size = 14), 
   left = text_grob("Rate Per 1000 Person Years (Midpoint 10 Derived)",
-                   rot = 90, vjust = 1.75)
+                   rot = 90, vjust = 1.75, size = 14)
 )
 
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
@@ -228,10 +228,10 @@ plot_an <- annotate_figure(
   plot, 
   top = text_grob(paste0("30-Date Rolling Rates in ",
                          str_to_title(gsub("_", " ", cohort))), face = "bold",
-                  size = 14, hjust = 0.65),
-  bottom = text_grob("Month", vjust = -0.75, hjust = 1.25), 
+                  size = 16, hjust = 0.65),
+  bottom = text_grob("Month", vjust = -0.75, hjust = 1.25, size = 14), 
   left = text_grob("Rate Per 1000 Person Years (Midpoint 10 Derived)",
-                   rot = 90, vjust = 1.75)
+                   rot = 90, vjust = 1.75, size = 14)
 )
 
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
