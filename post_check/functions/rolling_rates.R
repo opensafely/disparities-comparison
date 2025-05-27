@@ -216,11 +216,13 @@ create_rolling_plots_overall <- function(df) {
     facet_wrap(~ codelist_type, ncol = 2, scales = "free") +
     scale_x_continuous(
       breaks = cumsum(c(0, 30, 31, 30, 31, 28, 31, 30, 31, 30, 31, 31)) - 15,
-      labels = c("Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar",
-                 "Apr", "May", "Jun", "Jul", "Aug")) +
+      labels = c("09", "10", "11", "12", "01", "02", "03",
+                 "04", "05", "06", "07", "08")) +
     scale_y_continuous(labels = scaleFUN, breaks = my_breaks,
                        limits = get_consistent_limits) +
-    theme(legend.position = "none")
+    theme(legend.position = "none",
+          plot.subtitle = element_text(size = 12),
+          axis.text = element_text(size = 12))
   
   plot_severe <- df %>%
     filter(str_detect(outcome, "Severe")) %>%
@@ -236,18 +238,20 @@ create_rolling_plots_overall <- function(df) {
     facet_wrap(~ codelist_type, ncol = 2, scales = "free") +
     scale_x_continuous(
       breaks = cumsum(c(0, 30, 31, 30, 31, 28, 31, 30, 31, 30, 31, 31)) - 15,
-      labels = c("Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar",
-                 "Apr", "May", "Jun", "Jul", "Aug")) +
+      labels = c("09", "10", "11", "12", "01", "02", "03",
+                 "04", "05", "06", "07", "08")) +
     scale_y_continuous(labels = scaleFUN, breaks = my_breaks,
                        limits = get_consistent_limits) +
-    theme(legend.position = "none")
+    theme(legend.position = "none",
+          plot.subtitle = element_text(size = 12),
+          axis.text = element_text(size = 12))
   
   legend <- get_legend(plot_mild +
                theme(legend.position = "right",
                      legend.box = "verticle",
                      legend.key.size = unit(0.5, "cm"),
-                     legend.text = element_text(size = 10),
-                     legend.title = element_text(size = 10)))
+                     legend.text = element_text(size = 12),
+                     legend.title = element_text(size = 12)))
   
   plot <- plot_grid(
     plot_mild, plot_severe,

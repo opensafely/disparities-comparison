@@ -1,4 +1,5 @@
 library(UpSetR)
+library(plyr)
 library(tidyverse)
 library(here)
 library(ggplot2)
@@ -419,7 +420,7 @@ upset_plot <- function(input, seasons) {
                     mb.ratio = c(0.8, 0.2),
                     number.angles = 0,
                     show.numbers = FALSE,
-                    text.scale = 1.1,
+                    text.scale = 1.25,
                     point.size = 2,
                     line.size = 1,
                     set_size.angles = 45,
@@ -431,7 +432,7 @@ upset_plot <- function(input, seasons) {
         
         plot[[phenotype]] <- plot_grid(
           plot_grid(uu$Main_bar, uu$Matrix, NULL, nrow = 3,
-                    rel_heights = c(2.75, 1.2, 0.65), align = 'hv'),
+                    rel_heights = c(2.75, 1.25, 0.65), align = 'hv'),
           plot_grid(NULL, uu$Sizes, nrow = 2, rel_heights = c(0.85, 0.45)),
           NULL,
           ncol = 3, align = 'hv', rel_widths = c(0.75, 0.2, 0.1)
@@ -451,12 +452,12 @@ upset_plot <- function(input, seasons) {
     plot_label <- ggdraw() +
       draw_label(
         "Specific Phenotype",
-        x = 0.5, y = 0, hjust = 1.9, vjust = -2.5,
+        x = 0.5, y = 0, hjust = 1.705, vjust = -2.5,
         fontface = 'bold', size = 14
       ) +
       draw_label(
         "Sensitive Phenotype",
-        x = 1, y = 0, hjust = 1.9, vjust = -2.5,
+        x = 1, y = 0, hjust = 1.725, vjust = -2.5,
         fontface = 'bold', size = 14
       ) +
       theme(plot.background = element_rect(
@@ -467,7 +468,7 @@ upset_plot <- function(input, seasons) {
       ncol = 1, align = "v",
       axis = "tb",
       labels = gsub("_", "-", seasons),
-      vjust = -0.5,
+      vjust = 0,
       hjust = 0.5,
       label_size = 12
       )
@@ -482,7 +483,7 @@ upset_plot <- function(input, seasons) {
     nrow = 4,
     rel_heights = c(0.035, 0.5, 0.02, 0.5),
     labels = c("", "Mild", "", "Severe"),
-    label_size = 16,
+    label_size = 14,
     label_fontface = "bold",
     hjust = c(0, -0.1, 0, -0.05), 
     vjust = -1.45
