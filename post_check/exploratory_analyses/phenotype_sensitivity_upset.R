@@ -28,7 +28,7 @@ phen_sens <- upset_plot(df_input, seasons)
 
 ggsave(here::here("post_check", "plots", "exploratory_analyses", "condensed",
             paste0(cohort, "_both_phenotype_sensitivity_seasons", ".png")),
-       phen_sens, height = 16.5, width = 8)
+       phen_sens, height = 18, width = 10)
 
 ##  infants
 cohort <- "infants"
@@ -42,7 +42,7 @@ phen_sens <- upset_plot(df_input, seasons)
 
 ggsave(here::here("post_check", "plots", "exploratory_analyses", "condensed",
                   paste0(cohort, "_both_phenotype_sensitivity_seasons", ".png")),
-       phen_sens, height = 16.5, width = 8)
+       phen_sens, height = 18, width = 10)
 
 ##  infants subgroup
 cohort <- "infants_subgroup"
@@ -56,4 +56,4 @@ phen_sens <- upset_plot(df_input, seasons)
 
 ggsave(here::here("post_check", "plots", "exploratory_analyses", "condensed",
                   paste0(cohort, "_both_phenotype_sensitivity_seasons", ".png")),
-       phen_sens, height = 16.5, width = 8)
+       phen_sens, height = 18, width = 10)
