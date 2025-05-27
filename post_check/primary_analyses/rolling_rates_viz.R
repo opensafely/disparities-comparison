@@ -63,18 +63,35 @@ plot <- plot_grid(
   nrow = 3
 )
 
-plot_an <- annotate_figure(
+plot <- plot_grid(
   plot, 
-  top = text_grob("30-Date Rolling Rates in Older Adults, by Ethnicity (Specific Phenotype)",
-                  face = "bold", size = 14),
-  bottom = text_grob("Date", vjust = -1), 
-  left = text_grob("Rate Per 1000 Person Years (Midpoint 10 Derived)",
-                   rot = 90, vjust = 2)
+  get_legend(rsv_spec_ethnicity, position = "right"),
+  ncol = 2, rel_widths = c(1, 0.15)
 )
 
-ggsave(here("post_check", "plots", "primary_analyses", "rates", "condensed",
-            paste0(cohort, "_rates_over_time_spec_by_ethnicity", ".png")),
-       plot_an, height = 10, width = 15)
+plot_an <- annotate_figure(
+  plot, 
+  top = text_grob(
+    expression(bold("30-Date Rolling Rates in Older Adults, by ") * 
+                 bold(phantom("Ethnicity")) * 
+                 bold(" (Specific Phenotype)")),
+    size = 14
+  ),
+  bottom = text_grob("Date", vjust = -1, hjust = 1.7), 
+  left = text_grob("Rate Per 1000 Person Years (Midpoint 10 Derived)",
+                   rot = 90, vjust = 2)
+) %>% annotate_figure(
+  top = text_grob(
+    expression(bold(phantom("30-Date Rolling Rates in Older Adults, by ")) * 
+                 bold("Ethnicity") * 
+                 bold(phantom(" (Specific Phenotype)"))),
+    size = 14, col = '#2ca02c', vjust = 2.05, hjust = 0.482
+  )
+)
+
+ggsave(here::here("post_check", "plots", "primary_analyses", "rates",
+       "condensed", paste0(cohort, "_rates_over_time_spec_by_ethnicity",
+       ".png")), plot_an, height = 10, width = 15)
 
 ##plot together - sens
 plot <- plot_grid(
@@ -84,17 +101,34 @@ plot <- plot_grid(
   nrow = 3
 )
 
-plot_an <- annotate_figure(
+plot <- plot_grid(
   plot, 
-  top = text_grob("30-Date Rolling Rates, in Older Adults, by Ethnicity (Sensitive Phenotype)",
-                  face = "bold", size = 14),
-  bottom = text_grob("Date", vjust = -1), 
-  left = text_grob("Rate Per 1000 Person Years (Midpoint 10 Derived)",
-                   rot = 90, vjust = 2)
+  get_legend(rsv_sens_ethnicity, position = "right"),
+  ncol = 2, rel_widths = c(1, 0.15)
 )
 
-ggsave(here("post_check", "plots", "primary_analyses", "rates", "condensed",
-            paste0(cohort, "_rates_over_time_sens_ethnicity", ".png")),
+plot_an <- annotate_figure(
+  plot, 
+  top = text_grob(
+    expression(bold("30-Date Rolling Rates in Older Adults, by ") * 
+                 bold(phantom("Ethnicity")) * 
+                 bold(" (Sensitive Phenotype)")),
+    size = 14
+  ),
+  bottom = text_grob("Date", vjust = -1, hjust = 1.7), 
+  left = text_grob("Rate Per 1000 Person Years (Midpoint 10 Derived)",
+                   rot = 90, vjust = 2)
+) %>% annotate_figure(
+  top = text_grob(
+    expression(bold(phantom("30-Date Rolling Rates in Older Adults, by ")) * 
+                 bold("Ethnicity") * 
+                 bold(phantom(" (Sensitive Phenotype)"))),
+    size = 14, col = '#2ca02c', vjust = 2.05, hjust = 0.482
+  )
+)
+
+ggsave(here::here("post_check", "plots", "primary_analyses", "rates",
+       "condensed", paste0(cohort, "_rates_over_time_sens_ethnicity", ".png")),
        plot_an, height = 10, width = 15)
 
 ###infants 
@@ -138,17 +172,34 @@ plot <- plot_grid(
   nrow = 3
 )
 
-plot_an <- annotate_figure(
+plot <- plot_grid(
   plot, 
-  top = text_grob("30-Date Rolling Rates, in Infants, by IMD (Specific Phenotype)",
-                  face = "bold", size = 14),
-  bottom = text_grob("Date", vjust = -1), 
-  left = text_grob("Rate Per 1000 Person Years (Midpoint 10 Derived)",
-                   rot = 90, vjust = 2)
+  get_legend(rsv_spec_imd, position = "right"),
+  ncol = 2, rel_widths = c(1, 0.15)
 )
 
-ggsave(here("post_check", "plots", "primary_analyses", "rates", "condensed",
-            paste0(cohort, "_rates_over_time_spec_imd", ".png")),
+plot_an <- annotate_figure(
+  plot, 
+  top = text_grob(
+    expression(bold("30-Date Rolling Rates in Infants, by ") * 
+                 bold(phantom("IMD")) * 
+                 bold(" (Specific Phenotype)")),
+    size = 14
+  ),
+  bottom = text_grob("Date", vjust = -1, hjust = 1.7), 
+  left = text_grob("Rate Per 1000 Person Years (Midpoint 10 Derived)",
+                   rot = 90, vjust = 2)
+) %>% annotate_figure(
+  top = text_grob(
+    expression(bold(phantom("30-Date Rolling Rates in Infants, by ")) * 
+                 bold("IMD") * 
+                 bold(phantom(" (Specific Phenotype)"))),
+    size = 14, col = '#ff9896', vjust = 2.05, hjust = 0.48
+  )
+)
+
+ggsave(here::here("post_check", "plots", "primary_analyses", "rates",
+       "condensed", paste0(cohort, "_rates_over_time_spec_imd", ".png")),
        plot_an, height = 10, width = 15)
 
 ##plot together
@@ -159,15 +210,32 @@ plot <- plot_grid(
   nrow = 3
 )
 
-plot_an <- annotate_figure(
+plot <- plot_grid(
   plot, 
-  top = text_grob("30-Date Rolling Rates, in Infants, by IMD (Sensitive Phenotype)",
-                  face = "bold", size = 14),
-  bottom = text_grob("Date", vjust = -1), 
-  left = text_grob("Rate Per 1000 Person Years (Midpoint 10 Derived)",
-                   rot = 90, vjust = 2)
+  get_legend(rsv_sens_imd, position = "right"),
+  ncol = 2, rel_widths = c(1, 0.15)
 )
 
-ggsave(here("post_check", "plots", "primary_analyses", "rates", "condensed",
-            paste0(cohort, "_rates_over_time_sens_imd", ".png")),
+plot_an <- annotate_figure(
+  plot, 
+  top = text_grob(
+    expression(bold("30-Date Rolling Rates in Infants, by ") * 
+                 bold(phantom("IMD")) * 
+                 bold(" (Sensitive Phenotype)")),
+    size = 14
+  ),
+  bottom = text_grob("Date", vjust = -1, hjust = 1.7), 
+  left = text_grob("Rate Per 1000 Person Years (Midpoint 10 Derived)",
+                   rot = 90, vjust = 2)
+) %>% annotate_figure(
+  top = text_grob(
+    expression(bold(phantom("30-Date Rolling Rates in Infants, by ")) * 
+                 bold("IMD") * 
+                 bold(phantom(" (Sensitive Phenotype)"))),
+    size = 14, col = '#ff9896', vjust = 2.05, hjust = 0.48
+  )
+)
+
+ggsave(here::here("post_check", "plots", "primary_analyses", "rates",
+       "condensed", paste0(cohort, "_rates_over_time_sens_imd", ".png")),
        plot_an, height = 10, width = 15)

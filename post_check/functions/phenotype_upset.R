@@ -417,6 +417,8 @@ upset_plot <- function(input, seasons) {
         uu <- upset(fromExpression(input_expr),
                     nsets = 3,
                     keep.order = T,
+                    order.by = "degree",
+                    decreasing = FALSE,
                     mb.ratio = c(0.8, 0.2),
                     number.angles = 0,
                     show.numbers = FALSE,
@@ -427,7 +429,7 @@ upset_plot <- function(input, seasons) {
                     empty.intersections = TRUE,
                     main.bar.color = col,
                     sets.bar.color = cols,
-                    sets = c("RSV", "Influenza", "COVID-19")
+                    sets = c("COVID-19", "Influenza", "RSV")
         )
         
         plot[[phenotype]] <- plot_grid(
