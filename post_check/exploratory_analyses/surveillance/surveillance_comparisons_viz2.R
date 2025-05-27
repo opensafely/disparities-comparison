@@ -249,7 +249,7 @@ plot_combined <- function(df, pathogen, phenotype) {
   plot_grid(mild, severe, nrow = 1) %>%
     annotate_figure(
       top = text_grob(paste0(str_to_title(phenotype), " Phenotype"),
-                      face = "bold", size = 10, vjust = 1)
+                      face = "bold", size = 12, vjust = 1)
     )
   
 }
@@ -469,7 +469,7 @@ plot <- plot_grid(
   ncol = 1
 ) %>% annotate_figure(
   left = text_grob("Surveillance Data", rot = 90, vjust = 1),
-  bottom = text_grob("EHR Data", hjust = -0.38, vjust = 0),
+  bottom = text_grob("EHR Data", hjust = 0.2, vjust = 0),
   top = text_grob(
     "Surveillance VS EHR: Monthly Counts of RSV, Influenza and COVID-19 in All Cohorts",
     face = "bold", size = 14))
