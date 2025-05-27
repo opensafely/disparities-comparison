@@ -24,30 +24,26 @@ def first_infection_event(codelist, where = True):
 covid_season_min = datetime.strptime("2019-09-01", "%Y-%m-%d").date()
 
 ##define outcomes - rsv
-
-if cohort == "infants" or cohort == "infants_subgroup" : ##remove if not using infants
   
-  #extract date of first episode - looking at the first date for which there is
-  #a code in the RSV primary codelist or a code within diagnosis 1 or 2 
-  #in the bronchiolitis attendance codelist
-  rsv_primary_date = (
-    minimum_of((first_infection_event(codelists.rsv_primary_codelist).date),
-    ((emergency_care_attendances.where((emergency_care_attendances
-    .diagnosis_01.is_in(codelists.bronchiolitis_attendance))
-    |(emergency_care_attendances.diagnosis_02
-    .is_in(codelists.bronchiolitis_attendance)))
-    .where(emergency_care_attendances.arrival_date
-    .is_on_or_between(index_date, followup_end_date)))
-    .arrival_date.minimum_for_patient()))
-  )
+#extract date of first episode - looking at the first date for which there is
+#a code in the RSV primary codelist or a code within diagnosis 1 or 2 
+#in the bronchiolitis attendance codelist - FOR INFANTS ONLY
+rsv_primary_date_infants = (
+  minimum_of((first_infection_event(codelists.rsv_primary_codelist).date),
+  ((emergency_care_attendances.where((emergency_care_attendances
+  .diagnosis_01.is_in(codelists.bronchiolitis_attendance))
+  |(emergency_care_attendances.diagnosis_02
+  .is_in(codelists.bronchiolitis_attendance)))
+  .where(emergency_care_attendances.arrival_date
+  .is_on_or_between(index_date, followup_end_date)))
+  .arrival_date.minimum_for_patient()))
+)
   
-else :
-  
-  #extract date of first episode - using only the RSV primary codelist
-  rsv_primary_date = (
-    first_infection_event(codelists
-    .rsv_primary_codelist).date
-  )
+#extract date of first episode - using only the RSV primary codelist
+rsv_primary_date = (
+  first_infection_event(codelists
+  .rsv_primary_codelist).date
+)
 
 #extract rsv secondary care dates for primary analysis ('specific' phenotype)
 #extract date of first episode - looking at the first date for which there is
