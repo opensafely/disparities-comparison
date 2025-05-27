@@ -209,7 +209,7 @@ plot_combined <- function(df, pathogen, phenotype) {
                                 ymin = ymin, ymax = ymax),
               fill = "grey", alpha = 0.25, col = NA) +
     scale_y_continuous(
-      sec.axis = sec_axis(trans = ~./coeff_mild, name = "Surveillance Data")
+      sec.axis = sec_axis(trans = ~./coeff_mild, name = "")
     ) +
     scale_x_date(date_breaks = "1 years", date_labels = "%y") + 
     scale_color_manual(values = c(
@@ -232,7 +232,7 @@ plot_combined <- function(df, pathogen, phenotype) {
                                 ymin = ymin, ymax = ymax),
               fill = "grey", alpha = 0.25, col = NA) +
     scale_y_continuous(
-      sec.axis = sec_axis(trans = ~./coeff_severe, name = "Surveillance Data")
+      sec.axis = sec_axis(trans = ~./coeff_severe, name = "")
     ) +
     scale_x_date(date_breaks = "1 years", date_labels = "%y") + 
     scale_color_manual(values = c(
@@ -248,20 +248,18 @@ plot_combined <- function(df, pathogen, phenotype) {
   
   plot_grid(mild, severe, nrow = 1) %>%
     annotate_figure(
-      top = text_grob(
-        paste0(pathogen, " Events (", str_to_title(phenotype),
-               " Phenotype)"),
-        face = "bold", size = 10)
+      top = text_grob(paste0(str_to_title(phenotype), " Phenotype"),
+                      face = "bold", size = 10, vjust = 1)
     )
   
 }
 
-spec_rsv <- plot_combined(df_combined, "RSV", "specific")
-spec_flu <- plot_combined(df_combined, "Influenza", "specific")
-spec_covid <- plot_combined(df_combined, "COVID-19", "specific")
-sens_rsv <- plot_combined(df_combined, "RSV", "sensitive")
-sens_flu <- plot_combined(df_combined, "Influenza", "sensitive")
-sens_covid <- plot_combined(df_combined, "COVID-19", "sensitive")
+spec_rsv <- plot_combined(df_all, "RSV", "specific")
+spec_flu <- plot_combined(df_all, "Influenza", "specific")
+spec_covid <- plot_combined(df_all, "COVID-19", "specific")
+sens_rsv <- plot_combined(df_all, "RSV", "sensitive")
+sens_flu <- plot_combined(df_all, "Influenza", "sensitive")
+sens_covid <- plot_combined(df_all, "COVID-19", "sensitive")
 
 get_legend_2 <- function(df1, df2) {
   
@@ -307,16 +305,17 @@ plot <- plot_grid(
   spec_rsv, sens_rsv,
   spec_flu, sens_flu,
   spec_covid, sens_covid,
-  ncol = 2,
+  ncol = 1,
   label_size = 14
 ) %>% annotate_figure(
-  left = text_grob("Monthly Events Identified", rot = 90, vjust = 2)
+  left = text_grob("Monthly Events Identified", rot = 90, vjust = 1),
+  right = text_grob("Monthly Surveillance Data", rot = 270, vjust = 1),
 )
 
 # Dummy data for the grey box
 legend_df <- data.frame(
   xmin = 0.5, xmax = 1,
-  ymin = 0.25, ymax = 0.75
+  ymin = 0.4, ymax = 0.6
 )
 
 transmission_legend <- ggplot() +
@@ -336,25 +335,25 @@ bottom_row <- plot_grid(
   transmission_legend,
   legend,
   ncol = 2,
-  rel_widths = c(1, 1)
+  rel_widths = c(1, 1.5)
 )
 
 plot_grid(
   plot,
   bottom_row,
   ncol = 1,
-  rel_heights = c(1, .1)
+  rel_heights = c(1, 0.1)
 ) %>% annotate_figure(
   top = text_grob(
     "Monthly Counts of RSV, Influenza and COVID-19 in All Cohorts ",
     face = "bold", size = 14),
-  bottom = text_grob("Year (2016-2024)", vjust = -4)
+  bottom = text_grob("Year (2016-2024)", vjust = -12)
 )
 
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
                   "all_cohorts_seasonality_comparisons_2.png"),
-       width = 18, height = 6)
+       width = 12, height = 18)
 
 df_all_cohorts <- bind_rows(
   df_rsv %>% mutate(type = "EHR"),
@@ -466,20 +465,24 @@ legend <- get_legend(
 plot <- plot_grid(
   rsv_all_cohorts,
   flu_all_cohorts,
-  covid_all_cohorts, 
-  nrow = 1
+  covid_all_cohorts,
+  ncol = 1
 ) %>% annotate_figure(
-  left = text_grob("Surveillance", rot = 90, vjust = 1),
-  bottom = text_grob("EHR"),
+  left = text_grob("Surveillance Data", rot = 90, vjust = 1),
+  bottom = text_grob("EHR Data", hjust = -0.38, vjust = 0),
   top = text_grob(
     "Surveillance VS EHR: Monthly Counts of RSV, Influenza and COVID-19 in All Cohorts",
     face = "bold", size = 14))
-plot_grid(plot, legend, ncol = 1, rel_heights = c(1, .1)) +
+plot1 <- plot_grid(plot, legend, NULL, ncol = 1, rel_heights = c(2, 0.05, 0.001)) +
   theme(plot.margin = margin(0, 0, 0, 0),
         plot.title = element_text(hjust = 0.5)
+)
+
+plot_grid(
+  plot1, NULL, ncol = 2, rel_widths = c(0.99, 0.01)
 )
 
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
                   "all_cohorts_seasonality_comparisons_x_vs_y_2.png"),
-       width = 18, height = 6)
+       width = 12, height = 18)
