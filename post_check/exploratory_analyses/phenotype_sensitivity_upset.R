@@ -24,23 +24,11 @@ df_input <- read_csv(here::here("post_check", "output", "collated",
                      "descriptive", paste0(cohort,
                      "_phenotype_sensitivity_collated.csv")))
 
-# phen_sens_mild <- upset_plot(df_input, seasons)$Mild
-# 
-# ggsave(here::here("post_check", "plots", "exploratory_analyses", "condensed",
-#             paste0(cohort, "_mild_phenotype_sensitivity_seasons", ".png")),
-#        phen_sens_mild, height = 10, width = 15)
-# 
-# phen_sens_severe <- upset_plot(df_input, seasons)$Severe
-# 
-# ggsave(here::here("post_check", "plots", "exploratory_analyses", "condensed",
-#             paste0(cohort, "_severe_phenotype_sensitivity_seasons", ".png")),
-#        phen_sens_severe, height = 10, width = 15)
-
 phen_sens <- upset_plot(df_input, seasons)
 
 ggsave(here::here("post_check", "plots", "exploratory_analyses", "condensed",
             paste0(cohort, "_both_phenotype_sensitivity_seasons", ".png")),
-       phen_sens, height = 18, width = 12)
+       phen_sens, height = 16.5, width = 8)
 
 ##  infants
 cohort <- "infants"
@@ -50,23 +38,11 @@ df_input <- read_csv(here::here("post_check", "output", "collated",
                      "descriptive", paste0(cohort,
                      "_phenotype_sensitivity_collated.csv")))
 
-# phen_sens_mild <- upset_plot(df_input, seasons)$Mild
-# 
-# ggsave(here::here("post_check", "plots", "exploratory_analyses", "condensed",
-#             paste0(cohort, "_mild_phenotype_sensitivity_seasons", ".png")),
-#        phen_sens_mild, height = 10, width = 15)
-# 
-# phen_sens_severe <- upset_plot(df_input, seasons)$Severe
-# 
-# ggsave(here::here("post_check", "plots", "exploratory_analyses", "condensed",
-#             paste0(cohort, "_severe_phenotype_sensitivity_seasons", ".png")),
-#        phen_sens_severe, height = 10, width = 15)
-
 phen_sens <- upset_plot(df_input, seasons)
 
 ggsave(here::here("post_check", "plots", "exploratory_analyses", "condensed",
                   paste0(cohort, "_both_phenotype_sensitivity_seasons", ".png")),
-       phen_sens, height = 18, width = 12)
+       phen_sens, height = 16.5, width = 8)
 
 ##  infants subgroup
 cohort <- "infants_subgroup"
@@ -76,20 +52,8 @@ df_input <- read_csv(here::here("post_check", "output", "collated",
                      "descriptive", paste0(cohort,
                      "_phenotype_sensitivity_collated.csv")))
 
-# phen_sens_mild <- upset_plot(df_input, seasons)$Mild
-# 
-# ggsave(here::here("post_check", "plots", "exploratory_analyses", "condensed",
-#             paste0(cohort, "_mild_phenotype_sensitivity_seasons", ".png")),
-#        phen_sens_mild, height = 10, width = 15)
-# 
-# phen_sens_severe <- upset_plot(df_input, seasons)$Severe
-# 
-# ggsave(here::here("post_check", "plots", "exploratory_analyses", "condensed",
-#             paste0(cohort, "_severe_phenotype_sensitivity_seasons", ".png")),
-#        phen_sens_severe, height = 10, width = 15)
-
 phen_sens <- upset_plot(df_input, seasons)
 
 ggsave(here::here("post_check", "plots", "exploratory_analyses", "condensed",
                   paste0(cohort, "_both_phenotype_sensitivity_seasons", ".png")),
-       phen_sens, height = 18, width = 12)
+       phen_sens, height = 16.5, width = 8)
