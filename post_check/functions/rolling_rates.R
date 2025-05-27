@@ -4,6 +4,7 @@ library(arrow)
 library(lubridate)
 library(ggplot2)
 library(zoo)
+library(viridis)
 
 #get study dates
 source(here::here("analysis", "design", "design.R"))
@@ -79,13 +80,6 @@ create_rolling_plots <- function(season, phenotype) {
   
   characteristics <- unique(df$characteristic)
   
-  cols <- tibble(
-    var = c("Age Group", "Sex", "Ethnicity", "IMD Quintile",
-            "Household Composition", "Rurality"),
-    col = c('#1f77b4', '#ffbb78', '#2ca02c', '#ff9896',
-            '#aec7e8', '#ff7f0e')
-  )
-  
   plots <- list()
   
   for (characteristic in characteristics) {
@@ -120,12 +114,12 @@ create_rolling_plots <- function(season, phenotype) {
     plots[[characteristic]] <- df %>%
       filter(characteristic == !!characteristic) %>%
       ggplot(aes(x = interval_start, y = rate_1000_py_midpoint10_derived,
-                 group = group, alpha = group)) +
-      geom_line(stat = "smooth", method = "loess", col = col, lwd = 1,
+                 group = group, col = group)) +
+      geom_line(stat = "smooth", method = "loess", lwd = 1,
                 span = 0.25, se = FALSE) + theme_bw() +
-      labs(x = "", y = "",
-           alpha = "Group") + scale_alpha_manual(values = c(
-           seq(1, 0.25, length.out = alpha_length))) + facet_wrap( ~ outcome)
+      scale_color_viridis_d() +
+      labs(x = "", y = "", col = "Group") +
+      facet_wrap( ~ outcome) + theme(legend.position = "none")
     
   }
   
