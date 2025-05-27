@@ -1,7 +1,9 @@
-#import dependencies
+##import dependencies
+
 from datetime import date, datetime
 from ehrql import case, when, minimum_of
 from ehrql.tables.tpp import clinical_events, apcs, emergency_care_attendances
+import codelists
 
 ##define functions for queries
 
