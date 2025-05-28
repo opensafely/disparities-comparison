@@ -16,8 +16,8 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- as.Date("2016-09-01")
   study_end_date <- as.Date("2017-08-31")
-  cohort <- "infants"
-  codelist_type <- "specific"
+  cohort <- "older_adults"
+  codelist_type <- "sensitive"
   investigation_type <- "primary"
 } else {
   study_start_date <- study_dates[[args[[2]]]]
@@ -303,7 +303,7 @@ if (study_start_date >= covid_season_min) {
             year(study_start_date), "_", year(study_end_date), "_",
             codelist_type, "_", investigation_type, ".csv")))
 }
-if (codelist_type == "senstive") {
+if (codelist_type == "sensitive") {
   overall_resp_imd_eth <- calculate_rolling_rates(
     df_input, "overall_resp", c("latest_ethnicity_group", "imd_quintile"))
   write_csv(overall_resp_imd_eth, here::here("output", "results", "rates",
