@@ -131,7 +131,6 @@ create_rolling_plots <- function(season, phenotype) {
 create_rolling_plots_overall <- function(df) {
   
   scaleFUN <- function(x) sprintf("%.3f", signif(x, digits = 1))
-  
   cols <- scales::seq_gradient_pal(
     "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
   
@@ -196,6 +195,16 @@ create_rolling_plots_overall <- function(df) {
     
   }
   
+  if (pathogen != "overall_resp") {
+    
+    alph <- c(1, 0.5) 
+    
+  } else {
+    
+    alph <- 0.5
+    
+  }
+  
   plot_mild <- df %>%
     filter(str_detect(outcome, "Mild")) %>%
     ggplot(aes(x = days_since_season_start,
@@ -204,7 +213,7 @@ create_rolling_plots_overall <- function(df) {
     geom_line(stat = "smooth", method = "loess",
               span = 0.15, se = FALSE, lwd = 1) +  theme_bw() +
     scale_color_manual(values = cols) +
-    scale_alpha_manual(values = c(1, 0.5)) +
+    scale_alpha_manual(values = alph) +
     labs(x = "", y = "", col = "Season", alpha = "Phenotype",
          subtitle = paste0("Mild ", pathogen_print)) +
     facet_wrap(~ codelist_type, ncol = 2, scales = "free") +
@@ -226,7 +235,7 @@ create_rolling_plots_overall <- function(df) {
     geom_line(stat = "smooth", method = "loess",
               span = 0.15, se = FALSE, lwd = 1) +  theme_bw() +
     scale_color_manual(values = cols) +
-    scale_alpha_manual(values = c(1, 0.5)) +
+    scale_alpha_manual(values = alph) +
     labs(x = "", y = "", col = "Season", alpha = "Phenotype",
          subtitle = paste0("Severe ", pathogen_print)) +
     facet_wrap(~ codelist_type, ncol = 2, scales = "free") +
@@ -252,6 +261,15 @@ create_rolling_plots_overall <- function(df) {
     nrow = 1
   )
   
-  return(list(plot = plot, legend = legend))
+  if (pathogen == "overall_resp") {
+    
+    return(list(plot_mild = plot_mild, plot_severe = plot_severe,
+                plot  = plot, legend = legend))
+    
+  } else {
+  
+    return(list(plot = plot, legend = legend))
+    
+  }
   
 }
