@@ -15,6 +15,8 @@ fs::dir_create(here::here("output", "collated", "descriptive", "over_time"))
 
 ##rates
 collate_rates_season <- function(seasons, pathogen, characteristic) {
+  
+  df_group <- NULL
 
   for (i in 1:length(seasons)) {
     
@@ -171,8 +173,10 @@ characteristics <- c("Age_Group", "Sex", "Ethnicity", "IMD", "Rurality")
 collate_rates_characteristic(characteristics, pathogens)
 
 #collate multiple strata files
-collate_rates_season <- function(seasons, pathogen, characteristic1,
-                                 characteristic2) {
+collate_rates_season_multi <- function(seasons, pathogen, characteristic1,
+                                       characteristic2) {
+  
+  df_group <- NULL
 
   for (i in 1:length(seasons)) {
     
@@ -271,11 +275,11 @@ collate_rates_season <- function(seasons, pathogen, characteristic1,
   
   write_csv(df_group_primary, here::here("output", "collated", "descriptive",
             "over_time", paste0(cohort, "_primary_rates_over_time_multi_strata_",
-            pathogen, "_", characteristic, "_collated.csv")))
+            pathogen, "_collated.csv")))
   
   write_csv(df_group_secondary, here::here("output", "collated", "descriptive",
             "over_time", paste0(cohort, "_secondary_rates_over_time_multi_strata_",
-            pathogen, "_", characteristic, "_collated.csv")))
+            pathogen, "_collated.csv")))
   
 }
 
@@ -284,11 +288,12 @@ for (i in 1:length(pathogens)) {
   pathogen <- pathogens[i]
   
   if (pathogen == "covid") {
-    collate_rates_season(seasons_covid, pathogen, "latest_ethnicity_group",
-                         "imd_quintile")
+    collate_rates_season_multi(seasons_covid, pathogen,
+                               "latest_ethnicity_group",
+                               "imd_quintile")
   } else {
-    collate_rates_season(seasons, pathogen, "latest_ethnicity_group",
-                         "imd_quintile")
+    collate_rates_season_multi(seasons, pathogen, "latest_ethnicity_group",
+                               "imd_quintile")
   }
   
 }
