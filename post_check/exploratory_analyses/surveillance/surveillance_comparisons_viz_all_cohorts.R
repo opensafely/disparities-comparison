@@ -396,14 +396,20 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
   arrange(month) %>%
   ggplot() +
   # Primary axis viruses
-  geom_point(aes(x = EHR, y = Surveillance, alpha = codelist_type),
-             color = cols[1]) +
+  geom_point(aes(x = EHR, y = Surveillance, alpha = codelist_type,
+                 shape = codelist_type), color = cols[1], size = 3.5) +
   facet_wrap(~event, nrow = 1, scales = "free_x") +
   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
                      labels = c("sensitive" = "Sensitive",
                                 "specific" = "Specific"),
+                     name = "Phenotype Used",
                      na.translate = FALSE) +
-  labs(x = "", y = "", alpha = "Phenotype Used") + theme_bw() +
+  scale_shape_manual(values = c("sensitive" = 15, "specific" = 17),
+                     labels = c("sensitive" = "Sensitive",
+                                "specific" = "Specific"),
+                     name = "Phenotype Used",
+                     na.translate = FALSE) +
+  labs(x = "", y = "") + theme_bw() +
   theme(legend.position = "none")
 
 flu_all_cohorts <- df_comp_all_cohorts %>%
@@ -411,14 +417,20 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
   arrange(month) %>%
   ggplot() +
   # Primary axis viruses
-  geom_point(aes(x = EHR, y = Surveillance, alpha = codelist_type),
-             color = cols[2]) +
+  geom_point(aes(x = EHR, y = Surveillance, alpha = codelist_type,
+                 shape = codelist_type), color = cols[2], size = 3.5) +
   facet_wrap(~event, nrow = 1, scales = "free_x") +
   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
                      labels = c("sensitive" = "Sensitive",
                                 "specific" = "Specific"),
+                     name = "Phenotype Used",
                      na.translate = FALSE) +
-  labs(x = "", y = "", alpha = "Phenotype Used") + theme_bw() +
+  scale_shape_manual(values = c("sensitive" = 15, "specific" = 17),
+                     labels = c("sensitive" = "Sensitive",
+                                "specific" = "Specific"),
+                     name = "Phenotype Used",
+                     na.translate = FALSE) +
+  labs(x = "", y = "") + theme_bw() +
   theme(legend.position = "none")
 
 covid_all_cohorts <- df_comp_all_cohorts %>%
@@ -426,16 +438,22 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   arrange(month) %>%
   ggplot() +
   # Primary axis viruses
-  geom_point(aes(x = EHR, y = Surveillance, alpha = codelist_type),
-             color = cols[3]) +
+  geom_point(aes(x = EHR, y = Surveillance, alpha = codelist_type,
+                 shape = codelist_type), color = cols[3], size = 3.5) +
   facet_wrap(~event, nrow = 1, scales = "free_x") +
   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
                      labels = c("sensitive" = "Sensitive",
                                 "specific" = "Specific"),
+                     name = "Phenotype Used",
+                     na.translate = FALSE) +
+  scale_shape_manual(values = c("sensitive" = 15, "specific" = 17),
+                     labels = c("sensitive" = "Sensitive",
+                                "specific" = "Specific"),
+                     name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_y_continuous(labels = function(x) format(x, scientific = TRUE)) +
   scale_x_continuous(labels = function(x) format(x, scientific = TRUE)) +
-  labs(x = "", y = "", alpha = "Phenotype Used") + theme_bw() +
+  labs(x = "", y = "") + theme_bw() +
   theme(legend.position = "none")
 
 legend <- get_legend(
@@ -445,18 +463,27 @@ legend <- get_legend(
     # Primary axis viruses
     geom_point(aes(x = EHR, y = Surveillance, alpha = factor(
       codelist_type, levels = c("specific", "sensitive")),
-               color = factor(
-                 virus, levels = c("RSV", "Influenza", "COVID-19")))) +
+      color = factor(
+        virus, levels = c("RSV", "Influenza", "COVID-19")),
+      shape = factor(
+        codelist_type, levels = c("specific", "sensitive"))), size = 3.5) +
     scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
                        labels = c("sensitive" = "Sensitive",
                                   "specific" = "Specific"),
+                       name = "Phenotype Used",
+                       na.translate = FALSE) +
+    scale_shape_manual(values = c("sensitive" = 15, "specific" = 17),
+                       labels = c("sensitive" = "Sensitive",
+                                  "specific" = "Specific"),
+                       name = "Phenotype Used",
                        na.translate = FALSE) +
     scale_color_manual(values = c(
       "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3]),
       na.translate = F) +
     guides(colour = guide_legend(order = 1),
-           alpha = guide_legend(order = 2)) +
-    labs(color = "Virus", alpha = "Phenotype Used") + theme_bw() +
+           alpha = guide_legend("Phenotype Used", order = 2),
+           shape = guide_legend("Phenotype Used", order = 2)) +
+    labs(color = "Virus") + theme_bw() +
     theme(legend.position = "bottom",
               legend.box = "horizontal",
               legend.title = element_text())
