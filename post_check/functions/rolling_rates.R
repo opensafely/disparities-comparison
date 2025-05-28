@@ -131,7 +131,6 @@ create_rolling_plots <- function(season, phenotype) {
 create_rolling_plots_overall <- function(df) {
   
   scaleFUN <- function(x) sprintf("%.3f", signif(x, digits = 1))
-  
   cols <- scales::seq_gradient_pal(
     "#F05039", "#1F449c", "Lab")(seq(0,1,length.out=8))
   
@@ -197,9 +196,13 @@ create_rolling_plots_overall <- function(df) {
   }
   
   if (pathogen != "overall_resp") {
+    
     alph <- c(1, 0.5) 
+    
   } else {
+    
     alph <- 0.5
+    
   }
   
   plot_mild <- df %>%
@@ -258,6 +261,15 @@ create_rolling_plots_overall <- function(df) {
     nrow = 1
   )
   
-  return(list(plot = plot, legend = legend))
+  if (pathogen == "overall_resp") {
+    
+    return(list(plot_mild = plot_mild, plot_severe = plot_severe,
+                plot  = plot, legend = legend))
+    
+  } else {
+  
+    return(list(plot = plot, legend = legend))
+    
+  }
   
 }

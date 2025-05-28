@@ -132,11 +132,20 @@ ggsave(here::here("post_check", "plots", "exploratory_analyses",
 
 ##plot all four together 
 
+overall_resp_grid <- plot_grid(
+  NULL,
+  create_rolling_plots_overall(df_input)$plot_mild,
+  NULL,
+  create_rolling_plots_overall(df_input)$plot_severe,
+  ncol = 4,
+  rel_widths = c(0.92, 1, 0.92, 1)
+)
+
 plot_col <- plot_grid(
   rsv,
   flu,
   covid,
-  overall_resp,
+  overall_resp_grid,
   nrow = 4
 )
 
@@ -273,11 +282,20 @@ ggsave(here::here("post_check", "plots", "exploratory_analyses",
 
 ##plot all four together 
 
+overall_resp_grid <- plot_grid(
+  NULL,
+  create_rolling_plots_overall(df_input)$plot_mild,
+  NULL,
+  create_rolling_plots_overall(df_input)$plot_severe,
+  ncol = 4,
+  rel_widths = c(0.92, 1, 0.92, 1)
+)
+
 plot_col <- plot_grid(
   rsv,
   flu,
   covid,
-  overall_resp,
+  overall_resp_grid,
   nrow = 4
 )
 
