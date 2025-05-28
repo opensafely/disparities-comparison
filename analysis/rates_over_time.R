@@ -286,20 +286,20 @@ if (codelist_type == "sensitive") {
 rsv_imd_eth <- calculate_rolling_rates(
   df_input, "rsv", c("latest_ethnicity_group", "imd_quintile"))
 write_csv(rsv_imd_eth, here::here("output", "results", "rates", "weekly",
-          paste0("rates_over_time_multi_strata_", pathogen, "_", cohort, "_",
+          paste0("rates_over_time_multi_strata_rsv_", cohort, "_",
           year(study_start_date), "_", year(study_end_date), "_",
           codelist_type, "_", investigation_type, ".csv")))
 flu_imd_eth <- calculate_rolling_rates(
   df_input, "flu", c("latest_ethnicity_group", "imd_quintile"))
 write_csv(flu_imd_eth, here::here("output", "results", "rates", "weekly",
-          paste0("rates_over_time_multi_strata_", pathogen, "_", cohort, "_",
+          paste0("rates_over_time_multi_strata_flu_", cohort, "_",
           year(study_start_date), "_", year(study_end_date), "_",
           codelist_type, "_", investigation_type, ".csv")))
 if (study_start_date >= covid_season_min) {
   covid_imd_eth <- calculate_rolling_rates(
     df_input, "covid", c("latest_ethnicity_group", "imd_quintile"))
   write_csv(covid_imd_eth, here::here("output", "results", "rates", "weekly",
-            paste0("rates_over_time_multi_strata_", pathogen, "_", cohort, "_",
+            paste0("rates_over_time_multi_strata_covid_", cohort, "_",
             year(study_start_date), "_", year(study_end_date), "_",
             codelist_type, "_", investigation_type, ".csv")))
 }
@@ -307,7 +307,7 @@ if (codelist_type == "senstive") {
   overall_resp_imd_eth <- calculate_rolling_rates(
     df_input, "overall_resp", c("latest_ethnicity_group", "imd_quintile"))
   write_csv(overall_resp_imd_eth, here::here("output", "results", "rates",
-            "weekly", paste0("rates_over_time_multi_strata_", pathogen, "_",
+            "weekly", paste0("rates_over_time_multi_strata_overall_resp_",
             cohort, "_", year(study_start_date), "_", year(study_end_date),
             "_", codelist_type, "_", investigation_type, ".csv")))
 }
