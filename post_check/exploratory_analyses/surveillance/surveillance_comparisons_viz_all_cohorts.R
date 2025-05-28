@@ -204,7 +204,7 @@ plot_combined <- function(df, pathogen, phenotype) {
     filter(event == "Mild") %>%
     ggplot() +
     geom_line(aes(x = month, y = total_events, color = virus,
-                  alpha = type)) +
+                  alpha = type), linewidth = 1) +
     geom_rect(data = rects, aes(xmin = xmin, xmax = xmax,
                                 ymin = ymin, ymax = ymax),
               fill = "grey", alpha = 0.25, col = NA) +
@@ -227,7 +227,7 @@ plot_combined <- function(df, pathogen, phenotype) {
     filter(event == "Severe") %>%
     ggplot() +
     geom_line(aes(x = month, y = total_events, color = virus,
-                  alpha = type)) +
+                  alpha = type), linewidth = 1) +
     geom_rect(data = rects, aes(xmin = xmin, xmax = xmax,
                                 ymin = ymin, ymax = ymax),
               fill = "grey", alpha = 0.25, col = NA) +
@@ -282,7 +282,8 @@ get_legend_2 <- function(df1, df2) {
       ggplot() +
       geom_line(aes(x = month, y = total_events, color = factor(
         virus, levels = c("RSV", "Influenza", "COVID-19")),
-        alpha = factor(type, levels = c("EHR", "Surveillance")))) +
+        alpha = factor(type, levels = c("EHR", "Surveillance"))),
+        linewidth = 1) +
       scale_color_manual(values = c(
         "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3])) +
       scale_alpha_manual(values = c("Surveillance" = 0.5,
@@ -500,7 +501,8 @@ plot <- plot_grid(
   top = text_grob(
     "Surveillance VS EHR: Monthly Counts of RSV, Influenza and COVID-19 in All Cohorts",
     face = "bold", size = 14))
-plot1 <- plot_grid(plot, legend, NULL, ncol = 1, rel_heights = c(2, 0.05, 0.001)) +
+plot1 <- plot_grid(plot, legend, NULL, ncol = 1,
+                   rel_heights = c(2, 0.05, 0.001)) +
   theme(plot.margin = margin(0, 0, 0, 0),
         plot.title = element_text(hjust = 0.5)
 )
