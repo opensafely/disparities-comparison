@@ -109,31 +109,66 @@ calculate_rolling_rates <- function(df, pathogen, characteristic,
     interval <- intervals_list[[i]]
     
     #label events as whether they fall in or before the interval
-    df_expanded <- df_long %>%
-      filter(date <= int_end(interval)) %>%
-      mutate(
-        in_interval = if_else(date %within% interval, "during", "before")
-      ) %>%
-      group_by(in_interval, event, group) %>%
-      summarise(
-        events_in_interval = n(),
-        .groups = "drop"
-      ) %>%
-      complete(in_interval = c("during", "before"), event = unique(event), 
-               group = unique(group), fill = list(events_in_interval = 0)) %>%
-      pivot_wider(names_from = "in_interval", values_from = "events_in_interval")
+    if (length(characteristic) > 1) {
+      
+      df_expanded <- df_long %>%
+        filter(date <= int_end(interval)) %>%
+        mutate(
+          in_interval = if_else(date %within% interval, "during", "before")
+        ) %>%
+        group_by(in_interval, event, group1, group2) %>%
+        summarise(
+          events_in_interval = n(),
+          .groups = "drop"
+        ) %>%
+        complete(in_interval = c("during", "before"), event = unique(event), 
+                 group1 = unique(group1), group2 = unique(group2),
+                 fill = list(events_in_interval = 0)) %>%
+        pivot_wider(names_from = "in_interval", values_from = "events_in_interval")
+      
+    } else {
+      
+      df_expanded <- df_long %>%
+        filter(date <= int_end(interval)) %>%
+        mutate(
+          in_interval = if_else(date %within% interval, "during", "before")
+        ) %>%
+        group_by(in_interval, event, group) %>%
+        summarise(
+          events_in_interval = n(),
+          .groups = "drop"
+        ) %>%
+        complete(in_interval = c("during", "before"), event = unique(event), 
+                 group = unique(group), fill = list(events_in_interval = 0)) %>%
+        pivot_wider(names_from = "in_interval", values_from = "events_in_interval")
+      
+    }
     
     if (!"before" %in% names(df_expanded)) {
       df_expanded <- df_expanded %>%
         mutate(before = 0)
     }
     
-    df_expanded <- df_expanded %>%
-      left_join(total_patients_by_group, by = c("group" = characteristic)) %>%
-      #calculate the number of patients still at risk in interval
-      mutate(
-        patients_remaining = total_patients - before
-      )
+    if (length(characteristic) > 1) {
+      
+      df_expanded <- df_expanded %>%
+        left_join(total_patients_by_group, by = c("group1" = characteristic[1],
+                                                  "group2" = characteristic[2])) %>%
+        #calculate the number of patients still at risk in interval
+        mutate(
+          patients_remaining = total_patients - before
+        )
+      
+    } else {
+      
+      df_expanded <- df_expanded %>%
+        left_join(total_patients_by_group, by = c("group" = characteristic)) %>%
+        #calculate the number of patients still at risk in interval
+        mutate(
+          patients_remaining = total_patients - before
+        )
+      
+    }
     
     #append these rows to the interval-level data frame
     df_intervals <- bind_rows(df_intervals, df_expanded)
@@ -141,25 +176,49 @@ calculate_rolling_rates <- function(df, pathogen, characteristic,
   }
   
   ## calculate the rates per event type per group per interval
-  
-  df_rates <- df_intervals %>%
-    group_by(event, group) %>%
-    mutate(
-      interval = row_number()
-    ) %>%
-    group_by(interval, event, group) %>%
-    summarise(
-      #time at risk is interval width, then times number of patients
-      total_survival_time = (as.numeric(difftime(
-        int_end(intervals_list[interval]),
-        int_start(intervals_list[interval]))) * patients_remaining),
-      total_patients_remaining_midpoint10 = roundmid_any(patients_remaining),
-      total_events_midpoint10 = roundmid_any(during),
-      rate_1000_py_midpoint10_derived = (
-        total_events_midpoint10 / total_survival_time) * 1000,
-      rate_midpoint10_derived = (
-        total_events_midpoint10 / total_patients_remaining_midpoint10)
-    )
+  if (length(characteristic) > 1) {
+    
+    df_rates <- df_intervals %>%
+      group_by(event, group1, group2) %>%
+      mutate(
+        interval = row_number()
+      ) %>%
+      group_by(interval, event, group1, group2) %>%
+      summarise(
+        #time at risk is interval width, then times number of patients
+        total_survival_time = (as.numeric(difftime(
+          int_end(intervals_list[interval]),
+          int_start(intervals_list[interval]))) * patients_remaining),
+        total_patients_remaining_midpoint10 = roundmid_any(patients_remaining),
+        total_events_midpoint10 = roundmid_any(during),
+        rate_1000_py_midpoint10_derived = (
+          total_events_midpoint10 / total_survival_time) * 1000,
+        rate_midpoint10_derived = (
+          total_events_midpoint10 / total_patients_remaining_midpoint10)
+      )
+    
+  } else {
+    
+    df_rates <- df_intervals %>%
+      group_by(event, group) %>%
+      mutate(
+        interval = row_number()
+      ) %>%
+      group_by(interval, event, group) %>%
+      summarise(
+        #time at risk is interval width, then times number of patients
+        total_survival_time = (as.numeric(difftime(
+          int_end(intervals_list[interval]),
+          int_start(intervals_list[interval]))) * patients_remaining),
+        total_patients_remaining_midpoint10 = roundmid_any(patients_remaining),
+        total_events_midpoint10 = roundmid_any(during),
+        rate_1000_py_midpoint10_derived = (
+          total_events_midpoint10 / total_survival_time) * 1000,
+        rate_midpoint10_derived = (
+          total_events_midpoint10 / total_patients_remaining_midpoint10)
+      )
+    
+  }
   
   #get interval start date 
   df_rates <- df_rates %>%
@@ -221,4 +280,34 @@ if (study_start_date >= covid_season_min) {
 } 
 if (codelist_type == "sensitive") {
   calculate_for_groups(df_input, "overall_resp", characteristics)
+}
+
+#calculate for imd and ethnicity simultaneously
+rsv_imd_eth <- calculate_rolling_rates(
+  df_input, "rsv", c("latest_ethnicity_group", "imd_quintile"))
+write_csv(rsv_imd_eth, here::here("output", "results", "rates", "weekly",
+          paste0("rates_over_time_multi_strata_", pathogen, "_", cohort, "_",
+          year(study_start_date), "_", year(study_end_date), "_",
+          codelist_type, "_", investigation_type, ".csv")))
+flu_imd_eth <- calculate_rolling_rates(
+  df_input, "flu", c("latest_ethnicity_group", "imd_quintile"))
+write_csv(flu_imd_eth, here::here("output", "results", "rates", "weekly",
+          paste0("rates_over_time_multi_strata_", pathogen, "_", cohort, "_",
+          year(study_start_date), "_", year(study_end_date), "_",
+          codelist_type, "_", investigation_type, ".csv")))
+if (study_start_date >= covid_season_min) {
+  covid_imd_eth <- calculate_rolling_rates(
+    df_input, "covid", c("latest_ethnicity_group", "imd_quintile"))
+  write_csv(covid_imd_eth, here::here("output", "results", "rates", "weekly",
+            paste0("rates_over_time_multi_strata_", pathogen, "_", cohort, "_",
+            year(study_start_date), "_", year(study_end_date), "_",
+            codelist_type, "_", investigation_type, ".csv")))
+}
+if (codelist_type == "senstive") {
+  overall_resp_imd_eth <- calculate_rolling_rates(
+    df_input, "overall_resp", c("latest_ethnicity_group", "imd_quintile"))
+  write_csv(overall_resp_imd_eth, here::here("output", "results", "rates",
+            "weekly", paste0("rates_over_time_multi_strata_", pathogen, "_",
+            cohort, "_", year(study_start_date), "_", year(study_end_date),
+            "_", codelist_type, "_", investigation_type, ".csv")))
 }
