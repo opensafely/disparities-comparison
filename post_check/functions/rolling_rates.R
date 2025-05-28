@@ -115,8 +115,7 @@ create_rolling_plots <- function(season, phenotype) {
       filter(characteristic == !!characteristic) %>%
       ggplot(aes(x = interval_start, y = rate_1000_py_midpoint10_derived,
                  group = group, col = group)) +
-      geom_line(stat = "smooth", method = "loess", lwd = 1,
-                span = 0.25, se = FALSE) + theme_bw() +
+      geom_line(stat = "identity", linewidth = 1) +  theme_bw() +
       scale_color_viridis_d() +
       labs(x = "", y = "", col = "Group") +
       facet_wrap( ~ outcome) + theme(legend.position = "none")
@@ -210,8 +209,7 @@ create_rolling_plots_overall <- function(df) {
     ggplot(aes(x = days_since_season_start,
                y = rate_1000_py_midpoint10_derived,
                col = subset, alpha = codelist_type)) +
-    geom_line(stat = "smooth", method = "loess",
-              span = 0.15, se = FALSE, lwd = 1) +  theme_bw() +
+    geom_line(stat = "identity", linewidth = 1) +  theme_bw() +
     scale_color_manual(values = cols) +
     scale_alpha_manual(values = alph) +
     labs(x = "", y = "", col = "Season", alpha = "Phenotype",
@@ -232,8 +230,7 @@ create_rolling_plots_overall <- function(df) {
     ggplot(aes(x = days_since_season_start,
                y = rate_1000_py_midpoint10_derived,
                col = subset, alpha = codelist_type)) +
-    geom_line(stat = "smooth", method = "loess",
-              span = 0.15, se = FALSE, lwd = 1) +  theme_bw() +
+    geom_line(stat = "identity", linewidth = 1) +  theme_bw() +
     scale_color_manual(values = cols) +
     scale_alpha_manual(values = alph) +
     labs(x = "", y = "", col = "Season", alpha = "Phenotype",
