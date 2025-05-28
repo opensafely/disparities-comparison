@@ -196,6 +196,12 @@ create_rolling_plots_overall <- function(df) {
     
   }
   
+  if (pathogen != "overall_resp") {
+    alph <- c(1, 0.5) 
+  } else {
+    alph <- 0.5
+  }
+  
   plot_mild <- df %>%
     filter(str_detect(outcome, "Mild")) %>%
     ggplot(aes(x = days_since_season_start,
@@ -204,7 +210,7 @@ create_rolling_plots_overall <- function(df) {
     geom_line(stat = "smooth", method = "loess",
               span = 0.15, se = FALSE, lwd = 1) +  theme_bw() +
     scale_color_manual(values = cols) +
-    scale_alpha_manual(values = c(1, 0.5)) +
+    scale_alpha_manual(values = alph) +
     labs(x = "", y = "", col = "Season", alpha = "Phenotype",
          subtitle = paste0("Mild ", pathogen_print)) +
     facet_wrap(~ codelist_type, ncol = 2, scales = "free") +
@@ -226,7 +232,7 @@ create_rolling_plots_overall <- function(df) {
     geom_line(stat = "smooth", method = "loess",
               span = 0.15, se = FALSE, lwd = 1) +  theme_bw() +
     scale_color_manual(values = cols) +
-    scale_alpha_manual(values = c(1, 0.5)) +
+    scale_alpha_manual(values = alph) +
     labs(x = "", y = "", col = "Season", alpha = "Phenotype",
          subtitle = paste0("Severe ", pathogen_print)) +
     facet_wrap(~ codelist_type, ncol = 2, scales = "free") +
