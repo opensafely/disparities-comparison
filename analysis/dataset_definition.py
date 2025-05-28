@@ -601,7 +601,7 @@ else :
     )
     
     dataset.rsv_primary_date = (case(
-      when(rsv_primary_spec.exists_for_patient()
+      when(rsv_primary_spec.is_not_null()
       .then(rsv_primary_spec)),
       when(~rsv_exclusion_primary).then(
       minimum_of((rsv_codes_date),
@@ -673,7 +673,7 @@ else :
     
     #extract date of second episode - using the same criteria as the first episode
     dataset.rsv_primary_second_date = (case(
-      when(rsv_primary_spec_second.exists_for_patient())
+      when(rsv_primary_spec_second.is_not_null())
       .then(rsv_primary_spec_second),
       when(~rsv_exclusion_primary).then(
       minimum_of((rsv_codes_second_date),
@@ -702,7 +702,7 @@ else :
     )
     
     dataset.rsv_primary_date = (case(
-      when(rsv_primary_spec.exists_for_patient())
+      when(rsv_primary_spec.is_not_null())
       .then(rsv_primary_spec),
       when(~rsv_exclusion_primary).then(
       minimum_of((rsv_codes_date),
@@ -759,7 +759,7 @@ else :
     )
     
     dataset.rsv_primary_second_date = (case(
-      when(rsv_primary_spec_second.exists_for_patient())
+      when(rsv_primary_spec_second.is_not_null())
       .then(rsv_primary_spec_second),
       when(~rsv_exclusion_primary).then(
       minimum_of((rsv_codes_second_date),
@@ -1045,7 +1045,7 @@ else :
   )
   
   dataset.flu_primary_date = (case(
-    when(flu_primary_spec.exists_for_patient())
+    when(flu_primary_spec.is_not_null())
     .then(flu_primary_spec),
     when(~flu_exclusion_primary).then(
     minimum_of((ILI_date), (flu_med_date))))
@@ -1103,7 +1103,7 @@ else :
   )
   
   dataset.flu_primary_second_date = (case(
-    when(flu_primary_spec_second.exists_for_patient())
+    when(flu_primary_spec_second.is_not_null())
     .then(flu_primary_spec_second),
     when(~flu_exclusion_primary_second).then(
     minimum_of((ILI_second_date), (flu_med_second_date))))
@@ -1381,7 +1381,7 @@ if study_start_date >= covid_season_min :
     )
     
     dataset.covid_primary_date = (case(
-      when(covid_primary_spec.exists_for_patient())
+      when(covid_primary_spec.is_not_null())
       .then(covid_primary_spec),
       when(~covid_exclusion_primary).then(
       minimum_of((covid_codes_date),
@@ -1429,7 +1429,7 @@ if study_start_date >= covid_season_min :
     )
     
     dataset.covid_primary_second_date = (case(
-      when(covid_primary_spec_second.exists_for_patient())
+      when(covid_primary_spec_second.is_not_null())
       .then(covid_primary_spec_second),
       when(~covid_exclusion_primary).then(
       minimum_of((covid_codes_second_date),
@@ -1655,9 +1655,9 @@ if codelist_type == "sensitive" :
       #asthma exacerbation, a code in primary care for a COPD exacerbation,
       #or a code in primary care for an asthma exacerbation
       dataset.overall_resp_primary_date = (case(
-        when((dataset.rsv_primary_date.exists_for_patient())
-        |(dataset.flu_primary_date.exists_for_patient())
-        |(dataset.covid_primary_date.exists_for_patient()))
+        when((dataset.rsv_primary_date.is_not_null())
+        |(dataset.flu_primary_date.is_not_null())
+        |(dataset.covid_primary_date.is_not_null()))
         .then(minimum_of((dataset.rsv_primary_date),
         (dataset.flu_primary_date), (dataset.covid_primary_date))),
         when(~overall_resp_exclusion_primary).then(
@@ -1696,9 +1696,9 @@ if codelist_type == "sensitive" :
       
       #extract date of second episode - using the same criteria as the first episode
       dataset.overall_resp_primary_second_date = (case(
-        when((dataset.rsv_primary_second_date.exists_for_patient())
-        |(dataset.flu_primary_second_date.exists_for_patient())
-        |(dataset.covid_primary_second_date.exists_for_patient()))
+        when((dataset.rsv_primary_second_date.is_not_null())
+        |(dataset.flu_primary_second_date.is_not_null())
+        |(dataset.covid_primary_second_date.is_not_null()))
         .then(minimum_of((dataset.rsv_primary_second_date),
         (dataset.flu_primary_second_date),
         (dataset.covid_primary_second_date))),
@@ -1735,8 +1735,8 @@ if codelist_type == "sensitive" :
       #emergency care for an asthma exacerbation, a code in primary care for a
       #COPD exacerbation, or a code in primary care for an asthma exacerbation
       dataset.overall_resp_primary_date = (case(
-        when((dataset.rsv_primary_date.exists_for_patient())
-        |(dataset.flu_primary_date.exists_for_patient()))
+        when((dataset.rsv_primary_date.is_not_null())
+        |(dataset.flu_primary_date.is_not_null()))
         .then(minimum_of((dataset.rsv_primary_date),
         (dataset.flu_primary_date))),
         when(~overall_resp_exclusion_primary).then(
@@ -1778,8 +1778,8 @@ if codelist_type == "sensitive" :
       
       #extract date of second episode - using the same criteria as the first episode
       dataset.overall_resp_primary_second_date = (case(
-        when((dataset.rsv_primary_second_date.exists_for_patient())
-        |(dataset.flu_primary_second_date.exists_for_patient()))
+        when((dataset.rsv_primary_second_date.is_not_null())
+        |(dataset.flu_primary_second_date.is_not_null()))
         .then(minimum_of((dataset.rsv_primary_second_date),
         (dataset.flu_primary_second_date))),
         when(~overall_resp_exclusion_primary_second).then(
@@ -1815,9 +1815,9 @@ if codelist_type == "sensitive" :
       #covid primary episode, a code in the respiratory virus primary codelist,
       #or a code in emergency care for a respiratory tract infection
       dataset.overall_resp_primary_date = (case(
-        when((dataset.rsv_primary_date.exists_for_patient())
-        |(dataset.flu_primary_date.exists_for_patient())
-        |(dataset.covid_primary_date.exists_for_patient()))
+        when((dataset.rsv_primary_date.is_not_null())
+        |(dataset.flu_primary_date.is_not_null())
+        |(dataset.covid_primary_date.is_not_null()))
         .then(minimum_of((dataset.rsv_primary_date),
         (dataset.flu_primary_date), (dataset.covid_primary_date))),
         when(~overall_resp_exclusion_primary).then(
@@ -1850,9 +1850,9 @@ if codelist_type == "sensitive" :
       
       #extract date of second episode - using the same criteria as the first episode
       dataset.overall_resp_primary_second_date = (case(
-        when((dataset.rsv_primary_second_date.exists_for_patient())
-        |(dataset.flu_primary_second_date.exists_for_patient())
-        |(dataset.covid_primary_second_date.exists_for_patient()))
+        when((dataset.rsv_primary_second_date.is_not_null())
+        |(dataset.flu_primary_second_date.is_not_null())
+        |(dataset.covid_primary_second_date.is_not_null()))
         .then(minimum_of((dataset.rsv_primary_second_date),
         (dataset.flu_primary_second_date),
         (dataset.covid_primary_second_date))),
@@ -1875,8 +1875,8 @@ if codelist_type == "sensitive" :
       #a code in the respiratory virus primary codelist, or a code in emergency care
       #for a respiratory tract infection
       dataset.overall_resp_primary_date = (case(
-        when((dataset.rsv_primary_date.exists_for_patient())
-        |(dataset.flu_primary_date.exists_for_patient()))
+        when((dataset.rsv_primary_date.is_not_null())
+        |(dataset.flu_primary_date.is_not_null()))
         .then(minimum_of((dataset.rsv_primary_date),
         (dataset.flu_primary_date))),
         when(~overall_resp_exclusion_primary).then(
@@ -1909,8 +1909,8 @@ if codelist_type == "sensitive" :
       
       #extract date of second episode - using the same criteria as the first episode
       dataset.overall_resp_primary_second_date = (case(
-        when((dataset.rsv_primary_second_date.exists_for_patient())
-        |(dataset.flu_primary_second_date.exists_for_patient()))
+        when((dataset.rsv_primary_second_date.is_not_null())
+        |(dataset.flu_primary_second_date.is_not_null()))
         .then(minimum_of((dataset.rsv_primary_second_date),
         (dataset.flu_primary_second_date))),
         when(~overall_resp_exclusion_primary_second).then(
