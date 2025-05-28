@@ -14,16 +14,8 @@ if (length(args) == 0) {
 fs::dir_create(here::here("output", "collated", "descriptive", "over_time"))
 
 ##rates
-
 collate_rates_season <- function(seasons, pathogen, characteristic) {
-  
-  df_group <- NULL
-  
-  pathogen <- "rsv"
-  seasons <- c("2016_2017", "2017_2018", "2018_2019", "2019_2020", "2020_2021",
-               "2021_2022", "2022_2023", "2023_2024")
-  characteristic <- "Sex"
-  
+
   for (i in 1:length(seasons)) {
     
     season <- seasons[i]
@@ -177,3 +169,126 @@ characteristics <- c("Age_Group", "Sex", "Ethnicity", "IMD", "Rurality")
 
 #run function
 collate_rates_characteristic(characteristics, pathogens)
+
+#collate multiple strata files
+collate_rates_season <- function(seasons, pathogen, characteristic1,
+                                 characteristic2) {
+
+  for (i in 1:length(seasons)) {
+    
+    season <- seasons[i]
+    
+    if (pathogen != "overall_resp") {
+      
+      df_spec <- read_csv(here::here("output", "results", "rates", "weekly",
+                          paste0("rates_over_time_multi_strata_", pathogen, "_",
+                          cohort, "_", season, "_specific_primary.csv")))
+      
+      df_spec <- df_spec %>%
+        mutate(
+          characteristic1 = group1,
+          characteristic2 = group2,
+          group1 = case_when(
+            characteristic1 %in% c("Asian or Asian British",
+                                  "Black or Black British", "Mixed",
+                                  "Other Ethnic Groups", "White",
+                                  "Unknown") ~ "Ethnicity",
+            characteristic1 %in% c("1 (least deprived)", "2", "3", "4",
+                                  "5 (most deprived)") ~ "IMD"
+          ),
+          group2 = case_when(
+            characteristic2 %in% c("Asian or Asian British",
+                                   "Black or Black British", "Mixed",
+                                   "Other Ethnic Groups", "White",
+                                   "Unknown") ~ "Ethnicity",
+            characteristic2 %in% c("1 (least deprived)", "2", "3", "4",
+                                   "5 (most deprived)") ~ "IMD"
+          )
+        )
+      
+      df_characteristic_spec <- df_spec %>%
+        filter(group1 == !!characteristic1, group2 == !!characteristic2) %>%
+        mutate(
+          codelist_type = "specific",
+          season = gsub("_(\\d{2})\\d{2}", "_\\1", season)
+        )
+      
+    }
+    
+    df_sens <- read_csv(here::here("output", "results", "rates", "weekly",
+                        paste0("rates_over_time_multi_strata_", pathogen, "_",
+                        cohort, "_", season, "_sensitive_primary.csv")))
+    
+    df_sens <- df_sens %>%
+      mutate(
+        characteristic1 = group1,
+        characteristic2 = group2,
+        group1 = case_when(
+          characteristic1 %in% c("Asian or Asian British",
+                                 "Black or Black British", "Mixed",
+                                 "Other Ethnic Groups", "White",
+                                 "Unknown") ~ "Ethnicity",
+          characteristic1 %in% c("1 (least deprived)", "2", "3", "4",
+                                 "5 (most deprived)") ~ "IMD"
+        ),
+        group2 = case_when(
+          characteristic2 %in% c("Asian or Asian British",
+                                 "Black or Black British", "Mixed",
+                                 "Other Ethnic Groups", "White",
+                                 "Unknown") ~ "Ethnicity",
+          characteristic2 %in% c("1 (least deprived)", "2", "3", "4",
+                                 "5 (most deprived)") ~ "IMD"
+        )
+      )
+    
+    df_characteristic_sens <- df_sens %>%
+      filter(group1 == !!characteristic1, group2 == !!characteristic2) %>%
+      mutate(
+        codelist_type = "sensitive",
+        season = gsub("_(\\d{2})\\d{2}", "_\\1", season)
+      )
+    
+    if (pathogen != "overall_resp") {
+      df_characteristic <- bind_rows(df_characteristic_spec,
+                                     df_characteristic_sens)
+    } else {
+      df_characteristic <- df_characteristic_sens
+    }
+    
+    df_group <- bind_rows(df_group, df_characteristic)
+    
+  }
+  
+  df_group_primary <- df_group %>%
+    filter(
+      event == paste0(pathogen, "_primary_date")
+    )
+  
+  df_group_secondary <- df_group %>%
+    filter(
+      event == paste0(pathogen, "_secondary_date")
+    )
+  
+  write_csv(df_group_primary, here::here("output", "collated", "descriptive",
+            "over_time", paste0(cohort, "_primary_rates_over_time_multi_strata_",
+            pathogen, "_", characteristic, "_collated.csv")))
+  
+  write_csv(df_group_secondary, here::here("output", "collated", "descriptive",
+            "over_time", paste0(cohort, "_secondary_rates_over_time_multi_strata_",
+            pathogen, "_", characteristic, "_collated.csv")))
+  
+}
+
+for (i in 1:length(pathogens)) {
+  
+  pathogen <- pathogens[i]
+  
+  if (pathogen == "covid") {
+    collate_rates_season(seasons_covid, pathogen, "latest_ethnicity_group",
+                         "imd_quintile")
+  } else {
+    collate_rates_season(seasons, pathogen, "latest_ethnicity_group",
+                         "imd_quintile")
+  }
+  
+}
