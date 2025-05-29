@@ -26,10 +26,7 @@ if (length(args) == 0) {
   codelist_type <- args[[4]]
   investigation_type <- args[[5]]
 }
-
 covid_season_min <- as.Date("2019-09-01")
-covid_current_vacc_min <- as.Date("2020-09-01", "%Y-%m-%d")
-covid_prior_vacc_min <- as.Date("2021-09-01", "%Y-%m-%d")
 
 source(here::here("analysis", "functions", "redaction.R"))
 
@@ -54,6 +51,12 @@ calculate_rolling_rates_all <- function(df, pathogen, start = study_start_date,
                                         end = study_end_date,
                                         interval_length = 30,
                                         interval_width = "week") {
+  
+  int <- case_when(
+    interval_length == 30 ~ "monthly",
+    interval_length == 7 ~ "weekly",
+    interval_length == 1 ~ "daily"
+  )
   
   if (pathogen == "covid" & study_start_date == covid_season_min) {
     start <- as.Date("2020-03-01")
@@ -148,8 +151,8 @@ calculate_rolling_rates_all <- function(df, pathogen, start = study_start_date,
   
   #save the files
   write_csv(df_rates, here::here("output", "results", "rates", "weekly",
-            "all", paste0("rates_over_time_all_", pathogen, "_", cohort,
-            "_", year(study_start_date), "_", year(study_end_date),
+            "all", paste0("rates_over_time_all_", int, "_", pathogen, "_",
+            cohort, "_", year(study_start_date), "_", year(study_end_date),
             "_", codelist_type, "_", investigation_type, ".csv")))
   
 }
@@ -165,4 +168,18 @@ if (study_start_date >= covid_season_min) {
 } 
 if (codelist_type == "sensitive") {
   calculate_rolling_rates_all(df_input, "overall_resp")
+}
+
+##now weekly intervals
+calculate_rolling_rates_all(df_input, "rsv", interval_length = 7,
+                            interval_width = "day")
+calculate_rolling_rates_all(df_input, "flu", interval_length = 7,
+                            interval_width = "day")
+if (study_start_date >= covid_season_min) {
+  calculate_rolling_rates_all(df_input, "covid", interval_length = 7,
+                              interval_width = "day")
+} 
+if (codelist_type == "sensitive") {
+  calculate_rolling_rates_all(df_input, "overall_resp", interval_length = 7,
+                              interval_width = "day")
 }
