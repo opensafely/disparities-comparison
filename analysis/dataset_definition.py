@@ -618,9 +618,9 @@ else :
     )
     #then extract date - prioritising inclusion from specific phenotype
     dataset.rsv_primary_date = (case(
-      when(rsv_primary_spec.is_not_null()
-      .then(rsv_primary_spec)), when((rsv_primary_spec
-      .is_null) & (~rsv_exclusion_primary)).then(
+      when(rsv_primary_spec.is_not_null())
+      .then(rsv_primary_spec), when((rsv_primary_spec
+      .is_null()) & (~rsv_exclusion_primary)).then(
       minimum_of((rsv_codes_date), (rsv_med_inclusion_date),
       (emergency_care_diagnosis_matches(codelists
       .bronchiolitis_attendance).where(emergency_care_attendances
@@ -2069,9 +2069,9 @@ if codelist_type == "sensitive" :
       dataset.overall_resp_secondary_date = (case(
         when((dataset.rsv_secondary_date.is_not_null())
         |(dataset.flu_secondary_date.is_not_null())
-        |(dataset.covid_secondary_date.is_not_null())
+        |(dataset.covid_secondary_date.is_not_null()))
         .then(minimum_of(dataset.rsv_secondary_date,
-        dataset.flu_secondary_date, dataset.covid_secondary_date))),
+        dataset.flu_secondary_date, dataset.covid_secondary_date)),
         when((dataset.rsv_secondary_date.is_null()) &
         (dataset.flu_secondary_date.is_null()) &
         (dataset.covid_secondary_date.is_null()) &
@@ -2142,10 +2142,10 @@ if codelist_type == "sensitive" :
       dataset.overall_resp_secondary_second_date = (case(
         when((dataset.rsv_secondary_second_date.is_not_null())
         |(dataset.flu_secondary_second_date.is_not_null())
-        |(dataset.covid_secondary_second_date.is_not_null())
+        |(dataset.covid_secondary_second_date.is_not_null()))
         .then(minimum_of(dataset.rsv_secondary_second_date,
         dataset.flu_secondary_second_date, dataset
-        .covid_secondary_second_date))), when((dataset
+        .covid_secondary_second_date)), when((dataset
         .rsv_secondary_second_date.is_null()) &
         (dataset.flu_secondary_second_date.is_null()) &
         (dataset.covid_secondary_second_date.is_null()) &
@@ -2191,9 +2191,9 @@ if codelist_type == "sensitive" :
       #or overall_resp_secondary_sens_date
       dataset.overall_resp_secondary_date = (case(
         when((dataset.rsv_secondary_date.is_not_null())
-        |(dataset.flu_secondary_date.is_not_null())
+        |(dataset.flu_secondary_date.is_not_null()))
         .then(minimum_of(dataset.rsv_secondary_date,
-        dataset.flu_secondary_date))), when((dataset
+        dataset.flu_secondary_date)), when((dataset
         .rsv_secondary_date.is_null()) &
         (dataset.flu_secondary_date.is_null()) &
         (~overall_resp_exclusion_secondary)).then(
@@ -2260,10 +2260,10 @@ if codelist_type == "sensitive" :
       #extract date of second episode - using the same criteria as the first episode
       dataset.overall_resp_secondary_second_date = (case(
         when((dataset.rsv_secondary_second_date.is_not_null())
-        |(dataset.flu_secondary_second_date.is_not_null())
+        |(dataset.flu_secondary_second_date.is_not_null()))
         .then(minimum_of(dataset.rsv_secondary_second_date,
-        dataset.flu_secondary_second_date))),
-        when((dataset.rsv_secondary_seconf_date.is_null()) &
+        dataset.flu_secondary_second_date)),
+        when((dataset.rsv_secondary_second_date.is_null()) &
         (dataset.flu_secondary_second_date.is_null()) &
         (~overall_resp_exclusion_secondary)).then(
         overall_resp_secondary_sens_date),
@@ -2332,9 +2332,9 @@ if codelist_type == "sensitive" :
       dataset.overall_resp_secondary_date = (case(
         when((dataset.rsv_secondary_date.is_not_null())
         |(dataset.flu_secondary_date.is_not_null())
-        |(dataset.covid_secondary_date.is_not_null())
+        |(dataset.covid_secondary_date.is_not_null()))
         .then(minimum_of(dataset.rsv_secondary_date,
-        dataset.flu_secondary_date, dataset.covid_secondary_date))),
+        dataset.flu_secondary_date, dataset.covid_secondary_date)),
         when((dataset.rsv_secondary_date.is_null()) &
         (dataset.flu_secondary_date.is_null()) &
         (dataset.covid_secondary_date.is_null()) &
@@ -2391,10 +2391,10 @@ if codelist_type == "sensitive" :
       dataset.overall_resp_secondary_second_date = (case(
         when((dataset.rsv_secondary_second_date.is_not_null())
         |(dataset.flu_secondary_second_date.is_not_null())
-        |(dataset.covid_secondary_second_date.is_not_null())
+        |(dataset.covid_secondary_second_date.is_not_null()))
         .then(minimum_of(dataset.rsv_secondary_second_date,
         dataset.flu_secondary_second_date, dataset
-        .covid_secondary_second_date))), when((dataset
+        .covid_secondary_second_date)), when((dataset
         .rsv_secondary_second_date.is_null()) &
         (dataset.flu_secondary_second_date.is_null()) &
         (dataset.covid_secondary_second_date.is_null()) &
@@ -2436,9 +2436,9 @@ if codelist_type == "sensitive" :
       #or overall_resp_secondary_sens_date
       dataset.overall_resp_secondary_date = (case(
         when((dataset.rsv_secondary_date.is_not_null())
-        |(dataset.flu_secondary_date.is_not_null())
+        |(dataset.flu_secondary_date.is_not_null()))
         .then(minimum_of(dataset.rsv_secondary_date,
-        dataset.flu_secondary_date))), when((dataset
+        dataset.flu_secondary_date)), when((dataset
         .rsv_secondary_date.is_null()) &
         (dataset.flu_secondary_date.is_null()) &
         (~overall_resp_exclusion_secondary)).then(
@@ -2491,10 +2491,10 @@ if codelist_type == "sensitive" :
       #extract date of second episode - using the same criteria as the first episode
       dataset.overall_resp_secondary_second_date = (case(
         when((dataset.rsv_secondary_second_date.is_not_null())
-        |(dataset.flu_secondary_second_date.is_not_null())
+        |(dataset.flu_secondary_second_date.is_not_null()))
         .then(minimum_of(dataset.rsv_secondary_second_date,
-        dataset.flu_secondary_second_date))),
-        when((dataset.rsv_secondary_seconf_date.is_null()) &
+        dataset.flu_secondary_second_date)),
+        when((dataset.rsv_secondary_second_date.is_null()) &
         (dataset.flu_secondary_second_date.is_null()) &
         (~overall_resp_exclusion_secondary)).then(
         overall_resp_secondary_sens_date),
@@ -2529,13 +2529,11 @@ if codelist_type == "sensitive" :
 if investigation_type == "secondary" :
 
   from additional_comorbidities import (
-    filter_codes_by_category, smoking_status,
-    hazardous_drinking, drug_usage, has_asthma,
-    has_reactive_airway, has_copd,
-    has_cystic_fibrosis, has_other_resp,
+    smoking_status, hazardous_drinking, drug_usage, has_asthma,
+    has_copd, has_cystic_fibrosis, has_other_resp,
     has_diabetes, has_addisons, severe_obesity,
-    has_chd, has_ckd, has_cld, has_cnd, has_crd,
-    has_cancer, immunosuppressed, has_sickle_cell,
+    has_chd, has_ckd, has_cld, has_cnd, has_cancer,
+    immunosuppressed, has_sickle_cell,
   )
   
   if cohort == "older_adults" :
