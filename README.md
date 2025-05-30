@@ -35,7 +35,7 @@ For sensitive phenotypes additional outcomes are explored:
 - Mild overall respiratory virus
 - Severe overall respiratory virus
 
-For more information on the analyses performed, see the [protocol](https://github.com/opensafely/disparities-comparison/blob/main/docs/Finalised%20OpenSAFELY%20Protocol%20(Comparison%20of%20Disparities%20in%20RSV%2C%20influenza%2C%20and%20COVID-19).pdf)
+For more information on the analyses performed, see the [study protocol](https://github.com/opensafely/disparities-comparison/blob/main/docs/Finalised%20OpenSAFELY%20Protocol%20(Comparison%20of%20Disparities%20in%20RSV%2C%20influenza%2C%20and%20COVID-19).pdf)
 
 Details of the purpose and any published outputs from this project can be found at the link above.
 
