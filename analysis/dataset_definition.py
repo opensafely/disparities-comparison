@@ -2548,7 +2548,7 @@ if codelist_type == "sensitive" :
 
 ## comorbidities for secondary investigation 
 
-if investigation_type == "secondary" & cohort == "older_adults:
+if investigation_type == "secondary" & cohort == "older_adults":
 
   from additional_comorbidities import (
     smoking_status, hazardous_drinking, drug_usage, has_asthma,
