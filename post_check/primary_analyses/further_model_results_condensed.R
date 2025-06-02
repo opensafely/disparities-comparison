@@ -344,7 +344,7 @@ bottom_row <- plot_grid(
 )
 
 # Combine all plots
-combined_plot <- plot_grid(
+combined_plot_mild <- plot_grid(
   rsv_plot,
   flu_plot,
   bottom_row,
@@ -356,7 +356,7 @@ combined_plot <- plot_grid(
 
 # Add annotations
 ethnicity_ses_mild <- annotate_figure(
-  combined_plot, 
+  combined_plot_mild, 
   top = text_grob(paste0("Rate Ratios of Mild Disease in ",
                          str_to_title(gsub("_", " ", cohort))),
                   face = "bold", size = 14),
@@ -390,7 +390,7 @@ bottom_row <- plot_grid(
 )
 
 # Combine all plots
-combined_plot <- plot_grid(
+combined_plot_severe <- plot_grid(
   rsv_plot,
   flu_plot,
   bottom_row,
@@ -402,7 +402,7 @@ combined_plot <- plot_grid(
 
 # Add annotations
 ethnicity_ses_severe <- annotate_figure(
-  combined_plot, 
+  combined_plot_severe, 
   top = text_grob(paste0("Rate Ratios of Severe Disease in ",
                          str_to_title(gsub("_", " ", cohort))),
                   face = "bold", size = 14),
@@ -417,16 +417,30 @@ ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
             paste0(cohort, "_severe_ethnicity_ses_further", ".png")),
        ethnicity_ses_severe, height = 15, width = 15)
 
-# #plot mild and severe together
-# final_combined <- plot_grid(
-#   ethnicity_ses_mild,
-#   ethnicity_ses_severe,
-#   nrow = 2
-# )
-# 
-# ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
-#             paste0(cohort, "_all_ethnicity_ses_further", ".png")),
-#        final_combined, height = 20, width = 15)
+#plot mild and severe together
+final_combined <- plot_grid(
+  annotate_figure(combined_plot_mild, top = text_grob(
+    "Mild Outcomes", hjust = -0.35, size = 12.5)),
+  annotate_figure(combined_plot_severe, top = text_grob(
+    "Severe Outcomes", hjust = -0.2, size = 12.5)),
+  nrow = 2
+) %>%
+  annotate_figure(
+    top = text_grob(paste0("Rate Ratios of Outcomes in ",
+                           str_to_title(gsub("_", " ", cohort))),
+                    face = "bold", size = 14, hjust = 0.25),
+    bottom = text_grob("Rate Ratio", vjust = -1), 
+    left = text_grob(c("RSV", "Influenza", "COVID-19",
+                       "RSV", "Influenza", "COVID-19"), 
+                     x = 1.5, hjust = 0, vjust = -16,
+                     y = c(0.87, 0.71, 0.55,
+                           0.38, 0.22, 0.06), 
+                     just = "left", face = "bold")
+  )
+
+ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
+            paste0(cohort, "_all_ethnicity_ses_further", ".png")),
+       final_combined, height = 20, width = 14)
 
 ##overall respiratory
 pathogen <- "overall_and_all_cause"
@@ -725,7 +739,7 @@ bottom_row <- plot_grid(
 )
 
 # Combine all plots
-combined_plot <- plot_grid(
+combined_plot_mild <- plot_grid(
   rsv_plot,
   flu_plot,
   bottom_row,
@@ -737,7 +751,7 @@ combined_plot <- plot_grid(
 
 # Add annotations
 ethnicity_ses_mild <- annotate_figure(
-  combined_plot, 
+  combined_plot_mild, 
   top = text_grob(paste0("Rate Ratios of Mild Disease in ",
                          str_to_title(gsub("_", " ", cohort))),
                   face = "bold", size = 14),
@@ -771,7 +785,7 @@ bottom_row <- plot_grid(
 )
 
 # Combine all plots
-combined_plot <- plot_grid(
+combined_plot_severe <- plot_grid(
   rsv_plot,
   flu_plot,
   bottom_row,
@@ -783,7 +797,7 @@ combined_plot <- plot_grid(
 
 # Add annotations
 ethnicity_ses_severe <- annotate_figure(
-  combined_plot, 
+  combined_plot_severe, 
   top = text_grob(paste0("Rate Ratios of Severe Disease in ",
                          str_to_title(gsub("_", " ", cohort))),
                   face = "bold", size = 14),
@@ -798,16 +812,30 @@ ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
             paste0(cohort, "_severe_ethnicity_ses_further", ".png")),
        ethnicity_ses_severe, height = 15, width = 15)
 
-# #plot mild and severe together
-# final_combined <- plot_grid(
-#   ethnicity_ses_mild,
-#   ethnicity_ses_severe,
-#   nrow = 2
-# )
-# 
-# ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
-#             paste0(cohort, "_all_ethnicity_ses_further", ".png")),
-#        final_combined, height = 20, width = 15)
+#plot mild and severe together
+final_combined <- plot_grid(
+  annotate_figure(combined_plot_mild, top = text_grob(
+    "Mild Outcomes", hjust = -0.35, size = 12.5)),
+  annotate_figure(combined_plot_severe, top = text_grob(
+    "Severe Outcomes", hjust = -0.2, size = 12.5)),
+  nrow = 2
+) %>%
+  annotate_figure(
+    top = text_grob(paste0("Rate Ratios of Outcomes in ",
+                           str_to_title(gsub("_", " ", cohort))),
+                    face = "bold", size = 14, hjust = 0.25),
+    bottom = text_grob("Rate Ratio", vjust = -1), 
+    left = text_grob(c("RSV", "Influenza", "COVID-19",
+                       "RSV", "Influenza", "COVID-19"), 
+                     x = 1.5, hjust = 0, vjust = -16,
+                     y = c(0.87, 0.71, 0.55,
+                           0.38, 0.22, 0.06), 
+                     just = "left", face = "bold")
+  )
+
+ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
+            paste0(cohort, "_all_ethnicity_ses_further", ".png")),
+       final_combined, height = 20, width = 14)
 
 ##overall respiratory
 pathogen <- "overall_and_all_cause"
@@ -1066,7 +1094,7 @@ bottom_row <- plot_grid(
 )
 
 # Combine all plots
-combined_plot <- plot_grid(
+combined_plot_mild <- plot_grid(
   rsv_plot,
   flu_plot,
   bottom_row,
@@ -1079,7 +1107,7 @@ combined_plot <- plot_grid(
 
 # Add annotations
 ethnicity_ses_mild <- annotate_figure(
-  combined_plot, 
+  combined_plot_mild, 
   top = text_grob(paste0("Rate Ratios of Mild Disease in ",
                          str_to_title(gsub("_", " ", cohort))),
                   face = "bold", size = 14),
@@ -1113,7 +1141,7 @@ bottom_row <- plot_grid(
 )
 
 # Combine all plots
-combined_plot <- plot_grid(
+combined_plot_severe <- plot_grid(
   rsv_plot,
   flu_plot,
   bottom_row,
@@ -1126,7 +1154,7 @@ combined_plot <- plot_grid(
 
 # Add annotations
 ethnicity_ses_severe <- annotate_figure(
-  combined_plot, 
+  combined_plot_severe, 
   top = text_grob(paste0("Rate Ratios of Severe Disease in ",
                          str_to_title(gsub("_", " ", cohort))),
                   face = "bold", size = 14),
@@ -1141,16 +1169,30 @@ ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
             paste0(cohort, "_severe_ethnicity_ses_further", ".png")),
        ethnicity_ses_severe, height = 16, width = 15)
 
-# #plot mild and severe together
-# final_combined <- plot_grid(
-#   ethnicity_ses_mild,
-#   ethnicity_ses_severe,
-#   nrow = 2
-# )
-# 
-# ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
-#             paste0(cohort, "_all_ethnicity_ses_further", ".png")),
-#        final_combined, height = 20, width = 15)
+#plot mild and severe together
+final_combined <- plot_grid(
+  annotate_figure(combined_plot_mild, top = text_grob(
+    "Mild Outcomes", hjust = -0.35, size = 12.5)),
+  annotate_figure(combined_plot_severe, top = text_grob(
+    "Severe Outcomes", hjust = -0.2, size = 12.5)),
+  nrow = 2
+) %>%
+  annotate_figure(
+    top = text_grob(paste0("Rate Ratios of Outcomes in ",
+                           str_to_title(gsub("_", " ", cohort))),
+                    face = "bold", size = 14, hjust = 0.25),
+    bottom = text_grob("Rate Ratio", vjust = -1), 
+    left = text_grob(c("RSV", "Influenza", "COVID-19",
+                       "RSV", "Influenza", "COVID-19"), 
+                     x = 1.5, hjust = 0, vjust = -16,
+                     y = c(0.87, 0.71, 0.55,
+                           0.38, 0.22, 0.06), 
+                     just = "left", face = "bold")
+  )
+
+ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
+            paste0(cohort, "_all_ethnicity_ses_further", ".png")),
+       final_combined, height = 20, width = 14)
 
 ##overall respiratory
 pathogen <- "overall_and_all_cause"

@@ -385,7 +385,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                           pathogen_title, " by Group (", title_suffix, ")"),
            subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) + 
       scale_x_log10() + coord_cartesian(xlim = c(conf_low, conf_high)) +
-      theme_bw() + theme(text = element_text(size = 12),
+      theme_bw() + theme(text = element_text(size = 11),
                          plot.tag.position = "topright")
     
   }
@@ -918,7 +918,7 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
         facet_wrap(~ faceting, scales = "free_y", ncol = 2) + 
         labs(x = "Rate Ratio", y = " ", title = title_label,
              subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-        theme_bw() + theme(text = element_text(size = 12))
+        theme_bw() + theme(text = element_text(size = 11))
       
     } else {
       
@@ -976,7 +976,7 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
           facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
           labs(x = "Rate Ratio", y = " ", title = title_label,
                subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-          theme_bw() + theme(text = element_text(size = 12))
+          theme_bw() + theme(text = element_text(size = 11))
         
       } else {
       
@@ -1030,7 +1030,7 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
           facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
           labs(x = "Rate Ratio", y = " ", title = title_label,
                subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-          theme_bw() + theme(text = element_text(size = 12))
+          theme_bw() + theme(text = element_text(size = 11))
         
       }
       
@@ -1517,7 +1517,7 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type,
                           pathogen_title, " by Group (", title_suffix, ")"),
            subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) + 
       scale_x_log10(limits = c(conf_low, conf_high)) +
-      theme_bw() + theme(text = element_text(size = 12),
+      theme_bw() + theme(text = element_text(size = 11),
                          plot.tag.position = "topright")
     
   }
@@ -2133,7 +2133,7 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           facet_grid(faceting ~ subset, scales = "free") + 
           labs(x = "Rate Ratio", y = " ", title = title_label,
                subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-          theme_bw() + theme(text = element_text(size = 12))
+          theme_bw() + theme(text = element_text(size = 11))
         
       } else {
       
@@ -2193,7 +2193,7 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           facet_grid(faceting ~ subset, scales = "free") + 
           labs(x = "Rate Ratio", y = " ", title = title_label,
                subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-          theme_bw() + theme(text = element_text(size = 12))
+          theme_bw() + theme(text = element_text(size = 11))
         
       }
       
@@ -2256,7 +2256,7 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
           labs(x = "Rate Ratio", y = " ", title = title_label,
                subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-          theme_bw() + theme(text = element_text(size = 12))
+          theme_bw() + theme(text = element_text(size = 11))
         
       } else {
         
@@ -2312,7 +2312,7 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           facet_wrap(~ subset, scales = "free_y", nrow = 2) + 
           labs(x = "Rate Ratio", y = " ", title = title_label,
                subtitle = paste0(str_to_title(gsub("_", " ", model_type)))) +
-          theme_bw() + theme(text = element_text(size = 12))
+          theme_bw() + theme(text = element_text(size = 11))
         
       }
       
@@ -2636,7 +2636,7 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
         guides(color = "none", shape = guide_legend("Est. Type")) +
         facet_wrap(~ subset, nrow = 1, ncol = 4) + 
         labs(x = "", y = "") +
-        theme_bw() + theme(text = element_text(size = 12))
+        theme_bw() + theme(text = element_text(size = 11))
       
     } else {
       
@@ -2683,7 +2683,7 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
         guides(color = "none", shape = guide_legend("Est. Type")) +
         facet_wrap(~ subset, nrow = 1) + 
         labs(x = "", y = " ") +
-        theme_bw() + theme(text = element_text(size = 12))
+        theme_bw() + theme(text = element_text(size = 11))
       
     }
       
@@ -3184,7 +3184,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           guides(color = "none", shape = guide_legend("Est. Type")) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
           labs(x = "", y = "") +
-          theme_bw() + theme(text = element_text(size = 12))
+          theme_bw() + theme(text = element_text(size = 11))
         
       } else {
         
@@ -3246,7 +3246,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           guides(color = "none", shape = guide_legend("Est. Type")) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
           labs(x = "", y = "") +
-          theme_bw() + theme(text = element_text(size = 12))
+          theme_bw() + theme(text = element_text(size = 11))
         
       }
       
@@ -3312,7 +3312,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           guides(color = "none", shape = guide_legend("Est. Type")) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
           labs(x = "", y = "") +
-          theme_bw() + theme(text = element_text(size = 12))
+          theme_bw() + theme(text = element_text(size = 11))
         
       } else {
         
@@ -3369,7 +3369,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           guides(color = "none", shape = guide_legend("Est. Type")) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
           labs(x = "", y = "") +
-          theme_bw() + theme(text = element_text(size = 12))
+          theme_bw() + theme(text = element_text(size = 11))
         
       }
       

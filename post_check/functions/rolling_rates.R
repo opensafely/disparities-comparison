@@ -84,13 +84,13 @@ create_rolling_plots <- function(season, phenotype) {
   
   for (characteristic in characteristics) {
     
-    col <- cols %>%
-      filter(var == characteristic) %>%
-      pull(col)
-    
-    alpha_length <- df %>%
-      filter(characteristic == !!characteristic)
-    alpha_length <- length(unique(alpha_length$group))
+    # col <- cols %>%
+    #   filter(var == characteristic) %>%
+    #   pull(col)
+    # 
+    # alpha_length <- df %>%
+    #   filter(characteristic == !!characteristic)
+    # alpha_length <- length(unique(alpha_length$group))
     
     pathogen_print <- case_when(
       pathogen == "rsv" ~ "RSV",
@@ -111,13 +111,15 @@ create_rolling_plots <- function(season, phenotype) {
     
     options(scipen = 999)
     
+    alpha_type <- if_else(phenotype == "specific", 1, 0.5)
+    
     plots[[characteristic]] <- df %>%
       filter(characteristic == !!characteristic) %>%
       ggplot(aes(x = interval_start, y = rate_1000_py_midpoint10_derived,
                  group = group, col = group)) +
-      geom_line(stat = "identity", linewidth = 1) +  theme_bw() +
-      scale_color_viridis_d() +
-      labs(x = "", y = "", col = "Group") +
+      geom_line(stat = "identity", linewidth = 1, alpha = alpha_type) +
+      scale_color_viridis_d() + theme_bw() +
+      labs(x = paste0(start, "-", end), y = "", col = "Group") +
       facet_wrap( ~ outcome) + theme(legend.position = "none")
     
   }
