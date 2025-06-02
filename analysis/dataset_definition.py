@@ -533,7 +533,7 @@ if codelist_type == "specific" :
       .is_on_or_between(dataset.rsv_primary_date + days(14),
       followup_end_date))).arrival_date.minimum_for_patient()))
     )
-
+    
   #all cohorts above the age of 2  
   else :
     
@@ -555,12 +555,12 @@ if codelist_type == "specific" :
     
 #extract rsv primary care dates for 'sensitive' phenotype
 else :
-
+  
   #get dates of events and corresponding codes 
   rsv_codes_date, rsv_code = (
      get_codes_dates("rsv_sensitive_codelist", 4, index_date, 2)
   )
-
+  
   #get the date of the occurrence of first relevant prescription
   rsv_med_date = (
     medications.where(medications.dmd_code.is_in(codelists
@@ -635,13 +635,13 @@ else :
       .arrival_date.minimum_for_patient())))),
       otherwise = None)
     )
-
+    
     #get dates of events and corresponding codes 
     rsv_codes_second_date, rsv_code_second = (
        get_codes_dates("rsv_sensitive_codelist", 4,
                        dataset.rsv_primary_date + days(14), 2)
     )
-
+    
     #get the date of the occurrence of first relevant prescription
     # - looking at the second episode
     rsv_med_second_date = (
@@ -673,10 +673,10 @@ else :
       rsv_med_second_date - days(14), rsv_med_second_date + days(14)))
       .exists_for_patient()).then(minimum_of((is_infection_event(
       codelists.rsv_sensitive_codelist).where(clinical_events
-      .date.is_on_or_between(rsv_med_second_date - days(14),
-      rsv_med_second_date + days(14))).sort_by(clinical_events.date)
-      .first_for_patient().date), (rsv_med_second_date))),
-      otherwise = None)
+      .date.is_on_or_between(maximum_of(rsv_med_second_date - days(14),
+      dataset.rsv_primary_date + days(14)), rsv_med_second_date + days(14)))
+      .sort_by(clinical_events.date).first_for_patient().date),
+      (rsv_med_second_date))), otherwise = None)
     )
     
     #first get inclusion from specific phenotype
@@ -713,7 +713,7 @@ else :
       followup_end_date)).arrival_date.minimum_for_patient()))),
       otherwise = None)
     )
-
+    
   #all cohorts above the age of 2 
   else :
     
@@ -722,7 +722,7 @@ else :
     #primary codelist, the date of the first code in the RSV sensitive codelist,
     #or the date of the first prescription in the RSV prescriptions codelist
     #when there is at least one code in the RSV sensitive codelist
-
+    
     #first define inclusion from specific phenotype
     rsv_primary_spec = (
       first_infection_event(codelists
@@ -744,7 +744,7 @@ else :
        get_codes_dates("rsv_sensitive_codelist", 4,
                        dataset.rsv_primary_date + days(14), 2)
     )
-
+    
     #get the date of the occurrence of first relevant prescription
     # - looking at the second episode
     rsv_med_second_date = (
@@ -776,12 +776,12 @@ else :
       rsv_med_second_date - days(14), rsv_med_second_date + days(14)))
       .exists_for_patient()).then(minimum_of((is_infection_event(
       codelists.rsv_sensitive_codelist).where(clinical_events
-      .date.is_on_or_between(rsv_med_second_date - days(14),
-      rsv_med_second_date + days(14))).sort_by(clinical_events.date)
-      .first_for_patient().date), (rsv_med_second_date))),
-      otherwise = None)
+      .date.is_on_or_between(maximum_of(rsv_med_second_date - days(14),
+      dataset.rsv_primary_date + days(14)), rsv_med_second_date + days(14)))
+      .sort_by(clinical_events.date).first_for_patient().date),
+      (rsv_med_second_date))), otherwise = None)
     )
-
+    
     #first get inclusion from specific phenotype
     rsv_primary_spec_second = (
       is_infection_event(codelists
@@ -790,7 +790,7 @@ else :
       .sort_by(clinical_events.date)
       .first_for_patient().date
     )
-
+    
     #extract date of second episode - using the same criteria as the first episode
     dataset.rsv_primary_second_date = (case(
       when(rsv_primary_spec_second.is_not_null())
@@ -1381,13 +1381,13 @@ if study_start_date >= covid_season_min :
       .covid_primary_date + days(14))).sort_by(clinical_events
       .date).first_for_patient().date
     )
-
+    
   #extract covid primary care dates for 'sensitive' phenotype 
   else :
-
+    
     #count number of clinical codes in covid symptom list which occur within 14 days
     #looking at the first episode
-
+    
     #get dates of events and corresponding codes 
     covid_codes_date, covid_code = (
       get_codes_dates("covid_sensitive_codelist", 4, index_date, 2)
@@ -1420,7 +1420,7 @@ if study_start_date >= covid_season_min :
     # - get the first date of either a code in the covid primary codelist, 
     #a code in the covid sensitive codelist, or a prescription in the covid
     #prescriptions codelist
-
+    
     #first define inclusion from specific phenotype
     covid_primary_spec = (
       first_infection_event(codelists
@@ -1437,7 +1437,7 @@ if study_start_date >= covid_season_min :
     )
     
     #count number of clinical codes in covid symptom list for second episode
-
+    
     #get dates of events and corresponding codes 
     covid_codes_second_date, covid_code_second = (
       get_codes_dates("covid_sensitive_codelist", 4,
@@ -1467,7 +1467,7 @@ if study_start_date >= covid_season_min :
     )
     
     #extract date of second episode - using the same criteria as the first episode
-
+    
     #first define inclusion from specific phenotype
     covid_primary_spec_second = (
       is_infection_event(codelists.covid_primary_codelist)
@@ -1488,7 +1488,7 @@ if study_start_date >= covid_season_min :
     
   #extract covid secondary care dates for 'specific' phenotype
   if codelist_type == "specific" :
-
+    
     #extract date of first episode - looking at the first date for which there is
     #a code in the covid secondary codelist as the primary or secondary diagnosis
     dataset.covid_secondary_date = (
@@ -1552,7 +1552,7 @@ if study_start_date >= covid_season_min :
       diff_dates_hours(dataset.covid_secondary_second_date,
       covid_secondary_discharge_second)
     )
-
+    
   #extract covid secondary care dates for 'sensitive' phenotype 
   else :
     
@@ -1583,7 +1583,7 @@ if study_start_date >= covid_season_min :
     
     #extract date of first episode - looking at when the exclusion criteria is
     #not met 
-
+    
     #first define inclusion from specific phenotype
     covid_secondary_spec = (
       apcs.sort_by(apcs.admission_date)
@@ -1636,7 +1636,7 @@ if study_start_date >= covid_season_min :
       .admission_date.minimum_for_patient()
     )
     
-    #get occurrence of event in exclusion list within one month of an occurrence
+   #get occurrence of event in exclusion list within one month of an occurrence
     #of covid_secondary_sens_second_date
     covid_exclusion_secondary_second = (case(
       when((hospitalisation_diagnosis_matches(codelists
@@ -1804,7 +1804,7 @@ if codelist_type == "sensitive" :
         .date).first_for_patient().date))),
         otherwise = None)
       )
-
+      
     #pre covid seasons  
     else:
       
@@ -1891,7 +1891,7 @@ if codelist_type == "sensitive" :
         .date).first_for_patient().date))),
         otherwise = None)
       )
- 
+      
   #cohorts that are not older adults    
   else:
     
@@ -1963,7 +1963,7 @@ if codelist_type == "sensitive" :
         .arrival_date.minimum_for_patient()))),
         otherwise = None)
       )
-
+      
     #pre-covid seasons  
     else:
       
@@ -2131,7 +2131,7 @@ if codelist_type == "sensitive" :
         .overall_resp_secondary_date + days(14), 
         followup_end_date)).admission_date.minimum_for_patient())
       )
-      
+
       #occurrence of event in exclusion list within one month of an occurrence
       #of overall_resp_secondary_sens_second_date - using the same criteria as the first episode
       overall_resp_exclusion_secondary_second = (case(
@@ -2188,7 +2188,7 @@ if codelist_type == "sensitive" :
         diff_dates_hours(dataset.overall_resp_secondary_second_date,
         overall_resp_secondary_discharge_second)
       ) 
-
+      
     #pre-covid seasons  
     else:
       
@@ -2302,7 +2302,7 @@ if codelist_type == "sensitive" :
         diff_dates_hours(dataset.overall_resp_secondary_second_date,
         overall_resp_secondary_discharge_second)
       ) 
-
+      
   #cohorts that are not older adults   
   else:
     
@@ -2331,7 +2331,6 @@ if codelist_type == "sensitive" :
     
     #covid seasons
     if study_start_date >= covid_season_min :
-      
       #extract date of first episode where the exclusion criteria is not met
       # - get the first date of either a RSV secondary episode, flu secondary episode,
       #covid secondary episode or overall_resp_secondary_sens_date
@@ -2433,7 +2432,7 @@ if codelist_type == "sensitive" :
         diff_dates_hours(dataset.overall_resp_secondary_second_date,
         overall_resp_secondary_discharge_second)
       ) 
-
+      
     #pre-covid seasons  
     else:
       
@@ -2532,7 +2531,7 @@ if codelist_type == "sensitive" :
 
 ## comorbidities for secondary investigation 
 
-if investigation_type == "secondary" :
+if investigation_type == "secondary" & cohort == "older_adults:
 
   from additional_comorbidities import (
     smoking_status, hazardous_drinking, drug_usage, has_asthma,
@@ -2542,22 +2541,21 @@ if investigation_type == "secondary" :
     immunosuppressed, has_sickle_cell,
   )
   
-  if cohort == "older_adults" :
-    
-    dataset.smoking_status = smoking_status
-    dataset.hazardous_drinking = hazardous_drinking
-    dataset.drug_usage = drug_usage
-    dataset.has_asthma = has_asthma
-    dataset.has_copd = has_copd
-    dataset.has_cystic_fibrosis = has_cystic_fibrosis
-    dataset.has_other_resp = has_other_resp
-    dataset.has_diabetes = has_diabetes
-    dataset.has_addisons = has_addisons
-    dataset.severe_obesity = severe_obesity
-    dataset.has_chd = has_chd
-    dataset.has_ckd = has_ckd
-    dataset.has_cld = has_cld
-    dataset.has_cnd = has_cnd
-    dataset.has_cancer = has_cancer
-    dataset.immunosuppressed = immunosuppressed
-    dataset.has_sickle_cell = has_sickle_cell
+  #add to dataset
+  dataset.smoking_status = smoking_status
+  dataset.hazardous_drinking = hazardous_drinking
+  dataset.drug_usage = drug_usage
+  dataset.has_asthma = has_asthma
+  dataset.has_copd = has_copd
+  dataset.has_cystic_fibrosis = has_cystic_fibrosis
+  dataset.has_other_resp = has_other_resp
+  dataset.has_diabetes = has_diabetes
+  dataset.has_addisons = has_addisons
+  dataset.severe_obesity = severe_obesity
+  dataset.has_chd = has_chd
+  dataset.has_ckd = has_ckd
+  dataset.has_cld = has_cld
+  dataset.has_cnd = has_cnd
+  dataset.has_cancer = has_cancer
+  dataset.immunosuppressed = immunosuppressed
+  dataset.has_sickle_cell = has_sickle_cell
