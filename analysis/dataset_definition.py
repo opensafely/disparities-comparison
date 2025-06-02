@@ -501,6 +501,7 @@ def get_codes_dates(codelist_name, num_events, start_date, num_codes):
 #extract rsv primary care dates for 'specific' phenotype
 if codelist_type == "specific" :
   
+  #infant and infant subgroup cohorts
   if cohort == "infants" or cohort == "infants_subgroup" :
     
     #extract date of first episode - looking at the first date for which there is
@@ -532,7 +533,8 @@ if codelist_type == "specific" :
       .is_on_or_between(dataset.rsv_primary_date + days(14),
       followup_end_date))).arrival_date.minimum_for_patient()))
     )
-    
+
+  #all cohorts above the age of 2  
   else :
     
     #extract date of first episode - using only the RSV primary codelist
@@ -596,6 +598,7 @@ else :
     .first_for_patient().date), (rsv_med_date))), otherwise = None)
   )
 
+  #infant and infant subroup cohorts
   if cohort == "infants" or cohort == "infants_subgroup" :
     
     #extract date of first episode - looking at when the exclusion criteria is
@@ -696,7 +699,7 @@ else :
       when(rsv_primary_spec_second.is_not_null())
       .then(rsv_primary_spec_second),
       when((rsv_primary_spec_second.is_null()) &
-      (~rsv_exclusion_primary)).then(
+      (~rsv_exclusion_primary_second)).then(
       minimum_of((rsv_codes_second_date),
       (rsv_med_inclusion_second_date),
       (emergency_care_diagnosis_matches(codelists
@@ -710,7 +713,8 @@ else :
       followup_end_date)).arrival_date.minimum_for_patient()))),
       otherwise = None)
     )
-    
+
+  #all cohorts above the age of 2 
   else :
     
     #extract date of first episode - looking at when the exclusion criteria is
@@ -791,10 +795,10 @@ else :
     dataset.rsv_primary_second_date = (case(
       when(rsv_primary_spec_second.is_not_null())
       .then(rsv_primary_spec_second),
-      when((rsv_primary_spec.is_null()) &
-      (~rsv_exclusion_primary)).then(
+      when((rsv_primary_spec_second.is_null()) &
+      (~rsv_exclusion_primary_second)).then(
       minimum_of((rsv_codes_second_date),
-      (rsv_med_inclusion_date))),
+      (rsv_med_inclusion_second_date))),
       otherwise = None)
     )
 
@@ -821,9 +825,9 @@ if codelist_type == "specific" :
     .is_in(codelists.rsv_secondary_codelist))
     |(apcs.secondary_diagnosis
     .is_in(codelists.rsv_secondary_codelist)))
-    .where(apcs.discharge_date
-    .is_on_or_between(dataset.rsv_secondary_date,
-    followup_end_date)).first_for_patient()
+    .where(apcs.admission_date.is_on_or_between(
+    dataset.rsv_secondary_date, dataset
+    .rsv_secondary_date)).first_for_patient()
     .discharge_date
   )
   
@@ -853,10 +857,10 @@ if codelist_type == "specific" :
     .is_in(codelists.rsv_secondary_codelist))
     |(apcs.secondary_diagnosis
     .is_in(codelists.rsv_secondary_codelist)))
-    .where(apcs.discharge_date.is_on_or_between(
+    .where(apcs.admission_date.is_on_or_between(
     dataset.rsv_secondary_second_date,
-    followup_end_date)).first_for_patient()
-    .discharge_date
+    dataset.rsv_secondary_second_date))
+    .first_for_patient().discharge_date
   )
   
   #extract length of stay for second episode, in hours
@@ -1278,8 +1282,9 @@ else :
     |(hospitalisation_diagnosis_matches(codelists
     .ari_secondary_codelist).exists_for_patient()))
     .where(apcs.admission_date.is_on_or_between(
-    dataset.flu_secondary_date, dataset.flu_secondary_date))
-    .discharge_date.minimum_for_patient()
+    dataset.flu_secondary_date, dataset
+    .flu_secondary_date)).discharge_date
+    .minimum_for_patient()
   )
   
   #extract length of stay for first episode, in hours
@@ -1493,8 +1498,8 @@ if study_start_date >= covid_season_min :
       |(apcs.secondary_diagnosis
       .is_in(codelists.covid_secondary_codelist)))
       .where(apcs.admission_date.is_on_or_between(
-      index_date, followup_end_date)).first_for_patient()
-      .admission_date
+      index_date, followup_end_date)).admission_date
+      .minimum_for_patient()
     )
     
     #get discharge date for first episode
@@ -1506,8 +1511,8 @@ if study_start_date >= covid_season_min :
       .is_in(codelists.covid_secondary_codelist)))
       .where(apcs.admission_date
       .is_on_or_between(dataset.covid_secondary_date,
-      dataset.covid_secondary_date))
-      .first_for_patient().discharge_date
+      dataset.covid_secondary_date)).discharge_date
+      .minimum_for_patient()
     )
     
     #extract length of stay for first episode, in hours
@@ -1524,8 +1529,9 @@ if study_start_date >= covid_season_min :
       |(apcs.secondary_diagnosis
       .is_in(codelists.covid_secondary_codelist)))
       .where(apcs.admission_date.is_on_or_between(
-      dataset.covid_secondary_date + days(14), followup_end_date))
-      .first_for_patient().admission_date
+      dataset.covid_secondary_date + days(14),
+      followup_end_date)).admission_date
+      .minimum_for_patient()
     )
     
     #get discharge date for second episode
@@ -1535,10 +1541,10 @@ if study_start_date >= covid_season_min :
       .is_in(codelists.covid_secondary_codelist))
       |(apcs.secondary_diagnosis
       .is_in(codelists.covid_secondary_codelist)))
-      .where(apcs.admission_date
-      .is_on_or_between(dataset.covid_secondary_second_date,
-      dataset.covid_secondary_second_date))
-      .first_for_patient().discharge_date
+      .where(apcs.admission_date.is_on_or_between(
+      dataset.covid_secondary_second_date, dataset
+      .covid_secondary_second_date)).discharge_date
+      .minimum_for_patient()
     )
     
     #extract length of stay for second episode, in hours
