@@ -877,24 +877,25 @@ else :
   #get date of first diagnosis code (in any position) from the RSV sensitive 
   #secondary care codelist - looking at the first episode
   rsv_secondary_sens_date = (
-    apcs.sort_by(apcs.admission_date).where(
-    (hospitalisation_diagnosis_matches(codelists
-    .rsv_secondary_codelist).exists_for_patient())
-    |(hospitalisation_diagnosis_matches(codelists
-    .unspecified_lrti).exists_for_patient()))
+    apcs.sort_by(apcs.admission_date)
+    .where((apcs.primary_diagnosis
+    .is_in(codelists.unspecified_lrti)) 
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.unspecified_lrti)))
     .where(apcs.admission_date.is_on_or_between(
     index_date, followup_end_date))
-    .admission_date.minimum_for_patient()
+    .first_for_patient().admission_date
   )
   
   #get occurrence of event in exclusion list within one month of an occurrence 
   #of rsv_secondary_sens_date 
   rsv_exclusion_secondary = (case(
     when(apcs.sort_by(apcs.admission_date).where(
-    hospitalisation_diagnosis_matches(codelists
-    .rsv_secondary_exclusion_codelist)
-    .exists_for_patient()).where(apcs
-    .admission_date.minimum_for_patient()
+    (apcs.primary_diagnosis.is_in(codelists
+    .rsv_secondary_exclusion_codelist)) 
+    |(apcs.secondary_diagnosis.is_in(codelists
+    .rsv_secondary_exclusion_codelist)))
+    .where(apcs.admission_date.minimum_for_patient()
     .is_on_or_between(maximum_of(index_date,
     rsv_secondary_sens_date - days(30)),
     minimum_of(rsv_secondary_sens_date + days(30),
@@ -929,10 +930,14 @@ else :
   #get discharge date for first episode
   rsv_secondary_discharge = (
     apcs.sort_by(apcs.admission_date).where(
-    (hospitalisation_diagnosis_matches(codelists
-    .rsv_secondary_codelist).exists_for_patient())
-    |(hospitalisation_diagnosis_matches(codelists
-    .unspecified_lrti).exists_for_patient()))
+    (apcs.primary_diagnosis
+    .is_in(codelists.rsv_secondary_codelist)) 
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.rsv_secondary_codelist))
+    |(apcs.primary_diagnosis
+    .is_in(codelists.unspecified_lrti)) 
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.unspecified_lrti)))
     .where(apcs.admission_date.is_on_or_between(
     dataset.rsv_secondary_date, dataset.rsv_secondary_date))
     .discharge_date.minimum_for_patient()
@@ -947,11 +952,11 @@ else :
   #get date of first diagnosis code (in any position) from the RSV sensitive 
   #secondary care codelist - looking at the second episode
   rsv_secondary_sens_second_date = (
-    apcs.sort_by(apcs.admission_date).where(
-    (hospitalisation_diagnosis_matches(codelists
-    .rsv_secondary_codelist).exists_for_patient())
-    |(hospitalisation_diagnosis_matches(codelists
-    .unspecified_lrti).exists_for_patient()))
+    apcs.sort_by(apcs.admission_date)
+    .where((apcs.primary_diagnosis
+    .is_in(codelists.unspecified_lrti)) 
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.unspecified_lrti)))
     .where(apcs.admission_date.is_on_or_between(
     dataset.rsv_secondary_date + days(14), followup_end_date))
     .admission_date.minimum_for_patient()
@@ -961,10 +966,11 @@ else :
   #of rsv_secondary_sens_second_date 
   rsv_exclusion_secondary_second = (case(
     when(apcs.sort_by(apcs.admission_date).where(
-    hospitalisation_diagnosis_matches(codelists
-    .rsv_secondary_exclusion_codelist)
-    .exists_for_patient()).where(apcs
-    .admission_date.minimum_for_patient()
+    (apcs.primary_diagnosis.is_in(codelists
+    .rsv_secondary_exclusion_codelist)) 
+    |(apcs.secondary_diagnosis.is_in(codelists
+    .rsv_secondary_exclusion_codelist)))
+    .where(apcs.admission_date.minimum_for_patient()
     .is_on_or_between(maximum_of(
     dataset.rsv_secondary_date + days(14),
     rsv_secondary_sens_second_date - days(30)),
@@ -998,10 +1004,14 @@ else :
   #get discharge date for second episode
   rsv_secondary_discharge_second = (
     apcs.sort_by(apcs.admission_date).where(
-    (hospitalisation_diagnosis_matches(codelists
-    .rsv_secondary_codelist).exists_for_patient())
-    |(hospitalisation_diagnosis_matches(codelists
-    .unspecified_lrti).exists_for_patient()))
+    (apcs.primary_diagnosis
+    .is_in(codelists.rsv_secondary_codelist)) 
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.rsv_secondary_codelist))
+    |(apcs.primary_diagnosis
+    .is_in(codelists.unspecified_lrti)) 
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.unspecified_lrti)))
     .where(apcs.admission_date.is_on_or_between(
     dataset.rsv_secondary_second_date,
     dataset.rsv_secondary_second_date))
@@ -1232,10 +1242,10 @@ else :
   #secondary care codelist or ARI secondary care codelist - looking at the first episode
   flu_secondary_sens_date = (
     apcs.sort_by(apcs.admission_date)
-    .where((hospitalisation_diagnosis_matches(codelists
-    .flu_secondary_codelist).exists_for_patient())
-    |(hospitalisation_diagnosis_matches(codelists
-    .ari_secondary_codelist).exists_for_patient()))
+    .where((apcs.primary_diagnosis
+    .is_in(codelists.ari_secondary_codelist) )
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.ari_secondary_codelist)))
     .where(apcs.admission_date.is_on_or_between(
     index_date, followup_end_date)).admission_date
     .minimum_for_patient()
@@ -1243,11 +1253,12 @@ else :
   
   #occurance of event in exclusion list within one month of flu_secondary_sens_date
   flu_exclusion_secondary = (case(
-    when(apcs.sort_by(apcs.admission_date).where(
-    hospitalisation_diagnosis_matches(codelists
-    .flu_secondary_exclusion_codelist)
-    .exists_for_patient()).where(apcs
-    .admission_date.minimum_for_patient()
+    when(apcs.sort_by(apcs.admission_date)
+    .where((apcs.primary_diagnosis
+    .is_in(codelists.flu_secondary_exclusion_codelist) )
+    |(apcs.secondary_diagnosis.is_in(codelists
+    .flu_secondary_exclusion_codelist)))
+    .where(apcs.admission_date.minimum_for_patient()
     .is_on_or_between(maximum_of(index_date,
     flu_secondary_sens_date - days(30)), minimum_of(
     flu_secondary_sens_date + days(30), followup_end_date)))
@@ -1281,11 +1292,15 @@ else :
   
   #get discharge date for first episode
   flu_secondary_discharge = (
-    apcs.sort_by(apcs.admission_date).where(
-    (hospitalisation_diagnosis_matches(codelists
-    .flu_secondary_codelist).exists_for_patient())
-    |(hospitalisation_diagnosis_matches(codelists
-    .ari_secondary_codelist).exists_for_patient()))
+    apcs.sort_by(apcs.admission_date)
+    .where((apcs.primary_diagnosis
+    .is_in(codelists.flu_secondary_codelist))
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.flu_secondary_codelist))
+    |(apcs.primary_diagnosis
+    .is_in(codelists.ari_secondary_codelist))
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.ari_secondary_codelist)))
     .where(apcs.admission_date.is_on_or_between(
     dataset.flu_secondary_date, dataset
     .flu_secondary_date)).discharge_date
@@ -1315,11 +1330,11 @@ else :
   )
   #then extract date - prioritising inclusion from specific phenotype
   flu_secondary_sens_second_date = (
-    apcs.sort_by(apcs.admission_date).where(
-    (hospitalisation_diagnosis_matches(codelists
-    .flu_secondary_codelist).exists_for_patient())
-    |(hospitalisation_diagnosis_matches(codelists
-    .ari_secondary_codelist).exists_for_patient()))
+    apcs.sort_by(apcs.admission_date)
+    .where((apcs.primary_diagnosis
+    .is_in(codelists.ari_secondary_codelist) )
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.ari_secondary_codelist)))
     .where(apcs.admission_date.is_on_or_between(
     dataset.flu_secondary_date + days(14), followup_end_date))
     .admission_date.minimum_for_patient()
@@ -1328,14 +1343,18 @@ else :
   #get occurrence of event in exclusion list within one month of an occurrence 
   #of flu_secondary_sens_second_date
   flu_exclusion_secondary_second = (case(
-    when((hospitalisation_diagnosis_matches(codelists
-    .flu_secondary_exclusion_codelist))
-    .admission_date.minimum_for_patient()
+    when(apcs.sort_by(apcs.admission_date)
+    .where((apcs.primary_diagnosis
+    .is_in(codelists.flu_secondary_exclusion_codelist))
+    |(apcs.secondary_diagnosis.is_in(codelists
+    .flu_secondary_exclusion_codelist))).where(
+    apcs.admission_date.minimum_for_patient()
     .is_on_or_between(maximum_of(
     dataset.flu_secondary_date + days(14),
     flu_secondary_sens_second_date - days(30)),
     minimum_of(flu_secondary_sens_second_date + days(30),
-    followup_end_date))).then(True), otherwise = False)
+    followup_end_date))).exists_for_patient())
+    .then(True), otherwise = False)
   )
   
   #extract date of second episode - using the same criteria as the first episode
@@ -1350,11 +1369,15 @@ else :
   
   #get discharge date for second episode
   flu_secondary_discharge_second = (
-    apcs.sort_by(apcs.admission_date).where(
-    (hospitalisation_diagnosis_matches(codelists
-    .flu_secondary_codelist).exists_for_patient())
-    |(hospitalisation_diagnosis_matches(codelists
-    .ari_secondary_codelist).exists_for_patient()))
+    apcs.sort_by(apcs.admission_date)
+    .where((apcs.primary_diagnosis
+    .is_in(codelists.flu_secondary_codelist))
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.flu_secondary_codelist))
+    |(apcs.primary_diagnosis
+    .is_in(codelists.ari_secondary_codelist))
+    |(apcs.secondary_diagnosis
+    .is_in(codelists.ari_secondary_codelist)))
     .where(apcs.admission_date.is_on_or_between(
     dataset.flu_secondary_second_date,
     dataset.flu_secondary_second_date))
@@ -1567,11 +1590,11 @@ if study_start_date >= covid_season_min :
     #get date of first diagnosis code (in any position) from the covid sensitive
     #secondary care codelist - looking at the first episode
     covid_secondary_sens_date = (
-      apcs.sort_by(apcs.admission_date).where(
-      (hospitalisation_diagnosis_matches(codelists
-      .covid_secondary_codelist).exists_for_patient())
-      |(hospitalisation_diagnosis_matches(codelists
-      .coronavirus_unspecified).exists_for_patient()))
+      apcs.sort_by(apcs.admission_date)
+      .where((apcs.primary_diagnosis
+      .is_in(codelists.coronavirus_unspecified))
+      |(apcs.secondary_diagnosis
+      .is_in(codelists.coronavirus_unspecified)))
       .where(apcs.admission_date.is_on_or_between(index_date,
       followup_end_date)).admission_date.minimum_for_patient()
     )
@@ -1580,13 +1603,17 @@ if study_start_date >= covid_season_min :
     #- looking at the first date for which there is a code in the covid secondary
     #exclusion codelist within one month before or after the date of covid_secondary_sens_date
     covid_exclusion_secondary = (case(
-      when((hospitalisation_diagnosis_matches(codelists
+      when((apcs.sort_by(apcs.admission_date)
+      .where((apcs.primary_diagnosis.is_in(codelists
       .covid_secondary_exclusion_codelist))
+      |(apcs.secondary_diagnosis.is_in(codelists
+      .covid_secondary_exclusion_codelist))).where(apcs
       .admission_date.minimum_for_patient()
       .is_on_or_between(maximum_of(index_date,
       covid_secondary_sens_date - days(30)),
       minimum_of(covid_secondary_sens_date + days(30),
-      followup_end_date))).then(True), otherwise = False)
+      followup_end_date)))).exists_for_patient())
+      .then(True), otherwise = False)
     )
     
     #extract date of first episode - looking at when the exclusion criteria is
@@ -1596,7 +1623,7 @@ if study_start_date >= covid_season_min :
     covid_secondary_spec = (
       apcs.sort_by(apcs.admission_date)
       .where((apcs.primary_diagnosis
-      .is_in(codelists.covid_secondary_codelist) )
+      .is_in(codelists.covid_secondary_codelist))
       |(apcs.secondary_diagnosis
       .is_in(codelists.covid_secondary_codelist)))
       .where(apcs.admission_date.is_on_or_between(
@@ -1615,11 +1642,15 @@ if study_start_date >= covid_season_min :
     
     #get discharge date for first episode
     covid_secondary_discharge = (
-      apcs.sort_by(apcs.admission_date).where(
-      (hospitalisation_diagnosis_matches(codelists
-      .covid_secondary_codelist).exists_for_patient())
-      |(hospitalisation_diagnosis_matches(codelists
-      .coronavirus_unspecified).exists_for_patient()))
+      apcs.sort_by(apcs.admission_date)
+      .where((apcs.primary_diagnosis
+      .is_in(codelists.covid_secondary_codelist))
+      |(apcs.secondary_diagnosis
+      .is_in(codelists.covid_secondary_codelist))
+      |(apcs.primary_diagnosis
+      .is_in(codelists.coronavirus_unspecified))
+      |(apcs.secondary_diagnosis
+      .is_in(codelists.coronavirus_unspecified)))
       .where(apcs.admission_date.is_on_or_between(
       dataset.covid_secondary_date, dataset.covid_secondary_date))
       .discharge_date.minimum_for_patient()
@@ -1634,11 +1665,11 @@ if study_start_date >= covid_season_min :
     #get date of first diagnosis code (in any position) from the covid sensitive
     #secondary care codelist - looking at the second episode
     covid_secondary_sens_second_date = (
-      apcs.sort_by(apcs.admission_date).where(
-      (hospitalisation_diagnosis_matches(codelists
-      .covid_secondary_codelist).exists_for_patient())
-      |(hospitalisation_diagnosis_matches(codelists
-      .coronavirus_unspecified).exists_for_patient()))
+      apcs.sort_by(apcs.admission_date)
+      .where((apcs.primary_diagnosis
+      .is_in(codelists.coronavirus_unspecified))
+      |(apcs.secondary_diagnosis
+      .is_in(codelists.coronavirus_unspecified)))
       .where(apcs.admission_date.is_on_or_between(
       dataset.covid_secondary_date + days(14), followup_end_date))
       .admission_date.minimum_for_patient()
@@ -1647,14 +1678,18 @@ if study_start_date >= covid_season_min :
    #get occurrence of event in exclusion list within one month of an occurrence
     #of covid_secondary_sens_second_date
     covid_exclusion_secondary_second = (case(
-      when((hospitalisation_diagnosis_matches(codelists
+      when((apcs.sort_by(apcs.admission_date)
+      .where((apcs.primary_diagnosis.is_in(codelists
       .covid_secondary_exclusion_codelist))
+      |(apcs.secondary_diagnosis.is_in(codelists
+      .covid_secondary_exclusion_codelist))).where(apcs
       .admission_date.minimum_for_patient()
       .is_on_or_between(maximum_of(
       dataset.covid_secondary_date + days(14),
       covid_secondary_sens_second_date - days(30)),
       minimum_of(covid_secondary_sens_second_date + days(30),
-      followup_end_date))).then(True), otherwise = False)
+      followup_end_date)))).exists_for_patient())
+      .then(True), otherwise = False)
     )
     
     #first define inclusion from specific phenotype
@@ -1680,11 +1715,15 @@ if study_start_date >= covid_season_min :
     
     #get discharge date for second episode
     covid_secondary_discharge_second = (
-      apcs.sort_by(apcs.admission_date).where(
-      (hospitalisation_diagnosis_matches(codelists
-      .covid_secondary_codelist).exists_for_patient())
-      |(hospitalisation_diagnosis_matches(codelists
-      .coronavirus_unspecified).exists_for_patient()))
+      apcs.sort_by(apcs.admission_date)
+      .where((apcs.primary_diagnosis
+      .is_in(codelists.covid_secondary_codelist))
+      |(apcs.secondary_diagnosis
+      .is_in(codelists.covid_secondary_codelist))
+      |(apcs.primary_diagnosis
+      .is_in(codelists.coronavirus_unspecified))
+      |(apcs.secondary_diagnosis
+      .is_in(codelists.coronavirus_unspecified)))
       .where(apcs.admission_date.is_on_or_between(
       dataset.covid_secondary_second_date,
       dataset.covid_secondary_second_date))
@@ -2051,18 +2090,28 @@ if codelist_type == "sensitive" :
     #code in the COPD exacerbation secondary codelist (in any position), or a 
     #code in the asthma exacerbation secondary codelist (in any position)
     overall_resp_secondary_sens_date = (
-      minimum_of(hospitalisation_diagnosis_matches(codelists.
-      respiratory_virus_secondary_codelist).where(apcs.admission_date
-      .is_on_or_between(index_date, followup_end_date))
-      .admission_date.minimum_for_patient(),
-      hospitalisation_diagnosis_matches(codelists
-      .copd_exacerbation_secondary_codelist).where(apcs.admission_date
-      .is_on_or_between(index_date, followup_end_date))
-      .admission_date.minimum_for_patient(),
-      hospitalisation_diagnosis_matches(codelists
-      .asthma_exacerbation_secondary_codelist).where(apcs.admission_date
-      .is_on_or_between(index_date, followup_end_date))
-      .admission_date.minimum_for_patient())
+      minimum_of((apcs.sort_by(apcs.admission_date)
+      .where((apcs.primary_diagnosis.is_in(codelists
+      .respiratory_virus_secondary_codelist))
+      |(apcs.secondary_diagnosis.is_in(codelists
+      .respiratory_virus_secondary_codelist)))
+      .where(apcs.admission_date.is_on_or_between(
+      index_date, followup_end_date)).admission_date
+      .minimum_for_patient()), (apcs.sort_by(apcs
+      .admission_date).where((apcs.primary_diagnosis
+      .is_in(codelists.copd_exacerbation_secondary_codelist))
+      |(apcs.secondary_diagnosis.is_in(codelists
+      .copd_exacerbation_secondary_codelist)))
+      .where(apcs.admission_date.is_on_or_between(
+      index_date, followup_end_date)).admission_date
+      .minimum_for_patient()), (apcs.sort_by(apcs
+      .admission_date).where((apcs.primary_diagnosis
+      .is_in(codelists.asthma_exacerbation_secondary_codelist))
+      |(apcs.secondary_diagnosis.is_in(codelists
+      .asthma_exacerbation_secondary_codelist)))
+      .where(apcs.admission_date.is_on_or_between(
+      index_date, followup_end_date)).admission_date
+      .minimum_for_patient()))
     )
     
     #occurrence of event in exclusion list within one month of overall_resp_secondary_sens_date
@@ -2070,13 +2119,16 @@ if codelist_type == "sensitive" :
     #secondary exclusion codelist within one month before or after the date of
     #overall_resp_secondary_sens_date
     overall_resp_exclusion_secondary = (case(
-      when(hospitalisation_diagnosis_matches(codelists
-      .respiratory_virus_secondary_exclusion_codelist)
+      when(apcs.sort_by(apcs.admission_date)
+      .where((apcs.primary_diagnosis.is_in(codelists
+      .respiratory_virus_secondary_exclusion_codelist))
+      |(apcs.secondary_diagnosis.is_in(codelists
+      .respiratory_virus_secondary_exclusion_codelist)))
       .where(apcs.admission_date.is_on_or_between(
       maximum_of(index_date, overall_resp_secondary_sens_date - days(30)),
       minimum_of(overall_resp_secondary_sens_date + days(30),
       followup_end_date))).exists_for_patient())
-      .then(True), otherwise = False)  
+      .then(True), otherwise = False)
     )
     
     #covid seasons
@@ -2109,12 +2161,18 @@ if codelist_type == "sensitive" :
         .covid_secondary_date).then(covid_secondary_discharge),
         when(dataset.overall_resp_secondary_date == overall_resp_secondary_sens_date)
         .then(apcs.sort_by(apcs.admission_date).where(
-        (hospitalisation_diagnosis_matches(codelists.
-        respiratory_virus_secondary_codelist).exists_for_patient())
-        |(hospitalisation_diagnosis_matches(codelists
-        .copd_exacerbation_secondary_codelist).exists_for_patient())
-        |(hospitalisation_diagnosis_matches(codelists
-        .asthma_exacerbation_secondary_codelist).exists_for_patient()))
+        (apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.primary_diagnosis
+        .is_in(codelists.copd_exacerbation_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .copd_exacerbation_secondary_codelist))
+        |(apcs.primary_diagnosis
+        .is_in(codelists.asthma_exacerbation_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .asthma_exacerbation_secondary_codelist)))
         .where(apcs.admission_date.is_on_or_between(dataset
         .overall_resp_secondary_date, dataset
         .overall_resp_secondary_date)).first_for_patient()
@@ -2129,27 +2187,41 @@ if codelist_type == "sensitive" :
       
       #extract date of second episode - using the same criteria as the first episode
       overall_resp_secondary_sens_second_date = (
-        minimum_of(hospitalisation_diagnosis_matches(codelists.
-        respiratory_virus_secondary_codelist).where(apcs.admission_date
-        .is_on_or_between(dataset.overall_resp_secondary_date + days(14),
-        followup_end_date)).admission_date.minimum_for_patient(), 
-        hospitalisation_diagnosis_matches(codelists
-        .copd_exacerbation_secondary_codelist)
-        .where(apcs.admission_date.is_on_or_between(dataset
-        .overall_resp_secondary_date + days(14),
-        followup_end_date)).admission_date.minimum_for_patient(), 
-        hospitalisation_diagnosis_matches(codelists
-        .asthma_exacerbation_secondary_codelist)
-        .where(apcs.admission_date.is_on_or_between(dataset
-        .overall_resp_secondary_date + days(14), 
-        followup_end_date)).admission_date.minimum_for_patient())
+        minimum_of((apcs.sort_by(apcs.admission_date)
+        .where((apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist)))
+        .where(apcs.admission_date.is_on_or_between(
+        dataset.overall_resp_secondary_date + days(14),
+        followup_end_date)).admission_date
+        .minimum_for_patient()), (apcs.sort_by(apcs
+        .admission_date).where((apcs.primary_diagnosis
+        .is_in(codelists.copd_exacerbation_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .copd_exacerbation_secondary_codelist)))
+        .where(apcs.admission_date.is_on_or_between(
+        dataset.overall_resp_secondary_date + days(14),
+        followup_end_date)).admission_date
+        .minimum_for_patient()), (apcs.sort_by(apcs
+        .admission_date).where((apcs.primary_diagnosis
+        .is_in(codelists.asthma_exacerbation_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .asthma_exacerbation_secondary_codelist)))
+        .where(apcs.admission_date.is_on_or_between(
+        dataset.overall_resp_secondary_date + days(14),
+        followup_end_date)).admission_date
+        .minimum_for_patient()))
       )
       
       #occurrence of event in exclusion list within one month of an occurrence
       #of overall_resp_secondary_sens_second_date - using the same criteria as the first episode
       overall_resp_exclusion_secondary_second = (case(
-        when(hospitalisation_diagnosis_matches(codelists
-        .respiratory_virus_secondary_exclusion_codelist)
+        when(apcs.sort_by(apcs.admission_date)
+        .where((apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_exclusion_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_exclusion_codelist)))
         .where(apcs.admission_date.is_on_or_between(maximum_of(
         dataset.overall_resp_secondary_date + days(14),
         overall_resp_secondary_sens_second_date - days(30)),
@@ -2185,12 +2257,18 @@ if codelist_type == "sensitive" :
         when(dataset.overall_resp_secondary_second_date == 
         overall_resp_secondary_sens_second_date)
         .then(apcs.sort_by(apcs.admission_date).where(
-        (hospitalisation_diagnosis_matches(codelists.
-        respiratory_virus_secondary_codelist).exists_for_patient())
-        |(hospitalisation_diagnosis_matches(codelists
-        .copd_exacerbation_secondary_codelist).exists_for_patient())
-        |(hospitalisation_diagnosis_matches(codelists
-        .asthma_exacerbation_secondary_codelist).exists_for_patient()))
+        (apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.primary_diagnosis
+        .is_in(codelists.copd_exacerbation_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .copd_exacerbation_secondary_codelist))
+        |(apcs.primary_diagnosis
+        .is_in(codelists.asthma_exacerbation_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .asthma_exacerbation_secondary_codelist)))
         .where(apcs.admission_date.is_on_or_between(dataset
         .overall_resp_secondary_second_date, dataset
         .overall_resp_secondary_second_date)).first_for_patient()
@@ -2229,12 +2307,18 @@ if codelist_type == "sensitive" :
         .flu_secondary_date).then(flu_secondary_discharge),
         when(dataset.overall_resp_secondary_date == overall_resp_secondary_sens_date)
         .then(apcs.sort_by(apcs.admission_date).where(
-        (hospitalisation_diagnosis_matches(codelists.
-        respiratory_virus_secondary_codelist).exists_for_patient())
-        |(hospitalisation_diagnosis_matches(codelists
-        .copd_exacerbation_secondary_codelist).exists_for_patient())
-        |(hospitalisation_diagnosis_matches(codelists
-        .asthma_exacerbation_secondary_codelist).exists_for_patient()))
+        (apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.primary_diagnosis
+        .is_in(codelists.copd_exacerbation_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .copd_exacerbation_secondary_codelist))
+        |(apcs.primary_diagnosis
+        .is_in(codelists.asthma_exacerbation_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .asthma_exacerbation_secondary_codelist)))
         .where(apcs.discharge_date.is_on_or_between(dataset
         .overall_resp_secondary_date, dataset
         .overall_resp_secondary_date)).first_for_patient()
@@ -2249,27 +2333,41 @@ if codelist_type == "sensitive" :
       
       #extract date of second episode - using the same criteria as the first episode
       overall_resp_secondary_sens_second_date = (
-        minimum_of(hospitalisation_diagnosis_matches(codelists.
-        respiratory_virus_secondary_codelist).where(apcs.admission_date
-        .is_on_or_between(dataset.overall_resp_secondary_date + days(14), 
-        followup_end_date)).admission_date.minimum_for_patient(),
-        hospitalisation_diagnosis_matches(codelists
-        .copd_exacerbation_secondary_codelist)
-        .where(apcs.admission_date.is_on_or_between(dataset
-        .overall_resp_secondary_date + days(14), followup_end_date))
-        .admission_date.minimum_for_patient(), 
-        hospitalisation_diagnosis_matches(codelists
-        .asthma_exacerbation_secondary_codelist)
-        .where(apcs.admission_date.is_on_or_between(dataset
-        .overall_resp_secondary_date + days(14), 
-        followup_end_date)).admission_date.minimum_for_patient())
+        minimum_of((apcs.sort_by(apcs.admission_date)
+        .where((apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist)))
+        .where(apcs.admission_date.is_on_or_between(
+        dataset.overall_resp_secondary_date + days(14),
+        followup_end_date)).admission_date
+        .minimum_for_patient()), (apcs.sort_by(apcs
+        .admission_date).where((apcs.primary_diagnosis
+        .is_in(codelists.copd_exacerbation_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .copd_exacerbation_secondary_codelist)))
+        .where(apcs.admission_date.is_on_or_between(
+        dataset.overall_resp_secondary_date + days(14),
+        followup_end_date)).admission_date
+        .minimum_for_patient()), (apcs.sort_by(apcs
+        .admission_date).where((apcs.primary_diagnosis
+        .is_in(codelists.asthma_exacerbation_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .asthma_exacerbation_secondary_codelist)))
+        .where(apcs.admission_date.is_on_or_between(
+        dataset.overall_resp_secondary_date + days(14),
+        followup_end_date)).admission_date
+        .minimum_for_patient()))
       )
       
       #occurrence of event in exclusion list within one month of an occurrence
       #of overall_resp_secondary_sens_second_date - using the same criteria as the first episode
       overall_resp_exclusion_secondary_second = (case(
-        when(hospitalisation_diagnosis_matches(codelists
-        .respiratory_virus_secondary_exclusion_codelist)
+        when(apcs.sort_by(apcs.admission_date)
+        .where((apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_exclusion_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_exclusion_codelist)))
         .where(apcs.admission_date.is_on_or_between(maximum_of(
         dataset.overall_resp_secondary_date + days(14),
         overall_resp_secondary_sens_second_date - days(30)),
@@ -2300,12 +2398,18 @@ if codelist_type == "sensitive" :
         when(dataset.overall_resp_secondary_second_date == 
         overall_resp_secondary_sens_second_date)
         .then(apcs.sort_by(apcs.admission_date).where(
-        (hospitalisation_diagnosis_matches(codelists.
-        respiratory_virus_secondary_codelist).exists_for_patient())
-        |(hospitalisation_diagnosis_matches(codelists
-        .copd_exacerbation_secondary_codelist).exists_for_patient())
-        |(hospitalisation_diagnosis_matches(codelists
-        .asthma_exacerbation_secondary_codelist).exists_for_patient()))
+        (apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.primary_diagnosis
+        .is_in(codelists.copd_exacerbation_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .copd_exacerbation_secondary_codelist))
+        |(apcs.primary_diagnosis
+        .is_in(codelists.asthma_exacerbation_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .asthma_exacerbation_secondary_codelist)))
         .where(apcs.discharge_date.is_on_or_between(dataset
         .overall_resp_secondary_second_date, dataset
         .overall_resp_secondary_second_date)).first_for_patient()
@@ -2324,10 +2428,14 @@ if codelist_type == "sensitive" :
     #extract date of first episode - looking at the first date for which there is
     #a code in the respiratory virus secondary codelist (in any position)
     overall_resp_secondary_sens_date = (
-      hospitalisation_diagnosis_matches(codelists.
-      respiratory_virus_secondary_codelist).where(apcs.admission_date
-      .is_on_or_between(index_date, followup_end_date))
-      .admission_date.minimum_for_patient()
+      apcs.sort_by(apcs.admission_date)
+      .where((apcs.primary_diagnosis.is_in(codelists
+      .respiratory_virus_secondary_codelist))
+      |(apcs.secondary_diagnosis.is_in(codelists
+      .respiratory_virus_secondary_codelist)))
+      .where(apcs.admission_date.is_on_or_between(
+      index_date, followup_end_date)).admission_date
+      .minimum_for_patient()
     )
     
     #occurrence of event in exclusion list within one month of overall_resp_secondary_sens_date
@@ -2335,13 +2443,16 @@ if codelist_type == "sensitive" :
     #secondary exclusion codelist within one month before or after the date of
     #overall_resp_secondary_sens_date
     overall_resp_exclusion_secondary = (case(
-      when(hospitalisation_diagnosis_matches(codelists
-      .respiratory_virus_secondary_exclusion_codelist)
-      .where(apcs.admission_date.is_on_or_between(maximum_of(index_date,
-      overall_resp_secondary_sens_date - days(30)),
+      when(apcs.sort_by(apcs.admission_date)
+      .where((apcs.primary_diagnosis.is_in(codelists
+      .respiratory_virus_secondary_exclusion_codelist))
+      |(apcs.secondary_diagnosis.is_in(codelists
+      .respiratory_virus_secondary_exclusion_codelist)))
+      .where(apcs.admission_date.is_on_or_between(
+      maximum_of(index_date, overall_resp_secondary_sens_date - days(30)),
       minimum_of(overall_resp_secondary_sens_date + days(30),
       followup_end_date))).exists_for_patient())
-      .then(True), otherwise = False)  
+      .then(True), otherwise = False)
     )
     
     #covid seasons
@@ -2373,8 +2484,10 @@ if codelist_type == "sensitive" :
         .covid_secondary_date).then(covid_secondary_discharge),
         when(dataset.overall_resp_secondary_date == overall_resp_secondary_sens_date)
         .then(apcs.sort_by(apcs.admission_date).where(   
-        hospitalisation_diagnosis_matches(codelists.
-        respiratory_virus_secondary_codelist).exists_for_patient())
+        (apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist)))
         .where(apcs.admission_date.is_on_or_between(dataset
         .overall_resp_secondary_date, dataset
         .overall_resp_secondary_date)).first_for_patient()
@@ -2389,17 +2502,24 @@ if codelist_type == "sensitive" :
       
       #extract date of second episode - using the same criteria as the first episode
       overall_resp_secondary_sens_second_date = (
-        hospitalisation_diagnosis_matches(codelists.
-        respiratory_virus_secondary_codelist).where(apcs.admission_date
-        .is_on_or_between(dataset.overall_resp_secondary_date + days(14),
+        apcs.sort_by(apcs.admission_date)
+        .where((apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist)))
+        .where(apcs.admission_date.is_on_or_between(dataset
+        .overall_resp_secondary_date + days(14),
         followup_end_date)).admission_date.minimum_for_patient()
       )
       
       #occurrence of event in exclusion list within one month of an occurrence
       #of overall_resp_secondary_sens_second_date - using the same criteria as the first episode
       overall_resp_exclusion_secondary_second = (case(
-        when(hospitalisation_diagnosis_matches(codelists
-        .respiratory_virus_secondary_exclusion_codelist)
+        when(apcs.sort_by(apcs.admission_date)
+        .where((apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_exclusion_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_exclusion_codelist)))
         .where(apcs.admission_date.is_on_or_between(maximum_of(
         dataset.overall_resp_secondary_date + days(14),
         overall_resp_secondary_sens_second_date - days(30)),
@@ -2435,8 +2555,10 @@ if codelist_type == "sensitive" :
         when(dataset.overall_resp_secondary_second_date == 
         overall_resp_secondary_sens_second_date).then(
         apcs.sort_by(apcs.admission_date).where(   
-        hospitalisation_diagnosis_matches(codelists.
-        respiratory_virus_secondary_codelist).exists_for_patient())
+        (apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist)))
         .where(apcs.admission_date.is_on_or_between(dataset
         .overall_resp_secondary_second_date, dataset
         .overall_resp_secondary_second_date)).first_for_patient()
@@ -2475,8 +2597,10 @@ if codelist_type == "sensitive" :
         .flu_secondary_date).then(flu_secondary_discharge),
         when(dataset.overall_resp_secondary_date == overall_resp_secondary_sens_date)
         .then(apcs.sort_by(apcs.admission_date).where(   
-        hospitalisation_diagnosis_matches(codelists.
-        respiratory_virus_secondary_codelist).exists_for_patient())
+        (apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist)))
         .where(apcs.admission_date.is_on_or_between(dataset
         .overall_resp_secondary_date, dataset
         .overall_resp_secondary_date)).first_for_patient()
@@ -2491,17 +2615,24 @@ if codelist_type == "sensitive" :
       
       #extract date of second episode - using the same criteria as the first episode
       overall_resp_secondary_sens_second_date = (
-        hospitalisation_diagnosis_matches(codelists.
-        respiratory_virus_secondary_codelist).where(apcs.admission_date
-        .is_on_or_between(dataset.overall_resp_secondary_date + days(14),
+        apcs.sort_by(apcs.admission_date)
+        .where((apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist)))
+        .where(apcs.admission_date.is_on_or_between(dataset
+        .overall_resp_secondary_date + days(14),
         followup_end_date)).admission_date.minimum_for_patient()
       )
       
       #occurrence of event in exclusion list within one month of an occurrence
       #of overall_resp_secondary_sens_second_date - using the same criteria as the first episode
       overall_resp_exclusion_secondary_second = (case(
-        when(hospitalisation_diagnosis_matches(codelists
-        .respiratory_virus_secondary_exclusion_codelist)
+        when(apcs.sort_by(apcs.admission_date)
+        .where((apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_exclusion_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_exclusion_codelist)))
         .where(apcs.admission_date.is_on_or_between(maximum_of(
         dataset.overall_resp_secondary_date + days(14),
         overall_resp_secondary_sens_second_date - days(30)),
@@ -2532,8 +2663,10 @@ if codelist_type == "sensitive" :
         when(dataset.overall_resp_secondary_second_date == 
         overall_resp_secondary_sens_second_date).then(
         apcs.sort_by(apcs.admission_date).where(   
-        hospitalisation_diagnosis_matches(codelists.
-        respiratory_virus_secondary_codelist).exists_for_patient())
+        (apcs.primary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist))
+        |(apcs.secondary_diagnosis.is_in(codelists
+        .respiratory_virus_secondary_codelist)))
         .where(apcs.admission_date.is_on_or_between(dataset
         .overall_resp_secondary_second_date, dataset
         .overall_resp_secondary_second_date)).first_for_patient()
@@ -2558,6 +2691,7 @@ if (investigation_type == "secondary") & (cohort == "older_adults"):
     immunosuppressed, has_sickle_cell,
   )
   
+  #add to dataset
   dataset.smoking_status = smoking_status
   dataset.hazardous_drinking = hazardous_drinking
   dataset.drug_usage = drug_usage
