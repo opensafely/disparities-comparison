@@ -1470,7 +1470,7 @@ if study_start_date >= covid_season_min :
     #get dates of events and corresponding codes 
     covid_codes_second_date, covid_code_second = (
       get_codes_dates("covid_sensitive_codelist", 4,
-                      dataset.covid_primary_date, 2)
+                      dataset.covid_primary_date + days(14), 2)
     )
     
     #get date of first occurrence of relevant prescription - for second episode
@@ -2649,8 +2649,8 @@ if codelist_type == "sensitive" :
         dataset.flu_secondary_second_date)),
         when((dataset.rsv_secondary_second_date.is_null()) &
         (dataset.flu_secondary_second_date.is_null()) &
-        (~overall_resp_exclusion_secondary)).then(
-        overall_resp_secondary_sens_date),
+        (~overall_resp_exclusion_secondary_second))
+        .then(overall_resp_secondary_sens_second_date),
         otherwise = None)
       ) 
       
