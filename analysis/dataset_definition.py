@@ -2531,7 +2531,7 @@ if codelist_type == "sensitive" :
 
       else :
       
-        dataset.overall_resp_secondary_second = overall_resp_secondary_spec_second
+        dataset.overall_resp_secondary_second_date = overall_resp_secondary_spec_second
 
         #get discharge date for second episode
         overall_resp_secondary_discharge_second = (case(
