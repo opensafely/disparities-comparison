@@ -2440,21 +2440,21 @@ if codelist_type == "sensitive" :
           otherwise = None)
         )
 
+      #extract length of stay for first episode, in hours
+      dataset.overall_resp_los = (
+        diff_dates_hours(dataset.overall_resp_secondary_date,
+        overall_resp_secondary_discharge)
+      )
+      
       #prioritise pathogen specific outcomes first
       overall_resp_secondary_spec_second = (
         minimum_of(dataset.rsv_secondary_second_date,
         dataset.flu_secondary_second_date,
         dataset.covid_secondary_second_date)
-      )
+      )        
 
       if overall_resp_secondary_spec_second is None :
-      
-        #extract length of stay for first episode, in hours
-        dataset.overall_resp_los = (
-          diff_dates_hours(dataset.overall_resp_secondary_date,
-          overall_resp_secondary_discharge)
-        ) 
-        
+    
         #extract date of second episode - using the same criteria as the first episode
         overall_resp_secondary_sens_second_date = (
           minimum_of((apcs.sort_by(apcs.admission_date)
@@ -2652,6 +2652,12 @@ if codelist_type == "sensitive" :
           otherwise = None)
         )
 
+      #extract length of stay for first episode, in hours
+      dataset.overall_resp_los = (
+        diff_dates_hours(dataset.overall_resp_secondary_date,
+        overall_resp_secondary_discharge)
+      ) 
+
       #prioritise pathogen specific outcomes first
       overall_resp_secondary_spec_second = (
         minimum_of(dataset.rsv_secondary_second_date,
@@ -2659,12 +2665,6 @@ if codelist_type == "sensitive" :
       )
 
       if overall_resp_secondary_spec_second is None :
-      
-        #extract length of stay for first episode, in hours
-        dataset.overall_resp_los = (
-          diff_dates_hours(dataset.overall_resp_secondary_date,
-          overall_resp_secondary_discharge)
-        ) 
         
         #extract date of second episode - using the same criteria as the first episode
         overall_resp_secondary_sens_second_date = (
