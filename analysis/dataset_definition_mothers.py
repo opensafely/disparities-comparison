@@ -2,13 +2,12 @@ import json, sys
 from pathlib import Path
 
 from datetime import date, datetime
-from ehrql import Dataset, create_dataset, case, when, maximum_of, minimum_of, years, days
+from ehrql import Dataset, create_dataset, case, when, years
 from ehrql.tables import table_from_file, PatientFrame, Series
 
 from ehrql.tables.tpp import (
   patients,
   clinical_events,
-  practice_registrations,
   vaccinations,
 )
 

@@ -4,11 +4,7 @@ from pathlib import Path
 from datetime import date, datetime
 from ehrql import Dataset, years
 from ehrql.tables import table_from_file, PatientFrame, Series
-from ehrql.tables.tpp import ( 
-  patients, 
-  parents,
-  practice_registrations
-)
+from ehrql.tables.tpp import practice_registrations
 
 from variable_lib import has_a_continuous_practice_registration_spanning
 

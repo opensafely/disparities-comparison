@@ -2,7 +2,7 @@ import json, sys
 from pathlib import Path
 
 from datetime import date, datetime
-from ehrql import Dataset, create_dataset, case, when, maximum_of, minimum_of, years, days
+from ehrql import Dataset, create_dataset, case, when, maximum_of, minimum_of, years, days, months
 from ehrql.tables.tpp import (
   patients,
   medications,
@@ -67,7 +67,7 @@ else :
   index_date = maximum_of(study_start_date, age_date)
 
 #define date for registration period
-registration_date = index_date - years(1)
+registration_date = index_date - months(3)
 
 #set end date as earliest date of either end date or age out date 
 #so that patients are the correct age for the cohort when looking at records

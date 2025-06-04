@@ -2,21 +2,18 @@ import json, sys
 from pathlib import Path 
 
 from datetime import date, datetime
-from ehrql.tables import table_from_file, PatientFrame, Series
 from ehrql import (
-  Dataset, create_dataset, case, when, maximum_of, minimum_of, years, days
+  Dataset, create_dataset, case, when, maximum_of, minimum_of, years, months
 )
 from ehrql.tables.tpp import ( 
   patients, 
   addresses, 
   clinical_events,
   practice_registrations,
-  apcs,
   parents
 )
 
 from variable_lib import (
-  has_a_continuous_practice_registration_spanning,
   hospitalisation_diagnosis_matches,
 )
 
@@ -64,7 +61,7 @@ if cohort == "infants" or cohort == "infants_subgroup" :
 else : 
   index_date = maximum_of(study_start_date, age_date)
 
-registration_date = index_date - years(1)
+registration_date = index_date - months(3)
 
 #set end date as first date of either end date or age out date 
 #so that patients are the correct age for the cohort when looking at records
