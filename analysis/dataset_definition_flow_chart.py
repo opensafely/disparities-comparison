@@ -14,6 +14,7 @@ from ehrql.tables.tpp import (
 )
 
 from variable_lib import (
+  has_a_continuous_practice_registration_spanning,
   hospitalisation_diagnosis_matches,
 )
 
@@ -89,7 +90,10 @@ age_at_end_months = (study_end_date - patients.date_of_birth).months
 if cohort == "infants" or cohort == "infants_subgroup" :
   registered_patients = practice_registrations.for_patient_on(index_date).exists_for_patient()
 else :
-  registered_patients = practice_registrations.for_patient_on(registration_date).exists_for_patient()
+  registered_patients = (
+    has_a_continuous_practice_registration_spanning(
+    registration_date, index_date)
+  )
 
 #have sex
 is_female_or_male = patients.sex.is_in(["female", "male"])

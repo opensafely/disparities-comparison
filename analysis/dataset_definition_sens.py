@@ -15,6 +15,7 @@ from ehrql.tables.tpp import (
 )
 
 from variable_lib import (
+  has_a_continuous_practice_registration_spanning,
   emergency_care_diagnosis_matches,
   hospitalisation_diagnosis_matches
 )
@@ -98,8 +99,8 @@ if cohort == "infants" or cohort == "infants_subgroup" :
   )
 else :
   registered_patients = (
-    practice_registrations.for_patient_on(registration_date)
-    .exists_for_patient()
+    has_a_continuous_practice_registration_spanning(
+    registration_date, index_date)
   )
 
 #get patients that are either male or female
