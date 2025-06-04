@@ -1476,13 +1476,13 @@ if cohort == "older_adults" :
   if study_start_date >= covid_season_min :
 
     #prioritise pathogen specific outcomes first
-    overall_resp_spec = (
+    overall_resp_primary_spec = (
       minimum_of((dataset.rsv_primary_date),
       (dataset.flu_primary_date), (dataset.covid_primary_date))
     )
 
     #extract unspecified respiratory infection primary care dates for 'sensitive' phenotype
-    if overall_resp_spec is None :
+    if overall_resp_primary_spec is None :
     
       #count number of clinical codes in overall respiratory symptom list which occur within 14 days
       #get dates of events and corresponding codes 
@@ -1528,15 +1528,15 @@ if cohort == "older_adults" :
 
     else :
 
-      dataset.overall_resp_primary_date = overall_resp_spec
+      dataset.overall_resp_primary_date = overall_resp_primary_spec
 
     #prioritise pathogen specific outcomes first
-    overall_resp_spec_second = (
+    overall_resp_primary_spec_second = (
       minimum_of((dataset.rsv_primary_second_date),
       (dataset.flu_primary_second_date), (dataset.covid_primary_second_date))
     )
 
-    if overall_resp_spec_second is None :
+    if overall_resp_primary_spec_second is None :
     
       #count number of clinical codes in overall respiratory symptom list 
       # - for second episode and date of first occurrence of two of the
@@ -1588,18 +1588,18 @@ if cohort == "older_adults" :
 
     else :
 
-      dataset.overall_resp_primary_second_date = overall_resp_spec_second
+      dataset.overall_resp_primary_second_date = overall_resp_primary_spec_second
     
   #pre covid seasons  
   else:
     
     #prioritise pathogen specific outcomes first  
-    overall_resp_spec = (
+    overall_resp_primary_spec = (
       minimum_of((dataset.rsv_primary_date),
       (dataset.flu_primary_date))
     )
 
-    if overall_resp_spec is None :
+    if overall_resp_primary_spec is None :
 
       #count number of clinical codes in overall respiratory symptom list which occur within 14 days
       #get dates of events and corresponding codes 
@@ -1647,15 +1647,15 @@ if cohort == "older_adults" :
 
     else :
       
-      dataset.overall_resp_primary_date = overall_resp_spec
+      dataset.overall_resp_primary_date = overall_resp_primary_spec
 
     #prioritise pathogen specific outcomes first   
-    overall_resp_spec_second = (
+    overall_resp_primary_spec_second = (
       minimum_of((dataset.rsv_primary_second_date),
       (dataset.flu_primary_second_date))
     )
 
-    if overall_resp_spec_second is None :
+    if overall_resp_primary_spec_second is None :
 
       #count number of clinical codes in overall respiratory symptom list 
       # - for second episode and date of first occurrence of two of the
@@ -1707,7 +1707,7 @@ if cohort == "older_adults" :
 
     else :
 
-      dataset.overall_resp_primary_second_date = overall_resp_spec_second
+      dataset.overall_resp_primary_second_date = overall_resp_primary_spec_second
     
 #cohorts that are not older adults    
 else:
@@ -1716,12 +1716,12 @@ else:
   if study_start_date >= covid_season_min :
 
     #prioritise pathogen specific outcomes first
-    overall_resp_spec = (
+    overall_resp_primary_spec = (
       minimum_of((dataset.rsv_primary_date),
       (dataset.flu_primary_date), (dataset.covid_primary_date))
     )
 
-    if overall_resp_spec is None :
+    if overall_resp_primary_spec is None :
 
       #count number of clinical codes in overall respiratory symptom list which occur within 14 days
       #get dates of events and corresponding codes 
@@ -1759,15 +1759,15 @@ else:
 
     else :
 
-      dataset.overall_resp_primary_date = overall_resp_spec
+      dataset.overall_resp_primary_date = overall_resp_primary_spec
 
     #prioritise pathogen specific outcomes first
-    overall_resp_spec_second = (
+    overall_resp_primary_spec_second = (
       minimum_of((dataset.rsv_primary_second_date),
       (dataset.flu_primary_second_date), (dataset.covid_primary_second_date))
     )
 
-    if overall_resp_spec_second is None :
+    if overall_resp_primary_spec_second is None :
     
       #count number of clinical codes in overall respiratory symptom list 
       # - for second episode and date of first occurrence of two of the
@@ -1806,18 +1806,18 @@ else:
 
     else :
 
-      dataset.overall_resp_primary_second_date = overall_resp_spec_second
+      dataset.overall_resp_primary_second_date = overall_resp_primary_spec_second
     
   #pre-covid seasons  
   else:
 
     #prioritise pathogen specific outcomes first
-    overall_resp_spec = (
+    overall_resp_primary_spec = (
       minimum_of((dataset.rsv_primary_date),
       (dataset.flu_primary_date))
     )
 
-    if overall_resp_spec is None :
+    if overall_resp_primary_spec is None :
 
       #count number of clinical codes in overall respiratory symptom list which occur within 14 days
       #get dates of events and corresponding codes 
@@ -1855,15 +1855,15 @@ else:
 
     else :
     
-      dataset.overall_resp_primary_date = overall_resp_spec
+      dataset.overall_resp_primary_date = overall_resp_primary_spec
 
     #prioritise pathogen specific outcomes first   
-    overall_resp_spec_second = (
+    overall_resp_primary_spec_second = (
       minimum_of((dataset.rsv_primary_second_date),
       (dataset.flu_primary_second_date))
     )
 
-    if overall_resp_spec_second is None :
+    if overall_resp_primary_spec_second is None :
     
       #count number of clinical codes in overall respiratory symptom list 
       # - for second episode and date of first occurrence of two of the
@@ -1902,7 +1902,7 @@ else:
 
     else :
 
-      dataset.overall_resp_primary_second_date = overall_resp_spec_second
+      dataset.overall_resp_primary_second_date = overall_resp_primary_spec_second
 
 #extract unspecified respiratory infection secondary care dates for 'sensitive' phenotype 
 
