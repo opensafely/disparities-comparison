@@ -394,7 +394,7 @@ if cohort == "infants" or cohort == "infants_subgroup" :
     .arrival_date.minimum_for_patient()))
   )
 
-  if rsv_primary_spec.is_null() :
+  if rsv_primary_spec is None :
 
     #get dates of events and corresponding codes 
     rsv_codes_date, rsv_code = (
@@ -554,7 +554,7 @@ else :
     .rsv_primary_codelist).date
   )
 
-  if rsv_primary_spec.is_null() :
+  if rsv_primary_spec is None :
 
     #get dates of events and corresponding codes 
     rsv_codes_date, rsv_code = (
@@ -691,7 +691,7 @@ rsv_secondary_spec = (
   .first_for_patient().admission_date
 )
 
-if rsv_secondary_spec.is_null() :
+if rsv_secondary_spec is None :
 
   #get date of first diagnosis code (in any position) from the RSV sensitive 
   #secondary care codelist - looking at the first episode
@@ -863,7 +863,7 @@ flu_primary_spec = (
   .flu_primary_codelist).date
 )
 
-if flu_primary_spec.is_null() :
+if flu_primary_spec is None :
 
   #get date of first case of either ARI or fever for first episode
   ari_dates = (
@@ -999,7 +999,7 @@ flu_secondary_spec = (
   .minimum_for_patient()
 )
 
-if flu_secondary_spec.is_null() :
+if flu_secondary_spec is None :
    
   #get date of first diagnosis code (in any position) from the flu sensitive
   #secondary care codelist or ARI secondary care codelist - looking at the first episode
@@ -1178,7 +1178,7 @@ if study_start_date >= covid_season_min :
     .covid_primary_codelist).date
   )
   
-  if covid_primary_spec.is_null() :
+  if covid_primary_spec is None :
 
     #count number of clinical codes in covid symptom list which occur within 14 days
     #looking at the first episode
@@ -1298,7 +1298,7 @@ if study_start_date >= covid_season_min :
     .minimum_for_patient()
   )
 
-  if covid_secondary_spec.is_null() :
+  if covid_secondary_spec is None :
   
     #get date of first diagnosis code (in any position) from the covid sensitive
     #secondary care codelist - looking at the first episode
@@ -1336,7 +1336,7 @@ if study_start_date >= covid_season_min :
     dataset.covid_secondary_date = (case(
       when(covid_secondary_spec.is_not_null())
       .then(covid_secondary_spec),
-      when((covid_secondary_spec.is_null()) &
+      when((covid_secondary_spec is None) &
       (~covid_exclusion_secondary))
       .then(covid_secondary_sens_date),
       otherwise = None)
@@ -1481,7 +1481,7 @@ if cohort == "older_adults" :
     )
 
     #extract unspecified respiratory infection primary care dates for 'sensitive' phenotype
-    if overall_resp_spec.is_null() :
+    if overall_resp_spec is None :
     
       #count number of clinical codes in overall respiratory symptom list which occur within 14 days
       #get dates of events and corresponding codes 
@@ -1598,7 +1598,7 @@ if cohort == "older_adults" :
       (dataset.flu_primary_date))
     )
 
-    if overall_resp_spec.is_null() :
+    if overall_resp_spec is None :
 
       #count number of clinical codes in overall respiratory symptom list which occur within 14 days
       #get dates of events and corresponding codes 
@@ -1720,7 +1720,7 @@ else:
       (dataset.flu_primary_date), (dataset.covid_primary_date))
     )
 
-    if overall_resp_spec.is_null() :
+    if overall_resp_spec is None :
 
       #count number of clinical codes in overall respiratory symptom list which occur within 14 days
       #get dates of events and corresponding codes 
@@ -1816,7 +1816,7 @@ else:
       (dataset.flu_primary_date))
     )
 
-    if overall_resp_spec.is_null() :
+    if overall_resp_spec is None :
 
       #count number of clinical codes in overall respiratory symptom list which occur within 14 days
       #get dates of events and corresponding codes 
@@ -1917,7 +1917,7 @@ if cohort == "older_adults" :
       dataset.flu_secondary_date, dataset.covid_secondary_date)
     )
 
-    if overall_resp_secondary_spec.is_null() :
+    if overall_resp_secondary_spec is None :
 
       #extract date of first episode - looking at the first date for which there is
       #a code in the respiratory virus secondary codelist (in any position), a 
@@ -2131,7 +2131,7 @@ if cohort == "older_adults" :
       dataset.flu_secondary_date)
     )
 
-    if overall_resp_secondary_spec.is_null() :
+    if overall_resp_secondary_spec is None :
 
       #extract date of first episode - looking at the first date for which there is
       #a code in the respiratory virus secondary codelist (in any position), a 
@@ -2343,7 +2343,7 @@ else:
       dataset.flu_secondary_date, dataset.covid_secondary_date)
     )
 
-    if overall_resp_secondary_spec.is_null() :
+    if overall_resp_secondary_spec is None :
 
       #extract date of first episode - looking at the first date for which there is
       #a code in the respiratory virus secondary codelist (in any position)
@@ -2507,7 +2507,7 @@ else:
       dataset.flu_secondary_date)
     )
   
-    if overall_resp_secondary_spec.is_null() :
+    if overall_resp_secondary_spec is None :
 
       #extract date of first episode - looking at the first date for which there is
       #a code in the respiratory virus secondary codelist (in any position)
