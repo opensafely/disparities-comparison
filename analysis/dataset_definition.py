@@ -656,7 +656,7 @@ else :
       followup_end_date))).arrival_date.minimum_for_patient()))
     )
 
-    if rsv_primary_spec_second.is_null() :
+    if rsv_primary_spec_second is None :
     
       #get dates of events and corresponding codes 
       rsv_codes_second_date, rsv_code_second = (
@@ -803,7 +803,7 @@ else :
       .first_for_patient().date
     )
 
-    if rsv_primary_spec_second.is_null() :
+    if rsv_primary_spec_second is None :
 
       #get dates of events and corresponding codes 
       rsv_codes_second_date, rsv_code_second = (
@@ -1030,7 +1030,7 @@ else :
     .first_for_patient().admission_date
   )
 
-  if rsv_secondary_spec_second.is_null() :
+  if rsv_secondary_spec_second is None :
 
     #get date of first diagnosis code (in any position) from the RSV sensitive 
     #secondary care codelist - looking at the second episode
@@ -1198,7 +1198,7 @@ else :
     .first_for_patient().date
   )
 
-  if flu_primary_spec_second.is_null() :
+  if flu_primary_spec_second is None :
 
     #get date of first case of either ARI or fever for second episode
     ari_second_dates = (
@@ -1431,7 +1431,7 @@ else :
     .minimum_for_patient()
   )
 
-  if flu_secondary_spec_second.is_null() :
+  if flu_secondary_spec_second is None :
 
     #extract date - prioritising inclusion from specific phenotype
     flu_secondary_sens_second_date = (
@@ -1594,7 +1594,7 @@ if study_start_date >= covid_season_min :
       .date).first_for_patient().date
     )
 
-    if covid_primary_spec_second.is_null() :
+    if covid_primary_spec_second is None :
 
       #count number of clinical codes in covid symptom list for second episode
       
@@ -1813,7 +1813,7 @@ if study_start_date >= covid_season_min :
       .admission_date.minimum_for_patient()
     )
 
-    if covid_secondary_spec_second.is_null() :
+    if covid_secondary_spec_second is None :
     
       #get date of first diagnosis code (in any position) from the covid sensitive
       #secondary care codelist - looking at the second episode
@@ -1849,7 +1849,7 @@ if study_start_date >= covid_season_min :
       dataset.covid_secondary_second_date = (case(
         when(covid_secondary_spec_second.is_not_null())
         .then(covid_secondary_spec_second),
-        when((covid_secondary_spec_second.is_null()) &
+        when((covid_secondary_spec_second is None) &
         (~covid_exclusion_secondary_second))
         .then(covid_secondary_sens_second_date),
         otherwise = None)
@@ -1963,7 +1963,7 @@ if codelist_type == "sensitive" :
         (dataset.flu_primary_second_date), (dataset.covid_primary_second_date))
       )
 
-      if overall_resp_spec_second.is_null() :
+      if overall_resp_spec_second is None :
       
         #count number of clinical codes in overall respiratory symptom list 
         # - for second episode and date of first occurrence of two of the
@@ -2082,7 +2082,7 @@ if codelist_type == "sensitive" :
         (dataset.flu_primary_second_date))
       )
 
-      if overall_resp_spec_second.is_null() :
+      if overall_resp_spec_second is None :
 
         #count number of clinical codes in overall respiratory symptom list 
         # - for second episode and date of first occurrence of two of the
@@ -2194,7 +2194,7 @@ if codelist_type == "sensitive" :
         (dataset.flu_primary_second_date), (dataset.covid_primary_second_date))
       )
 
-      if overall_resp_spec_second.is_null() :
+      if overall_resp_spec_second is None :
       
         #count number of clinical codes in overall respiratory symptom list 
         # - for second episode and date of first occurrence of two of the
@@ -2290,7 +2290,7 @@ if codelist_type == "sensitive" :
         (dataset.flu_primary_second_date))
       )
 
-      if overall_resp_spec_second.is_null() :
+      if overall_resp_spec_second is None :
       
         #count number of clinical codes in overall respiratory symptom list 
         # - for second episode and date of first occurrence of two of the
@@ -2446,7 +2446,7 @@ if codelist_type == "sensitive" :
         dataset.covid_secondary_second_date)
       )
 
-      if overall_resp_secondary_spec_second.is_null() :
+      if overall_resp_secondary_spec_second is None :
       
         #extract length of stay for first episode, in hours
         dataset.overall_resp_los = (
@@ -2657,7 +2657,7 @@ if codelist_type == "sensitive" :
         dataset.flu_secondary_second_date)
       )
 
-      if overall_resp_secondary_spec_second.is_null() :
+      if overall_resp_secondary_spec_second is None :
       
         #extract length of stay for first episode, in hours
         dataset.overall_resp_los = (
@@ -2854,7 +2854,7 @@ if codelist_type == "sensitive" :
         dataset.covid_secondary_second_date)
       )
 
-      if overall_resp_secondary_spec_second.is_null() :
+      if overall_resp_secondary_spec_second is None :
       
         #extract date of second episode - using the same criteria as the first episode
         overall_resp_secondary_sens_second_date = (
@@ -3021,7 +3021,7 @@ if codelist_type == "sensitive" :
         dataset.flu_secondary_second_date)
       )
       
-      if overall_resp_secondary_spec_second.is_null() :
+      if overall_resp_secondary_spec_second is None :
 
         #extract date of second episode - using the same criteria as the first episode
         overall_resp_secondary_sens_second_date = (
