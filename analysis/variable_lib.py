@@ -2,9 +2,9 @@ import operator
 from functools import reduce
 import json, sys
 from pathlib import Path
-from datetime import date, datetime
+from datetime import datetime
 
-from ehrql.codes import SNOMEDCTCode, CTV3Code, ICD10Code
+from ehrql.codes import ICD10Code
 from ehrql import case, days, when, years, months, maximum_of, minimum_of
 from ehrql.tables.tpp import (
     emergency_care_attendances, 
@@ -127,46 +127,52 @@ def first_prior_meds(codelist, where = True):
         .first_for_patient()
     )
 
-#infections occuring after index date but before study end date
-infection_events = (
+#gp events occuring after index date but before end of follow up
+gp_events = (
   clinical_events.where(clinical_events.date
   .is_on_or_between(index_date, followup_end_date))
 )
 
-#query infection_events for existence of event-in-codelist 
-def is_infection_event(codelist, where = True):
+#query gp_events for existence of event-in-codelist 
+def is_gp_event(codelist, where = True):
     return (
-        infection_events.where(where)
-        .where(infection_events.snomedct_code.is_in(codelist))
+        gp_events.where(where)
+        .where(gp_events.snomedct_code.is_in(codelist))
     )
 
-#query infection_events for existence of event-in-codelist (get first of these)
-def has_infection_event(codelist, where = True):
+#query gp_events for existence of event-in-codelist (get first of these)
+def has_gp_event(codelist, where = True):
     return (
-        infection_events.where(where)
-        .where(infection_events.snomedct_code.is_in(codelist))
+        gp_events.where(where)
+        .where(gp_events.snomedct_code.is_in(codelist))
         .sort_by(clinical_events.date)
         .first_for_patient()
         .exists_for_patient()
     )
 
-#query infection_events for date of most recent event-in-codelist
-def last_infection_event(codelist, where = True):
+#query gp_events for date of most recent event-in-codelist
+def last_gp_event(codelist, where = True):
     return (
-        infection_events.where(where)
-        .where(infection_events.snomedct_code.is_in(codelist))
+        gp_events.where(where)
+        .where(gp_events.snomedct_code.is_in(codelist))
         .sort_by(clinical_events.date)
         .last_for_patient()
     )
   
-#query infection_events for date of earliest event-in-codelist
-def first_infection_event(codelist, where = True):
+#query gp_events for date of earliest event-in-codelist
+def first_gp_event(codelist, where = True):
     return (
-        infection_events.where(where)
-        .where(infection_events.snomedct_code.is_in(codelist))
+        gp_events.where(where)
+        .where(gp_events.snomedct_code.is_in(codelist))
         .sort_by(clinical_events.date)
         .first_for_patient()
     )
+
+#hospital events occuring after index date but before end of follow up
+hospital_events = (
+  apcs.where(apcs.admission_date
+  .is_on_or_between(index_date, followup_end_date))
+)
 
 #find difference between two dates in hours
 def diff_dates_hours(date1, date2):
@@ -251,23 +257,6 @@ def practice_registration_as_of(date):
 
 def has_a_continuous_practice_registration_spanning(start_date, end_date):
     return _registrations_overlapping_period(start_date, end_date).exists_for_patient()
-  
-def most_recent_bmi(*, minimum_age_at_measurement, where=True):
-    age_threshold = patients.date_of_birth + days(
-        # This is obviously inexact but, given that the dates of birth are rounded to
-        # the first of the month anyway, there's no point trying to be more accurate
-        int(365.25 * minimum_age_at_measurement)
-    )
-    return (
-        # This captures just explicitly recorded BMI observations rather than attempting
-        # to calculate it from height and weight measurements. Investigation has shown
-        # this to have no real benefit it terms of coverage or accuracy.
-        clinical_events.where(clinical_events.ctv3_code == CTV3Code("22K.."))
-        .where(clinical_events.date >= age_threshold)
-        .where(where)
-        .sort_by(clinical_events.date)
-        .last_for_patient()
-    )
 
 ###############################################################################
 # from https://github.com/opensafely/cis-pop-validation-ehrql/blob/cce4f0bfaffa5370b00f847fbcfe742c7a13aeeb/analysis/variable_lib.py#L100
@@ -306,10 +295,10 @@ def hospitalisation_diagnosis_matches(codelist):
         # Obviously this is all far from ideal though, and later we hope to be able
         # to pull these codes out in a separate table and handle the matching
         # properly.
-        apcs.all_diagnoses.contains(code_string)
+        hospital_events.all_diagnoses.contains(code_string)
         for code_string in code_strings
     ]
-    return apcs.where(any_of(conditions))
+    return hospital_events.where(any_of(conditions))
   
 ###############################################################################
 # from https://github.com/opensafely/comparative-booster-spring2023/blob/main/analysis/dataset_definition.py
@@ -324,29 +313,9 @@ def cause_of_death_matches(codelist):
     return any_of(conditions)
 
 def hospitalisation_primary_secondary_diagnosis_matches(codelist):
-    code_strings = set()
-    for code in codelist:
-        # Pass the string through the ICD10Code to constructor to validate that it has
-        # the expected format
-        code_string = ICD10Code(code)._to_primitive_type()
-        code_strings.add(code_string)
+
     conditions = [
-        # The reason a plain substring search like this works is twofold:
-        #
-        # * ICD-10 codes all start with the sequence [A-Z][0-9] and do not contain
-        #   such a sequence in any other part of the code. In this sense they are
-        #   suffix-free and two codes will only match at they start if they match at
-        #   all.
-        #
-        # * Although the codes are not prefix-free they are organised hierarchically
-        #   such that code A0123 represents a child concept of code A01. So although
-        #   the naive substring matching below will find code A01 if code A0123 is
-        #   present, this happens to be the behaviour we actually want.
-        #
-        # Obviously this is all far from ideal though, and later we hope to be able
-        # to pull these codes out in a separate table and handle the matching
-        # properly.
-        (apcs.primary_diagnosis.contains(code_string))|(apcs.secondary_diagnosis.contains(code_string))
-        for code_string in code_strings
+        (hospital_events.primary_diagnosis.is_in(codelist))|
+        (hospital_events.secondary_diagnosis.is_in(codelist))
     ]
-    return apcs.where(any_of(conditions))
+    return hospital_events.where(any_of(conditions))
