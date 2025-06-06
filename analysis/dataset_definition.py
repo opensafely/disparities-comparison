@@ -1445,8 +1445,6 @@ else :
       diff_dates_hours(dataset.covid_secondary_second_date, covid_secondary_discharge_second)
     )
 
-    ##continue from here
-
   ##unspecified respiratory virus outcomes
   
   #count number of clinical codes in overall respiratory symptom list which occur within 14 days
@@ -1460,12 +1458,12 @@ else :
   #primary exclusion codelist within one month before or after the date of
   #overall_resp_codes_date
   overall_resp_exclusion_primary = (case(
-    when(is_gp_event(codelists
-    .respiratory_virus_primary_exclusion_codelist)
-    .where(gp_events.date.is_on_or_between(
-    overall_resp_codes_date - days(30),
-    overall_resp_codes_date + days(30))).exists_for_patient())
-    .then(True), otherwise = False)
+    when(
+      is_gp_event(codelists.respiratory_virus_primary_exclusion_codelist)
+      .where(gp_events.date.is_on_or_between(overall_resp_codes_date - days(30), overall_resp_codes_date + days(30)))
+      .exists_for_patient()
+    ).then(True),
+    otherwise = False)
   )
   
   #older adults
@@ -1476,15 +1474,14 @@ else :
     #code in the COPD exacerbation secondary codelist (in any position), or a 
     #code in the asthma exacerbation secondary codelist (in any position)
     overall_resp_secondary_sens_date = (
-      minimum_of((hospitalisation_primary_secondary_diagnosis_matches(
-      codelists.respiratory_virus_secondary_codelist)
-      .admission_date.minimum_for_patient()),
-      (hospitalisation_primary_secondary_diagnosis_matches(codelists
-      .copd_exacerbation_secondary_codelist)
-      .admission_date.minimum_for_patient()),
-      (hospitalisation_primary_secondary_diagnosis_matches(codelists
-      .asthma_exacerbation_secondary_codelist)
-      .admission_date.minimum_for_patient()))
+      minimum_of(
+        (hospitalisation_primary_secondary_diagnosis_matches(codelists.respiratory_virus_secondary_codelist)
+         .admission_date.minimum_for_patient()),
+        (hospitalisation_primary_secondary_diagnosis_matches(codelists.copd_exacerbation_secondary_codelist)
+         .admission_date.minimum_for_patient()),
+        (hospitalisation_primary_secondary_diagnosis_matches(codelists.asthma_exacerbation_secondary_codelist)
+         .admission_date.minimum_for_patient())
+      )
     )
     
     #occurrence of event in exclusion list within one month of overall_resp_secondary_sens_date
@@ -1492,12 +1489,15 @@ else :
     #secondary exclusion codelist within one month before or after the date of
     #overall_resp_secondary_sens_date
     overall_resp_exclusion_secondary = (case(
-      when(hospitalisation_primary_secondary_diagnosis_matches(
-      codelists.respiratory_virus_secondary_exclusion_codelist)
-      .where(hospital_events.admission_date.is_on_or_between(
-      overall_resp_secondary_sens_date - days(30),
-      overall_resp_secondary_sens_date + days(30)))
-      .exists_for_patient()).then(True), otherwise = False)
+      when(
+        hospitalisation_primary_secondary_diagnosis_matches(codelists.respiratory_virus_secondary_exclusion_codelist)
+        .where(
+          hospital_events.admission_date.is_on_or_between(
+            overall_resp_secondary_sens_date - days(30), overall_resp_secondary_sens_date + days(30)
+          )
+        ).exists_for_patient()
+      ).then(True),
+      otherwise = False)
     )
 
     #covid seasons
@@ -1513,24 +1513,32 @@ else :
       #asthma exacerbation, a code in primary care for a COPD exacerbation,
       #or a code in primary care for an asthma exacerbation
       dataset.overall_resp_primary_date = (case(
-        when((dataset.rsv_primary_date.is_not_null())
-        |(dataset.flu_primary_date.is_not_null())
-        |(dataset.covid_primary_date.is_not_null()))
-        .then(minimum_of((dataset.rsv_primary_date),
-        (dataset.flu_primary_date), (dataset.covid_primary_date))),
-        when((dataset.rsv_primary_date.is_null()) &
-        (dataset.flu_primary_date.is_null()) &
-        (dataset.covid_primary_date.is_null()) &
-        (~overall_resp_exclusion_primary)).then(
-        minimum_of((emergency_care_diagnosis_matches(codelists
-        .rtri_attendance).arrival_date.minimum_for_patient()),
-        (emergency_care_diagnosis_matches(codelists
-        .copd_exacerbation_attendance).arrival_date
-        .minimum_for_patient()), (first_gp_event(
-        codelists.copd_exacerbation_primary_codelist).date),
-        (first_gp_event(codelists
-        .asthma_exacerbation_primary_codelist).date))),
-        otherwise = None)
+        when(
+          (dataset.rsv_primary_date.is_not_null())|
+          (dataset.flu_primary_date.is_not_null())|
+          (dataset.covid_primary_date.is_not_null())
+        ).then(
+          minimum_of(
+            (dataset.rsv_primary_date),
+            (dataset.flu_primary_date),
+            (dataset.covid_primary_date)
+          )
+        ),
+        when(
+          (dataset.rsv_primary_date.is_null()) &
+          (dataset.flu_primary_date.is_null()) &
+          (dataset.covid_primary_date.is_null()) &
+          (~overall_resp_exclusion_primary)
+        ).then(
+          minimum_of(
+            (emergency_care_diagnosis_matches(codelists.rtri_attendance)
+             .arrival_date.minimum_for_patient()),
+            (emergency_care_diagnosis_matches(codelists.copd_exacerbation_attendance)
+             .arrival_date.minimum_for_patient()),
+            (first_gp_event(codelists.copd_exacerbation_primary_codelist).date),
+            (first_gp_event(codelists.asthma_exacerbation_primary_codelist).date)
+          )
+        ), otherwise = None)
       ) 
       
       #count number of clinical codes in overall respiratory symptom list 
@@ -1544,49 +1552,56 @@ else :
       #occurrence of event in exclusion list within one month of overall_resp_codes_second_date
       # - using the same criteria as the first episode
       overall_resp_exclusion_primary_second = (case(
-        when(is_gp_event(codelists
-        .respiratory_virus_primary_exclusion_codelist)
-        .where(gp_events.date.is_on_or_between(
-        maximum_of(dataset.overall_resp_primary_date + days(14),
-        overall_resp_codes_second_date - days(30)),
-        overall_resp_codes_second_date + days(30)))
-        .exists_for_patient()).then(True),
+        when(
+          is_gp_event(codelists.respiratory_virus_primary_exclusion_codelist)
+          .where(
+            gp_events.date.is_on_or_between(
+              maximum_of(dataset.overall_resp_primary_date + days(14), overall_resp_codes_second_date - days(30)),
+              overall_resp_codes_second_date + days(30)
+            )
+          ).exists_for_patient()
+        ).then(True),
         otherwise = False)
       )
       
       #extract date of second episode - using the same criteria as the first episode
       dataset.overall_resp_primary_second_date = (case(
-        when((dataset.rsv_primary_second_date.is_not_null())
-        |(dataset.flu_primary_second_date.is_not_null())
-        |(dataset.covid_primary_second_date.is_not_null()))
-        .then(minimum_of((dataset.rsv_primary_second_date),
-        (dataset.flu_primary_second_date),
-        (dataset.covid_primary_second_date))),
-        when((dataset.rsv_primary_second_date.is_null()) &
-        (dataset.flu_primary_second_date.is_null()) &
-        (dataset.covid_primary_second_date.is_null()) &
-        (~overall_resp_exclusion_primary_second)).then(
-        minimum_of((is_gp_event(codelists
-        .respiratory_virus_primary_codelist).where(gp_events
-        .date.is_on_or_after(dataset.overall_resp_primary_date + days(14)))
-        .sort_by(gp_events.date).first_for_patient().date),
-        (overall_resp_codes_second_date), (emergency_care_diagnosis_matches(
-        codelists.rtri_attendance).where(emergency_events.arrival_date
-        .is_on_or_after(dataset.overall_resp_primary_date + days(14)))
-        .arrival_date.minimum_for_patient()),
-        (emergency_care_diagnosis_matches(codelists
-        .copd_exacerbation_attendance).where(emergency_events
-        .arrival_date.is_on_or_after(dataset.rsv_primary_date + days(14)))
-        .arrival_date.minimum_for_patient()),
-        (is_gp_event(codelists.copd_exacerbation_primary_codelist)
-        .where(gp_events.date.is_on_or_after(dataset
-        .overall_resp_primary_date + days(14))).sort_by(gp_events
-        .date).first_for_patient().date),
-        (is_gp_event(codelists.asthma_exacerbation_primary_codelist)
-        .where(gp_events.date.is_on_or_after(dataset
-        .overall_resp_primary_date + days(14))).sort_by(gp_events
-        .date).first_for_patient().date))),
-        otherwise = None)
+        when(
+          (dataset.rsv_primary_second_date.is_not_null())|
+          (dataset.flu_primary_second_date.is_not_null())|
+          (dataset.covid_primary_second_date.is_not_null())
+        ).then(
+          minimum_of(
+            (dataset.rsv_primary_second_date),
+            (dataset.flu_primary_second_date),
+            (dataset.covid_primary_second_date)
+          )
+        ),
+        when(
+          (dataset.rsv_primary_second_date.is_null()) &
+          (dataset.flu_primary_second_date.is_null()) &
+          (dataset.covid_primary_second_date.is_null()) &
+          (~overall_resp_exclusion_primary_second)
+        ).then(
+          minimum_of(
+            (is_gp_event(codelists.respiratory_virus_primary_codelist)
+             .where(gp_events.date.is_on_or_after(dataset.overall_resp_primary_date + days(14)))
+             .sort_by(gp_events.date).first_for_patient().date),
+            (overall_resp_codes_second_date),
+            (emergency_care_diagnosis_matches(codelists.rtri_attendance)
+             .where(emergency_events.arrival_date.is_on_or_after(dataset.overall_resp_primary_date + days(14)))
+             .arrival_date.minimum_for_patient()),
+            (emergency_care_diagnosis_matches(codelists.copd_exacerbation_attendance)
+             .where(emergency_events.arrival_date.is_on_or_after(dataset.rsv_primary_date + days(14)))
+             .arrival_date.minimum_for_patient()),
+            (is_gp_event(codelists.copd_exacerbation_primary_codelist)
+             .where(gp_events.date.is_on_or_after(dataset.overall_resp_primary_date + days(14)))
+             .sort_by(gp_events.date).first_for_patient().date),
+            (is_gp_event(codelists.asthma_exacerbation_primary_codelist)
+             .where(gp_events.date.is_on_or_after(dataset.overall_resp_primary_date + days(14)))
+             .sort_by(gp_events.date).first_for_patient().date)
+          )
+        ), otherwise = None)
       )
 
       #extract unspecified respiratory infection secondary care dates for 'sensitive' phenotype
@@ -1595,128 +1610,146 @@ else :
       # - get the first date of either a RSV secondary episode, flu secondary episode,
       #covid secondary episode or overall_resp_secondary_sens_date
       dataset.overall_resp_secondary_date = (case(
-        when((dataset.rsv_secondary_date.is_not_null())
-        |(dataset.flu_secondary_date.is_not_null())
-        |(dataset.covid_secondary_date.is_not_null()))
-        .then(minimum_of(dataset.rsv_secondary_date,
-        dataset.flu_secondary_date, dataset.covid_secondary_date)),
-        when((dataset.rsv_secondary_date.is_null()) &
-        (dataset.flu_secondary_date.is_null()) &
-        (dataset.covid_secondary_date.is_null()) &
-        (~overall_resp_exclusion_secondary)).then(
-        overall_resp_secondary_sens_date),
+        when(
+          (dataset.rsv_secondary_date.is_not_null())|
+          (dataset.flu_secondary_date.is_not_null())|
+          (dataset.covid_secondary_date.is_not_null())
+        ).then(
+          minimum_of(
+            (dataset.rsv_secondary_date),
+            (dataset.flu_secondary_date),
+            (dataset.covid_secondary_date)
+          )
+        ),
+        when(
+          (dataset.rsv_secondary_date.is_null()) &
+          (dataset.flu_secondary_date.is_null()) &
+          (dataset.covid_secondary_date.is_null()) &
+          (~overall_resp_exclusion_secondary)
+        ).then(overall_resp_secondary_sens_date),
         otherwise = None)
       ) 
       
       #get discharge date for first episode
       overall_resp_secondary_discharge = (case(
-        when(dataset.overall_resp_secondary_date == dataset
-        .rsv_secondary_date).then(rsv_secondary_discharge), 
-        when(dataset.overall_resp_secondary_date == dataset
-        .flu_secondary_date).then(flu_secondary_discharge),
-        when(dataset.overall_resp_secondary_date == dataset
-        .covid_secondary_date).then(covid_secondary_discharge),
-        when(dataset.overall_resp_secondary_date == overall_resp_secondary_sens_date)
-        .then(hospital_events.sort_by(hospital_events.admission_date).where(
-        (hospitalisation_primary_secondary_diagnosis_matches(
-        codelists.respiratory_virus_secondary_codelist)
-        .exists_for_patient())
-        |(hospitalisation_primary_secondary_diagnosis_matches(
-        codelists.copd_exacerbation_secondary_codelist)
-        .exists_for_patient())
-        |(hospitalisation_primary_secondary_diagnosis_matches(
-        codelists.asthma_exacerbation_secondary_codelist)
-        .exists_for_patient()))
-        .where(hospital_events.admission_date.is_on_or_between(dataset
-        .overall_resp_secondary_date, dataset
-        .overall_resp_secondary_date)).first_for_patient()
-        .discharge_date), otherwise = None)
+        when(
+          dataset.overall_resp_secondary_date == dataset.rsv_secondary_date
+        ).then(rsv_secondary_discharge), 
+        when(
+          dataset.overall_resp_secondary_date == dataset.flu_secondary_date
+        ).then(flu_secondary_discharge),
+        when(
+          dataset.overall_resp_secondary_date == dataset.covid_secondary_date
+        ).then(covid_secondary_discharge),
+        when(
+          dataset.overall_resp_secondary_date == overall_resp_secondary_sens_date)
+        .then(
+          hospital_events.sort_by(hospital_events.admission_date)
+          .where(
+            (hospitalisation_primary_secondary_diagnosis_matches(codelists.respiratory_virus_secondary_codelist).exists_for_patient())|
+            (hospitalisation_primary_secondary_diagnosis_matches(codelists.copd_exacerbation_secondary_codelist).exists_for_patient())|
+            (hospitalisation_primary_secondary_diagnosis_matches(codelists.asthma_exacerbation_secondary_codelist).exists_for_patient())
+          )
+          .where(
+            hospital_events.admission_date.is_on_or_between(
+              dataset.overall_resp_secondary_date, dataset.overall_resp_secondary_date
+            )
+          ).first_for_patient().discharge_date
+        ), otherwise = None)
       )
       
       #extract length of stay for first episode, in hours
       dataset.overall_resp_los = (
-        diff_dates_hours(dataset.overall_resp_secondary_date,
-        overall_resp_secondary_discharge)
+        diff_dates_hours(dataset.overall_resp_secondary_date, overall_resp_secondary_discharge)
       ) 
       
       #extract date of second episode - using the same criteria as the first episode
       overall_resp_secondary_sens_second_date = (
-        minimum_of(hospitalisation_primary_secondary_diagnosis_matches(
-        codelists.respiratory_virus_secondary_codelist)
-        .where(hospital_events.admission_date.is_on_or_after(
-        dataset.overall_resp_secondary_date + days(14)))
-        .admission_date.minimum_for_patient(),
-        (hospitalisation_primary_secondary_diagnosis_matches(
-        codelists.copd_exacerbation_secondary_codelist)
-        .where(hospital_events.admission_date.is_on_or_after(
-        dataset.overall_resp_secondary_date + days(14)))
-        .admission_date.minimum_for_patient()),
-        (hospitalisation_primary_secondary_diagnosis_matches(
-        codelists.asthma_exacerbation_secondary_codelist)
-        .where(hospital_events.admission_date.is_on_or_after(
-        dataset.overall_resp_secondary_date + days(14)))
-        .admission_date.minimum_for_patient()))
+        minimum_of(
+          (hospitalisation_primary_secondary_diagnosis_matches(codelists.respiratory_virus_secondary_codelist)
+          .where(hospital_events.admission_date.is_on_or_after(dataset.overall_resp_secondary_date + days(14)))
+          .admission_date.minimum_for_patient()),
+          (hospitalisation_primary_secondary_diagnosis_matches(codelists.copd_exacerbation_secondary_codelist)
+          .where(hospital_events.admission_date.is_on_or_after(dataset.overall_resp_secondary_date + days(14)))
+          .admission_date.minimum_for_patient()),
+          (hospitalisation_primary_secondary_diagnosis_matches(codelists.asthma_exacerbation_secondary_codelist)
+          .where(hospital_events.admission_date.is_on_or_after(dataset.overall_resp_secondary_date + days(14)))
+          .admission_date.minimum_for_patient())
+        )
       )
       
       #occurrence of event in exclusion list within one month of an occurrence
       #of overall_resp_secondary_sens_second_date - using the same criteria as the first episode
       overall_resp_exclusion_secondary_second = (case(
-        when(hospitalisation_primary_secondary_diagnosis_matches(
-        codelists.respiratory_virus_secondary_exclusion_codelist)
-        .where(hospital_events.admission_date.is_on_or_between(maximum_of(
-        dataset.overall_resp_secondary_date + days(14),
-        overall_resp_secondary_sens_second_date - days(30)),
-        overall_resp_secondary_sens_second_date + days(30)))
-        .exists_for_patient()).then(True), otherwise = False)  
+        when(
+          hospitalisation_primary_secondary_diagnosis_matches(codelists.respiratory_virus_secondary_exclusion_codelist)
+          .where(
+            hospital_events.admission_date.is_on_or_between(
+              maximum_of(dataset.overall_resp_secondary_date + days(14), overall_resp_secondary_sens_second_date - days(30)),
+              overall_resp_secondary_sens_second_date + days(30)
+            )
+          ).exists_for_patient()
+        ).then(True),
+        otherwise = False)  
       )
       
       #extract date of second episode - using the same criteria as the first episode
       dataset.overall_resp_secondary_second_date = (case(
-        when((dataset.rsv_secondary_second_date.is_not_null())
-        |(dataset.flu_secondary_second_date.is_not_null())
-        |(dataset.covid_secondary_second_date.is_not_null()))
-        .then(minimum_of(dataset.rsv_secondary_second_date,
-        dataset.flu_secondary_second_date, dataset
-        .covid_secondary_second_date)), when((dataset
-        .rsv_secondary_second_date.is_null()) &
-        (dataset.flu_secondary_second_date.is_null()) &
-        (dataset.covid_secondary_second_date.is_null()) &
-        (~overall_resp_exclusion_secondary_second)).then(
-        overall_resp_secondary_sens_second_date),
+        when(
+          (dataset.rsv_secondary_second_date.is_not_null())|
+          (dataset.flu_secondary_second_date.is_not_null())|
+          (dataset.covid_secondary_second_date.is_not_null())
+        ).then(
+          minimum_of(
+            (dataset.rsv_secondary_second_date),
+            (dataset.flu_secondary_second_date),
+            (dataset.covid_secondary_second_date)
+          )
+        ),
+        when(
+          (dataset.rsv_secondary_second_date.is_null()) &
+          (dataset.flu_secondary_second_date.is_null()) &
+          (dataset.covid_secondary_second_date.is_null()) &
+          (~overall_resp_exclusion_secondary_second)
+        ).then(overall_resp_secondary_sens_second_date),
         otherwise = None)
       ) 
       
       #get discharge date for second episode
       overall_resp_secondary_discharge_second = (case(
-        when(dataset.overall_resp_secondary_second_date == dataset
-        .rsv_secondary_second_date).then(rsv_secondary_discharge_second), 
-        when(dataset.overall_resp_secondary_second_date == dataset
-        .flu_secondary_second_date).then(flu_secondary_discharge_second),
-        when(dataset.overall_resp_secondary_second_date == dataset
-        .covid_secondary_second_date).then(covid_secondary_discharge_second),
-        when(dataset.overall_resp_secondary_second_date == overall_resp_secondary_sens_second_date)
-        .then(hospital_events.sort_by(hospital_events.admission_date).where(
-        (hospitalisation_primary_secondary_diagnosis_matches(
-        codelists.respiratory_virus_secondary_codelist)
-        .exists_for_patient())
-        |(hospitalisation_primary_secondary_diagnosis_matches(
-        codelists.copd_exacerbation_secondary_codelist)
-        .exists_for_patient())
-        |(hospitalisation_primary_secondary_diagnosis_matches(
-        codelists.asthma_exacerbation_secondary_codelist)
-        .exists_for_patient()))
-        .where(hospital_events.admission_date.is_on_or_between(dataset
-        .overall_resp_secondary_second_date, dataset
-        .overall_resp_secondary_second_date)).first_for_patient()
-        .discharge_date), otherwise = None)
+        when(
+          dataset.overall_resp_secondary_second_date == dataset.rsv_secondary_second_date
+        ).then(rsv_secondary_discharge_second), 
+        when(
+          dataset.overall_resp_secondary_second_date == dataset.flu_secondary_second_date
+        ).then(flu_secondary_discharge_second),
+        when(
+          dataset.overall_resp_secondary_second_date == dataset.covid_secondary_second_date
+        ).then(covid_secondary_discharge_second),
+        when(
+          dataset.overall_resp_secondary_second_date == overall_resp_secondary_sens_second_date
+        ).then(
+          hospital_events.sort_by(hospital_events.admission_date)
+          .where(
+            (hospitalisation_primary_secondary_diagnosis_matches(codelists.respiratory_virus_secondary_codelist).exists_for_patient())|
+            (hospitalisation_primary_secondary_diagnosis_matches(codelists.copd_exacerbation_secondary_codelist).exists_for_patient())|
+            (hospitalisation_primary_secondary_diagnosis_matches(codelists.asthma_exacerbation_secondary_codelist).exists_for_patient())
+          )
+          .where(
+            hospital_events.admission_date.is_on_or_between(
+              dataset.overall_resp_secondary_second_date, dataset.overall_resp_secondary_second_date
+            )
+          ).first_for_patient().discharge_date
+        ), otherwise = None)
       )
       
       #extract length of stay for second episode, in hours
       dataset.overall_resp_los_second = (
-        diff_dates_hours(dataset.overall_resp_secondary_second_date,
-        overall_resp_secondary_discharge_second)
+        diff_dates_hours(dataset.overall_resp_secondary_second_date, overall_resp_secondary_discharge_second)
       )
-      
+
+    ##continue from here
+       
     #pre covid seasons  
     else:
 
