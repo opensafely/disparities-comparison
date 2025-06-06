@@ -37,8 +37,7 @@ class matched_patients(PatientFrame) :
 
 ##define populations
 registered_mothers = (
-  practice_registrations.for_patient_on(matched_patients
-  .index_date).exists_for_patient()
+  practice_registrations.for_patient_on(matched_patients.index_date).exists_for_patient()
 )
 
 #extract mothers whose patient id matches those who were extracted with infants
@@ -48,6 +47,7 @@ dataset.define_population(
 
 #mothers registration for 1 year prior to index date
 dataset.mother_registered = (
-  has_a_continuous_practice_registration_spanning(matched_patients
-  .index_date - years(1), matched_patients.index_date)
+  has_a_continuous_practice_registration_spanning(
+    matched_patients.index_date - years(1), matched_patients.index_date
+  )
 )

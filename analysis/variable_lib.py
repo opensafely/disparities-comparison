@@ -195,6 +195,9 @@ def diff_dates_hours(date1, date2):
 def diff_dates_days(date1, date2):
     return (date2-date1).days
 
+def filter_codes_by_category(codelist, include):
+    return {k:v for k,v in codelist.items() if v in include}
+
 ##define function for outcome identification
 def get_codes_dates(codelist_name, num_events, start_date, num_codes):
 
