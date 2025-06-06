@@ -168,6 +168,19 @@ def first_gp_event(codelist, where = True):
         .first_for_patient()
     )
 
+
+#emergency attendances occuring after index date but before end of follow up
+emergency_events = (
+  emergency_care_attendances.where(emergency_care_attendances
+  .arrival_date.is_on_or_between(index_date, followup_end_date))
+)
+
+#prescriptions occuring after index date but before end of follow up
+prescribing_events = (
+  medications.where(medications.date
+  .is_on_or_between(index_date, followup_end_date))
+)
+
 #hospital events occuring after index date but before end of follow up
 hospital_events = (
   apcs.where(apcs.admission_date
@@ -267,10 +280,10 @@ def any_of(conditions):
 
 def emergency_care_diagnosis_matches(codelist):
     conditions = [
-        getattr(emergency_care_attendances, column_name).is_in(codelist)
+        getattr(emergency_events, column_name).is_in(codelist)
         for column_name in [f"diagnosis_{i:02d}" for i in range(1, 3)]
     ]
-    return emergency_care_attendances.where(any_of(conditions))
+    return emergency_events.where(any_of(conditions))
 
 def hospitalisation_diagnosis_matches(codelist):
     code_strings = set()
@@ -295,10 +308,10 @@ def hospitalisation_diagnosis_matches(codelist):
         # Obviously this is all far from ideal though, and later we hope to be able
         # to pull these codes out in a separate table and handle the matching
         # properly.
-        hospital_events.all_diagnoses.contains(code_string)
+        apcs.all_diagnoses.contains(code_string)
         for code_string in code_strings
     ]
-    return hospital_events.where(any_of(conditions))
+    return apcs.where(any_of(conditions))
   
 ###############################################################################
 # from https://github.com/opensafely/comparative-booster-spring2023/blob/main/analysis/dataset_definition.py
