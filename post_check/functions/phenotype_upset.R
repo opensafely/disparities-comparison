@@ -454,12 +454,12 @@ upset_plot <- function(input, seasons) {
     plot_label <- ggdraw() +
       draw_label(
         "Specific Phenotype",
-        x = 0.5, y = 0, hjust = 1.705, vjust = -2.5,
+        x = 0.5, y = 0, hjust = 2.2, vjust = -2.5,
         fontface = 'bold', size = 14
       ) +
       draw_label(
         "Sensitive Phenotype",
-        x = 1, y = 0, hjust = 1.725, vjust = -2.5,
+        x = 1, y = 0, hjust = 2.2, vjust = -2.5,
         fontface = 'bold', size = 14
       ) +
       theme(plot.background = element_rect(

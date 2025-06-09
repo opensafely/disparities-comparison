@@ -432,7 +432,8 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   labs(x = "", y = "") + theme_bw() +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        strip.text = element_text(size = 10))
 
 flu_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "Influenza", month >= as.Date("2016-09-01")) %>%
@@ -455,7 +456,8 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   labs(x = "", y = "") + theme_bw() +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        strip.text = element_text(size = 10))
 
 covid_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "COVID-19", month >= as.Date("2020-03-01")) %>%
@@ -480,7 +482,8 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = function(x) format(x, scientific = TRUE)) +
   scale_x_continuous(labels = function(x) format(x, scientific = TRUE)) +
   labs(x = "", y = "") + theme_bw() +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        strip.text = element_text(size = 10))
 
 legend <- get_legend(
   df_comp_all_cohorts %>%
@@ -539,7 +542,7 @@ plot_grid(
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
                   "all_cohorts_seasonality_comparisons_x_vs_y_viruses.png"),
-       width = 12, height = 18)
+       width = 14, height = 18)
 
 ##colour code by season
 cols2 <- scales::seq_gradient_pal(
@@ -567,7 +570,8 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
                      na.translate = FALSE) +
   scale_color_manual(values = cols2, name = "Season") +
   labs(x = "", y = "", title = "RSV") + theme_bw() +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        strip.text = element_text(size = 10))
 
 flu_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "Influenza", month >= as.Date("2016-09-01")) %>%
@@ -591,7 +595,8 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
                      na.translate = FALSE) +
   scale_color_manual(values = cols2, name = "Season") +
   labs(x = "", y = "", title = "Influenza") + theme_bw() +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        strip.text = element_text(size = 10))
 
 covid_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "COVID-19", month >= as.Date("2020-03-01")) %>%
@@ -617,7 +622,8 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = function(x) format(x, scientific = TRUE)) +
   scale_x_continuous(labels = function(x) format(x, scientific = TRUE)) +
   labs(x = "", y = "", title = "COVID-19") + theme_bw() +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        strip.text = element_text(size = 10))
 
 legend <- get_legend(
   df_comp_all_cohorts %>%
@@ -654,4 +660,4 @@ plot1 <- plot_grid(plot, legend, ncol = 2, rel_widths = c(2, 0.25)) +
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
                   "all_cohorts_seasonality_comparisons_x_vs_y_seasons.png"),
-       width = 12, height = 18)
+       width = 14, height = 18)
