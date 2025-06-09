@@ -13,9 +13,7 @@ options(scipen = 999)
 data <- read.csv(paste0(here::here(
   "post_check", "exploratory_analyses", "surveillance"), "/VIW_FNT.csv"))
 data <- as.data.table(data)
-data <- data[COUNTRY_AREA_TERRITORY %in% c("United Kingdom, England",
-             "United Kingdom, Wales", "United Kingdom, Scotland", 
-             "United Kingdom, Northern Ireland")]
+data <- data[COUNTRY_AREA_TERRITORY %in% c("United Kingdom, England")]
 data <- data[order(as.Date(ISO_WEEKSTARTDATE, format = "%Y-%M-%D"))]
 data <- data[, RSV_new := 
                ifelse(str_starts(data$OTHER_RESPVIRUS_DETAILS, "RSV"), 1, 
@@ -35,9 +33,7 @@ latest_date <- flu_rsv[week == max(week)]
 data_new <- read.csv(paste0(here::here(
   "post_check", "exploratory_analyses", "surveillance"), "/VIW_FNT_recent.csv"))
 data_new <- as.data.table(data_new)
-data_new <- data_new[COUNTRY_AREA_TERRITORY %in% c(
-  "United Kingdom, England", "United Kingdom, Wales",
-  "United Kingdom, Scotland", "United Kingdom, Northern Ireland")]
+data_new <- data_new[COUNTRY_AREA_TERRITORY %in% c("United Kingdom, England")]
 data_new <- data_new[order(as.Date(ISO_WEEKSTARTDATE, format = "%Y-%M-%D"))]
 data_new <- data_new[, RSV_new := 
                ifelse(str_starts(data_new$OTHER_RESPVIRUS_DETAILS, "RSV"), 1, 
@@ -126,4 +122,4 @@ all <- all %>%
 
 #export data
 write.csv(all, here::here("post_check", "exploratory_analyses", "surveillance",
-            "seasonality_weekly.csv"), row.names = FALSE)
+            "seasonality_weekly_england.csv"), row.names = FALSE)
