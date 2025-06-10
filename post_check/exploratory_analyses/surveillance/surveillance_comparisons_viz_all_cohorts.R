@@ -7,7 +7,6 @@ library(ggplot2)
 library(cowplot)
 library(ggpubr)
 library(ggpmisc)
-
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 
 ##-- comparing overall cases
@@ -740,3 +739,107 @@ plot1 <- plot_grid(plot, legend, ncol = 2, rel_widths = c(2, 0.25)) +
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
                   "all_cohorts_seasonality_comparisons_x_vs_y_seasons.png"),
        width = 14, height = 18)
+
+##phase plot
+
+#mutate 0 events for log scaling
+df_comp_all_cohorts_scale <- df_comp_all_cohorts %>%
+  mutate(
+    EHR = if_else(EHR == 0, 0.1, EHR),
+    Surveillance = if_else(Surveillance == 0, 0.1, Surveillance))
+
+rsv_all_cohorts <- df_comp_all_cohorts_scale %>%
+  filter(virus == "RSV", month >= as.Date("2016-09-01")) %>%
+  arrange(month) %>%
+  ggplot(aes(x = EHR, y = Surveillance)) +
+  # Primary axis viruses
+  geom_path(aes(alpha = codelist_type, color = season)) +
+  scale_x_log10() + scale_y_log10() +
+  facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
+                    labels = c("Specific", "Sensitive"))~event,
+             scales = "free_x") +
+  scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
+                     labels = c("sensitive" = "Sensitive",
+                                "specific" = "Specific"),
+                     name = "Phenotype Used",
+                     na.translate = FALSE) +
+  scale_color_manual(values = cols2, name = "Season") +
+  labs(x = "", y = "", title = "RSV") + theme_bw() +
+  theme(legend.position = "none")
+
+flu_all_cohorts <- df_comp_all_cohorts_scale %>%
+  filter(virus == "Influenza", month >= as.Date("2016-09-01")) %>%
+  arrange(month) %>%
+  ggplot(aes(x = EHR, y = Surveillance, shape)) +
+  # Primary axis viruses
+  geom_path(aes(alpha = codelist_type, color = season)) +
+  scale_x_log10() + scale_y_log10() +
+  facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
+                    labels = c("Specific", "Sensitive"))~event,
+             scales = "free_x") +
+  scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
+                     labels = c("sensitive" = "Sensitive",
+                                "specific" = "Specific"),
+                     name = "Phenotype Used",
+                     na.translate = FALSE) +
+  scale_color_manual(values = cols2, name = "Season") +
+  labs(x = "", y = "", title = "Influenza") + theme_bw() +
+  theme(legend.position = "none")
+
+covid_all_cohorts <- df_comp_all_cohorts_scale %>%
+  filter(virus == "COVID-19", month >= as.Date("2020-03-01")) %>%
+  arrange(month) %>%
+  ggplot(aes(x = EHR, y = Surveillance)) +
+  # Primary axis viruses
+  geom_path(aes(alpha = codelist_type, color = season)) +
+  scale_x_log10() + scale_y_log10() +
+  facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
+                    labels = c("Specific", "Sensitive"))~event,
+             scales = "free_x") +
+  scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
+                     labels = c("sensitive" = "Sensitive",
+                                "specific" = "Specific"),
+                     name = "Phenotype Used",
+                     na.translate = FALSE) +
+  scale_color_manual(values = cols2[4:8], name = "Season") +
+  scale_y_continuous(labels = function(x) format(x, scientific = TRUE)) +
+  scale_x_continuous(labels = function(x) format(x, scientific = TRUE)) +
+  labs(x = "", y = "", title = "COVID-19") + theme_bw() +
+  theme(legend.position = "none")
+
+legend <- get_legend(
+  df_comp_all_cohorts_scale %>%
+    filter(month >= as.Date("2016-09-01")) %>%
+    ggplot() +
+    # Primary axis viruses
+    geom_path(aes(x = EHR, y = Surveillance, color = season)) +
+    scale_color_manual(values = cols2, name = "Season") +
+    guides(colour = guide_legend("Season", order = 1)) +
+    theme_bw() +
+    theme(legend.position = "right",
+          legend.box = "verticle",
+          legend.title = element_text())
+)
+
+plot <- plot_grid(
+  NULL,
+  rsv_all_cohorts,
+  flu_all_cohorts,
+  covid_all_cohorts,
+  ncol = 1,
+  rel_heights = c(0.05, 1, 1, 1)
+) %>% annotate_figure(
+  left = text_grob("Surveillance Data", rot = 90, vjust = 1),
+  bottom = text_grob("EHR Data", hjust = 0.2, vjust = 0),
+  top = text_grob(
+    "Surveillance VS EHR: Monthly Counts of RSV, Influenza and COVID-19 in All Cohorts",
+    face = "bold", size = 14, vjust = 1.75))
+plot1 <- plot_grid(plot, legend, ncol = 2, rel_widths = c(2, 0.25)) +
+  theme(plot.margin = margin(0, 0, 0, 0),
+        plot.title = element_text(hjust = 0.5)
+  )
+
+#save
+ggsave(here::here("post_check", "plots", "exploratory_analyses",
+                  "all_cohorts_seasonality_comparisons_phase_seasons.png"),
+       width = 12, height = 18)
