@@ -30,8 +30,6 @@ args = sys.argv
 
 #define dataset definition settings from command line arguments
 cohort = args[1]
-codelist_type = args[4] #specific or sensitive
-investigation_type = args[5] #primary/secondary/sensitivity
 
 # Change these in ./analysis/design/study-dates.R if necessary
 study_start_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
