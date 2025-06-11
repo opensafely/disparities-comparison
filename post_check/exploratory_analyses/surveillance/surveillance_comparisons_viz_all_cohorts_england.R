@@ -497,7 +497,7 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
   ggplot(aes(x = EHR, y = Surveillance, shape = codelist_type)) +
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type), color = cols[1], size = 3.5) +
-  stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
+  stat_poly_line(color = "#5A5652", se = F, fullrange = T) + stat_poly_eq() +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -520,7 +520,7 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
   ggplot(aes(x = EHR, y = Surveillance, shape = codelist_type)) +
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type), color = cols[2], size = 3.5) +
-  stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
+  stat_poly_line(color = "#5A5652", se = F, fullrange = T) + stat_poly_eq() +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -543,7 +543,7 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   ggplot(aes(x = EHR, y = Surveillance, shape = codelist_type)) +
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type), color = cols[3], size = 3.5) +
-  stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
+  stat_poly_line(color = "#5A5652", se = F, fullrange = T) + stat_poly_eq() +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -631,7 +631,7 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
   ggplot(aes(x = EHR, y = Surveillance, shape = codelist_type)) +
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type, color = season), size = 3.5) +
-  stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
+  stat_poly_line(color = "#5A5652", se = F, fullrange = T) + stat_poly_eq() +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -655,7 +655,7 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
   ggplot(aes(x = EHR, y = Surveillance, shape = codelist_type)) +
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type, color = season), size = 3.5) +
-  stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
+  stat_poly_line(color = "#5A5652", se = F, fullrange = T) + stat_poly_eq() +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -679,7 +679,7 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   ggplot(aes(x = EHR, y = Surveillance, shape = codelist_type)) +
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type, color = season), size = 3.5) +
-  stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
+  stat_poly_line(color = "#5A5652", se = F, fullrange = T) + stat_poly_eq() +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -738,19 +738,20 @@ ggsave(here::here("post_check", "plots", "exploratory_analyses",
 
 ##phase plot
 
-#mutate 0 events for log scaling
-df_comp_all_cohorts_scale <- df_comp_all_cohorts %>%
-  mutate(
-    EHR = if_else(EHR == 0, 0.1, EHR),
-    Surveillance = if_else(Surveillance == 0, 0.1, Surveillance))
+# #mutate 0 events for log scaling
+# df_comp_all_cohorts_scale <- df_comp_all_cohorts %>%
+#   mutate(
+#     EHR = if_else(EHR == 0, 0.1, EHR),
+#     Surveillance = if_else(Surveillance == 0, 0.1, Surveillance))
 
-rsv_all_cohorts <- df_comp_all_cohorts_scale %>%
+rsv_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "RSV", month >= as.Date("2016-09-01")) %>%
   arrange(month) %>%
   ggplot(aes(x = EHR, y = Surveillance)) +
   # Primary axis viruses
   geom_path(aes(alpha = codelist_type, color = season)) +
-  scale_x_log10() + scale_y_log10() +
+  # scale_x_log10() + scale_y_log10() +
+  stat_poly_line(color = "#5A5652", se = F, fullrange = T) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -763,13 +764,14 @@ rsv_all_cohorts <- df_comp_all_cohorts_scale %>%
   labs(x = "", y = "", title = "RSV") + theme_bw() +
   theme(legend.position = "none")
 
-flu_all_cohorts <- df_comp_all_cohorts_scale %>%
+flu_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "Influenza", month >= as.Date("2016-09-01")) %>%
   arrange(month) %>%
   ggplot(aes(x = EHR, y = Surveillance, shape)) +
   # Primary axis viruses
   geom_path(aes(alpha = codelist_type, color = season)) +
-  scale_x_log10() + scale_y_log10() +
+  # scale_x_log10() + scale_y_log10() +
+  stat_poly_line(color = "#5A5652", se = F, fullrange = T) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -782,13 +784,14 @@ flu_all_cohorts <- df_comp_all_cohorts_scale %>%
   labs(x = "", y = "", title = "Influenza") + theme_bw() +
   theme(legend.position = "none")
 
-covid_all_cohorts <- df_comp_all_cohorts_scale %>%
+covid_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "COVID-19", month >= as.Date("2020-03-01")) %>%
   arrange(month) %>%
   ggplot(aes(x = EHR, y = Surveillance)) +
   # Primary axis viruses
   geom_path(aes(alpha = codelist_type, color = season)) +
-  scale_x_log10() + scale_y_log10() +
+  # scale_x_log10() + scale_y_log10() +
+  stat_poly_line(color = "#5A5652", se = F, fullrange = T) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -804,7 +807,7 @@ covid_all_cohorts <- df_comp_all_cohorts_scale %>%
   theme(legend.position = "none")
 
 legend <- get_legend(
-  df_comp_all_cohorts_scale %>%
+  df_comp_all_cohorts %>%
     filter(month >= as.Date("2016-09-01")) %>%
     ggplot() +
     # Primary axis viruses
