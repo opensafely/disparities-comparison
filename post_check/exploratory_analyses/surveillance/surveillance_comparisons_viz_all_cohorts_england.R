@@ -497,7 +497,7 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
   ggplot(aes(x = EHR, y = Surveillance, shape = codelist_type)) +
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type), color = cols[1], size = 3.5) +
-  stat_poly_line(color = "#5A5652", se = F, fullrange = T) + stat_poly_eq() +
+  stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -520,7 +520,7 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
   ggplot(aes(x = EHR, y = Surveillance, shape = codelist_type)) +
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type), color = cols[2], size = 3.5) +
-  stat_poly_line(color = "#5A5652", se = F, fullrange = T) + stat_poly_eq() +
+  stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -543,7 +543,7 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   ggplot(aes(x = EHR, y = Surveillance, shape = codelist_type)) +
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type), color = cols[3], size = 3.5) +
-  stat_poly_line(color = "#5A5652", se = F, fullrange = T) + stat_poly_eq() +
+  stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -631,7 +631,7 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
   ggplot(aes(x = EHR, y = Surveillance, shape = codelist_type)) +
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type, color = season), size = 3.5) +
-  stat_poly_line(color = "#5A5652", se = F, fullrange = T) + stat_poly_eq() +
+  stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -655,7 +655,7 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
   ggplot(aes(x = EHR, y = Surveillance, shape = codelist_type)) +
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type, color = season), size = 3.5) +
-  stat_poly_line(color = "#5A5652", se = F, fullrange = T) + stat_poly_eq() +
+  stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -679,7 +679,7 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   ggplot(aes(x = EHR, y = Surveillance, shape = codelist_type)) +
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type, color = season), size = 3.5) +
-  stat_poly_line(color = "#5A5652", se = F, fullrange = T) + stat_poly_eq() +
+  stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -751,7 +751,7 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
   # Primary axis viruses
   geom_path(aes(alpha = codelist_type, color = season)) +
   # scale_x_log10() + scale_y_log10() +
-  stat_poly_line(color = "#5A5652", se = F, fullrange = T) +
+  stat_poly_line(color = "#5A5652", se = F) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -771,7 +771,7 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
   # Primary axis viruses
   geom_path(aes(alpha = codelist_type, color = season)) +
   # scale_x_log10() + scale_y_log10() +
-  stat_poly_line(color = "#5A5652", se = F, fullrange = T) +
+  stat_poly_line(color = "#5A5652", se = F) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -791,7 +791,7 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   # Primary axis viruses
   geom_path(aes(alpha = codelist_type, color = season)) +
   # scale_x_log10() + scale_y_log10() +
-  stat_poly_line(color = "#5A5652", se = F, fullrange = T) +
+  stat_poly_line(color = "#5A5652", se = F) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
