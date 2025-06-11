@@ -96,7 +96,8 @@ df_covid <- df_covid[, total_events := sum(total_events, na.rm = T),
 
 #import surveillance data
 df_surv <- read_csv(here::here(
-  "post_check", "exploratory_analyses", "surveillance", "seasonality.csv")) %>%
+  "post_check", "exploratory_analyses", "surveillance",
+  "seasonality_england.csv")) %>%
   arrange(month) %>%
   mutate(
     total_overall = sum(total_rsv, total_flu, total_covid, na.rm = TRUE),
@@ -149,14 +150,14 @@ df_surv_mute <- bind_rows(
 df_surv_mute <- df_surv_mute %>%
   mutate(
     coeff = case_when(
-      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 5,
+      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 8,
       virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 2,
       virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 25,
       virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 5,
-      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 0.35,
-      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 0.5,
-      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 1,
-      virus == "Influenza" & event == "Severe" & codelist_type == "sensitive" ~ 1,
+      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 0.25,
+      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 0.25,
+      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 0.75,
+      virus == "Influenza" & event == "Severe" & codelist_type == "sensitive" ~ 0.8,
       virus == "COVID-19" & event == "Mild" & codelist_type == "specific" ~ 0.25,
       virus == "COVID-19" & event == "Severe" & codelist_type == "specific" ~ 0.005,
       virus == "COVID-19" & event == "Mild" & codelist_type == "sensitive" ~ 0.25,
@@ -441,7 +442,7 @@ plot_grid(
 
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
-                  "all_cohorts_seasonality_comparisons.png"),
+                  "all_cohorts_seasonality_comparisons_england.png"),
        width = 12, height = 18)
 
 df_all_cohorts <- bind_rows(
@@ -511,8 +512,7 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   labs(x = "", y = "") + theme_bw() +
-  theme(legend.position = "none",
-        strip.text = element_text(size = 10))
+  theme(legend.position = "none")
 
 flu_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "Influenza", month >= as.Date("2016-09-01")) %>%
@@ -535,8 +535,7 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   labs(x = "", y = "") + theme_bw() +
-  theme(legend.position = "none",
-        strip.text = element_text(size = 10))
+  theme(legend.position = "none")
 
 covid_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "COVID-19", month >= as.Date("2020-03-01")) %>%
@@ -561,8 +560,7 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = function(x) format(x, scientific = TRUE)) +
   scale_x_continuous(labels = function(x) format(x, scientific = TRUE)) +
   labs(x = "", y = "") + theme_bw() +
-  theme(legend.position = "none",
-        strip.text = element_text(size = 10))
+  theme(legend.position = "none")
 
 legend <- get_legend(
   df_comp_all_cohorts %>%
@@ -620,8 +618,8 @@ plot_grid(
 
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
-                  "all_cohorts_seasonality_comparisons_x_vs_y_viruses.png"),
-       width = 14, height = 18)
+                  "all_cohorts_seasonality_comparisons_x_vs_y_viruses_england.png"),
+       width = 12, height = 18)
 
 ##colour code by season
 cols2 <- scales::seq_gradient_pal(
@@ -649,8 +647,7 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
                      na.translate = FALSE) +
   scale_color_manual(values = cols2, name = "Season") +
   labs(x = "", y = "", title = "RSV") + theme_bw() +
-  theme(legend.position = "none",
-        strip.text = element_text(size = 10))
+  theme(legend.position = "none")
 
 flu_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "Influenza", month >= as.Date("2016-09-01")) %>%
@@ -674,8 +671,7 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
                      na.translate = FALSE) +
   scale_color_manual(values = cols2, name = "Season") +
   labs(x = "", y = "", title = "Influenza") + theme_bw() +
-  theme(legend.position = "none",
-        strip.text = element_text(size = 10))
+  theme(legend.position = "none")
 
 covid_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "COVID-19", month >= as.Date("2020-03-01")) %>%
@@ -701,8 +697,7 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = function(x) format(x, scientific = TRUE)) +
   scale_x_continuous(labels = function(x) format(x, scientific = TRUE)) +
   labs(x = "", y = "", title = "COVID-19") + theme_bw() +
-  theme(legend.position = "none",
-        strip.text = element_text(size = 10))
+  theme(legend.position = "none")
 
 legend <- get_legend(
   df_comp_all_cohorts %>%
@@ -738,8 +733,8 @@ plot1 <- plot_grid(plot, legend, ncol = 2, rel_widths = c(2, 0.25)) +
 
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
-                  "all_cohorts_seasonality_comparisons_x_vs_y_seasons.png"),
-       width = 14, height = 18)
+                  "all_cohorts_seasonality_comparisons_x_vs_y_seasons_england.png"),
+       width = 12, height = 18)
 
 ##phase plot
 
@@ -812,7 +807,7 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   theme(legend.position = "none")
 
 legend <- get_legend(
-  df_comp_all_cohorts_scale %>%
+  df_comp_all_cohorts %>%
     filter(month >= as.Date("2016-09-01")) %>%
     ggplot() +
     # Primary axis viruses
@@ -845,5 +840,5 @@ plot1 <- plot_grid(plot, legend, ncol = 2, rel_widths = c(2, 0.25)) +
 
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
-                  "all_cohorts_seasonality_comparisons_phase_seasons.png"),
+                  "all_cohorts_seasonality_comparisons_phase_seasons_england.png"),
        width = 12, height = 18)

@@ -95,32 +95,32 @@ all <- all %>%
 all <- all %>%
   subset(month >= as.Date("2016-09-01") & month <= as.Date("2024-08-31"))
 
-##plot
-rects <- tibble(
-  xmin = seq(as.Date("2016-11-01"), as.Date("2023-11-01"), by = "year"),
-  xmax = seq(as.Date("2017-03-01"), as.Date("2024-03-01"), by = "year"),
-  ymin = 0,
-  ymax = Inf
-)
-
-ggplot(data = all) + geom_line(aes(x = month, y = total_flu, col = "Influenza")) +
-  geom_line(aes(x = month, y = total_rsv, col = "RSV")) + 
-  geom_line(aes(x = month, y = covid_scaled, col = "COVID-19")) +
-  scale_y_continuous(
-    limits = c(0, round_any(max(all$total_rsv, all$total_flu), 10000)),
-    breaks = seq(0, round_any(max(all$total_rsv, all$total_flu), 10000), by = 10000),
-    sec.axis = sec_axis(trans = ~.*coeff, name = "COVID-19 Monthly Infections")) +
-  scale_x_date(date_breaks = "1 years", date_labels = "%Y") + 
-  geom_rect(data = rects, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
-            fill = "grey", alpha = 0.25, col = NA) +
-  annotate(label = "Usual Transmission Period (Nov-Mar)", x = as.Date("2019-12-15"), 
-           y = 20000, geom = "text", col = "black", size = 4) +
-  labs(x = "Year", y = "RSV/Influenza Monthly Infections", col = "Disease") + 
-  theme_bw(base_size = 15)
-
-#save
-ggsave(here::here("post_check", "plots", "exploratory_analyses",
-                  "seasonality.png"), width = 12, height = 8)
+# ##plot
+# rects <- tibble(
+#   xmin = seq(as.Date("2016-11-01"), as.Date("2023-11-01"), by = "year"),
+#   xmax = seq(as.Date("2017-03-01"), as.Date("2024-03-01"), by = "year"),
+#   ymin = 0,
+#   ymax = Inf
+# )
+# 
+# ggplot(data = all) + geom_line(aes(x = month, y = total_flu, col = "Influenza")) +
+#   geom_line(aes(x = month, y = total_rsv, col = "RSV")) + 
+#   geom_line(aes(x = month, y = covid_scaled, col = "COVID-19")) +
+#   scale_y_continuous(
+#     limits = c(0, round_any(max(all$total_rsv, all$total_flu), 10000)),
+#     breaks = seq(0, round_any(max(all$total_rsv, all$total_flu), 10000), by = 10000),
+#     sec.axis = sec_axis(trans = ~.*coeff, name = "COVID-19 Monthly Infections")) +
+#   scale_x_date(date_breaks = "1 years", date_labels = "%Y") + 
+#   geom_rect(data = rects, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+#             fill = "grey", alpha = 0.25, col = NA) +
+#   annotate(label = "Usual Transmission Period (Nov-Mar)", x = as.Date("2019-12-15"), 
+#            y = 20000, geom = "text", col = "black", size = 4) +
+#   labs(x = "Year", y = "RSV/Influenza Monthly Infections", col = "Disease") + 
+#   theme_bw(base_size = 15)
+# 
+# #save
+# ggsave(here::here("post_check", "plots", "exploratory_analyses",
+#                   "seasonality.png"), width = 12, height = 8)
 
 #export data
 write.csv(all, here::here("post_check", "exploratory_analyses", "surveillance",

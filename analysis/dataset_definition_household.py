@@ -2,7 +2,7 @@
 import json, sys
 from pathlib import Path 
 
-from datetime import date, datetime
+from datetime import datetime
 from ehrql import Dataset
 from ehrql.tables.tpp import patients, household_memberships_2020, addresses
 
