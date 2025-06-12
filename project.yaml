@@ -611,7 +611,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2016_2017_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2016_2017.arrow
-      -- season1_start_date season1_end_date
+      -- infants_subgroup season1_start_date season1_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s1
     - process_flow_chart_data_mothers_s1
@@ -651,7 +651,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2017_2018_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2017_2018.arrow
-      -- season2_start_date season2_end_date
+      -- infants_subgroup season2_start_date season2_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s2
     - process_flow_chart_data_mothers_s2
@@ -691,7 +691,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2018_2019_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2018_2019.arrow
-      -- season3_start_date season3_end_date
+      -- infants_subgroup season3_start_date season3_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s3
     - process_flow_chart_data_mothers_s3
@@ -731,7 +731,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2019_2020_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2019_2020.arrow
-      -- season4_start_date season4_end_date
+      -- infants_subgroup season4_start_date season4_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s4
     - process_flow_chart_data_mothers_s4
@@ -771,7 +771,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2020_2021_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2020_2021.arrow
-      -- season5_start_date season5_end_date
+      -- infants_subgroup season5_start_date season5_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s5
     - process_flow_chart_data_mothers_s5
@@ -811,7 +811,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2021_2022_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2021_2022.arrow
-      -- season6_start_date season6_end_date
+      -- infants_subgroup season6_start_date season6_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s6
     - process_flow_chart_data_mothers_s6
@@ -851,7 +851,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2022_2023_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2022_2023.arrow
-      -- season7_start_date season7_end_date
+      -- infants_subgroup season7_start_date season7_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s7
     - process_flow_chart_data_mothers_s7
@@ -891,7 +891,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2023_2024_flow_chart.arrow
       --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2023_2024.arrow
-      -- season8_start_date season8_end_date
+      -- infants_subgroup season8_start_date season8_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s8
     - process_flow_chart_data_mothers_s8
