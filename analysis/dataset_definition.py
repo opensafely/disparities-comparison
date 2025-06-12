@@ -1905,7 +1905,7 @@ else :
         when((dataset.rsv_secondary_second_date.is_not_null())|(dataset.flu_secondary_second_date.is_not_null()))
         .then(minimum_of(dataset.rsv_secondary_second_date, dataset.flu_secondary_second_date)),
         when((dataset.rsv_secondary_second_date.is_null()) & (dataset.flu_secondary_second_date.is_null()) & (~overall_resp_exclusion_secondary))
-        .then(overall_resp_secondary_sens_date),
+        .then(overall_resp_secondary_sens_second_date),
         otherwise = None)
       ) 
       
