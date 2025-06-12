@@ -21,8 +21,8 @@ study_dates = json.loads(
 args = sys.argv
 
 # Change these in ./analysis/design/study-dates.R if necessary
-study_start_date = datetime.strptime(study_dates[args[1]], "%Y-%m-%d").date()
-study_end_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
+study_start_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
+study_end_date = datetime.strptime(study_dates[args[3]], "%Y-%m-%d").date()
 
 #define dataset definition settings from command line arguments
 start_year = study_start_date.year
