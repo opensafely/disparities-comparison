@@ -69,7 +69,7 @@ dataset.define_population(
 #gestational_age = 
 
 #mothers age at birth of infant
-dataset.maternal_age = patients.age_on(matched_patients.index_date - years(1))
+dataset.maternal_age = patients.age_on(matched_patients.index_date)
 
 #mothers smoking status
 most_recent_smoking_code = (
