@@ -374,6 +374,8 @@ for(page in 1:nrow(weeks_2016)){
 #   
 # }
 
+
+
 ######COMBINE#####
 
 all_data <- data.table(rbind(storage_2016_flus, storage_2017_flus,
@@ -381,14 +383,13 @@ all_data <- data.table(rbind(storage_2016_flus, storage_2017_flus,
                              storage_2020_flus))
 all_data <- all_data[!is.na(all_data$flu_A), ]
 all_data[, year_week := paste0(year, "_", week)]
-all_data[, timestep := 1:nrow(all_data)]
 all_data[which(all_data$flu_A == "–"), "flu_A"] <- 0
 all_data[which(all_data$flu_B == "–"), "flu_B"] <- 0
 all_data$flu_A <- as.numeric(all_data$flu_A)
 all_data$flu_B <- as.numeric(all_data$flu_B)
 all_data[, flu := flu_A + flu_B]
 setcolorder(all_data, c("flu", "flu_A", "flu_B", "year", "week",
-                        "year_week", "timestep"))
+                        "year_week"))
 
 exclude <- c("2016_1", "2016_2", "2016_3", "2016_4", "2016_5", "2016_6",
              "2016_7", "2016_8", "2016_9", "2016_10", "2016_11", "2016_12",
@@ -398,6 +399,12 @@ exclude <- c("2016_1", "2016_2", "2016_3", "2016_4", "2016_5", "2016_6",
              "2016_31", "2016_32", "2016_33", "2016_34")
 
 all_data <- all_data[!(year_week %in% exclude), ]
+
+all_data <- all_data[, date := ymd(paste0(year, "-01", "-01")) + 7*(as.numeric(week))]
+all_data <- all_data[, month := month(date)]
+all_data <- all_data[, c("flu", "month", "year"), with = FALSE]
+all_data <- all_data[, flu := sum(as.numeric(flu)), by = c("month", "year")]
+all_data <- unique(all_data)
 
 write.csv(all_data, file = here::here(
   "post_check", "exploratory_analyses", "surveillance",

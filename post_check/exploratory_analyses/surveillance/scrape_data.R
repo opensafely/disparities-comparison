@@ -1,6 +1,7 @@
 # Scrape corona and other data
 library(rvest)
 library(data.table)
+library(lubridate)
 
 # IMPORTANT - need to check manually that it looks correct.
 # Have not incorporated checks inside!
@@ -516,7 +517,6 @@ all_data <- data.table(rbind(storage_2016, storage_2017, storage_2018,
                              storage_2019, storage_2020))
 all_data <- all_data[!is.na(all_data$RSV), ]
 all_data[, year_week := paste0(Year, "_", Week)]
-all_data[, timestep := 1:nrow(all_data)]
 all_data[which(all_data$Adenovirus == "–"), "Adenovirus"] <- 0
 all_data[which(all_data$Coronavirus == "–"), "Coronavirus"] <- 0
 all_data[which(all_data$Parainfluenza == "–"), "Parainfluenza"] <- 0
@@ -556,7 +556,11 @@ all_data <- all_data[!(year_week %in% exclude), ]
 # 
 # saveRDS(all_data_ages, file = paste0(Sys.Date(),"Respiratory viral defections by any method UK end 2020.RDS"))
 
-all_data <- all_data[, c("RSV", "Year", "Week", "year_week"), with = FALSE]
+all_data <- all_data[, date := ymd(paste0(Year, "-01", "-01")) + 7*(as.numeric(Week))]
+all_data <- all_data[, month := month(date)]
+all_data <- all_data[, c("RSV", "month", "Year"), with = FALSE]
+all_data <- all_data[, RSV := sum(as.numeric(RSV)), by = c("month", "Year")]
+all_data <- unique(all_data)
 
 write.csv(all_data, file = here::here(
   "post_check", "exploratory_analyses", "surveillance",
