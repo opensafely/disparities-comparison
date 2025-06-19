@@ -2,9 +2,7 @@
 library(rvest)
 library(data.table)
 library(lubridate)
-
-# IMPORTANT - need to check manually that it looks correct.
-# Have not incorporated checks inside!
+library(zoo)
 
 ###2020_data ####
 
@@ -557,7 +555,7 @@ all_data <- all_data[!(year_week %in% exclude), ]
 # saveRDS(all_data_ages, file = paste0(Sys.Date(),"Respiratory viral defections by any method UK end 2020.RDS"))
 
 all_data <- all_data[, date := ymd(paste0(Year, "-01", "-01")) + 7*(as.numeric(Week))]
-all_data <- all_data[, month := month(date)]
+all_data <- all_data[, month := as.Date(as.yearmon(date))]
 all_data <- all_data[, c("RSV", "month", "Year"), with = FALSE]
 all_data <- all_data[, RSV := sum(as.numeric(RSV)), by = c("month", "Year")]
 all_data <- unique(all_data)

@@ -1,9 +1,7 @@
 # scraping data flu subtypes
 library(rvest)
 library(data.table)
-
-# IMPORTANT - need to check manually that it looks correct.
-# Have not incorporated checks inside!
+library(zoo)
 
 ###2020_data ####
 
@@ -401,7 +399,7 @@ exclude <- c("2016_1", "2016_2", "2016_3", "2016_4", "2016_5", "2016_6",
 all_data <- all_data[!(year_week %in% exclude), ]
 
 all_data <- all_data[, date := ymd(paste0(year, "-01", "-01")) + 7*(as.numeric(week))]
-all_data <- all_data[, month := month(date)]
+all_data <- all_data[, month := as.Date(as.yearmon(date))]
 all_data <- all_data[, c("flu", "month", "year"), with = FALSE]
 all_data <- all_data[, flu := sum(as.numeric(flu)), by = c("month", "year")]
 all_data <- unique(all_data)
