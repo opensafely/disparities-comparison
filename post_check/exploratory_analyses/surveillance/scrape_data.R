@@ -538,7 +538,6 @@ all_data <- all_data[!(year_week %in% exclude), ]
 # all_data_ages$startweek <- as.character(all_data_ages$startweek)
 # all_data_ages[nchar(startweek)==1, startweek := paste0("0",startweek)]
 # 
-# 
 # all_data_ages[, year_week := paste0(Year,startweek, "1")]
 # all_data_ages[,year_week := as.Date(year_week, "%Y%W%w")]
 # all_data_ages[,timestep := 1:nrow(all_data_ages)]
@@ -556,8 +555,9 @@ all_data <- all_data[!(year_week %in% exclude), ]
 
 all_data <- all_data[, date := ymd(paste0(Year, "-01", "-01")) + 7*(as.numeric(Week))]
 all_data <- all_data[, month := as.Date(as.yearmon(date))]
-all_data <- all_data[, c("RSV", "month", "Year"), with = FALSE]
-all_data <- all_data[, RSV := sum(as.numeric(RSV)), by = c("month", "Year")]
+all_data <- all_data[, year := year(month)]
+all_data <- all_data[, c("RSV", "month", "year"), with = FALSE]
+all_data <- all_data[, RSV := sum(as.numeric(RSV)), by = c("month", "year")]
 all_data <- unique(all_data)
 
 write.csv(all_data, file = here::here(

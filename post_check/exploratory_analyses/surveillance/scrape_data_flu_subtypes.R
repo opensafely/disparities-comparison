@@ -386,8 +386,7 @@ all_data[which(all_data$flu_B == "–"), "flu_B"] <- 0
 all_data$flu_A <- as.numeric(all_data$flu_A)
 all_data$flu_B <- as.numeric(all_data$flu_B)
 all_data[, flu := flu_A + flu_B]
-setcolorder(all_data, c("flu", "flu_A", "flu_B", "year", "week",
-                        "year_week"))
+setcolorder(all_data, c("flu", "flu_A", "flu_B", "year", "week", "year_week"))
 
 exclude <- c("2016_1", "2016_2", "2016_3", "2016_4", "2016_5", "2016_6",
              "2016_7", "2016_8", "2016_9", "2016_10", "2016_11", "2016_12",
@@ -400,6 +399,7 @@ all_data <- all_data[!(year_week %in% exclude), ]
 
 all_data <- all_data[, date := ymd(paste0(year, "-01", "-01")) + 7*(as.numeric(week))]
 all_data <- all_data[, month := as.Date(as.yearmon(date))]
+all_data <- all_data[, year := year(month)]
 all_data <- all_data[, c("flu", "month", "year"), with = FALSE]
 all_data <- all_data[, flu := sum(as.numeric(flu)), by = c("month", "year")]
 all_data <- unique(all_data)
