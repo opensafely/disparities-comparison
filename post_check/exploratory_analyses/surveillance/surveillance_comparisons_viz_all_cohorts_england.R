@@ -367,8 +367,6 @@ get_legend_2 <- function(df1, df2) {
         alpha = factor(codelist_type, levels = c("specific", "sensitive"))),
         linewidth = 1) +
       scale_color_manual(values = c(
-        "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3])) +
-      scale_color_manual(values = c(
         "RSV - EHR" = cols[1], "Influenza - EHR" = cols[2],
         "COVID-19 - EHR" = cols[3], "RSV - Surveillance" = "#519A83",
         "Influenza - Surveillance" = "#CE704C",
@@ -426,13 +424,17 @@ bottom_row <- plot_grid(
   legend,
   nrow = 2,
   rel_heights = c(0.5, 0.25)
+) %>% annotate_figure(
+  left = text_grob("Mild", size = 14, hjust = -7.25, vjust = -117.5),
+  right = text_grob("Severe", size = 14, hjust = 4.75, vjust = -117.5)
 )
 
 plot_grid(
+  NULL,
   plot,
   bottom_row,
   ncol = 1,
-  rel_heights = c(1, 0.1)
+  rel_heights = c(0.02, 1, 0.1)
 ) %>% annotate_figure(
   top = text_grob(
     "Monthly Counts of RSV, Influenza and COVID-19 in All Cohorts ",
