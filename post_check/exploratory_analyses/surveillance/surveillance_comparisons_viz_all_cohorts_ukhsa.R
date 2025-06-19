@@ -84,9 +84,10 @@ df_surv_rsv <- read_csv(here::here(
 df_surv_flu <- read_csv(here::here(
   "post_check", "exploratory_analyses", "surveillance", "UKHSA_reports_flu.csv")) %>%
   arrange(month)
-df_surv <- bind_cols(
+df_surv <- merge(
   df_surv_rsv %>% select(c(month, total_rsv = RSV)),
-  df_surv_flu %>% select(total_flu = flu)
+  df_surv_flu %>% select(c(month, total_flu = flu)),
+  by = "month"
 ) %>%
   mutate(type = "Surveillance")
 df_surv <- df_surv %>%
