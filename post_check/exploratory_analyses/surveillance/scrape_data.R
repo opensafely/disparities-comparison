@@ -562,4 +562,4 @@ all_data <- unique(all_data)
 
 write.csv(all_data, file = here::here(
   "post_check", "exploratory_analyses", "surveillance",
-  "UKHSA_reports_RSV.csv"))
+  "UKHSA_reports_RSV.csv"), row.names = FALSE)
