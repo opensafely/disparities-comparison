@@ -318,7 +318,22 @@ plot_combined <- function(df, pathogen, phenotype) {
          alpha = "Phenotype Used") + theme_bw() +
     theme(legend.position = "none")
   
-  plot_grid(mild, severe, nrow = 1)
+  # Create a text label grob with the phenotype name
+  label <- ggdraw() + 
+    draw_label(
+      str_to_sentence(phenotype),
+      fontface = "bold", 
+      size = 8
+    )
+  
+  # Combine plots with text label in the middle
+  plot_grid(
+    mild, 
+    label,  # the text label
+    severe, 
+    nrow = 1, 
+    rel_widths = c(1, 0.1, 1)
+  )
   
 }
 
