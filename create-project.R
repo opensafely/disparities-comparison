@@ -230,6 +230,15 @@ action_specified <- function(cohort, season, dates, codelist_type,
     ),
     
     action(
+      name = glue("get_counts_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/counts_over_time.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        dataset = glue("output/results/counts/counts_over_time_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
+      )
+    ),
+    
+    action(
       name = glue("calculate_rates_rolling_{cohort}_{season}_{codelist_type}_{investigation_type}"),
       run = glue("r:latest analysis/rates_over_time.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
@@ -319,6 +328,15 @@ action_specified_sensitive <- function(cohort, season, dates, codelist_type,
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
         csv = glue("output/results/rates/rates_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
+      )
+    ),
+    
+    action(
+      name = glue("get_counts_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/counts_over_time.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        dataset = glue("output/results/counts/counts_over_time_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
       )
     ),
     
@@ -425,6 +443,15 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
         csv = glue("output/results/rates/rates_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
+      )
+    ),
+    
+    action(
+      name = glue("get_counts_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/counts_over_time.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        dataset = glue("output/results/counts/counts_over_time_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
       )
     ),
     
@@ -580,6 +607,15 @@ action_specified_infants_sensitive <- function(cohort, season, dates,
       needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
         csv = glue("output/results/rates/rates_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
+      )
+    ),
+    
+    action(
+      name = glue("get_counts_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/counts_over_time.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        dataset = glue("output/results/counts/counts_over_time_*_{cohort}_{dates}_{codelist_type}_{investigation_type}.csv")
       )
     ),
     
@@ -808,6 +844,15 @@ action_specified_infants_sub <- function(season, dates, codelist_type,
     ),
     
     action(
+      name = glue("get_counts_infants_subgroup_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/counts_over_time.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_infants_subgroup_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        dataset = glue("output/results/counts/counts_over_time_*_infants_subgroup_{dates}_{codelist_type}_{investigation_type}.csv")
+      )
+    ),
+    
+    action(
       name = glue("calculate_rates_rolling_infants_subgroup_{season}_{codelist_type}_{investigation_type}"),
       run = glue("r:latest analysis/rates_over_time.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = list(glue("process_dataset_infants_subgroup_{season}_{codelist_type}_{investigation_type}")),
@@ -981,6 +1026,15 @@ action_specified_infants_sub_sensitive <- function(season, dates, codelist_type,
       needs = list(glue("process_dataset_infants_subgroup_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
         csv = glue("output/results/rates/rates_infants_subgroup_{dates}_{codelist_type}_{investigation_type}.csv")
+      )
+    ),
+    
+    action(
+      name = glue("get_counts_infants_subgroup_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:latest analysis/counts_over_time.R infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_infants_subgroup_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        dataset = glue("output/results/counts/counts_over_time_*_infants_subgroup_{dates}_{codelist_type}_{investigation_type}.csv")
       )
     ),
     
@@ -2002,6 +2056,29 @@ action_finalise <- function(cohort) {
     ),
     
     action(
+      name = glue("collate_counts_tables_rolling_primary_{cohort}"),
+      run = glue("r:latest analysis/collation_code/counts_table_collation.R {cohort}"),
+      needs = list(glue("get_counts_{cohort}_s1_specific_primary"),
+                   glue("get_counts_{cohort}_s2_specific_primary"),
+                   glue("get_counts_{cohort}_s3_specific_primary"),
+                   glue("get_counts_{cohort}_s4_specific_primary"),
+                   glue("get_counts_{cohort}_s5_specific_primary"),
+                   glue("get_counts_{cohort}_s6_specific_primary"),
+                   glue("get_counts_{cohort}_s7_specific_primary"),
+                   glue("get_counts_{cohort}_s8_specific_primary"),
+                   glue("get_counts_{cohort}_s1_sensitive_primary"),
+                   glue("get_counts_{cohort}_s2_sensitive_primary"),
+                   glue("get_counts_{cohort}_s3_sensitive_primary"),
+                   glue("get_counts_{cohort}_s4_sensitive_primary"),
+                   glue("get_counts_{cohort}_s5_sensitive_primary"),
+                   glue("get_counts_{cohort}_s6_sensitive_primary"),
+                   glue("get_counts_{cohort}_s7_sensitive_primary"),
+                   glue("get_counts_{cohort}_s8_sensitive_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/over_time/{cohort}_*_counts_over_time_*.csv"))
+    ),
+    
+    action(
       name = glue("collate_rates_tables_rolling_primary_{cohort}"),
       run = glue("r:latest analysis/collation_code/rates_table_rolling_primary_collation.R {cohort}"),
       needs = list(glue("calculate_rates_rolling_{cohort}_s1_specific_primary"),
@@ -2386,6 +2463,29 @@ action_finalise_older_adults <- function(cohort) {
                    glue("describe_dataset_{cohort}_s3_specific_sensitivity")),
       moderately_sensitive = lst(
         csv = glue("output/collated/descriptive/{cohort}_rates_sensitivity_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_counts_tables_rolling_primary_{cohort}"),
+      run = glue("r:latest analysis/collation_code/counts_table_collation.R {cohort}"),
+      needs = list(glue("get_counts_{cohort}_s1_specific_primary"),
+                   glue("get_counts_{cohort}_s2_specific_primary"),
+                   glue("get_counts_{cohort}_s3_specific_primary"),
+                   glue("get_counts_{cohort}_s4_specific_primary"),
+                   glue("get_counts_{cohort}_s5_specific_primary"),
+                   glue("get_counts_{cohort}_s6_specific_primary"),
+                   glue("get_counts_{cohort}_s7_specific_primary"),
+                   glue("get_counts_{cohort}_s8_specific_primary"),
+                   glue("get_counts_{cohort}_s1_sensitive_primary"),
+                   glue("get_counts_{cohort}_s2_sensitive_primary"),
+                   glue("get_counts_{cohort}_s3_sensitive_primary"),
+                   glue("get_counts_{cohort}_s4_sensitive_primary"),
+                   glue("get_counts_{cohort}_s5_sensitive_primary"),
+                   glue("get_counts_{cohort}_s6_sensitive_primary"),
+                   glue("get_counts_{cohort}_s7_sensitive_primary"),
+                   glue("get_counts_{cohort}_s8_sensitive_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/over_time/{cohort}_*_counts_over_time_*.csv"))
     ),
     
     action(
@@ -2775,6 +2875,29 @@ action_finalise_infants <- function(cohort) {
                    glue("describe_dataset_{cohort}_s3_specific_sensitivity")),
       moderately_sensitive = lst(
         csv = glue("output/collated/descriptive/{cohort}_rates_sensitivity_collated.csv"))
+    ),
+    
+    action(
+      name = glue("collate_counts_tables_rolling_primary_{cohort}"),
+      run = glue("r:latest analysis/collation_code/counts_table_collation.R {cohort}"),
+      needs = list(glue("get_counts_{cohort}_s1_specific_primary"),
+                   glue("get_counts_{cohort}_s2_specific_primary"),
+                   glue("get_counts_{cohort}_s3_specific_primary"),
+                   glue("get_counts_{cohort}_s4_specific_primary"),
+                   glue("get_counts_{cohort}_s5_specific_primary"),
+                   glue("get_counts_{cohort}_s6_specific_primary"),
+                   glue("get_counts_{cohort}_s7_specific_primary"),
+                   glue("get_counts_{cohort}_s8_specific_primary"),
+                   glue("get_counts_{cohort}_s1_sensitive_primary"),
+                   glue("get_counts_{cohort}_s2_sensitive_primary"),
+                   glue("get_counts_{cohort}_s3_sensitive_primary"),
+                   glue("get_counts_{cohort}_s4_sensitive_primary"),
+                   glue("get_counts_{cohort}_s5_sensitive_primary"),
+                   glue("get_counts_{cohort}_s6_sensitive_primary"),
+                   glue("get_counts_{cohort}_s7_sensitive_primary"),
+                   glue("get_counts_{cohort}_s8_sensitive_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/over_time/{cohort}_*_counts_over_time_*.csv"))
     ),
     
     action(
