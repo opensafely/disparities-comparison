@@ -43,8 +43,7 @@ df_input <- read_feather(
 )
 
 ## create function to calculate the rolling rates by group for a specified pathogen
-get_counts_over_time <- function(df, pathogen, start = study_start_date,
-                                 end = study_end_date, interval_length) {
+get_counts_over_time <- function(df, pathogen, interval_length) {
   
   if (pathogen == "covid" & study_start_date == covid_season_min) {
     start <- as.Date("2020-03-01")
