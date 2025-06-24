@@ -81,7 +81,7 @@ get_counts_over_time <- function(df, pathogen, interval_length) {
     arrange(!!ensym(interval_length), event)
   
   #save the files
-  write_csv(df_rates, here::here("output", "results", "counts",
+  write_csv(df_long_int, here::here("output", "results", "counts",
             paste0("counts_over_time_all_", int, "_", pathogen, "_",
             cohort, "_", year(study_start_date), "_", year(study_end_date),
             "_", codelist_type, "_", investigation_type, ".csv")))
