@@ -4,7 +4,7 @@ import json, sys
 from pathlib import Path
 from datetime import datetime
 
-from ehrql.codes import ICD10Code
+from ehrql.codes import ICD10Code, CTV3Code
 from ehrql import case, days, when, years, months, maximum_of, minimum_of
 from ehrql.tables.tpp import (
     emergency_care_attendances, 
@@ -271,6 +271,23 @@ def practice_registration_as_of(date):
 
 def has_a_continuous_practice_registration_spanning(start_date, end_date):
     return _registrations_overlapping_period(start_date, end_date).exists_for_patient()
+
+def most_recent_bmi(*, minimum_age_at_measurement, where=True):
+    age_threshold = patients.date_of_birth + days(
+        # This is obviously inexact but, given that the dates of birth are rounded to
+        # the first of the month anyway, there's no point trying to be more accurate
+        int(365.25 * minimum_age_at_measurement)
+    )
+    return (
+        # This captures just explicitly recorded BMI observations rather than attempting
+        # to calculate it from height and weight measurements. Investigation has shown
+        # this to have no real benefit it terms of coverage or accuracy.
+        clinical_events.where(clinical_events.ctv3_code == CTV3Code("22K.."))
+        .where(clinical_events.date >= age_threshold)
+        .where(where)
+        .sort_by(clinical_events.date)
+        .last_for_patient()
+    )
 
 ###############################################################################
 # from https://github.com/opensafely/cis-pop-validation-ehrql/blob/cce4f0bfaffa5370b00f847fbcfe742c7a13aeeb/analysis/variable_lib.py#L100
