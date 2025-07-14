@@ -18078,7 +18078,7 @@ actions:
     - get_counts_older_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/over_time/older_adults_*_counts_over_time_*.csv
+        csv: output/collated/descriptive/over_time/older_adults_counts_over_time_*.csv
 
   collate_rates_tables_rolling_primary_older_adults:
     run: r:latest analysis/collation_code/rates_table_rolling_primary_collation.R
@@ -18497,7 +18497,7 @@ actions:
     - get_counts_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/over_time/adults_*_counts_over_time_*.csv
+        csv: output/collated/descriptive/over_time/adults_counts_over_time_*.csv
 
   collate_rates_tables_rolling_primary_adults:
     run: r:latest analysis/collation_code/rates_table_rolling_primary_collation.R
@@ -18887,7 +18887,7 @@ actions:
     - get_counts_children_and_adolescents_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/over_time/children_and_adolescents_*_counts_over_time_*.csv
+        csv: output/collated/descriptive/over_time/children_and_adolescents_counts_over_time_*.csv
 
   collate_rates_tables_rolling_primary_children_and_adolescents:
     run: r:latest analysis/collation_code/rates_table_rolling_primary_collation.R
@@ -19279,7 +19279,7 @@ actions:
     - get_counts_infants_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/over_time/infants_*_counts_over_time_*.csv
+        csv: output/collated/descriptive/over_time/infants_counts_over_time_*.csv
 
   collate_rates_tables_rolling_primary_infants:
     run: r:latest analysis/collation_code/rates_table_rolling_primary_collation.R
@@ -19877,7 +19877,7 @@ actions:
     - get_counts_infants_subgroup_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        csv: output/collated/descriptive/over_time/infants_subgroup_*_counts_over_time_*.csv
+        csv: output/collated/descriptive/over_time/infants_subgroup_counts_over_time_*.csv
 
   collate_rates_tables_rolling_primary_infants_subgroup:
     run: r:latest analysis/collation_code/rates_table_rolling_primary_collation.R
