@@ -10,7 +10,7 @@ library(patchwork)
 library(ggpubr)
 
 #import plot function
-source(here::here("testing", "functions", "forest.R"))
+source(here::here("analysis", "testing", "functions", "forest.R"))
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 investigation_type <- "primary"
 args <- commandArgs(trailingOnly = TRUE)

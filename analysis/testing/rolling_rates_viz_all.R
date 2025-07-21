@@ -8,7 +8,7 @@ library(patchwork)
 library(ggpubr)
 
 #import plot function
-source(here::here("testing", "functions", "rolling_rates.R"))
+source(here::here("analysis", "testing", "functions", "rolling_rates.R"))
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 
 investigation_type <- "primary"
