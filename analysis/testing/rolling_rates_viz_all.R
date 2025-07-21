@@ -36,7 +36,7 @@ pathogen <- "rsv"
 df_input <- read_csv(here::here(
                      "output", "collated", "descriptive",
                      "over_time", paste0(cohort, "_",
-                     "rates_over_time_all_all_", pathogen, ".csv")))
+                     "rates_over_time_all_monthly_", pathogen, ".csv")))
 
 #create plot
 rsv <- create_rolling_plots_overall(df_input)$plot
@@ -51,7 +51,7 @@ pathogen <- "flu"
 df_input <- read_csv(here::here(
                      "output", "collated", "descriptive",
                      "over_time", paste0(cohort, "_",
-                     "rates_over_time_all_all_", pathogen, ".csv")))
+                     "rates_over_time_all_monthly_", pathogen, ".csv")))
 
 #create plot
 flu <- create_rolling_plots_overall(df_input)$plot
@@ -63,7 +63,7 @@ pathogen <- "covid"
 df_input <- read_csv(here::here(
                      "output", "collated", "descriptive",
                      "over_time", paste0(cohort, "_",
-                     "rates_over_time_all_all_", pathogen, ".csv")))
+                     "rates_over_time_all_monthly_", pathogen, ".csv")))
 
 #create plot
 covid <- create_rolling_plots_overall(df_input)$plot
@@ -105,7 +105,7 @@ pathogen <- "overall_resp"
 df_input <- read_csv(here::here(
                      "output", "collated", "descriptive",
                      "over_time", paste0(cohort, "_",
-                     "rates_over_time_all_all_", pathogen, ".csv")))
+                     "rates_over_time_all_monthly_", pathogen, ".csv")))
 
 #plot
 overall_resp <- create_rolling_plots_overall(df_input)$plot
