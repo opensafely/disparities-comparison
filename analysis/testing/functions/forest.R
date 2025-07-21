@@ -3000,8 +3000,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       filter(subset %in% c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
       tidy_attach_model(dummy_model) %>%
       tidy_add_reference_rows() %>%
-      tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
-                                          conf.level = 95) %>%
+      tidy_add_estimate_to_reference_rows(exponentiate = TRUE) %>%
       tidy_add_term_labels() %>%
       tidy_remove_intercept() %>%
       mutate(
