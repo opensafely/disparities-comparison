@@ -3493,6 +3493,76 @@ action_investigate <- function(cohort, season, dates, season_start_date,
   
 }
 
+action_visualise <- function(cohort) {
+  
+  splice(
+    
+    action(
+      name = glue("plot_further_model_results_{cohort}"),
+      run = glue("r:latest analysis/testing/further_model_results_condensed.R {cohort}"),
+      needs = list(glue("collate_further_rsv_model_outputs_tables_{cohort}"),
+                   glue("collate_further_flu_model_outputs_tables_{cohort}"),
+                   glue("collate_further_covid_model_outputs_tables_{cohort}"),
+                   glue("collate_further_overall_and_all_cause_model_outputs_tables_{cohort}"),
+                   glue("process_dataset_{cohort}_s5_specific_primary"),
+                   glue("process_dataset_{cohort}_s5_sensitive_primary")),
+      moderately_sensitive = lst(
+        png = glue("output/testing/plots/{cohort}_*_further.png")
+      )
+    ),
+    
+    action(
+      name = glue("plot_rolling_rates_{cohort}"),
+      run = glue("r:latest analysis/testing/rolling_rates_viz.R {cohort}"),
+      needs = list(glue("calculate_rates_rolling_{cohort}_s1_specific_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s2_specific_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s3_specific_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s4_specific_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s5_specific_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s6_specific_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s7_specific_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s8_specific_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s1_sensitive_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s2_sensitive_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s3_sensitive_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s4_sensitive_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s5_sensitive_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s6_sensitive_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s7_sensitive_primary"),
+                   glue("calculate_rates_rolling_{cohort}_s8_sensitive_primary")),
+      moderately_sensitive = lst(
+        png = glue("output/testing/plots/{cohort}_rates_*.png")
+      )
+    ),
+    
+    action(
+      name = glue("plot_rolling_rates_all_{cohort}"),
+      run = glue("r:latest analysis/testing/rolling_rates_viz_all.R {cohort}"),
+      needs = list(glue("calculate_all_rates_over_time_{cohort}_s1_specific_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s2_specific_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s3_specific_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s4_specific_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s5_specific_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s6_specific_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s7_specific_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s8_specific_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s1_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s2_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s3_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s4_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s5_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s6_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s7_sensitive_primary"),
+                   glue("calculate_all_rates_over_time_{cohort}_s8_sensitive_primary")),
+      moderately_sensitive = lst(
+        png = glue("output/testing/plots/{cohort}_*_all.png")
+      )
+    )
+    
+  )
+  
+}
+
 # specify project ----
 
 ## defaults ----
@@ -4099,6 +4169,14 @@ actions_list <- splice (
   # action_investigate("older_adults", "s5", "2020_2021", "season5_start_date", "season5_end_date", "sensitive", "primary"),
   # action_investigate("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "specific", "primary"),
   # action_investigate("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "sensitive", "primary"),
+  
+  comment("# # # # # # # # # # # # # # # # # # #", "Visualisations", "# # # # # # # # # # # # # # # # # # #"),
+  
+  action_visualise("older_adults"),
+  action_visualise("adults"),
+  action_visualise("children_and_adolescents"),
+  action_visualise("infants"),
+  action_visualise("infants_subgroup"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "End", "# # # # # # # # # # # # # # # # # # #")
 
