@@ -16,6 +16,9 @@ investigation_type <- "primary"
 args <- commandArgs(trailingOnly = TRUE)
 cohort <- args[[1]]
 
+## create output directories ----
+fs::dir_create(here::here("output", "testing", "plots"))
+
 ##rsv
 pathogen <- "rsv"
 

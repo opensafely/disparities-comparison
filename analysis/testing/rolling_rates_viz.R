@@ -25,6 +25,9 @@ seasons <- function(pathogen) {
 args <- commandArgs(trailingOnly = TRUE)
 cohort <- args[[1]]
 
+## create output directories ----
+fs::dir_create(here::here("output", "testing", "plots"))
+
 ##plot rates for older_adults
 
 #rsv
