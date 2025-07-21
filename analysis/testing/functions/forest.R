@@ -612,10 +612,10 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
       
       tidy_forest <- df_model %>%
         filter(codelist_type == codelist_filter) %>%
-        tidy_attach_model(dummy_model, exponentiate = TRUE,
-                          conf.level = 95) %>%
+        tidy_attach_model(dummy_model) %>%
         tidy_add_reference_rows() %>%
-        tidy_add_estimate_to_reference_rows() %>%
+        tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
+                                            conf.level = 95) %>%
         tidy_add_term_labels() %>%
         tidy_remove_intercept() %>%
         mutate(
@@ -1159,10 +1159,10 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type,
       
       df_model %>%
         filter(codelist_type == codelist_filter) %>%
-        tidy_attach_model(dummy_model, exponentiate = TRUE,
-                          conf.level = 95) %>%
+        tidy_attach_model(dummy_model) %>%
         tidy_add_reference_rows() %>%
-        tidy_add_estimate_to_reference_rows() %>%
+        tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
+                                            conf.level = 95) %>%
         tidy_add_term_labels() %>%
         tidy_remove_intercept() %>%
         mutate(conf.low = if_else(reference_row, 1, conf.low), 
@@ -1823,10 +1823,10 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
       
       tidy_forest <- df_model %>%
         filter(codelist_type == codelist_filter) %>%
-        tidy_attach_model(dummy_model, exponentiate = TRUE,
-                          conf.level = 95) %>%
+        tidy_attach_model(dummy_model) %>%
         tidy_add_reference_rows() %>%
-        tidy_add_estimate_to_reference_rows() %>%
+        tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
+                                            conf.level = 95) %>%
         tidy_add_term_labels() %>%
         tidy_remove_intercept() %>%
         mutate(
@@ -2519,10 +2519,10 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
     
     tidy_forest <- df_model %>%
       filter(subset %in% c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
-      tidy_attach_model(dummy_model, exponentiate = TRUE,
-                        conf.level = 95) %>%
+      tidy_attach_model(dummy_model) %>%
       tidy_add_reference_rows() %>%
-      tidy_add_estimate_to_reference_rows() %>%
+      tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
+                                          conf.level = 95) %>%
       tidy_add_term_labels() %>%
       tidy_remove_intercept() %>%
       mutate(
@@ -2998,10 +2998,10 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     
     tidy_forest <- df_model %>%
       filter(subset %in% c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
-      tidy_attach_model(dummy_model, exponentiate = TRUE,
-                        conf.level = 95) %>%
+      tidy_attach_model(dummy_model) %>%
       tidy_add_reference_rows() %>%
-      tidy_add_estimate_to_reference_rows() %>%
+      tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
+                                          conf.level = 95) %>%
       tidy_add_term_labels() %>%
       tidy_remove_intercept() %>%
       mutate(
