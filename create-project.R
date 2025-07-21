@@ -3507,7 +3507,7 @@ action_visualise <- function(cohort) {
                    glue("process_dataset_{cohort}_s5_specific_primary"),
                    glue("process_dataset_{cohort}_s5_sensitive_primary")),
       moderately_sensitive = lst(
-        png = glue("output/testing/plots/*.png")
+        png = glue("output/testing/plots/{cohort}_*_further.png")
       )
     ),
     
@@ -3531,7 +3531,7 @@ action_visualise <- function(cohort) {
                    glue("calculate_rates_rolling_{cohort}_s7_sensitive_primary"),
                    glue("calculate_rates_rolling_{cohort}_s8_sensitive_primary")),
       moderately_sensitive = lst(
-        png = glue("output/testing/plots/*.png")
+        png = glue("output/testing/plots/{cohort}_rates_*.png")
       )
     ),
     
@@ -3555,7 +3555,7 @@ action_visualise <- function(cohort) {
                    glue("calculate_all_rates_over_time_{cohort}_s7_sensitive_primary"),
                    glue("calculate_all_rates_over_time_{cohort}_s8_sensitive_primary")),
       moderately_sensitive = lst(
-        png = glue("output/testing/plots/*.png")
+        png = glue("output/testing/plots/{cohort}_*_all.png")
       )
     )
     

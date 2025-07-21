@@ -20409,7 +20409,7 @@ actions:
     - process_dataset_older_adults_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/older_adults_*_further.png
 
   plot_rolling_rates_older_adults:
     run: r:latest analysis/testing/rolling_rates_viz.R older_adults
@@ -20432,7 +20432,7 @@ actions:
     - calculate_rates_rolling_older_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/older_adults_rates_*.png
 
   plot_rolling_rates_all_older_adults:
     run: r:latest analysis/testing/rolling_rates_viz_all.R older_adults
@@ -20455,7 +20455,7 @@ actions:
     - calculate_all_rates_over_time_older_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/older_adults_*_all.png
 
   plot_further_model_results_adults:
     run: r:latest analysis/testing/further_model_results_condensed.R adults
@@ -20468,7 +20468,7 @@ actions:
     - process_dataset_adults_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/adults_*_further.png
 
   plot_rolling_rates_adults:
     run: r:latest analysis/testing/rolling_rates_viz.R adults
@@ -20491,7 +20491,7 @@ actions:
     - calculate_rates_rolling_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/adults_rates_*.png
 
   plot_rolling_rates_all_adults:
     run: r:latest analysis/testing/rolling_rates_viz_all.R adults
@@ -20514,7 +20514,7 @@ actions:
     - calculate_all_rates_over_time_adults_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/adults_*_all.png
 
   plot_further_model_results_children_and_adolescents:
     run: r:latest analysis/testing/further_model_results_condensed.R children_and_adolescents
@@ -20527,7 +20527,7 @@ actions:
     - process_dataset_children_and_adolescents_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/children_and_adolescents_*_further.png
 
   plot_rolling_rates_children_and_adolescents:
     run: r:latest analysis/testing/rolling_rates_viz.R children_and_adolescents
@@ -20550,7 +20550,7 @@ actions:
     - calculate_rates_rolling_children_and_adolescents_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/children_and_adolescents_rates_*.png
 
   plot_rolling_rates_all_children_and_adolescents:
     run: r:latest analysis/testing/rolling_rates_viz_all.R children_and_adolescents
@@ -20573,7 +20573,7 @@ actions:
     - calculate_all_rates_over_time_children_and_adolescents_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/children_and_adolescents_*_all.png
 
   plot_further_model_results_infants:
     run: r:latest analysis/testing/further_model_results_condensed.R infants
@@ -20586,7 +20586,7 @@ actions:
     - process_dataset_infants_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/infants_*_further.png
 
   plot_rolling_rates_infants:
     run: r:latest analysis/testing/rolling_rates_viz.R infants
@@ -20609,7 +20609,7 @@ actions:
     - calculate_rates_rolling_infants_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/infants_rates_*.png
 
   plot_rolling_rates_all_infants:
     run: r:latest analysis/testing/rolling_rates_viz_all.R infants
@@ -20632,7 +20632,7 @@ actions:
     - calculate_all_rates_over_time_infants_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/infants_*_all.png
 
   plot_further_model_results_infants_subgroup:
     run: r:latest analysis/testing/further_model_results_condensed.R infants_subgroup
@@ -20645,7 +20645,7 @@ actions:
     - process_dataset_infants_subgroup_s5_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/infants_subgroup_*_further.png
 
   plot_rolling_rates_infants_subgroup:
     run: r:latest analysis/testing/rolling_rates_viz.R infants_subgroup
@@ -20668,7 +20668,7 @@ actions:
     - calculate_rates_rolling_infants_subgroup_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/infants_subgroup_rates_*.png
 
   plot_rolling_rates_all_infants_subgroup:
     run: r:latest analysis/testing/rolling_rates_viz_all.R infants_subgroup
@@ -20691,7 +20691,7 @@ actions:
     - calculate_all_rates_over_time_infants_subgroup_s8_sensitive_primary
     outputs:
       moderately_sensitive:
-        png: output/testing/plots/*.png
+        png: output/testing/plots/infants_subgroup_*_all.png
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## End 
