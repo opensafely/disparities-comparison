@@ -14,7 +14,15 @@ source(here::here("analysis", "testing", "functions", "forest.R"))
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 investigation_type <- "primary"
 args <- commandArgs(trailingOnly = TRUE)
-cohort <- args[[1]]
+is_being_sourced <- sys.nframe() > 0
+if (is_being_sourced == FALSE) {
+  args <- commandArgs(trailingOnly = TRUE)
+  if (length(args) == 0) {
+    cohort <- "adults"
+  } else {
+    cohort <- args[[1]]
+  }
+}
 
 ## create output directories ----
 fs::dir_create(here::here("output", "testing", "plots"))
