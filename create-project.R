@@ -3538,22 +3538,7 @@ action_visualise <- function(cohort) {
     action(
       name = glue("plot_rolling_rates_all_{cohort}"),
       run = glue("r:latest analysis/testing/rolling_rates_viz_all.R {cohort}"),
-      needs = list(glue("calculate_all_rates_over_time_{cohort}_s1_specific_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s2_specific_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s3_specific_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s4_specific_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s5_specific_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s6_specific_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s7_specific_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s8_specific_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s1_sensitive_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s2_sensitive_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s3_sensitive_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s4_sensitive_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s5_sensitive_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s6_sensitive_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s7_sensitive_primary"),
-                   glue("calculate_all_rates_over_time_{cohort}_s8_sensitive_primary")),
+      needs = list(glue("collate_rates_over_time_all_tables_primary_{cohort}")),
       moderately_sensitive = lst(
         png = glue("output/testing/plots/{cohort}_*_all.png")
       )

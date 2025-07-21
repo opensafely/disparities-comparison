@@ -20437,22 +20437,7 @@ actions:
   plot_rolling_rates_all_older_adults:
     run: r:latest analysis/testing/rolling_rates_viz_all.R older_adults
     needs:
-    - calculate_all_rates_over_time_older_adults_s1_specific_primary
-    - calculate_all_rates_over_time_older_adults_s2_specific_primary
-    - calculate_all_rates_over_time_older_adults_s3_specific_primary
-    - calculate_all_rates_over_time_older_adults_s4_specific_primary
-    - calculate_all_rates_over_time_older_adults_s5_specific_primary
-    - calculate_all_rates_over_time_older_adults_s6_specific_primary
-    - calculate_all_rates_over_time_older_adults_s7_specific_primary
-    - calculate_all_rates_over_time_older_adults_s8_specific_primary
-    - calculate_all_rates_over_time_older_adults_s1_sensitive_primary
-    - calculate_all_rates_over_time_older_adults_s2_sensitive_primary
-    - calculate_all_rates_over_time_older_adults_s3_sensitive_primary
-    - calculate_all_rates_over_time_older_adults_s4_sensitive_primary
-    - calculate_all_rates_over_time_older_adults_s5_sensitive_primary
-    - calculate_all_rates_over_time_older_adults_s6_sensitive_primary
-    - calculate_all_rates_over_time_older_adults_s7_sensitive_primary
-    - calculate_all_rates_over_time_older_adults_s8_sensitive_primary
+    - collate_rates_over_time_all_tables_primary_older_adults
     outputs:
       moderately_sensitive:
         png: output/testing/plots/older_adults_*_all.png
@@ -20496,22 +20481,7 @@ actions:
   plot_rolling_rates_all_adults:
     run: r:latest analysis/testing/rolling_rates_viz_all.R adults
     needs:
-    - calculate_all_rates_over_time_adults_s1_specific_primary
-    - calculate_all_rates_over_time_adults_s2_specific_primary
-    - calculate_all_rates_over_time_adults_s3_specific_primary
-    - calculate_all_rates_over_time_adults_s4_specific_primary
-    - calculate_all_rates_over_time_adults_s5_specific_primary
-    - calculate_all_rates_over_time_adults_s6_specific_primary
-    - calculate_all_rates_over_time_adults_s7_specific_primary
-    - calculate_all_rates_over_time_adults_s8_specific_primary
-    - calculate_all_rates_over_time_adults_s1_sensitive_primary
-    - calculate_all_rates_over_time_adults_s2_sensitive_primary
-    - calculate_all_rates_over_time_adults_s3_sensitive_primary
-    - calculate_all_rates_over_time_adults_s4_sensitive_primary
-    - calculate_all_rates_over_time_adults_s5_sensitive_primary
-    - calculate_all_rates_over_time_adults_s6_sensitive_primary
-    - calculate_all_rates_over_time_adults_s7_sensitive_primary
-    - calculate_all_rates_over_time_adults_s8_sensitive_primary
+    - collate_rates_over_time_all_tables_primary_adults
     outputs:
       moderately_sensitive:
         png: output/testing/plots/adults_*_all.png
@@ -20555,22 +20525,7 @@ actions:
   plot_rolling_rates_all_children_and_adolescents:
     run: r:latest analysis/testing/rolling_rates_viz_all.R children_and_adolescents
     needs:
-    - calculate_all_rates_over_time_children_and_adolescents_s1_specific_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s2_specific_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s3_specific_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s4_specific_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s5_specific_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s6_specific_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s7_specific_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s8_specific_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s1_sensitive_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s2_sensitive_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s3_sensitive_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s4_sensitive_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s5_sensitive_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s6_sensitive_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s7_sensitive_primary
-    - calculate_all_rates_over_time_children_and_adolescents_s8_sensitive_primary
+    - collate_rates_over_time_all_tables_primary_children_and_adolescents
     outputs:
       moderately_sensitive:
         png: output/testing/plots/children_and_adolescents_*_all.png
@@ -20614,22 +20569,7 @@ actions:
   plot_rolling_rates_all_infants:
     run: r:latest analysis/testing/rolling_rates_viz_all.R infants
     needs:
-    - calculate_all_rates_over_time_infants_s1_specific_primary
-    - calculate_all_rates_over_time_infants_s2_specific_primary
-    - calculate_all_rates_over_time_infants_s3_specific_primary
-    - calculate_all_rates_over_time_infants_s4_specific_primary
-    - calculate_all_rates_over_time_infants_s5_specific_primary
-    - calculate_all_rates_over_time_infants_s6_specific_primary
-    - calculate_all_rates_over_time_infants_s7_specific_primary
-    - calculate_all_rates_over_time_infants_s8_specific_primary
-    - calculate_all_rates_over_time_infants_s1_sensitive_primary
-    - calculate_all_rates_over_time_infants_s2_sensitive_primary
-    - calculate_all_rates_over_time_infants_s3_sensitive_primary
-    - calculate_all_rates_over_time_infants_s4_sensitive_primary
-    - calculate_all_rates_over_time_infants_s5_sensitive_primary
-    - calculate_all_rates_over_time_infants_s6_sensitive_primary
-    - calculate_all_rates_over_time_infants_s7_sensitive_primary
-    - calculate_all_rates_over_time_infants_s8_sensitive_primary
+    - collate_rates_over_time_all_tables_primary_infants
     outputs:
       moderately_sensitive:
         png: output/testing/plots/infants_*_all.png
@@ -20673,22 +20613,7 @@ actions:
   plot_rolling_rates_all_infants_subgroup:
     run: r:latest analysis/testing/rolling_rates_viz_all.R infants_subgroup
     needs:
-    - calculate_all_rates_over_time_infants_subgroup_s1_specific_primary
-    - calculate_all_rates_over_time_infants_subgroup_s2_specific_primary
-    - calculate_all_rates_over_time_infants_subgroup_s3_specific_primary
-    - calculate_all_rates_over_time_infants_subgroup_s4_specific_primary
-    - calculate_all_rates_over_time_infants_subgroup_s5_specific_primary
-    - calculate_all_rates_over_time_infants_subgroup_s6_specific_primary
-    - calculate_all_rates_over_time_infants_subgroup_s7_specific_primary
-    - calculate_all_rates_over_time_infants_subgroup_s8_specific_primary
-    - calculate_all_rates_over_time_infants_subgroup_s1_sensitive_primary
-    - calculate_all_rates_over_time_infants_subgroup_s2_sensitive_primary
-    - calculate_all_rates_over_time_infants_subgroup_s3_sensitive_primary
-    - calculate_all_rates_over_time_infants_subgroup_s4_sensitive_primary
-    - calculate_all_rates_over_time_infants_subgroup_s5_sensitive_primary
-    - calculate_all_rates_over_time_infants_subgroup_s6_sensitive_primary
-    - calculate_all_rates_over_time_infants_subgroup_s7_sensitive_primary
-    - calculate_all_rates_over_time_infants_subgroup_s8_sensitive_primary
+    - collate_rates_over_time_all_tables_primary_infants_subgroup
     outputs:
       moderately_sensitive:
         png: output/testing/plots/infants_subgroup_*_all.png
