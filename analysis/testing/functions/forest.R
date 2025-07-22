@@ -2992,24 +2992,76 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   
   process_forest_plot <- function(df_model) {
     
-    tidy_forest <- df_model %>%
-      filter(subset %in% c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
-      tidy_attach_model(dummy_model) %>%
-      tidy_add_reference_rows() %>%
-      tidy_add_estimate_to_reference_rows(exponentiate = TRUE) %>%
-      tidy_add_term_labels() %>%
-      tidy_remove_intercept() %>%
-      mutate(
-        conf.low = if_else(reference_row, 1, conf.low),
-        conf.high = if_else(reference_row, 1, conf.high),
-        label = if_else(label == "maternal_age", "Maternal Age", label),
-        reference_row = if_else(
-          label == "Maternal Age", FALSE, reference_row)
-      ) %>%
-      mutate(
-        conf.low = if_else(conf.low < 1e-100, NA_real_, conf.low),
-        conf.high = if_else(conf.high < 1e-100, NA_real_, conf.high)
+    if (nrow(df_model != 0)) {
+    
+      tidy_forest <- df_model %>%
+        filter(subset %in% c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
+        tidy_attach_model(dummy_model) %>%
+        tidy_add_reference_rows() %>%
+        tidy_add_estimate_to_reference_rows(exponentiate = TRUE) %>%
+        tidy_add_term_labels() %>%
+        tidy_remove_intercept() %>%
+        mutate(
+          conf.low = if_else(reference_row, 1, conf.low),
+          conf.high = if_else(reference_row, 1, conf.high),
+          label = if_else(label == "maternal_age", "Maternal Age", label),
+          reference_row = if_else(
+            label == "Maternal Age", FALSE, reference_row)
+        ) %>%
+        mutate(
+          conf.low = if_else(conf.low < 1e-100, NA_real_, conf.low),
+          conf.high = if_else(conf.high < 1e-100, NA_real_, conf.high)
+        )
+      
+    } else {
+      
+      age <- case_when(
+        cohort == "older_adults" ~ "65-74y",
+        cohort == "adults" ~ "18-39y",
+        cohort == "children_and_adolescents" ~ "2-5y",
+        cohort == "infants" ~ "0-2m",
+        cohort == "infants_subgroup" ~ "0-2m"
       )
+      
+      vars <- case_when(
+        model_type == "ethnicity" ~ list("Female", age, "White"),
+        model_type == "ses" ~ list("Female", age, "5 (least deprived)"),
+        model_type == "composition" ~ list(
+          "Female", age, "Multiple of the Same Generation"),
+        model_type == "ethnicity_ses" ~ list(c(
+          "Female", age, "White", "5 (least deprived)")),
+        model_type == "ethnicity_composition" ~ list(c(
+          "Female", age, "White", "Multiple of the Same Generation")),
+        model_type == "ses_composition" ~ list(c(
+          "Female", age, "5 (least deprived)",
+          "Multiple of the Same Generation")),
+        model_type == "full" ~ list(c(
+          "Female", age, "White", "5 (least deprived)",
+          "Multiple of the Same Generation"))
+      )[[1]]
+      
+      tidy_forest <- tibble(
+        term = NA,
+        variable = vars,
+        var_label = vars,
+        var_class = NA,
+        var_type = NA,
+        var_nlevels = NA_real_,
+        contrasts = NA,
+        contrasts_type = NA,
+        reference_row = TRUE,
+        label = vars,
+        estimate = 1,
+        std.error = NA_real_,
+        statistic = NA_real_,
+        p.value = NA_real_,
+        conf.low = NA_real_,
+        conf.high = NA_real_,
+        model_type = !!model_type,
+        subset = unique(df_model$subset)
+      )
+      
+    }
     
     if (cohort == "infants_subgroup") {
       

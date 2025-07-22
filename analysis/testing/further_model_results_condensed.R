@@ -18,7 +18,7 @@ is_being_sourced <- sys.nframe() > 0
 if (is_being_sourced == FALSE) {
   args <- commandArgs(trailingOnly = TRUE)
   if (length(args) == 0) {
-    cohort <- "adults"
+    cohort <- "older_adults"
   } else {
     cohort <- args[[1]]
   }
