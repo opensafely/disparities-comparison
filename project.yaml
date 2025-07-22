@@ -20407,6 +20407,8 @@ actions:
     - collate_further_overall_and_all_cause_model_outputs_tables_older_adults
     - process_dataset_older_adults_s5_specific_primary
     - process_dataset_older_adults_s5_sensitive_primary
+    - process_dataset_older_adults_s6_specific_primary
+    - process_dataset_older_adults_s6_sensitive_primary
     outputs:
       moderately_sensitive:
         png: output/testing/plots/older_adults_*_further.png
@@ -20451,6 +20453,8 @@ actions:
     - collate_further_overall_and_all_cause_model_outputs_tables_adults
     - process_dataset_adults_s5_specific_primary
     - process_dataset_adults_s5_sensitive_primary
+    - process_dataset_adults_s6_specific_primary
+    - process_dataset_adults_s6_sensitive_primary
     outputs:
       moderately_sensitive:
         png: output/testing/plots/adults_*_further.png
@@ -20495,6 +20499,8 @@ actions:
     - collate_further_overall_and_all_cause_model_outputs_tables_children_and_adolescents
     - process_dataset_children_and_adolescents_s5_specific_primary
     - process_dataset_children_and_adolescents_s5_sensitive_primary
+    - process_dataset_children_and_adolescents_s6_specific_primary
+    - process_dataset_children_and_adolescents_s6_sensitive_primary
     outputs:
       moderately_sensitive:
         png: output/testing/plots/children_and_adolescents_*_further.png
@@ -20539,6 +20545,8 @@ actions:
     - collate_further_overall_and_all_cause_model_outputs_tables_infants
     - process_dataset_infants_s5_specific_primary
     - process_dataset_infants_s5_sensitive_primary
+    - process_dataset_infants_s6_specific_primary
+    - process_dataset_infants_s6_sensitive_primary
     outputs:
       moderately_sensitive:
         png: output/testing/plots/infants_*_further.png
@@ -20583,6 +20591,8 @@ actions:
     - collate_further_overall_and_all_cause_model_outputs_tables_infants_subgroup
     - process_dataset_infants_subgroup_s5_specific_primary
     - process_dataset_infants_subgroup_s5_sensitive_primary
+    - process_dataset_infants_subgroup_s6_specific_primary
+    - process_dataset_infants_subgroup_s6_sensitive_primary
     outputs:
       moderately_sensitive:
         png: output/testing/plots/infants_subgroup_*_further.png

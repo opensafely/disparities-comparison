@@ -3505,7 +3505,9 @@ action_visualise <- function(cohort) {
                    glue("collate_further_covid_model_outputs_tables_{cohort}"),
                    glue("collate_further_overall_and_all_cause_model_outputs_tables_{cohort}"),
                    glue("process_dataset_{cohort}_s5_specific_primary"),
-                   glue("process_dataset_{cohort}_s5_sensitive_primary")),
+                   glue("process_dataset_{cohort}_s5_sensitive_primary"),
+                   glue("process_dataset_{cohort}_s6_specific_primary"),
+                   glue("process_dataset_{cohort}_s6_sensitive_primary")),
       moderately_sensitive = lst(
         png = glue("output/testing/plots/{cohort}_*_further.png")
       )
