@@ -62,13 +62,13 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         filter(codelist_type == codelist_filter) %>%
         tidy_attach_model(dummy_model) %>%
         tidy_add_reference_rows() %>%
-        tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
-                                            conf.level = 95) %>%
+        tidy_add_estimate_to_reference_rows() %>%
         tidy_add_term_labels() %>%
         tidy_remove_intercept() %>%
         mutate(conf.low = if_else(reference_row, 1, conf.low), 
-               )
-        
+               conf.high = if_else(reference_row, 1, conf.high),
+               label = if_else(label == "maternal_age", "Maternal Age", label)
+        )
       
     } else {
       
@@ -614,8 +614,7 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
         filter(codelist_type == codelist_filter) %>%
         tidy_attach_model(dummy_model) %>%
         tidy_add_reference_rows() %>%
-        tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
-                                            conf.level = 95) %>%
+        tidy_add_estimate_to_reference_rows() %>%
         tidy_add_term_labels() %>%
         tidy_remove_intercept() %>%
         mutate(
@@ -623,8 +622,8 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
           conf.high = if_else(reference_row, 1, conf.high)
         ) %>%
         mutate(
-          conf.low = if_else(conf.low < 1e-100, NA, conf.low),
-          conf.high = if_else(conf.high < 1e-100, NA, conf.high)
+          conf.low = if_else(conf.low < 1e-100, NA_real_, conf.low),
+          conf.high = if_else(conf.high < 1e-100, NA_real_, conf.high)
         )
       
     } else {
@@ -660,17 +659,17 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
         var_label = vars,
         var_class = NA,
         var_type = NA,
-        var_nlevels = NA,
+        var_nlevels = NA_real_,
         contrasts = NA,
         contrasts_type = NA,
         reference_row = TRUE,
         label = vars,
         estimate = 1,
-        std.error = NA,
-        statistic = NA,
-        p.value = NA,
-        conf.low = NA,
-        conf.high = NA,
+        std.error = NA_real_,
+        statistic = NA_real_,
+        p.value = NA_real_,
+        conf.low = NA_real_,
+        conf.high = NA_real_,
         model_type = !!model_type,
         codelist_type = !!codelist_filter,
         investigation_type = investigation_type,
@@ -709,8 +708,8 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
             model_name = NA,
             estimate = 1,
             std.error = 0,
-            statistic = NA,
-            p.value = NA,
+            statistic = NA_real_,
+            p.value = NA_real_,
             conf.low = 1,
             conf.high = 1,
             model_type = !!model_type,
@@ -1161,8 +1160,7 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type,
         filter(codelist_type == codelist_filter) %>%
         tidy_attach_model(dummy_model) %>%
         tidy_add_reference_rows() %>%
-        tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
-                                            conf.level = 95) %>%
+        tidy_add_estimate_to_reference_rows() %>%
         tidy_add_term_labels() %>%
         tidy_remove_intercept() %>%
         mutate(conf.low = if_else(reference_row, 1, conf.low), 
@@ -1208,17 +1206,17 @@ forest_further <- function(df, df_dummy, pathogen, model_type, outcome_type,
         var_label = rep(vars, length(unique(df_model$subset))),
         var_class = NA,
         var_type = NA,
-        var_nlevels = NA,
+        var_nlevels = NA_real_,
         contrasts = NA,
         contrasts_type = NA,
         reference_row = TRUE,
         label = rep(vars, length(unique(df_model$subset))),
         estimate = 1,
-        std.error = NA,
-        statistic = NA,
-        p.value = NA,
-        conf.low = NA,
-        conf.high = NA,
+        std.error = NA_real_,
+        statistic = NA_real_,
+        p.value = NA_real_,
+        conf.low = NA_real_,
+        conf.high = NA_real_,
         model_type = !!model_type,
         codelist_type = !!codelist_filter,
         investigation_type = investigation_type,
@@ -1825,8 +1823,7 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
         filter(codelist_type == codelist_filter) %>%
         tidy_attach_model(dummy_model) %>%
         tidy_add_reference_rows() %>%
-        tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
-                                            conf.level = 95) %>%
+        tidy_add_estimate_to_reference_rows() %>%
         tidy_add_term_labels() %>%
         tidy_remove_intercept() %>%
         mutate(
@@ -1835,8 +1832,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           label = if_else(label == "maternal_age", "Maternal Age", label)
         ) %>%
         mutate(
-          conf.low = if_else(conf.low < 1e-100, NA, conf.low),
-          conf.high = if_else(conf.high < 1e-100, NA, conf.high)
+          conf.low = if_else(conf.low < 1e-100, NA_real_, conf.low),
+          conf.high = if_else(conf.high < 1e-100, NA_real_, conf.high)
         )
       
     } else {
@@ -1883,17 +1880,17 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
         var_label = rep(vars, length(unique(df_model$subset))),
         var_class = NA,
         var_type = NA,
-        var_nlevels = NA,
+        var_nlevels = NA_real_,
         contrasts = NA,
         contrasts_type = NA,
         reference_row = TRUE,
         label = rep(vars, length(unique(df_model$subset))),
         estimate = 1,
-        std.error = NA,
-        statistic = NA,
-        p.value = NA,
-        conf.low = NA,
-        conf.high = NA,
+        std.error = NA_real_,
+        statistic = NA_real_,
+        p.value = NA_real_,
+        conf.low = NA_real_,
+        conf.high = NA_real_,
         model_type = !!model_type,
         codelist_type = !!codelist_filter,
         investigation_type = investigation_type,
@@ -1924,8 +1921,8 @@ forest_year_further <- function(df, df_dummy, pathogen, model_type,
           model_name = NA,
           estimate = 1,
           std.error = 0,
-          statistic = NA,
-          p.value = NA,
+          statistic = NA_real_,
+          p.value = NA_real_,
           conf.low = 1,
           conf.high = 1,
           model_type = !!model_type,
@@ -2521,8 +2518,7 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
       filter(subset %in% c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
       tidy_attach_model(dummy_model) %>%
       tidy_add_reference_rows() %>%
-      tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
-                                          conf.level = 95) %>%
+      tidy_add_estimate_to_reference_rows() %>%
       tidy_add_term_labels() %>%
       tidy_remove_intercept() %>%
       mutate(
@@ -2530,8 +2526,8 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
         conf.high = if_else(reference_row, 1, conf.high)
       ) %>%
       mutate(
-        conf.low = if_else(conf.low < 1e-100, NA, conf.low),
-        conf.high = if_else(conf.high < 1e-100, NA, conf.high)
+        conf.low = if_else(conf.low < 1e-100, NA_real_, conf.low),
+        conf.high = if_else(conf.high < 1e-100, NA_real_, conf.high)
       )
     
     if (model_type %in% c(
@@ -3000,8 +2996,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       filter(subset %in% c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
       tidy_attach_model(dummy_model) %>%
       tidy_add_reference_rows() %>%
-      tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
-                                          conf.level = 95) %>%
+      tidy_add_estimate_to_reference_rows(exponentiate = TRUE) %>%
       tidy_add_term_labels() %>%
       tidy_remove_intercept() %>%
       mutate(
@@ -3012,8 +3007,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           label == "Maternal Age", FALSE, reference_row)
       ) %>%
       mutate(
-        conf.low = if_else(conf.low < 1e-100, NA, conf.low),
-        conf.high = if_else(conf.high < 1e-100, NA, conf.high)
+        conf.low = if_else(conf.low < 1e-100, NA_real_, conf.low),
+        conf.high = if_else(conf.high < 1e-100, NA_real_, conf.high)
       )
     
     if (cohort == "infants_subgroup") {
@@ -3038,8 +3033,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           model_name = NA,
           estimate = 1,
           std.error = 0,
-          statistic = NA,
-          p.value = NA,
+          statistic = NA_real_,
+          p.value = NA_real_,
           conf.low = 1,
           conf.high = 1,
           model_type = !!model_type,
