@@ -81,10 +81,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       )
       
       vars <- case_when(
-        model_type == "ethnicity" ~ list("Female", age, "White"),
-        model_type == "ses" ~ list("Female", age, "5 (least deprived)"),
-        model_type == "composition" ~ list(
-          "Female", age, "Multiple of the Same Generation"),
+        model_type == "ethnicity" ~ list(c("Female", age, "White")),
+        model_type == "ses" ~ list(c("Female", age, "5 (least deprived)")),
+        model_type == "composition" ~ list(c(
+          "Female", age, "Multiple of the Same Generation")),
         model_type == "ethnicity_ses" ~ list(c(
           "Female", age, "White", "5 (least deprived)")),
         model_type == "ethnicity_composition" ~ list(c(
@@ -637,10 +637,10 @@ forest_year <- function(df, df_dummy, pathogen, model_type, outcome_type,
       )
       
       vars <- case_when(
-        model_type == "ethnicity" ~ list("Female", age, "White"),
-        model_type == "ses" ~ list("Female", age, "5 (least deprived)"),
-        model_type == "composition" ~ list(
-          "Female", age, "Multiple of the Same Generation"),
+        model_type == "ethnicity" ~ list(c("Female", age, "White")),
+        model_type == "ses" ~ list(c("Female", age, "5 (least deprived)")),
+        model_type == "composition" ~ list(c(
+          "Female", age, "Multiple of the Same Generation")),
         model_type == "ethnicity_ses" ~ list(c(
           "Female", age, "White", "5 (least deprived)")),
         model_type == "ethnicity_composition" ~ list(c(
@@ -3024,10 +3024,25 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       )
       
       vars <- case_when(
-        model_type == "ethnicity" ~ list("Female", age, "White"),
-        model_type == "ses" ~ list("Female", age, "5 (least deprived)"),
-        model_type == "composition" ~ list(
-          "Female", age, "Multiple of the Same Generation"),
+        model_type == "ethnicity" ~ list(c("sex", "age_band", "latest_ethnicity_group")),
+        model_type == "ses" ~ list(c("sex", "age_band", "imd_quintile")),
+        model_type == "composition" ~ list(c(
+          "sex", "age_band", "composition_category")),
+        model_type == "ethnicity_ses" ~ list(c(
+          "sex", "age_band", "latest_ethnicity_group", "imd_quintile")),
+        model_type == "ethnicity_composition" ~ list(c(
+          "sex", "age_band", "ethnicity", "composition_category")),
+        model_type == "ses_composition" ~ list(c(
+          "sex", "age_band", "imd_quintile", "composition_category")),
+        model_type == "full" ~ list(c(
+          "sex", "age_band", "ethnicity", "imd_quintile", "composition_category"))
+      )[[1]]
+      
+      var_labels <- case_when(
+        model_type == "ethnicity" ~ list(c("Female", age, "White")),
+        model_type == "ses" ~ list(c("Female", age, "5 (least deprived)")),
+        model_type == "composition" ~ list(c(
+          "Female", age, "Multiple of the Same Generation")),
         model_type == "ethnicity_ses" ~ list(c(
           "Female", age, "White", "5 (least deprived)")),
         model_type == "ethnicity_composition" ~ list(c(
@@ -3040,25 +3055,94 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           "Multiple of the Same Generation"))
       )[[1]]
       
-      tidy_forest <- tibble(
-        term = NA,
-        variable = vars,
-        var_label = vars,
-        var_class = NA,
-        var_type = NA,
-        var_nlevels = NA_real_,
-        contrasts = NA,
-        contrasts_type = NA,
-        reference_row = TRUE,
-        label = vars,
-        estimate = 1,
-        std.error = NA_real_,
-        statistic = NA_real_,
-        p.value = NA_real_,
-        conf.low = NA_real_,
-        conf.high = NA_real_,
-        model_type = !!model_type,
-        subset = unique(df_model$subset)
+      tidy_forest <- bind_rows(
+        tibble(
+          term = NA,
+          variable = vars,
+          var_label = var_labels,
+          var_class = NA,
+          var_type = NA,
+          var_nlevels = NA_real_,
+          contrasts = NA,
+          contrasts_type = NA,
+          reference_row = TRUE,
+          label = var_labels,
+          estimate = 1,
+          std.error = NA_real_,
+          statistic = NA_real_,
+          p.value = NA_real_,
+          conf.low = 1,
+          conf.high = 1,
+          model_type = !!model_type,
+          codelist_type = "specific",
+          investigation_type = investigation_type,
+          subset = unique(df_few$subset)
+        ),
+        tibble(
+          term = NA,
+          variable = vars,
+          var_label = var_labels,
+          var_class = NA,
+          var_type = NA,
+          var_nlevels = NA_real_,
+          contrasts = NA,
+          contrasts_type = NA,
+          reference_row = TRUE,
+          label = var_labels,
+          estimate = 1,
+          std.error = NA_real_,
+          statistic = NA_real_,
+          p.value = NA_real_,
+          conf.low = 1,
+          conf.high = 1,
+          model_type = !!model_type,
+          codelist_type = "sensitive",
+          investigation_type = investigation_type,
+          subset = unique(df_few$subset)
+        ),
+        tibble(
+          term = NA,
+          variable = vars,
+          var_label = var_labels,
+          var_class = NA,
+          var_type = NA,
+          var_nlevels = NA_real_,
+          contrasts = NA,
+          contrasts_type = NA,
+          reference_row = TRUE,
+          label = var_labels,
+          estimate = 1,
+          std.error = NA_real_,
+          statistic = NA_real_,
+          p.value = NA_real_,
+          conf.low = 1,
+          conf.high = 1,
+          model_type = !!model_type,
+          codelist_type = "specific",
+          investigation_type = investigation_type,
+          subset = unique(df_few$subset)
+        ),
+        tibble(
+          term = NA,
+          variable = vars,
+          var_label = var_labels,
+          var_class = NA,
+          var_type = NA,
+          var_nlevels = NA_real_,
+          contrasts = NA,
+          contrasts_type = NA,
+          reference_row = TRUE,
+          label = var_labels,
+          estimate = NA_real_,
+          std.error = NA_real_,
+          statistic = NA_real_,
+          p.value = NA_real_,
+          conf.low = NA_real_,
+          model_type = !!model_type,
+          codelist_type = "reference",
+          investigation_type = investigation_type,
+          subset = unique(df_few$subset)
+        )
       )
       
     }
@@ -3126,9 +3210,13 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       
     }
     
-    tidy_forest <- tidy_forest %>%
-      filter(!reference_row) %>%
-      bind_rows(reference_rows)
+    if (nrow(df_few) == 0) {
+      
+      tidy_forest <- tidy_forest %>%
+        filter(!reference_row) %>%
+        bind_rows(reference_rows)
+      
+    }
     
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
     
