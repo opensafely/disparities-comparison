@@ -3210,7 +3210,12 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       
     }
     
-    if (nrow(df_few) == 0) {
+    if (nrow(df_few) != 0 & model_type %in% c("composition", "ethnicity_composition",
+                                              "ses_composition", "full")) {
+      
+      tidy_forest <- tidy_forest
+      
+    } else {
       
       tidy_forest <- tidy_forest %>%
         filter(!reference_row) %>%
@@ -3223,7 +3228,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     cols2 <- tibble(
       variable = c("sex", "age_band", "latest_ethnicity_group", "imd_quintile",
                    "composition_category", "rurality_classification",
-                   vacc_prev, vacc_current, "maternal_age",
+                   vacc_prev, "vax_status", "maternal_age",
                    "maternal_smoking_status", "maternal_drinking",
                    "maternal_drug_usage", "maternal_flu_vaccination",
                    "maternal_pertussis_vaccination", "binary_variables"),
@@ -3401,14 +3406,13 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           ) %>%
           mutate(
             variable = case_when(
-              variable == "covid_vaccination_mild" ~ "covid_vaccination",
-              variable == "covid_vaccination_severe" ~ "covid_vaccination",
+              variable == "vax_status" ~ "covid_vaccination",
               TRUE ~ variable
             ),
             plot_label = str_to_title(gsub("_", " ", variable)),
             label = case_when(
               variable == "covid_vaccination" ~ paste0(
-                plot_label, " (", str_to_title(label),")"),
+                plot_label, " (Yes)"),
               variable == "time_since_last_covid_vaccination" ~ paste0(
                 label, " Since Last Covid Vaccination"),
               TRUE ~ label
@@ -3463,14 +3467,15 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           ) %>%
           mutate(
             variable = case_when(
-              variable == "flu_vaccination_mild" ~ "flu_vaccination",
-              variable == "flu_vaccination_severe" ~ "flu_vaccination",
+              variable == "vax_status" ~ "flu_vaccination",
               TRUE ~ variable
             ),
             plot_label = str_to_title(gsub("_", " ", variable)),
-            label = if_else(variable %in% c(
-              "prior_flu_vaccination", "flu_vaccination"), paste0(
-                plot_label, " (", str_to_title(label),")"), label),
+            label = case_when(
+              variable == "flu_vaccination" ~ paste0(plot_label, " (Yes)"),
+              variable == "prior_flu_vaccination" ~ paste0(
+                plot_label, "(", str_to_title(label),")"),
+              TRUE ~ label),
             subset = gsub("_", "-", subset)
           ) %>%
           mutate(
