@@ -280,10 +280,12 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
   df_dummy <- read_feather(
     here::here("output", "data", paste0("input_processed_", cohort, 
                "_2020_2021_specific_primary.arrow"))) %>%
-    mutate(subset = "2020_21",
-           time_since_last_covid_vaccination = case_when(
-             is.na(covid_vaccination_immunity_date) ~ "6-12m",
-             TRUE ~ "12m+"))
+    mutate(
+      subset = "2020_21",
+      time_since_last_covid_vaccination = factor(case_when(
+        is.na(covid_vaccination_immunity_date) ~ "6-12m",
+        TRUE ~ "12m+"), levels = c("0-6m", "6-12m", "12m+"))
+    )
   
   #plot both phenotypes together
   covid_composition_mild <- forest_year_further_mult(
@@ -318,9 +320,10 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
   df_dummy <- df_dummy %>%
     mutate(
       subset = "2021_22",
-      time_since_last_covid_vaccination = if_else(
+      time_since_last_covid_vaccination = factor(if_else(
         is.na(covid_vaccination_immunity_date), "6-12m",
-        time_since_last_covid_vaccination)
+        as.character(time_since_last_covid_vaccination)),
+        levels = c("0-6m", "6-12m", "12m+"))
     )
   
 }
@@ -346,12 +349,12 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
   df_dummy <- read_feather(
     here::here("output", "data", paste0("input_processed_", cohort, 
                "_2020_2021_specific_primary.arrow"))) %>%
-      mutate(
-        subset = "2020_21",
-        time_since_last_covid_vaccination = if_else(
-          is.na(covid_vaccination_immunity_date), "6-12m",
-          time_since_last_covid_vaccination)
-      )
+    mutate(
+      subset = "2020_21",
+      time_since_last_covid_vaccination = factor(case_when(
+        is.na(covid_vaccination_immunity_date) ~ "6-12m",
+        TRUE ~ "12m+"), levels = c("0-6m", "6-12m", "12m+"))
+    )
 
   #plot both phenotypes together
   covid_composition_severe <- forest_year_further_mult(
