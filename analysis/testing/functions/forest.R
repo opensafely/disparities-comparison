@@ -2992,7 +2992,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   
   process_forest_plot <- function(df_model) {
     
-    if (nrow(df_model != 0)) {
+    if (nrow(df_model) != 0) {
     
       tidy_forest <- df_model %>%
         filter(subset %in% c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
@@ -3013,7 +3013,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           conf.high = if_else(conf.high < 1e-100, NA_real_, conf.high)
         )
       
-    } else {
+    } else if (nrow(df_model) == 0 & model_type %in% c(
+      "composition", "ethnicity_composition", "ses_composition", "full")) {
       
       age <- case_when(
         cohort == "older_adults" ~ "65-74y",
@@ -3076,7 +3077,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           model_type = !!model_type,
           codelist_type = "specific",
           investigation_type = investigation_type,
-          subset = unique(df_few$subset)
+          subset = "2020_21"
         ),
         tibble(
           term = NA,
@@ -3098,29 +3099,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           model_type = !!model_type,
           codelist_type = "sensitive",
           investigation_type = investigation_type,
-          subset = unique(df_few$subset)
-        ),
-        tibble(
-          term = NA,
-          variable = vars,
-          var_label = var_labels,
-          var_class = NA,
-          var_type = NA,
-          var_nlevels = NA_real_,
-          contrasts = NA,
-          contrasts_type = NA,
-          reference_row = TRUE,
-          label = var_labels,
-          estimate = 1,
-          std.error = NA_real_,
-          statistic = NA_real_,
-          p.value = NA_real_,
-          conf.low = 1,
-          conf.high = 1,
-          model_type = !!model_type,
-          codelist_type = "specific",
-          investigation_type = investigation_type,
-          subset = unique(df_few$subset)
+          subset = "2020_21"
         ),
         tibble(
           term = NA,
@@ -3141,7 +3120,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           model_type = !!model_type,
           codelist_type = "reference",
           investigation_type = investigation_type,
-          subset = unique(df_few$subset)
+          subset = "2020_21"
         )
       )
       
