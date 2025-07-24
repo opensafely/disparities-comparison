@@ -47,85 +47,85 @@ df_input <- df_input %>%
 
 ##create relevant forest plots - mild
 
-#plot both phenotypes together
-rsv_ethnicity_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ethnicity", "Mild"
-)
-
-#plot both phenotypes together
-rsv_ses_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ses", "Mild"
-)
+# #plot both phenotypes together
+# rsv_ethnicity_mild <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ethnicity", "Mild"
+# )
+# 
+# #plot both phenotypes together
+# rsv_ses_mild <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ses", "Mild"
+# )
 
 #plot both phenotypes together
 rsv_ethnicity_ses_mild <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )
 
-if (cohort != "infants" & cohort != "infants_subgroup") {
-  
-  #plot both phenotypes together
-  rsv_composition_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "composition", "Mild"
-  )
-  
-  #plot both phenotypes together
-  rsv_ethnicity_composition_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
-  )
-  
-  #plot both phenotypes together
-  rsv_ses_composition_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ses_composition", "Mild"
-  )
-  
-  #plot both phenotypes together
-  rsv_full_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "full", "Mild"
-  )
-  
-}
+# if (cohort != "infants" & cohort != "infants_subgroup") {
+#   
+#   #plot both phenotypes together
+#   rsv_composition_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "composition", "Mild"
+#   )
+#   
+#   #plot both phenotypes together
+#   rsv_ethnicity_composition_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+#   )
+#   
+#   #plot both phenotypes together
+#   rsv_ses_composition_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ses_composition", "Mild"
+#   )
+#   
+#   #plot both phenotypes together
+#   rsv_full_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "full", "Mild"
+#   )
+#   
+# }
 
 ##create relevant forest plots - severe
 
-#plot both phenotypes together
-rsv_ethnicity_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ethnicity", "Severe"
-)
-
-#plot both phenotypes together
-rsv_ses_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ses", "Severe"
-)
+# #plot both phenotypes together
+# rsv_ethnicity_severe <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ethnicity", "Severe"
+# )
+# 
+# #plot both phenotypes together
+# rsv_ses_severe <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ses", "Severe"
+# )
 
 #plot both phenotypes together
 rsv_ethnicity_ses_severe <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )
 
-if (cohort != "infants" & cohort != "infants_subgroup") {
-  
-  #plot both phenotypes together
-  rsv_composition_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "composition", "Severe"
-  )
-  
-  #plot both phenotypes together
-  rsv_ethnicity_composition_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
-  )
-  
-  #plot both phenotypes together
-  rsv_ses_composition_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ses_composition", "Severe"
-  )
-  
-  #plot both phenotypes together
-  rsv_full_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "full", "Severe"
-  )
-  
-}
+# if (cohort != "infants" & cohort != "infants_subgroup") {
+#   
+#   #plot both phenotypes together
+#   rsv_composition_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "composition", "Severe"
+#   )
+#   
+#   #plot both phenotypes together
+#   rsv_ethnicity_composition_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+#   )
+#   
+#   #plot both phenotypes together
+#   rsv_ses_composition_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ses_composition", "Severe"
+#   )
+#   
+#   #plot both phenotypes together
+#   rsv_full_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "full", "Severe"
+#   )
+#   
+# }
 
 ##flu
 pathogen <- "flu"
@@ -147,85 +147,85 @@ df_input <- df_input %>%
 
 ##create relevant forest plots - mild
 
-#plot both phenotypes together
-flu_ethnicity_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ethnicity", "Mild"
-)
-
-#plot both phenotypes together
-flu_ses_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ses", "Mild"
-)
-
-if (cohort != "infants" & cohort != "infants_subgroup") {
-  
-  #plot both phenotypes together
-  flu_composition_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "composition", "Mild"
-  )
-  
-  #plot both phenotypes together
-  flu_ethnicity_composition_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
-  )
-  
-  #plot both phenotypes together
-  flu_ses_composition_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ses_composition", "Mild"
-  )
-  
-  #plot both phenotypes together
-  flu_full_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "full", "Mild"
-  )
-  
-}
+# #plot both phenotypes together
+# flu_ethnicity_mild <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ethnicity", "Mild"
+# )
+# 
+# #plot both phenotypes together
+# flu_ses_mild <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ses", "Mild"
+# )
 
 #plot both phenotypes together
 flu_ethnicity_ses_mild <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )
 
+# if (cohort != "infants" & cohort != "infants_subgroup") {
+#   
+#   #plot both phenotypes together
+#   flu_composition_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "composition", "Mild"
+#   )
+#   
+#   #plot both phenotypes together
+#   flu_ethnicity_composition_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+#   )
+#   
+#   #plot both phenotypes together
+#   flu_ses_composition_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ses_composition", "Mild"
+#   )
+#   
+#   #plot both phenotypes together
+#   flu_full_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "full", "Mild"
+#   )
+#   
+# }
+
 ##create relevant forest plots - severe
 
-#plot both phenotypes together
-flu_ethnicity_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ethnicity", "Severe"
-)
-
-#plot both phenotypes together
-flu_ses_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ses", "Severe"
-)
-
-if (cohort != "infants" & cohort != "infants_subgroup") {
-  
-  #plot both phenotypes together
-  flu_composition_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "composition", "Severe"
-  )
-  
-  #plot both phenotypes together
-  flu_ethnicity_composition_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
-  )
-  
-  #plot both phenotypes together
-  flu_ses_composition_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ses_composition", "Severe"
-  )
-  
-  #plot both phenotypes together
-  flu_full_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "full", "Severe"
-  )
-  
-}
+# #plot both phenotypes together
+# flu_ethnicity_severe <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ethnicity", "Severe"
+# )
+# 
+# #plot both phenotypes together
+# flu_ses_severe <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ses", "Severe"
+# )
 
 #plot both phenotypes together
 flu_ethnicity_ses_severe <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )
+
+# if (cohort != "infants" & cohort != "infants_subgroup") {
+#   
+#   #plot both phenotypes together
+#   flu_composition_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "composition", "Severe"
+#   )
+#   
+#   #plot both phenotypes together
+#   flu_ethnicity_composition_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+#   )
+#   
+#   #plot both phenotypes together
+#   flu_ses_composition_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ses_composition", "Severe"
+#   )
+#   
+#   #plot both phenotypes together
+#   flu_full_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "full", "Severe"
+#   )
+#   
+# }
 
 ##covid
 pathogen <- "covid"
@@ -260,54 +260,54 @@ df_input <- df_input %>%
 
 ##create relevant forest plots - mild
 
-#plot both phenotypes together
-covid_ethnicity_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ethnicity", "Mild"
-)
-
-#plot both phenotypes together
-covid_ses_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ses", "Mild"
-)
+# #plot both phenotypes together
+# covid_ethnicity_mild <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ethnicity", "Mild"
+# )
+# 
+# #plot both phenotypes together
+# covid_ses_mild <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ses", "Mild"
+# )
 
 #plot both phenotypes together
 covid_ethnicity_ses_mild <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )
 
-if (cohort != "infants" & cohort != "infants_subgroup") {
-  
-  df_dummy <- read_feather(
-    here::here("output", "data", paste0("input_processed_", cohort, 
-               "_2020_2021_specific_primary.arrow"))) %>%
-    mutate(
-      subset = "2020_21",
-      time_since_last_covid_vaccination = factor(case_when(
-        is.na(covid_vaccination_immunity_date) ~ "6-12m",
-        TRUE ~ "12m+"), levels = c("0-6m", "6-12m", "12m+"))
-    )
-  
-  #plot both phenotypes together
-  covid_composition_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "composition", "Mild"
-  )
-  
-  #plot both phenotypes together
-  covid_ethnicity_composition_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
-  )
-  
-  #plot both phenotypes together
-  covid_ses_composition_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ses_composition", "Mild"
-  )
-  
-  #plot both phenotypes together
-  covid_full_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "full", "Mild"
-  )
-  
-}
+# if (cohort != "infants" & cohort != "infants_subgroup") {
+#   
+#   df_dummy <- read_feather(
+#     here::here("output", "data", paste0("input_processed_", cohort, 
+#                "_2020_2021_specific_primary.arrow"))) %>%
+#     mutate(
+#       subset = "2020_21",
+#       time_since_last_covid_vaccination = factor(case_when(
+#         is.na(covid_vaccination_immunity_date) ~ "6-12m",
+#         TRUE ~ "12m+"), levels = c("0-6m", "6-12m", "12m+"))
+#     )
+#   
+#   #plot both phenotypes together
+#   covid_composition_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "composition", "Mild"
+#   )
+#   
+#   #plot both phenotypes together
+#   covid_ethnicity_composition_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+#   )
+#   
+#   #plot both phenotypes together
+#   covid_ses_composition_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ses_composition", "Mild"
+#   )
+#   
+#   #plot both phenotypes together
+#   covid_full_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "full", "Mild"
+#   )
+#   
+# }
 
 ##create relevant forest plots - severe
 
@@ -328,55 +328,54 @@ if (cohort != "infants" & cohort != "infants_subgroup") {
   
 }
 
-#plot both phenotypes together
-covid_ethnicity_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ethnicity", "Severe"
-)
-
-#plot both phenotypes together
-covid_ses_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ses", "Severe"
-)
+# #plot both phenotypes together
+# covid_ethnicity_severe <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ethnicity", "Severe"
+# )
+# 
+# #plot both phenotypes together
+# covid_ses_severe <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ses", "Severe"
+# )
 
 #plot both phenotypes together
 covid_ethnicity_ses_severe <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )
 
-
-if (cohort != "infants" & cohort != "infants_subgroup") {
-
-  df_dummy <- read_feather(
-    here::here("output", "data", paste0("input_processed_", cohort, 
-               "_2020_2021_specific_primary.arrow"))) %>%
-    mutate(
-      subset = "2020_21",
-      time_since_last_covid_vaccination = factor(case_when(
-        is.na(covid_vaccination_immunity_date) ~ "6-12m",
-        TRUE ~ "12m+"), levels = c("0-6m", "6-12m", "12m+"))
-    )
-
-  #plot both phenotypes together
-  covid_composition_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "composition", "Severe"
-  )
-  
-  #plot both phenotypes together
-  covid_ethnicity_composition_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
-  )
-  
-  #plot both phenotypes together
-  covid_ses_composition_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ses_composition", "Severe"
-  )
-  
-  #plot both phenotypes together
-  covid_full_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "full", "Severe"
-  )
-    
-}
+# if (cohort != "infants" & cohort != "infants_subgroup") {
+# 
+#   df_dummy <- read_feather(
+#     here::here("output", "data", paste0("input_processed_", cohort, 
+#                "_2020_2021_specific_primary.arrow"))) %>%
+#     mutate(
+#       subset = "2020_21",
+#       time_since_last_covid_vaccination = factor(case_when(
+#         is.na(covid_vaccination_immunity_date) ~ "6-12m",
+#         TRUE ~ "12m+"), levels = c("0-6m", "6-12m", "12m+"))
+#     )
+# 
+#   #plot both phenotypes together
+#   covid_composition_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "composition", "Severe"
+#   )
+#   
+#   #plot both phenotypes together
+#   covid_ethnicity_composition_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+#   )
+#   
+#   #plot both phenotypes together
+#   covid_ses_composition_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ses_composition", "Severe"
+#   )
+#   
+#   #plot both phenotypes together
+#   covid_full_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "full", "Severe"
+#   )
+#     
+# }
 
 ##mild
 
@@ -515,85 +514,85 @@ df_input <- df_input %>%
 
 ##create relevant forest plots - mild
 
-#plot both phenotypes together
-overall_resp_ethnicity_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ethnicity", "Mild"
-)
-
-#plot both phenotypes together
-overall_resp_ses_mild <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ses", "Mild"
-)
-
-if (cohort != "infants" & cohort != "infants_subgroup") {
-  
-  #plot both phenotypes together
-  overall_resp_composition_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "composition", "Mild"
-  )
-  
-  #plot both phenotypes together
-  overall_resp_ethnicity_composition_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
-  )
-  
-  #plot both phenotypes together
-  overall_resp_ses_composition_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ses_composition", "Mild"
-  )
-  
-  #plot both phenotypes together
-  overall_resp_full_mild <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "full", "Mild"
-  )
-  
-}
+# #plot both phenotypes together
+# overall_resp_ethnicity_mild <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ethnicity", "Mild"
+# )
+# 
+# #plot both phenotypes together
+# overall_resp_ses_mild <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ses", "Mild"
+# )
 
 #plot both phenotypes together
 overall_resp_ethnicity_ses_mild <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
 )
 
+# if (cohort != "infants" & cohort != "infants_subgroup") {
+#   
+#   #plot both phenotypes together
+#   overall_resp_composition_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "composition", "Mild"
+#   )
+#   
+#   #plot both phenotypes together
+#   overall_resp_ethnicity_composition_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+#   )
+#   
+#   #plot both phenotypes together
+#   overall_resp_ses_composition_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ses_composition", "Mild"
+#   )
+#   
+#   #plot both phenotypes together
+#   overall_resp_full_mild <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "full", "Mild"
+#   )
+#   
+# }
+
 ##create relevant forest plots - severe
 
-#plot both phenotypes together
-overall_resp_ethnicity_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ethnicity", "Severe"
-)
-
-#plot both phenotypes together
-overall_resp_ses_severe <- forest_year_further_mult(
-  df_input, df_dummy, pathogen, "ses", "Severe"
-)
-
-if (cohort != "infants" & cohort != "infants_subgroup") {
-  
-  #plot both phenotypes together
-  overall_resp_composition_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "composition", "Severe"
-  )
-  
-  #plot both phenotypes together
-  overall_resp_ethnicity_composition_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
-  )
-  
-  #plot both phenotypes together
-  overall_resp_ses_composition_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "ses_composition", "Severe"
-  )
-  
-  #plot both phenotypes together
-  overall_resp_full_severe <- forest_year_further_mult(
-    df_input, df_dummy, pathogen, "full", "Severe"
-  )
-  
-}
+# #plot both phenotypes together
+# overall_resp_ethnicity_severe <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ethnicity", "Severe"
+# )
+# 
+# #plot both phenotypes together
+# overall_resp_ses_severe <- forest_year_further_mult(
+#   df_input, df_dummy, pathogen, "ses", "Severe"
+# )
 
 #plot both phenotypes together
 overall_resp_ethnicity_ses_severe <- forest_year_further_mult(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
 )
+
+# if (cohort != "infants" & cohort != "infants_subgroup") {
+#   
+#   #plot both phenotypes together
+#   overall_resp_composition_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "composition", "Severe"
+#   )
+#   
+#   #plot both phenotypes together
+#   overall_resp_ethnicity_composition_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+#   )
+#   
+#   #plot both phenotypes together
+#   overall_resp_ses_composition_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "ses_composition", "Severe"
+#   )
+#   
+#   #plot both phenotypes together
+#   overall_resp_full_severe <- forest_year_further_mult(
+#     df_input, df_dummy, pathogen, "full", "Severe"
+#   )
+#   
+# }
 
 #plot mild and severe together
 final_combined <- plot_grid(
