@@ -1,4 +1,5 @@
-library(tidyverse)
+library(tidyr)
+library(dplyr)
 library(here)
 library(arrow)
 library(broom)
@@ -34,9 +35,9 @@ pathogen <- "rsv"
 df_input <- read_csv(here::here("output", "collated", "analytic",
                      paste0(cohort, "_further_", pathogen,
                      "_model_outputs_collated.csv")))
-df_dummy <- read_feather(
+df_dummy <- sample_n(read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) 
+             "_2020_2021_specific_primary.arrow"))), 10000) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -134,9 +135,9 @@ pathogen <- "flu"
 df_input <- read_csv(here::here("output", "collated", "analytic",
                      paste0(cohort, "_further_", pathogen,
                      "_model_outputs_collated.csv")))
-df_dummy <- read_feather(
+df_dummy <- sample_n(read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) 
+             "_2020_2021_specific_primary.arrow"))), 10000)
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -234,9 +235,9 @@ pathogen <- "covid"
 df_input <- read_csv(here::here("output", "collated", "analytic",
                      paste0(cohort, "_further_", pathogen,
                      "_model_outputs_collated.csv")))
-df_dummy <- read_feather(
+df_dummy <- sample_n(read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2021_2022_specific_primary.arrow")))
+             "_2021_2022_specific_primary.arrow"))), 10000)
 
 if (cohort != "infants" & cohort != "infants_subgroup") {
   
@@ -311,22 +312,22 @@ covid_ethnicity_ses_mild <- forest_year_further_mult(
 
 ##create relevant forest plots - severe
 
-df_dummy <- read_feather(
-  here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2021_2022_specific_primary.arrow")))
-
-if (cohort != "infants" & cohort != "infants_subgroup") {
-
-  df_dummy <- df_dummy %>%
-    mutate(
-      subset = "2021_22",
-      time_since_last_covid_vaccination = factor(if_else(
-        is.na(covid_vaccination_immunity_date), "6-12m",
-        as.character(time_since_last_covid_vaccination)),
-        levels = c("0-6m", "6-12m", "12m+"))
-    )
-  
-}
+# df_dummy <- read_feather(
+#   here::here("output", "data", paste0("input_processed_", cohort, 
+#              "_2021_2022_specific_primary.arrow")))
+# 
+# if (cohort != "infants" & cohort != "infants_subgroup") {
+# 
+#   df_dummy <- df_dummy %>%
+#     mutate(
+#       subset = "2021_22",
+#       time_since_last_covid_vaccination = factor(if_else(
+#         is.na(covid_vaccination_immunity_date), "6-12m",
+#         as.character(time_since_last_covid_vaccination)),
+#         levels = c("0-6m", "6-12m", "12m+"))
+#     )
+#   
+# }
 
 # #plot both phenotypes together
 # covid_ethnicity_severe <- forest_year_further_mult(
@@ -501,9 +502,9 @@ pathogen <- "overall_and_all_cause"
 df_input <- read_csv(here::here("output", "collated", "analytic",
                      paste0(cohort, "_further_", pathogen,
                      "_model_outputs_collated.csv")))
-df_dummy <- read_feather(
+df_dummy <- sample_n(read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_sensitive_primary.arrow"))) 
+             "_2020_2021_sensitive_primary.arrow"))), 10000)
 
 #extract models for which there were too few events
 df_few <- df_input %>%
