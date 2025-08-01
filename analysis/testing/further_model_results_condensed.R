@@ -35,9 +35,9 @@ pathogen <- "rsv"
 df_input <- read_csv(here::here("output", "collated", "analytic",
                      paste0(cohort, "_further_", pathogen,
                      "_model_outputs_collated.csv")))
-df_dummy <- sample_n(read_feather(
+df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))), 100000) 
+             "_2020_2021_specific_primary.arrow")))
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -135,9 +135,9 @@ pathogen <- "flu"
 df_input <- read_csv(here::here("output", "collated", "analytic",
                      paste0(cohort, "_further_", pathogen,
                      "_model_outputs_collated.csv")))
-df_dummy <- sample_n(read_feather(
+df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))), 100000)
+             "_2020_2021_specific_primary.arrow")))
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -235,9 +235,9 @@ pathogen <- "covid"
 df_input <- read_csv(here::here("output", "collated", "analytic",
                      paste0(cohort, "_further_", pathogen,
                      "_model_outputs_collated.csv")))
-df_dummy <- sample_n(read_feather(
+df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2021_2022_specific_primary.arrow"))), 100000)
+             "_2021_2022_specific_primary.arrow")))
 
 if (cohort != "infants" & cohort != "infants_subgroup") {
   
@@ -502,9 +502,9 @@ pathogen <- "overall_and_all_cause"
 df_input <- read_csv(here::here("output", "collated", "analytic",
                      paste0(cohort, "_further_", pathogen,
                      "_model_outputs_collated.csv")))
-df_dummy <- sample_n(read_feather(
+df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_sensitive_primary.arrow"))), 100000)
+             "_2020_2021_sensitive_primary.arrow")))
 
 #extract models for which there were too few events
 df_few <- df_input %>%
