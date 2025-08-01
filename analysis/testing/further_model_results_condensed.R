@@ -37,7 +37,7 @@ df_input <- read_csv(here::here("output", "collated", "analytic",
                      "_model_outputs_collated.csv")))
 df_dummy <- sample_n(read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))), 10000) 
+             "_2020_2021_specific_primary.arrow"))), 100000) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -137,7 +137,7 @@ df_input <- read_csv(here::here("output", "collated", "analytic",
                      "_model_outputs_collated.csv")))
 df_dummy <- sample_n(read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))), 10000)
+             "_2020_2021_specific_primary.arrow"))), 100000)
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -237,7 +237,7 @@ df_input <- read_csv(here::here("output", "collated", "analytic",
                      "_model_outputs_collated.csv")))
 df_dummy <- sample_n(read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2021_2022_specific_primary.arrow"))), 10000)
+             "_2021_2022_specific_primary.arrow"))), 100000)
 
 if (cohort != "infants" & cohort != "infants_subgroup") {
   
@@ -504,7 +504,7 @@ df_input <- read_csv(here::here("output", "collated", "analytic",
                      "_model_outputs_collated.csv")))
 df_dummy <- sample_n(read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_sensitive_primary.arrow"))), 10000)
+             "_2020_2021_sensitive_primary.arrow"))), 100000)
 
 #extract models for which there were too few events
 df_few <- df_input %>%
