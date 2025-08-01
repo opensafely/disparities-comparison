@@ -4160,10 +4160,10 @@ actions_list <- splice (
   comment("# # # # # # # # # # # # # # # # # # #", "Visualisations", "# # # # # # # # # # # # # # # # # # #"),
   
   action_visualise("older_adults"),
-  action_visualise("adults"),
-  action_visualise("children_and_adolescents"),
+  # action_visualise("adults"),
+  # action_visualise("children_and_adolescents"),
   action_visualise("infants"),
-  action_visualise("infants_subgroup"),
+  # action_visualise("infants_subgroup"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "End", "# # # # # # # # # # # # # # # # # # #")
 
