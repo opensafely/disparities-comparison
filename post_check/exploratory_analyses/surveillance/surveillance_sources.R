@@ -7,7 +7,6 @@ library(ggplot2)
 library(cowplot)
 library(ggpubr)
 library(ggpmisc)
-
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 
 ##-- comparing overall cases
@@ -149,10 +148,10 @@ plot_grid(
   top = text_grob(
     "Monthly Surveillance Counts of RSV, Influenza and COVID-19",
     face = "bold", size = 14, vjust = 1),
-  bottom = text_grob("Year (2016-2024)", vjust = -12)
+  bottom = text_grob("Year (2016-2024)", vjust = -10)
 )
 
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
                   "surveillance_source_comparisons.png"),
-       width = 12, height = 18)
+       width = 12, height = 14)
