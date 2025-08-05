@@ -76,7 +76,7 @@ if(cohort == "infants" | cohort == "infants_subgroup") {
   df_input <- df_input %>%
     rowwise() %>%
     mutate(
-      date = map2(patient_index_date, patient_end_date, ~seq(.x, .y, by = 30.44))
+      date = map2(patient_index_date, patient_end_date, ~seq.Date(.x, .y, by = "month"))
     ) %>%
     unnest(date) %>%
     mutate(
