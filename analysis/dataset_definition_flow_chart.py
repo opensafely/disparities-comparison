@@ -46,6 +46,10 @@ study_end_date = datetime.strptime(study_dates[args[3]], "%Y-%m-%d").date()
 if cohort == "infants" or cohort == "infants_subgroup" :
   age_date = patients.date_of_birth
   age_out_date = patients.date_of_birth + years(2)
+  registration_date = (
+    practice_registrations.sort_by(practice_registrations.start_date)
+    .first_for_patient().start_date
+  )
 elif cohort == "children_and_adolescents" :
   age_date = patients.date_of_birth + years(2) 
   age_out_date = patients.date_of_birth + years(18)
@@ -89,7 +93,9 @@ age_at_end_months = (study_end_date - patients.date_of_birth).months
 #get patients who meet registration criteria
 #(3 months continuous registration, for non-infants)
 if cohort == "infants" or cohort == "infants_subgroup" :
-  registered_patients = practice_registrations.for_patient_on(index_date).exists_for_patient()
+  registered_patients = (
+    registration_date < (age_date + months(3))
+  )
 else :
   registered_patients = (
     has_a_continuous_practice_registration_spanning(registration_date, index_date)

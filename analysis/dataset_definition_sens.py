@@ -46,6 +46,10 @@ study_end_date = datetime.strptime(study_dates[args[3]], "%Y-%m-%d").date()
 if cohort == "infants" or cohort == "infants_subgroup" :
   age_date = patients.date_of_birth
   age_out_date = patients.date_of_birth + years(2)
+  registration_date = (
+    practice_registrations.sort_by(practice_registrations.start_date)
+    .first_for_patient().start_date
+  )
 elif cohort == "children_and_adolescents" :
   age_date = patients.date_of_birth + years(2) 
   age_out_date = patients.date_of_birth + years(18)
@@ -58,10 +62,7 @@ else :
 
 #set index date (and registration date) as latest date of either start date or age date
 #so that patients are the correct age for the cohort when looking at records
-if cohort == "infants" or cohort == "infants_subgroup" :
-  index_date = maximum_of(study_start_date, study_start_date)
-else : 
-  index_date = maximum_of(study_start_date, age_date)
+index_date = maximum_of(study_start_date, age_date)
 
 #set end date as earliest date of either end date or age out date 
 #so that patients are the correct age for the cohort when looking at records
