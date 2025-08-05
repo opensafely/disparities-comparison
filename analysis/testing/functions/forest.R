@@ -670,7 +670,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
+          scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = "none", shape = guide_legend("Est. Type")) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
@@ -793,7 +793,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
+          scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = "none", shape = guide_legend("Est. Type")) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
