@@ -76,10 +76,7 @@ else :
 
 #set index date (and registration date) as latest date of either start date or age date
 #so that patients are the correct age for the cohort when looking at records
-if cohort == "infants" or cohort == "infants_subgroup" :
-  index_date = maximum_of(study_start_date, study_start_date)
-else : 
-  index_date = maximum_of(study_start_date, age_date)
+index_date = maximum_of(study_start_date, age_date)
 
 #define date for registration period
 registration_date = index_date - months(3)
