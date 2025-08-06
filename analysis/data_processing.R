@@ -73,6 +73,8 @@ df_input <- df_input %>%
     patient_index_date = patient_index_date - days(1)
   )
 
+max(df_input$patient_index_date)
+
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
   df_input <- df_input %>%
@@ -86,6 +88,8 @@ if(cohort == "infants" | cohort == "infants_subgroup") {
     ) %>%
     ungroup()
 }
+
+max(df_input$patient_index_date)
 
 #calculate age bands
 if(cohort == "older_adults") {
