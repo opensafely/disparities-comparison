@@ -34,15 +34,12 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_",
              codelist_type, "_", investigation_type,".arrow")))
 
-max(df_input$patient_index_date)
-
 if (study_start_date == as.Date("2020-09-01") &
     cohort != "infants" & cohort != "infants_subgroup") {
   
   df_household <- read_feather(
     here::here("output", "data", paste0("input_household_processed_", 
                year(study_start_date), "_", year(study_end_date), ".arrow")))
-  
   household_comp_vars <- tibble(
     "patient_id" = df_household$patient_id,
     "num_generations"= df_household$num_generations,
@@ -73,8 +70,6 @@ df_input <- df_input %>%
     patient_index_date = patient_index_date - days(1)
   )
 
-max(df_input$patient_index_date)
-
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
   df_input <- df_input %>%
@@ -89,9 +84,6 @@ if(cohort == "infants" | cohort == "infants_subgroup") {
     ungroup()
 }
 
-max(df_input$patient_index_date)
-length(unique(df_input$patient_id))
-df_input %>% select(age) %>% summarise(min = min(age), mean = mean(age), max = max(age))
 #calculate age bands
 if(cohort == "older_adults") {
   df_input <- df_input %>%
@@ -128,11 +120,8 @@ if(cohort == "older_adults") {
     ) %>%
     filter(!is.na(age_band))
 }
-df_input %>% select(age) %>% summarise(min = min(age), mean = mean(age), max = max(age))
-df_input$age_band <- factor(df_input$age_band)
 
-max(df_input$patient_index_date)
-length(unique(df_input$patient_id))
+df_input$age_band <- factor(df_input$age_band)
 
 #data manipulation
 df_input <- df_input %>%
@@ -159,8 +148,6 @@ df_input <- df_input %>%
 logical_cols <- which(sapply(df_input, is.logical) &
                       !grepl("primary|secondary|mortality|registered",
                              names(df_input)))
-
-max(df_input$patient_index_date)
 
 #apply mutation to convert logical columns to factors
 df_input <- df_input %>%
@@ -204,8 +191,6 @@ df_input <- df_input %>%
       TRUE ~ NA_character_))
   )
 
-max(df_input$patient_index_date)
-
 #ethnicity from HES
 if (cohort == "infants" | cohort == "infants_subgroup") {
   df_input <- df_input %>%
@@ -225,8 +210,6 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
                                        latest_ethnicity_group)
     )
 }
-
-max(df_input$patient_index_date)
 
 #household variables for when they are included (2020-21)
 if (study_start_date == as.Date("2020-09-01") &
@@ -335,8 +318,6 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
         TRUE ~ "Yes")), ref = "No")
     )
 }
-
-max(df_input$patient_index_date)
 
 #set covid date to missing if existing date occurs before March 1st 2020
 if (study_start_date >= covid_season_min) {
@@ -645,9 +626,6 @@ if (study_start_date < covid_season_min) {
       )
   }
 }
-
-max(df_input$patient_index_date)
-length(unique(df_input$patient_id))
 
 ## create output directories ----
 fs::dir_create(here::here("output", "data"))
