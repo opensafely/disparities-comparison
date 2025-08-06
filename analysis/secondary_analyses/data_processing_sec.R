@@ -38,7 +38,6 @@ if (study_start_date == as.Date("2020-09-01")) {
   df_household <- read_feather(
     here::here("output", "data", paste0("input_household_processed_", 
                year(study_start_date), "_", year(study_end_date), ".arrow")))
-  
   household_comp_vars <- tibble(
     "patient_id" = df_household$patient_id,
     "num_generations"= df_household$num_generations,
