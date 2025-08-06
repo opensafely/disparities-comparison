@@ -357,20 +357,20 @@ if (study_start_date == as.Date("2017-09-01")) {
     mutate(
       #time until mild rsv outcome
       time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
-                         patient_index_date - days(1), "weeks"), "years"),
+                         patient_index_date, "weeks"), "years"),
       #time until severe rsv outcome
       time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
-                           patient_index_date - days(1), "weeks"), "years")
+                           patient_index_date, "weeks"), "years")
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   df_input_filt <- df_input_filt %>%
     mutate(
       #time until mild flu outcome
       time_flu_primary = time_length(difftime(flu_primary_inf_date, 
-                         patient_index_date - days(1), "weeks"), "years"),
+                         patient_index_date, "weeks"), "years"),
       #time until severe flu outcome
       time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
-                           patient_index_date - days(1), "weeks"), "years")
+                           patient_index_date, "weeks"), "years")
     )
 }
 

@@ -130,6 +130,8 @@ if(cohort == "older_adults") {
 
 df_input$age_band <- factor(df_input$age_band)
 
+max(df_input$patient_index_date)
+
 #data manipulation
 df_input <- df_input %>%
   mutate(
@@ -155,6 +157,8 @@ df_input <- df_input %>%
 logical_cols <- which(sapply(df_input, is.logical) &
                       !grepl("primary|secondary|mortality|registered",
                              names(df_input)))
+
+max(df_input$patient_index_date)
 
 #apply mutation to convert logical columns to factors
 df_input <- df_input %>%
@@ -198,6 +202,8 @@ df_input <- df_input %>%
       TRUE ~ NA_character_))
   )
 
+max(df_input$patient_index_date)
+
 #ethnicity from HES
 if (cohort == "infants" | cohort == "infants_subgroup") {
   df_input <- df_input %>%
@@ -217,6 +223,8 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
                                        latest_ethnicity_group)
     )
 }
+
+max(df_input$patient_index_date)
 
 #household variables for when they are included (2020-21)
 if (study_start_date == as.Date("2020-09-01") &
@@ -325,6 +333,8 @@ if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort !=
         TRUE ~ "Yes")), ref = "No")
     )
 }
+
+max(df_input$patient_index_date)
 
 #set covid date to missing if existing date occurs before March 1st 2020
 if (study_start_date >= covid_season_min) {
@@ -573,27 +583,27 @@ if (study_start_date < covid_season_min) {
     mutate(
       #time until mild rsv outcome
       time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
-                         patient_index_date - days(1), "weeks"), "years"),
+                         patient_index_date, "weeks"), "years"),
       #time until severe rsv outcome
       time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
-                           patient_index_date - days(1), "weeks"), "years"),
+                           patient_index_date, "weeks"), "years"),
       #time until mild flu outcome
       time_flu_primary = time_length(difftime(flu_primary_inf_date, 
-                         patient_index_date - days(1), "weeks"), "years"),
+                         patient_index_date, "weeks"), "years"),
       #time until severe flu outcome
       time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
-                           patient_index_date - days(1), "weeks"), "years")
+                           patient_index_date, "weeks"), "years")
     )
   if (codelist_type == "sensitive") {
     df_input <- df_input %>%
       mutate(
         #time until mild overall respiratory outcome
         time_overall_resp_primary = time_length(
-          difftime(overall_resp_primary_inf_date, patient_index_date - days(1),
+          difftime(overall_resp_primary_inf_date, patient_index_date,
                    "weeks"), "years"),
         #time until severe overall respiratory outcome
         time_overall_resp_secondary = time_length(
-          difftime(overall_resp_secondary_inf_date, patient_index_date - days(1),
+          difftime(overall_resp_secondary_inf_date, patient_index_date,
                    "weeks"), "years")
       )
   }
@@ -602,33 +612,33 @@ if (study_start_date < covid_season_min) {
     mutate(
       #time until mild rsv outcome
       time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
-                         patient_index_date - days(1), "weeks"), "years"),
+                         patient_index_date, "weeks"), "years"),
       #time until severe rsv outcome
       time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
-                           patient_index_date - days(1), "weeks"), "years"),
+                           patient_index_date, "weeks"), "years"),
       #time until mild flu outcome
       time_flu_primary = time_length(difftime(flu_primary_inf_date, 
-                         patient_index_date - days(1), "weeks"), "years"),
+                         patient_index_date, "weeks"), "years"),
       #time until severe flu outcome
       time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
-                           patient_index_date - days(1), "weeks"), "years"),
+                           patient_index_date, "weeks"), "years"),
       #time until mild covid outcome
       time_covid_primary = time_length(difftime(covid_primary_inf_date, 
-                           patient_index_date - days(1), "weeks"), "years"),
+                           patient_index_date, "weeks"), "years"),
       #time until severe covid outcome
       time_covid_secondary = time_length(difftime(covid_secondary_inf_date, 
-                             patient_index_date - days(1), "weeks"), "years")
+                             patient_index_date, "weeks"), "years")
     )
   if (codelist_type == "sensitive") {
     df_input <- df_input %>%
       mutate(
         #time until mild overall respiratory outcome
         time_overall_resp_primary = time_length(
-          difftime(overall_resp_primary_inf_date, patient_index_date - days(1),
+          difftime(overall_resp_primary_inf_date, patient_index_date,
                    "weeks"), "years"),
         #time until severe overall respiratory outcome
         time_overall_resp_secondary = time_length(
-          difftime(overall_resp_secondary_inf_date, patient_index_date - days(1),
+          difftime(overall_resp_secondary_inf_date, patient_index_date,
                    "weeks"), "years")
       )
   }

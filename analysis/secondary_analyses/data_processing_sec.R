@@ -61,7 +61,8 @@ if(cohort == "infants" | cohort == "infants_subgroup") {
   df_input <- df_input %>%
     rowwise() %>%
     mutate(
-      date = map2(patient_index_date, patient_end_date, ~seq(.x, .y, by = 30.44))
+      date = map2(patient_index_date, patient_end_date,
+                  ~seq.Date(.x, .y, by = "month"))
     ) %>%
     unnest(date) %>%
     mutate(
@@ -406,30 +407,30 @@ if (study_start_date == as.Date("2017-09-01")) {
     mutate(
       #time until mild rsv outcome
       time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
-                         patient_index_date - days(1), "weeks"), "years"),
+                         patient_index_date, "weeks"), "years"),
       #time until severe rsv outcome
       time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
-                           patient_index_date - days(1), "weeks"), "years")
+                           patient_index_date, "weeks"), "years")
     )
 } else if (study_start_date == as.Date("2018-09-01")) {
   df_input <- df_input %>%
     mutate(
       #time until mild flu outcome
       time_flu_primary = time_length(difftime(flu_primary_inf_date, 
-                         patient_index_date - days(1), "weeks"), "years"),
+                         patient_index_date, "weeks"), "years"),
       #time until severe flu outcome
       time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
-                           patient_index_date - days(1), "weeks"), "years")
+                           patient_index_date, "weeks"), "years")
   )
 } else if (study_start_date == as.Date("2020-09-01")) {
     df_input <- df_input %>%
       mutate(
         #time until mild covid outcome
         time_covid_primary = time_length(difftime(covid_primary_inf_date, 
-                             patient_index_date - days(1), "weeks"), "years"),
+                             patient_index_date, "weeks"), "years"),
         #time until severe covid outcome
         time_covid_secondary = time_length(difftime(covid_secondary_inf_date, 
-                               patient_index_date - days(1), "weeks"), "years")
+                               patient_index_date, "weeks"), "years")
     )
 }
 
