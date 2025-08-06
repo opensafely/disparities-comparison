@@ -94,7 +94,9 @@ age_at_end_months = (study_end_date - patients.date_of_birth).months
 #(3 months continuous registration, for non-infants)
 if cohort == "infants" or cohort == "infants_subgroup" :
   registered_patients = (
-    registration_date < (age_date + months(3))
+    registration_date < (age_date + months(3)) | (
+      practice_registrations.for_patient_on(index_date).exists_for_patient()
+    )
   )
 else :
   registered_patients = (
