@@ -91,7 +91,7 @@ if(cohort == "infants" | cohort == "infants_subgroup") {
 
 max(df_input$patient_index_date)
 length(unique(df_input$patient_id))
-
+df_input %>% select(age) %>% summarise(min = min(age), mean = mean(age), max = max(age))
 #calculate age bands
 if(cohort == "older_adults") {
   df_input <- df_input %>%
@@ -125,10 +125,10 @@ if(cohort == "older_adults") {
       age > 5 & age < 12 ~ "6-11m",
       age > 11 & age < 24 ~ "12-23m",
       TRUE ~ NA_character_)
-    ) #%>%
-    #filter(!is.na(age_band))
+    ) %>%
+    filter(!is.na(age_band))
 }
-
+df_input %>% select(age) %>% summarise(min = min(age), mean = mean(age), max = max(age))
 df_input$age_band <- factor(df_input$age_band)
 
 max(df_input$patient_index_date)
