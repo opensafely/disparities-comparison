@@ -34,6 +34,8 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_",
              codelist_type, "_", investigation_type,".arrow")))
 
+max(df_input$patient_index_date)
+
 if (study_start_date == as.Date("2020-09-01") &
     cohort != "infants" & cohort != "infants_subgroup") {
   
