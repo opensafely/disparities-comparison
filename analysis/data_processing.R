@@ -634,6 +634,8 @@ if (study_start_date < covid_season_min) {
   }
 }
 
+max(df_input$patient_index_date)
+
 ## create output directories ----
 fs::dir_create(here::here("output", "data"))
 
