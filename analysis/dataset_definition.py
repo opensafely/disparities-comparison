@@ -214,7 +214,7 @@ dataset.sex = patients.sex
 
 #extract age (for infants in months)
 if cohort == "infants" or cohort == "infants_subgroup" :
-  dataset.age = age_at_start_months
+  dataset.age = age_months
 else:
   dataset.age = patients.age_on(index_date) #gets the patients age on their specific index date
 
