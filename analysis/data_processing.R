@@ -90,6 +90,7 @@ if(cohort == "infants" | cohort == "infants_subgroup") {
 }
 
 max(df_input$patient_index_date)
+length(unique(df_input$patient_id))
 
 #calculate age bands
 if(cohort == "older_adults") {
@@ -645,6 +646,7 @@ if (study_start_date < covid_season_min) {
 }
 
 max(df_input$patient_index_date)
+length(unique(df_input$patient_id))
 
 ## create output directories ----
 fs::dir_create(here::here("output", "data"))
