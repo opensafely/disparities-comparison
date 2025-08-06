@@ -125,13 +125,14 @@ if(cohort == "older_adults") {
       age > 5 & age < 12 ~ "6-11m",
       age > 11 & age < 24 ~ "12-23m",
       TRUE ~ NA_character_)
-    ) %>%
-    filter(!is.na(age_band))
+    ) #%>%
+    #filter(!is.na(age_band))
 }
 
 df_input$age_band <- factor(df_input$age_band)
 
 max(df_input$patient_index_date)
+length(unique(df_input$patient_id))
 
 #data manipulation
 df_input <- df_input %>%
