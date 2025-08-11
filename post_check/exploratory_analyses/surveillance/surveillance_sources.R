@@ -107,7 +107,7 @@ plot <- df_plot %>%
   scale_color_manual(values = c(
     "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3])) +
   labs(y = "RSV/Influenza Cases", x = "", colour = "Virus") +
-  theme_bw() + theme(legend.position = "bottom")
+  theme_bw() + theme(legend.position = "bottom", text = element_text(size = 22))
 
 #get the legend
 legend <- get_legend(plot)
@@ -126,16 +126,17 @@ transmission_legend <- ggplot() +
   # Label to the right
   annotate("text", x = 0.5, y = 0.5,
            label = "Usual Transmission Period (Nov–Mar)",
-           hjust = 0, vjust = 0.5, size = 4) +
+           hjust = 0, vjust = 0.5, size = 8) +
   xlim(0, 3) + ylim(0, 0.75) +  # Give horizontal space
   theme_void() +
   theme(plot.margin = margin(3, -10, -75, -10))
 
 bottom_row <- plot_grid(
-  plot_grid(NULL, transmission_legend, ncol = 2, rel_widths = c(0.32, 0.8)),
+  plot_grid(NULL, transmission_legend, ncol = 2, rel_widths = c(0.25, 0.8)),
+  NULL,
   legend,
-  nrow = 2,
-  rel_heights = c(0.5, 0.25)
+  nrow = 3,
+  rel_heights = c(0.5, 0.5, 0.25)
 )
 
 plot_grid(
@@ -147,11 +148,11 @@ plot_grid(
 ) %>% annotate_figure(
   top = text_grob(
     "Monthly Surveillance Counts of RSV, Influenza and COVID-19",
-    face = "bold", size = 14, vjust = 1),
-  bottom = text_grob("Year (2016-2024)", vjust = -10)
+    face = "bold", size = 20, vjust = 1),
+  bottom = text_grob("Year (2016-2024)", size = 18, vjust = -7.5)
 )
 
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
                   "surveillance_source_comparisons.png"),
-       width = 12, height = 14)
+       width = 20, height = 14)
