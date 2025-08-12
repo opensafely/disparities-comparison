@@ -272,8 +272,7 @@ if study_start_date == datetime.strptime("2020-09-01", "%Y-%m-%d").date() :
 
 #extract date deregistered from practice
 dataset.deregistration_date = (
-  practice_registrations.where(practice_registrations.end_date.is_not_null())
-  .sort_by(practice_registrations.end_date).last_for_patient().end_date
+  (practice_registrations.for_patient_on(index_date)).end_date
 )
 
 #extract mothers ID for infants subgroup and the infants D.O.B.
