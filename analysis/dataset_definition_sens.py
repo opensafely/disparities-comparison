@@ -6,6 +6,7 @@ from ehrql import Dataset, case, when, maximum_of, minimum_of, years, days
 from ehrql.tables.tpp import patients
 
 from variable_lib import (
+  get_eligible_registrations,
   gp_events,
   first_gp_event,
   is_gp_event,
@@ -60,9 +61,21 @@ else :
   age_date = patients.date_of_birth + years(65)
   age_out_date = patients.date_of_birth + years(110)
 
-#set index date (and registration date) as latest date of either start date or age date
+# Define the first period of active registration within the interval of interest.
+# Define entry_date and exit_date for each patient during each interval. 
+# Only events happening between these dates are elegible to be queried.
+first_registration_date = (
+  get_eligible_registrations(study_start_date, study_end_date)
+  .sort_by(practice_registrations.start_date)
+  .first_for_patient().start_date
+)
+
+#set index date as latest date of either start date, age date or registration date
 #so that patients are the correct age for the cohort when looking at records
-index_date = maximum_of(study_start_date, age_date)
+index_date = maximum_of(study_start_date, age_date, first_registration_date)
+
+#define date for registration period
+registration_date = index_date - months(3)
 
 #set end date as earliest date of either end date or age out date 
 #so that patients are the correct age for the cohort when looking at records

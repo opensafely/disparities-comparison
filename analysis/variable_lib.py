@@ -48,13 +48,39 @@ elif cohort == "adults" :
 else :
   age_date = patients.date_of_birth + years(65)
   age_out_date = patients.date_of_birth + years(110)
+  
+# Identify registration periods that overlap with a given interval
+def get_eligible_registrations(start_date, end_date):
+    """
+    Returns all registrations where at least one active registration date is within the specified interval
+    
+    Returns:
+        Table: Filtered registrations table.
+    """
+    
+    return (
+        practice_registrations
+        .where(
+            # starting during period
+            practice_registrations.start_date
+            .is_on_or_between(start_date, end_date) |
+                
+            # ending during period
+            practice_registrations.end_date
+            .is_on_or_between(start_date, end_date) | 
+           
+            # starting before and ending after
+            (
+              practice_registrations.start_date.is_on_or_before(start_date) &
+              (practice_registrations.end_date.is_on_or_after(end_date + days(1)) |
+              practice_registrations.end_date.is_null())
+            )
+        )
+    )
 
-#set index date (and registration date) as latest date of either start date or age date
+#set index date as latest date of either start date, age date or registration date
 #so that patients are the correct age for the cohort when looking at records
-if cohort == "infants" or cohort == "infants_subgroup" :
-  index_date = maximum_of(study_start_date, study_start_date)
-else : 
-  index_date = maximum_of(study_start_date, age_date)
+index_date = maximum_of(study_start_date, age_date, first_registration_date)
 
 #define date for registration period
 registration_date = index_date - months(3)

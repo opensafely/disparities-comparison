@@ -16,6 +16,7 @@ from ehrql.tables.tpp import (
 )
 
 from variable_lib import (
+  get_eligible_registrations,
   has_prior_event,
   gp_events,
   first_gp_event,
@@ -77,10 +78,19 @@ elif cohort == "adults" :
 else :
   age_date = patients.date_of_birth + years(65)
   age_out_date = patients.date_of_birth + years(110)
+  
+# Define the first period of active registration within the interval of interest.
+# Define entry_date and exit_date for each patient during each interval. 
+# Only events happening between these dates are elegible to be queried.
+first_registration_date = (
+  get_eligible_registrations(study_start_date, study_end_date)
+  .sort_by(practice_registrations.start_date)
+  .first_for_patient().start_date
+)
 
-#set index date (and registration date) as latest date of either start date or age date
+#set index date as latest date of either start date, age date or registration date
 #so that patients are the correct age for the cohort when looking at records
-index_date = maximum_of(study_start_date, age_date)
+index_date = maximum_of(study_start_date, age_date, first_registration_date)
 
 #define date for registration period
 registration_date = index_date - months(3)
@@ -247,22 +257,23 @@ if study_start_date == datetime.strptime("2020-09-01", "%Y-%m-%d").date() :
   dataset.household_pseudo_id = household_memberships_2020.household_pseudo_id
   dataset.household_size = household_memberships_2020.household_size
 
-#extract patients practice's pseudonymised identifier
-dataset.practice_pseudo_id = (
-  (practice_registrations.for_patient_on(index_date)).practice_pseudo_id
-)
-
-#extract practice region and stp
-dataset.region = (
-  (practice_registrations.for_patient_on(index_date)).practice_nuts1_region_name
-)
-dataset.stp = (
-  (practice_registrations.for_patient_on(index_date)).practice_stp
-)
+# #extract patients practice's pseudonymised identifier
+# dataset.practice_pseudo_id = (
+#   (practice_registrations.for_patient_on(index_date)).practice_pseudo_id
+# )
+# 
+# #extract practice region and stp
+# dataset.region = (
+#   (practice_registrations.for_patient_on(index_date)).practice_nuts1_region_name
+# )
+# dataset.stp = (
+#   (practice_registrations.for_patient_on(index_date)).practice_stp
+# )
 
 #extract date deregistered from practice
 dataset.deregistration_date = (
-  (practice_registrations.for_patient_on(index_date)).end_date
+  practice_registrations.where(practice_registrations.end_date.is_not_null())
+  .sort_by(practice_registrations.end_date).last_for_patient().end_date
 )
 
 #extract mothers ID for infants subgroup and the infants D.O.B.
