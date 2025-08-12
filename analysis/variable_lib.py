@@ -77,6 +77,15 @@ def get_eligible_registrations(start_date, end_date):
             )
         )
     )
+  
+# Define the first period of active registration within the interval of interest.
+# Define entry_date and exit_date for each patient during each interval. 
+# Only events happening between these dates are elegible to be queried.
+first_registration_date = (
+  get_eligible_registrations(study_start_date, study_end_date)
+  .sort_by(practice_registrations.start_date)
+  .first_for_patient().start_date
+)
 
 #set index date as latest date of either start date, age date or registration date
 #so that patients are the correct age for the cohort when looking at records
