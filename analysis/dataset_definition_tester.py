@@ -1,0 +1,189 @@
+import json, sys
+from pathlib import Path
+
+from datetime import datetime
+from ehrql import Dataset, maximum_of, minimum_of, years, months
+from ehrql.tables.tpp import (
+  patients,
+  #ons_deaths,
+  addresses,
+  practice_registrations
+)
+
+from variable_lib import (
+  get_eligible_registrations,
+  has_prior_event,
+  has_a_continuous_practice_registration_spanning
+)
+
+import codelists
+
+#ehrQL dummy data
+# dataset = create_dataset()
+# dataset.configure_dummy_data(population_size = 10000)
+
+#my dummy data
+dataset = Dataset()
+dataset.configure_dummy_data(population_size = 100)
+
+#######################################################################################
+# Import study dates defined in "./analysis/design/study-dates.R" script and then exported
+# to JSON
+#######################################################################################
+study_dates = json.loads(
+  Path("analysis/design/study-dates.json").read_text(),
+)
+
+args = sys.argv
+
+#define dataset definition settings from command line arguments
+cohort = args[1]
+codelist_type = args[4] #specific or sensitive
+investigation_type = args[5] #primary/secondary/sensitivity
+
+# Change these in ./analysis/design/study-dates.R if necessary
+study_start_date = datetime.strptime(study_dates[args[2]], "%Y-%m-%d").date()
+study_end_date = datetime.strptime(study_dates[args[3]], "%Y-%m-%d").date()
+
+#get date patient ages into and out of cohort 
+if cohort == "infants" or cohort == "infants_subgroup" :
+  age_date = patients.date_of_birth
+  age_out_date = patients.date_of_birth + years(2)
+  registration_date = (
+    practice_registrations.sort_by(practice_registrations.start_date)
+    .first_for_patient().start_date
+  )
+elif cohort == "children_and_adolescents" :
+  age_date = patients.date_of_birth + years(2) 
+  age_out_date = patients.date_of_birth + years(18)
+elif cohort == "adults" :
+  age_date = patients.date_of_birth + years(18)
+  age_out_date = patients.date_of_birth + years(65)
+else :
+  age_date = patients.date_of_birth + years(65)
+  age_out_date = patients.date_of_birth + years(110)
+  
+# Define the first period of active registration within the interval of interest.
+# Define entry_date and exit_date for each patient during each interval. 
+# Only events happening between these dates are elegible to be queried.
+first_registration_date = (
+  get_eligible_registrations(study_start_date, study_end_date)
+  .sort_by(practice_registrations.start_date)
+  .first_for_patient().start_date
+)
+
+#set index date as latest date of either start date, age date or registration date
+#so that patients are the correct age for the cohort when looking at records
+index_date = maximum_of(study_start_date, age_date, first_registration_date)
+
+#define date for registration period
+registration_date = index_date - months(3)
+
+#set end date as earliest date of either end date or age out date 
+#so that patients are the correct age for the cohort when looking at records
+followup_end_date = minimum_of(study_end_date, age_out_date)
+
+#extract patient specific follow up dates
+dataset.patient_index_date = index_date
+dataset.patient_end_date = followup_end_date
+
+#define patients status: alive/dead
+was_alive = (
+  (patients.date_of_death.is_after(index_date))|
+  (patients.date_of_death.is_null())
+)
+
+#define patients age
+age_at_start = patients.age_on(study_start_date)
+age_at_end = patients.age_on(study_end_date)
+age_months = (index_date - patients.date_of_birth).months
+age_at_start_months = (study_start_date - patients.date_of_birth).months
+age_at_end_months = (study_end_date - patients.date_of_birth).months
+
+#get patients who meet registration criteria
+#(3 months continuous registration, for non-infants)
+if cohort == "infants" or cohort == "infants_subgroup" :
+  registered_patients = (
+    (registration_date < (age_date + months(3))) | (
+      practice_registrations.for_patient_on(index_date).exists_for_patient()
+      )
+  )
+else :
+  registered_patients = (
+    has_a_continuous_practice_registration_spanning(registration_date, index_date)
+  )
+
+#get patients that are either male or female
+is_female_or_male = patients.sex.is_in(["female", "male"])
+
+#get patients of appropriate age for the cohort
+if cohort == "infants" or cohort == "infants_subgroup" :
+  is_appropriate_age = (age_at_start_months < 24) & (age_at_end_months >= 0)
+elif cohort == "children_and_adolescents" :
+  is_appropriate_age = (age_at_start < 18) & (age_at_end >= 2)
+elif cohort == "adults" :
+  is_appropriate_age = (age_at_start < 65) & (age_at_end >= 18)
+else :
+  is_appropriate_age = (age_at_start < 110) & (age_at_end >= 65)
+
+#get patients who have information on IMD
+has_imd = addresses.for_patient_on(index_date).imd_rounded.is_not_null()
+
+##exclusion criteria
+
+#care home resident - currently excluses anyone with a care home code
+#or a care home flag
+care_home_tpp = (
+  addresses.for_patient_on(index_date).care_home_is_potential_match.when_null_then(False)
+)
+care_home_code = has_prior_event(codelists.carehome_codelist)
+care_home = (care_home_tpp) | (care_home_code)
+
+##define populations
+
+#infants
+if cohort == "infants" :
+  dataset.define_population(
+    was_alive
+    & registered_patients
+    & is_female_or_male
+    & is_appropriate_age
+    & has_imd
+    & (~care_home)
+  )
+#everyone else
+else :
+  dataset.define_population(
+    was_alive
+    & registered_patients
+    & is_female_or_male
+    & is_appropriate_age
+    & has_imd
+    & (~care_home)
+  )
+
+#extract registration and sex  
+dataset.registered = registered_patients
+dataset.sex = patients.sex
+
+#extract age (for infants in months)
+if cohort == "infants" or cohort == "infants_subgroup" :
+  dataset.age = age_months
+else:
+  dataset.age = patients.age_on(index_date) #gets the patients age on their specific index date
+
+#extract date of death
+dataset.death_date = patients.date_of_death
+
+#extract patients IMD rank
+dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
+
+#extract rural/urban classification
+dataset.rural_urban_classification = (
+  addresses.for_patient_on(index_date).rural_urban_classification
+)
+
+#extract date deregistered from practice
+dataset.deregistration_date = (
+  (practice_registrations.for_patient_on(index_date)).end_date
+)
