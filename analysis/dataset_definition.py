@@ -83,7 +83,7 @@ else :
 # Define entry_date and exit_date for each patient during each interval. 
 # Only events happening between these dates are elegible to be queried.
 first_registration_date = (
-  get_eligible_registrations(study_start_date, age_out_date)
+  get_eligible_registrations(study_start_date, minimum_of(study_end_date, age_out_date))
   .sort_by(practice_registrations.start_date)
   .first_for_patient().start_date
 )
