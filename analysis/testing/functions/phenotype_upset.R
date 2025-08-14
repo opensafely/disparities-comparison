@@ -427,7 +427,7 @@ upset_plot <- function(input, seasons) {
                     point.size = 2,
                     line.size = 1,
                     set_size.angles = 45,
-                    empty.intersections = TRUE,
+                    empty.intersections = FALSE,
                     main.bar.color = col,
                     sets.bar.color = cols,
                     sets = c("COVID-19", "Influenza", "RSV")
