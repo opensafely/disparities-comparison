@@ -20444,6 +20444,14 @@ actions:
       moderately_sensitive:
         png: output/testing/plots/older_adults_*_all.png
 
+  plot_upsets_older_adults:
+    run: r:latest analysis/testing/phenotype_sensitivity_upset.R older_adults
+    needs:
+    - collate_phenotype_sensitivity_tables_older_adults
+    outputs:
+      moderately_sensitive:
+        png: output/testing/plots/older_adults_both_phenotype_sensitivity_seasons.png
+
   plot_further_model_results_infants:
     run: r:latest analysis/testing/further_model_results_condensed.R infants
     needs:
@@ -20489,6 +20497,14 @@ actions:
     outputs:
       moderately_sensitive:
         png: output/testing/plots/infants_*_all.png
+
+  plot_upsets_infants:
+    run: r:latest analysis/testing/phenotype_sensitivity_upset.R infants
+    needs:
+    - collate_phenotype_sensitivity_tables_infants
+    outputs:
+      moderately_sensitive:
+        png: output/testing/plots/infants_both_phenotype_sensitivity_seasons.png
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## End 

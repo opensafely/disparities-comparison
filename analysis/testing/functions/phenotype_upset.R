@@ -204,13 +204,14 @@ upset_plot <- function(input, seasons) {
       codelist_type = factor(
         codelist_type, levels = c("Specific", "Sensitive")),
       subset = gsub("_", "-", subset),
-      combo = case_when(
+      combo = factor(case_when(
         combo == "RSV & COVID" ~ "RSV&COVID",
         combo == "RSV & Flu" ~ "RSV&Flu",
         combo == "Flu & COVID" ~ "Flu&COVID",
         combo == "RSV & Flu & COVID" ~ "RSV&Flu&COVID",
-        TRUE ~ combo
-      )
+        TRUE ~ as.character(combo)
+      ), levels = c("RSV", "Flu", "COVID", "RSV&COVID", "RSV&Flu",
+                    "Flu&COVID", "RSV&Flu&COVID"))
     )
   
   df_plot <- df_plot %>%

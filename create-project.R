@@ -3544,6 +3544,15 @@ action_visualise <- function(cohort) {
       moderately_sensitive = lst(
         png = glue("output/testing/plots/{cohort}_*_all.png")
       )
+    ),
+    
+    action(
+      name = glue("plot_upsets_{cohort}"),
+      run = glue("r:latest analysis/testing/phenotype_sensitivity_upset.R {cohort}"),
+      needs = list(glue("collate_phenotype_sensitivity_tables_{cohort}")),
+      moderately_sensitive = lst(
+        png = glue("output/testing/plots/{cohort}_both_phenotype_sensitivity_seasons.png")
+      )
     )
     
   )
