@@ -26,6 +26,9 @@ if (is_being_sourced == FALSE) {
   }
 }
 
+## create output directories ----
+fs::dir_create(here::here("output", "testing", "plots"))
+
 #import collated phenotype sensitivity data
 df_input <- read_csv(here::here("output", "collated", "descriptive",
                      paste0(cohort, "_phenotype_sensitivity_collated.csv")))
