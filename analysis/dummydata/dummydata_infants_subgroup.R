@@ -566,6 +566,8 @@ dummydata_processed <- dummydata_processed %>%
 dummydata_processed <- dummydata_processed %>%
   filter(mother_id_present == TRUE)
 
-fs::dir_create(here::here("analysis", "dummydata"))
+fs::dir_create(here::here("analysis", "dummydata", "data"))
 write_feather(dummydata_processed, sink = here::here("analysis", "dummydata", 
-  paste0("dummyextract_infants_subgroup_", year(study_start_date), "_", year(study_end_date), ".arrow")))
+  "data", paste0("dummyextract_infants_subgroup_", year(study_start_date), "_",
+                 year(study_end_date), ".arrow")))
+

@@ -98,6 +98,7 @@ dummydata_processed <- dummydata %>%
   mutate(across(ends_with("_day"), ~ as.Date(as.character(index_date + .)))) %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
 
-fs::dir_create(here::here("analysis", "dummydata"))
+fs::dir_create(here::here("analysis", "dummydata", "data"))
 write_feather(dummydata_processed, sink = here::here("analysis", "dummydata", 
-  paste0("dummyextract_household_", year(study_start_date), "_", year(study_end_date), ".arrow")))
+  "data", paste0("dummyextract_household_", year(study_start_date), "_",
+                 year(study_end_date), ".arrow")))

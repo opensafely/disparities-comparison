@@ -610,7 +610,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2016_2017_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2016_2017.arrow
       -- infants_subgroup season1_start_date season1_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s1
@@ -650,7 +650,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2017_2018_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2017_2018.arrow
       -- infants_subgroup season2_start_date season2_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s2
@@ -690,7 +690,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2018_2019_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2018_2019.arrow
       -- infants_subgroup season3_start_date season3_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s3
@@ -730,7 +730,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2019_2020_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2019_2020.arrow
       -- infants_subgroup season4_start_date season4_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s4
@@ -770,7 +770,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2020_2021_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2020_2021.arrow
       -- infants_subgroup season5_start_date season5_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s5
@@ -810,7 +810,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2021_2022_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2021_2022.arrow
       -- infants_subgroup season6_start_date season6_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s6
@@ -850,7 +850,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2022_2023_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2022_2023.arrow
       -- infants_subgroup season7_start_date season7_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s7
@@ -890,7 +890,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_2023_2024_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2023_2024.arrow
       -- infants_subgroup season8_start_date season8_end_date
     needs:
     - generate_flow_chart_data_infants_subgroup_s8
@@ -917,7 +917,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_household.py
       --output output/data/input_household_2020_2021.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_household_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_household_2020_2021.arrow
       -- season5_start_date season5_end_date
     outputs:
       highly_sensitive:
@@ -943,7 +943,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2016_2017_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2016_2017.arrow
       -- older_adults season1_start_date season1_end_date specific primary
     outputs:
       highly_sensitive:
@@ -1034,7 +1034,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2017_2018_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2017_2018.arrow
       -- older_adults season2_start_date season2_end_date specific primary
     outputs:
       highly_sensitive:
@@ -1125,7 +1125,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2018_2019_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2018_2019.arrow
       -- older_adults season3_start_date season3_end_date specific primary
     outputs:
       highly_sensitive:
@@ -1216,7 +1216,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2019_2020_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2019_2020.arrow
       -- older_adults season4_start_date season4_end_date specific primary
     outputs:
       highly_sensitive:
@@ -1325,7 +1325,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2020_2021_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2020_2021.arrow
       -- older_adults season5_start_date season5_end_date specific primary
     outputs:
       highly_sensitive:
@@ -1435,7 +1435,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2021_2022_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2021_2022.arrow
       -- older_adults season6_start_date season6_end_date specific primary
     outputs:
       highly_sensitive:
@@ -1544,7 +1544,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2022_2023_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2022_2023.arrow
       -- older_adults season7_start_date season7_end_date specific primary
     outputs:
       highly_sensitive:
@@ -1653,7 +1653,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2023_2024_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2023_2024.arrow
       -- older_adults season8_start_date season8_end_date specific primary
     outputs:
       highly_sensitive:
@@ -1767,7 +1767,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2016_2017_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2016_2017.arrow
       -- adults season1_start_date season1_end_date specific primary
     outputs:
       highly_sensitive:
@@ -1858,7 +1858,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2017_2018_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2017_2018.arrow
       -- adults season2_start_date season2_end_date specific primary
     outputs:
       highly_sensitive:
@@ -1949,7 +1949,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2018_2019_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2018_2019.arrow
       -- adults season3_start_date season3_end_date specific primary
     outputs:
       highly_sensitive:
@@ -2040,7 +2040,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2019_2020_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2019_2020.arrow
       -- adults season4_start_date season4_end_date specific primary
     outputs:
       highly_sensitive:
@@ -2149,7 +2149,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2020_2021_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2020_2021.arrow
       -- adults season5_start_date season5_end_date specific primary
     outputs:
       highly_sensitive:
@@ -2259,7 +2259,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2021_2022_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2021_2022.arrow
       -- adults season6_start_date season6_end_date specific primary
     outputs:
       highly_sensitive:
@@ -2368,7 +2368,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2022_2023_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2022_2023.arrow
       -- adults season7_start_date season7_end_date specific primary
     outputs:
       highly_sensitive:
@@ -2477,7 +2477,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2023_2024_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2023_2024.arrow
       -- adults season8_start_date season8_end_date specific primary
     outputs:
       highly_sensitive:
@@ -2591,7 +2591,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2016_2017_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2016_2017.arrow
       -- children_and_adolescents season1_start_date season1_end_date specific primary
     outputs:
       highly_sensitive:
@@ -2682,7 +2682,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2017_2018_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2017_2018.arrow
       -- children_and_adolescents season2_start_date season2_end_date specific primary
     outputs:
       highly_sensitive:
@@ -2773,7 +2773,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2018_2019_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2018_2019.arrow
       -- children_and_adolescents season3_start_date season3_end_date specific primary
     outputs:
       highly_sensitive:
@@ -2864,7 +2864,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2019_2020_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2019_2020.arrow
       -- children_and_adolescents season4_start_date season4_end_date specific primary
     outputs:
       highly_sensitive:
@@ -2973,7 +2973,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2020_2021_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2020_2021.arrow
       -- children_and_adolescents season5_start_date season5_end_date specific primary
     outputs:
       highly_sensitive:
@@ -3083,7 +3083,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2021_2022_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2021_2022.arrow
       -- children_and_adolescents season6_start_date season6_end_date specific primary
     outputs:
       highly_sensitive:
@@ -3192,7 +3192,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2022_2023_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2022_2023.arrow
       -- children_and_adolescents season7_start_date season7_end_date specific primary
     outputs:
       highly_sensitive:
@@ -3301,7 +3301,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2023_2024_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2023_2024.arrow
       -- children_and_adolescents season8_start_date season8_end_date specific primary
     outputs:
       highly_sensitive:
@@ -3415,7 +3415,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2016_2017_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2016_2017.arrow
       -- infants season1_start_date season1_end_date specific primary
     outputs:
       highly_sensitive:
@@ -3578,7 +3578,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2017_2018_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2017_2018.arrow
       -- infants season2_start_date season2_end_date specific primary
     outputs:
       highly_sensitive:
@@ -3741,7 +3741,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2018_2019_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2018_2019.arrow
       -- infants season3_start_date season3_end_date specific primary
     outputs:
       highly_sensitive:
@@ -3904,7 +3904,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2019_2020_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2019_2020.arrow
       -- infants season4_start_date season4_end_date specific primary
     outputs:
       highly_sensitive:
@@ -4121,7 +4121,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2020_2021_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2020_2021.arrow
       -- infants season5_start_date season5_end_date specific primary
     outputs:
       highly_sensitive:
@@ -4338,7 +4338,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2021_2022_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2021_2022.arrow
       -- infants season6_start_date season6_end_date specific primary
     outputs:
       highly_sensitive:
@@ -4555,7 +4555,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2022_2023_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2022_2023.arrow
       -- infants season7_start_date season7_end_date specific primary
     outputs:
       highly_sensitive:
@@ -4772,7 +4772,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2023_2024_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2023_2024.arrow
       -- infants season8_start_date season8_end_date specific primary
     outputs:
       highly_sensitive:
@@ -4994,7 +4994,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2016_2017_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2016_2017.arrow
       -- infants_subgroup season1_start_date season1_end_date specific primary
     outputs:
       highly_sensitive:
@@ -5013,7 +5013,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2016_2017_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2016_2017.arrow
       -- infants_subroup season1_start_date season1_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s1_specific_primary
@@ -5181,7 +5181,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2017_2018_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2017_2018.arrow
       -- infants_subgroup season2_start_date season2_end_date specific primary
     outputs:
       highly_sensitive:
@@ -5200,7 +5200,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2017_2018_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2017_2018.arrow
       -- infants_subroup season2_start_date season2_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s2_specific_primary
@@ -5368,7 +5368,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2018_2019_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2018_2019.arrow
       -- infants_subgroup season3_start_date season3_end_date specific primary
     outputs:
       highly_sensitive:
@@ -5387,7 +5387,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2018_2019_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2018_2019.arrow
       -- infants_subroup season3_start_date season3_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s3_specific_primary
@@ -5555,7 +5555,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2019_2020_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2019_2020.arrow
       -- infants_subgroup season4_start_date season4_end_date specific primary
     outputs:
       highly_sensitive:
@@ -5574,7 +5574,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2019_2020_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2019_2020.arrow
       -- infants_subroup season4_start_date season4_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s4_specific_primary
@@ -5796,7 +5796,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2020_2021_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2020_2021.arrow
       -- infants_subgroup season5_start_date season5_end_date specific primary
     outputs:
       highly_sensitive:
@@ -5815,7 +5815,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2020_2021_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2020_2021.arrow
       -- infants_subroup season5_start_date season5_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s5_specific_primary
@@ -6037,7 +6037,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2021_2022_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2021_2022.arrow
       -- infants_subgroup season6_start_date season6_end_date specific primary
     outputs:
       highly_sensitive:
@@ -6056,7 +6056,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2021_2022_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2021_2022.arrow
       -- infants_subroup season6_start_date season6_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s6_specific_primary
@@ -6278,7 +6278,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2022_2023_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2022_2023.arrow
       -- infants_subgroup season7_start_date season7_end_date specific primary
     outputs:
       highly_sensitive:
@@ -6297,7 +6297,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2022_2023_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2022_2023.arrow
       -- infants_subroup season7_start_date season7_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s7_specific_primary
@@ -6519,7 +6519,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2023_2024_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2023_2024.arrow
       -- infants_subgroup season8_start_date season8_end_date specific primary
     outputs:
       highly_sensitive:
@@ -6538,7 +6538,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2023_2024_specific_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2023_2024.arrow
       -- infants_subroup season8_start_date season8_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s8_specific_primary
@@ -6768,7 +6768,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2016_2017_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2016_2017.arrow
       -- older_adults season1_start_date season1_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -6877,7 +6877,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2017_2018_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2017_2018.arrow
       -- older_adults season2_start_date season2_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -6986,7 +6986,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2018_2019_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2018_2019.arrow
       -- older_adults season3_start_date season3_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -7095,7 +7095,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2019_2020_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2019_2020.arrow
       -- older_adults season4_start_date season4_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -7222,7 +7222,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2020_2021_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2020_2021.arrow
       -- older_adults season5_start_date season5_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -7350,7 +7350,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2021_2022_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2021_2022.arrow
       -- older_adults season6_start_date season6_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -7477,7 +7477,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2022_2023_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2022_2023.arrow
       -- older_adults season7_start_date season7_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -7604,7 +7604,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2023_2024_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2023_2024.arrow
       -- older_adults season8_start_date season8_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -7736,7 +7736,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2016_2017_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2016_2017.arrow
       -- adults season1_start_date season1_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -7845,7 +7845,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2017_2018_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2017_2018.arrow
       -- adults season2_start_date season2_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -7954,7 +7954,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2018_2019_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2018_2019.arrow
       -- adults season3_start_date season3_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -8063,7 +8063,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2019_2020_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2019_2020.arrow
       -- adults season4_start_date season4_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -8190,7 +8190,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2020_2021_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2020_2021.arrow
       -- adults season5_start_date season5_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -8318,7 +8318,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2021_2022_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2021_2022.arrow
       -- adults season6_start_date season6_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -8445,7 +8445,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2022_2023_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2022_2023.arrow
       -- adults season7_start_date season7_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -8572,7 +8572,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_adults_2023_2024_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_adults_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_adults_2023_2024.arrow
       -- adults season8_start_date season8_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -8704,7 +8704,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2016_2017_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2016_2017.arrow
       -- children_and_adolescents season1_start_date season1_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -8813,7 +8813,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2017_2018_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2017_2018.arrow
       -- children_and_adolescents season2_start_date season2_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -8922,7 +8922,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2018_2019_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2018_2019.arrow
       -- children_and_adolescents season3_start_date season3_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -9031,7 +9031,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2019_2020_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2019_2020.arrow
       -- children_and_adolescents season4_start_date season4_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -9158,7 +9158,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2020_2021_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2020_2021.arrow
       -- children_and_adolescents season5_start_date season5_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -9286,7 +9286,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2021_2022_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2021_2022.arrow
       -- children_and_adolescents season6_start_date season6_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -9413,7 +9413,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2022_2023_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2022_2023.arrow
       -- children_and_adolescents season7_start_date season7_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -9540,7 +9540,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_children_and_adolescents_2023_2024_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_children_and_adolescents_2023_2024.arrow
       -- children_and_adolescents season8_start_date season8_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -9672,7 +9672,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2016_2017_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2016_2017.arrow
       -- infants season1_start_date season1_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -9889,7 +9889,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2017_2018_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2017_2018.arrow
       -- infants season2_start_date season2_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -10106,7 +10106,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2018_2019_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2018_2019.arrow
       -- infants season3_start_date season3_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -10323,7 +10323,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2019_2020_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2019_2020.arrow
       -- infants season4_start_date season4_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -10594,7 +10594,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2020_2021_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2020_2021.arrow
       -- infants season5_start_date season5_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -10865,7 +10865,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2021_2022_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2021_2022.arrow
       -- infants season6_start_date season6_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -11136,7 +11136,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2022_2023_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2022_2023.arrow
       -- infants season7_start_date season7_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -11407,7 +11407,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_2023_2024_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_2023_2024.arrow
       -- infants season8_start_date season8_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -11683,7 +11683,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2016_2017_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2016_2017.arrow
       -- infants_subgroup season1_start_date season1_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -11702,7 +11702,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2016_2017_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2016_2017.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2016_2017.arrow
       -- infants_subroup season1_start_date season1_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s1_sensitive_primary
@@ -11924,7 +11924,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2017_2018_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2017_2018.arrow
       -- infants_subgroup season2_start_date season2_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -11943,7 +11943,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2017_2018_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2017_2018.arrow
       -- infants_subroup season2_start_date season2_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s2_sensitive_primary
@@ -12165,7 +12165,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2018_2019_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2018_2019.arrow
       -- infants_subgroup season3_start_date season3_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -12184,7 +12184,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2018_2019_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2018_2019.arrow
       -- infants_subroup season3_start_date season3_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s3_sensitive_primary
@@ -12406,7 +12406,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2019_2020_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2019_2020.arrow
       -- infants_subgroup season4_start_date season4_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -12425,7 +12425,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2019_2020_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2019_2020.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2019_2020.arrow
       -- infants_subroup season4_start_date season4_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s4_sensitive_primary
@@ -12701,7 +12701,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2020_2021_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2020_2021.arrow
       -- infants_subgroup season5_start_date season5_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -12720,7 +12720,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2020_2021_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2020_2021.arrow
       -- infants_subroup season5_start_date season5_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s5_sensitive_primary
@@ -12996,7 +12996,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2021_2022_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2021_2022.arrow
       -- infants_subgroup season6_start_date season6_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -13015,7 +13015,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2021_2022_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2021_2022.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2021_2022.arrow
       -- infants_subroup season6_start_date season6_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s6_sensitive_primary
@@ -13291,7 +13291,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2022_2023_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2022_2023.arrow
       -- infants_subgroup season7_start_date season7_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -13310,7 +13310,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2022_2023_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2022_2023.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2022_2023.arrow
       -- infants_subroup season7_start_date season7_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s7_sensitive_primary
@@ -13586,7 +13586,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_2023_2024_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_2023_2024.arrow
       -- infants_subgroup season8_start_date season8_end_date sensitive primary
     outputs:
       highly_sensitive:
@@ -13605,7 +13605,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2023_2024_sensitive_primary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_maternal_2023_2024.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2023_2024.arrow
       -- infants_subroup season8_start_date season8_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s8_sensitive_primary
@@ -15735,7 +15735,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2017_2018_specific_secondary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2017_2018.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2017_2018.arrow
       -- older_adults season2_start_date season2_end_date specific secondary
     outputs:
       highly_sensitive:
@@ -15781,7 +15781,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2018_2019_specific_secondary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2018_2019.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2018_2019.arrow
       -- older_adults season3_start_date season3_end_date specific secondary
     outputs:
       highly_sensitive:
@@ -15827,7 +15827,7 @@ actions:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_older_adults_2020_2021_specific_secondary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_older_adults_2020_2021.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_older_adults_2020_2021.arrow
       -- older_adults season5_start_date season5_end_date specific secondary
     outputs:
       highly_sensitive:

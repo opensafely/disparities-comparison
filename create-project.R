@@ -104,7 +104,7 @@ action_flow_infants_sub <- function(cohort, season, dates, season_start_date,
       name = glue("generate_flow_chart_data_mothers_{season}"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition_flow_chart_mothers.py
       --output output/flow_chart/mothers_{dates}_flow_chart.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_{cohort}_{dates}.arrow
       -- {cohort} {season_start_date} {season_end_date}"),
       needs = list(glue("generate_flow_chart_data_{cohort}_{season}"),
                    glue("process_flow_chart_data_mothers_{season}")),
@@ -166,7 +166,7 @@ action_household <- function(season, dates, season_start_date, season_end_date) 
       name = glue("extract_household_information_{season}"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition_household.py
       --output output/data/input_household_{dates}.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_household_{dates}.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_household_{dates}.arrow
       -- {season_start_date} {season_end_date}"),
       # arguments = c(season, dates, season_start_date, season_end_date),
       needs = NULL,
@@ -200,7 +200,7 @@ action_specified <- function(cohort, season, dates, codelist_type,
       name = glue("generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_{cohort}_{dates}.arrow
       -- {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = NULL,
       highly_sensitive = lst(
@@ -302,7 +302,7 @@ action_specified_sensitive <- function(cohort, season, dates, codelist_type,
       name = glue("generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_{cohort}_{dates}.arrow
       -- {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = NULL,
       highly_sensitive = lst(
@@ -420,7 +420,7 @@ action_specified_infants <- function(cohort, season, dates, codelist_type,
       name = glue("generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_{cohort}_{dates}.arrow
       -- {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = NULL,
       highly_sensitive = lst(
@@ -584,7 +584,7 @@ action_specified_infants_sensitive <- function(cohort, season, dates,
       name = glue("generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_{cohort}_{dates}.arrow
       -- {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = NULL,
       highly_sensitive = lst(
@@ -795,7 +795,7 @@ action_specified_infants_sub <- function(season, dates, codelist_type,
       name = glue("generate_dataset_infants_subgroup_{season}_{codelist_type}_{investigation_type}"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_{dates}_{codelist_type}_{investigation_type}.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_{dates}.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_{dates}.arrow
       -- infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = NULL,
       highly_sensitive = lst(
@@ -815,7 +815,7 @@ action_specified_infants_sub <- function(season, dates, codelist_type,
       name = glue("generate_maternal_characteristics_{season}_{codelist_type}_{investigation_type}"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
           --output output/data/input_maternal_infants_subgroup_{dates}_{codelist_type}_{investigation_type}.arrow
-          --dummy-data-file analysis/dummydata/dummyextract_maternal_{dates}.arrow
+          --dummy-data-file analysis/dummydata/data/dummyextract_maternal_{dates}.arrow
           -- infants_subroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = list(glue("generate_dataset_infants_subgroup_{season}_{codelist_type}_{investigation_type}"),
                    glue("process_mothers_{season}_{codelist_type}_{investigation_type}")),
@@ -981,7 +981,7 @@ action_specified_infants_sub_sensitive <- function(season, dates, codelist_type,
       name = glue("generate_dataset_infants_subgroup_{season}_{codelist_type}_{investigation_type}"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_infants_subgroup_{dates}_{codelist_type}_{investigation_type}.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup_{dates}.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_infants_subgroup_{dates}.arrow
       -- infants_subgroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = NULL,
       highly_sensitive = lst(
@@ -1001,7 +1001,7 @@ action_specified_infants_sub_sensitive <- function(season, dates, codelist_type,
       name = glue("generate_maternal_characteristics_{season}_{codelist_type}_{investigation_type}"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
           --output output/data/input_maternal_infants_subgroup_{dates}_{codelist_type}_{investigation_type}.arrow
-          --dummy-data-file analysis/dummydata/dummyextract_maternal_{dates}.arrow
+          --dummy-data-file analysis/dummydata/data/dummyextract_maternal_{dates}.arrow
           -- infants_subroup {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = list(glue("generate_dataset_infants_subgroup_{season}_{codelist_type}_{investigation_type}"),
                    glue("process_mothers_{season}_{codelist_type}_{investigation_type}")),
@@ -1348,7 +1348,7 @@ action_secondary_rsv <- function(cohort, season, dates, codelist_type,
       name = glue("generate_dataset_{cohort}_s2_specific_secondary"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_{cohort}_{dates}_specific_secondary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_{cohort}_{dates}.arrow
       -- {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = NULL,
       highly_sensitive = lst(
@@ -1396,7 +1396,7 @@ action_secondary_flu <- function(cohort, season, dates, codelist_type,
       name = glue("generate_dataset_{cohort}_s3_specific_secondary"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_{cohort}_{dates}_specific_secondary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_{cohort}_{dates}.arrow
       -- {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = NULL,
       highly_sensitive = lst(
@@ -1444,7 +1444,7 @@ action_secondary_covid <- function(cohort, season, dates, codelist_type,
       name = glue("generate_dataset_{cohort}_s5_specific_secondary"),
       run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
       --output output/data/input_{cohort}_{dates}_specific_secondary.arrow
-      --dummy-data-file analysis/dummydata/dummyextract_{cohort}_{dates}.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_{cohort}_{dates}.arrow
       -- {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = NULL,
       highly_sensitive = lst(
