@@ -1,0 +1,1 @@
+This folder contains scripts which are used to format data which has been released following output checking. The primary aim is to create plots for publication in addition to some tables and supplementary material.
