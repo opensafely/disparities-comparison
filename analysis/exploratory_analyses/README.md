@@ -1,0 +1,1 @@
+Contained within this folder are scripts relating to exploratory analyses as outlined in the [study protocol](https://github.com/opensafely/disparities-comparison/blob/main/docs/Finalised%20OpenSAFELY%20Protocol%20(Comparison%20of%20Disparities%20in%20RSV%2C%20influenza%2C%20and%20COVID-19).pdf)
