@@ -1,0 +1,1 @@
+This folder contains scripts to plot key results to determine suitability of definitions before requesting the release of underlying data which will be used to create finalised plots of the same type.
