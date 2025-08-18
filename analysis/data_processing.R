@@ -70,8 +70,6 @@ df_input <- df_input %>%
     patient_index_date = patient_index_date - days(1)
   )
 
-df_input %>% mutate(test = patient_end_date < patient_index_date) %>% select(test) %>% filter(test == TRUE)
-
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {
   df_input <- df_input %>%
