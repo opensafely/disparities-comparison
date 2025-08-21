@@ -132,6 +132,24 @@ if(cohort == "older_adults") {
 
 df_input$age_band <- factor(df_input$age_band)
 
+#get distinct rows so time in age band is one row
+if (cohort == "infants" | cohort == "infants_subgroup") {
+  df_input <- df_input %>%
+    group_by(patient_id, age_band) %>%
+    mutate(
+      date = min(date),
+      date_month = max(date_month)
+    ) %>%
+    ungroup() %>%
+    group_by(patient_id) %>%
+    arrange(desc(date_month), by_group = TRUE) %>%
+    ungroup()
+  df_input <- df_input[!duplicated(df_input[!names(df_input) %in% c("age", "date", "date_month")]),]
+  df_input <- df_input %>%
+    arrange(date_month) %>%
+    arrange(patient_id)
+}
+
 #data manipulation
 df_input <- df_input %>%
   mutate(
@@ -949,6 +967,13 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
   }
   
 }
+
+# test <- df_input %>%
+#   select(patient_id, age_band, date, date_month, rsv_primary_inf_date,
+#          rsv_primary_censor, rsv_primary_date, rsv_primary_inf,
+#          time_rsv_primary) %>%
+#   group_by(patient_id) %>%
+#   arrange(rsv_primary_date)
 
 ## create output directories ----
 fs::dir_create(here::here("output", "data"))

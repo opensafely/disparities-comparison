@@ -146,6 +146,24 @@ if(cohort == "older_adults") {
 
 df_input_filt$age_band <- factor(df_input_filt$age_band)
 
+#get distinct rows so time in age band is one row
+if (cohort == "infants" | cohort == "infants_subgroup") {
+  df_input_filt <- df_input_filt %>%
+    group_by(patient_id, age_band) %>%
+    mutate(
+      date = min(date),
+      date_month = max(date_month)
+    ) %>%
+    ungroup() %>%
+    group_by(patient_id) %>%
+    arrange(desc(date_month), by_group = TRUE) %>%
+    ungroup()
+  df_input_filt <- df_input_filt[!duplicated(df_input[!names(df_input_filt) %in% c("age", "date", "date_month")]),]
+  df_input_filt <- df_input_filt %>%
+    arrange(date_month) %>%
+    arrange(patient_id)
+}
+
 #data manipulation
 df_input_filt <- df_input_filt %>%
   mutate(
