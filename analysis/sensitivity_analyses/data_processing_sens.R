@@ -146,22 +146,34 @@ if(cohort == "older_adults") {
 
 df_input_filt$age_band <- factor(df_input_filt$age_band)
 
+#drop age
+df_input_filt <- df_input_filt %>% select(-age)
+
 #get distinct rows so time in age band is one row
 if (cohort == "infants" | cohort == "infants_subgroup") {
-  df_input_filt <- df_input_filt %>%
+  #first get the start and end date of time in each age band per patient
+  df_dates <- df_input_filt %>%
     group_by(patient_id, age_band) %>%
-    mutate(
-      date = min(date),
-      date_month = max(date_month)
-    ) %>%
+    summarise(
+      date       = min(date),
+      date_month = max(date_month),
+      .groups = "drop"
+    )
+  
+  #then get the patient information for the rows with the latest date_month
+  df_attrs <- df_input_filt %>%
+    group_by(patient_id, age_band) %>%
+    slice_max(date_month, n = 1, with_ties = FALSE) %>%
     ungroup() %>%
-    group_by(patient_id) %>%
-    arrange(desc(date_month), by_group = TRUE) %>%
-    ungroup()
-  df_input_filt <- df_input_filt[!duplicated(df_input[!names(df_input_filt) %in% c("age", "date", "date_month")]),]
-  df_input_filt <- df_input_filt %>%
-    arrange(date_month) %>%
-    arrange(patient_id)
+    select(-date, -date_month)
+  
+  #join the data
+  df_input_filt <- df_attrs %>%
+    left_join(df_dates, by = c("patient_id", "age_band")) %>%
+    arrange(patient_id, date_month)
+  
+  #remove the unnecessary dataframes
+  rm(df_dates, df_attrs)
 }
 
 #data manipulation
