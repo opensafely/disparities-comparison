@@ -2,9 +2,11 @@ library(here)
 library(broom)
 library(rlang)
 library(purrr)
+library(lmtest)
+library(sandwich)
 
 ## create output directories ----
-fs::dir_create(here::here("post_check", "functions"))
+fs::dir_create(here::here("analysis", "functions"))
 
 #create function for poisson regression
 glm_poisson <- function(df, x, y, offset_var) {
@@ -41,25 +43,49 @@ glm_poisson <- function(df, x, y, offset_var) {
   
   #convert to a formula object
   formula <- as.formula(formula_string)
-
+  
   #fit the model
   model <- glm(formula, data = df, family = poisson)
   
+  #robust standard errors where appropriate and then tidy
+  if (cohort == "infants" | cohort == "infants_subgroup") {
+    
+    #cluster standard errors by patient_id
+    model <- coeftest(model, cluster = "patient_id", sandwich = TRUE)
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE)
+    
+    #exponentiate
+    tidy_model <- tidy_model %>%
+      mutate(across(c(estimate, conf.low, conf.high), exp))
+    
+  } else {
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+    
+  }
+  
   #return output
-  return(model)
+  return(tidy_model)
   
 }
 
 #create function for poisson regression with further adjustment
-glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
-                                vacc_severe, offset_var) {
+glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
   
   #filter out NA survival times
   df <- df %>%
     filter(!is.na(offset_var))
   
   #source tmerge alt
-  source(here::here("post_check", "functions", "expand_with_tmerge.R"))
+  source(here::here("analysis", "functions", "expand_with_tmerge.R"))
+  
+  #define minimum dates for covid seasons
+  covid_season_min <- as.Date("2019-09-01")
+  covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
+  covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
   
   #combine predictors
   predictors <- c(x, "age_band", "sex", "rurality_classification")
@@ -97,8 +123,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
       
     } else if (y == "covid_primary_inf") {
       
-      if (unique(df$subset) %in% c("2020_21", "2021_22", "2022_23",
-                                   "2023_24")) {
+      if (study_start_date >= covid_current_vacc_min) {
         
         df <- expand_with_tmerge(df, "covid_primary")
         
@@ -106,11 +131,11 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
         
       }
       
-      if (unique(df$subset) == "2020_21") {
+      if (study_start_date == covid_current_vacc_min) {
         
         predictors <- c(predictors, "vax_status")
         
-      } else if (unique(df$subset) %in% c("2021_22", "2022_23", "2023_24")) {
+      } else if (study_start_date >= covid_prior_vacc_min) {
         
         predictors <- c(predictors, prior_vacc, "vax_status")
         
@@ -118,8 +143,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
       
     } else if (y == "covid_secondary_inf") {
       
-      if (unique(df$subset) %in% c("2020_21", "2021_22", "2022_23",
-                                   "2023_24")) {
+      if (study_start_date >= covid_current_vacc_min) {
         
         df <- expand_with_tmerge(df, "covid_secondary")
         
@@ -127,11 +151,11 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
         
       }
       
-      if (unique(df$subset) == "2020_21") {
+      if (study_start_date == covid_current_vacc_min) {
         
         predictors <- c(predictors, "vax_status")
         
-      } else if (unique(df$subset) %in% c("2021_22", "2022_23", "2023_24")) {
+      } else if (study_start_date >= covid_prior_vacc_min) {
         
         predictors <- c(predictors, prior_vacc, "vax_status")
         
@@ -155,7 +179,40 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
   #fit the model
   model <- glm(formula, data = df, family = poisson)
   
+  #robust standard errors where appropriate and then tidy
+  if (cohort == "infants" | cohort == "infants_subgroup") {
+    
+    #cluster standard errors by patient_id
+    model <- coeftest(model, cluster = "patient_id", sandwich = TRUE)
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE)
+    
+    #exponentiate
+    tidy_model <- tidy_model %>%
+      mutate(across(c(estimate, conf.low, conf.high), exp))
+    
+  } else if (y %in% c("flu_primary_inf", "flu_secondary_inf",
+                      "covid_primary_inf", "covid_secondary_inf")) {  
+    
+    #cluster standard errors by patient_id
+    model <- coeftest(model, cluster = "patient_id", sandwich = TRUE)
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE)
+    
+    #exponentiate
+    tidy_model <- tidy_model %>%
+      mutate(across(c(estimate, conf.low, conf.high), exp))
+    
+  } else {
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+    
+  }
+  
   #return output
-  return(model)
+  return(tidy_model)
   
 }

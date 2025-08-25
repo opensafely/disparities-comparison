@@ -2,6 +2,8 @@ library(here)
 library(broom)
 library(rlang)
 library(purrr)
+library(lmtest)
+library(sandwich)
 
 ## create output directories ----
 fs::dir_create(here::here("analysis", "functions"))
@@ -45,8 +47,25 @@ glm_poisson <- function(df, x, y, offset_var) {
   #fit the model
   model <- glm(formula, data = df, family = poisson)
   
-  #tidy model output
-  tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+  #robust standard errors where appropriate and then tidy
+  if (cohort == "infants" | cohort == "infants_subgroup") {
+    
+    #cluster standard errors by patient_id
+    model <- coeftest(model, cluster = "patient_id", sandwich = TRUE)
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE)
+    
+    #exponentiate
+    tidy_model <- tidy_model %>%
+      mutate(across(c(estimate, conf.low, conf.high), exp))
+    
+  } else {
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+    
+  }
   
   #return output
   return(tidy_model)
@@ -160,8 +179,38 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
   #fit the model
   model <- glm(formula, data = df, family = poisson)
   
-  #tidy model output
-  tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+  #robust standard errors where appropriate and then tidy
+  if (cohort == "infants" | cohort == "infants_subgroup") {
+    
+    #cluster standard errors by patient_id
+    model <- coeftest(model, cluster = "patient_id", sandwich = TRUE)
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE)
+    
+    #exponentiate
+    tidy_model <- tidy_model %>%
+      mutate(across(c(estimate, conf.low, conf.high), exp))
+    
+  } else if (y %in% c("flu_primary_inf", "flu_secondary_inf",
+                      "covid_primary_inf", "covid_secondary_inf")) {  
+    
+    #cluster standard errors by patient_id
+    model <- coeftest(model, cluster = "patient_id", sandwich = TRUE)
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE)
+    
+    #exponentiate
+    tidy_model <- tidy_model %>%
+      mutate(across(c(estimate, conf.low, conf.high), exp))
+    
+  } else {
+    
+    #tidy model output
+    tidy_model <- tidy(model, conf.int = TRUE, exponentiate = TRUE)
+    
+  }
   
   #return output
   return(tidy_model)
