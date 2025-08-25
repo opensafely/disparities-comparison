@@ -51,7 +51,7 @@ glm_poisson <- function(df, x, y, offset_var) {
   if (cohort == "infants" | cohort == "infants_subgroup") {
     
     #cluster standard errors by patient_id
-    model <- coeftest(model, cluster = "patient_id", sandwich = TRUE)
+    model <- coeftest(model, vcov = vcovCL(model, cluster = ~ patient_id))
     
     #tidy model output
     tidy_model <- tidy(model, conf.int = TRUE)
@@ -183,7 +183,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
   if (cohort == "infants" | cohort == "infants_subgroup") {
     
     #cluster standard errors by patient_id
-    model <- coeftest(model, cluster = "patient_id", sandwich = TRUE)
+    model <- coeftest(model, vcov = vcovCL(model, cluster = ~ patient_id))
     
     #tidy model output
     tidy_model <- tidy(model, conf.int = TRUE)
