@@ -321,47 +321,9 @@ df_input_filt <- df_input_filt %>%
       !is.na(flu_secondary_second_date), TRUE, FALSE)
   )
 
-if (study_start_date >= covid_season_min) {
-  df_input_filt <- df_input_filt %>%
-    mutate(
-      #infer presence of mild covid
-      covid_primary = if_else(
-        !is.na(covid_primary_date), TRUE, FALSE),
-      #infer presence of second episode of mild covid
-      covid_primary_second = if_else(
-        !is.na(covid_primary_second_date), TRUE, FALSE),
-      #infer presence of severe covid
-      covid_secondary = if_else(
-        !is.na(covid_secondary_date), TRUE, FALSE),
-      #infer presence of second episode of severe covid
-      covid_secondary_second = if_else(
-        !is.na(covid_secondary_second_date), TRUE, FALSE)
-    )
-}
-
-if (codelist_type == "sensitive") {
-  df_input_filt <- df_input_filt %>%
-    mutate(
-      #infer presence of mild overall respiratory
-      overall_resp_primary = if_else(
-        !is.na(overall_resp_primary_date), TRUE, FALSE),
-      #infer presence of second episode of mild overall respiratory
-      overall_resp_primary_second = if_else(
-        !is.na(overall_resp_primary_second_date), TRUE, FALSE),
-      #infer presence of severe overall respiratory
-      overall_resp_secondary = if_else(
-        !is.na(overall_resp_secondary_date), TRUE, FALSE),
-      #infer presence of second episode of severe overall respiratory
-      overall_resp_secondary_second = if_else(
-        !is.na(overall_resp_secondary_second_date), TRUE, FALSE)
-    )
-}
-
 #for infants populations correct repeated outcome information
 if (cohort == "infants" | cohort == "infants_subgroup") {
-  #overall_resp_primary_inf_date < overall_resp_primary_date, 1,
-  #define event time 
-  if (study_start_date < covid_season_min) {
+
     df_input_filt <- df_input_filt %>%
       mutate(
         #infer mild case date for rsv 
@@ -413,485 +375,98 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
         #infer severe flu outcome
         flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0)
       )
-    #for sensitive analyses define overall respiratory outcomes
-    if (codelist_type == "sensitive") {
-      df_input_filt <- df_input_filt %>%
-        mutate(
-          #infer mild case date for overall respiratory
-          overall_resp_primary_inf_date = pmin(date_month,
-            overall_resp_primary_date, overall_resp_secondary_date,
-            deregistration_date, death_date, patient_end_date, na.rm = TRUE),
-          #assign censoring indicator
-          overall_resp_primary_censor = case_when(
-            is.na(overall_resp_primary_date) ~ 1, # no event
-            overall_resp_primary_inf_date < overall_resp_primary_date ~ 1, # event after censoring
-            overall_resp_primary_date >= date & overall_resp_primary_date <= date_month ~ 0 # event within interval of interest
-          ),
-          #infer mild overall respiratory outcome
-          overall_resp_primary_inf = if_else(
-            overall_resp_primary_censor == 0, 1, 0),
-          #infer severe case date for overall respiratory
-          overall_resp_secondary_inf_date = pmin(date_month,
-            overall_resp_secondary_date, deregistration_date,
-            death_date, patient_end_date, na.rm = TRUE),
-          #assign censoring indicator
-          overall_resp_secondary_censor = case_when(
-            is.na(overall_resp_secondary_date) ~ 1, # no event
-            overall_resp_secondary_inf_date < overall_resp_secondary_date ~ 1, # event after censoring
-            overall_resp_secondary_date >= date & overall_resp_secondary_date <= date_month ~ 0 # event within interval of interest
-          ),
-          #infer severe overall respiratory outcome
-          overall_resp_secondary_inf = if_else(
-            overall_resp_secondary_censor == 0, 1, 0)
-        )
-    }
-  } else {
-    df_input_filt <- df_input_filt %>%
-      mutate(
-        #infer mild case date for rsv
-        rsv_primary_inf_date = pmin(date_month,
-          rsv_primary_date, rsv_secondary_date, deregistration_date,
-          death_date, patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        rsv_primary_censor = case_when(
-          is.na(rsv_primary_date) ~ 1, # no event
-          rsv_primary_inf_date < rsv_primary_date ~ 1, # event after censoring
-          rsv_primary_date >= date & rsv_primary_date <= date_month ~ 0 # event within interval of interest
-        ),
-        #infer mild rsv outcome 
-        rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
-        #infer severe case date for rsv
-        rsv_secondary_inf_date = pmin(date_month,
-          rsv_secondary_date, deregistration_date, death_date,
-          patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        rsv_secondary_censor = case_when(
-          is.na(rsv_secondary_date) ~ 1, # no event
-          rsv_secondary_inf_date < rsv_secondary_date ~ 1, # event after censoring
-          rsv_secondary_date >= date & rsv_secondary_date <= date_month ~ 0 # event within interval of interest
-        ),
-        #infer severe rsv outcome
-        rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
-        #infer mild case date for flu
-        flu_primary_inf_date = pmin(date_month,
-          flu_primary_date, flu_secondary_date, deregistration_date,
-          death_date, patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        flu_primary_censor = case_when(
-          is.na(flu_primary_date) ~ 1, # no event
-          flu_primary_inf_date < flu_primary_date ~ 1, # event after censoring
-          flu_primary_date >= date & flu_primary_date <= date_month ~ 0 # event within interval of interest
-        ),
-        #infer mild flu outcome
-        flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
-        #infer severe case date for flu
-        flu_secondary_inf_date = pmin(date_month,
-          flu_secondary_date, deregistration_date, death_date,
-          patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        flu_secondary_censor = case_when(
-          is.na(flu_secondary_date) ~ 1, # no event
-          flu_secondary_inf_date < flu_secondary_date ~ 1, # event after censoring
-          flu_secondary_date >= date & flu_secondary_date <= date_month ~ 0 # event within interval of interest
-        ),
-        #infer severe flu outcome
-        flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0),
-        #infer mild case date for covid
-        covid_primary_inf_date = pmin(date_month,
-          covid_primary_date, covid_secondary_date, deregistration_date,
-          death_date, patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        covid_primary_censor = case_when(
-          is.na(covid_primary_date) ~ 1, # no event
-          covid_primary_inf_date < covid_primary_date ~ 1, # event after censoring
-          covid_primary_date >= date & covid_primary_date <= date_month ~ 0 # event within interval of interest
-        ),
-        #infer mild covid outcome
-        covid_primary_inf = if_else(covid_primary_censor == 0, 1, 0),
-        #infer severe case date for covid
-        covid_secondary_inf_date = pmin(date_month,
-          covid_secondary_date, deregistration_date, death_date,
-          patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        covid_secondary_censor = case_when(
-          is.na(covid_secondary_date) ~ 1, # no event
-          covid_secondary_inf_date < covid_secondary_date ~ 1, # event after censoring
-          covid_secondary_date >= date & covid_secondary_date <= date_month ~ 0 # event within interval of interest
-        ),
-        #infer severe covid outcome
-        covid_secondary_inf = if_else(covid_secondary_censor == 0, 1, 0)
-      )
-    #for sensitive analyses define overall respiratory outcomes
-    if (codelist_type == "sensitive") {
-      df_input_filt <- df_input_filt %>%
-        mutate(
-          #infer mild case date for overall respiratory
-          overall_resp_primary_inf_date = pmin(date_month,
-            overall_resp_primary_date, overall_resp_secondary_date,
-            deregistration_date, death_date, patient_end_date, na.rm = TRUE),
-          #assign censoring indicator
-          overall_resp_primary_censor = case_when(
-            is.na(overall_resp_primary_date) ~ 1, # no event
-            overall_resp_primary_inf_date < overall_resp_primary_date ~ 1, # event after censoring
-            overall_resp_primary_date >= date & overall_resp_primary_date <= date_month ~ 0 # event within interval of interest
-          ),
-          #infer overall respiratory outcome
-          overall_resp_primary_inf = if_else(
-            overall_resp_primary_censor == 0, 1, 0),
-          #infer severe case date for overall respiratory
-          overall_resp_secondary_inf_date = pmin(date_month,
-            overall_resp_secondary_date, deregistration_date,
-            death_date, patient_end_date, na.rm = TRUE),
-          #assign censoring indicator
-          overall_resp_secondary_censor = case_when(
-            is.na(overall_resp_secondary_date) ~ 1, # no event
-            overall_resp_secondary_inf_date < overall_resp_secondary_date ~ 1, # event after censoring
-            overall_resp_secondary_date >= date & overall_resp_secondary_date <= date_month ~ 0 # event within interval of interest
-          ),
-          #infer severe overall respiratory outcome
-          overall_resp_secondary_inf = if_else(
-            overall_resp_secondary_censor == 0, 1, 0)
-        )
-    }
-  }
   
 } else {
   
   #define event time 
-  if (study_start_date < covid_season_min) {
-    df_input_filt <- df_input_filt %>%
-      mutate(
-        #infer mild case date for rsv 
-        rsv_primary_inf_date = pmin(
-          rsv_primary_date, rsv_secondary_date, deregistration_date,
-          death_date, patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        rsv_primary_censor = if_else(
-          rsv_primary_inf_date < rsv_primary_date, 1, 0, missing = 1),
-        #infer mild rsv outcome 
-        rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
-        #infer severe case date for rsv
-        rsv_secondary_inf_date = pmin(
-          rsv_secondary_date, deregistration_date, death_date,
-          patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        rsv_secondary_censor = if_else(
-          rsv_secondary_inf_date < rsv_secondary_date, 1, 0, missing = 1),
-        #infer severe rsv outcome
-        rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
-        #infer mild case date for flu
-        flu_primary_inf_date = pmin(
-          flu_primary_date, flu_secondary_date, deregistration_date,
-          death_date, patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        flu_primary_censor = if_else(
-          flu_primary_inf_date < flu_primary_date, 1, 0, missing = 1),
-        #infer mild flu outcome
-        flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
-        #infer severe case date for flu
-        flu_secondary_inf_date = pmin(
-          flu_secondary_date, deregistration_date, death_date,
-          patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        flu_secondary_censor = if_else(
-          flu_secondary_inf_date < flu_secondary_date, 1, 0, missing = 1),
-        #infer severe flu outcome
-        flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0)
-      )
-    #for sensitive analyses define overall respiratory outcomes
-    if (codelist_type == "sensitive") {
-      df_input_filt <- df_input_filt %>%
-        mutate(
-          #infer mild case date for overall respiratory
-          overall_resp_primary_inf_date = pmin(
-            overall_resp_primary_date, overall_resp_secondary_date,
-            deregistration_date, death_date, patient_end_date, na.rm = TRUE),
-          #assign censoring indicator
-          overall_resp_primary_censor = if_else(
-            overall_resp_primary_inf_date < overall_resp_primary_date, 1, 0,
-            missing = 1),
-          #infer mild overall respiratory outcome
-          overall_resp_primary_inf = if_else(
-            overall_resp_primary_censor == 0, 1, 0),
-          #infer severe case date for overall respiratory
-          overall_resp_secondary_inf_date = pmin(
-            overall_resp_secondary_date, deregistration_date,
-            death_date, patient_end_date, na.rm = TRUE),
-          #assign censoring indicator
-          overall_resp_secondary_censor = if_else(
-            overall_resp_secondary_inf_date < overall_resp_secondary_date,
-            1, 0, missing = 1),
-          #infer severe overall respiratory outcome
-          overall_resp_secondary_inf = if_else(
-            overall_resp_secondary_censor == 0, 1, 0)
-        )
-    }
-  } else {
-    df_input_filt <- df_input_filt %>%
-      mutate(
-        #infer mild case date for rsv
-        rsv_primary_inf_date = pmin(
-          rsv_primary_date, rsv_secondary_date, deregistration_date,
-          death_date, patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        rsv_primary_censor = if_else(
-          rsv_primary_inf_date < rsv_primary_date, 1, 0, missing = 1),
-        #infer mild rsv outcome 
-        rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
-        #infer severe case date for rsv
-        rsv_secondary_inf_date = pmin(
-          rsv_secondary_date, deregistration_date, death_date,
-          patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        rsv_secondary_censor = if_else(
-          rsv_secondary_inf_date < rsv_secondary_date, 1, 0, missing = 1),
-        #infer severe rsv outcome
-        rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
-        #infer mild case date for flu
-        flu_primary_inf_date = pmin(
-          flu_primary_date, flu_secondary_date, deregistration_date,
-          death_date, patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        flu_primary_censor = if_else(
-          flu_primary_inf_date < flu_primary_date, 1, 0, missing = 1),
-        #infer mild flu outcome
-        flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
-        #infer severe case date for flu
-        flu_secondary_inf_date = pmin(
-          flu_secondary_date, deregistration_date, death_date,
-          patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        flu_secondary_censor = if_else(
-          flu_secondary_inf_date < flu_secondary_date, 1, 0, missing = 1),
-        #infer severe flu outcome
-        flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0),
-        #infer mild case date for covid
-        covid_primary_inf_date = pmin(
-          covid_primary_date, covid_secondary_date, deregistration_date,
-          death_date, patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        covid_primary_censor = if_else(
-          covid_primary_inf_date < covid_primary_date, 1, 0, missing = 1),
-        #infer mild covid outcome
-        covid_primary_inf = if_else(covid_primary_censor == 0, 1, 0),
-        #infer severe case date for covid
-        covid_secondary_inf_date = pmin(
-          covid_secondary_date, deregistration_date, death_date,
-          patient_end_date, na.rm = TRUE),
-        #assign censoring indicator
-        covid_secondary_censor = if_else(
-          covid_secondary_inf_date < covid_secondary_date, 1, 0, missing = 1),
-        #infer severe covid outcome
-        covid_secondary_inf = if_else(covid_secondary_censor == 0, 1, 0)
-      )
-    #for sensitive analyses define overall respiratory outcomes
-    if (codelist_type == "sensitive") {
-      df_input_filt <- df_input_filt %>%
-        mutate(
-          #infer mild case date for overall respiratory
-          overall_resp_primary_inf_date = pmin(
-            overall_resp_primary_date, overall_resp_secondary_date,
-            deregistration_date, death_date, patient_end_date, na.rm = TRUE),
-          #assign censoring indicator
-          overall_resp_primary_censor = if_else(
-            overall_resp_primary_inf_date < overall_resp_primary_date, 1, 0,
-            missing = 1),
-          #infer overall respiratory outcome
-          overall_resp_primary_inf = if_else(
-            overall_resp_primary_censor == 0, 1, 0),
-          #infer severe case date for overall respiratory
-          overall_resp_secondary_inf_date = pmin(
-            overall_resp_secondary_date, deregistration_date,
-            death_date, patient_end_date, na.rm = TRUE),
-          #assign censoring indicator
-          overall_resp_secondary_censor = if_else(
-            overall_resp_secondary_inf_date < overall_resp_secondary_date,
-            1, 0, missing = 1),
-          #infer severe overall respiratory outcome
-          overall_resp_secondary_inf = if_else(
-            overall_resp_secondary_censor == 0, 1, 0)
-        )
-    }
-  }
+  df_input_filt <- df_input_filt %>%
+    mutate(
+      #infer mild case date for rsv 
+      rsv_primary_inf_date = pmin(
+        rsv_primary_date, rsv_secondary_date, deregistration_date,
+        death_date, patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
+      rsv_primary_censor = if_else(
+        rsv_primary_inf_date < rsv_primary_date, 1, 0, missing = 1),
+      #infer mild rsv outcome 
+      rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
+      #infer severe case date for rsv
+      rsv_secondary_inf_date = pmin(
+        rsv_secondary_date, deregistration_date, death_date,
+        patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
+      rsv_secondary_censor = if_else(
+        rsv_secondary_inf_date < rsv_secondary_date, 1, 0, missing = 1),
+      #infer severe rsv outcome
+      rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
+      #infer mild case date for flu
+      flu_primary_inf_date = pmin(
+        flu_primary_date, flu_secondary_date, deregistration_date,
+        death_date, patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
+      flu_primary_censor = if_else(
+        flu_primary_inf_date < flu_primary_date, 1, 0, missing = 1),
+      #infer mild flu outcome
+      flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
+      #infer severe case date for flu
+      flu_secondary_inf_date = pmin(
+        flu_secondary_date, deregistration_date, death_date,
+        patient_end_date, na.rm = TRUE),
+      #assign censoring indicator
+      flu_secondary_censor = if_else(
+        flu_secondary_inf_date < flu_secondary_date, 1, 0, missing = 1),
+      #infer severe flu outcome
+      flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0)
+    )
 }
 
 #calculate time to event
 if (cohort == "infants" | cohort == "infants_subgroup") {
   
-  if (study_start_date < covid_season_min) {
-    df_input_filt <- df_input_filt %>%
-      mutate(
-        #time until mild rsv outcome
-        time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
+  df_input_filt <- df_input_filt %>%
+    mutate(
+      #time until mild rsv outcome
+      time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
+                         date - days(1), "weeks"), "years"),
+      #time until severe rsv outcome
+      time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
                            date - days(1), "weeks"), "years"),
-        #time until severe rsv outcome
-        time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
-                             date - days(1), "weeks"), "years"),
-        #time until mild flu outcome
-        time_flu_primary = time_length(difftime(flu_primary_inf_date, 
-                           date - days(1), "weeks"), "years"),
-        #time until severe flu outcome
-        time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
-                             date - days(1), "weeks"), "years")
-      ) %>%
-      mutate(
-        time_rsv_primary = if_else(
-          date > rsv_primary_inf_date, NA_real_, time_rsv_primary),
-        time_rsv_secondary = if_else(
-          date > rsv_secondary_inf_date, NA_real_, time_rsv_secondary),
-        time_flu_primary = if_else(
-          date > flu_primary_inf_date, NA_real_, time_flu_primary),
-        time_flu_secondary = if_else(
-          date > flu_secondary_inf_date, NA_real_, time_flu_secondary)
-      )
-    if (codelist_type == "sensitive") {
-      df_input_filt <- df_input_filt %>%
-        mutate(
-          #time until mild overall respiratory outcome
-          time_overall_resp_primary = time_length(
-            difftime(overall_resp_primary_inf_date, date - days(1),
-                     "weeks"), "years"),
-          #time until severe overall respiratory outcome
-          time_overall_resp_secondary = time_length(
-            difftime(overall_resp_secondary_inf_date, date - days(1),
-                     "weeks"), "years")
-        ) %>%
-        mutate(
-          time_overall_resp_primary = if_else(
-            date > overall_resp_primary_inf_date, NA_real_,
-            time_overall_resp_primary),
-          time_overall_resp_secondary = if_else(
-            date > overall_resp_secondary_inf_date, NA_real_,
-            time_overall_resp_secondary)
-        )
-      }
-    } else {
-      df_input_filt <- df_input_filt %>%
-        mutate(
-          #time until mild rsv outcome
-          time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
-                             date - days(1), "weeks"), "years"),
-          #time until severe rsv outcome
-          time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
-                               date - days(1), "weeks"), "years"),
-          #time until mild flu outcome
-          time_flu_primary = time_length(difftime(flu_primary_inf_date, 
-                             date - days(1), "weeks"), "years"),
-          #time until severe flu outcome
-          time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
-                               date - days(1), "weeks"), "years"),
-          #time until mild covid outcome
-          time_covid_primary = time_length(difftime(covid_primary_inf_date, 
-                               date - days(1), "weeks"), "years"),
-          #time until severe covid outcome
-          time_covid_secondary = time_length(difftime(covid_secondary_inf_date, 
-                                 date - days(1), "weeks"), "years")
-        ) %>% 
-        mutate(
-          time_rsv_primary = if_else(
-            date > rsv_primary_inf_date, NA_real_, time_rsv_primary),
-          time_rsv_secondary = if_else(
-            date > rsv_secondary_inf_date, NA_real_, time_rsv_secondary),
-          time_flu_primary = if_else(
-            date > flu_primary_inf_date, NA_real_, time_flu_primary),
-          time_flu_secondary = if_else(
-            date > flu_secondary_inf_date, NA_real_, time_flu_secondary),
-          time_covid_primary = if_else(
-            date > covid_primary_inf_date, NA_real_, time_covid_primary),
-          time_covid_secondary = if_else(
-            date > covid_secondary_inf_date, NA_real_, time_covid_secondary)
-        )
-      if (codelist_type == "sensitive") {
-        df_input_filt <- df_input_filt %>%
-          mutate(
-            #time until mild overall respiratory outcome
-            time_overall_resp_primary = time_length(
-              difftime(overall_resp_primary_inf_date, date - days(1),
-                       "weeks"), "years"),
-            #time until severe overall respiratory outcome
-            time_overall_resp_secondary = time_length(
-              difftime(overall_resp_secondary_inf_date, date - days(1),
-                       "weeks"), "years")
-          ) %>%
-          mutate(
-            time_overall_resp_primary = if_else(
-              date > overall_resp_primary_inf_date, NA_real_,
-              time_overall_resp_primary),
-            time_overall_resp_secondary = if_else(
-              date > overall_resp_secondary_inf_date, NA_real_,
-              time_overall_resp_secondary)
-          )
-      }
-    }
+      #time until mild flu outcome
+      time_flu_primary = time_length(difftime(flu_primary_inf_date, 
+                         date - days(1), "weeks"), "years"),
+      #time until severe flu outcome
+      time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
+                           date - days(1), "weeks"), "years")
+    ) %>%
+    mutate(
+      time_rsv_primary = if_else(
+        date > rsv_primary_inf_date, NA_real_, time_rsv_primary),
+      time_rsv_secondary = if_else(
+        date > rsv_secondary_inf_date, NA_real_, time_rsv_secondary),
+      time_flu_primary = if_else(
+        date > flu_primary_inf_date, NA_real_, time_flu_primary),
+      time_flu_secondary = if_else(
+        date > flu_secondary_inf_date, NA_real_, time_flu_secondary)
+    )
   
 } else {
   
   #calculate time to event
-  if (study_start_date < covid_season_min) {
-    df_input_filt <- df_input_filt %>%
-      mutate(
-        #time until mild rsv outcome
-        time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
+  df_input_filt <- df_input_filt %>%
+    mutate(
+      #time until mild rsv outcome
+      time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
+                         patient_index_date, "weeks"), "years"),
+      #time until severe rsv outcome
+      time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
                            patient_index_date, "weeks"), "years"),
-        #time until severe rsv outcome
-        time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
-                             patient_index_date, "weeks"), "years"),
-        #time until mild flu outcome
-        time_flu_primary = time_length(difftime(flu_primary_inf_date, 
-                           patient_index_date, "weeks"), "years"),
-        #time until severe flu outcome
-        time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
-                             patient_index_date, "weeks"), "years")
-      )
-    if (codelist_type == "sensitive") {
-      df_input_filt <- df_input_filt %>%
-        mutate(
-          #time until mild overall respiratory outcome
-          time_overall_resp_primary = time_length(
-            difftime(overall_resp_primary_inf_date, patient_index_date,
-                     "weeks"), "years"),
-          #time until severe overall respiratory outcome
-          time_overall_resp_secondary = time_length(
-            difftime(overall_resp_secondary_inf_date, patient_index_date,
-                     "weeks"), "years")
-        )
-    }
-  } else {
-    df_input_filt <- df_input_filt %>%
-      mutate(
-        #time until mild rsv outcome
-        time_rsv_primary = time_length(difftime(rsv_primary_inf_date, 
-                           patient_index_date, "weeks"), "years"),
-        #time until severe rsv outcome
-        time_rsv_secondary = time_length(difftime(rsv_secondary_inf_date, 
-                             patient_index_date, "weeks"), "years"),
-        #time until mild flu outcome
-        time_flu_primary = time_length(difftime(flu_primary_inf_date, 
-                           patient_index_date, "weeks"), "years"),
-        #time until severe flu outcome
-        time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
-                             patient_index_date, "weeks"), "years"),
-        #time until mild covid outcome
-        time_covid_primary = time_length(difftime(covid_primary_inf_date, 
-                             patient_index_date, "weeks"), "years"),
-        #time until severe covid outcome
-        time_covid_secondary = time_length(difftime(covid_secondary_inf_date, 
-                               patient_index_date, "weeks"), "years")
-      )
-    if (codelist_type == "sensitive") {
-      df_input_filt <- df_input_filt %>%
-        mutate(
-          #time until mild overall respiratory outcome
-          time_overall_resp_primary = time_length(
-            difftime(overall_resp_primary_inf_date, patient_index_date,
-                     "weeks"), "years"),
-          #time until severe overall respiratory outcome
-          time_overall_resp_secondary = time_length(
-            difftime(overall_resp_secondary_inf_date, patient_index_date,
-                     "weeks"), "years")
-        )
-    }
-  }
+      #time until mild flu outcome
+      time_flu_primary = time_length(difftime(flu_primary_inf_date, 
+                         patient_index_date, "weeks"), "years"),
+      #time until severe flu outcome
+      time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
+                           patient_index_date, "weeks"), "years")
+    )
   
 }
 
