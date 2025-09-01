@@ -83,7 +83,7 @@ rsv_primary_exclusion_codelist = codelist_from_csv(
 )
 
 # rsv secondary - sensitive - X added as SUS adds this in 
-unspecified_lrti = ["J22"]
+unspecified_lrti = ["J22X"]
 
 # rsv secondary exclusion 
 rsv_secondary_exclusion_codelist = codelist_from_csv(
