@@ -173,8 +173,7 @@ characteristics <- c("Age_Group", "Sex", "Ethnicity", "IMD", "Rurality")
 collate_rates_characteristic(characteristics, pathogens)
 
 #collate multiple strata files
-collate_rates_season_multi <- function(seasons, pathogen, characteristic1,
-                                       characteristic2) {
+collate_rates_season_multi <- function(seasons, pathogen, char1, char2) {
   
   df_group <- NULL
 
@@ -211,7 +210,7 @@ collate_rates_season_multi <- function(seasons, pathogen, characteristic1,
         )
       
       df_characteristic_spec <- df_spec %>%
-        filter(group1 == !!characteristic1, group2 == !!characteristic2) %>%
+        filter(group1 == !!char1, group2 == !!char2) %>%
         mutate(
           codelist_type = "specific",
           season = gsub("_(\\d{2})\\d{2}", "_\\1", season)
@@ -246,7 +245,7 @@ collate_rates_season_multi <- function(seasons, pathogen, characteristic1,
       )
     
     df_characteristic_sens <- df_sens %>%
-      filter(group1 == !!characteristic1, group2 == !!characteristic2) %>%
+      filter(group1 == !!char1, group2 == !!char2) %>%
       mutate(
         codelist_type = "sensitive",
         season = gsub("_(\\d{2})\\d{2}", "_\\1", season)
@@ -288,12 +287,9 @@ for (i in 1:length(pathogens)) {
   pathogen <- pathogens[i]
   
   if (pathogen == "covid") {
-    collate_rates_season_multi(seasons_covid, pathogen,
-                               "latest_ethnicity_group",
-                               "imd_quintile")
+    collate_rates_season_multi(seasons_covid, pathogen, "Ethnicity", "IMD")
   } else {
-    collate_rates_season_multi(seasons, pathogen, "latest_ethnicity_group",
-                               "imd_quintile")
+    collate_rates_season_multi(seasons, pathogen, "Ethnicity", "IMD")
   }
   
 }
