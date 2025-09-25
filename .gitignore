@@ -22,3 +22,4 @@ analysis/old_model_files/*
 /post_check/plots/*
 .RDataTmp*
 /dummy_tables
+/post_check/old_plots/*

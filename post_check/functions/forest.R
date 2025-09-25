@@ -8,7 +8,6 @@ library(stringr)
 
 #import model functions
 source(here::here("post_check", "functions", "model.R"))
-
 options(scipen = 999)
 
 #create function to filter collated results to models wanted and then plot
@@ -2695,8 +2694,9 @@ forest_year_mult <- function(df, df_dummy, pathogen, model_type, outcome_type,
   
 }
 
+#forest plot combined model results
 forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
-                                     outcome_type, interest = "no") {
+                                     outcome_type) {
   
   pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
                       pathogen)
@@ -2735,20 +2735,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     pathogen == "covid" ~ "time_since_last_covid_vaccination"
   )
   
-  vacc_mild <- case_when(
-    pathogen == "flu" & outcome_type == "Mild" ~ "flu_vaccination_mild",
-    pathogen == "covid" & outcome_type == "Mild" ~ "covid_vaccination_mild"
-  )
-  
-  vacc_severe <- case_when(
-    pathogen == "flu" & outcome_type == "Severe" ~ "flu_vaccination_severe",
-    pathogen == "covid" & outcome_type == "Severe" ~ "covid_vaccination_severe"
-  )
-  
-  vacc_current <- if_else(
-    outcome_type == "Mild", vacc_mild, vacc_severe
-  )
-  
   if (cohort == "infants" | cohort == "infants_subgroup") {
     
     dummy_model <- glm_poisson_further(
@@ -2758,8 +2744,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   } else {
     
     dummy_model <- glm_poisson_further(
-      df_dummy, exposure, outcome, vacc_prev, vacc_mild, vacc_severe,
-      offset_var = offset
+      df_dummy, exposure, outcome, vacc_prev, offset_var = offset
     )
     
   }
@@ -2866,15 +2851,14 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   } else if (cohort != "infants" & pathogen == "flu") {
     
     levels <- c("Prior Flu Vaccination (Yes)", "Prior Flu Vaccination (No)",
-                "Flu Vaccination (Yes)", "Flu Vaccination (No)", levels)
-      
+                "Flu Vaccination (Yes)", levels)
+    
   } else if (cohort != "infants" & pathogen == "covid") {
-      
-    levels <- c("Covid Vaccination (Yes)", "Covid Vaccination (No)",
-                "12m+ Since Last Covid Vaccination",
+    
+    levels <- c("Covid Vaccination (Yes)", "12m+ Since Last Covid Vaccination",
                 "6-12m Since Last Covid Vaccination",
                 "0-6m Since Last Covid Vaccination", levels)
-      
+    
   }
   
   group_order <- case_when(
@@ -2996,25 +2980,145 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   
   process_forest_plot <- function(df_model) {
     
-    tidy_forest <- df_model %>%
-      filter(subset %in% c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
-      tidy_attach_model(dummy_model) %>%
-      tidy_add_reference_rows() %>%
-      tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
-                                          conf.level = 95) %>%
-      tidy_add_term_labels() %>%
-      tidy_remove_intercept() %>%
-      mutate(
-        conf.low = if_else(reference_row, 1, conf.low),
-        conf.high = if_else(reference_row, 1, conf.high),
-        label = if_else(label == "maternal_age", "Maternal Age", label),
-        reference_row = if_else(
-          label == "Maternal Age", FALSE, reference_row)
-      ) %>%
-      mutate(
-        conf.low = if_else(conf.low < 1e-100, NA, conf.low),
-        conf.high = if_else(conf.high < 1e-100, NA, conf.high)
+    if (nrow(df_model) != 0) {
+      
+      tidy_forest <- df_model %>%
+        filter(subset %in% c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
+        tidy_attach_model(dummy_model) %>%
+        tidy_add_reference_rows() %>%
+        tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
+                                            conf.level = 95) %>%
+        tidy_add_term_labels() %>%
+        tidy_remove_intercept() %>%
+        mutate(
+          conf.low = if_else(reference_row, 1, conf.low),
+          conf.high = if_else(reference_row, 1, conf.high),
+          label = case_when(
+            label == "maternal_age" ~ "Maternal Age",
+            label == "vax_status" ~ "Vaccination Status",
+            TRUE ~ label),
+          reference_row = case_when(
+            label == "Maternal Age" ~ FALSE,
+            label == "Vaccination Status" ~ FALSE,
+            TRUE ~ reference_row)
+        ) %>%
+        mutate(
+          conf.low = if_else(conf.low < 1e-100, NA_real_, conf.low),
+          conf.high = if_else(conf.high < 1e-100, NA_real_, conf.high)
+        )
+      
+    } else if (nrow(df_model) == 0 & model_type %in% c(
+      "composition", "ethnicity_composition", "ses_composition", "full")) {
+      
+      age <- case_when(
+        cohort == "older_adults" ~ "65-74y",
+        cohort == "adults" ~ "18-39y",
+        cohort == "children_and_adolescents" ~ "2-5y",
+        cohort == "infants" ~ "0-2m",
+        cohort == "infants_subgroup" ~ "0-2m"
       )
+      
+      vars <- case_when(
+        model_type == "ethnicity" ~ list(c("sex", "age_band", "latest_ethnicity_group")),
+        model_type == "ses" ~ list(c("sex", "age_band", "imd_quintile")),
+        model_type == "composition" ~ list(c(
+          "sex", "age_band", "composition_category")),
+        model_type == "ethnicity_ses" ~ list(c(
+          "sex", "age_band", "latest_ethnicity_group", "imd_quintile")),
+        model_type == "ethnicity_composition" ~ list(c(
+          "sex", "age_band", "ethnicity", "composition_category")),
+        model_type == "ses_composition" ~ list(c(
+          "sex", "age_band", "imd_quintile", "composition_category")),
+        model_type == "full" ~ list(c(
+          "sex", "age_band", "ethnicity", "imd_quintile", "composition_category"))
+      )[[1]]
+      
+      var_labels <- case_when(
+        model_type == "ethnicity" ~ list(c("Female", age, "White")),
+        model_type == "ses" ~ list(c("Female", age, "5 (least deprived)")),
+        model_type == "composition" ~ list(c(
+          "Female", age, "Multiple of the Same Generation")),
+        model_type == "ethnicity_ses" ~ list(c(
+          "Female", age, "White", "5 (least deprived)")),
+        model_type == "ethnicity_composition" ~ list(c(
+          "Female", age, "White", "Multiple of the Same Generation")),
+        model_type == "ses_composition" ~ list(c(
+          "Female", age, "5 (least deprived)",
+          "Multiple of the Same Generation")),
+        model_type == "full" ~ list(c(
+          "Female", age, "White", "5 (least deprived)",
+          "Multiple of the Same Generation"))
+      )[[1]]
+      
+      tidy_forest <- bind_rows(
+        tibble(
+          term = NA,
+          variable = vars,
+          var_label = var_labels,
+          var_class = NA,
+          var_type = NA,
+          var_nlevels = NA_real_,
+          contrasts = NA,
+          contrasts_type = NA,
+          reference_row = TRUE,
+          label = var_labels,
+          estimate = 1,
+          std.error = NA_real_,
+          statistic = NA_real_,
+          p.value = NA_real_,
+          conf.low = 1,
+          conf.high = 1,
+          model_type = !!model_type,
+          codelist_type = "specific",
+          investigation_type = investigation_type,
+          subset = "2020_21"
+        ),
+        tibble(
+          term = NA,
+          variable = vars,
+          var_label = var_labels,
+          var_class = NA,
+          var_type = NA,
+          var_nlevels = NA_real_,
+          contrasts = NA,
+          contrasts_type = NA,
+          reference_row = TRUE,
+          label = var_labels,
+          estimate = 1,
+          std.error = NA_real_,
+          statistic = NA_real_,
+          p.value = NA_real_,
+          conf.low = 1,
+          conf.high = 1,
+          model_type = !!model_type,
+          codelist_type = "sensitive",
+          investigation_type = investigation_type,
+          subset = "2020_21"
+        ),
+        tibble(
+          term = NA,
+          variable = vars,
+          var_label = var_labels,
+          var_class = NA,
+          var_type = NA,
+          var_nlevels = NA_real_,
+          contrasts = NA,
+          contrasts_type = NA,
+          reference_row = TRUE,
+          label = var_labels,
+          estimate = NA_real_,
+          std.error = NA_real_,
+          statistic = NA_real_,
+          p.value = NA_real_,
+          conf.low = NA_real_,
+          model_type = !!model_type,
+          codelist_type = "reference",
+          investigation_type = investigation_type,
+          subset = "2020_21"
+        )
+      )
+      
+    }
     
     if (cohort == "infants_subgroup") {
       
@@ -3038,8 +3142,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           model_name = NA,
           estimate = 1,
           std.error = 0,
-          statistic = NA,
-          p.value = NA,
+          statistic = NA_real_,
+          p.value = NA_real_,
           conf.low = 1,
           conf.high = 1,
           model_type = !!model_type,
@@ -3079,16 +3183,25 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       
     }
     
-    tidy_forest <- tidy_forest %>%
-      filter(!reference_row) %>%
-      bind_rows(reference_rows)
+    if (nrow(df_few) != 0 & model_type %in% c("composition", "ethnicity_composition",
+                                              "ses_composition", "full")) {
+      
+      tidy_forest <- tidy_forest
+      
+    } else {
+      
+      tidy_forest <- tidy_forest %>%
+        filter(!reference_row) %>%
+        bind_rows(reference_rows)
+      
+    }
     
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
     
     cols2 <- tibble(
       variable = c("sex", "age_band", "latest_ethnicity_group", "imd_quintile",
                    "composition_category", "rurality_classification",
-                   vacc_prev, vacc_current, "maternal_age",
+                   vacc_prev, "vax_status", "maternal_age",
                    "maternal_smoking_status", "maternal_drinking",
                    "maternal_drug_usage", "maternal_flu_vaccination",
                    "maternal_pertussis_vaccination", "binary_variables"),
@@ -3179,7 +3292,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
+          scale_x_log10() + #coord_cartesian(xlim = c(0.1, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = "none", shape = guide_legend("Est. Type")) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
@@ -3227,7 +3340,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           ) %>%
           mutate(
             plot_label2 = paste0(
-                plot_label, " (", str_to_title(codelist_type), ")")
+              plot_label, " (", str_to_title(codelist_type), ")")
           ) %>%
           mutate(
             plot_label2 = factor(plot_label2, levels = group_order),
@@ -3241,7 +3354,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
+          scale_x_log10() + #coord_cartesian(xlim = c(0.1, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = "none", shape = guide_legend("Est. Type")) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
@@ -3266,18 +3379,17 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           ) %>%
           mutate(
             variable = case_when(
-              variable == "covid_vaccination_mild" ~ "covid_vaccination",
-              variable == "covid_vaccination_severe" ~ "covid_vaccination",
+              variable == "vax_status" ~ "covid_vaccination",
               TRUE ~ variable
             ),
             plot_label = str_to_title(gsub("_", " ", variable)),
             label = case_when(
               variable == "covid_vaccination" ~ paste0(
-                plot_label, " (", str_to_title(label),")"),
+                plot_label, " (Yes)"),
               variable == "time_since_last_covid_vaccination" ~ paste0(
                 label, " Since Last Covid Vaccination"),
               TRUE ~ label
-              ),
+            ),
             subset = gsub("_", "-", subset)
           ) %>%
           mutate(
@@ -3307,7 +3419,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
+          scale_x_log10() + #coord_cartesian(xlim = c(0.1, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = "none", shape = guide_legend("Est. Type")) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
@@ -3328,14 +3440,15 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           ) %>%
           mutate(
             variable = case_when(
-              variable == "flu_vaccination_mild" ~ "flu_vaccination",
-              variable == "flu_vaccination_severe" ~ "flu_vaccination",
+              variable == "vax_status" ~ "flu_vaccination",
               TRUE ~ variable
             ),
             plot_label = str_to_title(gsub("_", " ", variable)),
-            label = if_else(variable %in% c(
-              "prior_flu_vaccination", "flu_vaccination"), paste0(
-                plot_label, " (", str_to_title(label),")"), label),
+            label = case_when(
+              variable == "flu_vaccination" ~ paste0(plot_label, " (Yes)"),
+              variable == "prior_flu_vaccination" ~ paste0(
+                plot_label, " (", str_to_title(label),")"),
+              TRUE ~ label),
             subset = gsub("_", "-", subset)
           ) %>%
           mutate(
@@ -3364,7 +3477,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
+          scale_x_log10() + #coord_cartesian(xlim = c(0.1, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = "none", shape = guide_legend("Est. Type")) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
