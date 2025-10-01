@@ -328,9 +328,13 @@ covid_ethnicity_ses_severe <- forest_year_further_mult(
 ##mild
 
 # Create versions of your plots without legends
-rsv_plot <- rsv_ethnicity_ses_mild + theme(legend.position = "none")
+rsv_plot <- rsv_ethnicity_ses_mild + theme(legend.position = "none",
+                                           axis.text.x = element_blank(),
+                                           axis.ticks = element_blank())
 flu_plot <- flu_ethnicity_ses_mild + theme(legend.position = "none")
-covid_plot <- covid_ethnicity_ses_mild + theme(legend.position = "none")
+covid_plot <- covid_ethnicity_ses_mild + theme(legend.position = "none",
+                                               axis.text.x = element_blank(),
+                                               axis.ticks = element_blank())
 
 # Extract the legend from the original plot
 legend <- get_legend(rsv_ethnicity_ses_mild)
@@ -374,9 +378,13 @@ ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
 ##severe
 
 # Create versions of your plots without legends
-rsv_plot <- rsv_ethnicity_ses_severe + theme(legend.position = "none")
+rsv_plot <- rsv_ethnicity_ses_severe + theme(legend.position = "none",
+                                             axis.text.x = element_blank(),
+                                             axis.ticks = element_blank())
 flu_plot <- flu_ethnicity_ses_severe + theme(legend.position = "none")
-covid_plot <- covid_ethnicity_ses_severe + theme(legend.position = "none")
+covid_plot <- covid_ethnicity_ses_severe + theme(legend.position = "none",
+                                                 axis.text.x = element_blank(),
+                                                 axis.ticks = element_blank())
 
 # Extract the legend from the original plot
 legend <- get_legend(rsv_ethnicity_ses_severe)
@@ -426,10 +434,10 @@ final_combined <- plot_grid(
   nrow = 2
 ) %>%
   annotate_figure(
-    top = text_grob(paste0("Rate Ratios of Outcomes in ",
-                           str_to_title(gsub("_", " ", cohort))),
-                    face = "bold", size = 14, hjust = 0.25),
-    bottom = text_grob("Rate Ratio", vjust = -1), 
+    # top = text_grob(paste0("Rate Ratios of Outcomes in ",
+    #                        str_to_title(gsub("_", " ", cohort))),
+    #                 face = "bold", size = 14, hjust = 0.25),
+    bottom = text_grob("Rate Ratio", vjust = -1, hjust = -0.5), 
     left = text_grob(c("RSV", "Influenza", "COVID-19",
                        "RSV", "Influenza", "COVID-19"), 
                      x = 1.5, hjust = 0, vjust = -16,
@@ -541,7 +549,7 @@ final_combined <- plot_grid(
       top = text_grob(paste0("Rate Ratios of Mild Disease in ",
                              str_to_title(gsub("_", " ", cohort))),
                       face = "bold", size = 14),
-      bottom = text_grob("Rate Ratio", vjust = -1),
+      bottom = text_grob("Rate Ratio", vjust = -1, hjust = -0.5),
       left = text_grob("Overall Respiratory", vjust = -16.75, hjust = -0.75,
                        just = "left", face = "bold")
     ),
@@ -550,7 +558,7 @@ final_combined <- plot_grid(
       top = text_grob(paste0("Rate Ratios of Severe Disease in ",
                              str_to_title(gsub("_", " ", cohort))),
                       face = "bold", size = 14),
-      bottom = text_grob("Rate Ratio", vjust = -1),
+      bottom = text_grob("Rate Ratio", vjust = -1, hjust = -0.5),
       left = text_grob("Overall Respiratory", vjust = -16.75, hjust = -0.75,
                        just = "left", face = "bold")
     ),
@@ -723,9 +731,13 @@ covid_ethnicity_ses_severe <- forest_year_further_mult(
 ##mild
 
 # Create versions of your plots without legends
-rsv_plot <- rsv_ethnicity_ses_mild + theme(legend.position = "none")
+rsv_plot <- rsv_ethnicity_ses_mild + theme(legend.position = "none",
+                                           axis.text.x = element_blank(),
+                                           axis.ticks = element_blank())
 flu_plot <- flu_ethnicity_ses_mild + theme(legend.position = "none")
-covid_plot <- covid_ethnicity_ses_mild + theme(legend.position = "none")
+covid_plot <- covid_ethnicity_ses_mild + theme(legend.position = "none",
+                                               axis.text.x = element_blank(),
+                                               axis.ticks = element_blank())
 
 # Extract the legend from the original plot
 legend <- get_legend(rsv_ethnicity_ses_mild)
@@ -769,9 +781,12 @@ ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
 ##severe
 
 # Create versions of your plots without legends
-rsv_plot <- rsv_ethnicity_ses_severe + theme(legend.position = "none")
-flu_plot <- flu_ethnicity_ses_severe + theme(legend.position = "none")
-covid_plot <- covid_ethnicity_ses_severe + theme(legend.position = "none")
+rsv_plot <- rsv_ethnicity_ses_severe + theme(legend.position = "none",
+                                             axis.text.x = element_blank(),
+                                             axis.ticks = element_blank())
+covid_plot <- covid_ethnicity_ses_severe + theme(legend.position = "none",
+                                                 axis.text.x = element_blank(),
+                                                 axis.ticks = element_blank())
 
 # Extract the legend from the original plot
 legend <- get_legend(rsv_ethnicity_ses_severe)
@@ -821,10 +836,10 @@ final_combined <- plot_grid(
   nrow = 2
 ) %>%
   annotate_figure(
-    top = text_grob(paste0("Rate Ratios of Outcomes in ",
-                           str_to_title(gsub("_", " ", cohort))),
-                    face = "bold", size = 14, hjust = 0.25),
-    bottom = text_grob("Rate Ratio", vjust = -1), 
+    # top = text_grob(paste0("Rate Ratios of Outcomes in ",
+    #                        str_to_title(gsub("_", " ", cohort))),
+    #                 face = "bold", size = 14, hjust = 0.25),
+    bottom = text_grob("Rate Ratio", vjust = -1, hjust = -0.5), 
     left = text_grob(c("RSV", "Influenza", "COVID-19",
                        "RSV", "Influenza", "COVID-19"), 
                      x = 1.5, hjust = 0, vjust = -16,
@@ -896,7 +911,7 @@ final_combined <- plot_grid(
       top = text_grob(paste0("Rate Ratios of Mild Disease in ",
                              str_to_title(gsub("_", " ", cohort))),
                       face = "bold", size = 14),
-      bottom = text_grob("Rate Ratio", vjust = -1),
+      bottom = text_grob("Rate Ratio", vjust = -1, hjust = -0.5),
       left = text_grob("Overall Respiratory", vjust = -16.75, hjust = -0.75,
                        just = "left", face = "bold")
     ),
@@ -905,7 +920,7 @@ final_combined <- plot_grid(
       top = text_grob(paste0("Rate Ratios of Severe Disease in ",
                              str_to_title(gsub("_", " ", cohort))),
                       face = "bold", size = 14),
-      bottom = text_grob("Rate Ratio", vjust = -1),
+      bottom = text_grob("Rate Ratio", vjust = -1, hjust = -0.5),
       left = text_grob("Overall Respiratory", vjust = -16.75, hjust = -0.75,
                        just = "left", face = "bold")
     ),

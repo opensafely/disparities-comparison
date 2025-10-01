@@ -23,22 +23,19 @@ import <- function(pathogen, cohort) {
   
   df <- read_csv(here::here(
     "post_check", "output", "collated", "descriptive", "over_time",
-    paste0(cohort, "_", "rates_over_time_all_all_", pathogen, ".csv"))) %>%
+    paste0(cohort, "_", "counts_over_time_all_monthly_", pathogen, ".csv"))) %>%
     mutate(virus = pathogen_title) %>%
-    arrange(interval_start) %>%
+    arrange(month) %>%
     mutate(
-      month = ymd(floor_date(interval_start, unit = "month")),
       event = case_when(
         str_detect(event, "primary") ~ "Mild",
         str_detect(event, "secondary") ~ "Severe"
       )
     ) %>%
-    select(c(interval_start, month, event,
-             total_events = total_events_midpoint10,
+    select(c(month, event,
+             total_events = n,
              codelist_type, virus)) %>%
-    filter(month >= "2016-09-01") %>%
-    slice_min(order_by = interval_start, n = 1, by = c("month", "event")) %>%
-    select(-interval_start)
+    filter(month >= "2016-09-01")
   
   return(df)
 }

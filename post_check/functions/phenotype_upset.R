@@ -492,21 +492,21 @@ upset_plot <- function(input, seasons) {
     label_size = 14,
     label_fontface = "bold",
     hjust = c(0, -0.1, 0, -0.05), 
-    vjust = -1.45
+    vjust = -2
   )
   plot_final <- plot_grid(
     plot_final2,
     plot_label,
     nrow = 2, rel_heights = c(0.95, 0.025)
-  ) %>%
-    annotate_figure(
-      top = text_grob(
-        paste0("Identification of Outcomes in ",
-               str_to_title(gsub("_", " ", cohort)),
-               " by Season of Interest"),
-        color = "black", face = "bold", size = 16, 
-        vjust = 1.25)
-    )
+  ) #%>%
+    # annotate_figure(
+    #   top = text_grob(
+    #     paste0("Identification of Outcomes in ",
+    #            str_to_title(gsub("_", " ", cohort)),
+    #            " by Season of Interest"),
+    #     color = "black", face = "bold", size = 16, 
+    #     vjust = 1.25)
+    # )
   
   return(plot_final)
   

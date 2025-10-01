@@ -7,6 +7,7 @@ library(ggplot2)
 library(cowplot)
 library(ggpubr)
 library(ggpmisc)
+
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 
 ##-- comparing overall cases
@@ -93,11 +94,11 @@ plot <- df_plot %>%
   filter(virus != "COVID-19") %>%
   ggplot() +
   geom_line(aes(x = month, y = total_events, color = virus),
-            linewidth = 1) +
+            linewidth = 1.5) +
   facet_wrap(~event, nrow = 2, scales = "free_y") +
   geom_line(data = df_plot %>% filter(virus == "COVID-19"),
             aes(x = month, y = total_events/100, color = virus),
-            linewidth = 1) +
+            linewidth = 1.5) +
   geom_rect(data = rects, aes(xmin = xmin, xmax = xmax,
                               ymin = ymin, ymax = ymax),
             fill = "grey", alpha = 0.25, col = NA) +
