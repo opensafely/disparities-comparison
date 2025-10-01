@@ -965,10 +965,6 @@ else :
 
   #extract flu primary care dates for 'sensitive' phenotype
   
-  #define a function to determine whether two dates are within 14 days irrespective of order
-  def dates_are_within_n_days(date_1, date_2, n_days):
-    return (diff_dates_days(date_1, date_2) <= n_days) & (diff_dates_days(date_1, date_2) >= -n_days)
-  
   #get date of first case of either ARI or fever for first episode
   ari_dates = (
     get_codes_dates("ari_primary_codelist", 4, index_date, 1)
@@ -982,7 +978,7 @@ else :
 
   for ari_date in ari_dates:
       for fever_date in fever_dates:
-          close_in_time = dates_are_within_n_days(ari_date, fever_date, 14)
+          close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
           ILI_pairs.append(when(close_in_time).then(True))
           ILI_date_cases.append(when(close_in_time)
           .then(minimum_of(ari_date, fever_date)))
@@ -1042,7 +1038,7 @@ else :
 
   for ari_date in ari_second_dates:
       for fever_date in fever_second_dates:
-          close_in_time = dates_are_within_n_days(ari_date, fever_date, 14)
+          close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
           ILI_pairs_second.append(when(close_in_time).then(True))
           ILI_second_date_cases.append(when(close_in_time)
           .then(minimum_of(ari_date, fever_date)))
