@@ -441,8 +441,8 @@ final_combined <- plot_grid(
     left = text_grob(c("RSV", "Influenza", "COVID-19",
                        "RSV", "Influenza", "COVID-19"), 
                      x = 1.5, hjust = 0, vjust = -16,
-                     y = c(0.87, 0.71, 0.55,
-                           0.38, 0.22, 0.06), 
+                     y = c(0.88, 0.72, 0.56,
+                           0.385, 0.225, 0.068), 
                      just = "left", face = "bold")
   )
 
@@ -843,8 +843,8 @@ final_combined <- plot_grid(
     left = text_grob(c("RSV", "Influenza", "COVID-19",
                        "RSV", "Influenza", "COVID-19"), 
                      x = 1.5, hjust = 0, vjust = -16,
-                     y = c(0.87, 0.71, 0.55,
-                           0.38, 0.22, 0.06), 
+                     y = c(0.88, 0.72, 0.56,
+                           0.385, 0.225, 0.068), 
                      just = "left", face = "bold")
   )
 
