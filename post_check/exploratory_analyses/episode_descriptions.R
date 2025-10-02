@@ -12,23 +12,47 @@ seasons <- c("2017_18", "2018_19", "2020_21", "2023_24")
 
 cohort <- "older_adults"
 
+#specific phenotype
+phenotype <- "specific"
+
 #import collated reinfection outputs
 df_input <- read_csv(
   here::here("post_check", "output", "collated", "descriptive",
-             paste0(cohort, "_reinfections_collated.csv")))
+             paste0(cohort, "_reinfections_", phenotype, "_collated.csv")))
 
 rsv_older_adults <- reinfections(df_input, "rsv", seasons)
 gt::gtsave(
   rsv_older_adults, here::here("post_check", "plots", "exploratory_analyses",
-  "condensed", paste0(cohort, "_reinfections_rsv.png")))
+  "condensed", paste0(cohort, "_reinfections_", phenotype, "_rsv.png")))
 flu_older_adults <- reinfections(df_input, "flu", seasons)
 gt::gtsave(
   flu_older_adults, here::here("post_check", "plots", "exploratory_analyses",
-  "condensed", paste0(cohort, "_reinfections_flu.png")))
+  "condensed", paste0(cohort, "_reinfections_", phenotype, "_flu.png")))
 covid_older_adults <- reinfections(df_input, "covid", seasons)
 gt::gtsave(
   covid_older_adults, here::here("post_check", "plots", "exploratory_analyses",
-  "condensed",  paste0(cohort, "_reinfections_covid.png")))
+  "condensed",  paste0(cohort, "_reinfections_", phenotype, "_covid.png")))
+
+#sensitive phenotype
+phenotype <- "sensitive"
+
+#import collated reinfection outputs
+df_input <- read_csv(
+  here::here("post_check", "output", "collated", "descriptive",
+             paste0(cohort, "_reinfections_", phenotype, "_collated.csv")))
+
+rsv_older_adults <- reinfections(df_input, "rsv", seasons)
+gt::gtsave(
+  rsv_older_adults, here::here("post_check", "plots", "exploratory_analyses",
+  "condensed", paste0(cohort, "_reinfections_", phenotype, "_rsv.png")))
+flu_older_adults <- reinfections(df_input, "flu", seasons)
+gt::gtsave(
+  flu_older_adults, here::here("post_check", "plots", "exploratory_analyses",
+  "condensed", paste0(cohort, "_reinfections_", phenotype, "_flu.png")))
+covid_older_adults <- reinfections(df_input, "covid", seasons)
+gt::gtsave(
+  covid_older_adults, here::here("post_check", "plots", "exploratory_analyses",
+  "condensed",  paste0(cohort, "_reinfections_", phenotype, "_covid.png")))
 
 # #import collated multiple episode outputs
 # df_input <- read_csv(
@@ -42,20 +66,44 @@ gt::gtsave(
 
 cohort <- "infants"
 
+#specific phenotype
+phenotype <- "specific"
+
 #import collated reinfection outputs
 df_input <- read_csv(
   here::here("post_check", "output", "collated", "descriptive",
-             paste0(cohort, "_reinfections_collated.csv")))
+             paste0(cohort, "_reinfections_", phenotype, "_collated.csv")))
 
-rsv_infants <- reinfections(df_input, "rsv", seasons)
+rsv_older_adults <- reinfections(df_input, "rsv", seasons)
 gt::gtsave(
-  rsv_infants, here::here("post_check", "plots", "exploratory_analyses",
-  "condensed", paste0(cohort, "_reinfections_rsv.png")))
-flu_infants <- reinfections(df_input, "flu", seasons)
+  rsv_older_adults, here::here("post_check", "plots", "exploratory_analyses",
+  "condensed", paste0(cohort, "_reinfections_", phenotype, "_rsv.png")))
+flu_older_adults <- reinfections(df_input, "flu", seasons)
 gt::gtsave(
-  flu_infants, here::here("post_check", "plots", "exploratory_analyses",
-  "condensed", paste0(cohort, "_reinfections_flu.png")))
-covid_infants <- reinfections(df_input, "covid", seasons)
+  flu_older_adults, here::here("post_check", "plots", "exploratory_analyses",
+  "condensed", paste0(cohort, "_reinfections_", phenotype, "_flu.png")))
+covid_older_adults <- reinfections(df_input, "covid", seasons)
 gt::gtsave(
-  covid_infants, here::here("post_check", "plots", "exploratory_analyses",
-  "condensed", paste0(cohort, "_reinfections_covid.png")))
+  covid_older_adults, here::here("post_check", "plots", "exploratory_analyses",
+  "condensed",  paste0(cohort, "_reinfections_", phenotype, "_covid.png")))
+
+#sensitive phenotype
+phenotype <- "sensitive"
+
+#import collated reinfection outputs
+df_input <- read_csv(
+  here::here("post_check", "output", "collated", "descriptive",
+             paste0(cohort, "_reinfections_", phenotype, "_collated.csv")))
+
+rsv_older_adults <- reinfections(df_input, "rsv", seasons)
+gt::gtsave(
+  rsv_older_adults, here::here("post_check", "plots", "exploratory_analyses",
+  "condensed", paste0(cohort, "_reinfections_", phenotype, "_rsv.png")))
+flu_older_adults <- reinfections(df_input, "flu", seasons)
+gt::gtsave(
+  flu_older_adults, here::here("post_check", "plots", "exploratory_analyses",
+  "condensed", paste0(cohort, "_reinfections_", phenotype, "_flu.png")))
+covid_older_adults <- reinfections(df_input, "covid", seasons)
+gt::gtsave(
+  covid_older_adults, here::here("post_check", "plots", "exploratory_analyses",
+  "condensed",  paste0(cohort, "_reinfections_", phenotype, "_covid.png")))

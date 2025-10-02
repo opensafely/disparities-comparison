@@ -3309,7 +3309,13 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               '#d62728', '#9467bd',
               '#c49c94', '#e377c2',
               '#c5b0d5', '#8c564b',
-              '#f7b6d2', "#4e3f2c")
+              '#f7b6d2', "#4e3f2c"),
+      labels = c("Sex", "Age Group", "Ethnicity", "IMD Quintile",
+                 "Household Composition", "Rurality", "Prior Vaccination",
+                 "Current Vaccination", "Current Vaccination",
+                 "Current Vaccination", "Age", "Smoking Status",
+                 "Drinking", "Drug Usage", "Flu Vaccination",
+                 "Pertussis Vaccination", "Binary Variables")
     )
     
     cols_final <- cols2 %>%
@@ -3317,7 +3323,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     
     cols_final2 <- full_join(cols_final, tidy_forest, by = "variable",
                              relationship = "one-to-many") %>%
-      select(variable, subset, col)
+      select(variable, subset, col, labels)
     
     tidy_forest <- merge(tidy_forest, cols_final2,
                          by = c("variable", "subset"))
@@ -3330,6 +3336,9 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           codelist_type == "sensitive" ~ 15,
         )
       )
+    
+    plot_labelling <- cols_final2$col
+    names(plot_labelling) <- cols_final2$labels
     
     if (cohort == "infants_subgroup") {
       
@@ -3381,20 +3390,22 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive"))
+              "Reference", "Specific", "Sensitive")),
+            labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           filter(subset %in% c("2020-21", "2023-24")) %>%
           unique() %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
-                     color = col, shape = shape)) +
-          scale_color_identity() +
+                     color = labels, shape = shape)) +
+          scale_color_manual(name = "Characteristic", guide = "legend",
+                             values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
-          guides(color = "none", shape = guide_legend("Est. Type")) +
+          guides(color = guide_legend("Characteristic"), shape = guide_legend("Est. Type")) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
           labs(x = "", y = "") + theme_bw() +
           theme(text = element_text(size = 11), strip.text.x = element_blank())
@@ -3445,19 +3456,21 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           mutate(
             plot_label2 = factor(plot_label2, levels = group_order),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive"))
+              "Reference", "Specific", "Sensitive")),
+            labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           unique() %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
-                     color = col, shape = shape)) +
-          scale_color_identity() +
+                     color = labels, shape = shape)) +
+          scale_color_manual(name = "Characteristic", guide = "legend",
+                             values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
-          guides(color = "none", shape = guide_legend("Est. Type")) +
+          guides(color = guide_legend("Characteristic"), shape = guide_legend("Est. Type")) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
           labs(x = "", y = "") + theme_bw() +
           theme(text = element_text(size = 11), strip.text.x = element_blank())
@@ -3501,6 +3514,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               str_detect(plot_label, "Latest") ~ "Ethnicity",
               str_detect(plot_label, "Comp") ~ "Household Composition",
               str_detect(plot_label, "Rurality" ) ~ "Rurality",
+              str_detect(plot_label, "Time Since") ~ "Prior Vaccination",
+              str_detect(plot_label, "Covid Vaccination") ~ "Current Vaccination",
               TRUE ~ plot_label)
           ) %>%
           mutate(
@@ -3517,20 +3532,22 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive"))
+              "Reference", "Specific", "Sensitive")),
+            labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           filter(subset %in% c("2020-21", "2023-24")) %>%
           unique() %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
-                     color = col, shape = shape)) +
-          scale_color_identity() +
+                     color = labels, shape = shape)) +
+          scale_color_manual(name = "Characteristic", guide = "legend",
+                             values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
-          guides(color = "none", shape = guide_legend("Est. Type")) +
+          guides(color = guide_legend("Characteristic"), shape = guide_legend("Est. Type")) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
           labs(x = "", y = "") + theme_bw() +
           theme(text = element_text(size = 11), strip.text.x = element_blank())
@@ -3569,6 +3586,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               str_detect(plot_label, "Latest") ~ "Ethnicity",
               str_detect(plot_label, "Comp") ~ "Household Composition",
               str_detect(plot_label, "Rurality" ) ~ "Rurality",
+              str_detect(plot_label, "Prior") ~ "Prior Vaccination",
+              str_detect(plot_label, "Flu Vaccination") ~ "Current Vaccination",
               TRUE ~ plot_label),
             label = case_when(
               str_detect(label, "Prior") & str_detect(label, "(Yes)") ~ "Eligible and Vaccinated Last Autumn",
@@ -3584,19 +3603,21 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive"))
+              "Reference", "Specific", "Sensitive")),
+            labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           unique() %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
-                     color = col, shape = shape)) +
-          scale_color_identity() +
+                     color = labels, shape = shape)) +
+          scale_color_manual(name = "Characteristic", guide = "legend",
+                             values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
-          guides(color = "none", shape = guide_legend("Est. Type")) +
+          guides(color = guide_legend("Characteristic"), shape = guide_legend("Est. Type")) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
           labs(x = "", y = "") + theme_bw() +
           theme(text = element_text(size = 11), strip.text.x = element_blank())

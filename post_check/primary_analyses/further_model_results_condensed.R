@@ -337,7 +337,7 @@ covid_plot <- covid_ethnicity_ses_mild + theme(legend.position = "none",
                                                axis.ticks = element_blank())
 
 # Extract the legend from the original plot
-legend <- get_legend(rsv_ethnicity_ses_mild)
+legend <- get_legend(flu_ethnicity_ses_mild)
 
 # Create the bottom row with legend and COVID plot
 bottom_row <- plot_grid(
@@ -387,7 +387,7 @@ covid_plot <- covid_ethnicity_ses_severe + theme(legend.position = "none",
                                                  axis.ticks = element_blank())
 
 # Extract the legend from the original plot
-legend <- get_legend(rsv_ethnicity_ses_severe)
+legend <- get_legend(flu_ethnicity_ses_severe)
 
 # Create the bottom row with legend and COVID plot
 bottom_row <- plot_grid(
@@ -740,7 +740,7 @@ covid_plot <- covid_ethnicity_ses_mild + theme(legend.position = "none",
                                                axis.ticks = element_blank())
 
 # Extract the legend from the original plot
-legend <- get_legend(rsv_ethnicity_ses_mild)
+legend <- get_legend(flu_ethnicity_ses_mild)
 
 # Create the bottom row with legend and COVID plot
 bottom_row <- plot_grid(
@@ -789,7 +789,7 @@ covid_plot <- covid_ethnicity_ses_severe + theme(legend.position = "none",
                                                  axis.ticks = element_blank())
 
 # Extract the legend from the original plot
-legend <- get_legend(rsv_ethnicity_ses_severe)
+legend <- get_legend(flu_ethnicity_ses_severe)
 
 # Create the bottom row with legend and COVID plot
 bottom_row <- plot_grid(
@@ -1098,7 +1098,7 @@ ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
 # covid_plot <- covid_ethnicity_ses_mild + theme(legend.position = "none")
 # 
 # # Extract the legend from the original plot
-# legend <- get_legend(rsv_ethnicity_ses_mild)
+# legend <- get_legend(flu_ethnicity_ses_mild)
 # 
 # # Create the bottom row with legend and COVID plot
 # bottom_row <- plot_grid(
@@ -1145,7 +1145,7 @@ ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
 # covid_plot <- covid_ethnicity_ses_severe + theme(legend.position = "none")
 # 
 # # Extract the legend from the original plot
-# legend <- get_legend(rsv_ethnicity_ses_severe)
+# legend <- get_legend(flu_ethnicity_ses_severe)
 # 
 # # Create the bottom row with legend and COVID plot
 # bottom_row <- plot_grid(
