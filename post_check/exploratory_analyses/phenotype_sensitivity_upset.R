@@ -1,13 +1,5 @@
 library(tidyverse)
 library(here)
-library(ggplot2)
-library(scales)
-library(grid)
-library(gridExtra)
-library(stringr)
-library(ggeasy)
-library(forcats)
-library(cowplot)
 
 #import plot function
 source(here::here("post_check", "functions", "phenotype_upset.R"))

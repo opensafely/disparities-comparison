@@ -129,14 +129,14 @@ df_surv_mute <- bind_rows(
 df_surv_mute <- df_surv_mute %>%
   mutate(
     coeff = case_when(
-      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 8,
+      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 10,
       virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 5,
-      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 18,
-      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 5,
-      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 0.75,
-      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 0.5,
-      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 2,
-      virus == "Influenza" & event == "Severe" & codelist_type == "sensitive" ~ 2
+      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 30,
+      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 6,
+      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 0.25,
+      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 0.25,
+      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 0.5,
+      virus == "Influenza" & event == "Severe" & codelist_type == "sensitive" ~ 1
     ),
     total_events = total_events*coeff
   ) %>%
@@ -152,14 +152,14 @@ df_all <- bind_rows(
 df_all <- df_all %>%
   mutate(
     ylims = case_when(
-      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 80000,
-      virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 50000,
-      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 250000,
-      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 60000,
-      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 10500,
-      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 7500,
-      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 35000,
-      virus == "Influenza" & event == "Severe" & codelist_type == "sensitive" ~ 40000
+      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 115000,
+      virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 58000,
+      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 310000,
+      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 62000,
+      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 12500,
+      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 12500,
+      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 25000,
+      virus == "Influenza" & event == "Severe" & codelist_type == "sensitive" ~ 52000
     )
   )
 
@@ -231,6 +231,14 @@ plot_combined <- function(df, pathogen, phenotype) {
       )
     )
   
+  my_tag <- function(outcome_type, pathogen, phenotype) {
+
+    tag <- paste0(outcome_type, " ", pathogen, " (",
+                  str_to_sentence(phenotype), ")")
+    return(tag)
+
+  }
+  
   mild <- df_plot %>%
     filter(event == "Mild") %>%
     ggplot() +
@@ -246,7 +254,8 @@ plot_combined <- function(df, pathogen, phenotype) {
     scale_x_date(date_breaks = "1 years", date_labels = "%y") + 
     scale_color_manual(values = c(
       "RSV - EHR" = cols[1], "Influenza - EHR" = cols[2],
-      "RSV - Surveillance" = "#519A83", "Influenza - Surveillance" = "#CE704C")) +
+      "RSV - Surveillance" = "#519A83",
+      "Influenza - Surveillance" = "#CE704C")) +
     scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
                        labels = c("sensitive" = "Sensitive",
                                   "specific" = "Specific"),
@@ -254,6 +263,15 @@ plot_combined <- function(df, pathogen, phenotype) {
     labs(x = "", y = "", colour = "Virus & Data Source",
          alpha = "Phenotype Used") + theme_bw() +
     theme(legend.position = "none")
+
+  mild <- tag_facet(mild,
+                    x = df_plot$month[[1]], y = limits_mild,
+                    hjust = 0, vjust = 0.5,
+                    open = "", close = "",
+                    fontface = 4,
+                    size = 3.5,
+                    family = "sans",
+                    tag_pool = my_tag("Mild", pathogen, phenotype))
   
   severe <- df_plot %>%
     filter(event == "Severe") %>%
@@ -270,7 +288,8 @@ plot_combined <- function(df, pathogen, phenotype) {
     scale_x_date(date_breaks = "1 years", date_labels = "%y") + 
     scale_color_manual(values = c(
       "RSV - EHR" = cols[1], "Influenza - EHR" = cols[2],
-      "RSV - Surveillance" = "#519A83", "Influenza - Surveillance" = "#CE704C")) +
+      "RSV - Surveillance" = "#519A83",
+      "Influenza - Surveillance" = "#CE704C")) +
     scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
                        labels = c("sensitive" = "Sensitive",
                                   "specific" = "Specific"),
@@ -278,22 +297,31 @@ plot_combined <- function(df, pathogen, phenotype) {
     labs(x = "", y = "", colour = "Virus & Data Source",
          alpha = "Phenotype Used") + theme_bw() +
     theme(legend.position = "none")
+
+    severe <- tag_facet(severe,
+                        x = df_plot$month[[1]], y = limits_severe,
+                        hjust = 0, vjust = 0.5,
+                        open = "", close = "",
+                        fontface = 4,
+                        size = 3.5,
+                        family = "sans",
+                        tag_pool = my_tag("Severe", pathogen, phenotype))
   
-  # Create a text label grob with the phenotype name
-  label <- ggdraw() + 
-    draw_label(
-      str_to_sentence(phenotype),
-      fontface = "bold", 
-      size = 8
-    )
+  # # Create a text label grob with the phenotype name
+  # label <- ggdraw() + 
+  #   draw_label(
+  #     str_to_sentence(phenotype),
+  #     fontface = "bold", 
+  #     size = 8
+  #   )
   
   # Combine plots with text label in the middle
   plot_grid(
     mild, 
-    label,  # the text label
+    #label,  # the text label
     severe, 
     nrow = 1, 
-    rel_widths = c(1, 0.1, 1)
+    rel_widths = c(1, 1)
   )
   
 }
@@ -328,6 +356,7 @@ get_legend_2 <- function(df1, df2) {
   
   legend <- get_legend(
     df_plot %>%
+      filter(virus != "Overall Respiratory Viruses") %>%
       ggplot() +
       geom_line(aes(x = month, y = total_events, color = factor(
         col_type, levels = c(
@@ -337,7 +366,8 @@ get_legend_2 <- function(df1, df2) {
         linewidth = 1) +
       scale_color_manual(values = c(
         "RSV - EHR" = cols[1], "Influenza - EHR" = cols[2],
-        "RSV - Surveillance" = "#519A83", "Influenza - Surveillance" = "#CE704C")) +
+        "RSV - Surveillance" = "#519A83",
+        "Influenza - Surveillance" = "#CE704C")) +
       scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
                          labels = c("sensitive" = "Sensitive",
                                     "specific" = "Specific"),
@@ -386,26 +416,21 @@ transmission_legend <- ggplot() +
   theme(plot.margin = margin(3, -10, -75, -10))
 
 bottom_row <- plot_grid(
-  plot_grid(NULL, transmission_legend, ncol = 2, rel_widths = c(0.32, 0.8)),
-  legend,
-  nrow = 2,
-  rel_heights = c(0.5, 0.25)
-) %>% annotate_figure(
-  left = text_grob("Mild", size = 14, hjust = -7.25, vjust = -118.5),
-  right = text_grob("Severe", size = 14, hjust = 4.75, vjust = -118.5)
+  NULL, transmission_legend, ncol = 2, rel_widths = c(0.32, 0.8)
 )
 
 plot_grid(
   NULL,
   plot,
   bottom_row,
+  NULL,
   ncol = 1,
-  rel_heights = c(0.01, 1, 0.1)
+  rel_heights = c(0.02, 1, 0.05, 0.025)
 ) %>% annotate_figure(
-  top = text_grob(
-    "Monthly Counts of RSV and Influenza in All Cohorts ",
-    face = "bold", size = 14),
-  bottom = text_grob("Year (2016-2024)", vjust = -12)
+  # top = text_grob(
+  #   "Monthly Counts of RSV, Influenza and COVID-19 in All Cohorts ",
+  #   face = "bold", size = 14),
+  bottom = text_grob("Year (2016-2024)", vjust = -9.5)
 )
 
 #save

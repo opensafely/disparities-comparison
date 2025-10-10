@@ -12,78 +12,69 @@ import <- function(pathogen) {
     pathogen == "covid" ~ "COVID-19"
   )
   
-  df_older_adults <- read_csv(here::here("post_check",
-    "output", "collated", "descriptive", "over_time",
-    paste0("older_adults_", "rates_over_time_all_all_", pathogen, ".csv"))) %>%
+  df_older_adults <- read_csv(here::here(
+    "post_check", "output", "collated", "descriptive", "over_time",
+    paste0("older_adults_", "counts_over_time_all_monthly_", pathogen, ".csv"))) %>%
     mutate(virus = pathogen_title) %>%
-    arrange(interval_start) %>%
+    arrange(month) %>%
     mutate(
-      month = ymd(floor_date(interval_start, unit = "month")),
       event = case_when(
         str_detect(event, "primary") ~ "Mild",
         str_detect(event, "secondary") ~ "Severe"
       )
     ) %>%
-    select(c(interval_start, month, event, total_events = total_events_midpoint10,
+    select(c(month, event,
+             total_events = n,
              codelist_type, virus)) %>%
-    filter(month >= "2016-09-01") %>%
-    slice_min(order_by = interval_start, n = 1, by = c("month", "event")) %>%
-    select(-interval_start)
+    filter(month >= "2016-09-01")
   
-  df_adults <- read_csv(here::here("post_check",
-    "output", "collated", "descriptive", "over_time",
-    paste0("adults_", "rates_over_time_all_all_", pathogen, ".csv"))) %>%
+  df_adults <- read_csv(here::here(
+    "post_check", "output", "collated", "descriptive", "over_time",
+    paste0("adults_", "counts_over_time_all_monthly_", pathogen, ".csv"))) %>%
     mutate(virus = pathogen_title) %>%
-    arrange(interval_start) %>%
+    arrange(month) %>%
     mutate(
-      month = ymd(floor_date(interval_start, unit = "month")),
       event = case_when(
         str_detect(event, "primary") ~ "Mild",
         str_detect(event, "secondary") ~ "Severe"
       )
     ) %>%
-    select(c(interval_start, month, event, total_events = total_events_midpoint10,
+    select(c(month, event,
+             total_events = n,
              codelist_type, virus)) %>%
-    filter(month >= "2016-09-01") %>%
-    slice_min(order_by = interval_start, n = 1, by = c("month", "event")) %>%
-    select(-interval_start)
+    filter(month >= "2016-09-01")
   
-  df_children_and_adolescents <- read_csv(here::here("post_check",
-    "output", "collated", "descriptive", "over_time",
-    paste0("children_and_adolescents_", "rates_over_time_all_all_", pathogen,
-           ".csv"))) %>%
+  df_children_and_adolescents <- read_csv(here::here(
+    "post_check", "output", "collated", "descriptive", "over_time",
+    paste0("children_and_adolescents_", "counts_over_time_all_monthly_", pathogen, ".csv"))) %>%
     mutate(virus = pathogen_title) %>%
-    arrange(interval_start) %>%
+    arrange(month) %>%
     mutate(
-      month = ymd(floor_date(interval_start, unit = "month")),
       event = case_when(
         str_detect(event, "primary") ~ "Mild",
         str_detect(event, "secondary") ~ "Severe"
       )
     ) %>%
-    select(c(interval_start, month, event, total_events = total_events_midpoint10,
+    select(c(month, event,
+             total_events = n,
              codelist_type, virus)) %>%
-    filter(month >= "2016-09-01") %>%
-    slice_min(order_by = interval_start, n = 1, by = c("month", "event")) %>%
-    select(-interval_start)
+    filter(month >= "2016-09-01")
   
-  df_infants <- read_csv(here::here("post_check",
-    "output", "collated", "descriptive", "over_time",
-    paste0("infants_", "rates_over_time_all_all_", pathogen, ".csv"))) %>%
+  df_infants <- read_csv(here::here(
+    "post_check", "output", "collated", "descriptive", "over_time",
+    paste0("infants_", "counts_over_time_all_monthly_", pathogen, ".csv"))) %>%
     mutate(virus = pathogen_title) %>%
-    arrange(interval_start) %>%
+    arrange(month) %>%
     mutate(
-      month = ymd(floor_date(interval_start, unit = "month")),
       event = case_when(
         str_detect(event, "primary") ~ "Mild",
         str_detect(event, "secondary") ~ "Severe"
       )
     ) %>%
-    select(c(interval_start, month, event, total_events = total_events_midpoint10,
+    select(c(month, event,
+             total_events = n,
              codelist_type, virus)) %>%
-    filter(month >= "2016-09-01") %>%
-    slice_min(order_by = interval_start, n = 1, by = c("month", "event")) %>%
-    select(-interval_start)
+    filter(month >= "2016-09-01")
   
   df <- as.data.table(bind_rows(
     df_older_adults,
@@ -126,6 +117,10 @@ df_surv <- read_csv(here::here(
   "seasonality_england.csv")) %>%
   arrange(month) %>%
   select(-covid_scaled) %>%
+  # Generate a complete monthly sequence from 2016-09-01 to 2024-08-31
+  complete(
+    month = seq(ymd("2016-09-01"), ymd("2024-08-31"), by = "1 month")
+  ) %>%
   pivot_longer(
     cols = c(total_rsv, total_flu, total_covid),
     names_to = "virus",
@@ -136,6 +131,12 @@ df_surv <- read_csv(here::here(
       virus == "total_rsv" ~ "RSV",
       virus == "total_flu" ~ "Influenza",
       virus == "total_covid" ~ "COVID-19"
+    ),
+    total_events = case_when(
+      is.na(total_events) & virus != "COVID-19" ~ 0,
+      is.na(total_events) & virus == "COVID-19" & month >= ymd("2020-03-01") ~ 0,
+      is.na(total_events) & virus == "COVID-19" & month < ymd("2020-03-01") ~ NA,
+      TRUE ~ total_events
     )
   )
 df_surv <- df_surv[, c("month", "total_events", "virus")] %>%
@@ -370,3 +371,59 @@ for (season in seasons_post) {
   )  
   
 }
+
+# visualise the results over time
+df_clean <- pearson_results_seasons %>%
+  separate(test, into = c("pathogen", "severity", "codelist_type", "season"), 
+           sep = " ", remove = FALSE)
+df_clean <- df_clean %>%
+  mutate(
+    season = str_remove_all(season, "[()]"),
+    pathogen = case_when(pathogen == "Flu" ~ "Influenza", TRUE ~ pathogen)
+  ) %>% 
+  mutate(
+    pathogen = factor(pathogen, levels = c("RSV", "Influenza", "COVID-19")),
+    codelist_type = factor(codelist_type, levels = c("Specific", "Sensitive"))
+  )
+
+f <- function(pal) brewer.pal(3, pal)
+cols <- f("Set2")
+
+ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
+                     group = codelist_type, col = pathogen)) +
+  geom_line(linewidth = 1) +
+  geom_point(aes(size = 1 - p_value)) + #, alpha = p_value < 0.05)) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+  facet_grid(severity ~ pathogen, scales = "fixed") +
+  scale_size_continuous(range = c(1, 5), name = "Strength of Evidence",
+                        labels = c("Weak", "Moderate", "Strong"),
+                        breaks = c(0.25, 0.5, 0.75)) +
+  scale_color_manual(values = c(
+      "RSV" = cols[1], "Influenza" = cols[2],
+      "COVID-19" = cols[3])) +
+  scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
+                       na.translate = FALSE) +
+  theme_bw(base_size = 16) +
+  labs(
+    #title = "Pearson Correlation Between EHR and Surveillance Data Over Time",
+    #subtitle = "By pathogen, severity, and codelist type",
+    x = "Season (September-September)",
+    y = "Correlation (r)",
+    alpha = "Codelist type",
+    color = "Virus"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    panel.grid.minor = element_blank(),
+    strip.text.x = element_blank()
+  ) + 
+  guides(
+    color = guide_legend(order = 1),
+    alpha = guide_legend(order = 2),
+    size = guide_legend(order = 3)
+  )
+
+#save
+ggsave(here::here("post_check", "plots", "exploratory_analyses",
+                  "pearson_overtime.png"),
+       width = 18, height = 12)
