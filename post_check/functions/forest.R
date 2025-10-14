@@ -1788,12 +1788,15 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
+          coord_cartesian(xlim = c(0.08, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic"), shape = guide_legend("Est. Type")) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
           labs(x = "", y = "") + theme_bw() +
-          theme(text = element_text(size = 11), strip.text.x = element_blank())
+          theme(text = element_text(size = 11), strip.text.x = element_blank(),
+                panel.border = element_blank(),
+                axis.line = element_line(color = 'black'))
         
       } else {
         
@@ -1853,12 +1856,15 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
+          coord_cartesian(xlim = c(0.08, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic"), shape = guide_legend("Est. Type")) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
           labs(x = "", y = "") + theme_bw() +
-          theme(text = element_text(size = 11), strip.text.x = element_blank())
+          theme(text = element_text(size = 11), strip.text.x = element_blank(),
+                panel.border = element_blank(),
+                axis.line = element_line(color = 'black'))
         
       }
       
@@ -1930,12 +1936,15 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
+          coord_cartesian(xlim = c(0.08, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic"), shape = guide_legend("Est. Type")) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
           labs(x = "", y = "") + theme_bw() +
-          theme(text = element_text(size = 11), strip.text.x = element_blank())
+          theme(text = element_text(size = 11), strip.text.x = element_blank(),
+                panel.border = element_blank(),
+                axis.line = element_line(color = 'black'))
         
       } else {
         
@@ -2000,12 +2009,15 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
+          coord_cartesian(xlim = c(0.08, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic"), shape = guide_legend("Est. Type")) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
           labs(x = "", y = "") + theme_bw() +
-          theme(text = element_text(size = 11), strip.text.x = element_blank())
+          theme(text = element_text(size = 11), strip.text.x = element_blank(),
+                panel.border = element_blank(),
+                axis.line = element_line(color = 'black'))
         
       }
       

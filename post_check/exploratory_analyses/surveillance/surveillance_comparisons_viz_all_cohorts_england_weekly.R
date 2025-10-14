@@ -287,7 +287,9 @@ plot_combined <- function(df, pathogen, phenotype) {
               fill = "grey", alpha = 0.25, col = NA) +
     scale_y_continuous(
       limits = c(0, limits_mild),
-      sec.axis = sec_axis(trans = ~./coeff_mild, name = "")
+      sec.axis = sec_axis(trans = ~./coeff_mild, name = "",
+                 labels = scales::label_number(scale_cut = cut_si(""))),
+      labels = scales::label_number(scale_cut = cut_si(""))
     ) +
     scale_x_date(date_breaks = "1 years", date_labels = "%y") + 
     scale_color_manual(values = c(
@@ -301,7 +303,8 @@ plot_combined <- function(df, pathogen, phenotype) {
                        na.translate = FALSE) +
     labs(x = "", y = "", colour = "Virus & Data Source",
          alpha = "Phenotype Used") + theme_bw() +
-    theme(legend.position = "none")
+    theme(legend.position = "none", panel.border = element_blank(),
+          axis.line = element_line(color = 'black'))
 
   mild <- tag_facet(mild,
                     x = df_plot$week[[1]], y = limits_mild,
@@ -322,7 +325,9 @@ plot_combined <- function(df, pathogen, phenotype) {
               fill = "grey", alpha = 0.25, col = NA) +
     scale_y_continuous(
       limits = c(0, limits_severe),
-      sec.axis = sec_axis(trans = ~./coeff_severe, name = "")
+      sec.axis = sec_axis(trans = ~./coeff_severe, name = "",
+                 labels = scales::label_number(scale_cut = cut_si(""))),
+      labels = scales::label_number(scale_cut = cut_si(""))
     ) +
     scale_x_date(date_breaks = "1 years", date_labels = "%y") + 
     scale_color_manual(values = c(
@@ -336,7 +341,8 @@ plot_combined <- function(df, pathogen, phenotype) {
                        na.translate = FALSE) +
     labs(x = "", y = "", colour = "Virus & Data Source",
          alpha = "Phenotype Used") + theme_bw() +
-    theme(legend.position = "none")
+    theme(legend.position = "none", panel.border = element_blank(),
+          axis.line = element_line(color = 'black'))
 
     severe <- tag_facet(severe,
                         x = df_plot$week[[1]], y = limits_severe,
@@ -538,6 +544,8 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type), color = cols[1], size = 3.5) +
   stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
+  scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
+  scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -552,7 +560,9 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   labs(x = "", y = "") + theme_bw() +
-  theme(legend.position = "none", strip.text.x = element_blank())
+  theme(legend.position = "none", strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(color = 'black'))
 
 flu_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "Influenza", week >= as.Date("2016-09-01")) %>%
@@ -561,6 +571,8 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type), color = cols[2], size = 3.5) +
   stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
+  scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
+  scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -575,7 +587,9 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   labs(x = "", y = "") + theme_bw() +
-  theme(legend.position = "none", strip.text.x = element_blank())
+  theme(legend.position = "none", strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(color = 'black'))
 
 covid_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "COVID-19", week >= as.Date("2020-03-01")) %>%
@@ -584,6 +598,8 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type), color = cols[3], size = 3.5) +
   stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
+  scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
+  scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -597,10 +613,10 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
                                 "specific" = "Specific"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
-  scale_y_continuous(labels = function(x) format(x, scientific = TRUE)) +
-  scale_x_continuous(labels = function(x) format(x, scientific = TRUE)) +
   labs(x = "", y = "") + theme_bw() +
-  theme(legend.position = "none", strip.text.x = element_blank())
+  theme(legend.position = "none", strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(color = 'black'))
 
 legend <- get_legend(
   df_comp_all_cohorts %>%
@@ -679,6 +695,8 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type, color = season), size = 3.5) +
   stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
+  scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
+  scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -694,7 +712,9 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
                      na.translate = FALSE) +
   scale_color_manual(values = cols2, name = "Season") +
   labs(x = "", y = "", title = "RSV") + theme_bw() +
-  theme(legend.position = "none", strip.text.x = element_blank())
+  theme(legend.position = "none", strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(color = 'black'))
 
 flu_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "Influenza", week >= as.Date("2016-09-01")) %>%
@@ -703,6 +723,8 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type, color = season), size = 3.5) +
   stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
+  scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
+  scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -718,7 +740,9 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
                      na.translate = FALSE) +
   scale_color_manual(values = cols2, name = "Season") +
   labs(x = "", y = "", title = "Influenza") + theme_bw() +
-  theme(legend.position = "none", strip.text.x = element_blank())
+  theme(legend.position = "none", strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(color = 'black'))
 
 covid_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "COVID-19", week >= as.Date("2020-03-01")) %>%
@@ -727,6 +751,8 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   # Primary axis viruses
   geom_point(aes(alpha = codelist_type, color = season), size = 3.5) +
   stat_poly_line(color = "#5A5652", se = F) + stat_poly_eq() +
+  scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
+  scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -741,10 +767,10 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_color_manual(values = cols2[4:8], name = "Season") +
-  scale_y_continuous(labels = function(x) format(x, scientific = TRUE)) +
-  scale_x_continuous(labels = function(x) format(x, scientific = TRUE)) +
   labs(x = "", y = "", title = "COVID-19") + theme_bw() +
-  theme(legend.position = "none", strip.text.x = element_blank())
+  theme(legend.position = "none", strip.text.x = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(color = 'black'))
 
 legend <- get_legend(
   df_comp_all_cohorts %>%
@@ -813,6 +839,8 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
   geom_path(aes(alpha = codelist_type, color = season)) +
   # scale_x_log10() + scale_y_log10() +
   stat_poly_line(color = "#5A5652", se = F) +
+  scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
+  scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -823,7 +851,9 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
                      na.translate = FALSE) +
   scale_color_manual(values = cols2, name = "Season") +
   labs(x = "", y = "", title = "RSV") + theme_bw() +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        panel.border = element_blank(),
+        axis.line = element_line(color = 'black'))
 
 flu_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "Influenza", week >= as.Date("2016-09-01")) %>%
@@ -833,6 +863,8 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
   geom_path(aes(alpha = codelist_type, color = season)) +
   # scale_x_log10() + scale_y_log10() +
   stat_poly_line(color = "#5A5652", se = F) +
+  scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
+  scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -843,7 +875,9 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
                      na.translate = FALSE) +
   scale_color_manual(values = cols2, name = "Season") +
   labs(x = "", y = "", title = "Influenza") + theme_bw() +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        panel.border = element_blank(),
+        axis.line = element_line(color = 'black'))
 
 covid_all_cohorts <- df_comp_all_cohorts %>%
   filter(virus == "COVID-19", week >= as.Date("2020-03-01")) %>%
@@ -853,6 +887,8 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   geom_path(aes(alpha = codelist_type, color = season)) +
   # scale_x_log10() + scale_y_log10() +
   stat_poly_line(color = "#5A5652", se = F) +
+  scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
+  scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
                     labels = c("Specific", "Sensitive"))~event,
              scales = "free_x") +
@@ -862,10 +898,10 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_color_manual(values = cols2[4:8], name = "Season") +
-  scale_y_continuous(labels = function(x) format(x, scientific = TRUE)) +
-  scale_x_continuous(labels = function(x) format(x, scientific = TRUE)) +
   labs(x = "", y = "", title = "COVID-19") + theme_bw() +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        panel.border = element_blank(),
+        axis.line = element_line(color = 'black'))
 
 legend <- get_legend(
   df_comp_all_cohorts %>%

@@ -2,6 +2,8 @@ library(tidyverse)
 library(here)
 library(lmtest)
 library(data.table)
+library(ggpubr)
+library(ggpmisc)
 
 #create function to import data
 import <- function(pathogen) {
@@ -392,18 +394,15 @@ cols <- f("Set2")
 ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
                      group = codelist_type, col = pathogen)) +
   geom_line(linewidth = 1) +
-  geom_point(aes(size = 1 - p_value)) + #, alpha = p_value < 0.05)) +
+  geom_point(size = 6, stroke = NA) + #, alpha = p_value < 0.05)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
-  facet_grid(severity ~ pathogen, scales = "fixed") +
-  scale_size_continuous(range = c(1, 5), name = "Strength of Evidence",
-                        labels = c("Weak", "Moderate", "Strong"),
-                        breaks = c(0.25, 0.5, 0.75)) +
+  facet_grid(pathogen ~ severity, scales = "fixed") +
   scale_color_manual(values = c(
       "RSV" = cols[1], "Influenza" = cols[2],
       "COVID-19" = cols[3])) +
   scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
                        na.translate = FALSE) +
-  theme_bw(base_size = 16) +
+  theme_bw(base_size = 20) +
   labs(
     #title = "Pearson Correlation Between EHR and Surveillance Data Over Time",
     #subtitle = "By pathogen, severity, and codelist type",
@@ -415,15 +414,18 @@ ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
     panel.grid.minor = element_blank(),
-    strip.text.x = element_blank()
+    strip.text.y = element_blank(),
+    strip.background.x = element_blank(),
+    strip.text.x = element_text(face = "bold"),
+    panel.border = element_blank(),
+    axis.line = element_line(color = 'black')
   ) + 
   guides(
-    color = guide_legend(order = 1),
-    alpha = guide_legend(order = 2),
-    size = guide_legend(order = 3)
+    color = guide_legend(order = 1, override.aes = list(size = 8)),
+    alpha = guide_legend(order = 2, override.aes = list(size = 8))
   )
 
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
                   "pearson_overtime.png"),
-       width = 18, height = 12)
+       width = 15, height = 10)
