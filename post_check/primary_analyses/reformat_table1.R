@@ -252,3 +252,46 @@ write_csv(
   here::here("post_check", "output", "collated", "descriptive",
              paste0(cohort, "_reformated_table1_collated.csv"))
 )
+
+
+##secondary table 
+
+###older adults
+
+cohort <- "older_adults"
+investigation_type <- "secondary"
+
+#import collated table 1 outputs
+df_input <- read_csv(here::here("post_check", "output", "collated",
+                     "descriptive", paste0(cohort, "_secondary_table1_collated.csv")))
+names(df_input) <- c("characteristic", "n", "perc", "subset")
+
+df_input_reformat <- df_input %>%
+  filter(!is.na(n), !str_detect(characteristic, "Vaccine")) %>%
+  mutate(
+    n_perc = paste0(n, " (", perc, ")")
+  ) %>%
+  select(-c(n, perc)) %>%
+  pivot_wider(
+    names_from = subset,
+    values_from = n_perc
+  )%>%
+  mutate(
+    characteristic = factor(characteristic, levels = c(
+      "Total", "Asthma", "COPD", "Cystic Fibrosis",
+      "Other Chronic Respiratory Diseases", "Diabetes",
+      "Heart Disease", "Addisons", "Severe Obesity", "Chronic Heart Diseases",
+      "Chronic Liver Disease", "Chronic Kidney Disease",
+      "Chronic Neurological Disease", "Cancer Within 3 Years",
+      "Immunosuppressed", "Sickle Cell Disease", "Never", "Current", "Former",
+      "Unknown", "Hazardous Drinking", "Drug Usage"
+    ))
+  ) %>%
+  arrange(characteristic)
+
+#export to csv file
+write_csv(
+  df_input_reformat,
+  here::here("post_check", "output", "collated", "descriptive",
+             paste0(cohort, "_reformated_secondary_table1_collated.csv"))
+)
