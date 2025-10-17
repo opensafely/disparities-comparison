@@ -131,10 +131,10 @@ def first_prior_event(codelist, where = True):
         .first_for_patient()
     )
 
-#meds occurring before booster date
+#meds occurring before index date
 prior_meds = medications.where(medications.date.is_on_or_before(index_date))
 
-#query prior_meds for existence of event-in-codelist
+#query prior_meds for existence of med-in-codelist
 def has_prior_meds(codelist, where = True):
     return (
         prior_meds.where(where)
@@ -151,7 +151,7 @@ def last_prior_meds(codelist, where = True):
         .last_for_patient()
     )
 
-#query prior_meds for date of earliest event-in-codelist
+#query prior_meds for date of earliest med-in-codelist
 def first_prior_meds(codelist, where = True):
     return (
         prior_meds.where(where)
