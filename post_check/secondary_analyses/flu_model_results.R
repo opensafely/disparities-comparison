@@ -33,21 +33,21 @@ df_input <- df_input %>%
 
 ##create relevant forest plots - severe
 
-#ethnicity
-flu_ethnicity_severe_spec <- forest(
-  df_input, df_dummy, pathogen, "ethnicity", "Severe"
-)$spec
-flu_ethnicity_severe_spec_alt <- forest_year(
-  df_input, df_dummy, pathogen, "ethnicity", "Severe"
-)$spec
+# #ethnicity
+# flu_ethnicity_severe_spec <- forest(
+#   df_input, df_dummy, pathogen, "ethnicity", "Severe"
+# )$spec
+# flu_ethnicity_severe_spec_alt <- forest_year(
+#   df_input, df_dummy, pathogen, "ethnicity", "Severe"
+# )$spec
 
-#ses
-flu_ses_severe_spec <- forest(
-  df_input, df_dummy, pathogen, "ses", "Severe"
-)$spec
-flu_ses_severe_spec_alt <- forest_year(
-  df_input, df_dummy, pathogen, "ses", "Severe"
-)$spec
+# #ses
+# flu_ses_severe_spec <- forest(
+#   df_input, df_dummy, pathogen, "ses", "Severe"
+# )$spec
+# flu_ses_severe_spec_alt <- forest_year(
+#   df_input, df_dummy, pathogen, "ses", "Severe"
+# )$spec
 
 #ethnicity & ses
 flu_ethnicity_ses_severe_spec <- forest(
@@ -59,10 +59,10 @@ flu_ethnicity_ses_severe_spec_alt <- forest_year(
 
 #create list of plots
 plotlist <- list(
-  flu_ethnicity_severe_spec,
-  flu_ethnicity_severe_spec_alt,
-  flu_ses_severe_spec,
-  flu_ses_severe_spec_alt,
+  # flu_ethnicity_severe_spec,
+  # flu_ethnicity_severe_spec_alt,
+  # flu_ses_severe_spec,
+  # flu_ses_severe_spec_alt,
   flu_ethnicity_ses_severe_spec,
   flu_ethnicity_ses_severe_spec_alt
 )
