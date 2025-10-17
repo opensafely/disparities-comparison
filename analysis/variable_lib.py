@@ -142,7 +142,7 @@ def has_prior_meds(codelist, where = True):
         .exists_for_patient()
     )
 
-#query prior meds for date of most recent med-in-codelist
+#query prior_meds for date of most recent med-in-codelist
 def last_prior_meds(codelist, where = True):
     return (
         prior_meds.where(where)
@@ -151,7 +151,7 @@ def last_prior_meds(codelist, where = True):
         .last_for_patient()
     )
 
-#query prior_events for date of earliest med-in-codelist
+#query prior_meds for date of earliest med-in-codelist
 def first_prior_meds(codelist, where = True):
     return (
         prior_meds.where(where)
