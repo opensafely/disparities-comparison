@@ -187,7 +187,8 @@ has_asthma = (
   (has_prior_event(codelists.asthma_codelist))
   & (has_prior_meds(codelists.asthma_oral_medications,
   where = medications.date.is_on_or_between(medication_date, index_date))
-  |(has_prior_meds(codelists.asthma_inhaled_medications)))
+  |(has_prior_meds(codelists.asthma_inhaled_medications,
+  where = medications.date.is_on_or_between(medication_date, index_date))))
 )
   
 #copd diagnosis
