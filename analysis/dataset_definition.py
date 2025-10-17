@@ -839,7 +839,7 @@ else :
 
   #extract rsv secondary care dates for 'sensitive' phenotype
   
-  #get date of first diagnosis code (in any position) from the RSV sensitive 
+  #get date of first diagnosis code (in first or second position) from the RSV sensitive 
   #secondary care codelist - looking at the first episode
   rsv_secondary_sens_date = (
     hospitalisation_primary_secondary_diagnosis_matches(codelists.unspecified_lrti)
@@ -899,7 +899,7 @@ else :
     diff_dates_hours(dataset.rsv_secondary_date, rsv_secondary_discharge)
   )  
   
-  #get date of first diagnosis code (in any position) from the RSV sensitive 
+  #get date of first diagnosis code (in first or second position) from the RSV sensitive 
   #secondary care codelist - looking at the second episode
   rsv_secondary_sens_second_date = (
     hospitalisation_primary_secondary_diagnosis_matches(codelists.unspecified_lrti)
@@ -1097,7 +1097,7 @@ else :
   
   #extract flu secondary care dates for 'sensitive' phenotype
   
-  #get date of first diagnosis code (in any position) from the flu sensitive
+  #get date of first diagnosis code (in first or second position) from the flu sensitive
   #secondary care codelist or ARI secondary care codelist - looking at the first episode
   flu_secondary_sens_date = (
     hospitalisation_primary_secondary_diagnosis_matches(codelists.ari_secondary_codelist)
@@ -1157,7 +1157,7 @@ else :
     diff_dates_hours(dataset.flu_secondary_date, flu_secondary_discharge)
   )
   
-  #get date of first diagnosis code (in any position) from the flu sensitive 
+  #get date of first diagnosis code (in first or second position) from the flu sensitive 
   #secondary care codelist - looking at the second episode
   
   #first define inclusion from specific phenotype
@@ -1344,7 +1344,7 @@ else :
     
     #extract covid secondary care dates for 'sensitive' phenotype
     
-    #get date of first diagnosis code (in any position) from the covid sensitive
+    #get date of first diagnosis code (in first or second position) from the covid sensitive
     #secondary care codelist - looking at the first episode
     covid_secondary_sens_date = (
       hospitalisation_primary_secondary_diagnosis_matches(codelists.coronavirus_unspecified)
@@ -1406,7 +1406,7 @@ else :
       diff_dates_hours(dataset.covid_secondary_date, covid_secondary_discharge)
     )
     
-    #get date of first diagnosis code (in any position) from the covid sensitive
+    #get date of first diagnosis code (in first or second position) from the covid sensitive
     #secondary care codelist - looking at the second episode
     covid_secondary_sens_second_date = (
       hospitalisation_primary_secondary_diagnosis_matches(codelists.coronavirus_unspecified)
@@ -1499,9 +1499,9 @@ else :
   if cohort == "older_adults" :
 
     #extract date of first episode - looking at the first date for which there is
-    #a code in the respiratory virus secondary codelist (in any position), a 
-    #code in the COPD exacerbation secondary codelist (in any position), or a 
-    #code in the asthma exacerbation secondary codelist (in any position)
+    #a code in the respiratory virus secondary codelist (in first or second position), a 
+    #code in the COPD exacerbation secondary codelist (in first or second position), or a 
+    #code in the asthma exacerbation secondary codelist (in first or second position)
     overall_resp_secondary_sens_date = (
       minimum_of(
         (hospitalisation_primary_secondary_diagnosis_matches(codelists.respiratory_virus_secondary_codelist)
@@ -1956,7 +1956,7 @@ else :
   else:
 
     #extract date of first episode - looking at the first date for which there is
-    #a code in the respiratory virus secondary codelist (in any position)
+    #a code in the respiratory virus secondary codelist (in first or second position)
     overall_resp_secondary_sens_date = (
       hospitalisation_primary_secondary_diagnosis_matches(codelists.respiratory_virus_secondary_codelist)
       .admission_date.minimum_for_patient()
