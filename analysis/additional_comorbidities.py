@@ -1,28 +1,15 @@
 import json, sys
 from pathlib import Path 
 
-from datetime import date, datetime
-from ehrql import Dataset, case, when, maximum_of, minimum_of, years, days
+from datetime import datetime
+from ehrql import Dataset, case, when, maximum_of, years
 from ehrql.tables.tpp import ( 
   patients, 
   medications,
-  ons_deaths,
-  addresses, 
-  clinical_events,
-  practice_registrations,
-  household_memberships_2020,
-  vaccinations,
-  apcs,
-  emergency_care_attendances
+  clinical_events
 )
 
-from variable_lib import (
-  has_a_continuous_practice_registration_spanning,
-  most_recent_bmi,
-  practice_registration_as_of,
-  emergency_care_diagnosis_matches,
-  hospitalisation_diagnosis_matches
-)
+from variable_lib import most_recent_bmi
 
 import codelists
 
