@@ -1791,12 +1791,15 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
           coord_cartesian(xlim = c(0.08, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
-          guides(color = guide_legend("Characteristic"), shape = guide_legend("Est. Type")) +
+          guides(color = guide_legend("Characteristic", order = 2),
+                 shape = guide_legend("Est. Type"), order = 1) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
-          labs(x = "", y = "") + theme_bw() +
-          theme(text = element_text(size = 11), strip.text.x = element_blank(),
+          labs(x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
+          theme(text = element_text(size = 14),
+                strip.text.x = element_blank(),
                 panel.border = element_blank(),
-                axis.line = element_line(color = 'black'))
+                axis.line = element_line(color = 'black'),
+                legend.spacing.y = unit(-0.25, "cm"))
         
       } else {
         
@@ -1859,12 +1862,15 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
           coord_cartesian(xlim = c(0.08, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
-          guides(color = guide_legend("Characteristic"), shape = guide_legend("Est. Type")) +
+          guides(color = guide_legend("Characteristic", order = 2),
+                 shape = guide_legend("Est. Type"), order = 1) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
-          labs(x = "", y = "") + theme_bw() +
-          theme(text = element_text(size = 11), strip.text.x = element_blank(),
+          labs(x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
+          theme(text = element_text(size = 14),
+                strip.text.x = element_blank(),
                 panel.border = element_blank(),
-                axis.line = element_line(color = 'black'))
+                axis.line = element_line(color = 'black'),
+                legend.spacing.y = unit(-0.25, "cm"))
         
       }
       
@@ -1939,12 +1945,15 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
           coord_cartesian(xlim = c(0.08, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
-          guides(color = guide_legend("Characteristic"), shape = guide_legend("Est. Type")) +
+          guides(color = guide_legend("Characteristic", order = 2),
+                 shape = guide_legend("Est. Type"), order = 1) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
-          labs(x = "", y = "") + theme_bw() +
-          theme(text = element_text(size = 11), strip.text.x = element_blank(),
+          labs(x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
+          theme(text = element_text(size = 14),
+                strip.text.x = element_blank(),
                 panel.border = element_blank(),
-                axis.line = element_line(color = 'black'))
+                axis.line = element_line(color = 'black'),
+                legend.spacing.y = unit(-0.25, "cm"))
         
       } else {
         
@@ -2012,12 +2021,15 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
           coord_cartesian(xlim = c(0.08, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
-          guides(color = guide_legend("Characteristic"), shape = guide_legend("Est. Type")) +
+          guides(color = guide_legend("Characteristic", order = 2),
+                 shape = guide_legend("Est. Type"), order = 1) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
-          labs(x = "", y = "") + theme_bw() +
-          theme(text = element_text(size = 11), strip.text.x = element_blank(),
+          labs(x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
+          theme(text = element_text(size = 14),
+                strip.text.x = element_blank(),
                 panel.border = element_blank(),
-                axis.line = element_line(color = 'black'))
+                axis.line = element_line(color = 'black'),
+                legend.spacing.y = unit(-0.25, "cm"))
         
       }
       
@@ -2072,7 +2084,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                     hjust = -0.4,
                     open = "", close = "",
                     fontface = 4,
-                    size = 3.5,
+                    size = 4,
                     family = "serif",
                     tag_pool = my_tag)
   
