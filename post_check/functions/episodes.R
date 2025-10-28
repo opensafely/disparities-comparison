@@ -26,7 +26,7 @@ reinfections <- function(df, pathogen, seasons) {
     tbl_sum[[season]] <- df %>%
       filter(infection_type == pathogen, subset == !!season) %>%
       mutate_all(~replace(., is.na(.), 0)) %>%
-      select(-c(infection_type, subset)) %>%
+      select(-c(infection_type, subset, codelist_type)) %>%
       tbl_summary(
         by = outcome_type,
         type = list(
@@ -79,42 +79,75 @@ reinfections <- function(df, pathogen, seasons) {
 multiple_episodes <- function(df, severity) {
   
   tbl_sum <- df %>%
+    rename("n" = `n (midpoint 10 rounded)`) %>% 
     filter(!str_detect(combo, "Total")) %>%
-    mutate_if(is.factor, forcats::fct_explicit_na, na_level = "Unknown") %>%
     mutate(
       combo = case_when(
-        combo == "0_0" ~ "No RSV or flu",
-        combo == "0_0_0" ~ "No RSV, flu, or COVID-19",
+        combo == "0_0" ~ "None",
+        combo == "0_0_0" ~ "None",
         combo == "0_0_COVID_Mild" ~ "Only COVID-19",
         combo == "0_0_COVID_Severe" ~ "Only COVID-19",
         combo == "0_Flu_Mild" ~ "Only flu",
-        combo == "0_Flu_Mild_0" ~ "Only flu (post COVID-19)",
+        combo == "0_Flu_Mild_0" ~ "Only flu",
         combo == "0_Flu_Severe" ~ "Only flu",
-        combo == "0_Flu_Severe_0" ~ "Only flu (post COVID-19)",
+        combo == "0_Flu_Severe_0" ~ "Only flu",
         combo == "0_Flu_Mild_COVID_Mild" ~ "Flu and COVID-19",
         combo == "0_Flu_Severe_COVID_Severe" ~ "Flu and COVID-19",
         combo == "RSV_Mild_0" ~ "Only RSV",
-        combo == "RSV_Mild_0_0" ~ "Only RSV (post COVID-19)",
+        combo == "RSV_Mild_0_0" ~ "Only RSV",
         combo == "RSV_Severe_0" ~ "Only RSV",
-        combo == "RSV_Severe_0_0" ~ "Only RSV (post COVID-19)",
+        combo == "RSV_Severe_0_0" ~ "Only RSV",
         combo == "RSV_Mild_0_COVID_Mild" ~ "RSV and COVID-19",
         combo == "RSV_Severe_0_COVID_Severe" ~ "RSV and COVID-19",
         combo == "RSV_Mild_Flu_Mild" ~ "RSV and flu",
-        combo == "RSV_Mild_Flu_Mild_0" ~ "RSV and flu (post COVID-19)",
+        combo == "RSV_Mild_Flu_Mild_0" ~ "RSV and flu",
         combo == "RSV_Severe_Flu_Severe" ~ "RSV and flu",
-        combo == "RSV_Severe_Flu_Severe_0" ~ "RSV and flu (post COVID-19)"
+        combo == "RSV_Severe_Flu_Severe_0" ~ "RSV and flu",
+        combo == "RSV_Mild_Flu_Mild_COVID_Mild" ~ "RSV, flu, and COVID-19",
+        combo == "RSV_Severe_Flu_Severe_COVID_Severe" ~ "RSV, flu, and COVID-19"
       )
     ) %>%
-    filter(outcome_type == severity) %>%
-    mutate_all(~replace(., is.na(.), 0)) %>%
-    select(-c(outcome_type, subset)) %>%
-    pivot_wider(cols = c(characteristic), names_from = combo,
-                values_from = `n (midpoint 10 rounded)`) %>%
-    tbl_summary(
-      by = combo,
-      type = list(value = "continuous"),
-      statistic = list(all_continuous() ~ "{mean} ({sd})")
+    filter(outcome_type == !!severity) %>%
+    select(-c(outcome_type)) %>%
+    mutate(
+      characteristic = case_when(
+        characteristic == "1 (least deprived)" ~ "5 (least deprived)",
+        characteristic == "2" ~ "4",
+        characteristic == "4" ~ "2",
+        characteristic == "5 (most deprived)" ~ "1 (most deprived)",
+        is.na(characteristic) ~ "Unknown",
+        TRUE ~ characteristic
       )
+    ) %>% 
+    mutate(
+      group = case_when(
+        characteristic %in% c("0-2m", "3-5m", "6-11m", "12-23m",
+                              "2-5y", "6-9y", "10-13y", "14-17y",
+                              "18-39y", "40-64y",
+                              "65-74y", "75-89y", "90y+") ~ "Age",
+        characteristic %in% c("Male", "Female") ~ "Sex",
+        characteristic %in% c("White", "Mixed", "Asian or Asian British",
+                              "Black or Black British", "Other Ethnic Groups",
+                              "Unknown") ~ "Ethnicity",
+        characteristic %in% c("5 (least deprived)", "4", "3", "2",
+                              "1 (most deprived)") ~ "IMD",
+        characteristic %in% c("Rural Town and Fringe", "Rural Village and Dispersed",
+                              "Urban City and Town", "Urban Major Conurbation",
+                              "Urban Minor Conurbation") ~ "Rurality",
+        TRUE ~ "Other"
+      )
+    ) %>% 
+    group_by(subset, group, combo) %>% 
+    mutate(
+      prop = n/sum(n)
+    )
+    # pivot_wider(id_cols = c(characteristic, subset), names_from = combo,
+    #             values_from = `n (midpoint 10 rounded)`) %>%
+    # tbl_summary(
+    #   by = combo,
+    #   type = list(value = "continuous"),
+    #   statistic = list(all_continuous() ~ "{mean} ({sd})")
+    #   )
   
   return(tbl_sum)  
   

@@ -165,7 +165,7 @@ combined_plot_mild <- plot_grid(
   ncol = 1,
   align = 'v',
   axis = 'lr',
-  rel_heights = c(1, -0.0475, 1.25, -0.0475, 1.1)
+  rel_heights = c(1, -0.035, 1.25, -0.0475, 1.1)
 )
 
 # Add annotations
@@ -221,7 +221,7 @@ combined_plot_severe <- plot_grid(
   ncol = 1,
   align = 'v',
   axis = 'lr',
-  rel_heights = c(1, -0.0475, 1.25, -0.0475, 1.1)
+  rel_heights = c(1, -0.035, 1.25, -0.0475, 1.1)
 )
 
 # Add annotations
@@ -261,12 +261,12 @@ final_combined <- plot_grid(
     left = text_grob(c("RSV", "Influenza",
                        "RSV", "Influenza"), 
                      x = 1,
-                     y = c(0.885, 0.74235,
-                           0.388, 0.2448), 
+                     y = c(0.8844, 0.74,
+                           0.38685, 0.24305), 
                      hjust = 0, vjust = -16,
                      just = "left", face = "bold"),
     right = text_grob(c("COVID-19", "COVID-19"),
-                      x = 1, y = c(0.559, 0.06234),
+                      x = 1, y = c(0.5584, 0.061),
                       hjust = 10, vjust = -16,
                       just = "left", face = "bold")
   )
@@ -469,7 +469,7 @@ combined_plot_mild <- plot_grid(
   ncol = 1,
   align = 'v',
   axis = 'lr',
-  rel_heights = c(1, -0.0475, 1.25, -0.0475, 1.1)
+  rel_heights = c(1, -0.035, 1.25, -0.0475, 1.1)
 )
 
 # Add annotations
@@ -525,7 +525,7 @@ combined_plot_severe <- plot_grid(
   ncol = 1,
   align = 'v',
   axis = 'lr',
-  rel_heights = c(1, -0.0475, 1.25, -0.0475, 1.1)
+  rel_heights = c(1, -0.035, 1.25, -0.0475, 1.1)
 )
 
 # Add annotations
@@ -564,13 +564,13 @@ final_combined <- plot_grid(
   annotate_figure(
     left = text_grob(c("RSV", "Influenza",
                        "RSV", "Influenza"), 
-                     x = 0.5,
-                     y = c(0.885, 0.74235,
-                           0.388, 0.2448), 
+                     x = 0.35,
+                     y = c(0.8844, 0.74,
+                           0.38685, 0.24305), 
                      hjust = 0, vjust = -16,
                      just = "left", face = "bold"),
     right = text_grob(c("COVID-19", "COVID-19"),
-                      x = 1, y = c(0.559, 0.06234),
+                      x = 0.8, y = c(0.5584, 0.061),
                       hjust = 10, vjust = -16,
                       just = "left", face = "bold")
   )
