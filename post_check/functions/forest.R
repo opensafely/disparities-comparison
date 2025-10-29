@@ -167,11 +167,12 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
   
   if (cohort == "infants_subgroup") {
     
-    levels <- c(levels, "Maternal Pertussis Vaccination",
+    levels <- c("Maternal Pertussis Vaccination",
                 "Maternal Flu Vaccination", "Maternal Drug Usage",
                 "Maternal Drinking", "Binary Variables (Reference)",
-                "Current Smoker", "Former Smoker", "Never Smoker",
-                "Maternal Age", "Maternal Age (Average)")
+                "Maternal Current Smoking", "Maternal Former Smoking",
+                "Maternal Never Smoking", "Maternal Age",
+                "Maternal Age (Average)", levels)
     
   } else if (cohort != "infants" & pathogen == "flu") {
     
@@ -216,7 +217,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
       "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
       "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
-      "Maternal Age (Specific)", "Maternal Age (Sensitive)",
+      "Maternal Age (Average)", "Maternal Age (Specific)", "Maternal Age (Sensitive)",
       "Maternal Smoking Status (Reference)", "Maternal Smoking Status (Specific)",
       "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
       "Maternal Drinking (Sensitive)", "Maternal Drug Usage (Specific)",
@@ -231,7 +232,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
       "IMD Quintile (Reference)", "IMD Quintile (Specific)",
       "IMD Quintile (Sensitive)", "Rurality (Reference)", "Rurality (Specific)",
-      "Rurality (Sensitive)", "Maternal Age (Specific)",
+      "Rurality (Sensitive)", "Maternal Age (Average)", "Maternal Age (Specific)",
       "Maternal Age (Sensitive)", "Maternal Smoking Status (Reference)",
       "Maternal Smoking Status (Specific)",
       "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
@@ -248,7 +249,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
       "IMD Quintile (Reference)", "IMD Quintile (Specific)",
       "IMD Quintile (Sensitive)", "Rurality (Reference)", "Rurality (Specific)",
-      "Rurality (Sensitive)", "Maternal Age (Specific)",
+      "Rurality (Sensitive)", "Maternal Age (Average)", "Maternal Age (Specific)",
       "Maternal Age (Sensitive)", "Maternal Smoking Status (Reference)",
       "Maternal Smoking Status (Specific)",
       "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
@@ -336,7 +337,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           contrasts = "contr.treatment",
           contrasts_type = "treatment",
           reference_row = TRUE,
-          label = "Maternal Age (Reference)",
+          label = "Maternal Age (Average)",
           model_name = NA,
           estimate = 1,
           std.error = 0,
@@ -475,36 +476,14 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           contrasts_type = NA,
           reference_row = TRUE,
           label = var_labels,
-          estimate = 1,
+          estimate = NA_real_,
           std.error = NA_real_,
           statistic = NA_real_,
           p.value = NA_real_,
-          conf.low = 1,
-          conf.high = 1,
+          conf.low = NA_real_,
+          conf.high = NA_real_,
           model_type = !!model_type,
           codelist_type = "specific",
-          investigation_type = investigation_type,
-          subset = "2020_21"
-        ),
-        tibble(
-          term = NA,
-          variable = vars,
-          var_label = var_labels,
-          var_class = NA,
-          var_type = NA,
-          var_nlevels = NA_real_,
-          contrasts = NA,
-          contrasts_type = NA,
-          reference_row = TRUE,
-          label = var_labels,
-          estimate = 1,
-          std.error = NA_real_,
-          statistic = NA_real_,
-          p.value = NA_real_,
-          conf.low = 1,
-          conf.high = 1,
-          model_type = !!model_type,
-          codelist_type = "sensitive",
           investigation_type = investigation_type,
           subset = "2020_21"
         ),
@@ -524,6 +503,29 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           statistic = NA_real_,
           p.value = NA_real_,
           conf.low = NA_real_,
+          conf.high = NA_real_,
+          model_type = !!model_type,
+          codelist_type = "sensitive",
+          investigation_type = investigation_type,
+          subset = "2020_21"
+        ),
+        tibble(
+          term = NA,
+          variable = vars,
+          var_label = var_labels,
+          var_class = NA,
+          var_type = NA,
+          var_nlevels = NA_real_,
+          contrasts = NA,
+          contrasts_type = NA,
+          reference_row = TRUE,
+          label = var_labels,
+          estimate = 1,
+          std.error = NA_real_,
+          statistic = NA_real_,
+          p.value = NA_real_,
+          conf.low = 1,
+          conf.high = 1,
           model_type = !!model_type,
           codelist_type = "reference",
           investigation_type = investigation_type,
@@ -550,12 +552,12 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           contrasts_type = NA,
           reference_row = FALSE,
           label = tidies$var_label,
-          estimate = 1,
+          estimate = NA_real_,
           std.error = NA_real_,
           statistic = NA_real_,
           p.value = NA_real_,
-          conf.low = 1,
-          conf.high = 1,
+          conf.low = NA_real_,
+          conf.high = NA_real_,
           model_type = !!model_type,
           codelist_type = "specific",
           investigation_type = investigation_type,
@@ -722,9 +724,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       labels = c("Sex", "Age Group", "Ethnicity", "IMD Quintile",
                  "Household Composition", "Rurality", "Prior Vaccination",
                  "Current Vaccination", "Current Vaccination",
-                 "Current Vaccination", "Age", "Smoking Status",
-                 "Drinking", "Drug Usage", "Flu Vaccination",
-                 "Pertussis Vaccination", "Binary Variables")
+                 "Current Vaccination", "Age (Average)",
+                 "Maternal Smoking Status", "Maternal Drinking",
+                 "Maternal Drug Usage", "Maternal Flu Vaccination",
+                 "Maternal Pertussis Vaccination", "Binary Variables")
     )
     
     cols_final <- cols2 %>%
@@ -778,12 +781,14 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               str_detect(term, "imd_quintile4") ~ "2",
               str_detect(term, "imd_quintile2") ~ "4",
               str_detect(term, "imd_quintile1") ~ "5 (least deprived)",
-              label == "Current" ~ "Current Smoker",
-              label == "Former" ~ "Former Smoker",
-              label == "Never" ~ "Never Smoker",
+              label == "Current" ~ "Maternal Current Smoking",
+              label == "Former" ~ "Maternal Former Smoking",
+              label == "Never" ~ "Maternal Never Smoking",
+              str_detect(label, "Age") ~ "Maternal Age (Average)",
+              label == "maternal_age" ~ "Maternal Age",
               TRUE ~ label
             )
-          ) %>%
+          ) %>% 
           mutate(
             plot_label = str_to_title(
               gsub("has ", "", gsub("_", " ", variable))),
@@ -805,9 +810,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           ) %>%
           mutate(
             label = if_else(label == "Yes", plot_label, label)
-          ) %>%
-          mutate(
-            label = forcats::fct_relevel(label, levels)
           ) %>%
           mutate(
             plot_label2 = paste0(
@@ -835,7 +837,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
-          facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
+          facet_wrap( ~ subset, ncol = 4, nrow = 2) + 
           labs(title = str_to_title(gsub("_", " ", model_type)),
                x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
           theme(text = element_text(size = 14),
@@ -853,9 +855,11 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               str_detect(term, "imd_quintile4") ~ "2",
               str_detect(term, "imd_quintile2") ~ "4",
               str_detect(term, "imd_quintile1") ~ "5 (least deprived)",
-              label == "Current" ~ "Current Smoker",
-              label == "Former" ~ "Former Smoker",
-              label == "Never" ~ "Never Smoker",
+              label == "Current" ~ "Maternal Current Smoking",
+              label == "Former" ~ "Maternal Former Smoking",
+              label == "Never" ~ "Maternal Never Smoking",
+              str_detect(label, "Age") ~ "Maternal Age (Average)",
+              label == "maternal_age" ~ "Maternal Age",
               TRUE ~ label
             )
           ) %>%
@@ -907,7 +911,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
-          facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
+          facet_wrap(~ subset, ncol = 4, nrow = 2) + 
           labs(title = title, x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
           theme(text = element_text(size = 14),
                 strip.text.x = element_blank(),

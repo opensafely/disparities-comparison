@@ -113,6 +113,7 @@ plotlist <- list(
   rsv_ses_mild,
   rsv_ses_severe, 
   rsv_composition_mild,
+  rsv_composition_severe,
   rsv_ethnicity_ses_mild,
   rsv_ethnicity_ses_severe, 
   rsv_ethnicity_composition_mild, 
@@ -251,15 +252,16 @@ rsv_full_severe <- forest(
 
 #create list of plots
 plotlist <- list(
-  rsv_ethnicity_mild, 
-  rsv_ethnicity_severe,
+  rsv_ethnicity_mild,
+  rsv_ethnicity_severe, 
   rsv_ses_mild,
-  rsv_ses_severe,
-  rsv_composition_mild, 
+  rsv_ses_severe, 
+  rsv_composition_mild,
+  rsv_composition_severe,
   rsv_ethnicity_ses_mild,
   rsv_ethnicity_ses_severe, 
-  rsv_ethnicity_composition_mild,
-  rsv_ethnicity_composition_severe,
+  rsv_ethnicity_composition_mild, 
+  rsv_ethnicity_composition_severe, 
   rsv_ses_composition_mild,
   rsv_ses_composition_severe,
   rsv_full_mild,
@@ -390,17 +392,18 @@ rsv_full_severe <- forest(
 #create list of plots
 plotlist <- list(
   rsv_ethnicity_mild,
-  rsv_ethnicity_severe,
+  rsv_ethnicity_severe, 
   rsv_ses_mild,
-  rsv_ses_severe,
+  rsv_ses_severe, 
   rsv_composition_mild,
+  rsv_composition_severe,
   rsv_ethnicity_ses_mild,
   rsv_ethnicity_ses_severe, 
   rsv_ethnicity_composition_mild, 
   rsv_ethnicity_composition_severe, 
   rsv_ses_composition_mild,
   rsv_ses_composition_severe,
-  rsv_full_mild, 
+  rsv_full_mild,
   rsv_full_severe
 )
 plot_names <- c(
