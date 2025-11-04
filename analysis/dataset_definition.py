@@ -5,7 +5,7 @@ from datetime import datetime
 from ehrql import Dataset, create_dataset, case, when, maximum_of, minimum_of, years, days, months
 from ehrql.tables.tpp import (
   patients,
-  #ons_deaths,
+  ons_deaths,
   addresses,
   clinical_events,
   practice_registrations,
@@ -103,11 +103,9 @@ followup_end_date = minimum_of(study_end_date, age_out_date)
 dataset.patient_index_date = index_date
 dataset.patient_end_date = followup_end_date
 
-#define patients status: alive/dead
-was_alive = (
-  (patients.date_of_death.is_after(index_date))|
-  (patients.date_of_death.is_null())
-)
+#define patients status: alive/dead: use ONS record if present, otherwise use GP record
+death_date = ons_deaths.date.when_null_then(patients.date_of_death)
+was_alive = death_date.is_after(index_date) | death_date.is_null()
 
 #define patients age
 age_at_start = patients.age_on(study_start_date)
