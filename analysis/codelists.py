@@ -3,6 +3,10 @@ from ehrql import (
   codelist_from_csv
 )
 
+#expand codes in SUS which are 3 characters to have X at the end
+def expand_three_char_icd10_codes(codelist):
+    return codelist + [f"{code}X" for code in codelist if len(code) == 3]
+
 ## exposures 
 
 # ethnicity codes
@@ -60,6 +64,7 @@ rsv_secondary_codelist = codelist_from_csv(
   "codelists/opensafely-rsv-identification-secondary-care.csv",
   column = "code",
 )
+rsv_secondary_codelist = expand_three_char_icd10_codes(rsv_secondary_codelist)
 
 # rsv primary - sensitive 
 rsv_sensitive_codelist = codelist_from_csv(
@@ -90,6 +95,9 @@ rsv_secondary_exclusion_codelist = codelist_from_csv(
   "codelists/opensafely-rsv-exclusion-secondary-care-maximal-sensitivity.csv",
   column = "code",
 )
+rsv_secondary_exclusion_codelist = (
+  expand_three_char_icd10_codes(rsv_secondary_exclusion_codelist)
+)
 
 # flu primary - specific
 flu_primary_codelist = codelist_from_csv(
@@ -102,6 +110,7 @@ flu_secondary_codelist = codelist_from_csv(
   "codelists/opensafely-influenza-identification-secondary-care.csv",
   column = "code",
 )
+flu_secondary_codelist = expand_three_char_icd10_codes(flu_secondary_codelist)
 
 # flu primary - sensitive
 flu_sensitive_codelist = codelist_from_csv(
@@ -144,11 +153,15 @@ ari_secondary_codelist = codelist_from_csv(
   "codelists/opensafely-acute-respiratory-illness-secondary-care.csv",
   column = "code",
 )
+ari_secondary_codelist = expand_three_char_icd10_codes(ari_secondary_codelist)
 
 # flu secondary exclusion
 flu_secondary_exclusion_codelist = codelist_from_csv(
   "codelists/opensafely-influenza-exclusion-secondary-care-maximal-sensitivity.csv",
   column = "code",
+)
+flu_secondary_exclusion_codelist = (
+  expand_three_char_icd10_codes(flu_secondary_exclusion_codelist)
 )
 
 # covid primary - specific
@@ -189,6 +202,9 @@ covid_secondary_exclusion_codelist = codelist_from_csv(
   "codelists/opensafely-covid-19-exclusion-secondary-care-maximal-sensitivity.csv",
   column = "code",
 )
+covid_secondary_exclusion_codelist = (
+  expand_three_char_icd10_codes(covid_secondary_exclusion_codelist)
+)
 
 # unspecified respiratory virus primary
 respiratory_virus_primary_codelist = codelist_from_csv(
@@ -225,11 +241,17 @@ respiratory_virus_secondary_codelist = codelist_from_csv(
   "codelists/opensafely-respiratory-virus-unspecified-identification-secondary-care.csv",
   column = "code",
 )
+respiratory_virus_secondary_codelist = (
+  expand_three_char_icd10_codes(respiratory_virus_secondary_codelist)
+)
 
 #copd exacerbation secondary
 copd_exacerbation_secondary_codelist = codelist_from_csv(
   "codelists/opensafely-copd-exacerbation.csv",
   column = "code",
+)
+copd_exacerbation_secondary_codelist = (
+  expand_three_char_icd10_codes(copd_exacerbation_secondary_codelist)
 )
 
 #asthma exacerbation secondary
@@ -237,13 +259,18 @@ asthma_exacerbation_secondary_codelist = codelist_from_csv(
   "codelists/opensafely-copd-exacerbation.csv",
   column = "code",
 )
+asthma_exacerbation_secondary_codelist = (
+  expand_three_char_icd10_codes(asthma_exacerbation_secondary_codelist)
+)
 
 # unspecified respiratory virus exclusion secondary
 respiratory_virus_secondary_exclusion_codelist = codelist_from_csv(
   "codelists/opensafely-respiratory-virus-unspecified-exclusion-secondary-care.csv",
   column = "code",
 )
-
+respiratory_virus_secondary_exclusion_codelist = (
+  expand_three_char_icd10_codes(respiratory_virus_secondary_exclusion_codelist)
+)
 
 ##comorbidities
 
