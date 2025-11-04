@@ -37,8 +37,8 @@ ventilation_codes = ["Z991", "P288"]
 
 # cardiac disease
 cardiac_disease_codelist = codelist_from_csv(
-  "codelists/opensafely-chronic-cardiac-disease.csv",
-  column = "CTV3ID",
+  "codelists/opensafely-chronic-cardiac-disease-snomed.csv",
+  column = "id",
 )
 
 # pulmonary hypertension
