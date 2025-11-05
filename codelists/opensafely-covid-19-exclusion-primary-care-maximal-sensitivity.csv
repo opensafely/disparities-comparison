@@ -59,19 +59,19 @@ code,term
 1050601000000101,Influenza due to seasonal influenza virus
 10509002,Acute bronchitis
 1050981000000100,Influenza due to seasonal influenza virus
-10624911000119107,Otitis media caused by H1N1 influenza
-10624951000119108,Otitis media caused by influenza
+10624911000119107,Otitis media caused by Influenza A virus subtype H1N1
+10624951000119108,Otitis media caused by influenza virus
 10625271000119109,Bronchopneumonia caused by Human metapneumovirus
 10625431000119105,Bronchopneumonia caused by Mycoplasma pneumoniae
 10625551000119103,Bronchopneumonia caused by respiratory syncytial virus
 10625751000119106,Bronchopneumonia due to virus
-10628871000119101,Gastroenteritis caused by influenza
+10628871000119101,Gastroenteritis caused by influenza virus
 10628911000119103,Gastroenteritis caused by Influenza A virus
 10629191000119100,Bronchiolitis caused by influenza virus
 10629351000119108,Myocarditis caused by Influenza A virus
 10674911000119108,Otitis media caused by Influenza A virus
 10677711000119101,Encephalopathy caused by Influenza A virus
-10685111000119102,Upper respiratory tract infection caused by Influenza
+10685111000119102,Upper respiratory tract infection caused by influenza virus
 10722007,Human adenovirus 18
 10809006,Parainfluenza virus laryngotracheitis
 1087141000119106,Human metapneumovirus infection
@@ -79,16 +79,20 @@ code,term
 1087801000000105,Suspected pertussis
 1092361000119109,Rubella pneumonia
 1092951000119106,Pneumonia caused by Bordetella parapertussis
+1097601000112106,Extended spectrum beta-lactamase producing Klebsiella pneumoniae subspecies ozaenae
+1097801000112105,AmpC beta-lactamase producing Klebsiella pneumoniae subspecies ozaenae
 1098002,Human adenovirus 3
+1098101000112102,AmpC beta-lactamase producing Klebsiella pneumoniae
 109814008,Acute ulcerative gastroenteritis complicating pneumonia
+1098401000112107,AmpC beta-lactamase producing Klebsiella pneumoniae subspecies rhinoscleromatis
 11014004,Human rhinovirus 102
 111274000,Acute abscess of nasal sinus
 11134001,Acute suppuration of sphenoidal sinus
 111849006,Adenoviral bronchitis
-111850006,Adenoviral meningitis
+111850006,Meningitis caused by Adenovirus
 111851005,Subacute adenoviral encephalitis
 111876006,Influenza due to other Influenza virus
-111878007,Coxsackie meningitis
+111878007,Meningitis caused by coxsackie virus
 1119277000,Antigen of Influenza A virus A/Indonesia/05/2005 (H5N1)-like virus strain split virion hemagglutinin
 112359001,Simian enterovirus 17
 112360006,Human rhinovirus 45
@@ -152,7 +156,7 @@ code,term
 122212007,Enterovirus culture
 122233003,Respiratory syncytial virus antigen assay
 122262002,Influenza virus culture
-122268003,Adenovirus species culture
+122268003,Adenovirus culture
 122274003,Respiratory syncytial virus culture
 122281005,Enterovirus identification
 122296009,Adenovirus deoxyribonucleic acid assay
@@ -177,6 +181,7 @@ code,term
 123592004,Acute mucous pneumonia
 1240551000000105,Pneumonia caused by severe acute respiratory syndrome coronavirus 2
 12473007,Human rhinovirus 94
+12571000132104,Pneumonia caused by Herpes zoster
 12612001,Human adenovirus 31
 1264007008,Adenovirus infection in immunocompromised person
 1282001,Perichondritis of larynx
@@ -194,6 +199,7 @@ code,term
 128405007,Coxsackie carditis
 12842000,Human echovirus 21
 1293004,Human coxsackievirus A8
+1293140000,Mycoplasma pneumoniae induced rash and mucositis
 129459004,Acute interstitial pneumonia
 129671003,Human echovirus infection
 12997006,Human enterovirus 68
@@ -201,19 +207,42 @@ code,term
 1321111000000101,Coronavirus disease 19 caused by severe acute respiratory syndrome coronavirus 2 excluded by laboratory test
 13266007,Sphenoidal sinusitis
 13320001000004109,Human respiratory syncytial virus isolated in sputum by culture
+1339010008,Streptococcus pneumoniae Danish serotype 15B or Streptococcus pneumoniae Danish serotype 15C
 134249005,Influenza A antigen level
 134251009,Influenza B antigen level
 134260001,Enterovirus DNA detection
+1354809009,Influenza A virus subtype H5N2
+1354810004,Influenza A virus subtype H10N3
+1354811000,Influenza A virus subtype H1N2v
+1354812007,Influenza A virus subtype H1N1v
+1354813002,Influenza A virus subtype H5N6
+1354814008,Influenza A virus subtype N6
+1354815009,Influenza A virus subtype N3
+1359794002,Enterovirus geswini serotype 1
+1359795001,Enterovirus geswini serotype 2
+1359796000,Enterovirus geswini
 13617004,Tracheobronchitis
+1362060007,Acute hemorrhagic conjunctivitis caused by Enterovirus
+1362117000,Influenza A virus subtype N4
+1363119009,Antigen of Streptococcus pneumoniae Danish serotype de-O-acetylated 15B capsular polysaccharide conjugated
+1366207003,Antigen of Influenza A virus subtype H5
+1366374009,Antigen of Influenza B virus B/Phuket/3073/2013 (B/Yamagata lineage)-like virus strain
+1366435001,Antigen of Influenza A virus A/Wisconsin/67/2022 (H1N1)pdm09-like virus strain
+1366436000,Antigen of Influenza A virus A/District of Columbia/27/2023 (H3N2)-like virus strain
+1366437009,Antigen of Influenza A virus A/Victoria/4897/2022 (H1N1)pdm09-like virus strain
+1366438004,Antigen of Influenza A virus A/Croatia/10136RV/2023 (H3N2)-like virus strain
+1366440009,Antigen of Influenza B virus B/Austria/1359417/2021 (B/Victoria lineage)-like virus strain
+1370993008,Administration of post exposure antibiotic prophylaxis for Bordetella pertussis infection
+1371341007,Administration of prophylactic antiviral for respiratory syncytial virus infection
 139168000,Influenza-like symptoms
 141453008,O/E - follicular tonsillitis
 14174008,Human rhinovirus 88
 142921000119103,Upper respiratory tract infection caused by avian influenza
-142931000119100,Pneumonia caused by H1N1 influenza
-142941000119109,Upper respiratory tract infection caused by H1N1 influenza
+142931000119100,Pneumonia caused by Influenza A virus subtype H1N1
+142941000119109,Upper respiratory tract infection caused by Influenza A virus subtype H1N1
 142951000119106,Myocarditis caused by Influenza A virus subtype H1N1
-142961000119108,Gastroenteritis caused by H1N1 influenza
-142971000119102,Encephalopathy caused by H1N1 influenza
+142961000119108,Gastroenteritis caused by Influenza A virus subtype H1N1
+142971000119102,Encephalopathy caused by Influenza A virus subtype H1N1
 142981000119104,Myocarditis caused by avian influenza
 142991000119101,Gastroenteritis caused by avian influenza
 143001000119100,Encephalopathy caused by avian influenza
@@ -264,11 +293,12 @@ code,term
 15738003,Human rhinovirus 90
 15755004,Simian enterovirus 6
 15805002,Acute sinusitis
-16036000,Acute empyema of frontal sinus
+16077451000119106,Acute hemorrhagic conjunctivitis of right eye caused by Enterovirus
+16077491000119101,Acute hemorrhagic conjunctivitis of left eye caused by Enterovirus
 16077531000119101,Acute hemorrhagic conjunctivitis of bilateral eyes caused by Enterovirus
 16146001,Viral bronchitis
 161913008,Influenza-like symptoms
-16311000119108,Pneumonia caused by influenza
+16311000119108,Pneumonia caused by influenza virus
 16362001,Human poliovirus 3
 16416005,Simian enterovirus 8
 164256007,On examination - follicular tonsillitis
@@ -288,11 +318,12 @@ code,term
 17851002,Human rhinovirus 2
 17904003,Hypertrophic laryngitis
 17905002,Human rhinovirus 93
+181000112100,AmpC beta-lactamase producing Klebsiella pneumoniae complex
 181000124108,Influenza A virus present
 181007,Hemorrhagic bronchopneumonia
 18113003,Human rhinovirus 32
 1838001,Human rhinovirus
-184431000119108,Acute pneumonia due to coccidioidomycosis
+184431000119108,Acute pneumonia caused by coccidioidomycosis
 18560002,Porcine adenovirus 1
 186351008,Bordetella pertussis (& infection)
 186352001,Bordetella parapertussis (& infection)
@@ -314,6 +345,7 @@ code,term
 186752004,"[X]Enterovirus infection, unspecified"
 186760003,Respiratory syncytial virus as the cause of diseases classified to other chapters
 186764007,[X]Adenovirus as the cause of diseases classified to other chapters
+187196002,Pneumonia caused by Toxoplasma
 187341000000105,Respiratory syncytial virus antigen assay
 187351000000108,Parainfluenza virus antigen assay
 187465002,"[X]Adenovirus infection, unspecified"
@@ -326,8 +358,8 @@ code,term
 190781000000101,Respiratory syncytial virus antigen assay
 190791000000104,Parainfluenza virus antigen assay
 19219004,Human rhinovirus 4
-192650000,Meningitis caused by pertussis
-192667007,Echovirus meningitis
+192650000,Meningitis caused by Bordetella pertussis
+192667007,Meningitis caused by echovirus
 192691003,Encephalitis due to influenza
 192693000,Encephalitis due to influenza-virus identified
 19319001,Human echovirus 18
@@ -426,6 +458,7 @@ code,term
 197344005,Hepatitis caused by adenovirus
 198691000000108,Acute obstructive laryngitis
 200011000000106,Polymerase chain reaction test for enterovirus ribonucleic acid
+201000112101,Extended spectrum beta-lactamase producing Klebsiella pneumoniae complex
 20398001,Human rhinovirus 86
 204271000000104,Avian influenza virus nucleic acid detection
 204421000000102,Human metapneumovirus nucleic acid detection
@@ -452,6 +485,7 @@ code,term
 2185006,Human adenovirus 5
 21938003,Human rhinovirus 8
 21948001,Simian enterovirus 1
+221000124104,Influenza A virus subtype H1 2009 pandemic strain
 221051000000108,Respiratory syncytial virus prevention drugs Band 1
 221061000000106,Respiratory syncytial virus treatment and Hepatitis C treatment drugs Band 1
 222008,Acute epiglottitis with obstruction
@@ -464,8 +498,8 @@ code,term
 22580008,Human poliovirus 1
 22594009,Bovine enterovirus 7
 22958004,Human rhinovirus 70
-230142004,Coxsackie A viral meningitis
-230143009,Coxsackie B viral meningitis
+230142004,Meningitis caused by coxsackievirus A virus
+230143009,Meningitis caused by coxsackievirus B virus
 230144003,Chronic echovirus meningoencephalitis
 230162007,Enteroviral encephalitis
 232389000,Pott's puffy tumor
@@ -486,7 +520,7 @@ code,term
 233612004,Fetal pneumonia
 233617005,Hemorrhagic pneumonia
 233619008,Neonatal pneumonia
-233623000,Mononuclear interstitial pneumonia
+233623000,Mononuclear interstitial pneumonitis
 233624006,Herpes simplex pneumonia
 233625007,Giant cell pneumonia
 23376009,Human adenovirus 12
@@ -562,7 +596,7 @@ code,term
 26183002,Bordetella parapertussis
 26314008,Human rhinovirus 82
 26420005,Simian enterovirus 12
-266108008,Hand foot and mouth disease
+266108008,Enteroviral vesicular stomatitis with exanthem
 266337001,Acute epiglottitis (non-streptococcal)
 266351001,Pneumonia with infectious diseases EC
 266352008,Bronchopneumonia due to unspecified organism
@@ -574,11 +608,10 @@ code,term
 266393000,(Influenza NOS) or (influenza-like illness)
 26650005,Acute tracheitis
 26808007,Polypoid sinus degeneration
-26846000,Porcine enterovirus 3
+26846000,Teschovirus asilesi serotype 3
 27028004,Human rhinovirus 91
 271532008,Echovirus disease
 27164000,Human rhinovirus 16
-27278006,Acute empyema of sphenoidal sinus
 273041000000105,Respiratory syncytial virus treatment and Hepatitis C treatment drugs band 1 
 273051000000108,Respiratory syncytial virus prevention drugs band 1 
 274102007,Vesicular pharyngitis
@@ -601,7 +634,7 @@ code,term
 2793000,Human coxsackievirus A12
 280331000000102,Avian influenza
 28105000,Influenzal laryngitis
-28192008,Enterovirus meningitis
+28192008,Meningitis caused by Enterovirus
 28522007,Mouse adenovirus
 285342006,Influenza-like illness
 28650002,Human rhinovirus 85
@@ -615,25 +648,26 @@ code,term
 29591002,Purulent bronchitis
 29608009,Acute epiglottitis
 29941005,Bovine enterovirus 6
+30031000234105,Antigen of Influenza A virus subtype H5N8
 300999006,Basal pneumonia
 301000005,Left lower zone pneumonia
 301001009,Right lower zone pneumonia
 301002002,Left upper zone pneumonia
 301003007,Right middle zone pneumonia
 301004001,Right upper zone pneumonia
-30131005,Porcine enterovirus 6
+30131005,Teschovirus asilesi serotype 6
 30154001,Human echovirus 29
 301824001,Acute viral laryngotracheitis
 30239003,Acute abscess of sphenoidal sinus
 30270006,Infection caused by Human parainfluenza virus 3
 302911003,Acute lingual tonsillitis
-30471008,Porcine enterovirus 5
+30471008,Teschovirus asilesi serotype 5
 30490000,Human adenovirus 11
 30718009,Human rhinovirus 51
 307500008,Cricoarytenoid joint arthritis
 30840007,Human coxsackievirus A18
 3096006,Human coxsackievirus A9
-309789002,Encephalitis caused by influenza
+309789002,Encephalitis caused by influenza virus
 309806000,Encephalitis caused by influenza-virus identified
 31183009,Human echovirus 30
 312342009,Infective pneumonia
@@ -651,7 +685,7 @@ code,term
 3163006,Acute adenoviral follicular conjunctivitis
 32398004,Bronchitis
 32522009,Human adenovirus 35
-32580004,Enterovirus enteritis
+32580004,Inflammation of intestine caused by Enterovirus
 326101000000105,Polymerase chain reaction test for adenovirus
 326111000000107,Adenovirus polymerase chain reaction 
 326121000000101,Adenovirus polymerase chain reaction 
@@ -660,7 +694,7 @@ code,term
 326151000000106,Adenovirus group F polymerase chain reaction 
 32771000237101,Titre of Mycoplasma pneumoniae in sputum
 32812008,Infection due to Parainfluenza virus 1
-328531000119104,Upper respiratory tract infection caused by Influenza A
+328531000119104,Upper respiratory tract infection caused by Influenza A virus
 33093008,Simian adenovirus infection
 33411000237107,Titre of Adenovirus antibody in serum by complement fixation
 33611008,Bovine adenovirus 6
@@ -675,7 +709,6 @@ code,term
 35005008,Bovine adenovirus 3
 35037009,Primary atypical interstitial pneumonia
 35161000,Human rhinovirus 39
-35168006,Acute empyema of ethmoidal sinus
 35301006,Acute tracheobronchitis
 35320008,Human rhinovirus 65
 35377009,Parainfluenza virus laryngotracheobronchitis
@@ -707,6 +740,7 @@ code,term
 36155008,Hepatitis in coxsackie viral disease
 36204005,Human echovirus 1
 36426008,Subacute bronchitis
+364351000119103,Detection of Streptococcus pneumoniae antigen in urine
 365411000000103,Respiratory syncytial virus A detected
 365421000000109,Respiratory syncytial virus A detected 
 365431000000106,Respiratory syncytial virus A detected 
@@ -786,7 +820,7 @@ code,term
 40600002,Pneumococcal bronchitis
 406568007,Coxsackievirus infection of the central nervous system
 406571004,Echovirus infection of the central nervous system
-406578005,Enterovirus infection of the central nervous system
+406578005,Infection of central nervous system caused by Enterovirus
 406588006,Influenza of the central nervous system
 406595002,Infection caused by Mycoplasma pneumoniae
 407468004,Genus Thogotovirus
@@ -813,6 +847,7 @@ code,term
 408686008,Healthcare associated adenoviral disease
 408687004,Healthcare associated influenza disease
 408688009,Healthcare associated severe acute respiratory syndrome
+409801009,Extended spectrum beta-lactamase producing Klebsiella pneumoniae
 41024002,Bovine enterovirus
 41207000,Adenoviral pneumonia
 41269000,Influenzal bronchopneumonia
@@ -927,7 +962,7 @@ code,term
 43518005,Bovine rhinovirus 2
 43521000237101,Qualitative result of human rhinovirus culture
 43561000237107,Qualitative result of human adenovirus culture
-43603001,Porcine enterovirus 2
+43603001,Teschovirus asilesi serotype 2
 43692000,Influenzal acute upper respiratory infection
 43794009,Human echovirus 3
 43861000237105,Number concentration of human parainfluenza by culture
@@ -1031,7 +1066,7 @@ code,term
 460345001,Myocarditis caused by echovirus
 46171006,"Influenza due to Influenza virus, type A, porcine"
 46301003,Human rhinovirus 31
-46397005,Enterovirus heart infection
+46397005,Infection of heart caused by Enterovirus
 46486009,Human rhinovirus 40
 46498004,Human rhinovirus 26
 464991000000105,[X]Mycoplasma pneumoniae [pplo] as the cause of diseases classified to other chapters
@@ -1083,10 +1118,12 @@ code,term
 51391000237109,Qualitative result of Adenovirus ribonucleic acid nucleic acid amplification
 51411000237109,Qualitative result of human coronavirus ribonucleic acid nucleic acid amplification
 51441000237105,Qualitative result of Enterovirus ribonucleic acid nucleic acid amplification
+51581000087101,Antigen of Enterovirus A71
 51701000237100,Qualitative result of human respiratory syncytial virus ribonucleic acid nucleic acid amplification
 51741000237102,Qualitative result of Parainfluenza virus antigen in nasopharyngeal swab
 51751000237104,Qualitative result of Avian influenza virus ribonucleic acid nucleic acid amplification
 51841000237107,Qualitative result of Influenza A virus H1 ribonucleic acid nucleic acid amplification
+52001000237106,Qualitative result of Pneumococcal antigen in urine
 52041000237109,Qualitative result of Influenza B virus ribonucleic acid nucleic acid amplification
 52241000237102,Qualitative result of Adenovirus species F deoxyribonucleic acid by polymerase chain reaction
 52411000237104,Qualitative result of severe acute respiratory syndrome coronavirus ribonucleic acid nucleic acid amplification
@@ -1128,7 +1165,7 @@ code,term
 57713008,Inflammation of vocal cord
 57757007,Human coxsackievirus
 57785009,Human rhinovirus 98
-57923009,Porcine enterovirus 7
+57923009,Teschovirus asilesi serotype 7
 5811004,Human rhinovirus 52
 58445002,Human coxsackievirus A17
 58528009,Bovine rhinovirus infection
@@ -1136,7 +1173,7 @@ code,term
 58720004,Mycoplasma pneumoniae
 5875001,Acute bronchitis with obstruction
 58754003,Porcine adenovirus
-58763001,Acute empyema of nasal sinus
+587751151000119107,Acute lower respiratory infection caused by respiratory syncytial virus
 58890000,Adenoviral bronchopneumonia
 58959001,Parainfluenza 5 virus
 59001000237103,Qualitative result of Bordetella pertussis deoxyribonucleic acid nucleic acid amplification
@@ -1144,7 +1181,7 @@ code,term
 59056002,Human echovirus 32
 59114004,Simian enterovirus 16
 59221008,Parainfluenza virus rhinopharyngitis
-5938005,Porcine enterovirus 4
+5938005,Teschovirus asilesi serotype 4
 59475000,Pneumonia in pertussis
 59921000237106,Qualitative result of respiratory syncytial virus antigen in nasopharyngeal aspirate
 59967003,Acute laryngotracheitis with obstruction
@@ -1153,6 +1190,7 @@ code,term
 600981000000100,Other acute sinusitis NOS
 600991000000103,Acute sinusitis NOS
 60174000,Human rhinovirus 41
+602893011000119101,Acute nasopharyngitis caused by respiratory syncytial virus
 603091000000105,Acute laryngitis NOS
 603111000000100,Pneumonia with other infectious diseases EC
 603131000000108,Acute laryngitis and tracheitis NOS
@@ -1165,7 +1203,26 @@ code,term
 60761000237101,Qualitative result of influenza A antigen in nasal fluid
 607911000000108,Other acute sinusitis
 60847003,Human rhinovirus 114
+60881000087104,Influenza A virus subtype H7N4
+60901000087101,Antigen of Streptococcus pneumoniae Danish serotype 15A capsular polysaccharide
+60911000087104,Antigen of Streptococcus pneumoniae Danish serotype 16F capsular polysaccharide
+60921000087107,Antigen of Streptococcus pneumoniae Danish serotype 20A capsular polysaccharide
+60931000087109,Antigen of Streptococcus pneumoniae Danish serotype 23A capsular polysaccharide
+60941000087103,Antigen of Streptococcus pneumoniae Danish serotype 23B capsular polysaccharide
 609444009,Influenza A virus subtype H7N9
+60951000087100,Antigen of Streptococcus pneumoniae Danish serotype 24F capsular polysaccharide
+60961000087102,Antigen of Streptococcus pneumoniae Danish serotype 31 capsular polysaccharide
+60971000087106,Antigen of Streptococcus pneumoniae Danish serotype 35B capsular polysaccharide
+60981000087108,Antigen of Streptococcus pneumoniae Danish serotype 15A capsular polysaccharide conjugated
+60991000087105,Antigen of Streptococcus pneumoniae Danish serotype 16F capsular polysaccharide conjugated
+61001000087109,Antigen of Streptococcus pneumoniae Danish serotype 17F capsular polysaccharide conjugated
+61011000087106,Antigen of Streptococcus pneumoniae Danish serotype 20A capsular polysaccharide conjugated
+61021000087103,Antigen of Streptococcus pneumoniae Danish serotype 23A capsular polysaccharide conjugated
+61031000087101,Antigen of Streptococcus pneumoniae Danish serotype 23B capsular polysaccharide conjugated
+61041000087107,Antigen of Streptococcus pneumoniae Danish serotype 24F capsular polysaccharide conjugated
+61051000087105,Antigen of Streptococcus pneumoniae Danish serotype 31 capsular polysaccharide conjugated
+61061000087108,Antigen of Streptococcus pneumoniae Danish serotype 35B capsular polysaccharide conjugated
+61071000087104,Antigen of Streptococcus pneumoniae Danish serotype 9N capsular polysaccharide conjugated
 61173003,Human rhinovirus 38
 6142004,Influenza
 615621000000101,Respiratory syncytial virus as the cause of diseases classified to other chapters
@@ -1247,7 +1304,7 @@ code,term
 68957002,Human adenovirus 7
 69239002,Human enterovirus
 698222005,Human coxsackievirus A24 variant
-698257008,Coxsackie virus infection of oral cavity
+698257008,Coxsackie virus infection of internal part of mouth
 699872005,Influenza A virus untyped strain present
 700349009,Influenza A virus subtype H10
 700350009,Influenza A virus subtype H10N8
@@ -1365,7 +1422,7 @@ code,term
 720313003,Antigen to Swine influenza virus
 721274005,Congenital infection caused by Echovirus
 721586007,Pharyngotonsillitis caused by Human herpes simplex virus
-721764008,Infection caused by Human poliovirus
+721764008,Infection caused by human poliovirus
 721765009,Meningitis caused by Human poliovirus
 721863005,Antigen of Influenza virus surface protein
 72204002,Respiratory syncytial virus laryngotracheobronchitis
@@ -1384,7 +1441,7 @@ code,term
 725917007,Acute sinusitis caused by virus
 72593000,Human coxsackievirus A15
 72597004,Human coxsackievirus A21
-72656004,Granulomatous pneumonia
+72656004,Granulomatous pneumonitis
 72877003,Human coxsackievirus A24
 73657004,Human rhinovirus 58
 73815008,Ovine adenovirus 4
@@ -1404,9 +1461,8 @@ code,term
 75715004,Human rhinovirus 61
 764948009,Bourbon virus
 764993001,Encephalitis caused by Mycoplasma pneumoniae
-76653009,Acute empyema of maxillary sinus
 766968000,Antigen of Human rhinovirus
-767467006,Respiratory syncytial virus immune globulin
+767467006,Respiratory Syncytial Virus (RSV) immune globulin
 7678002,Cytomegaloviral pneumonia
 76892004,Human rhinovirus 11
 76985005,Human rhinovirus 89
@@ -1423,7 +1479,7 @@ code,term
 77379003,Human rhinovirus 37
 7746003,Human echovirus 24
 77470003,Enteroviral exanthematous fever
-777424002,Respiratory Syncytial Virus (RSV) vaccine
+777424002,Respiratory Syncytial Virus (RSV) immune globulin
 77919000,Acute sphenoidal sinusitis
 78046005,Myocarditis caused by influenza virus
 781602008,Genus Deltainfluenzavirus
@@ -1443,7 +1499,7 @@ code,term
 78911000,Parainfluenza virus pharyngitis
 79101004,Human rhinovirus 47
 79479005,Respiratory syncytial virus bronchitis
-79658004,Porcine enterovirus 1
+79658004,Teschovirus asilesi serotype 1
 79804005,Human adenovirus 38
 79968007,Human echovirus 33
 801631000000107,Influenza A nucleic acid detection
@@ -1467,7 +1523,7 @@ code,term
 815501000000104,Measurement of Parainfluenza virus type 3 ribonucleic acid by nucleic acid amplification test
 815521000000108,Measurement of Parainfluenza virus ribonucleic acid by nucleic acid amplification test
 815641000000102,Measurement of Parainfluenza virus type 4 ribonucleic acid by nucleic acid amplification test
-81660009,Porcine enterovirus 8
+81660009,Sapelovirus anglia
 817031000000106,Determination of enterovirus genotype by ribonucleic acid analysis
 817051000000104,Measurement of enterovirus ribonucleic acid by nucleic acid amplification test
 817191000000106,Determination of adenovirus genotype by deoxyribonucleic acid analysis
@@ -1483,7 +1539,7 @@ code,term
 82081006,Bovine adenovirus 7
 821021000000105,Detection of respiratory syncytial virus ribonucleic acid by nucleic acid amplification test
 82519006,Human echovirus 19
-82547005,Acute adenoviral meningoencephalitis
+82547005,Acute meningoencephalitis caused by Adenovirus
 82690000,Suppurative laryngitis
 82698007,Human rhinovirus 28
 82774008,Human rhinovirus 104
@@ -1534,7 +1590,8 @@ code,term
 86869009,Canine adenovirus 2
 86886003,Human coxsackievirus A4
 86976003,Human rhinovirus 44
-870573008,Interstitial pneumonia with autoimmune features
+870082891000119100,Pneumonia caused by Acinetobacter baumannii
+870573008,Interstitial pneumonitis with autoimmune features
 870728004,Exanthem caused by human echovirus 16
 870729007,Exanthem caused by human echovirus
 871771002,Antigen of Influenza A virus subtype H5N1
@@ -1558,6 +1615,7 @@ code,term
 89860009,Human adenovirus 27
 90176007,Tonsillitis
 90336009,Human adenovirus 39
+903729901000119103,Acute upper respiratory infection caused by respiratory syncytial virus
 90389005,Genus Rhinovirus
 906511000000100,Adenovirus nucleic acid detection assay
 906521000000106,Adenovirus nucleic acid detection assay 

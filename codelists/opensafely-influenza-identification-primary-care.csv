@@ -18,15 +18,15 @@ code,term
 103524001,Influenzavirus A Victoria
 1050601000000101,Influenza due to seasonal influenza virus
 1050981000000100,Influenza due to seasonal influenza virus
-10624911000119107,Otitis media caused by H1N1 influenza
-10624951000119108,Otitis media caused by influenza
-10628871000119101,Gastroenteritis caused by influenza
+10624911000119107,Otitis media caused by Influenza A virus subtype H1N1
+10624951000119108,Otitis media caused by influenza virus
+10628871000119101,Gastroenteritis caused by influenza virus
 10628911000119103,Gastroenteritis caused by Influenza A virus
 10629191000119100,Bronchiolitis caused by influenza virus
 10629351000119108,Myocarditis caused by Influenza A virus
 10674911000119108,Otitis media caused by Influenza A virus
 10677711000119101,Encephalopathy caused by Influenza A virus
-10685111000119102,Upper respiratory tract infection caused by Influenza
+10685111000119102,Upper respiratory tract infection caused by influenza virus
 111876006,Influenza due to other Influenza virus
 1119277000,Antigen of Influenza A virus A/Indonesia/05/2005 (H5N1)-like virus strain split virion hemagglutinin
 1149091008,Influenza caused by Influenza A virus subtype H2
@@ -35,12 +35,27 @@ code,term
 121008006,Antigen of Influenza B virus
 121026009,Antigen of Influenza C virus
 134251009,Influenza B antigen level
+1354809009,Influenza A virus subtype H5N2
+1354810004,Influenza A virus subtype H10N3
+1354811000,Influenza A virus subtype H1N2v
+1354812007,Influenza A virus subtype H1N1v
+1354813002,Influenza A virus subtype H5N6
+1354814008,Influenza A virus subtype N6
+1354815009,Influenza A virus subtype N3
+1362117000,Influenza A virus subtype N4
+1366207003,Antigen of Influenza A virus subtype H5
+1366374009,Antigen of Influenza B virus B/Phuket/3073/2013 (B/Yamagata lineage)-like virus strain
+1366435001,Antigen of Influenza A virus A/Wisconsin/67/2022 (H1N1)pdm09-like virus strain
+1366436000,Antigen of Influenza A virus A/District of Columbia/27/2023 (H3N2)-like virus strain
+1366437009,Antigen of Influenza A virus A/Victoria/4897/2022 (H1N1)pdm09-like virus strain
+1366438004,Antigen of Influenza A virus A/Croatia/10136RV/2023 (H3N2)-like virus strain
+1366440009,Antigen of Influenza B virus B/Austria/1359417/2021 (B/Victoria lineage)-like virus strain
 142921000119103,Upper respiratory tract infection caused by avian influenza
-142931000119100,Pneumonia caused by H1N1 influenza
-142941000119109,Upper respiratory tract infection caused by H1N1 influenza
+142931000119100,Pneumonia caused by Influenza A virus subtype H1N1
+142941000119109,Upper respiratory tract infection caused by Influenza A virus subtype H1N1
 142951000119106,Myocarditis caused by Influenza A virus subtype H1N1
-142961000119108,Gastroenteritis caused by H1N1 influenza
-142971000119102,Encephalopathy caused by H1N1 influenza
+142961000119108,Gastroenteritis caused by Influenza A virus subtype H1N1
+142971000119102,Encephalopathy caused by Influenza A virus subtype H1N1
 142981000119104,Myocarditis caused by avian influenza
 142991000119101,Gastroenteritis caused by avian influenza
 143001000119100,Encephalopathy caused by avian influenza
@@ -49,7 +64,7 @@ code,term
 155559006,Influenza
 155560001,Influenzal pneumonia
 155561002,Influenza with encephalopathy
-16311000119108,Pneumonia caused by influenza
+16311000119108,Pneumonia caused by influenza virus
 181000124108,Influenza A virus present
 192691003,Encephalitis due to influenza
 192693000,Encephalitis due to influenza-virus identified
@@ -69,6 +84,7 @@ code,term
 196201003,"[X]Influenza with other manifestations, influenza virus identified"
 196202005,"[X]Influenza with other respiratory manifestations, virus not identified"
 196203000,"[X]Influenza with other manifestations, virus not identified"
+221000124104,Influenza A virus subtype H1 2009 pandemic strain
 243612002,Influenza virus A and B
 243613007,Influenza virus A
 243614001,Influenza virus C
@@ -98,10 +114,11 @@ code,term
 280331000000102,Avian influenza
 28105000,Influenzal laryngitis
 292631000000106,Avian influenza
-309789002,Encephalitis caused by influenza
+30031000234105,Antigen of Influenza A virus subtype H5N8
+309789002,Encephalitis caused by influenza virus
 309806000,Encephalitis caused by influenza-virus identified
 313251006,Encephalitis caused by influenza-specific virus not identified
-328531000119104,Upper respiratory tract infection caused by Influenza A
+328531000119104,Upper respiratory tract infection caused by Influenza A virus
 359371000000109,Influenza H1 virus detected
 359381000000106,Influenza H1 detected 
 359391000000108,Influenza H1 detected 
@@ -195,6 +212,7 @@ code,term
 540131000000101,Influenza with other manifestations NOS
 55207002,Influenzavirus A (living organism)
 55604004,Avian influenza
+60881000087104,Influenza A virus subtype H7N4
 609444009,Influenza A virus subtype H7N9
 6142004,Influenza
 616161000000107,Influenza with pneumonia NOS

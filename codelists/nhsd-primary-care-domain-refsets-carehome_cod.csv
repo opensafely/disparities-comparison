@@ -1,22 +1,69 @@
 code,term
+1025041000000100,Referred by care home
+1025051000000102,Referred by care home 
+105530003,Living in residential institution
 1078511000000102,Home visit requested by care home staff
 1129891000000107,Seen by clinical pharmacist in care home
-160734000,Lives in a nursing home
+1240291000000104,Living temporarily in care home
+1325851000000107,Registration with general practitioner practice aligned to care home declined
+151902007,Delayed discharge to nursing home
+152517000,Patient died in nursing home
+153422005,Seen in nursing home
+160732001,Resident in part III accommodation
+160734000,Lives in nursing home
 160737007,Lives in an old peoples home
+164291000000102,Lives in an old peoples home
+171591000000105,Lives in an old peoples home
+183672007,Delayed discharge to nursing home
+184295002,Patient died in nursing home
 185218006,Seen in nursing home
 185219003,Seen in elderly mentally infirm home
 193081000000106,Provision of nursing home care
 193231000000103,Provision of permanent nursing home care
+224224003,Lives in staffed home
+239541000000104,Patient transfer to nursing home
+24751000000101,Nursing home visit note
 248171000000108,Lives in care home
+249371000000104,Lives in care home 
+252001000000102,Lives in care home 
+270114009,Patient died in part 3 accommodation
+270611000,Patient died in part 4 accommodation
+275690000,Seen in Part 3 accommodation
 275691001,Seen in old people's home
 299701000000103,Provision of continuing care in nursing home
+299711000000101,Provision of continuing care in nursing home 
+299721000000107,Provision of continuing care in nursing home 
 306694006,Discharge to nursing home
 306695007,Discharge to private nursing home
+306696008,Discharge to part III accommodation
+312074008,Placement for residential accommodation
+323691000000101,Nursing home care
+35851000000108,Nursing home visit note
+35861000000106,Nursing home visit note
+371381000000107,Fall in nursing home
+390829003,Non NHS registered nursing home mental health care for older adults
+391272008,Non NHS registered nursing home mental health care for older adults - 24 hour not intensive
+392695005,Lives in a residential home
+393653008,Lives in a residential home
 394923006,Lives in a residential home
+431181000000104,Non National Health Service registered nursing home mental health care for older adults
+439570003,Fall in nursing home
+454801000000101,Non NHS registered nursing home mental health care for older adults - 24 hour not intensive
+698747008,Patient died in care home
+710551000000105,Patient died in care home
+710561000000108,Patient died in care home 
 719023008,Referred by care home
 751801000000106,Home visit request by residential institution
 763301000000108,Admission to nursing home
+780811000000106,Discharge to nursing home
+780821000000100,Admission to nursing home
 838691000000105,Referred by nursing home
+876880009,Died in care home
+876884000,Died in nursing home
 889311000000109,Care home visit
+889321000000103,Care home visit 
 889331000000101,Care home visit for initial patient assessment
+889341000000105,Care home visit for initial patient assessment 
 889351000000108,Care home visit for follow-up patient review
+889361000000106,Care home visit for follow-up patient review 
+929171000000100,Seen in Part 3 accommodation

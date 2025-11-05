@@ -5,7 +5,7 @@ from datetime import datetime
 from ehrql import Dataset, create_dataset, case, when, maximum_of, minimum_of, years, days, months
 from ehrql.tables.tpp import (
   patients,
-  #ons_deaths,
+  ons_deaths,
   addresses,
   clinical_events,
   practice_registrations,
@@ -103,11 +103,9 @@ followup_end_date = minimum_of(study_end_date, age_out_date)
 dataset.patient_index_date = index_date
 dataset.patient_end_date = followup_end_date
 
-#define patients status: alive/dead
-was_alive = (
-  (patients.date_of_death.is_after(index_date))|
-  (patients.date_of_death.is_null())
-)
+#define patients status: alive/dead: use ONS record if present, otherwise use GP record
+death_date = ons_deaths.date.when_null_then(patients.date_of_death)
+was_alive = death_date.is_after(index_date) | death_date.is_null()
 
 #define patients age
 age_at_start = patients.age_on(study_start_date)
@@ -978,7 +976,7 @@ else :
 
   for ari_date in ari_dates:
       for fever_date in fever_dates:
-          close_in_time = diff_dates_days(ari_date, fever_date) <= abs(14)
+          close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
           ILI_pairs.append(when(close_in_time).then(True))
           ILI_date_cases.append(when(close_in_time)
           .then(minimum_of(ari_date, fever_date)))
@@ -1038,7 +1036,7 @@ else :
 
   for ari_date in ari_second_dates:
       for fever_date in fever_second_dates:
-          close_in_time = diff_dates_days(ari_date, fever_date) <= abs(14)
+          close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
           ILI_pairs_second.append(when(close_in_time).then(True))
           ILI_second_date_cases.append(when(close_in_time)
           .then(minimum_of(ari_date, fever_date)))

@@ -1,28 +1,15 @@
 import json, sys
 from pathlib import Path 
 
-from datetime import date, datetime
-from ehrql import Dataset, case, when, maximum_of, minimum_of, years, days
+from datetime import datetime
+from ehrql import Dataset, case, when, maximum_of, years
 from ehrql.tables.tpp import ( 
   patients, 
   medications,
-  ons_deaths,
-  addresses, 
-  clinical_events,
-  practice_registrations,
-  household_memberships_2020,
-  vaccinations,
-  apcs,
-  emergency_care_attendances
+  clinical_events
 )
 
-from variable_lib import (
-  has_a_continuous_practice_registration_spanning,
-  most_recent_bmi,
-  practice_registration_as_of,
-  emergency_care_diagnosis_matches,
-  hospitalisation_diagnosis_matches
-)
+from variable_lib import most_recent_bmi
 
 import codelists
 
@@ -187,24 +174,25 @@ has_asthma = (
   (has_prior_event(codelists.asthma_codelist))
   & (has_prior_meds(codelists.asthma_oral_medications,
   where = medications.date.is_on_or_between(medication_date, index_date))
-  |(has_prior_meds(codelists.asthma_inhaled_medications)))
+  |(has_prior_meds(codelists.asthma_inhaled_medications,
+  where = medications.date.is_on_or_between(medication_date, index_date))))
 )
   
 #copd diagnosis
 copd_res = (case(
   when(last_prior_event(codelists.copd_resolved_codelist).date
   .is_on_or_after(last_prior_event(codelists.copd_codelist).date))
-  .then(True), otherwise = False)
+  .then(True),
+  when(last_prior_event(codelists.copd_resolved_codelist).date
+  .is_on_or_after(last_prior_event(codelists.copd_qof_codelist).date))
+  .then(True),
+  otherwise = False)
 )
 has_copd = (case(
-  when(last_prior_event(codelists.copd_resolved_codelist).date
-  .is_on_or_after(last_prior_event(codelists.copd_codelist).date))
-  .then(False), when(last_prior_event(codelists
-  .copd_qof_codelist).date.is_on_or_after(
-  last_prior_event(codelists.copd_codelist).date))
-  .then(False), when(((has_prior_event(codelists.copd_codelist)) 
-  | (has_prior_meds(codelists.copd_medications)) 
-  | (has_prior_event(codelists.copd_qof_codelist)))
+  when(((has_prior_event(codelists.copd_codelist)) 
+  |(has_prior_meds(codelists.copd_medications,
+    where = medications.date.is_on_or_between(medication_date, index_date))) 
+  |(has_prior_event(codelists.copd_qof_codelist)))
   & (~copd_res)).then(True), otherwise = False)
 )
   

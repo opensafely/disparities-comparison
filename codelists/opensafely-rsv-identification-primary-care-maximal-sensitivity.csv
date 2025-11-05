@@ -80,7 +80,7 @@ code,term
 161934001,Unexplained cough
 161935000,Cough symptom NOS
 161945003,Difficulty breathing
-161947006,Nocturnal cough / wheeze
+161947006,Nocturnal cough and wheeze
 162481009,Breathing aggravates symptom
 162896002,On examination - stertorous breathing
 162900004,On examination - air hunger
@@ -284,7 +284,7 @@ code,term
 312133006,Viral respiratory infection
 312134000,Viral lower respiratory infection
 31309002,Respiratory syncytial virus pharyngitis
-313274005,Respiratory syncytial virus swab
+313274005,Taking swab for Respiratory syncytial virus test
 314043005,Viral pleurisy
 315184001,Respiratory syncytial virus antigen level
 315246003,Unexplained cough
@@ -316,6 +316,7 @@ code,term
 371044001,Transient respiratory distress with sepsis
 373904004,Feels hot/feverish
 373906002,Fever with sweating
+383350451000119103,Subacute cough
 386305005,Treatment of fever
 386661006,Fever
 386813002,Abnormal breathing
@@ -399,12 +400,14 @@ code,term
 571051000000102,On examination - level of fever NOS
 582151000000103,On examination - fever NOS
 58596002,Inspiratory stridor
+587751151000119107,Acute lower respiratory infection caused by respiratory syncytial virus
 58840004,Decreased breath sounds
 593251000000102,Relapsing fever NOS
 598631000000100,On examination - fever character NOS
 59921000237106,Qualitative result of respiratory syncytial virus antigen in nasopharyngeal aspirate
 59994004,Hacking cough
 60025004,Transitory fever of newborn
+602893011000119101,Acute nasopharyngitis caused by respiratory syncytial virus
 615621000000101,Respiratory syncytial virus as the cause of diseases classified to other chapters
 621031000000103,Acute bronchiolitis NOS
 62731002,Increasing frequency of cough
@@ -442,7 +445,7 @@ code,term
 755601000000105,Severe wheeze
 755611000000107,Very severe wheeze
 76571007,Septic shock
-767467006,Respiratory syncytial virus immune globulin
+767467006,Respiratory Syncytial Virus (RSV) immune globulin
 769210005,Strength of cough
 769211009,No cough strength
 770349000,Sepsis caused by virus
@@ -451,11 +454,11 @@ code,term
 773551000000105,Fever care management
 77957000,Intermittent fever
 781651000000101,Respiratory bronchiolitis associated interstitial lung disease
+788062371000119104,Acute cough
 789043007,Sepsis without septic shock
 79451004,Bronchial breathing
 79479005,Respiratory syncytial virus bronchitis
 807861000000106,Respiratory bronchiolitis associated interstitial lung disease
-80954004,Decreased respiratory function
 821021000000105,Detection of respiratory syncytial virus ribonucleic acid by nucleic acid amplification test
 82272006,Common cold
 82399006,Audible inspiration
@@ -470,13 +473,14 @@ code,term
 867411000000108,Respiratory syncytial virus monoclonal antibody prophylaxis
 876251000000103,Respiratory syncytial virus monoclonal antibody prophylaxis
 897656009,Rhinosinusitis
+901000172101,Dry tickly cough
+903729901000119103,Acute upper respiratory infection caused by respiratory syncytial virus
 908401000000100,Respiratory syncytial virus nucleic acid detection assay
 908411000000103,RSV nucleic acid detection assay 
 91302008,Sepsis
 926181000000107,Wheezing in absence of colds
 935211000000102,Respiratory syncytial virus ribonucleic acid detection assay
 935221000000108,Respiratory syncytial virus ribonucleic acid detection assay 
-95618001,Neonatal respiratory depression
 95627000,Fever of newborn
 957421000000104,Uncomplicated sepsis
 957431000000102,Red flag sepsis
