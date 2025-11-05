@@ -10,9 +10,9 @@ code,term
 1098002,Human adenovirus 3
 11014004,Human rhinovirus 102
 111849006,Adenoviral bronchitis
-111850006,Adenoviral meningitis
+111850006,Meningitis caused by Adenovirus
 111851005,Subacute adenoviral encephalitis
-111878007,Coxsackie meningitis
+111878007,Meningitis caused by coxsackie virus
 112359001,Simian enterovirus 17
 112360006,Human rhinovirus 45
 112361005,Human rhinovirus 62
@@ -95,7 +95,6 @@ code,term
 1573008,Human rhinovirus 9
 15738003,Human rhinovirus 90
 15755004,Simian enterovirus 6
-16077531000119101,Acute hemorrhagic conjunctivitis of bilateral eyes caused by Enterovirus
 16362001,Human poliovirus 3
 16416005,Simian enterovirus 8
 16532006,Human rhinovirus 34
@@ -137,8 +136,8 @@ code,term
 187586000,[X]Enterovirus as the cause of diseases classified to other chapters
 18835008,Simian adenovirus
 19219004,Human rhinovirus 4
-192650000,Meningitis caused by pertussis
-192667007,Echovirus meningitis
+192650000,Meningitis caused by Bordetella pertussis
+192667007,Meningitis caused by echovirus
 19319001,Human echovirus 18
 19371009,Human parainfluenza virus 1
 194905000,Acute pericarditis caused by human coxsackievirus
@@ -169,8 +168,8 @@ code,term
 22580008,Human poliovirus 1
 22594009,Bovine enterovirus 7
 22958004,Human rhinovirus 70
-230142004,Coxsackie A viral meningitis
-230143009,Coxsackie B viral meningitis
+230142004,Meningitis caused by coxsackievirus A virus
+230143009,Meningitis caused by coxsackievirus B virus
 230144003,Chronic echovirus meningoencephalitis
 230162007,Enteroviral encephalitis
 233599001,Acute mycoplasmal bronchitis
@@ -213,8 +212,8 @@ code,term
 26183002,Bordetella parapertussis
 26314008,Human rhinovirus 82
 26420005,Simian enterovirus 12
-266108008,Hand foot and mouth disease
-26846000,Porcine enterovirus 3
+266108008,Enteroviral vesicular stomatitis with exanthem
+26846000,Teschovirus asilesi serotype 3
 27028004,Human rhinovirus 91
 271532008,Echovirus disease
 271567008,Whooping cough-like syndrome
@@ -226,7 +225,7 @@ code,term
 27806003,Coxsackie pericarditis
 27836007,Pertussis
 2793000,Human coxsackievirus A12
-28192008,Enterovirus meningitis
+28192008,Meningitis caused by Enterovirus
 28522007,Mouse adenovirus
 28650002,Human rhinovirus 85
 28775008,Human rhinovirus 30
@@ -235,10 +234,10 @@ code,term
 29569009,Human rhinovirus 113
 29576004,Human adenovirus 41
 29941005,Bovine enterovirus 6
-30131005,Porcine enterovirus 6
+30131005,Teschovirus asilesi serotype 6
 30154001,Human echovirus 29
 30270006,Infection caused by Human parainfluenza virus 3
-30471008,Porcine enterovirus 5
+30471008,Teschovirus asilesi serotype 5
 30490000,Human adenovirus 11
 30718009,Human rhinovirus 51
 30840007,Human coxsackievirus A18
@@ -247,7 +246,7 @@ code,term
 314559002,Adenoviral keratitis
 3163006,Acute adenoviral follicular conjunctivitis
 32522009,Human adenovirus 35
-32580004,Enterovirus enteritis
+32580004,Inflammation of intestine caused by Enterovirus
 32812008,Infection due to Parainfluenza virus 1
 33093008,Simian adenovirus infection
 33611008,Bovine adenovirus 6
@@ -260,7 +259,6 @@ code,term
 35320008,Human rhinovirus 65
 35377009,Parainfluenza virus laryngotracheobronchitis
 35640008,Acute adenoviral encephalitis
-359628008,Conjunctivitis caused by enterovirus type 70
 36026003,Simian enterovirus
 3606000,Bovine adenovirus
 36155008,Hepatitis in coxsackie viral disease
@@ -314,7 +312,7 @@ code,term
 40599000,Simian enterovirus 2
 406568007,Coxsackievirus infection of the central nervous system
 406571004,Echovirus infection of the central nervous system
-406578005,Enterovirus infection of the central nervous system
+406578005,Infection of central nervous system caused by Enterovirus
 406595002,Infection caused by Mycoplasma pneumoniae
 407489008,Human parainfluenza virus 1
 407491000,Human parainfluenza virus 2
@@ -402,7 +400,7 @@ code,term
 43229008,Parainfluenza virus
 43277008,Human rhinovirus 107
 43518005,Bovine rhinovirus 2
-43603001,Porcine enterovirus 2
+43603001,Teschovirus asilesi serotype 2
 43794009,Human echovirus 3
 440925005,Human rhinovirus present
 440930009,Human adenovirus present
@@ -452,7 +450,7 @@ code,term
 45843005,Human rhinovirus 59
 460345001,Myocarditis caused by echovirus
 46301003,Human rhinovirus 31
-46397005,Enterovirus heart infection
+46397005,Infection of heart caused by Enterovirus
 46486009,Human rhinovirus 40
 46498004,Human rhinovirus 26
 464991000000105,[X]Mycoplasma pneumoniae [pplo] as the cause of diseases classified to other chapters
@@ -504,7 +502,7 @@ code,term
 570791000000100,Whooping cough - other specified organism
 57757007,Human coxsackievirus
 57785009,Human rhinovirus 98
-57923009,Porcine enterovirus 7
+57923009,Teschovirus asilesi serotype 7
 5811004,Human rhinovirus 52
 58445002,Human coxsackievirus A17
 58528009,Bovine rhinovirus infection
@@ -517,7 +515,7 @@ code,term
 59056002,Human echovirus 32
 59114004,Simian enterovirus 16
 59221008,Parainfluenza virus rhinopharyngitis
-5938005,Porcine enterovirus 4
+5938005,Teschovirus asilesi serotype 4
 59475000,Pneumonia in pertussis
 60066004,Human echovirus 34
 60087009,Human rhinovirus 22
@@ -559,7 +557,7 @@ code,term
 68957002,Human adenovirus 7
 69239002,Human enterovirus
 698222005,Human coxsackievirus A24 variant
-698257008,Coxsackie virus infection of oral cavity
+698257008,Coxsackie virus infection of internal part of mouth
 70075003,Human rhinovirus 115
 70233007,Infection caused by Human parainfluenza virus 2
 70385007,Adenoviral pharyngoconjunctivitis
@@ -609,7 +607,7 @@ code,term
 716865000,Congenital infection caused by enterovirus
 7195006,Human rhinovirus 56
 721274005,Congenital infection caused by Echovirus
-721764008,Infection caused by Human poliovirus
+721764008,Infection caused by human poliovirus
 721765009,Meningitis caused by Human poliovirus
 72254008,Human coxsackievirus A1
 722547006,Meningitis caused by Human enterovirus 71
@@ -653,7 +651,7 @@ code,term
 788393007,Antigen of Human mastadenovirus F
 78911000,Parainfluenza virus pharyngitis
 79101004,Human rhinovirus 47
-79658004,Porcine enterovirus 1
+79658004,Teschovirus asilesi serotype 1
 79804005,Human adenovirus 38
 79968007,Human echovirus 33
 80441004,Ovine adenovirus 5
@@ -663,7 +661,7 @@ code,term
 81190003,Human adenovirus 2
 81227000,Human rhinovirus 83
 81401002,Human rhinovirus 99
-81660009,Porcine enterovirus 8
+81660009,Sapelovirus anglia
 817031000000106,Determination of enterovirus genotype by ribonucleic acid analysis
 817191000000106,Determination of adenovirus genotype by deoxyribonucleic acid analysis
 81754003,Human rhinovirus 111
@@ -672,7 +670,7 @@ code,term
 82059001,Human coxsackievirus B1
 82081006,Bovine adenovirus 7
 82519006,Human echovirus 19
-82547005,Acute adenoviral meningoencephalitis
+82547005,Acute meningoencephalitis caused by Adenovirus
 82670009,Whooping cough caused by organism other than Bordetella pertussis
 82698007,Human rhinovirus 28
 82774008,Human rhinovirus 104

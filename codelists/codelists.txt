@@ -1,59 +1,59 @@
-opensafely/ethnicity-snomed-0removed/2e641f61/
+opensafely/ethnicity-snomed-0removed/22911876/
 
 
-opensafely/rsv-identification-primary-care/47b6884f/
-opensafely/rsv-identification-secondary-care/560dcda6/
-opensafely/rsv-identification-primary-care-maximal-sensitivity/7c882eaf/
-opensafely/rsv-identification-prescriptions-maximal-sensitivity-dmd/65062298/
-opensafely/rsv-exclusion-primary-care-maximal-sensitivity/0e4f7e8f/
-opensafely/rsv-exclusion-secondary-care-maximal-sensitivity/625ccb9f/
+opensafely/rsv-identification-primary-care/13907155/
+opensafely/rsv-identification-secondary-care/5ebecaf4/
+opensafely/rsv-identification-primary-care-maximal-sensitivity/2c9fe48a/
+opensafely/rsv-identification-prescriptions-maximal-sensitivity-dmd/210e3123/
+opensafely/rsv-exclusion-primary-care-maximal-sensitivity/02993e02/
+opensafely/rsv-exclusion-secondary-care-maximal-sensitivity/61718aea/
 
-opensafely/covid-19-identification-primary-care/2f7731a6/
+opensafely/covid-19-identification-primary-care/507a5797/
 opensafely/covid-identification/2020-06-03
-opensafely/covid-19-identification-primary-care-maximal-sensitivity/52781f2a/
+opensafely/covid-19-identification-primary-care-maximal-sensitivity/4dc797a1/
 opensafely/covid-19-identification-prescriptions-dmd/32e73c2e
-opensafely/covid-19-exclusion-primary-care-maximal-sensitivity/03e32400/
-opensafely/covid-19-exclusion-secondary-care-maximal-sensitivity/1fa5572b/
+opensafely/covid-19-exclusion-primary-care-maximal-sensitivity/054bfdf8/
+opensafely/covid-19-exclusion-secondary-care-maximal-sensitivity/1e5b712d/
 
-opensafely/influenza-identification-primary-care/2b370a92/
-opensafely/influenza-identification-secondary-care/3cfe5a71/
-opensafely/influenza-identification-primary-care-maximal-sensitivity/178d1749/
-opensafely/acute-respiratory-illness-primary-care/30f1c6ca/
-opensafely/symptoms-fever/758b5341/
-opensafely/symptoms-cough/72d8934b/
+opensafely/influenza-identification-primary-care/4b14d7ab/
+opensafely/influenza-identification-secondary-care/7d33be15/
+opensafely/influenza-identification-primary-care-maximal-sensitivity/64244ae0/
+opensafely/acute-respiratory-illness-primary-care/3a1da458/
+opensafely/symptoms-fever/3cd0644e/
+opensafely/symptoms-cough/55dfd783/
 opensafely/influenza-identification-prescriptions-maximal-sensitivity-dmd/4bf6af63
-opensafely/influenza-exclusion-primary-care-maximal-sensitivity/7ed2e05f/
-opensafely/acute-respiratory-illness-secondary-care/680e1eda/
-opensafely/influenza-exclusion-secondary-care-maximal-sensitivity/011d9210/
+opensafely/influenza-exclusion-primary-care-maximal-sensitivity/6989cacc/
+opensafely/acute-respiratory-illness-secondary-care/532d178d/
+opensafely/influenza-exclusion-secondary-care-maximal-sensitivity/18f5f141/
 
-opensafely/respiratory-virus-unspecified-identification-primary-care/662b7b70/
+opensafely/respiratory-virus-unspecified-identification-primary-care/3392cb94/
 bristol/copd-exacerbations-snomed/162ebd1c/
 bristol/asthma_exacerbations_snomed/137bfd26/
-opensafely/respiratory-virus-unspecified-exclusion-primary-care/3159d510/
-opensafely/respiratory-virus-unspecified-identification-secondary-care/4d1c083b/
+opensafely/respiratory-virus-unspecified-exclusion-primary-care/686471f4/
+opensafely/respiratory-virus-unspecified-identification-secondary-care/65b1b1fe/
 opensafely/copd-exacerbation/6858db5b/
 opensafely/asthma-exacerbation-secondary-care/229001a8/
-opensafely/respiratory-virus-unspecified-exclusion-secondary-care/0fd37cb0/
+opensafely/respiratory-virus-unspecified-exclusion-secondary-care/1a83585f/
 
 
 opensafely/smoking-clear/2020-04-29/
 opensafely/smoking-unclear/2020-04-29/
 user/angel-wong/hazardous-drinking/3c786eff/
-nhsd-primary-care-domain-refsets/illsub_cod/20210127/
-nhsd-primary-care-domain-refsets/illsubint_cod/20210127/
-nhsd-primary-care-domain-refsets/illsubassdec_cod/20200812/
+nhsd-primary-care-domain-refsets/illsub_cod/20250912/
+nhsd-primary-care-domain-refsets/illsubint_cod/20250912/
+nhsd-primary-care-domain-refsets/illsubassdec_cod/20250912/
 
-opensafely/chronic-cardiac-disease/2020-04-08/
-nhsd-primary-care-domain-refsets/pulmohyp_cod/20210127/
-nhsd-primary-care-domain-refsets/carehome_cod/20211221/
-nhsd-primary-care-domain-refsets/tempcarhome_cod/20200812/
+opensafely/chronic-cardiac-disease-snomed/2020-04-08/
+nhsd-primary-care-domain-refsets/pulmohyp_cod/20250912/
+nhsd-primary-care-domain-refsets/carehome_cod/20250912/
+nhsd-primary-care-domain-refsets/tempcarhome_cod/20250912/
 
 primis-covid19-vacc-uptake/ast/v2.5/
 primis-covid19-vacc-uptake/astrxm1/v2.5/
 primis-covid19-vacc-uptake/astrxm2/v2.5/
-nhsd-primary-care-domain-refsets/copd_cod/20210127/
-opensafely/copd-medications-new-dmd/20b7de09/
-nhsd-primary-care-domain-refsets/copdres_cod/20200812/
+nhsd-primary-care-domain-refsets/copd_cod/20250912/
+opensafely/copd-medications-new-dmd/6eef4ab8/
+nhsd-primary-care-domain-refsets/copdres_cod/20250912/
 opensafely/chronic-obstructive-pulmonary-disease-copd-review-qof/01cfd170/
 bristol/ild-snomed/2f3e3051/
 opensafely/cystic-fibrosis/2020-07-20/
@@ -78,5 +78,5 @@ primis-covid19-vacc-uptake/immrx/v2.5/
 primis-covid19-vacc-uptake/immunosuppression-admin-codes/v2.5/
 primis-covid19-vacc-uptake/dxt_chemo_cod/v2.5/
 opensafely/sickle-cell-disease-snomed/2020-04-14/
-nhsd-primary-care-domain-refsets/hf_cod/20210127/
-nhsd-primary-care-domain-refsets/chd_cod/20210127/
+nhsd-primary-care-domain-refsets/hf_cod/20250912/
+nhsd-primary-care-domain-refsets/chd_cod/20250912/

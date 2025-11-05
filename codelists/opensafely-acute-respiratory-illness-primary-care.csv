@@ -17,7 +17,6 @@ code,term
 155547007,Infection of the upper respiratory tract
 155616009,Bronchitis NOS
 15805002,Acute sinusitis
-16036000,Acute empyema of frontal sinus
 16146001,Viral bronchitis
 17357005,Acute suppuration of frontal sinus
 18643000,Ethmoidal sinusitis
@@ -77,7 +76,6 @@ code,term
 312400008,Acute infective tracheobronchitis
 312423006,Infective laryngitis
 32398004,Bronchitis
-35168006,Acute empyema of ethmoidal sinus
 35301006,Acute tracheobronchitis
 363746003,Acute pharyngitis
 36971009,Sinusitis
@@ -97,7 +95,6 @@ code,term
 55355000,Acute laryngopharyngitis
 576581000000107,Acute viral laryngitis unspecified
 5875001,Acute bronchitis with obstruction
-58763001,Acute empyema of nasal sinus
 603091000000105,Acute laryngitis NOS
 603141000000104,Other acute upper respiratory infections
 617931000000103,Upper respiratory tract disease NOS
@@ -123,7 +120,6 @@ code,term
 714203003,Acute bronchitis co-occurrent with bronchiectasis
 718004,Acute bronchiolitis with obstruction
 725917007,Acute sinusitis caused by virus
-76653009,Acute empyema of maxillary sinus
 78337007,Acute upper respiratory infection of multiple sites
 785728005,Bronchitis co-occurrent with wheeze
 785744001,Bronchitis co-occurrent with acute wheeze
@@ -139,3 +135,4 @@ code,term
 88348008,Maxillary sinusitis
 897656009,Rhinosinusitis
 91038008,Acute frontal sinusitis
+921000172108,Acute sore throat

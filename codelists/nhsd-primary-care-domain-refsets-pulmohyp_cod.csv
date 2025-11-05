@@ -1,4 +1,6 @@
 code,term
+1010625007,Pulmonary hypertension due to pulmonary disease with mixed restrictive and obstructive patterns
+1010627004,Pulmonary hypertension due to developmental abnormality
 10964002,Progressive pulmonary hypertension
 11399002,Pulmonary hypertensive arterial disease
 233815004,Persistent pulmonary hypertension of the newborn
@@ -11,7 +13,7 @@ code,term
 233947005,Thromboembolic pulmonary hypertension
 233948000,Post-arteritic pulmonary hypertension
 233950008,Pulmonary hypertension associated with chronic underventilation
-233954004,High altitude pulmonary hypertension
+233954004,Pulmonary hypertension caused by low air pressure due to chronic exposure to high altitude
 276792008,Pulmonary hypertension with extreme obesity
 276793003,Pulmonary hypertension with occult mitral stenosis
 276794009,Facultative pulmonary hypertension with shunt at atrial level
@@ -61,8 +63,12 @@ code,term
 703355003,Pulmonary hypertension due to vasculitis
 70995007,Pulmonary hypertension
 720575002,Braddock syndrome
+83291003,Cor pulmonale
 840306007,Mild pulmonary hypertension
 840307003,Moderate pulmonary hypertension
 840308008,Severe pulmonary hypertension
 87394009,Episodic pulmonary hypertension
+879814007,Pulmonary hypertension due to pulmonary capillary hemangiomatosis
+879815008,Pulmonary hypertension due to pulmonary veno-occlusive disease
+879816009,Pulmonary hypertension due to familial pulmonary capillary hemangiomatosis
 88223008,Secondary pulmonary hypertension

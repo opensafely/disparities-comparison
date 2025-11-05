@@ -1,10 +1,4 @@
 code,term,dmd_id,dmd_type,bnf_code
-40087411000001104,Generic Trimbow NEXThaler 88micrograms/dose / 5micrograms/dose / 9micrograms/dose dry powder inhaler,40087411000001104,VMP,0301011ABAAAAAA
-40766811000001104,Generic Trimbow 172micrograms/dose / 5micrograms/dose / 9micrograms/dose inhaler CFC free,40766811000001104,VMP,0301011ABAAABAB
-34683311000001106,Generic Trimbow 87micrograms/dose / 5micrograms/dose / 9micrograms/dose inhaler CFC free,34683311000001106,VMP,0301011ABBBAAA0
-34681611000001100,Trimbow 87micrograms/dose / 5micrograms/dose / 9micrograms/dose inhaler,34681611000001100,AMP,0301011ABBBAAA0
-39993311000001105,Trimbow NEXThaler 88micrograms/dose / 5micrograms/dose / 9micrograms/dose dry powder inhaler,39993311000001105,AMP,0301011ABBBABAA
-40752211000001109,Trimbow 172micrograms/dose / 5micrograms/dose / 9micrograms/dose inhaler,40752211000001109,AMP,0301011ABBBACAB
 12626211000001108,Formoterol 12microgram inhalation powder capsules with device,12626211000001108,VMP,0301011E0AAAAAA
 39112911000001101,Formoterol 6micrograms/dose dry powder inhaler,39112911000001101,VMP,0301011E0AAABAB
 39113011000001109,Formoterol 12micrograms/dose dry powder inhaler,39113011000001109,VMP,0301011E0AAACAC
@@ -43,8 +37,8 @@ code,term,dmd_id,dmd_type,bnf_code
 11006511000001106,Salbutamol 2.5mg/2.5ml nebuliser liquid unit dose vials,11006511000001106,AMP,0301011R0AAAXAX
 17026511000001100,Salbutamol 2.5mg/2.5ml nebuliser liquid unit dose vials,17026511000001100,AMP,0301011R0AAAXAX
 10453811000001108,Salbutamol 2.5mg/2.5ml nebuliser liquid unit dose vials,10453811000001108,AMP,0301011R0AAAXAX
-41170711000001100,Salbutamol 2.5mg/2.5ml nebuliser liquid unit dose vials,41170711000001100,AMP,0301011R0AAAXAX
 18080711000001105,Salbutamol 2.5mg/2.5ml nebuliser liquid unit dose vials,18080711000001105,AMP,0301011R0AAAXAX
+42642011000001102,Salbutamol 2.5mg/2.5ml nebuliser liquid unit dose vials,42642011000001102,AMP,0301011R0AAAXAX
 12880611000001109,Salbutamol 2.5mg/2.5ml nebuliser liquid unit dose vials,12880611000001109,AMP,0301011R0AAAXAX
 30891911000001100,Salbutamol 2.5mg/2.5ml nebuliser liquid unit dose vials,30891911000001100,AMP,0301011R0AAAXAX
 17927211000001106,Salbutamol 2.5mg/2.5ml nebuliser liquid unit dose vials,17927211000001106,AMP,0301011R0AAAXAX
@@ -75,8 +69,8 @@ code,term,dmd_id,dmd_type,bnf_code
 11006711000001101,Salbutamol 5mg/2.5ml nebuliser liquid unit dose vials,11006711000001101,AMP,0301011R0AABDBD
 17026711000001105,Salbutamol 5mg/2.5ml nebuliser liquid unit dose vials,17026711000001105,AMP,0301011R0AABDBD
 10454011000001100,Salbutamol 5mg/2.5ml nebuliser liquid unit dose vials,10454011000001100,AMP,0301011R0AABDBD
-41172211000001108,Salbutamol 5mg/2.5ml nebuliser liquid unit dose vials,41172211000001108,AMP,0301011R0AABDBD
 18080911000001107,Salbutamol 5mg/2.5ml nebuliser liquid unit dose vials,18080911000001107,AMP,0301011R0AABDBD
+42642211000001107,Salbutamol 5mg/2.5ml nebuliser liquid unit dose vials,42642211000001107,AMP,0301011R0AABDBD
 12880811000001108,Salbutamol 5mg/2.5ml nebuliser liquid unit dose vials,12880811000001108,AMP,0301011R0AABDBD
 30892111000001108,Salbutamol 5mg/2.5ml nebuliser liquid unit dose vials,30892111000001108,AMP,0301011R0AABDBD
 17927411000001105,Salbutamol 5mg/2.5ml nebuliser liquid unit dose vials,17927411000001105,AMP,0301011R0AABDBD
@@ -140,8 +134,6 @@ code,term,dmd_id,dmd_type,bnf_code
 13533711000001109,Salbulin Novolizer 100micrograms/dose inhalation powder refill,13533711000001109,AMP,0301011R0BXABCC
 18148111000001107,Asmavent 100micrograms/dose inhaler CFC free,18148111000001107,AMP,0301011R0BYAAAP
 22503111000001109,AirSalb 100micrograms/dose inhaler CFC free,22503111000001109,AMP,0301011R0BZAAAP
-41346811000001102,Brodilaten 2.5mg/2.5ml nebuliser solution unit dose ampoules,41346811000001102,AMP,0301011R0CBAAAX
-42019411000001100,Brodilaten 5mg/2.5ml nebuliser solution unit dose ampoules,42019411000001100,AMP,0301011R0CBABBD
 35937811000001108,Salmeterol 50microgram inhalation powder blisters with device,35937811000001108,VMP,0301011U0AAAAAA
 35938011000001101,Salmeterol 50microgram inhalation powder blisters,35938011000001101,VMP,0301011U0AAABAB
 39110811000001105,Salmeterol 25micrograms/dose inhaler,39110811000001105,VMP,0301011U0AAACAC
@@ -172,6 +164,7 @@ code,term,dmd_id,dmd_type,bnf_code
 3223511000001105,Ipratropium bromide 500micrograms/2ml nebuliser liquid unit dose vials,3223511000001105,AMP,0301020I0AAACAC
 10453611000001109,Ipratropium bromide 500micrograms/2ml nebuliser liquid unit dose vials,10453611000001109,AMP,0301020I0AAACAC
 23949311000001100,Ipratropium bromide 500micrograms/2ml nebuliser liquid unit dose vials,23949311000001100,AMP,0301020I0AAACAC
+43094411000001109,Ipratropium bromide 500micrograms/2ml nebuliser liquid unit dose vials,43094411000001109,AMP,0301020I0AAACAC
 8097811000001100,Ipratropium bromide 500micrograms/2ml nebuliser liquid unit dose vials,8097811000001100,AMP,0301020I0AAACAC
 30215011000001107,Ipratropium bromide 500micrograms/2ml nebuliser liquid unit dose vials,30215011000001107,AMP,0301020I0AAACAC
 39001511000001107,Ipratropium bromide 500micrograms/2ml nebuliser liquid unit dose vials,39001511000001107,AMP,0301020I0AAACAC
@@ -188,6 +181,7 @@ code,term,dmd_id,dmd_type,bnf_code
 3227511000001100,Ipratropium bromide 250micrograms/1ml nebuliser liquid unit dose vials,3227511000001100,AMP,0301020I0AAAFAF
 10453411000001106,Ipratropium bromide 250micrograms/1ml nebuliser liquid unit dose vials,10453411000001106,AMP,0301020I0AAAFAF
 23949111000001102,Ipratropium bromide 250micrograms/1ml nebuliser liquid unit dose vials,23949111000001102,AMP,0301020I0AAAFAF
+43093511000001105,Ipratropium bromide 250micrograms/1ml nebuliser liquid unit dose vials,43093511000001105,AMP,0301020I0AAAFAF
 8097311000001109,Ipratropium bromide 250micrograms/1ml nebuliser liquid unit dose vials,8097311000001109,AMP,0301020I0AAAFAF
 39001311000001101,Ipratropium bromide 250micrograms/1ml nebuliser liquid unit dose vials,39001311000001101,AMP,0301020I0AAAFAF
 17933111000001105,Ipratropium bromide 250micrograms/1ml nebuliser liquid unit dose vials,17933111000001105,AMP,0301020I0AAAFAF
@@ -309,9 +303,9 @@ code,term,dmd_id,dmd_type,bnf_code
 543711000001100,Slo-Phyllin 250mg capsules,543711000001100,AMP,0301030S0BHACAD
 296711000001107,Theo-Dur 200mg tablets,296711000001107,AMP,0301030S0BIAAAM
 727211000001102,Theo-Dur 300mg tablets,727211000001102,AMP,0301030S0BIABAP
-2892211000001108,Uniphyllin Continus 400mg tablets,2892211000001108,AMP,0301030S0BKAAAR
-454311000001109,Uniphyllin Continus 200mg tablets,454311000001109,AMP,0301030S0BKABAM
-2891811000001100,Uniphyllin Continus 300mg tablets,2891811000001100,AMP,0301030S0BKACAP
+2892211000001108,Uniphyllin 400mg prolonged-release tablets,2892211000001108,AMP,0301030S0BKAAAR
+454311000001109,Uniphyllin 200mg prolonged-release tablets,454311000001109,AMP,0301030S0BKABAM
+2891811000001100,Uniphyllin 300mg prolonged-release tablets,2891811000001100,AMP,0301030S0BKACAP
 39343611000001104,Glycopyrronium 7.2micrograms/dose / Formoterol 5micrograms/dose inhaler CFC free,39343611000001104,VMP,0301040AAAAAAAA
 39329111000001107,Bevespi Aerosphere 7.2micrograms/dose / 5micrograms/dose pressurised inhaler,39329111000001107,AMP,0301040AABBAAAA
 36066611000001106,Fenoterol 100micrograms/dose / Ipratropium 40micrograms/dose inhaler,36066611000001106,VMP,0301040M0AAAAAA
@@ -468,6 +462,7 @@ code,term,dmd_id,dmd_type,bnf_code
 41476211000001105,Beclu 200micrograms/dose inhaler,41476211000001105,AMP,0302000C0BVABBV
 41963811000001107,Bibecfo 100micrograms/dose / 6micrograms/dose inhaler,41963811000001107,AMP,0302000C0BWAABX
 41966111000001105,Bibecfo 200micrograms/dose / 6micrograms/dose inhaler,41966111000001105,AMP,0302000C0BWABBZ
+42606411000001103,Vivaire 100micrograms/dose / 6micrograms/dose inhaler,42606411000001103,AMP,0302000C0BXAABX
 35912811000001103,Budesonide 50micrograms/dose inhaler,35912811000001103,VMP,0302000K0AAAAAA
 35912511000001101,Budesonide 200micrograms/dose inhaler,35912511000001101,VMP,0302000K0AAADAD
 35912411000001100,Budesonide 200micrograms/dose dry powder inhaler,35912411000001100,VMP,0302000K0AAAGAG
@@ -642,7 +637,13 @@ code,term,dmd_id,dmd_type,bnf_code
 4045711000001107,Asmanex 200micrograms/dose Twisthaler,4045711000001107,AMP,0302000R0BBAAAA
 4043811000001103,Asmanex 400micrograms/dose Twisthaler,4043811000001103,AMP,0302000R0BBACAC
 9004511000001107,Ciclesonide 80micrograms/dose inhaler CFC free,9004511000001107,VMP,0302000U0AAAAAA
+44221111000001101,Ciclesonide 80micrograms/dose inhaler CFC free,44221111000001101,AMP,0302000U0AAAAAA
+43823711000001105,Ciclesonide 80micrograms/dose inhaler CFC free,43823711000001105,AMP,0302000U0AAAAAA
+44138311000001106,Ciclesonide 80micrograms/dose inhaler CFC free,44138311000001106,AMP,0302000U0AAAAAA
 9004411000001108,Ciclesonide 160micrograms/dose inhaler CFC free,9004411000001108,VMP,0302000U0AAABAB
+44221911000001103,Ciclesonide 160micrograms/dose inhaler CFC free,44221911000001103,AMP,0302000U0AAABAB
+43823911000001107,Ciclesonide 160micrograms/dose inhaler CFC free,43823911000001107,AMP,0302000U0AAABAB
+44137711000001109,Ciclesonide 160micrograms/dose inhaler CFC free,44137711000001109,AMP,0302000U0AAABAB
 9003911000001102,Alvesco 80 inhaler,9003911000001102,AMP,0302000U0BBAAAA
 9004211000001109,Alvesco 160 inhaler,9004211000001109,AMP,0302000U0BBABAB
 23661311000001105,Fluticasone furoate 184micrograms/dose / Vilanterol 22micrograms/dose dry powder inhaler,23661311000001105,VMP,0302000V0AAAAAA

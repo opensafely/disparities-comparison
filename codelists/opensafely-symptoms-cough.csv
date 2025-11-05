@@ -35,7 +35,7 @@ code,term
 161933007,Evening cough
 161934001,Unexplained cough
 161935000,Cough symptom NOS
-161947006,Nocturnal cough / wheeze
+161947006,Nocturnal cough and wheeze
 17986004,Barking cough
 191954008,Psychogenic cough
 19282004,Cough on exercise
@@ -115,8 +115,10 @@ code,term
 709481000000105,Cough on exercise
 7142008,Cough at rest
 74671000000102,Difficulty in coughing up sputum
+788062371000119104,Acute cough
 78911000000108,Difficulty in coughing up sputum
 808361000000100,Benign cough headache
 810511000000109,Episodic dry cough
 831721000000106,Episodic dry cough
+901000172101,Dry tickly cough
 90129003,Tussive syncope
