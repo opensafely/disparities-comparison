@@ -2,6 +2,7 @@ code,term
 10625551000119103,Bronchopneumonia caused by respiratory syncytial virus
 1163073003,Encephalitis caused by human respiratory syncytial virus
 13320001000004109,Human respiratory syncytial virus isolated in sputum by culture
+1371341007,Administration of prophylactic antiviral for respiratory syncytial virus infection
 15199004,Acute bronchiolitis with bronchospasm
 155513009,Acute bronchiolitis
 186750007,Respiratory syncytial virus infection
@@ -45,6 +46,8 @@ code,term
 5505005,Acute bronchiolitis
 55735004,Respiratory syncytial virus infection
 57089007,Respiratory syncytial virus bronchiolitis
+587751151000119107,Acute lower respiratory infection caused by respiratory syncytial virus
+602893011000119101,Acute nasopharyngitis caused by respiratory syncytial virus
 615621000000101,Respiratory syncytial virus as the cause of diseases classified to other chapters
 621031000000103,Acute bronchiolitis NOS
 6415009,Human respiratory syncytial virus
@@ -55,3 +58,4 @@ code,term
 72204002,Respiratory syncytial virus laryngotracheobronchitis
 79479005,Respiratory syncytial virus bronchitis
 821021000000105,Detection of respiratory syncytial virus ribonucleic acid by nucleic acid amplification test
+903729901000119103,Acute upper respiratory infection caused by respiratory syncytial virus

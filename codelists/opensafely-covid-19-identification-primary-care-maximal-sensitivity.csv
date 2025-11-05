@@ -76,9 +76,14 @@ code,term
 1325081000000107,Assessment using COVID-19 Yorkshire Rehabilitation Screening tool
 1325171000000109,Acute disease caused by severe acute respiratory syndrome coronavirus 2 infection
 1325181000000106,Ongoing symptomatic disease caused by severe acute respiratory syndrome coronavirus 2
+1332141006,Nirmatrelvir
+1332142004,Severe acute respiratory syndrome coronavirus main protease inhibitor
+1332143009,Substance with Severe acute respiratory syndrome coronavirus main protease inhibitor mechanism of action
 135833008,Cardiovascular Limitations and Symptoms Profile shortness of breath score
 135882008,Feverish cold
 135883003,Cough with fever
+1363026006,Primary cough headache
+1371344004,Administration of prophylactic drug or medicament for nausea
 13791008,Asthenia
 138389411000119105,Acute bronchitis caused by severe acute respiratory syndrome coronavirus 2
 139108003,Feels hot/feverish
@@ -171,8 +176,8 @@ code,term
 161934001,Unexplained cough
 161935000,Cough symptom NOS
 161937008,(Symptom: [SOB] or [breathlessness] or [dyspnoea]) or (breathlessness)
-161939006,Breathless - moderate exertion
-161940008,Breathless - mild exertion
+161939006,Dyspnea on moderate exertion
+161940008,Dyspnea on mild exertion
 161941007,Dyspnea at rest
 162012003,Loss of taste (& [C/O -])
 162055004,Nausea
@@ -408,8 +413,8 @@ code,term
 373906002,Fever with sweating
 386305005,Treatment of fever
 386661006,Fever
-390870001,Short of breath dressing/undressing
-390871002,Breathless - strenuous exertion
+390870001,Dyspnea on dressing and undressing
+390871002,Dyspnea on strenuous exertion
 390891000000102,[D]Smell or taste disorder NOS
 391120009,Medical Research Council Dyspnoea scale grade 1
 391123006,Medical Research Council Dyspnoea scale grade 2
@@ -490,6 +495,7 @@ code,term
 542861000000102,Sore throat symptom NOS
 564521000000109,Infectious diarrhea NOS
 567531000000100,Coronavirus as the cause of diseases classified to other chapters
+56971000087101,Informing nurse of coughing
 571041000000100,On examination - fever - general NOS
 571051000000102,On examination - level of fever NOS
 57769004,Dyspnea after eating
@@ -518,7 +524,7 @@ code,term
 68962001,Muscle pain
 697990000,Hypogeusia
 698861005,Intractable nausea and vomiting
-700217006,Suspected coronavirus infection
+700217006,Coronavirus infection suspected
 70076002,Rhinitis
 708673009,Parosmia
 709345005,Antigen of Human coronavirus
@@ -540,6 +546,7 @@ code,term
 765480005,Vomiting co-occurrent and due to infectious disease
 773551000000105,Fever care management
 77957000,Intermittent fever
+788062371000119104,Acute cough
 78901000000106,Decrease in appetite
 79117005,Central muscle fatigue
 79215008,High frequency muscle fatigue
@@ -553,7 +560,7 @@ code,term
 840533007,Severe acute respiratory syndrome coronavirus 2
 840536004,Antigen of severe acute respiratory syndrome coronavirus 2
 840539006,Disease caused by severe acute respiratory syndrome coronavirus 2
-840544004,Suspected disease caused by Severe acute respiratory coronavirus 2
+840544004,Disease caused by severe acute respiratory coronavirus 2 suspected
 84101006,Human coronavirus
 84229001,Fatigue
 8442000,Purulent rhinitis
@@ -579,8 +586,10 @@ code,term
 890351000000103,Suspected coronavirus infection
 894362851000119109,Disease caused by severe acute respiratory syndrome coronavirus 2 during pregnancy
 897656009,Rhinosinusitis
+901000172101,Dry tickly cough
 906711000000107,Coronavirus nucleic acid detection assay
 906721000000101,Coronavirus nucleic acid detection assay 
+921000172108,Acute sore throat
 933791000000101,Coronavirus ribonucleic acid detection assay
 933801000000102,Coronavirus ribonucleic acid detection assay 
 93447004,Eosinophilic nonallergic rhinitis

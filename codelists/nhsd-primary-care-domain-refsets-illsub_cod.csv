@@ -9,24 +9,91 @@ code,term
 1087481000000103,Late onset cocaine-induced psychosis
 1087491000000101,Late onset lysergic acid diethylamide-induced psychosis
 1087501000000107,Late onset cannabinoid-induced psychosis
-11048011000119103,Cannabis hyperemesis syndrome co-occurrent and due to cannabis dependence
+1087511000000109,Late onset amphetamine-induced psychosis
+11048011000119103,Cannabis hyperemesis syndrome due to Cannabis dependence
 1104931000000109,Nitrous oxide misuse
 11061003,Psychoactive substance use disorder
 111480006,Psychoactive substance-induced organic dementia
-11387009,Psychoactive substance-induced organic mental disorder
+11387009,Organic mental disorder caused by psychoactive substance
+1142050005,Uncomplicated opioid withdrawal
+1149239002,Overdose of lysergic acid diethylamide
+1149240000,Accidental overdose by lysergic acid diethylamide
+1149241001,Intentional overdose by lysergic acid diethylamide
+1155772001,Intoxication caused by central stimulant
+1157240004,Amfetamine and/or amfetamine derivative intoxication
+1187205008,Organic mental disorder caused by sedative
+1187219008,Disorder caused by psychoactive substance
+1187220002,Disorder caused by cocaine
+1230071005,Episodic harmful pattern of use of amfetamine and/or amfetamine derivative
+1230072003,"Amfetamine and/or amfetamine derivative abuse, continuous"
+1230078004,Nondependent harmful pattern of use of anxiolytic in remission
+1230079007,Nondependent harmful pattern of use of hypnotic in remission
+1230082002,Nondependent harmful pattern of use of psychostimulant in remission
+1230083007,Nondependent harmful pattern of use of amfetamine and/or amfetamine derivative in remission
+1230084001,Continuous nondependent harmful pattern of use of psychostimulant
+1230085000,Continuous nondependent harmful pattern of use of amfetamine and/or amfetamine derivative
+1230086004,Episodic nondependent harmful pattern of use of psychostimulant
+1230087008,Episodic nondependent harmful pattern of use of amfetamine and/or amfetamine derivative
+1230088003,Nondependent harmful pattern of use of amfetamine and/or amfetamine derivative
+1230089006,Nondependent harmful pattern of use of psychostimulant
+1230266009,Harmful pattern of use of amfetamine and/or amfetamine derivative in remission
+1231158003,Hypnotic dependence in remission
+1231159006,Anxiolytic dependence in remission
+1231160001,"Hypnotic dependence, episodic"
+1231161002,"Anxiolytic dependence, episodic"
+1231162009,"Hypnotic dependence, continuous"
+1231163004,"Anxiolytic dependence, continuous"
+1231319004,Methylenedioxymethamphetamine dependence
+1231325000,Amfetamine and/or amfetamine derivative dependence in remission
+1231327008,Amfetamine and/or amfetamine derivative dependence episodic
+1231328003,Amfetamine and/or amfetamine derivative dependence continuous
+1231331002,Psychostimulant dependence in remission
+1231333004,Psychostimulant dependence episodic
+1231336007,Psychostimulant dependence continuous
+1237200003,Buprenorphine and/or naloxone withdrawal syndrome
+1237201004,Naloxone dependence
+1237202006,Amfetamine and/or amfetamine derivative withdrawal syndrome
 12398201000119102,Anxiety disorder caused by methamphetamine
-12398281000119105,Methamphetamine withdrawal
+12398281000119105,Methamphetamine withdrawal syndrome
 12398321000119100,Mood disorder caused by methamphetamine
 12398361000119105,Mental disorder caused by methamphetamine
+12398571000119105,Methamphetamine intoxication
+1254782007,Dabbing
+1254812006,Substance dependence
+1254959003,Monitoring substance withdrawal
+1254960008,Seizure co-occurrent and due to substance withdrawal
+1254973007,Substance dependence in remission
+1254974001,"Substance dependence, episodic"
+1254975000,"Substance dependence, continuous"
+1254981008,"Substance dependence during pregnancy, childbirth and/or puerperium"
+1254985004,Substance dependence during pregnancy - baby delivered
+1254986003,Substance dependence during pregnancy - baby not yet delivered
+1254987007,Substance dependence in childbirth
+1254991002,Pregnancy and substance dependence
+1255012001,"Combined substance dependence, continuous"
+1255013006,Combined opioid with non-opioid substance dependence
+1255014000,"Combined substance dependence, excluding opioids"
+1255015004,"Combined opioid with non-opioid substance dependence, episodic"
+1255016003,"Combined substance dependence, excluding opioid, episodic"
+1255017007,"Combined substance dependence, excluding opioid, continuous"
+1255018002,"Combined opioid with non-opioid substance dependence, continuous"
+1255019005,Combined opioid with non-opioid substance dependence in remission
+1255020004,"Combined substance dependence, excluding opioid, in remission"
+1264554000,Signs of opioid withdrawal on naloxone challenge test
+1268383007,Methylenedioxymethamphetamine user
+1268384001,Nitrous oxide user
+1364721000000101,Date stopped drug misuse
 1383008,Hallucinogen mood disorder
-145121000119106,Intravenous nondependent opioid abuse
+145101000119102,Harmful pattern of use of intravenous cocaine
+145121000119106,Intravenous nondependent harmful pattern of use of opioid
 1461000119109,Drug dependence in remission
-14784000,Opioid-induced organic mental disorder
+14784000,Organic mental disorder caused by opioid
 15277004,Hallucinogen-induced anxiety disorder
 153491000119103,"Drug dependence, continuous"
 153501000119105,"Drug dependence, episodic"
 16076691000119100,Episodic polysubstance dependence
 16236661000119100,Delirium due to methamphetamine intoxication
+16238181000119101,Depressive disorder caused by amphetamine
 16238221000119109,Depressive disorder caused by methamphetamine
 18689007,Inhalant intoxication delirium
 191816009,Drug dependence
@@ -43,6 +110,9 @@ code,term
 191837001,"Cannabis dependence, continuous"
 191838006,"Cannabis dependence, episodic"
 191839003,Cannabis dependence in remission
+191843004,"Amphetamine or psychostimulant dependence, continuous"
+191844005,"Amphetamine or psychostimulant dependence, episodic"
+191845006,Amphetamine or psychostimulant dependence in remission
 191849000,"Hallucinogen dependence, continuous"
 191850000,"Hallucinogen dependence, episodic"
 191851001,Hallucinogen dependence in remission
@@ -59,6 +129,15 @@ code,term
 191874002,"Combined drug dependence, excluding opioid, episodic"
 191875001,"Combined drug dependence, excluding opioid, in remission"
 191877009,Ecstasy type drug dependence
+191905001,"Nondependent hypnotic or anxiolytic abuse, continuous"
+191906000,"Nondependent hypnotic or anxiolytic abuse, episodic"
+191907009,Nondependent hypnotic or anxiolytic abuse in remission
+191916008,Nondependent harmful pattern of use of cocaine
+191918009,Continuous nondependent harmful pattern of use of cocaine
+191919001,Episodic nondependent harmful pattern of use of cocaine
+191920007,Nondependent harmful pattern of use of cocaine in remission
+191924003,"Nondependent amphetamine or psychostimulant abuse, continuous"
+191925002,"Nondependent amphetamine or psychostimulant abuse, episodic"
 191939002,Misuse of prescription only drugs
 19445006,Opioid-induced psychotic disorder with hallucinations
 197541000000101,Occasional drug user
@@ -68,11 +147,19 @@ code,term
 199255000,Drug dependence in the puerperium - baby delivered during previous episode of care
 202961000000106,Ecstasy misuse
 202991000000100,Heroin misuse
-20385005,Opioid-induced psychotic disorder with delusions
+20385005,Psychotic disorder with delusions caused by opioid
+204641000000107,Episodic nondependent crack cocaine abuse
 20876004,Inhalant-induced anxiety disorder
+216463005,Accidental poisoning caused by heroin
+216469009,Accidental poisoning caused by opium
 21647008,Amphetamine dependence
-21831000119109,Phencyclidine psychosis
-21841000119100,Phencyclidine induced mental problem
+216551003,Accidental poisoning caused by cannabis derivatives
+216552005,"Accidental poisoning by lysergide, LSD"
+216554006,Accidental poisoning caused by mescaline
+216583009,Accidental poisoning caused by cocaine
+21831000119109,Psychotic disorder caused by phencyclidine
+21841000119100,Organic mental disorder caused by phencyclidine
+22574000,Cocaine-induced sleep disorder
 226034001,Injecting drug user
 228367002,Does not misuse drugs
 228368007,Has never misused drugs
@@ -139,52 +226,94 @@ code,term
 231473004,Benzodiazepine dependence
 231474005,Diazepam dependence
 231475006,Librium dependence
-231477003,Heroin dependence
+231477003,Dependence on diamorphine
 231478008,Methadone dependence
 231479000,Morphine dependence
 231480002,Opium dependence
 231481003,Controlled drug dependence
 231482005,Active drug dependence
 237228001,Pregnancy and drug dependence
+240061000000104,Intentional drug overdose by drug paraphernalia
 2403008,Psychoactive substance dependence
 240951000000103,Drug misuse reported by other
 240961000000100,Patient admits to drug use
+242257009,Accidental overdose of ecstasy
 248021000000105,Current non recreational drug user
 248601000000106,Neck injector
+25753007,Amphetamine-induced sleep disorder
 26714005,Cannabis-induced psychotic disorder with hallucinations
 267206008,"Drug dependence during pregnancy, childbirth and the puerperium"
 268640002,Hypnotic or anxiolytic dependence
 268641003,Cannabis type drug dependence
+268647004,Nondependent hypnotic or anxiolytic abuse
+275471001,Psychostimulant dependence
 279461000000104,Using heroin on top of substitution therapy
 279491000000105,Not using heroin on top of substitution therapy
 27956007,Cocaine intoxication
-28368009,Psychoactive substance-induced organic hallucinosis
+28368009,Organic hallucinosis caused by psychoactive substance
 288461000119105,Psychosis caused by inhalant
 288851000119106,Opioid-induced mood disorder due to opioid abuse
 288861000119108,Opioid-induced mood disorder due to opioid dependence
-29733004,Opioid-induced mood disorder
+290181001,Accidental heroin poisoning
+290543000,Accidental cocaine poisoning
+291246000,Accidental cannabis poisoning
+291255002,Accidental mescaline poisoning
+291258000,Accidental ecstasy poisoning
+291261004,Accidental poisoning caused by crack cocaine
+295174006,Heroin overdose
+295175007,Accidental heroin overdose
+295176008,Heroin overdose of undetermined intent
+295566002,Local cocaine overdose
+295567006,Accidental local cocaine overdose
+295568001,Intentional local cocaine overdose
+295570005,Local cocaine overdose of undetermined intent
+296301000,Cannabis overdose
+296302007,Accidental cannabis overdose
+296303002,Intentional cannabis overdose
+296304008,Cannabis overdose of undetermined intent
+296305009,Overdose of lysergic acid
+296306005,Accidental overdose by lysergic acid
+296307001,Intentional overdose by lysergic acid
+296308006,Overdose of lysergic acid of undetermined intent
+296310008,Accidental psilocybin overdose
+296313005,Mescaline overdose
+296314004,Accidental mescaline overdose
+296315003,Intentional mescaline overdose
+296316002,Mescaline overdose of undetermined intent
+296318001,Overdose of ecstasy
+296319009,Intentional overdose of ecstasy
+296320003,Overdose of ecstasy of undetermined intent
+296321004,Overdose of cocaine
+296322006,Accidental overdose by cocaine
+296323001,Intentional overdose by cocaine
+296324007,Overdose of cocaine of undetermined intent
+296325008,Overdose of crack cocaine
+296326009,Accidental overdose by crack cocaine
+296327000,Intentional overdose by crack cocaine
+296328005,Overdose of crack cocaine of undetermined intent
+29733004,Mood disorder caused by opioid
 30491001,Cocaine delusional disorder
 307052004,Illicit drug use
-310202009,Arylcyclohexylamine-induced organic mental disorder
+310202009,Organic mental disorder caused by arylcyclohexylamine
 311173003,Phencyclidine-related disorder
-312936002,Anxiolytic-induced organic mental disorder
-313915006,Hypnotic-induced organic mental disorder
-314539001,Alcohol related optic neuropathy
+312936002,Organic mental disorder caused by anxiolytic agent
+313915006,Organic mental disorder caused by hypnotic agent
+31715000,Phencyclidine intoxication delirium
 31956009,Cocaine dependence
 32009006,Hallucinogen hallucinosis
 32358001,Amphetamine delusional disorder
-32552001,Psychoactive substance-induced organic delusional disorder
+32552001,Organic delusional disorder caused by psychoactive substance
 32875003,Inhalant-induced persisting dementia
 33871004,Phencyclidine-induced psychotic disorder with hallucinations
 361049005,Habitual drug user
 361055000,Misuses drugs
 363908000,Details of drug misuse behavior
-37331004,Psychoactive substance-induced organic mood disorder
+37331004,Organic mood disorder caused by psychoactive substance
 373613000,Cleans own needles
 38247002,Hallucinogen dependence
 383871000000108,Health problem secondary to drug misuse
 383901000000108,Uses drug paraphernalia
-39003006,Psychoactive substance-induced organic delirium
+39003006,Delirium caused by psychoactive substance
 39807006,Cannabis intoxication delirium
 39951001,Cannabis-induced anxiety disorder
 405069002,Effect of substance addiction
@@ -192,6 +321,7 @@ code,term
 413096007,Never injecting drug user
 413295004,Concerned about own drug use
 413329000,Treated for drug use in last 12 months
+414874007,Nondependent amphetamine or psychostimulant abuse in remission
 416262000,Continuous use of drugs
 416437003,Preoccupied with substance misuse
 416479009,Previously injecting drug user
@@ -202,13 +332,15 @@ code,term
 417360004,Duplicative flashbacks
 417531009,Excessive craving for drugs
 417697003,Irresistible craving for drugs
-424461008,Behavior change due to substance use
+424461008,Altered behavior due to substance use
 424626006,Misuse of over-the-counter medications
 424848002,Recreational drug user
 425841004,Phencyclidine dependence in remission
 426001001,Fentanyl dependence
 426873000,Methamphetamine dependence
+427205009,"Amphetamine abuse, continuous"
 427327003,Sedative dependence
+428370001,Psychostimulant withdrawal syndrome
 428406005,Benzodiazepine misuse
 428493006,Crack cocaine misuse
 428495004,Solvent misuse
@@ -219,46 +351,52 @@ code,term
 429179002,Antidepressant misuse
 429299000,"Combined drug dependence, continuous"
 429512006,Methadone misuse
+429692000,"Amphetamine abuse, episodic"
 429782000,Cocaine misuse
-43497001,Amphetamine-induced mood disorder
+43497001,Amfetamine-induced mood disorder
 439374006,Drug abuse cessation behavior
 440664005,Details of drug use behavior during pregnancy
+441527004,Harmful pattern of use of stimulant
 441668002,Drug seeking behavior
 441681009,Dependence on unknown drug
 442229000,Amount of money spent per day on drug habit
 442406005,Stimulant dependence
 44870007,Misused drugs in past
-46721000,Psychoactive substance-induced organic personality disorder
-46975003,Cocaine-induced organic mental disorder
-4863002,Phencyclidine mood disorder
-5002000,Inhalant dependence
-50026000,Psychoactive substance-induced organic anxiety disorder
+45421006,Amphetamine intoxication
+46721000,Organic personality disorder caused by psychoactive substance
+46975003,Organic mental disorder caused by cocaine
+4863002,Mood disorder caused by phencyclidine
+5002000,Volatile inhalant dependence
+50026000,Organic anxiety disorder caused by psychoactive substance
 50320000,Hallucinogen intoxication
-50722006,Phencyclidine delusional disorder
+50722006,Delusional disorder caused by phencyclidine
 50933003,Hallucinogen delusional disorder
 51339003,Polysubstance dependence
+51441000087107,Cannabis-filled electronic cigarette user
 51443000,Amphetamine-induced psychotic disorder with hallucinations
-51493001,Cocaine-induced anxiety disorder
+51493001,Anxiety disorder caused by cocaine
 52866005,Opioid intoxication delirium
-53050002,Hallucinogen-induced organic mental disorder
-55967005,Phencyclidine-induced anxiety disorder
+53050002,Organic mental disorder caused by hallucinogen
+55967005,Anxiety disorder caused by phencyclidine
 58727001,Phencyclidine dependence
 61104008,Inhalant-induced organic mental disorder
 6348008,Cocaine-induced psychotic disorder with hallucinations
 63649001,Cannabis delusional disorder
 63983005,Inhalant-induced psychotic disorder with hallucinations
-70328006,Cocaine delirium
+699449003,Harmful pattern of use of metamfetamine
+70328006,Cocaine intoxication delirium
 703845008,Buprenorphine dependence
 703885002,Misuse of analgesic
 70545002,Narcotic drug user
 707848009,Patient denies drug use
-70932007,Amphetamine-induced sexual dysfunction
+708079007,Overdose of illicit drug
+70932007,Sexual dysfunction caused by amfetamine
 712542001,Abstinent from drug misuse
 712543006,Abstinent from drug misuse in normal environment
 712544000,Abstinent from drug misuse in protected environment
 712545004,Abstinent from drug misuse on maintenance replacement
 712546003,Abstinent from drug misuse when receiving blocking therapy
-71328000,Opioid-induced sexual dysfunction
+71328000,Sexual dysfunction caused by opioid
 715818002,Cleans drug injection needle with bleach
 718617006,Clinical Institute Withdrawal Assessment for Benzodiazepines scale score
 723933008,Cannabis dependence with current use
@@ -269,6 +407,12 @@ code,term
 724657002,Sedative dependence with current use
 724658007,Hypnotic dependence with current use
 724659004,Anxiolytic dependence with current use
+724673008,Psychotic disorder caused by sedative
+724674002,Psychotic disorder caused by hypnotic
+724675001,Psychotic disorder caused by anxiolytic
+724676000,Mood disorder with depressive symptoms caused by sedative
+724677009,Mood disorder with depressive symptoms caused by hypnotic
+724678004,Mood disorder with depressive symptoms caused by anxiolytic
 724688003,Cocaine dependence with current use
 724689006,Psychotic disorder caused by cocaine
 724690002,Mood disorder with depressive symptoms caused by cocaine
@@ -283,8 +427,11 @@ code,term
 724706006,Psychotic disorder caused by methylenedioxymethamphetamine
 724707002,Mood disorder caused by methylenedioxymethamphetamine
 724708007,Anxiety disorder caused by methylenedioxymethamphetamine
+724712001,Harmful use of dissociative drug
 724714000,Dependence caused by dissociative substance
-724715004,Dependence caused by ketamine
+724715004,Ketamine dependence
+724716003,Delirium caused by ketamine
+724717007,Delirium caused by dissociative drug
 724718002,Psychotic disorder caused by dissociative drug
 724719005,Psychotic disorder caused by ketamine
 724720004,Mood disorder caused by dissociative drug
@@ -292,22 +439,26 @@ code,term
 724722007,Anxiety disorder caused by dissociative drug
 724723002,Anxiety disorder caused by ketamine
 724724008,Psychoactive substance dependence with current use
-724725009,Psychoactive substance withdrawal without complication
+724725009,Psychoactive substance withdrawal syndrome without complication
 724726005,Perceptual disturbances co-occurrent and due to psychoactive substance withdrawal
 724727001,Seizure co-occurrent and due to psychoactive substance withdrawal
 724728006,Perceptual disturbances and seizures co-occurrent and due to psychoactive substance withdrawal
+724729003,Psychotic disorder caused by psychoactive substance
+724730008,Obsessive compulsive disorder caused by psychoactive substance
 735750005,Psychotic disorder with schizophreniform symptoms caused by cocaine
 737226008,Disorder caused by cannabis
 737334000,Disorder caused by synthetic cannabinoid use
 737335004,Synthetic cannabinoid intoxication
-737336003,Synthetic cannabinoid abuse
+737336003,Harmful pattern of use of synthetic cannabinoid
 737337007,Synthetic cannabinoid dependence
-737338002,Synthetic cannabinoid withdrawal
+737338002,Synthetic cannabinoid withdrawal syndrome
 737339005,Delirium caused by synthetic cannabinoid
+737340007,Psychotic disorder caused by synthetic cannabinoid
 737341006,Anxiety disorder caused by synthetic cannabinoid
 737342004,Sleep disorder caused by synthetic cannabinoid
 741063003,Illicit drug injection in last 12 months
-74934004,Psychoactive substance-induced withdrawal syndrome
+74851005,Harmful pattern of use of hallucinogen
+74934004,Psychoactive substance withdrawal syndrome
 75122001,Inhalant-induced psychotic disorder with delusions
 75544000,Opioid dependence
 762320004,Mood disorder with manic symptoms caused by opioid
@@ -321,6 +472,9 @@ code,term
 762329003,Mood disorder with depressive symptoms caused by stimulant
 762330008,Mood disorder with mixed depressive and manic symptoms caused by stimulant
 762331007,Anxiety disorder caused by stimulant
+762332000,Obsessive compulsive disorder caused by stimulant
+762333005,Sexual dysfunction caused by stimulant
+762334004,Sleep disorder caused by stimulant
 762335003,Mood disorder with manic symptoms caused by hallucinogen
 762336002,Mood disorder with depressive symptoms caused by hallucinogen
 762337006,Mood disorder with mixed depressive and manic symptoms caused by hallucinogen
@@ -333,6 +487,8 @@ code,term
 762344002,Mood disorder with manic symptoms caused by dissociative drug
 762345001,Mood disorder with depressive symptoms caused by dissociative drug
 762346000,Mood disorder with mixed depressive and manic symptoms caused by dissociative drug
+762503004,Disorder caused by synthetic cathinone
+762504005,Harmful pattern of use of synthetic cathinone
 762505006,Synthetic cathinone dependence
 762506007,Delirium caused by synthetic cathinone
 762507003,Psychotic disorder caused by synthetic cathinone
@@ -345,32 +501,49 @@ code,term
 762514001,Mood disorder with mixed depressive and manic symptoms caused by synthetic cathinone
 762515000,Anxiety disorder caused by synthetic cathinone
 762516004,Obsessive compulsive disorder caused by synthetic cathinone
+762517008,Sexual dysfunction caused by synthetic cathinone
+762518003,Sleep disorder caused by synthetic cathinone
+762671008,Intoxication caused by synthetic cathinone
+762672001,Synthetic cathinone withdrawal syndrome
 763699005,Clinical Opiate Withdrawal Scale score
 770101000000107,Treatment outcomes profile score
-77355000,Cannabis-induced organic mental disorder
-78358001,Amphetamine withdrawal
+77355000,Organic mental disorder caused by Cannabis
+7761000119106,Psychotic disorder caused by amphetamine
+78267003,Harmful pattern of use of cocaine
+78358001,Amphetamine withdrawal syndrome
+785277001,Harmful pattern of use of amfetamine and/or amfetamine derivative
 788165003,Misuse of medication
+788863007,Amnestic disorder caused by psychoactive substance
+788904003,Disorder caused by dissociative drug
 788955005,Impulse control disorder caused by cocaine
+788956006,Impulse control disorder caused by psychoactive substance
+788957002,Impulse control disorder caused by stimulant
+788958007,Impulse control disorder caused by synthetic cathinone
 788983007,Mood disorder caused by cannabis
 789119007,Mood disorder caused by synthetic cannabinoid
-80868005,Cocaine withdrawal
+80868005,Cocaine withdrawal syndrome
 817962007,Chlordiazepoxide dependence
-82339009,Amphetamine-induced anxiety disorder
+82339009,Anxiety disorder caused by amfetamine
 824001000000103,Misuses anabolic steroids
 83168008,Psychoactive substance-induced organic amnestic disorder
-83367009,Amphetamine-induced organic mental disorder
+83367009,Organic mental disorder caused by amphetamine and/or amfetamine derivative
 836439001,Nicotine dependence in remission
-838527002,Amfetamine and amfetamine derivative drug dependence
-838528007,Mood disorder with manic symptoms caused by amfetamine and amfetamine derivative
-838529004,Mood disorder with mixed depressive and manic symptoms caused by amfetamine and amfetamine derivative
-838530009,Mood disorder with depressive symptoms caused by amfetamine and amfetamine derivative
+838519006,Overdose of methylenedioxymethamphetamine
+838520000,Accidental overdose of methylenedioxymethamphetamine
+838521001,Intentional overdose of methylenedioxymethamphetamine
+838522008,Overdose of methylenedioxymethamphetamine of undetermined intent
+838527002,Amfetamine and/or amfetamine derivative dependence
+838528007,Mood disorder with manic symptoms caused by amfetamine and/or amfetamine derivative
+838529004,Mood disorder with mixed depressive and manic symptoms caused by amfetamine and/or amfetamine derivative
+838530009,Mood disorder with depressive symptoms caused by amfetamine and/or amfetamine derivative
+84758004,Amphetamine abuse
 85005007,Cannabis dependence
 860699005,Deep vein thrombosis of lower extremity due to intravenous drug use
-86391000119101,"Inhalant dependence, continuous"
-86401000119104,"Inhalant dependence, episodic"
-870621003,Tobacco dependence with current use
-87132004,Opioid withdrawal
-8837000,Amphetamine delirium
+86391000119101,"Volatile inhalant dependence, continuous"
+86401000119104,"Volatile inhalant dependence, episodic"
+87132004,Opioid withdrawal syndrome
+8837000,Delirium caused by amphetamine
 89451009,Inhalant-induced mood disorder
+91388009,Harmful pattern of use of psychoactive substance
 943121000000104,Psychoactive substance-induced psychosis
 943151000000109,Volatile inhalant-induced psychosis
