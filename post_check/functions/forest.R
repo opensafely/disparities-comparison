@@ -74,7 +74,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
 
   }
   
-    #define levels
+  #define levels
   levels <- list()
   
   if (cohort == "infants" | cohort == "infants_subgroup") {
@@ -83,11 +83,11 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     
   } else if (cohort == "children_and_adolescents") {
     
-    levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Female", "Male")
+    levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Male", "Female")
     
   } else if (cohort == "adults") {
     
-    levels <- c("18-39y", "40-64y", "Female", "Male")
+    levels <- c("40-64y", "18-39y", "Male", "Female")
     
   } else {
     
@@ -189,123 +189,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     
   }
   
-  group_order <- case_when(
-    
-    model_type == "ethnicity" & cohort == "infants" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)")),
-    
-    model_type == "ses" & cohort == "infants" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "IMD Quintile (Sensitive)", "Rurality (Reference)",
-      "Rurality (Specific)", "Rurality (Sensitive)")),
-    
-    model_type == "ethnicity_ses" & cohort == "infants" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "IMD Quintile (Sensitive)", "Rurality (Reference)",
-      "Rurality (Specific)", "Rurality (Sensitive)")),
-    
-    model_type == "ethnicity" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
-      "Maternal Age (Average)", "Maternal Age (Specific)", "Maternal Age (Sensitive)",
-      "Maternal Smoking Status (Reference)", "Maternal Smoking Status (Specific)",
-      "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
-      "Maternal Drinking (Sensitive)", "Maternal Drug Usage (Specific)",
-      "Maternal Drug Usage (Sensitive)", "Maternal Flu Vaccination (Specific)",
-      "Maternal Flu Vaccination (Sensitive)",
-      "Maternal Pertussis Vaccination (Specific)",
-      "Maternal Pertussis Vaccination (Sensitive)",
-      "Binary Variables (Reference)")),
-    
-    model_type == "ses" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "IMD Quintile (Sensitive)", "Rurality (Reference)", "Rurality (Specific)",
-      "Rurality (Sensitive)", "Maternal Age (Average)", "Maternal Age (Specific)",
-      "Maternal Age (Sensitive)", "Maternal Smoking Status (Reference)",
-      "Maternal Smoking Status (Specific)",
-      "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
-      "Maternal Drinking (Sensitive)", "Maternal Drug Usage (Specific)",
-      "Maternal Drug Usage (Sensitive)", "Maternal Flu Vaccination (Specific)",
-      "Maternal Flu Vaccination (Sensitive)",
-      "Maternal Pertussis Vaccination (Specific)",
-      "Maternal Pertussis Vaccination (Sensitive)",
-      "Binary Variables (Reference)")),
-    
-    model_type == "ethnicity_ses" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "IMD Quintile (Sensitive)", "Rurality (Reference)", "Rurality (Specific)",
-      "Rurality (Sensitive)", "Maternal Age (Average)", "Maternal Age (Specific)",
-      "Maternal Age (Sensitive)", "Maternal Smoking Status (Reference)",
-      "Maternal Smoking Status (Specific)",
-      "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
-      "Maternal Drinking (Sensitive)", "Maternal Drug Usage (Specific)",
-      "Maternal Drug Usage (Sensitive)", "Maternal Flu Vaccination (Specific)",
-      "Maternal Flu Vaccination (Sensitive)",
-      "Maternal Pertussis Vaccination (Specific)",
-      "Maternal Pertussis Vaccination (Sensitive)",
-      "Binary Variables (Reference)")),
-    
-    model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
-                      "ethnicity_composition", "ses_composition", "full") & 
-      cohort != "infants" & cohort != "infants_subgroup" &
-      pathogen == "rsv" ~ list(c(
-        "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-        "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-        "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-        "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-        "IMD Quintile (Sensitive)", "Household Composition (Reference)",
-        "Household Composition (Specific)", "Household Composition (Sensitive)",
-        "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)")),
-    
-    model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
-                      "ethnicity_composition", "ses_composition", "full") & 
-      cohort != "infants" & cohort != "infants_subgroup" &
-      pathogen == "flu" ~ list(c(
-        "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-        "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-        "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-        "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-        "IMD Quintile (Sensitive)", "Household Composition (Reference)",
-        "Household Composition (Specific)", "Household Composition (Sensitive)",
-        "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
-        "Prior Flu Vaccination (Reference)", "Prior Flu Vaccination (Specific)",
-        "Prior Flu Vaccination (Sensitive)", "Flu Vaccination (Reference)",
-        "Flu Vaccination (Specific)", "Flu Vaccination (Sensitive)")),
-    
-    model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
-                      "ethnicity_composition", "ses_composition", "full") & 
-      cohort != "infants" & cohort != "infants_subgroup" &
-      pathogen == "covid" ~ list(c(
-        "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-        "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-        "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-        "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-        "IMD Quintile (Sensitive)", "Household Composition (Reference)",
-        "Household Composition (Specific)", "Household Composition (Sensitive)",
-        "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
-        "Time Since Last Covid Vaccination (Reference)",
-        "Time Since Last Covid Vaccination (Specific)",
-        "Time Since Last Covid Vaccination (Sensitive)",
-        "Covid Vaccination (Reference)", "Covid Vaccination (Specific)",
-        "Covid Vaccination (Sensitive)"))
-    
-  )[[1]]
-  
   process_forest_plot <- function(df_model) {
     
     if (nrow(df_model) != 0) {
@@ -325,7 +208,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           reference_row = if_else(var_type == "continuous", FALSE, reference_row)
         )
       
-      if (cohort == "infants_subgroup") {
+      if (cohort == "infants_subgroup" & further == "yes") {
         
         continuous_vars <- tibble(
           term = "maternal_ageAverage",
@@ -568,7 +451,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
 
     }
     
-    if (cohort == "infants_subgroup") {
+    if (cohort == "infants_subgroup" & further == "yes") {
       
       binaries <- tidy_forest %>%
         filter(str_detect(term, "Yes")) %>%
@@ -710,24 +593,24 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       variable = c("sex", "age_band", "latest_ethnicity_group", "imd_quintile",
                    "composition_category", "rurality_classification",
                    vacc_prev, "vax_status", "flu_vaccination",
-                   "covid_vaccination", "maternal_age",
-                   "maternal_smoking_status", "maternal_drinking",
+                   "covid_vaccination", "maternal_age", "maternal_smoking_status",
+                   "binary_variables", "maternal_drinking",
                    "maternal_drug_usage", "maternal_flu_vaccination",
-                   "maternal_pertussis_vaccination", "binary_variables"),
+                   "maternal_pertussis_vaccination"),
       col = c('#1f77b4', '#ffbb78', '#2ca02c', '#ff9896',
               '#aec7e8', '#ff7f0e',
               '#98df8a', '#d62728', '#d62728',
-              '#d62728', '#9467bd',
-              '#c49c94', '#e377c2',
+              '#d62728', '#9467bd', '#c49c94',
+              '#4e3f2c', '#e377c2',
               '#c5b0d5', '#8c564b',
-              '#f7b6d2', "#4e3f2c"),
+              '#f7b6d2'),
       labels = c("Sex", "Age Group", "Ethnicity", "IMD Quintile",
                  "Household Composition", "Rurality", "Prior Vaccination",
                  "Current Vaccination", "Current Vaccination",
-                 "Current Vaccination", "Age (Average)",
-                 "Maternal Smoking Status", "Maternal Drinking",
-                 "Maternal Drug Usage", "Maternal Flu Vaccination",
-                 "Maternal Pertussis Vaccination", "Binary Variables")
+                 "Current Vaccination", "Age",
+                 "Maternal Smoking Status", "Binary Variables",
+                 "Maternal Drinking", "Maternal Drug Usage",
+                 "Maternal Flu Vaccination", "Maternal Pertussis Vaccination")
     )
     
     cols_final <- cols2 %>%
@@ -812,11 +695,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
             label = if_else(label == "Yes", plot_label, label)
           ) %>%
           mutate(
-            plot_label2 = paste0(
-              plot_label, " (", str_to_title(codelist_type), ")")
-          ) %>%
-          mutate(
-            plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
@@ -838,8 +716,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
           facet_wrap( ~ subset, ncol = 4, nrow = 2) + 
-          labs(title = str_to_title(gsub("_", " ", model_type)),
-               x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
+          labs(title = title, x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
           theme(text = element_text(size = 14),
                 strip.text.x = element_blank(),
                 panel.border = element_blank(),
@@ -888,11 +765,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
             label = forcats::fct_relevel(label, levels)
           ) %>%
           mutate(
-            plot_label2 = paste0(
-              plot_label, " (", str_to_title(codelist_type), ")")
-          ) %>%
-          mutate(
-            plot_label2 = factor(plot_label2, levels = group_order),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -969,8 +841,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            plot_label2 = paste0(
-              plot_label, " (", str_to_title(codelist_type), ")"),
             label = case_when(
               str_detect(label, regex("^6-12m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Autumn",
               str_detect(label, regex("^0-6m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Spring",
@@ -979,7 +849,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
             )
           ) %>%
           mutate(
-            plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
@@ -1029,16 +898,20 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           ) %>%
           mutate(
             label = case_when(
-              variable == "vax_status" ~ "Covid Vaccination (Yes)",
+              variable == "vax_status" & pathogen == "covid" ~ "Covid Vaccination (Yes)",
               variable == "time_since_last_covid_vaccination" ~ paste0(
                 label, " Since Last Covid Vaccination"),
+              variable == "prior_flu_vaccination" ~ paste0(
+                "Prior Flu Vaccination (", str_to_title(label),")"),
+              variable == "vax_status" & pathogen == "flu" ~ "Flu Vaccination (Yes)",
               TRUE ~ label
             ),
             subset = gsub("_", "-", subset)
           ) %>%
           mutate(
             variable = case_when(
-              variable == "vax_status" ~ "covid_vaccination",
+              variable == "vax_status" & pathogen == "covid" ~ "covid_vaccination",
+              variable == "vax_status" & pathogen == "flu" ~ "flu_vaccination",
               TRUE ~ variable
             ),
             plot_label = str_to_title(gsub("_", " ", variable))
@@ -1055,17 +928,16 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            plot_label2 = paste0(
-              plot_label, " (", str_to_title(codelist_type), ")"),
             label = case_when(
               str_detect(label, regex("^6-12m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Autumn",
               str_detect(label, regex("^0-6m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Spring",
               str_detect(label, "12m") ~ "Not Vaccinated in Past Year",
+              str_detect(label, "Prior") & str_detect(label, "(Yes)") ~ "Eligible and Vaccinated Last Autumn",
+              str_detect(label, "Prior") & str_detect(label, "(No)") ~ "Not Vaccinated in Past Year",
               TRUE ~ label
             )
           ) %>%
           mutate(
-            plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
@@ -1144,11 +1016,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
             )
           ) %>%
           mutate(
-            plot_label2 = paste0(
-              plot_label, " (", str_to_title(codelist_type), ")")
-          ) %>%
-          mutate(
-            plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
@@ -1182,13 +1049,12 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     
   }
   
-  if (pathogen == "covid") {
-    my_tag <- c("2019-20", "2020-21", "2021-22", "2022-23", "2023-24")
-
-  } else if (cohort != "infants" & cohort != "infants_subgroup" & 
+  if (cohort != "infants" & cohort != "infants_subgroup" & 
     model_type %in% c("composition", "ethnicity_composition",
                       "ses_composition", "full")) {
     my_tag <- "2020-21"
+  } else if (pathogen == "covid") {
+    my_tag <- c("2019-20", "2020-21", "2021-22", "2022-23", "2023-24")
   } else {
     my_tag <- c("2016-17", "2017-18", "2018-19", "2019-20", "2020-21",
                 "2021-22", "2022-23", "2023-24")
@@ -1412,123 +1278,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                 "Eligible and Vaccinated Last Spring", levels)
     
   }
-  
-  group_order <- case_when(
-    
-    model_type == "ethnicity" & cohort == "infants" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)")),
-    
-    model_type == "ses" & cohort == "infants" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "IMD Quintile (Sensitive)", "Rurality (Reference)",
-      "Rurality (Specific)", "Rurality (Sensitive)")),
-    
-    model_type == "ethnicity_ses" & cohort == "infants" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "IMD Quintile (Sensitive)", "Rurality (Reference)",
-      "Rurality (Specific)", "Rurality (Sensitive)")),
-    
-    model_type == "ethnicity" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
-      "Maternal Age (Specific)", "Maternal Age (Sensitive)",
-      "Maternal Smoking Status (Reference)", "Maternal Smoking Status (Specific)",
-      "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
-      "Maternal Drinking (Sensitive)", "Maternal Drug Usage (Specific)",
-      "Maternal Drug Usage (Sensitive)", "Maternal Flu Vaccination (Specific)",
-      "Maternal Flu Vaccination (Sensitive)",
-      "Maternal Pertussis Vaccination (Specific)",
-      "Maternal Pertussis Vaccination (Sensitive)",
-      "Binary Variables (Reference)")),
-    
-    model_type == "ses" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "IMD Quintile (Sensitive)", "Rurality (Reference)", "Rurality (Specific)",
-      "Rurality (Sensitive)", "Maternal Age (Specific)",
-      "Maternal Age (Sensitive)", "Maternal Smoking Status (Reference)",
-      "Maternal Smoking Status (Specific)",
-      "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
-      "Maternal Drinking (Sensitive)", "Maternal Drug Usage (Specific)",
-      "Maternal Drug Usage (Sensitive)", "Maternal Flu Vaccination (Specific)",
-      "Maternal Flu Vaccination (Sensitive)",
-      "Maternal Pertussis Vaccination (Specific)",
-      "Maternal Pertussis Vaccination (Sensitive)",
-      "Binary Variables (Reference)")),
-    
-    model_type == "ethnicity_ses" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "IMD Quintile (Sensitive)", "Rurality (Reference)", "Rurality (Specific)",
-      "Rurality (Sensitive)", "Maternal Age (Specific)",
-      "Maternal Age (Sensitive)", "Maternal Smoking Status (Reference)",
-      "Maternal Smoking Status (Specific)",
-      "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
-      "Maternal Drinking (Sensitive)", "Maternal Drug Usage (Specific)",
-      "Maternal Drug Usage (Sensitive)", "Maternal Flu Vaccination (Specific)",
-      "Maternal Flu Vaccination (Sensitive)",
-      "Maternal Pertussis Vaccination (Specific)",
-      "Maternal Pertussis Vaccination (Sensitive)",
-      "Binary Variables (Reference)")),
-    
-    model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
-                      "ethnicity_composition", "ses_composition", "full") & 
-      cohort != "infants" & cohort != "infants_subgroup" &
-      pathogen == "rsv" ~ list(c(
-        "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-        "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-        "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-        "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-        "IMD Quintile (Sensitive)", "Household Composition (Reference)",
-        "Household Composition (Specific)", "Household Composition (Sensitive)",
-        "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)")),
-    
-    model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
-                      "ethnicity_composition", "ses_composition", "full") & 
-      cohort != "infants" & cohort != "infants_subgroup" &
-      pathogen == "flu" ~ list(c(
-        "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-        "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-        "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-        "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-        "IMD Quintile (Sensitive)", "Household Composition (Reference)",
-        "Household Composition (Specific)", "Household Composition (Sensitive)",
-        "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
-        "Prior Flu Vaccination (Reference)", "Prior Flu Vaccination (Specific)",
-        "Prior Flu Vaccination (Sensitive)", "Flu Vaccination (Reference)",
-        "Flu Vaccination (Specific)", "Flu Vaccination (Sensitive)")),
-    
-    model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
-                      "ethnicity_composition", "ses_composition", "full") & 
-      cohort != "infants" & cohort != "infants_subgroup" &
-      pathogen == "covid" ~ list(c(
-        "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-        "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-        "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-        "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-        "IMD Quintile (Sensitive)", "Household Composition (Reference)",
-        "Household Composition (Specific)", "Household Composition (Sensitive)",
-        "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
-        "Time Since Last Covid Vaccination (Reference)",
-        "Time Since Last Covid Vaccination (Specific)",
-        "Time Since Last Covid Vaccination (Sensitive)",
-        "Covid Vaccination (Reference)", "Covid Vaccination (Specific)",
-        "Covid Vaccination (Sensitive)"))
-    
-  )[[1]]
   
   process_forest_plot <- function(df_model) {
     
@@ -1929,14 +1678,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             label = if_else(label == "Yes", plot_label, label)
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels)
-          ) %>%
-          mutate(
-            plot_label2 = paste0(
-              plot_label, " (", str_to_title(codelist_type), ")")
-          ) %>%
-          mutate(
-            plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
@@ -2002,14 +1743,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             label = if_else(label == "Yes", plot_label, label)
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels)
-          ) %>%
-          mutate(
-            plot_label2 = paste0(
-              plot_label, " (", str_to_title(codelist_type), ")")
-          ) %>%
-          mutate(
-            plot_label2 = factor(plot_label2, levels = group_order),
+            label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -2080,8 +1814,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            plot_label2 = paste0(
-              plot_label, " (", str_to_title(codelist_type), ")"),
             label = case_when(
               str_detect(label, regex("^6-12m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Autumn",
               str_detect(label, regex("^0-6m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Spring",
@@ -2090,7 +1822,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             )
           ) %>%
           mutate(
-            plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
@@ -2163,11 +1894,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             )
           ) %>%
           mutate(
-            plot_label2 = paste0(
-              plot_label, " (", str_to_title(codelist_type), ")")
-          ) %>%
-          mutate(
-            plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
@@ -2365,76 +2091,6 @@ forest_year_further_mult_sens <- function(df, df_dummy, pathogen, model_type,
                 "Not Vaccinated in Past Year", levels)
     
   }
-  
-  group_order <- case_when(
-    
-    model_type == "ethnicity" & cohort == "infants" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Age Group (Reference)",
-      "Age Group (Specific)", "Ethnicity (Reference)", "Ethnicity (Specific)",
-      "Rurality (Reference)", "Rurality (Specific)")),
-    
-    model_type == "ses" & cohort == "infants" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Age Group (Reference)",
-      "Age Group (Specific)", "IMD Quintile (Reference)",
-      "IMD Quintile (Specific)", "Rurality (Reference)",
-      "Rurality (Specific)")),
-    
-    model_type == "ethnicity_ses" & cohort == "infants" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Age Group (Reference)",
-      "Age Group (Specific)", "Ethnicity (Reference)", "Ethnicity (Specific)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "Rurality (Reference)", "Rurality (Specific)")),
-    
-    model_type == "ethnicity" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Age Group (Reference)",
-      "Age Group (Specific)", "Ethnicity (Reference)", "Ethnicity (Specific)",
-      "Rurality (Reference)", "Rurality (Specific)", "Maternal Age (Reference)",
-      "Maternal Age (Specific)", "Maternal Smoking Status (Reference)",
-      "Maternal Smoking Status (Specific)", "Maternal Drinking (Specific)",
-      "Maternal Drug Usage (Specific)", "Maternal Flu Vaccination (Specific)",
-      "Maternal Pertussis Vaccination (Specific)",
-      "Binary Variables (Reference)")),
-    
-    model_type == "ses" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Age Group (Reference)",
-      "Age Group (Specific)", "IMD Quintile (Reference)",
-      "IMD Quintile (Specific)", "Rurality (Reference)", "Rurality (Specific)",
-      "Maternal Age (Reference)", "Maternal Age (Specific)",
-      "Maternal Smoking Status (Reference)", "Maternal Smoking Status (Specific)",
-      "Maternal Drinking (Specific)", "Maternal Drug Usage (Specific)",
-      "Maternal Flu Vaccination (Specific)", "Maternal Pertussis Vaccination (Specific)",
-      "Binary Variables (Reference)")),
-    
-    model_type == "ethnicity_ses" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Age Group (Reference)",
-      "Age Group (Specific)", "Ethnicity (Reference)", "Ethnicity (Specific)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "Rurality (Reference)", "Rurality (Specific)", "Maternal Age (Reference)",
-      "Maternal Age (Specific)", "Maternal Smoking Status (Reference)",
-      "Maternal Smoking Status (Specific)", "Maternal Drinking (Specific)",
-      "Maternal Drug Usage (Specific)", "Maternal Flu Vaccination (Specific)",
-      "Maternal Pertussis Vaccination (Specific)",
-      "Binary Variables (Reference)")),
-    
-    model_type %in% c("ethnicity", "ses", "ethnicity_ses") & 
-      cohort != "infants" & cohort != "infants_subgroup" &
-      pathogen == "rsv" ~ list(c(
-        "Sex (Reference)", "Sex (Specific)", "Age Group (Reference)",
-        "Age Group (Specific)", "Ethnicity (Reference)", "Ethnicity (Specific)",
-        "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-        "Rurality (Reference)", "Rurality (Specific)")),
-    
-    model_type %in% c("ethnicity", "ses", "ethnicity_ses") & 
-      cohort != "infants" & cohort != "infants_subgroup" &
-      pathogen == "flu" ~ list(c(
-        "Sex (Reference)", "Sex (Specific)", "Age Group (Reference)",
-        "Age Group (Specific)", "Ethnicity (Reference)", "Ethnicity (Specific)",
-        "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-        "Rurality (Reference)", "Rurality (Specific)",
-        "Prior Flu Vaccination (Reference)", "Prior Flu Vaccination (Specific)",
-        "Flu Vaccination (Reference)", "Flu Vaccination (Specific)")),
-    
-  )[[1]]
   
   process_forest_plot <- function(df_model) {
     
@@ -2737,14 +2393,7 @@ forest_year_further_mult_sens <- function(df, df_dummy, pathogen, model_type,
           label = if_else(label == "Yes", plot_label, label)
         ) %>%
         mutate(
-          label = forcats::fct_relevel(label, levels)
-        ) %>%
-        mutate(
-          plot_label2 = paste0(
-            plot_label, " (", str_to_title(codelist_type), ")")
-        ) %>%
-        mutate(
-          plot_label2 = factor(plot_label2, levels = group_order),
+          label = forcats::fct_relevel(label, levels),
           shape_order = factor(str_to_title(codelist_type), levels = c(
             "Reference", "Specific"))
         ) %>%
@@ -2805,11 +2454,6 @@ forest_year_further_mult_sens <- function(df, df_dummy, pathogen, model_type,
           )
         ) %>%
         mutate(
-          plot_label2 = paste0(
-            plot_label, " (", str_to_title(codelist_type), ")")
-        ) %>%
-        mutate(
-          plot_label2 = factor(plot_label2, levels = group_order),
           label = forcats::fct_relevel(label, levels),
           shape_order = factor(str_to_title(codelist_type), levels = c(
             "Reference", "Specific"))
