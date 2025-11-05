@@ -12,12 +12,12 @@ def expand_three_char_icd10_codes(codelist):
 # ethnicity codes
 ethnicity_codes = codelist_from_csv(
   "codelists/opensafely-ethnicity-snomed-0removed.csv",
-  column = "snomedcode",
+  column = "code",
   category_column = "Grouping_6",
 )
 ethnicity_codes_16 = codelist_from_csv(
   "codelists/opensafely-ethnicity-snomed-0removed.csv",
-  column = "snomedcode",
+  column = "code",
   category_column = "Grouping_16",
 )
 
