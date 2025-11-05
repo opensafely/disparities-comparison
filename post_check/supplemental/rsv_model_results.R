@@ -10,6 +10,7 @@ library(stringr)
 #import plot function
 source(here::here("post_check", "functions", "forest.R"))
 
+#define parameters for plots
 pathogen <- "rsv"
 investigation_type <- "primary"
 
@@ -352,6 +353,7 @@ rsv_ses_composition_mild <- forest(
 rsv_full_mild <- forest(
   df_input, df_dummy, pathogen, "full", "Mild"
 )
+
 ##create relevant forest plots - severe
 
 #ethnicity
