@@ -687,6 +687,6 @@ for(i in seq_along(plotlist)) {
   ggsave(
     here("post_check", "plots", "supplemental", "models", cohort,
          paste0(cohort, "_", name, "_further.png")),
-    p, height = 8, width = 15
+    p, height = 10, width = 15
   )
 }
