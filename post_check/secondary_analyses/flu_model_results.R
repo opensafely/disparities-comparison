@@ -7,6 +7,7 @@ library(lubridate)
 library(cowplot)
 library(stringr)
 
+#define parameters for plots
 cohort <- "older_adults"
 pathogen <- "flu"
 investigation_type <- "secondary"
@@ -29,53 +30,4 @@ df_few <- df_input %>%
 df_input <- df_input %>%
   filter(term != "too few events")
 
-##create relevant forest plots - mild : no mild flu secondary
-
-##create relevant forest plots - severe
-
-# #ethnicity
-# flu_ethnicity_severe_spec <- forest(
-#   df_input, df_dummy, pathogen, "ethnicity", "Severe"
-# )$spec
-# flu_ethnicity_severe_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "ethnicity", "Severe"
-# )$spec
-
-# #ses
-# flu_ses_severe_spec <- forest(
-#   df_input, df_dummy, pathogen, "ses", "Severe"
-# )$spec
-# flu_ses_severe_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "ses", "Severe"
-# )$spec
-
-#ethnicity & ses
-flu_ethnicity_ses_severe_spec <- forest(
-  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
-)$spec
-flu_ethnicity_ses_severe_spec_alt <- forest_year(
-  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
-)$spec
-
-#create list of plots
-plotlist <- list(
-  # flu_ethnicity_severe_spec,
-  # flu_ethnicity_severe_spec_alt,
-  # flu_ses_severe_spec,
-  # flu_ses_severe_spec_alt,
-  flu_ethnicity_ses_severe_spec,
-  flu_ethnicity_ses_severe_spec_alt
-)
-
-#plot all
-for(p in plotlist) {
-  
-  print(p)
-  title_name <- p$labels$title
-  subtitle_name <- p$labels$subtitle
-  saveas <- paste0(gsub(" ", "_", title_name), "_",
-                   gsub(" ", "_", subtitle_name))
-  ggsave(here("post_check", "plots", "secondary_analyses", "models",
-              paste0(saveas, ".png")), p, height = 8, width = 15)
-  
-}
+#too few events for all models

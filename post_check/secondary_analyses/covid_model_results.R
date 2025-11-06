@@ -29,163 +29,123 @@ df_few <- df_input %>%
 df_input <- df_input %>%
   filter(term != "too few events")
 
-##create relevant forest plots - mild : no mild covid secondary
+##create relevant forest plots - mild
 
-# #ethnicity
-# covid_ethnicity_mild_spec <- forest(
-#   df_input, df_dummy, pathogen, "ethnicity", "Mild"
-# )$spec
-# covid_ethnicity_mild_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "ethnicity", "Mild"
-# )$spec
+#ethnicity
+covid_ethnicity_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity", "Mild"
+)
 
-# #ses
-# covid_ses_mild_spec <- forest(
-#   df_input, df_dummy, pathogen, "ses", "Mild"
-# )$spec
-# covid_ses_mild_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "ses", "Mild"
-# )$spec
+#ses
+covid_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ses", "Mild"
+)
 
-# #hh_comp
-# covid_hh_comp_mild_spec <- forest(
-#   df_input, df_dummy, pathogen, "composition", "Mild"
-# )$spec
-# covid_hh_comp_mild_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "composition", "Mild"
-# )$spec
+#composition
+covid_composition_mild <- forest(
+  df_input, df_dummy, pathogen, "composition", "Mild"
+)
 
 #ethnicity & ses
-covid_ethnicity_ses_mild_spec <- forest(
+covid_ethnicity_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
-)$spec
-covid_ethnicity_ses_mild_spec_alt <- forest_year(
-  df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
-)$spec
+)
 
-# #ethnicity & hh_comp
-# covid_ethnicity_hh_comp_mild_spec <- forest(
-#   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
-# )$spec
-# covid_ethnicity_hh_comp_mild_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
-# )$spec
+#ethnicity & composition - too few events
+covid_ethnicity_composition_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
+)
 
-# #ses & hh_comp
-# covid_ses_hh_comp_mild_spec <- forest(
-#   df_input, df_dummy, pathogen, "ses_composition", "Mild"
-# )$spec
-# covid_ses_hh_comp_mild_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "ses_composition", "Mild"
-# )$spec
+#ses & composition
+covid_ses_composition_mild <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Mild"
+)
 
-# #full
-# covid_full_mild_spec <- forest(
-#   df_input, df_dummy, pathogen, "full", "Mild"
-# )$spec
-# covid_full_mild_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "full", "Mild"
-# )$spec
+#full
+covid_full_mild <- forest(
+  df_input, df_dummy, pathogen, "full", "Mild"
+)
 
 ##create relevant forest plots - severe
 
-# #ethnicity
-# covid_ethnicity_severe_spec <- forest(
-#   df_input, df_dummy, pathogen, "ethnicity", "Severe"
-# )$spec
-# covid_ethnicity_severe_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "ethnicity", "Severe"
-# )$spec
+#ethnicity
+covid_ethnicity_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity", "Severe"
+)
 
-# #ses
-# covid_ses_severe_spec <- forest(
-#   df_input, df_dummy, pathogen, "ses", "Severe"
-# )$spec
-# covid_ses_severe_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "ses", "Severe"
-# )$spec
+#ses
+covid_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ses", "Severe"
+)
 
-# #hh_comp
-# covid_hh_comp_severe_spec <- forest(
-#   df_input, df_dummy, pathogen, "composition", "Severe"
-# )$spec
-# covid_hh_comp_severe_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "composition", "Severe"
-# )$spec
+#composition
+covid_composition_severe <- forest(
+  df_input, df_dummy, pathogen, "composition", "Severe"
+)
 
 #ethnicity & ses
-covid_ethnicity_ses_severe_spec <- forest(
+covid_ethnicity_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
-)$spec
-covid_ethnicity_ses_severe_spec_alt <- forest_year(
-  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
-)$spec
+)
 
-# #ethnicity & hh_comp
-# covid_ethnicity_hh_comp_severe_spec <- forest(
-#   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
-# )$spec
-# covid_ethnicity_hh_comp_severe_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
-# )$spec
+#ethnicity & composition - too few events
+covid_ethnicity_composition_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
+)
 
-# #ses & hh_comp
-# covid_ses_hh_comp_severe_spec <- forest(
-#   df_input, df_dummy, pathogen, "ses_composition", "Severe"
-# )$spec
-# covid_ses_hh_comp_severe_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "ses_composition", "Severe"
-# )$spec
+#ses & composition
+covid_ses_composition_severe <- forest(
+  df_input, df_dummy, pathogen, "ses_composition", "Severe"
+)
 
-# #full
-# covid_full_severe_spec <- forest(
-#   df_input, df_dummy, pathogen, "full", "Severe"
-# )$spec
-# covid_full_severe_spec_alt <- forest_year(
-#   df_input, df_dummy, pathogen, "full", "Severe"
-# )$spec
+#full
+covid_full_severe <- forest(
+  df_input, df_dummy, pathogen, "full", "Severe"
+)
 
 #create list of plots
 plotlist <- list(
-  # covid_ethnicity_mild_spec,
-  # covid_ethnicity_mild_spec_alt,
-  # covid_ses_mild_spec,
-  # covid_ses_mild_spec_alt,
-  # covid_hh_comp_mild_spec,
-  # covid_hh_comp_mild_spec_alt,
-  covid_ethnicity_ses_mild_spec,
-  covid_ethnicity_ses_mild_spec_alt,
-  # covid_ethnicity_hh_comp_mild_spec,
-  # covid_ethnicity_hh_comp_mild_spec_alt,
-  # covid_ses_hh_comp_mild_spec,
-  # covid_ses_hh_comp_mild_spec_alt,
-  # covid_full_mild_spec,
-  # covid_full_mild_spec_alt,
-  # covid_ethnicity_severe_spec,
-  # covid_ethnicity_severe_spec_alt,
-  # covid_ses_severe_spec,
-  # covid_ses_severe_spec_alt,
-  # covid_hh_comp_severe_spec,
-  # covid_hh_comp_severe_spec_alt,
-  covid_ethnicity_ses_severe_spec,
-  covid_ethnicity_ses_severe_spec_alt#,
-  # covid_ethnicity_hh_comp_severe_spec,
-  # covid_ethnicity_hh_comp_severe_spec_alt,
-  # covid_ses_hh_comp_severe_spec,
-  # covid_ses_hh_comp_severe_spec_alt,
-  # covid_full_severe_spec,
-  # covid_full_severe_spec_alt
+  covid_ethnicity_mild,
+  covid_ethnicity_severe, 
+  covid_ses_mild,
+  covid_ses_severe, 
+  covid_composition_mild,
+  covid_composition_severe,
+  covid_ethnicity_ses_mild,
+  covid_ethnicity_ses_severe, 
+  covid_ethnicity_composition_mild, 
+  covid_ethnicity_composition_severe, 
+  covid_ses_composition_mild,
+  covid_ses_composition_severe,
+  covid_full_mild,
+  covid_full_severe
+)
+plot_names <- c(
+  "covid_ethnicity_mild",
+  "covid_ethnicity_severe",
+  "covid_ses_mild",
+  "covid_ses_severe",
+  "covid_composition_mild",
+  "covid_composition_severe",
+  "covid_ethnicity_ses_mild",
+  "covid_ethnicity_ses_severe",
+  "covid_ethnicity_composition_mild",
+  "covid_ethnicity_composition_severe",
+  "covid_ses_composition_mild",
+  "covid_ses_composition_severe",
+  "covid_full_mild",
+  "covid_full_severe"
 )
 
-#plot all
-for(p in plotlist) {
+for(i in seq_along(plotlist)) {
+  p <- plotlist[[i]]
+  name <- plot_names[i]
   
   print(p)
-  title_name <- p$labels$title
-  subtitle_name <- p$labels$subtitle
-  saveas <- paste0(gsub(" ", "_", title_name), "_",
-                   gsub(" ", "_", subtitle_name))
-  ggsave(here("post_check", "plots", "secondary_analyses", "models",
-              paste0(saveas, ".png")), p, height = 8, width = 15)
   
+  ggsave(
+    here("post_check", "plots", "supplemental", "models", cohort, "secondary",
+         paste0(cohort, "_", name, ".png")),
+    p, height = 8, width = 15
+  )
 }
