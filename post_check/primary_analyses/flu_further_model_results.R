@@ -11,7 +11,7 @@ library(stringr)
 source(here::here("post_check", "functions", "forest.R"))
 
 #define parameters for plots
-pathogen <- "covid"
+pathogen <- "flu"
 investigation_type <- "primary"
 
 ###older adults
@@ -24,13 +24,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2021_2022_specific_primary.arrow"))) %>%
-  mutate(
-    subset = "2021_22",
-    time_since_last_covid_vaccination = if_else(
-      is.na(covid_vaccination_immunity_date), "6-12m",
-      time_since_last_covid_vaccination)
-    )
+             "_2020_2021_specific_primary.arrow"))) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -42,132 +36,109 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-covid_ethnicity_mild <- forest(
+flu_ethnicity_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Mild", "yes"
 )
 
 #ses
-covid_ses_mild <- forest(
+flu_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ses", "Mild", "yes"
 )
 
-#ethnicity & ses
-covid_ethnicity_ses_mild <- forest(
-  df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
-)
-
-#import dummy data with composition
-df_dummy <- read_feather(
-  here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) %>% 
-  mutate(subset = "2020_21")
-
 #composition
-covid_composition_mild <- forest(
+flu_composition_mild <- forest(
   df_input, df_dummy, pathogen, "composition", "Mild", "yes"
 )
 
+#ethnicity & ses
+flu_ethnicity_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
+)
+
 #ethnicity & composition - too few events
-covid_ethnicity_composition_mild <- forest(
+flu_ethnicity_composition_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild", "yes"
 )
 
 #ses & composition
-covid_ses_composition_mild <- forest(
+flu_ses_composition_mild <- forest(
   df_input, df_dummy, pathogen, "ses_composition", "Mild", "yes"
 )
 
 #full
-covid_full_mild <- forest(
+flu_full_mild <- forest(
   df_input, df_dummy, pathogen, "full", "Mild", "yes"
 )
 
 ##create relevant forest plots - severe
 
-#import dummy data with vaccination
-df_dummy <- read_feather(
-  here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2021_2022_specific_primary.arrow"))) %>%
-  mutate(
-    subset = "2021_22",
-    time_since_last_covid_vaccination = if_else(
-      is.na(covid_vaccination_immunity_date), "6-12m",
-      time_since_last_covid_vaccination)
-    )
-
 #ethnicity
-covid_ethnicity_severe <- forest(
+flu_ethnicity_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Severe", "yes"
 )
 
 #ses
-covid_ses_severe <- forest(
+flu_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ses", "Severe", "yes"
 )
 
-#ethnicity & ses
-covid_ethnicity_ses_severe <- forest(
-  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
-)
-
-#import dummy data with composition
-df_dummy <- read_feather(
-  here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) %>% 
-  mutate(subset = "2020_21")
-
 #composition
-covid_composition_severe <- forest(
+flu_composition_severe <- forest(
   df_input, df_dummy, pathogen, "composition", "Severe", "yes"
 )
 
+#ethnicity & ses
+flu_ethnicity_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
+)
+
 #ethnicity & composition - too few events
-covid_ethnicity_composition_severe <- forest(
+flu_ethnicity_composition_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe", "yes"
 )
 
 #ses & composition
-covid_ses_composition_severe <- forest(
+flu_ses_composition_severe <- forest(
   df_input, df_dummy, pathogen, "ses_composition", "Severe", "yes"
 )
 
 #full
-covid_full_severe <- forest(
+flu_full_severe <- forest(
   df_input, df_dummy, pathogen, "full", "Severe", "yes"
 )
 
 #create list of plots
 plotlist <- list(
-  covid_ethnicity_mild,
-  covid_ethnicity_severe, 
-  covid_ses_mild,
-  covid_ses_severe, 
-  covid_composition_mild,
-  covid_composition_severe,
-  covid_ethnicity_ses_mild,
-  covid_ethnicity_ses_severe, 
-  covid_ethnicity_composition_mild, 
-  covid_ethnicity_composition_severe, 
-  covid_ses_composition_mild,
-  covid_ses_composition_severe,
-  covid_full_mild,
-  covid_full_severe
+  flu_ethnicity_mild,
+  flu_ethnicity_severe, 
+  flu_ses_mild,
+  flu_ses_severe, 
+  flu_composition_mild,
+  flu_composition_severe,
+  flu_ethnicity_ses_mild,
+  flu_ethnicity_ses_severe, 
+  flu_ethnicity_composition_mild, 
+  flu_ethnicity_composition_severe, 
+  flu_ses_composition_mild,
+  flu_ses_composition_severe,
+  flu_full_mild,
+  flu_full_severe
 )
 plot_names <- c(
-  "covid_ethnicity_mild",
-  "covid_ethnicity_severe",
-  "covid_ses_mild",
-  "covid_ses_severe",
-  "covid_composition_mild",
-  "covid_composition_severe",
-  "covid_ethnicity_ses_mild",
-  "covid_ethnicity_ses_severe",
-  "covid_ethnicity_composition_mild",
-  "covid_ethnicity_composition_severe",
-  "covid_ses_composition_mild",
-  "covid_ses_composition_severe",
-  "covid_full_mild",
-  "covid_full_severe"
+  "flu_ethnicity_mild",
+  "flu_ethnicity_severe",
+  "flu_ses_mild",
+  "flu_ses_severe",
+  "flu_composition_mild",
+  "flu_composition_severe",
+  "flu_ethnicity_ses_mild",
+  "flu_ethnicity_ses_severe",
+  "flu_ethnicity_composition_mild",
+  "flu_ethnicity_composition_severe",
+  "flu_ses_composition_mild",
+  "flu_ses_composition_severe",
+  "flu_full_mild",
+  "flu_full_severe"
 )
 
 for(i in seq_along(plotlist)) {
@@ -182,6 +153,10 @@ for(i in seq_along(plotlist)) {
     p, height = 8, width = 15
   )
 }
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_flu_further_model_results.RData")))
 
 ###adults
 
@@ -193,12 +168,10 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2021_2022_specific_primary.arrow"))) %>%
+             "_2020_2021_specific_primary.arrow")))
+df_dummy <- df_dummy %>%
   mutate(
-    subset = "2021_22",
-    time_since_last_covid_vaccination = if_else(
-      is.na(covid_vaccination_immunity_date), "6-12m",
-      time_since_last_covid_vaccination)
+    age_band = if_else(age_band == "18-29y", "18-39y", age_band)
   )
 
 #extract models for which there were too few events
@@ -211,132 +184,109 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-covid_ethnicity_mild <- forest(
+flu_ethnicity_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Mild", "yes"
 )
 
 #ses
-covid_ses_mild <- forest(
+flu_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ses", "Mild", "yes"
 )
 
-#ethnicity & ses
-covid_ethnicity_ses_mild <- forest(
-  df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
-)
-
-#import dummy data with composition
-df_dummy <- read_feather(
-  here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) %>% 
-  mutate(subset = "2020_21")
-
 #composition
-covid_composition_mild <- forest(
+flu_composition_mild <- forest(
   df_input, df_dummy, pathogen, "composition", "Mild", "yes"
 )
 
+#ethnicity & ses
+flu_ethnicity_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
+)
+
 #ethnicity & composition - too few events
-covid_ethnicity_composition_mild <- forest(
+flu_ethnicity_composition_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild", "yes"
 )
 
 #ses & composition
-covid_ses_composition_mild <- forest(
+flu_ses_composition_mild <- forest(
   df_input, df_dummy, pathogen, "ses_composition", "Mild", "yes"
 )
 
 #full
-covid_full_mild <- forest(
+flu_full_mild <- forest(
   df_input, df_dummy, pathogen, "full", "Mild", "yes"
 )
 
 ##create relevant forest plots - severe
 
-#import dummy data with vaccination
-df_dummy <- read_feather(
-  here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2021_2022_specific_primary.arrow"))) %>%
-  mutate(
-    subset = "2021_22",
-    time_since_last_covid_vaccination = if_else(
-      is.na(covid_vaccination_immunity_date), "6-12m",
-      time_since_last_covid_vaccination)
-    )
-
 #ethnicity
-covid_ethnicity_severe <- forest(
+flu_ethnicity_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Severe", "yes"
 )
 
 #ses
-covid_ses_severe <- forest(
+flu_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ses", "Severe", "yes"
 )
 
-#ethnicity & ses
-covid_ethnicity_ses_severe <- forest(
-  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
-)
-
-#import dummy data with composition
-df_dummy <- read_feather(
-  here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) %>% 
-  mutate(subset = "2020_21")
-
 #composition
-covid_composition_severe <- forest(
+flu_composition_severe <- forest(
   df_input, df_dummy, pathogen, "composition", "Severe", "yes"
 )
 
+#ethnicity & ses
+flu_ethnicity_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
+)
+
 #ethnicity & composition - too few events
-covid_ethnicity_composition_severe <- forest(
+flu_ethnicity_composition_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe", "yes"
 )
 
 #ses & composition
-covid_ses_composition_severe <- forest(
+flu_ses_composition_severe <- forest(
   df_input, df_dummy, pathogen, "ses_composition", "Severe", "yes"
 )
 
 #full
-covid_full_severe <- forest(
+flu_full_severe <- forest(
   df_input, df_dummy, pathogen, "full", "Severe", "yes"
 )
 
 #create list of plots
 plotlist <- list(
-  covid_ethnicity_mild,
-  covid_ethnicity_severe, 
-  covid_ses_mild,
-  covid_ses_severe, 
-  covid_composition_mild,
-  covid_composition_severe,
-  covid_ethnicity_ses_mild,
-  covid_ethnicity_ses_severe, 
-  covid_ethnicity_composition_mild, 
-  covid_ethnicity_composition_severe, 
-  covid_ses_composition_mild,
-  covid_ses_composition_severe,
-  covid_full_mild,
-  covid_full_severe
+  flu_ethnicity_mild,
+  flu_ethnicity_severe, 
+  flu_ses_mild,
+  flu_ses_severe, 
+  flu_composition_mild,
+  flu_composition_severe,
+  flu_ethnicity_ses_mild,
+  flu_ethnicity_ses_severe, 
+  flu_ethnicity_composition_mild, 
+  flu_ethnicity_composition_severe, 
+  flu_ses_composition_mild,
+  flu_ses_composition_severe,
+  flu_full_mild,
+  flu_full_severe
 )
 plot_names <- c(
-  "covid_ethnicity_mild",
-  "covid_ethnicity_severe",
-  "covid_ses_mild",
-  "covid_ses_severe",
-  "covid_composition_mild",
-  "covid_composition_severe",
-  "covid_ethnicity_ses_mild",
-  "covid_ethnicity_ses_severe",
-  "covid_ethnicity_composition_mild",
-  "covid_ethnicity_composition_severe",
-  "covid_ses_composition_mild",
-  "covid_ses_composition_severe",
-  "covid_full_mild",
-  "covid_full_severe"
+  "flu_ethnicity_mild",
+  "flu_ethnicity_severe",
+  "flu_ses_mild",
+  "flu_ses_severe",
+  "flu_composition_mild",
+  "flu_composition_severe",
+  "flu_ethnicity_ses_mild",
+  "flu_ethnicity_ses_severe",
+  "flu_ethnicity_composition_mild",
+  "flu_ethnicity_composition_severe",
+  "flu_ses_composition_mild",
+  "flu_ses_composition_severe",
+  "flu_full_mild",
+  "flu_full_severe"
 )
 
 for(i in seq_along(plotlist)) {
@@ -351,6 +301,10 @@ for(i in seq_along(plotlist)) {
     p, height = 8, width = 15
   )
 }
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_flu_further_model_results.RData")))
 
 ###children and adolescents
 
@@ -362,13 +316,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2021_2022_specific_primary.arrow"))) %>%
-  mutate(
-    subset = "2021_22",
-    time_since_last_covid_vaccination = if_else(
-      is.na(covid_vaccination_immunity_date), "6-12m",
-      time_since_last_covid_vaccination)
-  )
+             "_2020_2021_specific_primary.arrow"))) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -380,132 +328,109 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-covid_ethnicity_mild <- forest(
+flu_ethnicity_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Mild", "yes"
 )
 
 #ses
-covid_ses_mild <- forest(
+flu_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ses", "Mild", "yes"
 )
 
-#ethnicity & ses
-covid_ethnicity_ses_mild <- forest(
-  df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
-)
-
-#import dummy data with composition
-df_dummy <- read_feather(
-  here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) %>% 
-  mutate(subset = "2020_21")
-
 #composition
-covid_composition_mild <- forest(
+flu_composition_mild <- forest(
   df_input, df_dummy, pathogen, "composition", "Mild", "yes"
 )
 
+#ethnicity & ses
+flu_ethnicity_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
+)
+
 #ethnicity & composition - too few events
-covid_ethnicity_composition_mild <- forest(
+flu_ethnicity_composition_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild", "yes"
 )
 
 #ses & composition
-covid_ses_composition_mild <- forest(
+flu_ses_composition_mild <- forest(
   df_input, df_dummy, pathogen, "ses_composition", "Mild", "yes"
 )
 
 #full
-covid_full_mild <- forest(
+flu_full_mild <- forest(
   df_input, df_dummy, pathogen, "full", "Mild", "yes"
 )
 
 ##create relevant forest plots - severe
 
-#import dummy data with vaccination
-df_dummy <- read_feather(
-  here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2021_2022_specific_primary.arrow"))) %>%
-  mutate(
-    subset = "2021_22",
-    time_since_last_covid_vaccination = if_else(
-      is.na(covid_vaccination_immunity_date), "6-12m",
-      time_since_last_covid_vaccination)
-    )
-
 #ethnicity
-covid_ethnicity_severe <- forest(
+flu_ethnicity_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Severe", "yes"
 )
 
 #ses
-covid_ses_severe <- forest(
+flu_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ses", "Severe", "yes"
 )
 
-#ethnicity & ses
-covid_ethnicity_ses_severe <- forest(
-  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
-)
-
-#import dummy data with composition
-df_dummy <- read_feather(
-  here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) %>% 
-  mutate(subset = "2020_21")
-
 #composition
-covid_composition_severe <- forest(
+flu_composition_severe <- forest(
   df_input, df_dummy, pathogen, "composition", "Severe", "yes"
 )
 
+#ethnicity & ses
+flu_ethnicity_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
+)
+
 #ethnicity & composition - too few events
-covid_ethnicity_composition_severe <- forest(
+flu_ethnicity_composition_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe", "yes"
 )
 
 #ses & composition
-covid_ses_composition_severe <- forest(
+flu_ses_composition_severe <- forest(
   df_input, df_dummy, pathogen, "ses_composition", "Severe", "yes"
 )
 
 #full
-covid_full_severe <- forest(
+flu_full_severe <- forest(
   df_input, df_dummy, pathogen, "full", "Severe", "yes"
 )
 
 #create list of plots
 plotlist <- list(
-  covid_ethnicity_mild,
-  covid_ethnicity_severe, 
-  covid_ses_mild,
-  covid_ses_severe, 
-  covid_composition_mild,
-  covid_composition_severe,
-  covid_ethnicity_ses_mild,
-  covid_ethnicity_ses_severe, 
-  covid_ethnicity_composition_mild, 
-  covid_ethnicity_composition_severe, 
-  covid_ses_composition_mild,
-  covid_ses_composition_severe,
-  covid_full_mild,
-  covid_full_severe
+  flu_ethnicity_mild,
+  flu_ethnicity_severe, 
+  flu_ses_mild,
+  flu_ses_severe, 
+  flu_composition_mild,
+  flu_composition_severe,
+  flu_ethnicity_ses_mild,
+  flu_ethnicity_ses_severe, 
+  flu_ethnicity_composition_mild, 
+  flu_ethnicity_composition_severe, 
+  flu_ses_composition_mild,
+  flu_ses_composition_severe,
+  flu_full_mild,
+  flu_full_severe
 )
 plot_names <- c(
-  "covid_ethnicity_mild",
-  "covid_ethnicity_severe",
-  "covid_ses_mild",
-  "covid_ses_severe",
-  "covid_composition_mild",
-  "covid_composition_severe",
-  "covid_ethnicity_ses_mild",
-  "covid_ethnicity_ses_severe",
-  "covid_ethnicity_composition_mild",
-  "covid_ethnicity_composition_severe",
-  "covid_ses_composition_mild",
-  "covid_ses_composition_severe",
-  "covid_full_mild",
-  "covid_full_severe"
+  "flu_ethnicity_mild",
+  "flu_ethnicity_severe",
+  "flu_ses_mild",
+  "flu_ses_severe",
+  "flu_composition_mild",
+  "flu_composition_severe",
+  "flu_ethnicity_ses_mild",
+  "flu_ethnicity_ses_severe",
+  "flu_ethnicity_composition_mild",
+  "flu_ethnicity_composition_severe",
+  "flu_ses_composition_mild",
+  "flu_ses_composition_severe",
+  "flu_full_mild",
+  "flu_full_severe"
 )
 
 for(i in seq_along(plotlist)) {
@@ -520,6 +445,10 @@ for(i in seq_along(plotlist)) {
     p, height = 8, width = 15
   )
 }
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_flu_further_model_results.RData")))
 
 ###infants
 
@@ -531,8 +460,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) %>% 
-  mutate(subset = "2020_21")
+             "_2020_2021_specific_primary.arrow"))) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -544,53 +472,53 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-covid_ethnicity_mild <- forest(
+flu_ethnicity_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Mild", "yes"
 )
 
 #ses
-covid_ses_mild <- forest(
+flu_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ses", "Mild", "yes"
 )
 
 #ethnicity & ses
-covid_ethnicity_ses_mild <- forest(
+flu_ethnicity_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
 )
 
 ##create relevant forest plots - severe
 
 #ethnicity
-covid_ethnicity_severe <- forest(
+flu_ethnicity_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Severe", "yes"
 )
 
 #ses
-covid_ses_severe <- forest(
+flu_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ses", "Severe", "yes"
 )
 
 #ethnicity & ses
-covid_ethnicity_ses_severe <- forest(
+flu_ethnicity_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
 )
 
 #create list of plots
 plotlist <- list(
-  covid_ethnicity_mild,
-  covid_ethnicity_severe,
-  covid_ses_mild,
-  covid_ses_severe,
-  covid_ethnicity_ses_mild,
-  covid_ethnicity_ses_severe
+  flu_ethnicity_mild,
+  flu_ethnicity_severe,
+  flu_ses_mild,
+  flu_ses_severe,
+  flu_ethnicity_ses_mild,
+  flu_ethnicity_ses_severe
 )
 plot_names <- c(
-  "covid_ethnicity_mild",
-  "covid_ethnicity_severe",
-  "covid_ses_mild",
-  "covid_ses_severe",
-  "covid_ethnicity_ses_mild",
-  "covid_ethnicity_ses_severe"
+  "flu_ethnicity_mild",
+  "flu_ethnicity_severe",
+  "flu_ses_mild",
+  "flu_ses_severe",
+  "flu_ethnicity_ses_mild",
+  "flu_ethnicity_ses_severe"
 )
 
 for(i in seq_along(plotlist)) {
@@ -606,6 +534,10 @@ for(i in seq_along(plotlist)) {
   )
 }
 
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_flu_further_model_results.RData")))
+
 ###infants_subgroup
 
 cohort <- "infants_subgroup"
@@ -616,8 +548,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) %>% 
-  mutate(subset = "2020_21")
+             "_2020_2021_specific_primary.arrow"))) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -629,53 +560,53 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-covid_ethnicity_mild_ <- forest(
+flu_ethnicity_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Mild", "yes"
 )
 
 #ses
-covid_ses_mild <- forest(
+flu_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ses", "Mild", "yes"
 )
 
 #ethnicity & ses
-covid_ethnicity_ses_mild <- forest(
+flu_ethnicity_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
 )
 
 ##create relevant forest plots - severe
 
 #ethnicity
-covid_ethnicity_severe <- forest(
+flu_ethnicity_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Severe", "yes"
 )
 
 #ses
-covid_ses_severe <- forest(
+flu_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ses", "Severe", "yes"
 )
 
 #ethnicity & ses
-covid_ethnicity_ses_severe <- forest(
+flu_ethnicity_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
 )
 
 #create list of plots
 plotlist <- list(
-  covid_ethnicity_mild,
-  covid_ethnicity_severe, 
-  covid_ses_mild,
-  covid_ses_severe,
-  covid_ethnicity_ses_mild,
-  covid_ethnicity_ses_severe
+  flu_ethnicity_mild,
+  flu_ethnicity_severe,
+  flu_ses_mild,
+  flu_ses_severe,
+  flu_ethnicity_ses_mild,
+  flu_ethnicity_ses_severe
 )
 plot_names <- c(
-  "covid_ethnicity_mild",
-  "covid_ethnicity_severe",
-  "covid_ses_mild",
-  "covid_ses_severe",
-  "covid_ethnicity_ses_mild",
-  "covid_ethnicity_ses_severe"
+  "flu_ethnicity_mild",
+  "flu_ethnicity_severe",
+  "flu_ses_mild",
+  "flu_ses_severe",
+  "flu_ethnicity_ses_mild",
+  "flu_ethnicity_ses_severe"
 )
 
 for(i in seq_along(plotlist)) {
@@ -690,3 +621,7 @@ for(i in seq_along(plotlist)) {
     p, height = 10, width = 15
   )
 }
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_flu_further_model_results.RData")))
