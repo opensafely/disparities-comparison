@@ -154,6 +154,10 @@ for(i in seq_along(plotlist)) {
   )
 }
 
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_rsv_model_results.RData")))
+
 ###adults
 
 cohort <- "adults"
@@ -298,6 +302,10 @@ for(i in seq_along(plotlist)) {
   )
 }
 
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_rsv_model_results.RData")))
+
 ###children and adolescents
 
 cohort <- "children_and_adolescents"
@@ -438,6 +446,10 @@ for(i in seq_along(plotlist)) {
   )
 }
 
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_rsv_model_results.RData")))
+
 ###infants
 
 cohort <- "infants"
@@ -522,6 +534,10 @@ for(i in seq_along(plotlist)) {
   )
 }
 
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_rsv_model_results.RData")))
+
 ###infants_subgroup
 
 cohort <- "infants_subgroup"
@@ -605,3 +621,7 @@ for(i in seq_along(plotlist)) {
     p, height = 8, width = 15
   )
 }
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_rsv_model_results.RData")))

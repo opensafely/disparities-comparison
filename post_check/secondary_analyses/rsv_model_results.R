@@ -7,9 +7,7 @@ library(lubridate)
 library(cowplot)
 library(stringr)
 
-## create output directories ----
-fs::dir_create(here("post_check", "secondary_analyses"))
-
+#define parameters for plots
 cohort <- "older_adults"
 pathogen <- "rsv"
 investigation_type <- "secondary"

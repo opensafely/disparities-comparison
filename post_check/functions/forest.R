@@ -174,19 +174,28 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                 "Maternal Never Smoking", "Maternal Age",
                 "Maternal Age (Average)", levels)
     
-  } else if (cohort != "infants" & pathogen == "flu") {
+  } else if (cohort != "infants" & pathogen == "flu" & investigation_type == "primary") {
     
     levels <- c("Flu Vaccination (Yes)", "Flu Vaccination (No)",
                 "Eligible and Vaccinated Last Autumn",
                 "Not Vaccinated in Past Year", levels)
     
-  } else if (cohort != "infants" & pathogen == "covid") {
+  } else if (cohort != "infants" & pathogen == "covid" & investigation_type == "primary") {
     
     levels <- c("Covid Vaccination (Yes)", "Covid Vaccination (No)",
                 "Not Vaccinated in Past Year",
                 "Eligible and Vaccinated Last Autumn",
                 "Eligible and Vaccinated Last Spring", levels)
     
+  } else if (investigation_type == "secondary") {
+
+    levels <- c("Drug Usage", "Hazardous Drinking", "Sickle Cell",
+                "Immunosuppressed", "Cancer Within 3 Yrs", "CND", "CKD",
+                "CLD", "CHD", "Severely Obese", "Addisons", "Diabetes",
+                "Other Resp. Cond.", "Cystic Fibrosis", "COPD", "Asthma",
+                "Binary Variables (Reference)", "Current", "Former",
+                "Never", levels)
+
   }
   
   process_forest_plot <- function(df_model) {
@@ -514,7 +523,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
             contrasts = "contr.treatment",
             contrasts_type = "treatment",
             reference_row = TRUE,
-            label = "Binary Variables (No)",
+            label = "Binary Variables (Reference)",
             model_name = NA,
             estimate = 1,
             std.error = 0,
@@ -523,8 +532,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
             conf.low = 1,
             conf.high = 1,
             model_type = !!model_type,
-            codelist_type = !!codelist_filter,
-            investigation_type = investigation_type,
+            codelist_type = "reference",
+            investigation_type = "secondary",
             subset = NA)
         ) 
       
@@ -566,20 +575,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         mutate(codelist_type = "reference")
       
     }
-    
-    # if (nrow(df_few) != 0 & model_type %in% c("composition", "ethnicity_composition",
-    #                                           "ses_composition", "full")) {
       
-    #   tidy_forest <- tidy_forest %>% 
-    #     mutate(codelist_type = if_else(is.na(codelist_type), "reference", codelist_type))
-      
-    # } else {
-      
-      tidy_forest <- tidy_forest %>%
-        filter(!reference_row) %>%
-        bind_rows(reference_rows)
-      
-    #}
+    tidy_forest <- tidy_forest %>%
+      filter(!reference_row) %>%
+      bind_rows(reference_rows)
     
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
 
@@ -594,23 +593,42 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                    "composition_category", "rurality_classification",
                    vacc_prev, "vax_status", "flu_vaccination",
                    "covid_vaccination", "maternal_age", "maternal_smoking_status",
-                   "binary_variables", "maternal_drinking",
+                   "smoking_status", "binary_variables", "maternal_drinking",
                    "maternal_drug_usage", "maternal_flu_vaccination",
-                   "maternal_pertussis_vaccination"),
+                   "maternal_pertussis_vaccination",
+                   "has_asthma", "has_copd", "has_cystic_fibrosis",
+                   "has_other_resp", "has_diabetes", "has_addisons",
+                   "severe_obesity", "has_chd", "has_ckd", "has_cld", "has_cnd",
+                   "has_cancer", "immunosuppressed", "has_sickle_cell",
+                   "hazardous_drinking", "drug_usage"),
       col = c('#1f77b4', '#ffbb78', '#2ca02c', '#ff9896',
-              '#aec7e8', '#ff7f0e',
-              '#98df8a', '#d62728', '#d62728',
-              '#d62728', '#9467bd', '#c49c94',
-              '#4e3f2c', '#e377c2',
-              '#c5b0d5', '#8c564b',
-              '#f7b6d2'),
+              '#aec7e8', '#ff7f0e', '#98df8a',
+              '#d62728', '#d62728',
+              '#d62728', '#9467bd',
+              '#c49c94', '#9467bd', '#4e3f2c',
+              '#e377c2', '#c5b0d5',
+              '#8c564b', '#f7b6d2',
+              '#d177f4', '#7b98f4', '#37aabe',
+              '#bcbd22', '#c5b0d5',
+              '#dbdb8d', '#17becf', '#9edae5',
+              '#b884f4', '#ec62f4',
+              '#38a8cb', '#9d8ff4',
+              '#98df8a', '#43a1f4',
+              '#8c564b', '#e377c2'),
       labels = c("Sex", "Age Group", "Ethnicity", "IMD Quintile",
                  "Household Composition", "Rurality", "Prior Vaccination",
                  "Current Vaccination", "Current Vaccination",
                  "Current Vaccination", "Age",
-                 "Maternal Smoking Status", "Binary Variables",
+                 "Maternal Smoking Status", "Smoking Status", "Binary Variables",
                  "Maternal Drinking", "Maternal Drug Usage",
-                 "Maternal Flu Vaccination", "Maternal Pertussis Vaccination")
+                 "Maternal Flu Vaccination", "Maternal Pertussis Vaccination",
+                 "Asthma", "COPD", "Cystic Fibrosis",
+                 "Other Chronic Respiratory Disease", "Diabetes",
+                 "Addison's Disease", "Severely Obese", "Chronic Heart Disease",
+                 "Chronic Kidney Disease", "Chronic Liver Disease",
+                 "Chronic Neurological Disease", "Cancer Within 3 Years",
+                 "Immunosuppressed", "Sickle Cell Disease",
+                 "Hazardous Drinking", "Drug Usage")
     )
     
     cols_final <- cols2 %>%
@@ -638,7 +656,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     pathogen_title <- case_when(
       pathogen == "rsv" ~ "RSV",
       pathogen == "flu" ~ "Influenza",
-      pathogen == "covid" ~ "COVID-19"
+      pathogen == "covid" ~ "COVID-19",
+      pathogen == "overall_resp" ~ "Overall Respiratory Virus"
     )
 
     model_title <- case_when(
@@ -796,20 +815,40 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     } else {
       
       if (pathogen == "covid") {
+
+        if (investigation_type == "secondary") {
+
+          tidy_forest <- tidy_forest %>%
+            filter(subset %in% c("2017_18", "2018_19", "2020_21"))
+
+        } else if (investigation_type == "sensitivity") {
+
+          tidy_forest <- tidy_forest %>%
+            filter(subset %in% c("2017_18", "2018_19"))
+
+        }
         
         tidy_forest %>%
           mutate(
+            label = if_else(
+              str_detect(term, "Yes"),
+              str_to_title(gsub("has ", "", gsub("_", " ", variable))),
+              label
+            ),
             label = case_when(
               str_detect(term, "imd_quintile5") ~ "1 (most deprived)",
               str_detect(term, "imd_quintile4") ~ "2",
               str_detect(term, "imd_quintile2") ~ "4",
               str_detect(term, "imd_quintile1") ~ "5 (least deprived)",
               str_detect(label, "Cancer") ~ "Cancer Within 3 Yrs",
-              str_detect(label, "Chd") ~ "Has CHD",
-              str_detect(label, "Ckd") ~ "Has CKD",
-              str_detect(label, "Cld") ~ "Has CLD",
-              str_detect(label, "Cnd") ~ "Has CND",
-              str_detect(label, "Copd") ~ "Has COPD",
+              str_detect(label, "Chd") ~ "CHD",
+              str_detect(label, "Ckd") ~ "CKD",
+              str_detect(label, "Cld") ~ "CLD",
+              str_detect(label, "Cnd") ~ "CND",
+              str_detect(label, "Copd") ~ "COPD",
+              str_detect(label, "Resp") ~ "Other Resp. Cond.",
+              str_detect(label, "Obesity") ~ "Severely Obese",
+              str_detect(label, "Binary") ~ "Binary Variables (Reference)",
               TRUE ~ label
             )
           ) %>%
@@ -882,17 +921,25 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         
         tidy_forest %>%
           mutate(
+            label = if_else(
+              str_detect(term, "Yes"),
+              str_to_title(gsub("has ", "", gsub("_", " ", variable))),
+              label
+            ),
             label = case_when(
               str_detect(term, "imd_quintile5") ~ "1 (most deprived)",
               str_detect(term, "imd_quintile4") ~ "2",
               str_detect(term, "imd_quintile2") ~ "4",
               str_detect(term, "imd_quintile1") ~ "5 (least deprived)",
               str_detect(label, "Cancer") ~ "Cancer Within 3 Yrs",
-              str_detect(label, "Chd") ~ "Has CHD",
-              str_detect(label, "Ckd") ~ "Has CKD",
-              str_detect(label, "Cld") ~ "Has CLD",
-              str_detect(label, "Cnd") ~ "Has CND",
-              str_detect(label, "Copd") ~ "Has COPD",
+              str_detect(label, "Chd") ~ "CHD",
+              str_detect(label, "Ckd") ~ "CKD",
+              str_detect(label, "Cld") ~ "CLD",
+              str_detect(label, "Cnd") ~ "CND",
+              str_detect(label, "Copd") ~ "COPD",
+              str_detect(label, "Resp") ~ "Other Resp. Cond.",
+              str_detect(label, "Obesity") ~ "Severely Obese",
+              str_detect(label, "Binary") ~ "Binary Variables (Reference)",
               TRUE ~ label
             )
           ) %>%
@@ -967,20 +1014,40 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                 legend.spacing.y = unit(-0.25, "cm"))
         
       } else {
+
+        if (investigation_type == "secondary") {
+
+          tidy_forest <- tidy_forest %>%
+            filter(subset %in% c("2017_18", "2018_19", "2020_21"))
+
+        } else if (investigation_type == "sensitivity") {
+
+          tidy_forest <- tidy_forest %>%
+            filter(subset %in% c("2017_18", "2018_19"))
+
+        }
         
         tidy_forest %>%
           mutate(
+            label = if_else(
+              str_detect(term, "Yes"),
+              str_to_title(gsub("has ", "", gsub("_", " ", variable))),
+              label
+            ),
             label = case_when(
               str_detect(term, "imd_quintile5") ~ "1 (most deprived)",
               str_detect(term, "imd_quintile4") ~ "2",
               str_detect(term, "imd_quintile2") ~ "4",
               str_detect(term, "imd_quintile1") ~ "5 (least deprived)",
               str_detect(label, "Cancer") ~ "Cancer Within 3 Yrs",
-              str_detect(label, "Chd") ~ "Has CHD",
-              str_detect(label, "Ckd") ~ "Has CKD",
-              str_detect(label, "Cld") ~ "Has CLD",
-              str_detect(label, "Cnd") ~ "Has CND",
-              str_detect(label, "Copd") ~ "Has COPD",
+              str_detect(label, "Chd") ~ "CHD",
+              str_detect(label, "Ckd") ~ "CKD",
+              str_detect(label, "Cld") ~ "CLD",
+              str_detect(label, "Cnd") ~ "CND",
+              str_detect(label, "Copd") ~ "COPD",
+              str_detect(label, "Resp") ~ "Other Resp. Cond.",
+              str_detect(label, "Obesity") ~ "Severely Obese",
+              str_detect(label, "Binary") ~ "Binary Variables (Reference)",
               TRUE ~ label
             )
           ) %>%
@@ -1053,6 +1120,12 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     model_type %in% c("composition", "ethnicity_composition",
                       "ses_composition", "full")) {
     my_tag <- "2020-21"
+  } else if (investigation_type %in% c("secondary", "sensitivity")) {
+    my_tag <- case_when(
+      pathogen == "rsv" ~ "2017-18",
+      pathogen == "flu" ~ "2018-19",
+      pathogen == "covid" ~ "2020-21"
+    )
   } else if (pathogen == "covid") {
     my_tag <- c("2019-20", "2020-21", "2021-22", "2022-23", "2023-24")
   } else {

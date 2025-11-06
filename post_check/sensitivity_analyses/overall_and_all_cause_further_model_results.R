@@ -11,7 +11,7 @@ library(stringr)
 source(here::here("post_check", "functions", "forest.R"))
 
 #define parameters for plots
-pathogen <- "rsv"
+pathogen <- "overall_and_all_cause"
 investigation_type <- "primary"
 
 ###older adults
@@ -24,7 +24,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) 
+             "_2020_2021_sensitive_primary.arrow"))) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -36,109 +36,109 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-rsv_ethnicity_mild <- forest(
+overall_and_all_cause_ethnicity_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Mild", "yes"
 )
 
 #ses
-rsv_ses_mild <- forest(
+overall_and_all_cause_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ses", "Mild", "yes"
 )
 
 #composition
-rsv_composition_mild <- forest(
+overall_and_all_cause_composition_mild <- forest(
   df_input, df_dummy, pathogen, "composition", "Mild", "yes"
 )
 
 #ethnicity & ses
-rsv_ethnicity_ses_mild <- forest(
+overall_and_all_cause_ethnicity_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
 )
 
 #ethnicity & composition - too few events
-rsv_ethnicity_composition_mild <- forest(
+overall_and_all_cause_ethnicity_composition_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild", "yes"
 )
 
 #ses & composition
-rsv_ses_composition_mild <- forest(
+overall_and_all_cause_ses_composition_mild <- forest(
   df_input, df_dummy, pathogen, "ses_composition", "Mild", "yes"
 )
 
 #full
-rsv_full_mild <- forest(
+overall_and_all_cause_full_mild <- forest(
   df_input, df_dummy, pathogen, "full", "Mild", "yes"
 )
 
 ##create relevant forest plots - severe
 
 #ethnicity
-rsv_ethnicity_severe <- forest(
+overall_and_all_cause_ethnicity_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Severe", "yes"
 )
 
 #ses
-rsv_ses_severe <- forest(
+overall_and_all_cause_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ses", "Severe", "yes"
 )
 
 #composition
-rsv_composition_severe <- forest(
+overall_and_all_cause_composition_severe <- forest(
   df_input, df_dummy, pathogen, "composition", "Severe", "yes"
 )
 
 #ethnicity & ses
-rsv_ethnicity_ses_severe <- forest(
+overall_and_all_cause_ethnicity_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
 )
 
 #ethnicity & composition - too few events
-rsv_ethnicity_composition_severe <- forest(
+overall_and_all_cause_ethnicity_composition_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe", "yes"
 )
 
 #ses & composition
-rsv_ses_composition_severe <- forest(
+overall_and_all_cause_ses_composition_severe <- forest(
   df_input, df_dummy, pathogen, "ses_composition", "Severe", "yes"
 )
 
 #full
-rsv_full_severe <- forest(
+overall_and_all_cause_full_severe <- forest(
   df_input, df_dummy, pathogen, "full", "Severe", "yes"
 )
 
 #create list of plots
 plotlist <- list(
-  rsv_ethnicity_mild,
-  rsv_ethnicity_severe, 
-  rsv_ses_mild,
-  rsv_ses_severe, 
-  rsv_composition_mild,
-  rsv_composition_severe,
-  rsv_ethnicity_ses_mild,
-  rsv_ethnicity_ses_severe, 
-  rsv_ethnicity_composition_mild, 
-  rsv_ethnicity_composition_severe, 
-  rsv_ses_composition_mild,
-  rsv_ses_composition_severe,
-  rsv_full_mild,
-  rsv_full_severe
+  overall_and_all_cause_ethnicity_mild,
+  overall_and_all_cause_ethnicity_severe, 
+  overall_and_all_cause_ses_mild,
+  overall_and_all_cause_ses_severe, 
+  overall_and_all_cause_composition_mild,
+  overall_and_all_cause_composition_severe,
+  overall_and_all_cause_ethnicity_ses_mild,
+  overall_and_all_cause_ethnicity_ses_severe, 
+  overall_and_all_cause_ethnicity_composition_mild, 
+  overall_and_all_cause_ethnicity_composition_severe, 
+  overall_and_all_cause_ses_composition_mild,
+  overall_and_all_cause_ses_composition_severe,
+  overall_and_all_cause_full_mild,
+  overall_and_all_cause_full_severe
 )
 plot_names <- c(
-  "rsv_ethnicity_mild",
-  "rsv_ethnicity_severe",
-  "rsv_ses_mild",
-  "rsv_ses_severe",
-  "rsv_composition_mild",
-  "rsv_composition_severe",
-  "rsv_ethnicity_ses_mild",
-  "rsv_ethnicity_ses_severe",
-  "rsv_ethnicity_composition_mild",
-  "rsv_ethnicity_composition_severe",
-  "rsv_ses_composition_mild",
-  "rsv_ses_composition_severe",
-  "rsv_full_mild",
-  "rsv_full_severe"
+  "overall_and_all_cause_ethnicity_mild",
+  "overall_and_all_cause_ethnicity_severe",
+  "overall_and_all_cause_ses_mild",
+  "overall_and_all_cause_ses_severe",
+  "overall_and_all_cause_composition_mild",
+  "overall_and_all_cause_composition_severe",
+  "overall_and_all_cause_ethnicity_ses_mild",
+  "overall_and_all_cause_ethnicity_ses_severe",
+  "overall_and_all_cause_ethnicity_composition_mild",
+  "overall_and_all_cause_ethnicity_composition_severe",
+  "overall_and_all_cause_ses_composition_mild",
+  "overall_and_all_cause_ses_composition_severe",
+  "overall_and_all_cause_full_mild",
+  "overall_and_all_cause_full_severe"
 )
 
 for(i in seq_along(plotlist)) {
@@ -154,6 +154,10 @@ for(i in seq_along(plotlist)) {
   )
 }
 
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_overall_resp_further_model_results.RData")))
+
 ###adults
 
 cohort <- "adults"
@@ -164,7 +168,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow")))
+             "_2020_2021_sensitive_primary.arrow")))
 df_dummy <- df_dummy %>%
   mutate(
     age_band = if_else(age_band == "18-29y", "18-39y", age_band)
@@ -180,109 +184,109 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-rsv_ethnicity_mild <- forest(
+overall_and_all_cause_ethnicity_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Mild", "yes"
 )
 
 #ses
-rsv_ses_mild <- forest(
+overall_and_all_cause_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ses", "Mild", "yes"
 )
 
 #composition
-rsv_composition_mild <- forest(
+overall_and_all_cause_composition_mild <- forest(
   df_input, df_dummy, pathogen, "composition", "Mild", "yes"
 )
 
 #ethnicity & ses
-rsv_ethnicity_ses_mild <- forest(
+overall_and_all_cause_ethnicity_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
 )
 
 #ethnicity & composition - too few events
-rsv_ethnicity_composition_mild <- forest(
+overall_and_all_cause_ethnicity_composition_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild", "yes"
 )
 
 #ses & composition
-rsv_ses_composition_mild <- forest(
+overall_and_all_cause_ses_composition_mild <- forest(
   df_input, df_dummy, pathogen, "ses_composition", "Mild", "yes"
 )
 
 #full
-rsv_full_mild <- forest(
+overall_and_all_cause_full_mild <- forest(
   df_input, df_dummy, pathogen, "full", "Mild", "yes"
 )
 
 ##create relevant forest plots - severe
 
 #ethnicity
-rsv_ethnicity_severe <- forest(
+overall_and_all_cause_ethnicity_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Severe", "yes"
 )
 
 #ses
-rsv_ses_severe <- forest(
+overall_and_all_cause_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ses", "Severe", "yes"
 )
 
 #composition
-rsv_composition_severe <- forest(
+overall_and_all_cause_composition_severe <- forest(
   df_input, df_dummy, pathogen, "composition", "Severe", "yes"
 )
 
 #ethnicity & ses
-rsv_ethnicity_ses_severe <- forest(
+overall_and_all_cause_ethnicity_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
 )
 
 #ethnicity & composition - too few events
-rsv_ethnicity_composition_severe <- forest(
+overall_and_all_cause_ethnicity_composition_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe", "yes"
 )
 
 #ses & composition
-rsv_ses_composition_severe <- forest(
+overall_and_all_cause_ses_composition_severe <- forest(
   df_input, df_dummy, pathogen, "ses_composition", "Severe", "yes"
 )
 
 #full
-rsv_full_severe <- forest(
+overall_and_all_cause_full_severe <- forest(
   df_input, df_dummy, pathogen, "full", "Severe", "yes"
 )
 
 #create list of plots
 plotlist <- list(
-  rsv_ethnicity_mild,
-  rsv_ethnicity_severe, 
-  rsv_ses_mild,
-  rsv_ses_severe, 
-  rsv_composition_mild,
-  rsv_composition_severe,
-  rsv_ethnicity_ses_mild,
-  rsv_ethnicity_ses_severe, 
-  rsv_ethnicity_composition_mild, 
-  rsv_ethnicity_composition_severe, 
-  rsv_ses_composition_mild,
-  rsv_ses_composition_severe,
-  rsv_full_mild,
-  rsv_full_severe
+  overall_and_all_cause_ethnicity_mild,
+  overall_and_all_cause_ethnicity_severe, 
+  overall_and_all_cause_ses_mild,
+  overall_and_all_cause_ses_severe, 
+  overall_and_all_cause_composition_mild,
+  overall_and_all_cause_composition_severe,
+  overall_and_all_cause_ethnicity_ses_mild,
+  overall_and_all_cause_ethnicity_ses_severe, 
+  overall_and_all_cause_ethnicity_composition_mild, 
+  overall_and_all_cause_ethnicity_composition_severe, 
+  overall_and_all_cause_ses_composition_mild,
+  overall_and_all_cause_ses_composition_severe,
+  overall_and_all_cause_full_mild,
+  overall_and_all_cause_full_severe
 )
 plot_names <- c(
-  "rsv_ethnicity_mild",
-  "rsv_ethnicity_severe",
-  "rsv_ses_mild",
-  "rsv_ses_severe",
-  "rsv_composition_mild",
-  "rsv_composition_severe",
-  "rsv_ethnicity_ses_mild",
-  "rsv_ethnicity_ses_severe",
-  "rsv_ethnicity_composition_mild",
-  "rsv_ethnicity_composition_severe",
-  "rsv_ses_composition_mild",
-  "rsv_ses_composition_severe",
-  "rsv_full_mild",
-  "rsv_full_severe"
+  "overall_and_all_cause_ethnicity_mild",
+  "overall_and_all_cause_ethnicity_severe",
+  "overall_and_all_cause_ses_mild",
+  "overall_and_all_cause_ses_severe",
+  "overall_and_all_cause_composition_mild",
+  "overall_and_all_cause_composition_severe",
+  "overall_and_all_cause_ethnicity_ses_mild",
+  "overall_and_all_cause_ethnicity_ses_severe",
+  "overall_and_all_cause_ethnicity_composition_mild",
+  "overall_and_all_cause_ethnicity_composition_severe",
+  "overall_and_all_cause_ses_composition_mild",
+  "overall_and_all_cause_ses_composition_severe",
+  "overall_and_all_cause_full_mild",
+  "overall_and_all_cause_full_severe"
 )
 
 for(i in seq_along(plotlist)) {
@@ -297,6 +301,10 @@ for(i in seq_along(plotlist)) {
     p, height = 8, width = 15
   )
 }
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_overall_resp_further_model_results.RData")))
 
 ###children and adolescents
 
@@ -308,7 +316,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) 
+             "_2020_2021_sensitive_primary.arrow"))) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -320,109 +328,109 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-rsv_ethnicity_mild <- forest(
+overall_and_all_cause_ethnicity_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Mild", "yes"
 )
 
 #ses
-rsv_ses_mild <- forest(
+overall_and_all_cause_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ses", "Mild", "yes"
 )
 
 #composition
-rsv_composition_mild <- forest(
+overall_and_all_cause_composition_mild <- forest(
   df_input, df_dummy, pathogen, "composition", "Mild", "yes"
 )
 
 #ethnicity & ses
-rsv_ethnicity_ses_mild <- forest(
+overall_and_all_cause_ethnicity_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
 )
 
 #ethnicity & composition - too few events
-rsv_ethnicity_composition_mild <- forest(
+overall_and_all_cause_ethnicity_composition_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild", "yes"
 )
 
 #ses & composition
-rsv_ses_composition_mild <- forest(
+overall_and_all_cause_ses_composition_mild <- forest(
   df_input, df_dummy, pathogen, "ses_composition", "Mild", "yes"
 )
 
 #full
-rsv_full_mild <- forest(
+overall_and_all_cause_full_mild <- forest(
   df_input, df_dummy, pathogen, "full", "Mild", "yes"
 )
 
 ##create relevant forest plots - severe
 
 #ethnicity
-rsv_ethnicity_severe <- forest(
+overall_and_all_cause_ethnicity_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Severe", "yes"
 )
 
 #ses
-rsv_ses_severe <- forest(
+overall_and_all_cause_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ses", "Severe", "yes"
 )
 
 #composition
-rsv_composition_severe <- forest(
+overall_and_all_cause_composition_severe <- forest(
   df_input, df_dummy, pathogen, "composition", "Severe", "yes"
 )
 
 #ethnicity & ses
-rsv_ethnicity_ses_severe <- forest(
+overall_and_all_cause_ethnicity_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
 )
 
 #ethnicity & composition - too few events
-rsv_ethnicity_composition_severe <- forest(
+overall_and_all_cause_ethnicity_composition_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe", "yes"
 )
 
 #ses & composition
-rsv_ses_composition_severe <- forest(
+overall_and_all_cause_ses_composition_severe <- forest(
   df_input, df_dummy, pathogen, "ses_composition", "Severe", "yes"
 )
 
 #full
-rsv_full_severe <- forest(
+overall_and_all_cause_full_severe <- forest(
   df_input, df_dummy, pathogen, "full", "Severe", "yes"
 )
 
 #create list of plots
 plotlist <- list(
-  rsv_ethnicity_mild,
-  rsv_ethnicity_severe, 
-  rsv_ses_mild,
-  rsv_ses_severe, 
-  rsv_composition_mild,
-  rsv_composition_severe,
-  rsv_ethnicity_ses_mild,
-  rsv_ethnicity_ses_severe, 
-  rsv_ethnicity_composition_mild, 
-  rsv_ethnicity_composition_severe, 
-  rsv_ses_composition_mild,
-  rsv_ses_composition_severe,
-  rsv_full_mild,
-  rsv_full_severe
+  overall_and_all_cause_ethnicity_mild,
+  overall_and_all_cause_ethnicity_severe, 
+  overall_and_all_cause_ses_mild,
+  overall_and_all_cause_ses_severe, 
+  overall_and_all_cause_composition_mild,
+  overall_and_all_cause_composition_severe,
+  overall_and_all_cause_ethnicity_ses_mild,
+  overall_and_all_cause_ethnicity_ses_severe, 
+  overall_and_all_cause_ethnicity_composition_mild, 
+  overall_and_all_cause_ethnicity_composition_severe, 
+  overall_and_all_cause_ses_composition_mild,
+  overall_and_all_cause_ses_composition_severe,
+  overall_and_all_cause_full_mild,
+  overall_and_all_cause_full_severe
 )
 plot_names <- c(
-  "rsv_ethnicity_mild",
-  "rsv_ethnicity_severe",
-  "rsv_ses_mild",
-  "rsv_ses_severe",
-  "rsv_composition_mild",
-  "rsv_composition_severe",
-  "rsv_ethnicity_ses_mild",
-  "rsv_ethnicity_ses_severe",
-  "rsv_ethnicity_composition_mild",
-  "rsv_ethnicity_composition_severe",
-  "rsv_ses_composition_mild",
-  "rsv_ses_composition_severe",
-  "rsv_full_mild",
-  "rsv_full_severe"
+  "overall_and_all_cause_ethnicity_mild",
+  "overall_and_all_cause_ethnicity_severe",
+  "overall_and_all_cause_ses_mild",
+  "overall_and_all_cause_ses_severe",
+  "overall_and_all_cause_composition_mild",
+  "overall_and_all_cause_composition_severe",
+  "overall_and_all_cause_ethnicity_ses_mild",
+  "overall_and_all_cause_ethnicity_ses_severe",
+  "overall_and_all_cause_ethnicity_composition_mild",
+  "overall_and_all_cause_ethnicity_composition_severe",
+  "overall_and_all_cause_ses_composition_mild",
+  "overall_and_all_cause_ses_composition_severe",
+  "overall_and_all_cause_full_mild",
+  "overall_and_all_cause_full_severe"
 )
 
 for(i in seq_along(plotlist)) {
@@ -437,6 +445,10 @@ for(i in seq_along(plotlist)) {
     p, height = 8, width = 15
   )
 }
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_overall_resp_further_model_results.RData")))
 
 ###infants
 
@@ -448,7 +460,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) 
+             "_2020_2021_sensitive_primary.arrow"))) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -460,53 +472,53 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-rsv_ethnicity_mild <- forest(
+overall_and_all_cause_ethnicity_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Mild", "yes"
 )
 
 #ses
-rsv_ses_mild <- forest(
+overall_and_all_cause_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ses", "Mild", "yes"
 )
 
 #ethnicity & ses
-rsv_ethnicity_ses_mild <- forest(
+overall_and_all_cause_ethnicity_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
 )
 
 ##create relevant forest plots - severe
 
 #ethnicity
-rsv_ethnicity_severe <- forest(
+overall_and_all_cause_ethnicity_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Severe", "yes"
 )
 
 #ses
-rsv_ses_severe <- forest(
+overall_and_all_cause_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ses", "Severe", "yes"
 )
 
 #ethnicity & ses
-rsv_ethnicity_ses_severe <- forest(
+overall_and_all_cause_ethnicity_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
 )
 
 #create list of plots
 plotlist <- list(
-  rsv_ethnicity_mild,
-  rsv_ethnicity_severe,
-  rsv_ses_mild,
-  rsv_ses_severe,
-  rsv_ethnicity_ses_mild,
-  rsv_ethnicity_ses_severe
+  overall_and_all_cause_ethnicity_mild,
+  overall_and_all_cause_ethnicity_severe,
+  overall_and_all_cause_ses_mild,
+  overall_and_all_cause_ses_severe,
+  overall_and_all_cause_ethnicity_ses_mild,
+  overall_and_all_cause_ethnicity_ses_severe
 )
 plot_names <- c(
-  "rsv_ethnicity_mild",
-  "rsv_ethnicity_severe",
-  "rsv_ses_mild",
-  "rsv_ses_severe",
-  "rsv_ethnicity_ses_mild",
-  "rsv_ethnicity_ses_severe"
+  "overall_and_all_cause_ethnicity_mild",
+  "overall_and_all_cause_ethnicity_severe",
+  "overall_and_all_cause_ses_mild",
+  "overall_and_all_cause_ses_severe",
+  "overall_and_all_cause_ethnicity_ses_mild",
+  "overall_and_all_cause_ethnicity_ses_severe"
 )
 
 for(i in seq_along(plotlist)) {
@@ -522,6 +534,10 @@ for(i in seq_along(plotlist)) {
   )
 }
 
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_overall_resp_further_model_results.RData")))
+
 ###infants_subgroup
 
 cohort <- "infants_subgroup"
@@ -532,7 +548,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated", "analytic",
                             "_model_outputs_collated.csv")))
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
-             "_2020_2021_specific_primary.arrow"))) 
+             "_2020_2021_sensitive_primary.arrow"))) 
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -544,53 +560,53 @@ df_input <- df_input %>%
 ##create relevant forest plots - mild
 
 #ethnicity
-rsv_ethnicity_mild <- forest(
+overall_and_all_cause_ethnicity_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Mild", "yes"
 )
 
 #ses
-rsv_ses_mild <- forest(
+overall_and_all_cause_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ses", "Mild", "yes"
 )
 
 #ethnicity & ses
-rsv_ethnicity_ses_mild <- forest(
+overall_and_all_cause_ethnicity_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild", "yes"
 )
 
 ##create relevant forest plots - severe
 
 #ethnicity
-rsv_ethnicity_severe <- forest(
+overall_and_all_cause_ethnicity_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity", "Severe", "yes"
 )
 
 #ses
-rsv_ses_severe <- forest(
+overall_and_all_cause_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ses", "Severe", "yes"
 )
 
 #ethnicity & ses
-rsv_ethnicity_ses_severe <- forest(
+overall_and_all_cause_ethnicity_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe", "yes"
 )
 
 #create list of plots
 plotlist <- list(
-  rsv_ethnicity_mild,
-  rsv_ethnicity_severe,
-  rsv_ses_mild,
-  rsv_ses_severe,
-  rsv_ethnicity_ses_mild,
-  rsv_ethnicity_ses_severe
+  overall_and_all_cause_ethnicity_mild,
+  overall_and_all_cause_ethnicity_severe,
+  overall_and_all_cause_ses_mild,
+  overall_and_all_cause_ses_severe,
+  overall_and_all_cause_ethnicity_ses_mild,
+  overall_and_all_cause_ethnicity_ses_severe
 )
 plot_names <- c(
-  "rsv_ethnicity_mild",
-  "rsv_ethnicity_severe",
-  "rsv_ses_mild",
-  "rsv_ses_severe",
-  "rsv_ethnicity_ses_mild",
-  "rsv_ethnicity_ses_severe"
+  "overall_and_all_cause_ethnicity_mild",
+  "overall_and_all_cause_ethnicity_severe",
+  "overall_and_all_cause_ses_mild",
+  "overall_and_all_cause_ses_severe",
+  "overall_and_all_cause_ethnicity_ses_mild",
+  "overall_and_all_cause_ethnicity_ses_severe"
 )
 
 for(i in seq_along(plotlist)) {
@@ -605,3 +621,7 @@ for(i in seq_along(plotlist)) {
     p, height = 10, width = 15
   )
 }
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_overall_resp_further_model_results.RData")))
