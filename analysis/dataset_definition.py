@@ -227,7 +227,7 @@ else:
   dataset.age = patients.age_on(index_date) #gets the patients age on their specific index date
 
 #extract date of death
-dataset.death_date = patients.date_of_death
+dataset.death_date = death_date
 
 #extract latest ethnicity code for patient
 dataset.latest_ethnicity_group = (
