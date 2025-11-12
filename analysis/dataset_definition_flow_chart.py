@@ -167,7 +167,7 @@ if cohort == "infants" or cohort == "infants_subgroup" :
     when(
       (age_months >=12) &
       (age_months <= 23) &
-      ((clinical_events.where(clinical_events.snomed_code.is_in(codelists.cardiac_disease_codelist)).exists_for_patient())|
+      ((clinical_events.where(clinical_events.snomedct_code.is_in(codelists.cardiac_disease_codelist)).exists_for_patient())|
        (clinical_events.where(clinical_events.snomedct_code.is_in(codelists.pulmonary_hypertension_codelist)).exists_for_patient()))
     )
     .then(hospitalisation_diagnosis_matches(codelists.ventilation_codes).exists_for_patient()),
