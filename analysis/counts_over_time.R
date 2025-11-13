@@ -42,7 +42,7 @@ df_input <- read_feather(
       "_second_", "_inf_", "patient_")))))
 )
 
-## create function to calculate the rolling rates by group for a specified pathogen
+## create function to get monthly counts of events 
 get_counts_over_time <- function(df, pathogen, interval_length) {
   
   if (pathogen == "covid" & study_start_date == covid_season_min) {
