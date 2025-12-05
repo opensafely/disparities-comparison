@@ -9,7 +9,6 @@ library(stringr)
 
 #import plot function
 source(here::here("post_check", "functions", "forest.R"))
-
 #define parameters for plots
 pathogen <- "flu"
 investigation_type <- "primary"
@@ -153,6 +152,9 @@ for(i in seq_along(plotlist)) {
     p, height = 8, width = 15
   )
 }
+
+#assign plot names to list
+names(plotlist) <- plot_names
 
 #save Rdata
 save(plotlist, file = here("post_check", "supplemental", "dashboard",
@@ -302,6 +304,9 @@ for(i in seq_along(plotlist)) {
   )
 }
 
+#assign plot names to list
+names(plotlist) <- plot_names
+
 #save Rdata
 save(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_flu_further_model_results.RData")))
@@ -446,6 +451,9 @@ for(i in seq_along(plotlist)) {
   )
 }
 
+#assign plot names to list
+names(plotlist) <- plot_names
+
 #save Rdata
 save(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_flu_further_model_results.RData")))
@@ -534,6 +542,9 @@ for(i in seq_along(plotlist)) {
   )
 }
 
+#assign plot names to list
+names(plotlist) <- plot_names
+
 #save Rdata
 save(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_flu_further_model_results.RData")))
@@ -621,6 +632,9 @@ for(i in seq_along(plotlist)) {
     p, height = 10, width = 15
   )
 }
+
+#assign plot names to list
+names(plotlist) <- plot_names
 
 #save Rdata
 save(plotlist, file = here("post_check", "supplemental", "dashboard",

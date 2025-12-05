@@ -7,9 +7,15 @@ library(lubridate)
 library(cowplot)
 library(stringr)
 
-cohort <- "older_adults"
+#import plot function
+source(here::here("post_check", "functions", "forest.R"))
+#define parameters for plots
 pathogen <- "covid"
 investigation_type <- "secondary"
+
+###older adults
+
+cohort <- "older_adults"
 
 #import collated model outputs
 df_input <- read_csv(here::here("post_check", "output", "collated",
@@ -18,9 +24,6 @@ df_input <- read_csv(here::here("post_check", "output", "collated",
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2020_2021_specific_secondary.arrow"))) 
-
-#import plot function
-source(here::here("post_check", "functions", "forest.R"))
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -149,3 +152,10 @@ for(i in seq_along(plotlist)) {
     p, height = 8, width = 15
   )
 }
+
+#assign plot names to list
+names(plotlist) <- plot_names
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_covid_model_results_secondary.RData")))

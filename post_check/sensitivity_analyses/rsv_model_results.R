@@ -7,11 +7,14 @@ library(lubridate)
 library(cowplot)
 library(stringr)
 
+#import plot function
+source(here::here("post_check", "functions", "forest.R"))
 #define parameters for plots
 pathogen <- "rsv"
 investigation_type <- "sensitivity"
 
 ###older adults
+
 cohort <- "older_adults"
 
 #import collated model outputs
@@ -22,8 +25,6 @@ df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2017_2018_specific_sensitivity.arrow"))) 
 
-#import plot function
-source(here::here("post_check", "functions", "forest.R"))
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -34,110 +35,26 @@ df_input <- df_input %>%
 
 ##create relevant forest plots - mild
 
-# #ethnicity
-# rsv_ethnicity_mild <- forest(
-#   df_input, df_dummy, pathogen, "ethnicity", "Mild"
-# )
-
 #ses
 rsv_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )
 
-# #composition
-# rsv_composition_mild <- forest(
-#   df_input, df_dummy, pathogen, "composition", "Mild"
-# )
-
-# #ethnicity & ses
-# rsv_ethnicity_ses_mild <- forest(
-#   df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
-# )
-
-# #ethnicity & composition - too few events
-# rsv_ethnicity_composition_mild <- forest(
-#   df_input, df_dummy, pathogen, "ethnicity_composition", "Mild"
-# )
-
-# #ses & composition
-# rsv_ses_composition_mild <- forest(
-#   df_input, df_dummy, pathogen, "ses_composition", "Mild"
-# )
-
-# #full
-# rsv_full_mild <- forest(
-#   df_input, df_dummy, pathogen, "full", "Mild"
-# )
-
 ##create relevant forest plots - severe
-
-# #ethnicity
-# rsv_ethnicity_severe <- forest(
-#   df_input, df_dummy, pathogen, "ethnicity", "Severe"
-# )
 
 #ses
 rsv_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )
 
-# #composition
-# rsv_composition_severe <- forest(
-#   df_input, df_dummy, pathogen, "composition", "Severe"
-# )
-
-# #ethnicity & ses
-# rsv_ethnicity_ses_severe <- forest(
-#   df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
-# )
-
-# #ethnicity & composition - too few events
-# rsv_ethnicity_composition_severe <- forest(
-#   df_input, df_dummy, pathogen, "ethnicity_composition", "Severe"
-# )
-
-# #ses & composition
-# rsv_ses_composition_severe <- forest(
-#   df_input, df_dummy, pathogen, "ses_composition", "Severe"
-# )
-
-# #full
-# rsv_full_severe <- forest(
-#   df_input, df_dummy, pathogen, "full", "Severe"
-# )
-
 #create list of plots
 plotlist <- list(
-  # rsv_ethnicity_mild,
-  # rsv_ethnicity_severe, 
   rsv_ses_mild,
-  rsv_ses_severe#, 
-  # rsv_composition_mild,
-  # rsv_composition_severe,
-  # rsv_ethnicity_ses_mild,
-  # rsv_ethnicity_ses_severe, 
-  # rsv_ethnicity_composition_mild, 
-  # rsv_ethnicity_composition_severe, 
-  # rsv_ses_composition_mild,
-  # rsv_ses_composition_severe,
-  # rsv_full_mild,
-  # rsv_full_severe
+  rsv_ses_severe
 )
 plot_names <- c(
-  "rsv_ethnicity_mild",
-  "rsv_ethnicity_severe"#,
-  # "rsv_ses_mild",
-  # "rsv_ses_severe",
-  # "rsv_composition_mild",
-  # "rsv_composition_severe",
-  # "rsv_ethnicity_ses_mild",
-  # "rsv_ethnicity_ses_severe",
-  # "rsv_ethnicity_composition_mild",
-  # "rsv_ethnicity_composition_severe",
-  # "rsv_ses_composition_mild",
-  # "rsv_ses_composition_severe",
-  # "rsv_full_mild",
-  # "rsv_full_severe"
+  "rsv_ses_mild",
+  "rsv_ses_severe"
 )
 
 for(i in seq_along(plotlist)) {
@@ -153,7 +70,15 @@ for(i in seq_along(plotlist)) {
   )
 }
 
+#assign plot names to list
+names(plotlist) <- plot_names
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_rsv_model_results_sensitivity.RData")))
+
 ###infants
+
 cohort <- "infants"
 
 #import collated model outputs
@@ -163,6 +88,7 @@ df_input <- read_csv(here::here("post_check", "output", "collated",
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2017_2018_specific_sensitivity.arrow"))) 
+
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -208,7 +134,7 @@ rsv_ethnicity_ses_severe <- forest(
 #create list of plots
 plotlist <- list(
   rsv_ethnicity_mild,
-  rsv_ethnicity_severe,
+  rsv_ethnicity_severe, 
   rsv_ses_mild,
   rsv_ses_severe,
   rsv_ethnicity_ses_mild,
@@ -235,3 +161,11 @@ for(i in seq_along(plotlist)) {
     p, height = 8, width = 15
   )
 }
+
+#assign plot names to list
+names(plotlist) <- plot_names
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_rsv_model_results_sensitivity.RData"))
+    )
