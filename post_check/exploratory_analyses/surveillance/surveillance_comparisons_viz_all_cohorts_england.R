@@ -8,6 +8,7 @@ library(cowplot)
 library(ggpubr)
 library(ggpmisc)
 library(egg)
+library(scales)
 
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 
@@ -289,8 +290,8 @@ plot_combined <- function(df, pathogen, phenotype) {
     scale_y_continuous(
       limits = c(0, limits_mild),
       sec.axis = sec_axis(trans = ~./coeff_mild, name = "",
-                 labels = scales::label_number(scale_cut = cut_si(""))),
-      labels = scales::label_number(scale_cut = cut_si(""))
+                 labels = label_number(scale_cut = cut_si(""))),
+      labels = label_number(scale_cut = cut_si(""))
     ) +
     scale_x_date(date_breaks = "1 years", date_labels = "%Y") + 
     scale_color_manual(values = c(
