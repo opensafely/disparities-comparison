@@ -240,7 +240,7 @@ upset_plot <- function(input, seasons) {
                                   select(combo, n))
         input_expr <- tibble::deframe(input2)
         
-        col <- if_else(phenotype == "Specific", "#1E88E5", "#D81B60")
+        col <- if_else(phenotype == "Specific", "#71797E", "#71797E")
         f <- function(pal) brewer.pal(3, pal)
         cols <- f("Set2")
         
@@ -253,12 +253,14 @@ upset_plot <- function(input, seasons) {
                     text.scale = c(1.25, 1.25, 1.25, 1.25, 1.25, 1),
                     point.size = 2,
                     line.size = 1,
+                    mainbar.y.label = "Intersection Cases",
                     # set_size.show = FALSE,
                     # set_size.angles = 45,
                     # scale.sets = "log10",
-                    empty.intersections = NULL,
-                    main.bar.color = col,
+                    empty.intersections = TRUE,
+                    # main.bar.color = col,
                     sets.bar.color = cols,
+                    # matrix.color = cols,
                     sets = c("COVID-19", "Influenza", "RSV")
         )
 
@@ -298,8 +300,10 @@ upset_plot <- function(input, seasons) {
             labels = c("RSV", "Influenza", "COVID-19"),
             name = "Virus"
           ) +
-          guides(y = "none") + labs(x = NULL) +
-          scale_y_continuous(name = NULL, sec.axis = sec_axis(~., name = NULL)) +
+          ggrepel::geom_text_repel(aes(label = size), size = 2.25, direction = "y") +
+          labs(x = NULL) +
+          scale_y_continuous(name = NULL, expand = expansion(mult = c(0, 0.1))) +
+          #expand_limits(x = c(-0.1, 4)) +
           theme_bw() + theme(
             axis.line = element_line(colour = "black"),
             panel.grid.major = element_blank(),
@@ -309,18 +313,19 @@ upset_plot <- function(input, seasons) {
             axis.text.x = element_blank(),
             axis.ticks.x = element_blank(),
             legend.direction = "horizontal",
-            legend.position = "bottom"
-          )
+            legend.position = "bottom",
+            legend.title = element_text(size = 14)
+          ) +
+          guides(fill = guide_legend(label.position = "left"))
         
         legend <- get_legend(sizes_plot)
 
         plot[[phenotype]] <- plot_grid(
-          plot_grid(uu$Main_bar, uu$Matrix, NULL, nrow = 3,
-                    rel_heights = c(2.75, 1.25, 0.65), align = 'hv'),
           plot_grid(sizes_plot + theme(legend.position = "none"),
                     NULL, nrow = 2, rel_heights = c(0.95, 0.15)),
-          NULL,
-          ncol = 3, align = 'hv', rel_widths = c(0.75, 0.2, 0.05)
+          plot_grid(uu$Matrix, uu$Main_bar, NULL, nrow = 3,
+                    rel_heights = c(1.25, 2.75, 0.5), align = 'hv'),
+          ncol = 2, align = 'hv', rel_widths = c(0.25, 0.75)
         )
         
       }
@@ -337,25 +342,25 @@ upset_plot <- function(input, seasons) {
     plot_label <- ggdraw() +
       draw_label(
         "Specific Phenotype",
-        x = 0.5, y = 0, hjust = 2, vjust = -0.225,
-        fontface = 'bold', size = 14
+        x = 0.5, y = 0, hjust = 1.35, vjust = 0.5,
+        fontface = 'bold', size = 14# color = "#71797E"
       ) +
       draw_label(
         "Sensitive Phenotype",
-        x = 1, y = 0, hjust = 2.12, vjust = -0.225,
-        fontface = 'bold', size = 14
+        x = 1, y = 0, hjust = 1.55, vjust = 0.5,
+        fontface = 'bold', size = 14#, color = "#71797E"
       ) +
       theme(plot.background = element_rect(
         fill = "white", colour = "white"))
     
     other_plot_label <- ggdraw() +
       draw_label(
-        "Set Size",
-        x = 1, y = 0, hjust = 11.5, vjust = -1, size = 12
+        "Total Cases",
+        x = 1, y = 0, hjust = 12.68, vjust = -1.2, size = 12
       ) +
       draw_label(
-        "Set Size",
-        x = 1, y = 0, hjust = 2.5, vjust = -1, size = 12
+        "Total Cases",
+        x = 1, y = 0, hjust = 5.9, vjust = -1.2, size = 12
       ) +
       theme(plot.background = element_rect(
         fill = "white", colour = "white"))
@@ -367,7 +372,7 @@ upset_plot <- function(input, seasons) {
         ncol = 1, align = "v",
         axis = "tb",
         labels = gsub("_", "-", seasons),
-        vjust = 0,
+        vjust = 0.2,
         hjust = 0.5,
         label_size = 12
       ), ncol = 1, rel_heights = c(0.01, 0.99)
@@ -636,7 +641,7 @@ upset_plot_supplement <- function(input, seasons) {
                                   select(combo, n))
         input_expr <- tibble::deframe(input2)
         
-        col <- if_else(phenotype == "Specific", "#1E88E5", "#D81B60")
+        col <- if_else(phenotype == "Specific", "#71797E", "#71797E")
         f <- function(pal) brewer.pal(3, pal)
         cols <- f("Set2")
         
@@ -652,11 +657,21 @@ upset_plot_supplement <- function(input, seasons) {
                     # set_size.show = FALSE,
                     # set_size.angles = 45,
                     # scale.sets = "log10",
-                    empty.intersections = NULL,
-                    main.bar.color = col,
+                    empty.intersections = TRUE,
+                    # main.bar.color = col,
                     sets.bar.color = cols,
+                    # matrix.color = cols,
                     sets = c("COVID-19", "Influenza", "RSV")
         )
+        dot_cols <- cols   # your Set2 palette (3 colors)
+
+        # Layer 1 = active (intersection) dots
+        uu$Matrix$layers[[1]]$aes_params$fill   <- dot_cols
+        uu$Matrix$layers[[1]]$aes_params$colour <- dot_cols
+
+        # Layer 2 = inactive dots (background)
+        uu$Matrix$layers[[2]]$aes_params$fill   <- "grey90"
+        uu$Matrix$layers[[2]]$aes_params$colour <- "grey90"
 
         sizes_data <- data.frame(
           set = names(input_expr),
@@ -694,8 +709,10 @@ upset_plot_supplement <- function(input, seasons) {
             labels = c("RSV", "Influenza", "COVID-19"),
             name = "Virus"
           ) +
-          guides(y = "none") + labs(x = NULL) +
-          scale_y_continuous(name = NULL, sec.axis = sec_axis(~., name = NULL)) +
+          ggrepel::geom_text_repel(aes(label = size), size = 2.25, direction = "y") +
+          labs(x = NULL) +
+          scale_y_continuous(name = NULL, expand = expansion(mult = c(0, 0.1))) +
+          #expand_limits(x = c(-0.1, 4)) +
           theme_bw() + theme(
             axis.line = element_line(colour = "black"),
             panel.grid.major = element_blank(),
@@ -705,18 +722,20 @@ upset_plot_supplement <- function(input, seasons) {
             axis.text.x = element_blank(),
             axis.ticks.x = element_blank(),
             legend.direction = "horizontal",
-            legend.position = "bottom"
-          )
+            legend.position = "bottom",
+            legend.title = element_text(size = 14)
+          )  +
+          guides(fill = guide_legend(label.position = "left"))
         
         legend <- get_legend(sizes_plot)
 
         plot[[phenotype]] <- plot_grid(
-          plot_grid(uu$Main_bar, uu$Matrix, NULL, nrow = 3,
-                    rel_heights = c(2.75, 1.25, 0.65), align = 'hv'),
           plot_grid(sizes_plot + theme(legend.position = "none"),
                     NULL, nrow = 2, rel_heights = c(0.95, 0.15)),
+          plot_grid(uu$Matrix, uu$Main_bar, NULL, nrow = 3,
+                    rel_heights = c(1.25, 2.75, 0.5), align = 'hv'),
           NULL,
-          ncol = 3, align = 'hv', rel_widths = c(0.75, 0.2, 0.05)
+          ncol = 3, align = 'hv', rel_widths = c(0.2, 0.75, 0.05)
         )
         
       }
@@ -733,25 +752,25 @@ upset_plot_supplement <- function(input, seasons) {
     plot_label <- ggdraw() +
       draw_label(
         "Specific Phenotype",
-        x = 0.5, y = 0, hjust = 2, vjust = -0.225,
-        fontface = 'bold', size = 14
+        x = 0.5, y = 0, hjust = 1.35, vjust = 0.5,
+        fontface = 'bold', size = 14#, color = "#71797E"
       ) +
       draw_label(
         "Sensitive Phenotype",
-        x = 1, y = 0, hjust = 2.12, vjust = -0.225,
-        fontface = 'bold', size = 14
+        x = 1, y = 0, hjust = 1.55, vjust = 0.5,
+        fontface = 'bold', size = 14#, color = "#71797E"
       ) +
       theme(plot.background = element_rect(
         fill = "white", colour = "white"))
     
     other_plot_label <- ggdraw() +
       draw_label(
-        "Set Size",
-        x = 1, y = 0, hjust = 11.5, vjust = -1, size = 12
+        "Total Cases",
+        x = 1, y = 0, hjust = 12.68, vjust = -1.2, size = 12
       ) +
       draw_label(
-        "Set Size",
-        x = 1, y = 0, hjust = 2.5, vjust = -1, size = 12
+        "Total Cases",
+        x = 1, y = 0, hjust = 5.9, vjust = -1.2, size = 12
       ) +
       theme(plot.background = element_rect(
         fill = "white", colour = "white"))
@@ -763,7 +782,7 @@ upset_plot_supplement <- function(input, seasons) {
         ncol = 1, align = "v",
         axis = "tb",
         labels = gsub("_", "-", seasons),
-        vjust = 0,
+        vjust = 0.2,
         hjust = 0.5,
         label_size = 12
       ), ncol = 1, rel_heights = c(0.01, 0.99)

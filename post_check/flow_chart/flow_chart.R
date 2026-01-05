@@ -43,7 +43,7 @@ for (i in 1:nrow(patients_df)) {
   
   #construct label strings with variable values
   org_cohort_label[i] <- paste0("Living population of correct age and sex with records", 
-                                "\nin pracitces using TPP software on \n", substr(patients_df[i, ]$subset,
+                                "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
                                 start = 1, stop = 4), "-09-01 (n = ", format(
                                 patients_df[i, ]$total, big.mark = ","),")")
   
@@ -155,7 +155,7 @@ for (i in 1:nrow(patients_df)) {
   
   #construct label strings with variable values
   org_cohort_label[i] <- paste0("Living population of correct age and sex with records", 
-                                "\nin pracitces using TPP software on \n", substr(patients_df[i, ]$subset,
+                                "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
                                 start = 1, stop = 4), "-09-01 (n = ", format(
                                 patients_df[i, ]$total, big.mark = ","),")")
   
@@ -267,7 +267,7 @@ for (i in 1:nrow(patients_df)) {
   
   #construct label strings with variable values
   org_cohort_label[i] <- paste0("Living population of correct age and sex with records", 
-                                "\nin pracitces using TPP software on \n", substr(patients_df[i, ]$subset,
+                                "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
                                 start = 1, stop = 4), "-09-01 (n = ", format(
                                 patients_df[i, ]$total, big.mark = ","),")")
   
@@ -381,7 +381,7 @@ for (i in 1:nrow(patients_df)) {
   
   #construct label strings with variable values
   org_cohort_label[i] <- paste0("Living population of correct age and sex with records", 
-                                "\nin pracitces using TPP software on \n", substr(patients_df[i, ]$subset,
+                                "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
                                 start = 1, stop = 4), "-09-01 (n = ", format(
                                 patients_df[i, ]$total, big.mark = ","),")")
   
@@ -500,7 +500,7 @@ for (i in 1:nrow(patients_df)) {
   
   #construct label strings with variable values
   org_cohort_label[i] <- paste0("Living population of correct age and sex with records", 
-                                "\nin pracitces using TPP software on \n", substr(patients_df[i, ]$subset,
+                                "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
                                 start = 1, stop = 4), "-09-01 (n = ", format(
                                 patients_df[i, ]$total, big.mark = ","),")")
   

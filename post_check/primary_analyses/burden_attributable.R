@@ -170,270 +170,465 @@ df_all <- bind_rows(
 f <- function(pal) brewer.pal(3, pal)
 cols <- f("Set2")
 
-# #plot
-# plot_burden <- function(df, virus) {
+#plot
+plot_burden <- function(df, virus) {
 
-#   plot <- df %>%
-#     filter(virus == !!virus) %>%
-#     mutate(
-#       codelist_type = factor(str_to_title(codelist_type), levels = c("Specific", "Sensitive")),
-#       cohort = str_to_title(gsub("_", " ", cohort))
-#     ) %>% 
-#     ggplot(aes(x = subset, y = perc_burden, col = cohort, alpha = codelist_type,
-#                group = cohort)) +
-#     geom_line() + geom_point() + facet_grid(codelist_type~event) +
-#     theme_bw(base_size = 18) +
-#     # scale_colour_manual(values = c(
-#     #   "RSV" = cols[1], "Influenza" = cols[2],
-#     #   "COVID-19" = cols[3])) +
-#     scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
-#                        na.translate = FALSE,
-#                        guide = guide_legend(position = NULL)) +
-#     labs(x = "", y = "", col = "Virus", alpha = "Phenotype Used",
-#          title = virus) +
-#     scale_y_continuous(limits = c(0, 1)) +
-#     theme(legend.position = "none",
-#           plot.margin = margin(t = 10, unit = "pt"),
-#           panel.border = element_blank(),
-#           axis.line.y = element_line(color = 'black'),
-#           axis.line.x = element_line(color = 'black'),
-#           legend.box = "horizontal",
-#           strip.background = element_blank(),
-#           axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)
-#           # strip.text.x = element_blank()
-#         )
-
-#   return(plot)
-
-# }
-
-# rsv <- plot_burden(df_all, "RSV")
-# flu <- plot_burden(df_all, "Influenza")
-# covid <- plot_burden(df_all, "COVID-19")
-# legend <- get_legend(
-#   df_all %>%
-#     filter(virus == "RSV") %>% 
-#     mutate(
-#       codelist_type = factor(str_to_title(codelist_type), levels = c("Specific", "Sensitive")),
-#       cohort = str_to_title(gsub("_", " ", cohort))
-#     ) %>% 
-#     ggplot(aes(x = subset, y = perc_burden, col = cohort, alpha = codelist_type,
-#                group = cohort)) +
-#     geom_line() + geom_point() + facet_grid(cohort~event) + theme_bw() +
-#     scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
-#                        na.translate = FALSE,
-#                        guide = guide_legend(position = NULL)) +
-#     labs(x = "", y = "", col = "Virus", alpha = "Phenotype Used") +
-#     scale_y_continuous(limits = c(0, 1)) +
-#       labs(
-#         x = "",
-#         y = "",
-#         col = "Age Cohort",
-#         alpha = "Phenotype Used"
-#       ) + theme_bw(base_size = 16) + theme(legend.box = "horizontal")
-#   )
-
-# viruses <- plot_grid(
-#   rsv + theme(
-#     axis.text.x = element_blank(), axis.ticks.x = element_blank()),
-#   flu,
-#   covid + theme(
-#     axis.text.x = element_blank(), axis.ticks.x = element_blank()),
-#   nrow = 3,
-#   rel_heights = c(0.85, 1, 0.85)
-# ) %>% 
-#   annotate_figure(
-#     bottom = text_grob("Annual Cohort", size = 18, hjust = 0.4, vjust = -0.5)
-#   )
-
-# plot_grid(
-#   legend,
-#   viruses,
-#   nrow = 2,
-#   rel_heights = c(0.065, 0.935)
-# )
-
-# #save
-# ggsave(here::here("post_check", "plots", "primary_analyses",
-#                   "viruses_burden_proportions_overtime.png"),
-#        width = 14, height = 20)
-
-plot_burden_allviruses <- function(df, ctype) {
-
-  df %>% 
-    filter(codelist_type == !!ctype) %>%
+  plot <- df %>%
+    filter(virus == !!virus) %>%
     mutate(
-      cohort = factor(str_to_title(gsub("_", " ", cohort)),
-                      levels = c("Older Adults", "Adults", "Children", "Infants")),
-      virus  = factor(virus, levels = c("RSV", "Influenza", "COVID-19"))
+      codelist_type = factor(str_to_title(codelist_type), levels = c("Specific", "Sensitive")),
+      cohort = str_to_title(gsub("_", " ", cohort))
     ) %>% 
-    ggplot(aes(x = subset, y = perc_burden, col = virus, shape = cohort,
-           group = interaction(cohort, virus))) +
-    geom_line() + 
-    geom_point(size = 5) +
-    facet_grid(. ~ event) +     # only Mild vs Severe
-    theme_bw(base_size = 20) +
-    labs(
-      title = paste("Phenotype:", str_to_title(ctype)),
-      x = "Annual Cohort",
-      y = "Proportion of Burden",
-      col = "Virus",
-      shape = "Age Cohort"
-    ) +
-    scale_y_continuous(limits = c(0, 1)) +
-    scale_colour_manual(values = c(
-      "RSV" = cols[1], "Influenza" = cols[2],
-      "COVID-19" = cols[3])) +
-    theme(
-      legend.position = "bottom",
-      axis.text.x = element_text(angle = 45, hjust = 1),
-      strip.background = element_blank(),
-      panel.border = element_blank(),
-      axis.line.y = element_line(color = 'black'),
-      axis.line.x = element_line(color = 'black'),
-      axis.title.x = element_text(vjust = -1)
-    )
-}
-
-plot_specific  <- plot_burden_allviruses(df_all, "specific")
-#save
-ggsave(here::here("post_check", "plots", "primary_analyses",
-                  "viruses_burden_proportions_overtime_specific.png"),
-       plot_specific, width = 16, height = 14)
-
-plot_sensitive <- plot_burden_allviruses(df_all, "sensitive")
-#save
-ggsave(here::here("post_check", "plots", "primary_analyses",
-                  "viruses_burden_proportions_overtime_sensitive.png"),
-       plot_sensitive, width = 16, height = 14)
-
-plot_virus_composition <- function(df, ctype) {
-  
-  df %>%
-    filter(codelist_type == !!ctype) %>%
-    mutate(
-      cohort = factor(str_to_title(gsub("_", " ", cohort)),
-                      levels = c("Older Adults", "Adults", "Children", "Infants")),
-      virus  = factor(virus, levels = c("RSV", "Influenza", "COVID-19"))
-    ) %>%
-    group_by(subset, cohort, event, codelist_type) %>%
-    mutate(
-      total_in_cohort = sum(cohort_events),
-      perc_within_cohort = cohort_events / total_in_cohort
-    ) %>%
-    ungroup() %>%
-    ggplot(aes(
-      x = subset,
-      y = perc_within_cohort,
-      fill = virus
-    )) +
-    geom_col(position = "stack") +
-    facet_grid(event ~ cohort) +
-    scale_fill_manual(values = c(
-      "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3]
-    )) +
-    scale_y_continuous(labels = percent_format(), limits = c(0, 1)) +
-    labs(
-      title = paste("Virus Composition by Age Cohort — Phenotype:", str_to_title(ctype)),
-      x = "Annual Cohort",
-      y = "Percentage of Cases",
-      fill = "Virus"
-    ) +
+    ggplot(aes(x = subset, y = perc_burden, col = cohort, alpha = codelist_type,
+               group = cohort)) +
+    geom_line() + geom_point() + facet_grid(codelist_type~event) +
     theme_bw(base_size = 18) +
-    theme(
-      axis.text.x = element_text(angle = 45, hjust = 1),
-      strip.background = element_blank(),
-      panel.border = element_blank(),
-      axis.line.y = element_line(color = "black"),
-      axis.line.x = element_line(color = "black")
-    )
+    # scale_colour_manual(values = c(
+    #   "RSV" = cols[1], "Influenza" = cols[2],
+    #   "COVID-19" = cols[3])) +
+    scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
+                       na.translate = FALSE,
+                       guide = guide_legend(position = NULL)) +
+    labs(x = "", y = "", col = "Virus", alpha = "Phenotype Used",
+         title = virus) +
+    scale_y_continuous(limits = c(0, 1)) +
+    theme(legend.position = "none",
+          plot.margin = margin(t = 10, unit = "pt"),
+          panel.border = element_blank(),
+          axis.line.y = element_line(color = 'black'),
+          axis.line.x = element_line(color = 'black'),
+          legend.box = "horizontal",
+          strip.background = element_blank(),
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)
+          # strip.text.x = element_blank()
+        )
+
+  return(plot)
+
 }
 
-plot_comp_specific <- plot_virus_composition(df_all, "specific")
-ggsave(here::here("post_check", "plots", "primary_analyses",
-                  "virus_composition_by_age_specific.png"),
-       plot_comp_specific, width = 18, height = 10)
+rsv <- plot_burden(df_all, "RSV")
+flu <- plot_burden(df_all, "Influenza")
+covid <- plot_burden(df_all, "COVID-19")
+legend <- get_legend(
+  df_all %>%
+    filter(virus == "RSV") %>% 
+    mutate(
+      codelist_type = factor(str_to_title(codelist_type), levels = c("Specific", "Sensitive")),
+      cohort = str_to_title(gsub("_", " ", cohort))
+    ) %>% 
+    ggplot(aes(x = subset, y = perc_burden, col = cohort, alpha = codelist_type,
+               group = cohort)) +
+    geom_line() + geom_point() + facet_grid(cohort~event) + theme_bw() +
+    scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
+                       na.translate = FALSE,
+                       guide = guide_legend(position = NULL)) +
+    labs(x = "", y = "", col = "Virus", alpha = "Phenotype Used") +
+    scale_y_continuous(limits = c(0, 1)) +
+      labs(
+        x = "",
+        y = "",
+        col = "Age Cohort",
+        alpha = "Phenotype Used"
+      ) + theme_bw(base_size = 16) + theme(legend.box = "horizontal")
+  )
 
-plot_comp_sensitive <- plot_virus_composition(df_all, "sensitive")
-ggsave(here::here("post_check", "plots", "primary_analyses",
-                  "virus_composition_by_age_sensitive.png"),
-       plot_comp_sensitive, width = 18, height = 10)
+viruses <- plot_grid(
+  rsv + theme(
+    axis.text.x = element_blank(), axis.ticks.x = element_blank()),
+  flu,
+  covid + theme(
+    axis.text.x = element_blank(), axis.ticks.x = element_blank()),
+  nrow = 3,
+  rel_heights = c(0.85, 1, 0.85)
+) %>% 
+  annotate_figure(
+    bottom = text_grob("Annual Cohort", size = 18, hjust = 0.4, vjust = -0.5)
+  )
 
-plot_virus_composition_by_subset <- function(df, ctype) {
+plot_grid(
+  legend,
+  viruses,
+  nrow = 2,
+  rel_heights = c(0.065, 0.935)
+)
+
+#save
+ggsave(here::here("post_check", "plots", "primary_analyses",
+                  "viruses_burden_proportions_overtime.png"),
+       width = 14, height = 20)
+
+plot_cases_specific <- function(df) {
   
   df_plot <- df %>%
-    filter(codelist_type == !!ctype) %>%
+    filter(str_to_title(codelist_type) == "Specific") %>%
     mutate(
       cohort = str_to_title(gsub("_", " ", cohort)),
-      cohort = factor(cohort, 
-                      levels = c("Infants", 
-                                 "Children And Adolescents",
-                                 "Adults", 
-                                 "Older Adults")),
-      virus = factor(virus, levels = c("RSV", "Influenza", "COVID-19"))
-    ) %>%
-    group_by(subset, cohort, event) %>%
-    mutate(
-      total_in_cohort = sum(cohort_events),
-      perc_within_cohort = cohort_events / total_in_cohort
-    ) %>%
-    ungroup()
+      cohort = factor(
+        cohort,
+        levels = c("Infants",
+                   "Children",
+                   "Adults",
+                   "Older Adults")
+      ),
+      cohort_events = if_else(cohort_events == 0, NA, cohort_events),
+      virus = factor(
+        virus,
+        levels = c("RSV", "Influenza", "COVID-19")
+      )
+    )
   
   ggplot(
     df_plot,
     aes(
       x = subset,
-      y = perc_within_cohort,
-      fill = virus,
-      group = cohort
+      y = cohort_events,      # ✔ your variable name
+      fill = virus            # ✔ your virus variable
     )
   ) +
-    geom_col(
-      position = position_dodge(width = 0.9)
-    ) +
-    facet_wrap(~ event, ncol = 2) +
+    geom_col(position = position_dodge(width = 0.8), width = 0.7) +
     
-    scale_fill_manual(values = c(
-      "RSV" = cols[1],
-      "Influenza" = cols[2],
-      "COVID-19" = cols[3]
-    )) +
+    facet_wrap(~ cohort, ncol = 1, scales = "free_y") +
     
-    scale_y_continuous(
-      labels = scales::percent_format(),
-      limits = c(0, 1)
+    scale_fill_manual(
+      values = c(
+        "RSV"       = cols[1],
+        "Influenza" = cols[2],
+        "COVID-19"  = cols[3]
+      )
     ) +
     
     labs(
-      title = paste("Virus Composition Within Age Cohorts Across Seasons —", 
-                    str_to_title(ctype)),
       x = "Season",
-      y = "Percentage of Cases",
+      y = "N cases (log10)",
       fill = "Virus"
     ) +
     
+    scale_y_log10() +
+    
+    coord_cartesian(ylim = c(10, NA)) +
+    
     theme_bw(base_size = 18) +
     theme(
-      axis.text.x = element_text(angle = 45, hjust = 1),
       strip.background = element_blank(),
+      strip.text = element_text(size = 18, face = "bold"),
+      axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
       panel.border = element_blank(),
-      axis.line.y = element_line(colour = "black"),
-      axis.line.x = element_line(colour = "black")
+      axis.line = element_line(colour = "black"),
+      legend.position = "right"
     )
 }
 
-plot_sub_specific <- plot_virus_composition_by_subset(df_all, "specific")
-ggsave(
-  here::here("post_check", "plots", "primary_analyses",
-             "virus_composition_dodgedbars_specific.png"),
-  plot_sub_specific,
-  width = 18, height = 12
-)
+burden_specific <- plot_cases_specific(df_all)
 
-plot_sub_sensitive <- plot_virus_composition_by_subset(df_all, "sensitive")
-ggsave(
-  here::here("post_check", "plots", "primary_analyses",
-             "virus_composition_dodgedbars_sensitive.png"),
-  plot_sub_sensitive,
-  width = 18, height = 12
-)
+#save
+ggsave(here::here("post_check", "plots", "primary_analyses",
+                  "viruses_burden_proportions_overtime_specific.png"),
+       width = 14, height = 20)
+
+plot_burden_options <- function(df, option = c("1", "2")) {
+  
+  option <- match.arg(option)
+  
+  df_plot <- df %>%
+    filter(str_to_title(codelist_type) == "Specific") %>%
+    mutate(
+      cohort = str_to_title(gsub("_", " ", cohort)),
+      cohort = factor(
+        cohort,
+        levels = c("Infants",
+                   "Children",
+                   "Adults",
+                   "Older Adults")
+      ),
+      virus = factor(
+        virus,
+        levels = c("RSV", "Influenza", "COVID-19")
+      )
+    )
+  
+  if (option == "1") {
+    # ------------------------------------------------------------
+    # OPTION 1
+    # % of cases for a given pathogen accounted for by each cohort
+    # ------------------------------------------------------------
+    
+    df_option <- df_plot %>%
+      group_by(virus, subset, event) %>%
+      mutate(
+        denom = sum(cohort_events),
+        value = cohort_events / denom
+      ) %>%
+      ungroup()
+    
+    p <- ggplot(
+      df_option,
+      aes(
+        x = subset,
+        y = value,
+        fill = cohort
+      )
+    ) +
+      geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+      facet_grid(virus ~ event) +
+      #scale_fill_manual(values = cols) +
+      scale_y_continuous(labels = scales::percent_format()) +
+      labs(
+        x = "Season",
+        y = "% of pathogen cases",
+        fill = "Cohort",
+        title = "Option 1: % of pathogen's cases accounted for by each cohort"
+      ) +
+      theme_bw(base_size = 18) +
+      theme(
+        strip.background = element_blank(),
+        strip.text = element_text(size = 18, face = "bold"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.border = element_blank(),
+        axis.line = element_line(colour = "black")
+      )
+    
+  } else if (option == "2") {
+    # ------------------------------------------------------------
+    # OPTION 2
+    # % of cases in a given cohort accounted for by each pathogen
+    # ------------------------------------------------------------
+    
+    df_option <- df_plot %>%
+      group_by(cohort, subset, event) %>%
+      mutate(
+        denom = sum(cohort_events),
+        value = cohort_events / denom
+      ) %>%
+      ungroup()
+    
+    p <- ggplot(
+      df_option,
+      aes(
+        x = subset,
+        y = value,
+        fill = virus
+      )
+    ) +
+      geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+      facet_grid(cohort ~ event) +
+      scale_fill_manual(
+        values = c(
+          "RSV"       = cols[1],
+          "Influenza" = cols[2],
+          "COVID-19"  = cols[3]
+        )
+      ) +
+      scale_y_continuous(labels = scales::percent_format()) +
+      labs(
+        x = "Season",
+        y = "% of cohort cases",
+        fill = "Virus",
+        title = "Option 2: % of cohort's cases accounted for by each pathogen"
+      ) +
+      theme_bw(base_size = 18) +
+      theme(
+        strip.background = element_blank(),
+        strip.text = element_text(size = 18, face = "bold"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.border = element_blank(),
+        axis.line = element_line(colour = "black")
+      )
+  }
+  
+  return(p)
+}
+
+p1 <- plot_burden_options(df_all, option = "1")
+
+#save
+ggsave(here::here("post_check", "plots", "primary_analyses",
+                  "viruses_burden_proportions_overtime_pathogen_cases.png"),
+       width = 14, height = 20)
+
+p2 <- plot_burden_options(df_all, option = "2")
+
+#save
+ggsave(here::here("post_check", "plots", "primary_analyses",
+                  "viruses_burden_proportions_overtime_cohort_cases.png"),
+       width = 14, height = 20)
+
+# plot_burden_allviruses <- function(df, ctype) {
+
+#   df %>% 
+#     filter(codelist_type == !!ctype) %>%
+#     mutate(
+#       cohort = factor(str_to_title(gsub("_", " ", cohort)),
+#                       levels = c("Older Adults", "Adults", "Children", "Infants")),
+#       virus  = factor(virus, levels = c("RSV", "Influenza", "COVID-19"))
+#     ) %>% 
+#     ggplot(aes(x = subset, y = perc_burden, col = virus, shape = cohort,
+#            group = interaction(cohort, virus))) +
+#     geom_line() + 
+#     geom_point(size = 5) +
+#     facet_grid(. ~ event) +     # only Mild vs Severe
+#     theme_bw(base_size = 20) +
+#     labs(
+#       title = paste("Phenotype:", str_to_title(ctype)),
+#       x = "Annual Cohort",
+#       y = "Proportion of Burden",
+#       col = "Virus",
+#       shape = "Age Cohort"
+#     ) +
+#     scale_y_continuous(limits = c(0, 1)) +
+#     scale_colour_manual(values = c(
+#       "RSV" = cols[1], "Influenza" = cols[2],
+#       "COVID-19" = cols[3])) +
+#     theme(
+#       legend.position = "bottom",
+#       axis.text.x = element_text(angle = 45, hjust = 1),
+#       strip.background = element_blank(),
+#       panel.border = element_blank(),
+#       axis.line.y = element_line(color = 'black'),
+#       axis.line.x = element_line(color = 'black'),
+#       axis.title.x = element_text(vjust = -1)
+#     )
+# }
+
+# plot_specific  <- plot_burden_allviruses(df_all, "specific")
+# #save
+# ggsave(here::here("post_check", "plots", "primary_analyses",
+#                   "viruses_burden_proportions_overtime_specific.png"),
+#        plot_specific, width = 16, height = 14)
+
+# plot_sensitive <- plot_burden_allviruses(df_all, "sensitive")
+# #save
+# ggsave(here::here("post_check", "plots", "primary_analyses",
+#                   "viruses_burden_proportions_overtime_sensitive.png"),
+#        plot_sensitive, width = 16, height = 14)
+
+# plot_virus_composition <- function(df, ctype) {
+  
+#   df %>%
+#     filter(codelist_type == !!ctype) %>%
+#     mutate(
+#       cohort = factor(str_to_title(gsub("_", " ", cohort)),
+#                       levels = c("Older Adults", "Adults", "Children", "Infants")),
+#       virus  = factor(virus, levels = c("RSV", "Influenza", "COVID-19"))
+#     ) %>%
+#     group_by(subset, cohort, event, codelist_type) %>%
+#     mutate(
+#       total_in_cohort = sum(cohort_events),
+#       perc_within_cohort = cohort_events / total_in_cohort
+#     ) %>%
+#     ungroup() %>%
+#     ggplot(aes(
+#       x = subset,
+#       y = perc_within_cohort,
+#       fill = virus
+#     )) +
+#     geom_col(position = "stack") +
+#     facet_grid(event ~ cohort) +
+#     scale_fill_manual(values = c(
+#       "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3]
+#     )) +
+#     scale_y_continuous(labels = percent_format(), limits = c(0, 1)) +
+#     labs(
+#       title = paste("Virus Composition by Age Cohort — Phenotype:", str_to_title(ctype)),
+#       x = "Annual Cohort",
+#       y = "Percentage of Cases",
+#       fill = "Virus"
+#     ) +
+#     theme_bw(base_size = 18) +
+#     theme(
+#       axis.text.x = element_text(angle = 45, hjust = 1),
+#       strip.background = element_blank(),
+#       panel.border = element_blank(),
+#       axis.line.y = element_line(color = "black"),
+#       axis.line.x = element_line(color = "black")
+#     )
+# }
+
+# plot_comp_specific <- plot_virus_composition(df_all, "specific")
+# ggsave(here::here("post_check", "plots", "primary_analyses",
+#                   "virus_composition_by_age_specific.png"),
+#        plot_comp_specific, width = 18, height = 10)
+
+# plot_comp_sensitive <- plot_virus_composition(df_all, "sensitive")
+# ggsave(here::here("post_check", "plots", "primary_analyses",
+#                   "virus_composition_by_age_sensitive.png"),
+#        plot_comp_sensitive, width = 18, height = 10)
+
+# plot_virus_composition_by_subset <- function(df, ctype) {
+  
+#   df_plot <- df %>%
+#     filter(codelist_type == !!ctype) %>%
+#     mutate(
+#       cohort = str_to_title(gsub("_", " ", cohort)),
+#       cohort = factor(cohort, 
+#                       levels = c("Infants", 
+#                                  "Children And Adolescents",
+#                                  "Adults", 
+#                                  "Older Adults")),
+#       virus = factor(virus, levels = c("RSV", "Influenza", "COVID-19"))
+#     ) %>%
+#     group_by(subset, cohort, event) %>%
+#     mutate(
+#       total_in_cohort = sum(cohort_events),
+#       perc_within_cohort = cohort_events / total_in_cohort
+#     ) %>%
+#     ungroup()
+  
+#   ggplot(
+#     df_plot,
+#     aes(
+#       x = subset,
+#       y = perc_within_cohort,
+#       fill = virus,
+#       group = cohort
+#     )
+#   ) +
+#     geom_col(
+#       position = position_dodge(width = 0.9)
+#     ) +
+#     facet_wrap(~ event, ncol = 2) +
+    
+#     scale_fill_manual(values = c(
+#       "RSV" = cols[1],
+#       "Influenza" = cols[2],
+#       "COVID-19" = cols[3]
+#     )) +
+    
+#     scale_y_continuous(
+#       labels = scales::percent_format(),
+#       limits = c(0, 1)
+#     ) +
+    
+#     labs(
+#       title = paste("Virus Composition Within Age Cohorts Across Seasons —", 
+#                     str_to_title(ctype)),
+#       x = "Season",
+#       y = "Percentage of Cases",
+#       fill = "Virus"
+#     ) +
+    
+#     theme_bw(base_size = 18) +
+#     theme(
+#       axis.text.x = element_text(angle = 45, hjust = 1),
+#       strip.background = element_blank(),
+#       panel.border = element_blank(),
+#       axis.line.y = element_line(colour = "black"),
+#       axis.line.x = element_line(colour = "black")
+#     )
+# }
+
+# plot_sub_specific <- plot_virus_composition_by_subset(df_all, "specific")
+# ggsave(
+#   here::here("post_check", "plots", "primary_analyses",
+#              "virus_composition_dodgedbars_specific.png"),
+#   plot_sub_specific,
+#   width = 18, height = 12
+# )
+
+# plot_sub_sensitive <- plot_virus_composition_by_subset(df_all, "sensitive")
+# ggsave(
+#   here::here("post_check", "plots", "primary_analyses",
+#              "virus_composition_dodgedbars_sensitive.png"),
+#   plot_sub_sensitive,
+#   width = 18, height = 12
+# )
