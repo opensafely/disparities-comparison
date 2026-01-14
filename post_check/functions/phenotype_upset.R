@@ -250,7 +250,7 @@ upset_plot <- function(input, seasons) {
                     order.by = "degree",
                     decreasing = FALSE,
                     mb.ratio = c(0.8, 0.2),
-                    text.scale = c(1.25, 1.25, 1.25, 1.25, 1.25, 1),
+                    text.scale = c(1.25, 1.25, 1.25, 1.25, 1.25, 1.25),
                     point.size = 2,
                     line.size = 1,
                     mainbar.y.label = "Intersection Cases",
@@ -300,7 +300,7 @@ upset_plot <- function(input, seasons) {
             labels = c("RSV", "Influenza", "COVID-19"),
             name = "Virus"
           ) +
-          ggrepel::geom_text_repel(aes(label = size), size = 2.25, direction = "y") +
+          ggrepel::geom_text_repel(aes(label = size), size = 3, direction = "y") +
           labs(x = NULL) +
           scale_y_continuous(name = NULL, expand = expansion(mult = c(0, 0.1))) +
           #expand_limits(x = c(-0.1, 4)) +
@@ -322,9 +322,9 @@ upset_plot <- function(input, seasons) {
 
         plot[[phenotype]] <- plot_grid(
           plot_grid(sizes_plot + theme(legend.position = "none"),
-                    NULL, nrow = 2, rel_heights = c(0.95, 0.15)),
+                    NULL, nrow = 2, rel_heights = c(0.95, 0.05)),
           plot_grid(uu$Matrix, uu$Main_bar, NULL, nrow = 3,
-                    rel_heights = c(1.25, 2.75, 0.5), align = 'hv'),
+                    rel_heights = c(1, 2.75, 0.05), align = 'hv'),
           ncol = 2, align = 'hv', rel_widths = c(0.25, 0.75)
         )
         
@@ -386,11 +386,11 @@ upset_plot <- function(input, seasons) {
     NULL,
     plot_grid(NULL, plots[["Severe"]], ncol = 2, rel_widths = c(0.05, 1)),
     nrow = 4,
-    rel_heights = c(0.035, 0.5, 0.01, 0.5),
-    labels = c("", "Mild", "", "Severe"),
+    rel_heights = c(0.035, 0.5, 0.02, 0.5),
+    labels = c("", "A. Mild", "", "B. Severe"),
     label_size = 14,
     label_fontface = "bold",
-    hjust = c(0, -0.1, 0, -0.05), 
+    hjust = c(0, -0.1, 0, -0.1), 
     vjust = -2
   )
   plot_final <- plot_grid(
@@ -651,9 +651,10 @@ upset_plot_supplement <- function(input, seasons) {
                     order.by = "degree",
                     decreasing = FALSE,
                     mb.ratio = c(0.8, 0.2),
-                    text.scale = c(1.25, 1.25, 1.25, 1.25, 1.25, 1),
+                    text.scale = c(1.25, 1.25, 1.25, 1.25, 1.25, 1.25),
                     point.size = 2,
                     line.size = 1,
+                    mainbar.y.label = "Intersection Cases",
                     # set_size.show = FALSE,
                     # set_size.angles = 45,
                     # scale.sets = "log10",
@@ -663,15 +664,6 @@ upset_plot_supplement <- function(input, seasons) {
                     # matrix.color = cols,
                     sets = c("COVID-19", "Influenza", "RSV")
         )
-        dot_cols <- cols   # your Set2 palette (3 colors)
-
-        # Layer 1 = active (intersection) dots
-        uu$Matrix$layers[[1]]$aes_params$fill   <- dot_cols
-        uu$Matrix$layers[[1]]$aes_params$colour <- dot_cols
-
-        # Layer 2 = inactive dots (background)
-        uu$Matrix$layers[[2]]$aes_params$fill   <- "grey90"
-        uu$Matrix$layers[[2]]$aes_params$colour <- "grey90"
 
         sizes_data <- data.frame(
           set = names(input_expr),
@@ -709,7 +701,7 @@ upset_plot_supplement <- function(input, seasons) {
             labels = c("RSV", "Influenza", "COVID-19"),
             name = "Virus"
           ) +
-          ggrepel::geom_text_repel(aes(label = size), size = 2.25, direction = "y") +
+          ggrepel::geom_text_repel(aes(label = size), size = 3, direction = "y") +
           labs(x = NULL) +
           scale_y_continuous(name = NULL, expand = expansion(mult = c(0, 0.1))) +
           #expand_limits(x = c(-0.1, 4)) +
@@ -724,18 +716,17 @@ upset_plot_supplement <- function(input, seasons) {
             legend.direction = "horizontal",
             legend.position = "bottom",
             legend.title = element_text(size = 14)
-          )  +
+          ) +
           guides(fill = guide_legend(label.position = "left"))
         
         legend <- get_legend(sizes_plot)
 
         plot[[phenotype]] <- plot_grid(
           plot_grid(sizes_plot + theme(legend.position = "none"),
-                    NULL, nrow = 2, rel_heights = c(0.95, 0.15)),
+                    NULL, nrow = 2, rel_heights = c(0.95, 0.05)),
           plot_grid(uu$Matrix, uu$Main_bar, NULL, nrow = 3,
-                    rel_heights = c(1.25, 2.75, 0.5), align = 'hv'),
-          NULL,
-          ncol = 3, align = 'hv', rel_widths = c(0.2, 0.75, 0.05)
+                    rel_heights = c(1, 2.75, 0.05), align = 'hv'),
+          ncol = 2, align = 'hv', rel_widths = c(0.25, 0.75)
         )
         
       }
@@ -752,12 +743,12 @@ upset_plot_supplement <- function(input, seasons) {
     plot_label <- ggdraw() +
       draw_label(
         "Specific Phenotype",
-        x = 0.5, y = 0, hjust = 1.35, vjust = 0.5,
-        fontface = 'bold', size = 14#, color = "#71797E"
+        x = 0.5, y = 0, hjust = 1.35, vjust = -0.75,
+        fontface = 'bold', size = 14# color = "#71797E"
       ) +
       draw_label(
         "Sensitive Phenotype",
-        x = 1, y = 0, hjust = 1.55, vjust = 0.5,
+        x = 1, y = 0, hjust = 1.55, vjust = -0.75,
         fontface = 'bold', size = 14#, color = "#71797E"
       ) +
       theme(plot.background = element_rect(
@@ -790,25 +781,25 @@ upset_plot_supplement <- function(input, seasons) {
     
   }
   
-  plot_final2 <- plot_grid(
-    NULL,
-    plot_grid(NULL, plots[["Mild"]], ncol = 2, rel_widths = c(0.05, 1)),
-    NULL,
-    plot_grid(NULL, plots[["Severe"]], ncol = 2, rel_widths = c(0.05, 1)),
-    nrow = 4,
-    rel_heights = c(0.035, 0.5, 0.01, 0.5),
-    labels = c("", "Mild", "", "Severe"),
-    label_size = 14,
-    label_fontface = "bold",
-    hjust = c(0, -0.1, 0, -0.05), 
-    vjust = -2
-  )
-  plot_final <- plot_grid(
-    legend,
-    plot_label,
-    plot_final2,
-    nrow = 3, rel_heights = c(0.025, 0.01, 0.925)
-  ) #%>%
+  # plot_final2 <- plot_grid(
+  #   NULL,
+  #   plot_grid(NULL, plots[["Mild"]], ncol = 2, rel_widths = c(0.05, 1)),
+  #   NULL,
+  #   plot_grid(NULL, plots[["Severe"]], ncol = 2, rel_widths = c(0.05, 1)),
+  #   nrow = 4,
+  #   rel_heights = c(0.035, 0.5, 0.01, 0.5),
+  #   labels = c("", "A. Mild", "", "B. Severe"),
+  #   label_size = 14,
+  #   label_fontface = "bold",
+  #   hjust = c(0, -0.1, 0, -0.05), 
+  #   vjust = -2
+  # )
+  # plot_final <- plot_grid(
+  #   legend,
+  #   plot_label,
+  #   plot_final2,
+  #   nrow = 3, rel_heights = c(0.025, 0.01, 0.925)
+  # ) %>%
     # annotate_figure(
     #   top = text_grob(
     #     paste0("Identification of Outcomes in ",
@@ -822,14 +813,14 @@ upset_plot_supplement <- function(input, seasons) {
     legend,
     plot_label,
     plot_grid(NULL, plots[["Mild"]], ncol = 2, rel_widths = c(0.05, 1)),
-    nrow = 3, rel_heights = c(0.025, 0.01, 0.925)
+    nrow = 3, rel_heights = c(0.02, 0.02, 0.925)
   )
 
   plot_severe <- plot_grid(
     legend,
     plot_label,
     plot_grid(NULL, plots[["Severe"]], ncol = 2, rel_widths = c(0.05, 1)),
-    nrow = 3, rel_heights = c(0.025, 0.01, 0.925)
+    nrow = 3, rel_heights = c(0.02, 0.02, 0.925)
   )
   
   return(list(plot_mild, plot_severe))
