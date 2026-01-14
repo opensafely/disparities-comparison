@@ -24,3 +24,4 @@ analysis/old_model_files/*
 /dummy_tables
 /post_check/old_plots/*
 /post_check/supplemental/dashboard/*
+/post_check/supplemental/surveillance/*
