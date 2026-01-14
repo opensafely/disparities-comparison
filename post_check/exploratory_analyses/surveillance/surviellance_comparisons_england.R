@@ -154,6 +154,16 @@ df_surv <- df_surv[, c("month", "total_events", "virus")] %>%
     month >= as.Date("2023-09-01") & month < as.Date("2024-09-01") ~ "2023-24"
   ))
 
+#save the data used
+write_csv(df_rsv, here::here("post_check", "supplemental", "surveillance",
+                             "rsv_cases_all_seasons.csv"))
+write_csv(df_flu, here::here("post_check", "supplemental", "surveillance",
+                             "flu_cases_all_seasons.csv"))
+write_csv(df_covid, here::here("post_check", "supplemental", "surveillance",
+                               "covid_cases_all_seasons.csv"))
+write_csv(df_surv, here::here("post_check", "supplemental", "surveillance",
+                              "surv_cases_all_seasons.csv"))
+
 #write a function for pearson's correlation coefficient test
 pearson_test <- function(df1, df2, event, codelist, virus, subset = "no") {
   
