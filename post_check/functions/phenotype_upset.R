@@ -300,7 +300,7 @@ upset_plot <- function(input, seasons) {
             labels = c("RSV", "Influenza", "COVID-19"),
             name = "Virus"
           ) +
-          ggrepel::geom_text_repel(aes(label = size), size = 3, direction = "y") +
+          ggrepel::geom_text_repel(aes(label = size), size = 3, direction = "y", point.padding = NA, segment.color = NA) +
           labs(x = NULL) +
           scale_y_continuous(name = NULL, expand = expansion(mult = c(0, 0.1))) +
           #expand_limits(x = c(-0.1, 4)) +
@@ -701,7 +701,7 @@ upset_plot_supplement <- function(input, seasons) {
             labels = c("RSV", "Influenza", "COVID-19"),
             name = "Virus"
           ) +
-          ggrepel::geom_text_repel(aes(label = size), size = 3, direction = "y") +
+          ggrepel::geom_text_repel(aes(label = size), size = 3, direction = "y", point.padding = NA, segment.color = NA) +
           labs(x = NULL) +
           scale_y_continuous(name = NULL, expand = expansion(mult = c(0, 0.1))) +
           #expand_limits(x = c(-0.1, 4)) +

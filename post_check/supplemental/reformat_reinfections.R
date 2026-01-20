@@ -7,6 +7,8 @@ library(cowplot)
 library(ggpubr)
 library(egg)
 
+ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
+
 #create function to plot reinfections over time
 reinfections <- function(cohort) {
 
@@ -42,9 +44,14 @@ reinfections <- function(cohort) {
                   group = codelist_type, col = codelist_type)) +
     scale_colour_manual(values = c("#1E88E5", "#D81B60"),
                         name = "Phenotype Used") +
-    labs(x = "", y = "") + theme_bw(base_size = 16) +
+    labs(title = str_to_title(gsub("_", " ", cohort)),x = "", y = "") +
+    theme_bw(base_size  = 18) +
     facet_wrap(~outcome_type) +
-    theme(legend.position = "none")
+    theme(legend.position = "none",
+          title = element_text(size = 12),
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.border = element_blank(),
+          axis.line = element_line(color = 'black'))
   if (cohort != "infants_subgroup") {
     rsv <- rsv + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
@@ -52,7 +59,7 @@ reinfections <- function(cohort) {
     rsv, tag_pool = c("Mild", "Severe"),
     open = "", close = "",
     fontface = 4,
-    size = 4,
+    size = 4.5,
     family = "sans"
   )
 
@@ -63,9 +70,13 @@ reinfections <- function(cohort) {
                   group = codelist_type, col = codelist_type)) +
     scale_colour_manual(values = c("#1E88E5", "#D81B60"),
                         name = "Phenotype Used") +
-    labs(x = "", y = "") + theme_bw(base_size = 16) +
+    labs(title = " ", x = "", y = "") + theme_bw(base_size  = 18) +
     facet_wrap(~outcome_type) +
-    theme(legend.position = "none")
+    theme(legend.position = "none",
+          title = element_text(size = 12),
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.border = element_blank(),
+          axis.line = element_line(color = 'black'))
   if (cohort != "infants_subgroup") {
     flu <- flu + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
@@ -73,7 +84,7 @@ reinfections <- function(cohort) {
     flu, tag_pool = c("Mild", "Severe"),
     open = "", close = "",
     fontface = 4,
-    size = 4,
+    size = 4.5,
     family = "sans"
   )
 
@@ -84,9 +95,13 @@ reinfections <- function(cohort) {
                   group = codelist_type, col = codelist_type)) +
     scale_colour_manual(values = c("#1E88E5", "#D81B60"),
                         name = "Phenotype Used") +
-    labs(x = "", y = "") + theme_bw(base_size = 16) +
+    labs(title = " ", x = "", y = "") + theme_bw(base_size = 18) +
     facet_wrap(~outcome_type) +
-    theme(legend.position = "none")
+    theme(legend.position = "none",
+          title = element_text(size = 12),
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.border = element_blank(),
+          axis.line = element_line(color = 'black'))
   if (cohort != "infants_subgroup") {
     covid <- covid + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
@@ -94,7 +109,7 @@ reinfections <- function(cohort) {
     covid, tag_pool = c("Mild", "Severe"),
     open = "", close = "",
     fontface = 4,
-    size = 4,
+    size = 4.5,
     family = "sans"
   )
 
@@ -126,26 +141,36 @@ legend <- get_legend(
                   col = codelist_type)) +
     scale_colour_manual(values = c("#1E88E5", "#D81B60"),
                         name = "Phenotype Used") +
-    labs(x = "", y = "") + theme_bw(base_size = 16) +
+    labs(x = "", y = "") + theme_bw(base_size = 18) +
     guides(col = guide_legend(label.position = "left")),
   position = "bottom"
 )
 
+label_plot <- ggplot() +
+  annotate("text",
+           x = c(0.96, 2.05, 3.165),
+           y = 1,
+           label = c("RSV", "Influenza", "COVID-19"),
+           size = 6
+          ) +
+  xlim(0.5, 3.5) +
+  ylim(0.5, 1.5) +
+  theme_void()
+
 plot_grid(
+  label_plot,
   older_adults,
   adults,
   children_and_adolescents,
   infants,
   infants_subgroup,
   legend,
-  nrow = 6,
-  rel_heights = c(1, 1, 1, 1, 1, 0.1)
+  nrow = 7,
+  rel_heights = c(0.15, 1, 1, 1, 1, 1.4, 0.1)
 ) %>% 
   annotate_figure(
-    bottom = text_grob("Season", vjust = -4),
-    left = text_grob("Proportion Reinfected", rot = 90),
-    fig.lab = c("RSV", "Influenza", "COVID-19"),
-    fig.lab.pos = "top"
+    bottom = text_grob("Season", vjust = -3, hjust = -0.05, size = 14),
+    left = text_grob("Proportion Reinfected", rot = 90, size = 14, vjust = 1)
   )
 
 #save
@@ -188,9 +213,14 @@ reinfections_28 <- function(cohort) {
                   group = codelist_type, col = codelist_type)) +
     scale_colour_manual(values = c("#1E88E5", "#D81B60"),
                         name = "Phenotype Used") +
-    labs(x = "", y = "") + theme_bw(base_size = 16) +
+    labs(title = str_to_title(gsub("_", " ", cohort)),x = "", y = "") +
+    theme_bw(base_size  = 18) +
     facet_wrap(~outcome_type) +
-    theme(legend.position = "none")
+    theme(legend.position = "none",
+          title = element_text(size = 12),
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.border = element_blank(),
+          axis.line = element_line(color = 'black'))
   if (cohort != "infants_subgroup") {
     rsv <- rsv + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
@@ -198,7 +228,7 @@ reinfections_28 <- function(cohort) {
     rsv, tag_pool = c("Mild", "Severe"),
     open = "", close = "",
     fontface = 4,
-    size = 4,
+    size = 4.5,
     family = "sans"
   )
 
@@ -209,9 +239,14 @@ reinfections_28 <- function(cohort) {
                   group = codelist_type, col = codelist_type)) +
     scale_colour_manual(values = c("#1E88E5", "#D81B60"),
                         name = "Phenotype Used") +
-    labs(x = "", y = "") + theme_bw(base_size = 16) +
+    labs(title = " ",x = "", y = "") +
+    theme_bw(base_size  = 18) +
     facet_wrap(~outcome_type) +
-    theme(legend.position = "none")
+    theme(legend.position = "none",
+          title = element_text(size = 12),
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.border = element_blank(),
+          axis.line = element_line(color = 'black'))
   if (cohort != "infants_subgroup") {
     flu <- flu + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
@@ -219,7 +254,7 @@ reinfections_28 <- function(cohort) {
     flu, tag_pool = c("Mild", "Severe"),
     open = "", close = "",
     fontface = 4,
-    size = 4,
+    size = 4.5,
     family = "sans"
   )
 
@@ -230,9 +265,14 @@ reinfections_28 <- function(cohort) {
                   group = codelist_type, col = codelist_type)) +
     scale_colour_manual(values = c("#1E88E5", "#D81B60"),
                         name = "Phenotype Used") +
-    labs(x = "", y = "") + theme_bw(base_size = 16) +
+    labs(title = " ",x = "", y = "") +
+    theme_bw(base_size  = 18) +
     facet_wrap(~outcome_type) +
-    theme(legend.position = "none")
+    theme(legend.position = "none",
+          title = element_text(size = 12),
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.border = element_blank(),
+          axis.line = element_line(color = 'black'))
   if (cohort != "infants_subgroup") {
     covid <- covid + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
@@ -240,7 +280,7 @@ reinfections_28 <- function(cohort) {
     covid, tag_pool = c("Mild", "Severe"),
     open = "", close = "",
     fontface = 4,
-    size = 4,
+    size = 4.5,
     family = "sans"
   )
 
@@ -272,26 +312,36 @@ legend <- get_legend(
                   col = codelist_type)) +
     scale_colour_manual(values = c("#1E88E5", "#D81B60"),
                         name = "Phenotype Used") +
-    labs(x = "", y = "") + theme_bw(base_size = 16) +
+    labs(x = "", y = "") + theme_bw(base_size  = 18) +
     guides(col = guide_legend(label.position = "left")),
   position = "bottom"
 )
 
+label_plot <- ggplot() +
+  annotate("text",
+           x = c(0.96, 2.05, 3.165),
+           y = 1,
+           label = c("RSV", "Influenza", "COVID-19"),
+           size = 6
+          ) +
+  xlim(0.5, 3.5) +
+  ylim(0.5, 1.5) +
+  theme_void()
+
 plot_grid(
+  label_plot,
   older_adults,
   adults,
   children_and_adolescents,
   infants,
   infants_subgroup,
   legend,
-  nrow = 6,
-  rel_heights = c(1, 1, 1, 1, 1, 0.1)
+  nrow = 7,
+  rel_heights = c(0.15, 1, 1, 1, 1, 1.4, 0.1)
 ) %>% 
   annotate_figure(
-    bottom = text_grob("Season", vjust = -4),
-    left = text_grob("Proportion Reinfected in 28 Days", rot = 90),
-    fig.lab = c("RSV", "Influenza", "COVID-19"),
-    fig.lab.pos = "top"
+    bottom = text_grob("Season", vjust = -3, hjust = -0.05, size = 14),
+    left = text_grob("Proportion Reinfected in 28 Days", rot = 90, size = 14, vjust = 1)
   )
 
 #save
