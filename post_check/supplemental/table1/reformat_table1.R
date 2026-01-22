@@ -47,7 +47,7 @@ df_input_reformat <- df_input %>%
 #export to csv file
 write_csv(
   df_input_reformat,
-  here::here("post_check", "plots", "supplemental", "table1",
+  here::here("post_check", "supplemental", "table1",
              paste0(cohort, "_reformated_table1_collated.csv"))
 )
 
@@ -94,7 +94,7 @@ df_input_reformat <- df_input %>%
 #export to csv file
 write_csv(
   df_input_reformat,
-  here::here("post_check", "plots", "supplemental", "table1",
+  here::here("post_check", "supplemental", "table1",
              paste0(cohort, "_reformated_table1_collated.csv"))
 )
 
@@ -141,7 +141,7 @@ df_input_reformat <- df_input %>%
 #export to csv file
 write_csv(
   df_input_reformat,
-  here::here("post_check", "plots", "supplemental", "table1",
+  here::here("post_check", "supplemental", "table1",
              paste0(cohort, "_reformated_table1_collated.csv"))
 )
 
@@ -188,7 +188,7 @@ df_input_reformat <- df_input %>%
 #export to csv file
 write_csv(
   df_input_reformat,
-  here::here("post_check", "plots", "supplemental", "table1",
+  here::here("post_check", "supplemental", "table1",
              paste0(cohort, "_reformated_table1_collated.csv"))
 )
 
@@ -247,7 +247,7 @@ df_input_reformat <- df_input %>%
 #export to csv file
 write_csv(
   df_input_reformat,
-  here::here("post_check", "plots", "supplemental", "table1",
+  here::here("post_check", "supplemental", "table1",
              paste0(cohort, "_reformated_table1_collated.csv"))
 )
 
@@ -289,6 +289,6 @@ df_input_reformat <- df_input %>%
 #export to csv file
 write_csv(
   df_input_reformat,
-  here::here("post_check", "plots", "supplemental", "table1",
+  here::here("post_check", "supplemental", "table1",
              paste0(cohort, "_reformated_secondary_table1_collated.csv"))
 )
