@@ -31,3 +31,4 @@ analysis/old_model_files/*
 !reformat_outcome_overlap.R
 !dashboard.qmd
 !_quarto.yml
+!.gitignore
