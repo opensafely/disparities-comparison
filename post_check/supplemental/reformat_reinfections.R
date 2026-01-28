@@ -343,7 +343,8 @@ plot_grid(
 ) %>% 
   annotate_figure(
     bottom = text_grob("Season", vjust = -3, hjust = -0.05, size = 14),
-    left = text_grob("Proportion Reinfected in 28 Days", rot = 90, size = 14, vjust = 1)
+    left = text_grob("Proportion of Reinfections Which Occurred Within 28 Days",
+     rot = 90, size = 14, vjust = 1)
   )
 
 #save
