@@ -35,7 +35,8 @@ reinfections <- function(cohort) {
         infection_type == "rsv" ~ "RSV",
       ), levels = c("RSV", "Influenza", "COVID-19")),
       subset = gsub("_", "-", subset)
-    )
+    ) %>% 
+    mutate_if(is.numeric , replace_na, replace = 0)
 
   rsv <- df_input %>% 
     filter(infection_type == "RSV") %>% 
@@ -204,7 +205,8 @@ reinfections_28 <- function(cohort) {
         infection_type == "rsv" ~ "RSV",
       ), levels = c("RSV", "Influenza", "COVID-19")),
       subset = gsub("_", "-", subset)
-    )
+    ) %>% 
+    mutate_if(is.numeric , replace_na, replace = 0)
 
   rsv <- df_input %>% 
     filter(infection_type == "RSV") %>% 
