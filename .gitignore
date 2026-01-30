@@ -25,3 +25,10 @@ analysis/old_model_files/*
 /post_check/old_plots/*
 /post_check/supplemental/dashboard/*
 /post_check/supplemental/surveillance/*
+/post_check/supplemental/table1/*
+/post_check/supplemental/outcome_overlap/*
+!reformat_table1.R
+!reformat_outcome_overlap.R
+!dashboard.qmd
+!_quarto.yml
+!.gitignore
