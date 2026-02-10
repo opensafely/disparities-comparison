@@ -10,7 +10,7 @@ library(egg)
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 
 #create function to plot reinfections over time
-reinfections <- function(cohort) {
+reinfections <- function(cohort, descriptive = "no") {
 
   df_input <- bind_rows(
     read_csv(
@@ -53,7 +53,9 @@ reinfections <- function(cohort) {
           axis.text.x = element_text(angle = 45, hjust = 1),
           panel.border = element_blank(),
           axis.line = element_line(color = 'black'))
-  if (cohort != "infants_subgroup") {
+  if (cohort != "infants_subgroup" & descriptive == "no") {
+    rsv <- rsv + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  } else if (cohort != "adults" & descriptive == "yes") {
     rsv <- rsv + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
   rsv <- tag_facet(
@@ -78,7 +80,9 @@ reinfections <- function(cohort) {
           axis.text.x = element_text(angle = 45, hjust = 1),
           panel.border = element_blank(),
           axis.line = element_line(color = 'black'))
-  if (cohort != "infants_subgroup") {
+  if (cohort != "infants_subgroup" & descriptive == "no") {
+    flu <- flu + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  } else if (cohort != "adults" & descriptive == "yes") {
     flu <- flu + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
   flu <- tag_facet(
@@ -103,7 +107,9 @@ reinfections <- function(cohort) {
           axis.text.x = element_text(angle = 45, hjust = 1),
           panel.border = element_blank(),
           axis.line = element_line(color = 'black'))
-  if (cohort != "infants_subgroup") {
+  if (cohort != "infants_subgroup" & descriptive == "no") {
+    covid <- covid + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  } else if (cohort != "adults" & descriptive == "yes") {
     covid <- covid + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
   covid <- tag_facet(
@@ -179,8 +185,47 @@ ggsave(here::here("post_check", "plots", "supplemental",
             paste0("reinfections", ".png")),
        height = 12, width = 18)
 
+# now split ages
+adults <- reinfections("adults", "yes")
+plot_grid(
+  label_plot,
+  older_adults,
+  adults,
+  legend,
+  nrow = 4,
+  rel_heights = c(0.15, 1, 1.4, 0.1)
+) %>% 
+  annotate_figure(
+    bottom = text_grob("Season", vjust = -4, hjust = -0.05, size = 14),
+    left = text_grob("Proportion Reinfected", rot = 90, size = 14, vjust = 1)
+  )
+
+#save
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0("reinfections_older_pop", ".png")),
+       height = 12, width = 18)
+
+plot_grid(
+  label_plot,
+  children_and_adolescents,
+  infants,
+  infants_subgroup,
+  legend,
+  nrow = 5,
+  rel_heights = c(0.15, 1, 1, 1.4, 0.1)
+) %>% 
+  annotate_figure(
+    bottom = text_grob("Season", vjust = -3.5, hjust = -0.05, size = 14),
+    left = text_grob("Proportion Reinfected", rot = 90, size = 14, vjust = 1)
+  )
+
+#save
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0("reinfections_younger_pop", ".png")),
+       height = 12, width = 18)
+
 #create function to plot reinfections within 28 days over time
-reinfections_28 <- function(cohort) {
+reinfections_28 <- function(cohort, descriptive = "no") {
 
   df_input <- bind_rows(
     read_csv(
@@ -223,7 +268,9 @@ reinfections_28 <- function(cohort) {
           axis.text.x = element_text(angle = 45, hjust = 1),
           panel.border = element_blank(),
           axis.line = element_line(color = 'black'))
-  if (cohort != "infants_subgroup") {
+  if (cohort != "infants_subgroup" & descriptive == "no") {
+    rsv <- rsv + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  } else if (cohort != "adults" & descriptive == "yes") {
     rsv <- rsv + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
   rsv <- tag_facet(
@@ -249,7 +296,9 @@ reinfections_28 <- function(cohort) {
           axis.text.x = element_text(angle = 45, hjust = 1),
           panel.border = element_blank(),
           axis.line = element_line(color = 'black'))
-  if (cohort != "infants_subgroup") {
+  if (cohort != "infants_subgroup" & descriptive == "no") {
+    flu <- flu + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  } else if (cohort != "adults" & descriptive == "yes") {
     flu <- flu + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
   flu <- tag_facet(
@@ -275,7 +324,9 @@ reinfections_28 <- function(cohort) {
           axis.text.x = element_text(angle = 45, hjust = 1),
           panel.border = element_blank(),
           axis.line = element_line(color = 'black'))
-  if (cohort != "infants_subgroup") {
+  if (cohort != "infants_subgroup" & descriptive == "no") {
+    covid <- covid + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  } else if (cohort != "adults" & descriptive == "yes") {
     covid <- covid + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
   covid <- tag_facet(
@@ -350,4 +401,45 @@ plot_grid(
 #save
 ggsave(here::here("post_check", "plots", "supplemental",
             paste0("reinfections_28_days", ".png")),
+       height = 12, width = 18)
+
+#separate ages
+adults <- reinfections_28("adults", "yes")
+plot_grid(
+  label_plot,
+  older_adults,
+  adults,
+  legend,
+  nrow = 4,
+  rel_heights = c(0.15, 1, 1.4, 0.1)
+) %>% 
+  annotate_figure(
+    bottom = text_grob("Season", vjust = -4, hjust = -0.05, size = 14),
+    left = text_grob("Proportion of Reinfections Which Occurred Within 28 Days",
+     rot = 90, size = 14, vjust = 1)
+  )
+
+#save
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0("reinfections_28_days_older_pop", ".png")),
+       height = 12, width = 18)
+
+plot_grid(
+  label_plot,
+  children_and_adolescents,
+  infants,
+  infants_subgroup,
+  legend,
+  nrow = 5,
+  rel_heights = c(0.15, 1, 1, 1.4, 0.1)
+) %>% 
+  annotate_figure(
+    bottom = text_grob("Season", vjust = -3.5, hjust = -0.05, size = 14),
+    left = text_grob("Proportion of Reinfections Which Occurred Within 28 Days",
+     rot = 90, size = 14, vjust = 1)
+  )
+
+#save
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0("reinfections_28_days_younger_pop", ".png")),
        height = 12, width = 18)
