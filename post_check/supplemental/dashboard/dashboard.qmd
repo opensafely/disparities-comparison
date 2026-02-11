@@ -1,0 +1,357 @@
+---
+title: "Social Determinants of Respiratory Virus Outcomes"
+format:
+  html:
+    theme: cosmo
+    code-fold: false
+    engine: shiny
+---
+
+```{r setup}
+#| include: false
+library(shiny)
+library(dplyr)
+library(ggplot2)
+library(tibble)
+
+# --- Dropdown options ---
+cohorts <- c("Older Adults", "Adults", "Children and Adolescents",
+             "Infants", "Maternally Linked Infants")
+pathogens <- c("RSV", "Influenza", "COVID-19", "Overall Respiratory Virus")
+
+# --- Investigation lookup table ---
+investigation_lookup <- tribble(
+  ~cohort, ~pathogen, ~valid_investigations,
+  
+  # Older Adults
+  "Older Adults", "RSV", c("Primary", "Secondary", "Sensitivity"),
+  "Older Adults", "Influenza", c("Primary", "Secondary", "Sensitivity"),
+  "Older Adults", "COVID-19", c("Primary", "Secondary"),
+  "Older Adults", "Overall Respiratory Virus", c("Primary"),
+  
+  # Adults
+  "Adults", "RSV", c("Primary"),
+  "Adults", "Influenza", c("Primary"),
+  "Adults", "COVID-19", c("Primary"),
+  "Adults", "Overall Respiratory Virus", c("Primary"),
+  
+  # Children and adolescents
+  "Children and Adolescents", "RSV", c("Primary"),
+  "Children and Adolescents", "Influenza", c("Primary"),
+  "Children and Adolescents", "COVID-19", c("Primary"),
+  "Children and Adolescents", "Overall Respiratory Virus", c("Primary"),
+  
+  # Infants
+  "Infants", "RSV", c("Primary", "Sensitivity"),
+  "Infants", "Influenza", c("Primary", "Sensitivity"),
+  "Infants", "COVID-19", c("Primary"),
+  "Infants", "Overall Respiratory Virus", c("Primary"),
+  
+  # Maternally Linked Infants
+  "Maternally Linked Infants", "RSV", c("Primary"),
+  "Maternally Linked Infants", "Influenza", c("Primary"),
+  "Maternally Linked Infants", "COVID-19", c("Primary"),
+  "Maternally Linked Infants", "Overall Respiratory Virus", c("Primary")
+)
+```
+
+```{r}
+#| context: server
+ui <- fluidPage(
+  titlePanel("Social Determinants of Respiratory Virus Outcomes"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("cohort", "Select Cohort:", choices = cohorts),
+      selectInput("pathogen", "Select Pathogen:", choices = pathogens),
+      uiOutput("investigation_ui"),
+      uiOutput("model_selector"),
+      actionButton("clear_cache", "Clear Cached Plots", icon = icon("broom"))
+    ),
+    mainPanel(
+      h4("Minimally Adjusted Model"),
+      shinycssloaders::withSpinner(
+        plotOutput("mainPlot", height = "500px")
+      ),
+      conditionalPanel(
+        condition = "input.investigation == 'Primary'",
+        hr(),
+        h4("Fully Adjusted Model (Primary Investigations Only)"),
+        shinycssloaders::withSpinner(
+          plotOutput("secondPlot", height = "500px")
+        )
+      )
+    )
+  )
+)
+```
+
+```{r}
+# --- Lazy-loading plot cache ---
+plot_cache <- new.env(parent = emptyenv())
+plot_cache$current_key <- NULL
+
+load_plotlist_from_file <- function(file_path) {
+  env <- new.env()
+  load(file_path, envir = env)
+  objs <- ls(env)
+
+  # Case 1: list of ggplots
+  list_objs <- objs[sapply(objs, function(x)
+    is.list(env[[x]]) && all(sapply(env[[x]], inherits, "ggplot")))]
+  if (length(list_objs) > 0) {
+    return(env[[list_objs[1]]])
+  }
+
+  # Case 2: multiple standalone ggplots
+  gg_objs <- objs[sapply(objs, function(x) inherits(env[[x]], "ggplot"))]
+  if (length(gg_objs) > 0) {
+    return(setNames(lapply(gg_objs, function(x) env[[x]]), gg_objs))
+  }
+
+  return(list())
+}
+
+get_cached_plotlist <- function(key, file_path) {
+  # If switching to a new key, clear the old cache
+  if (!identical(plot_cache$current_key, key)) {
+    rm(list = setdiff(ls(plot_cache), "current_key"), envir = plot_cache)
+    plot_cache$current_key <- key
+  }
+
+  # Load only if not already cached
+  if (!exists(key, envir = plot_cache)) {
+    if (file.exists(file_path)) {
+      message("Loading plot cache for: ", key)
+      plot_cache[[key]] <- load_plotlist_from_file(file_path)
+    } else {
+      plot_cache[[key]] <- list()
+    }
+  }
+  plot_cache[[key]]
+}
+
+# --- Helper: prettify plot names for dropdown ---
+prettify_plot_names <- function(plot_names) {
+  tibble(raw = plot_names) %>%
+    mutate(
+      pretty = raw %>%
+        # Remove leading pathogen prefix (e.g. "rsv_")
+        gsub("^[a-z]+_", "", .) %>%
+        # Replace underscores with spaces
+        gsub("_", " ", .) %>%
+        # Capitalize first letter of each word
+        tools::toTitleCase(.) %>%
+        # Replace common abbreviations
+        gsub("Ses", "IMD", .) %>%
+        gsub("Mild", "(Mild)", .) %>%
+        gsub("Severe", "(Severe)", .)
+    )
+}
+
+pathogen_code <- function(pathogen_label) {
+  dplyr::case_when(
+    pathogen_label == "RSV" ~ "rsv",
+    pathogen_label == "Influenza" ~ "flu",
+    pathogen_label == "COVID-19" ~ "covid",
+    pathogen_label == "Overall Respiratory Virus" ~ "overall_resp",
+    TRUE ~ tolower(gsub(" ", "_", pathogen_label))
+  )
+}
+
+cohort_code <- function(cohort_label) {
+
+  dplyr::case_when(
+    cohort_label == "Older Adults" ~ "older_adults",
+    cohort_label == "Adults" ~ "adults",
+    cohort_label == "Children and Adolescents" ~ "children_and_adolescents",
+    cohort_label == "Infants" ~ "infants",
+    cohort_label == "Maternally Linked Infants" ~ "infants_subgroup",
+    TRUE ~ tolower(gsub(" ", "_", cohort_label))
+  )
+
+}
+
+#| context: server
+server <- function(input, output, session) {
+
+  # Reactive key to track which plot should be displayed
+  plot_selection <- reactive({
+    req(input$cohort, input$pathogen, input$investigation, input$model_choice)
+    
+    list(
+      cohort = input$cohort,
+      pathogen = input$pathogen,
+      investigation = input$investigation,
+      model_choice = input$model_choice
+    )
+  })
+  
+  # --- Dynamic investigation dropdown ---
+  output$investigation_ui <- renderUI({
+    valid <- investigation_lookup %>%
+      filter(cohort == input$cohort, pathogen == input$pathogen)
+    
+    choices <- if (nrow(valid) > 0) valid$valid_investigations[[1]] else "Primary"
+    selectInput("investigation", "Select Investigation:", choices = choices)
+  })
+  
+  # --- Helper to extract plot names ---
+  get_plot_names <- function(rdata_path) {
+    env <- new.env()
+    load(rdata_path, envir = env)
+    objs <- ls(env)
+
+    # Case 1: There are direct ggplot objects in the environment
+    plot_objs <- objs[sapply(objs, function(x) inherits(env[[x]], "ggplot"))]
+    if (length(plot_objs) > 0) return(plot_objs)
+
+    # Case 2: There is a list of ggplots (common pattern)
+    list_objs <- objs[sapply(objs, function(x) is.list(env[[x]]) && all(sapply(env[[x]], inherits, "ggplot")))]
+    if (length(list_objs) > 0) {
+      list_name <- list_objs[1]
+      return(names(env[[list_name]]))
+    }
+
+    # Fallback
+    return(objs)
+  }
+  
+  # --- Model selector ---
+  output$model_selector <- renderUI({
+    req(input$investigation, input$pathogen, input$cohort)
+    
+    path <- path <- paste0(
+      cohort_code(input$cohort), "_", pathogen_code(input$pathogen)
+    )
+    if (input$investigation == "Secondary") {
+      cache_file <- paste0(
+        "post_check/supplemental/dashboard/", path,
+        "_model_results_secondary.RData"
+      )
+    } else if (input$investigation == "Sensitivity") {
+      cache_file <- paste0(
+        "post_check/supplemental/dashboard/", path,
+        "_model_results_sensitivity.RData"
+      )
+    } else {
+      cache_file <- paste0(
+        "post_check/supplemental/dashboard/", path, "_model_results.RData"
+      )
+    }
+
+    if (input$investigation == "Secondary") {
+      cache_key <- paste0(path, "_secondary")
+    } else if (input$investigation == "Sensitivity") {
+      cache_key <- paste0(path, "_sensitivity")
+    } else {
+      cache_key <- path
+    }
+
+    plotlist <- get_cached_plotlist(cache_key, cache_file)
+    
+    if (length(plotlist) > 0) {
+      name_map <- prettify_plot_names(names(plotlist))
+      selectInput(
+        "model_choice",
+        "Select Model / Plot:",
+        choices = setNames(name_map$raw, name_map$pretty),
+        selected = name_map$raw[1]  # ensures a valid selection exists
+      )
+    } else {
+      selectInput("model_choice", "Select Model / Plot:", choices = "p")
+    }
+  })
+  
+  # --- Main plot ---
+  output$mainPlot <- renderPlot({
+    req(input$investigation, input$pathogen, input$cohort)
+    sel <- plot_selection()  # reactive dependency here
+    path <- paste0(cohort_code(sel$cohort), "_", pathogen_code(sel$pathogen))
+    if (sel$investigation == "Secondary") {
+      cache_file <- paste0(
+        "post_check/supplemental/dashboard/", path,
+        "_model_results_secondary.RData"
+      )
+    } else if (sel$investigation == "Sensitivity") {
+      cache_file <- paste0(
+        "post_check/supplemental/dashboard/", path,
+        "_model_results_sensitivity.RData"
+      )
+    } else {
+      cache_file <- paste0(
+        "post_check/supplemental/dashboard/", path, "_model_results.RData"
+      )
+    }
+
+    if (input$investigation == "Secondary") {
+      cache_key <- paste0(path, "_secondary")
+    } else if (input$investigation == "Sensitivity") {
+      cache_key <- paste0(path, "_sensitivity")
+    } else {
+      cache_key <- path
+    }
+
+    plotlist <- get_cached_plotlist(cache_key, cache_file)
+    
+    if (length(plotlist) == 0) {
+      plot.new(); title("No cached plots available")
+      return()
+    }
+    
+    if (sel$model_choice %in% names(plotlist)) {
+      print(plotlist[[sel$model_choice]])
+    } else if ("p" %in% names(plotlist)) {
+      print(plotlist[["p"]])
+    } else {
+      plot.new(); title("Plot not found in cached list")
+    }
+  })
+
+
+  # --- Secondary plot (Primary only) ---
+  output$secondPlot <- renderPlot({
+    req(input$investigation, input$pathogen, input$cohort)
+    inv <- input$investigation
+    if (is.null(inv) || inv != "Primary") {
+      plot.new(); title("Fully Adjusted Model (Primary Investigations Only)")
+      return()
+    }
+
+    sel <- plot_selection()  # reactive dependency here
+    path <- paste0(cohort_code(sel$cohort), "_", pathogen_code(sel$pathogen), "_further")
+    cache_file <- paste0("post_check/supplemental/dashboard/", path, "_model_results.RData")
+    
+    plotlist <- get_cached_plotlist(path, cache_file)
+    
+    if (length(plotlist) == 0) {
+      plot.new(); title("No cached plots available")
+      return()
+    }
+    
+    if (sel$model_choice %in% names(plotlist)) {
+      print(plotlist[[sel$model_choice]])
+    } else if ("p" %in% names(plotlist)) {
+      print(plotlist[["p"]])
+    } else {
+      plot.new(); title("Plot not found in cached list")
+    }
+  })
+
+  # Add a clear cache button
+  observeEvent(input$clear_cache, {
+    rm(list = ls(plot_cache), envir = plot_cache)
+    gc()
+    showNotification("Cache cleared.", type = "message")
+    
+    # Force refresh of model selector and plot
+    output$model_selector <- renderUI({ NULL })
+    output$mainPlot <- renderPlot({ plot.new(); title("Cache cleared – please reselect options") })
+  })
+
+}
+```
+
+```{r}
+#| context: server
+shinyApp(ui, server)
+```

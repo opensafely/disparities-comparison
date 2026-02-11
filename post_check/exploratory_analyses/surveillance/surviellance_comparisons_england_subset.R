@@ -100,6 +100,9 @@ import <- function(pathogen) {
       month >= as.Date("2023-09-01") & month < as.Date("2024-09-01") ~ "2023-24"
     ))
   
+  df <- df %>% 
+    filter(month(month) %in% c("9", "10", "11", "12", "1", "2", "3"))
+  
   return(df)
   
 }
@@ -154,15 +157,18 @@ df_surv <- df_surv[, c("month", "total_events", "virus")] %>%
     month >= as.Date("2023-09-01") & month < as.Date("2024-09-01") ~ "2023-24"
   ))
 
-#save the data used
-write_csv(df_rsv, here::here("post_check", "supplemental", "surveillance",
-                             "rsv_cases_all_seasons.csv"))
-write_csv(df_flu, here::here("post_check", "supplemental", "surveillance",
-                             "flu_cases_all_seasons.csv"))
-write_csv(df_covid, here::here("post_check", "supplemental", "surveillance",
-                               "covid_cases_all_seasons.csv"))
-write_csv(df_surv, here::here("post_check", "supplemental", "surveillance",
-                              "surv_cases_all_seasons.csv"))
+df_surv <- df_surv %>% 
+    filter(month(month) %in% c("9", "10", "11", "12", "1", "2", "3"))
+
+# #save the data used
+# write_csv(df_rsv, here::here("post_check", "supplemental", "surveillance",
+#                              "rsv_cases_all_seasons.csv"))
+# write_csv(df_flu, here::here("post_check", "supplemental", "surveillance",
+#                              "flu_cases_all_seasons.csv"))
+# write_csv(df_covid, here::here("post_check", "supplemental", "surveillance",
+#                                "covid_cases_all_seasons.csv"))
+# write_csv(df_surv, here::here("post_check", "supplemental", "surveillance",
+#                               "surv_cases_all_seasons.csv"))
 
 #write a function for pearson's correlation coefficient test
 pearson_test <- function(df1, df2, event, codelist, virus, subset = "no") {
@@ -252,8 +258,8 @@ pearson_results <- data.frame(
 )
 
 #now do the same by season
-seasons_pre <- c("2016-17", "2017-18", "2018-19")
-seasons_post <- c("2019-20", "2020-21", "2021-22", "2022-23", "2023-24")
+seasons_pre <- c("2016-17", "2017-18", "2018-19", "2019-20")
+seasons_post <- c("2020-21", "2021-22", "2022-23", "2023-24")
 pearson_results_seasons <- NULL
 
 for (season in seasons_pre) {
@@ -384,51 +390,25 @@ for (season in seasons_post) {
   
 }
 
-#tidy the overall results
-pearson_tidy <- pearson_results %>%
-  mutate(
-    pathogen = case_when(
-      str_starts(test, "RSV") ~ "RSV",
-      str_starts(test, "Flu") ~ "Influenza",
-      str_starts(test, "COVID-19") ~ "COVID-19"
-    ),
-    severity = case_when(
-      str_detect(test, "Mild") ~ "Mild",
-      str_detect(test, "Severe") ~ "Severe"
-    ),
-    codelist_type = case_when(
-      str_detect(test, "Specific") ~ "Specific",
-      str_detect(test, "Sensitive") ~ "Sensitive"
-    ),
-    season = "All",
-    test = "Overall"
-  ) %>%
-  select(test, pathogen, severity, codelist_type, season, pearson)
-
-#visualise the results over time
+# visualise the results over time
 df_clean <- pearson_results_seasons %>%
   separate(test, into = c("pathogen", "severity", "codelist_type", "season"), 
-           sep = " ", remove = FALSE) %>% 
-  select(-p_value)
-df_clean <- df_clean %>% 
-  bind_rows(
-    pearson_tidy
-  ) %>%
+           sep = " ", remove = FALSE)
+df_clean <- df_clean %>%
   mutate(
     season = str_remove_all(season, "[()]"),
-    pathogen = case_when(pathogen == "Flu" ~ "Influenza", TRUE ~ pathogen),
+    pathogen = case_when(pathogen == "Flu" ~ "Influenza", TRUE ~ pathogen)
+  ) %>% 
+  mutate(
     pathogen = factor(pathogen, levels = c("RSV", "Influenza", "COVID-19")),
-    codelist_type = factor(codelist_type, levels = c("Specific", "Sensitive")),
-    season_or_allseason = if_else(test == "Overall", "All Seasons", "Seasonal"),
-    season_or_allseason = factor(season_or_allseason, levels = c("Seasonal", "All Seasons"))
+    codelist_type = factor(codelist_type, levels = c("Specific", "Sensitive"))
   )
 
 f <- function(pal) brewer.pal(3, pal)
 cols <- f("Set2")
 
 ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
-                     group = interaction(season_or_allseason, codelist_type),
-                     col = pathogen, shape = season_or_allseason)) +
+                     group = codelist_type, col = pathogen)) +
   geom_line(linewidth = 1) +
   geom_point(size = 6, stroke = NA) + #, alpha = p_value < 0.05)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
@@ -438,11 +418,6 @@ ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
       "COVID-19" = cols[3])) +
   scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
                        na.translate = FALSE) +
-  #scale_shape_manual(values = c("Seasonal" = 16, "All Seasons" = 3)) + 
-  # geom_point(aes(x = 8.45, y = pearson_overall, shape = 2), size = 4) +
-  # ggrepel::geom_label_repel(aes(x = 8.5, y = pearson_overall, label = pearson_overall),
-  #                           segment.color = NA, show.legend = FALSE,
-  #                           direction = "y") +
   theme_bw(base_size = 20) +
   labs(
     #title = "Pearson Correlation Between EHR and Surveillance Data Over Time",
@@ -450,8 +425,7 @@ ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
     x = "Season (September-September)",
     y = "Correlation (r)",
     alpha = "Codelist type",
-    color = "Virus",
-    shape = "Correlation Type"
+    color = "Virus"
   ) +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
@@ -463,12 +437,11 @@ ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
     axis.line = element_line(color = 'black')
   ) + 
   guides(
-    color = guide_legend(order = 1, override.aes = list(size = 6)),
-    alpha = guide_legend(order = 2, override.aes = list(size = 6)),
-    shape = guide_legend(order = 3)
+    color = guide_legend(order = 1, override.aes = list(size = 8)),
+    alpha = guide_legend(order = 2, override.aes = list(size = 8))
   )
 
 #save
 ggsave(here::here("post_check", "plots", "exploratory_analyses",
-                  "pearson_overtime.png"),
+                  "pearson_overtime_peak_seasons.png"),
        width = 15, height = 10)

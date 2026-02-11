@@ -11,7 +11,7 @@ library(rsvg)
 options(scipen = 999)
 
 ## create output directories ----
-fs::dir_create(here("post_check", "flow_chart", "plots"))
+fs::dir_create(here("post_check", "plots", "supplemental", "flow_charts"))
 
 ##  older adults 
 cohort <- "older_adults"
@@ -20,8 +20,8 @@ cohort <- "older_adults"
 df_input <- read_csv(here::here("post_check", "output", "collated", "descriptive", 
                                 paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
-names(patients_df) <- c("total", "registered", "registed_sex", "registered_imd",
-"registered_no_carehome", "included", "perc_registered", "perc_registed_sex",
+names(patients_df) <- c("total", "registered", "registered_sex", "registered_imd",
+"registered_no_carehome", "included", "perc_registered", "perc_registered_sex",
 "perc_registered_imd", "perc_registered_no_carehome", "perc_included", "subset")
 patients_df <- patients_df[, not_registered := total - registered, by = .(subset)]
 patients_df <- patients_df[, not_eligible := registered - included, by = .(subset)]
@@ -42,7 +42,7 @@ flow_chart <- vector("list", nrow(patients_df))
 for (i in 1:nrow(patients_df)) {
   
   #construct label strings with variable values
-  org_cohort_label[i] <- paste0("Living population of correct age and sex with records", 
+  org_cohort_label[i] <- paste0("Living population of correct age (65y+)", 
                                 "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
                                 start = 1, stop = 4), "-09-01 (n = ", format(
                                 patients_df[i, ]$total, big.mark = ","),")")
@@ -121,7 +121,7 @@ for (i in 1:length(flow_chart)) {
   flow_chart[[i]] %>%
     export_svg %>%
     charToRaw %>%
-    rsvg_png(paste0(here::here("post_check", "flow_chart", "plots"), "/", 
+    rsvg_png(paste0(here::here("post_check", "plots", "supplemental", "flow_charts"), "/", 
              "cohort_inclusion_", cohort, "_", patients_df[i, ]$subset, ".png"))
 }
 
@@ -132,8 +132,8 @@ cohort <- "adults"
 df_input <- read_csv(here::here("post_check", "output", "collated", "descriptive", 
                                 paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
-names(patients_df) <- c("total", "registered", "registed_sex", "registered_imd",
-"registered_no_carehome", "included", "perc_registered", "perc_registed_sex",
+names(patients_df) <- c("total", "registered", "registered_sex", "registered_imd",
+"registered_no_carehome", "included", "perc_registered", "perc_registered_sex",
 "perc_registered_imd", "perc_registered_no_carehome", "perc_included", "subset")
 patients_df <- patients_df[, not_registered := total - registered, by = .(subset)]
 patients_df <- patients_df[, not_eligible := registered - included, by = .(subset)]
@@ -154,7 +154,7 @@ flow_chart <- vector("list", nrow(patients_df))
 for (i in 1:nrow(patients_df)) {
   
   #construct label strings with variable values
-  org_cohort_label[i] <- paste0("Living population of correct age and sex with records", 
+  org_cohort_label[i] <- paste0("Living population of correct age (18-64y)", 
                                 "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
                                 start = 1, stop = 4), "-09-01 (n = ", format(
                                 patients_df[i, ]$total, big.mark = ","),")")
@@ -233,7 +233,7 @@ for (i in 1:length(flow_chart)) {
   flow_chart[[i]] %>%
     export_svg %>%
     charToRaw %>%
-    rsvg_png(paste0(here::here("post_check", "flow_chart", "plots"), "/", 
+    rsvg_png(paste0(here::here("post_check", "plots", "supplemental", "flow_charts"), "/", 
              "cohort_inclusion_", cohort, "_", patients_df[i, ]$subset, ".png"))
 }
 
@@ -244,8 +244,8 @@ cohort <- "children_and_adolescents"
 df_input <- read_csv(here::here("post_check", "output", "collated", "descriptive", 
                                 paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
-names(patients_df) <- c("total", "registered", "registed_sex", "registered_imd",
-"registered_no_carehome", "included", "perc_registered", "perc_registed_sex",
+names(patients_df) <- c("total", "registered", "registered_sex", "registered_imd",
+"registered_no_carehome", "included", "perc_registered", "perc_registered_sex",
 "perc_registered_imd", "perc_registered_no_carehome", "perc_included", "subset")
 patients_df <- patients_df[, not_registered := total - registered, by = .(subset)]
 patients_df <- patients_df[, not_eligible := registered - included, by = .(subset)]
@@ -266,7 +266,7 @@ flow_chart <- vector("list", nrow(patients_df))
 for (i in 1:nrow(patients_df)) {
   
   #construct label strings with variable values
-  org_cohort_label[i] <- paste0("Living population of correct age and sex with records", 
+  org_cohort_label[i] <- paste0("Living population of correct age (2-17y)", 
                                 "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
                                 start = 1, stop = 4), "-09-01 (n = ", format(
                                 patients_df[i, ]$total, big.mark = ","),")")
@@ -345,7 +345,7 @@ for (i in 1:length(flow_chart)) {
   flow_chart[[i]] %>%
     export_svg %>%
     charToRaw %>%
-    rsvg_png(paste0(here::here("post_check", "flow_chart", "plots"), "/", 
+    rsvg_png(paste0(here::here("post_check", "plots", "supplemental", "flow_charts"), "/", 
              "cohort_inclusion_", cohort, "_", patients_df[i, ]$subset, ".png"))
 }
 
@@ -356,9 +356,9 @@ cohort <- "infants"
 df_input <- read_csv(here::here("post_check", "output", "collated", "descriptive", 
                                 paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
-names(patients_df) <- c("total", "registered", "registed_sex", "registered_imd",
+names(patients_df) <- c("total", "registered", "registered_sex", "registered_imd",
 "registered_no_carehome", "registered_no_riskgroup", "registered_no_immune",
-"included", "perc_registered", "perc_registed_sex", "perc_registered_imd",
+"included", "perc_registered", "perc_registered_sex", "perc_registered_imd",
 "perc_registered_no_carehome", "perc_registered_no_riskgroup",
 "perc_registered_no_immune",  "perc_included", "subset")
 patients_df <- patients_df[, not_registered := total - registered, by = .(subset)]
@@ -380,7 +380,7 @@ flow_chart <- vector("list", nrow(patients_df))
 for (i in 1:nrow(patients_df)) {
   
   #construct label strings with variable values
-  org_cohort_label[i] <- paste0("Living population of correct age and sex with records", 
+  org_cohort_label[i] <- paste0("Living population of correct age (under 2y)", 
                                 "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
                                 start = 1, stop = 4), "-09-01 (n = ", format(
                                 patients_df[i, ]$total, big.mark = ","),")")
@@ -459,7 +459,7 @@ for (i in 1:length(flow_chart)) {
   flow_chart[[i]] %>%
     export_svg %>%
     charToRaw %>%
-    rsvg_png(paste0(here::here("post_check", "flow_chart", "plots"), "/", 
+    rsvg_png(paste0(here::here("post_check", "plots", "supplemental", "flow_charts"), "/", 
              "cohort_inclusion_", cohort, "_", patients_df[i, ]$subset, ".png"))
 }
 
@@ -470,13 +470,13 @@ cohort <- "infants_subgroup"
 df_input <- read_csv(here::here("post_check", "output", "collated", "descriptive", 
                                 paste0(cohort, "_flow_chart_collated.csv")))
 patients_df <- as.data.table(df_input)
-names(patients_df) <- c("total", "registered", "mother_registed",
-"registered_mother_registered", "registed_mother_registered_sex",
+names(patients_df) <- c("total", "registered", "mother_registered",
+"registered_mother_registered", "registered_mother_registered_sex",
 "registered_mother_registered_imd", "registered_mother_registered_no_carehome",
 "registered_mother_registered_no_riskgroup", 
 "registered_mother_registered_no_immune", "included", "perc_registered",
-"perc_mother_registed", "perc_registered_mother_registered", 
-"perc_registed_mother_registered_sex", "perc_registered_mother_registered_imd",
+"perc_mother_registered", "perc_registered_mother_registered", 
+"perc_registered_mother_registered_sex", "perc_registered_mother_registered_imd",
 "perc_registered_mother_registered_no_carehome",
 "perc_registered_mother_registered_no_riskgroup", 
 "perc_registered_mother_registered_no_immune", "perc_included",  "subset")
@@ -499,7 +499,7 @@ flow_chart <- vector("list", nrow(patients_df))
 for (i in 1:nrow(patients_df)) {
   
   #construct label strings with variable values
-  org_cohort_label[i] <- paste0("Living population of correct age and sex with records", 
+  org_cohort_label[i] <- paste0("Living population of correct age (under 2y) with maternal linkage", 
                                 "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
                                 start = 1, stop = 4), "-09-01 (n = ", format(
                                 patients_df[i, ]$total, big.mark = ","),")")
@@ -580,6 +580,6 @@ for (i in 1:length(flow_chart)) {
   flow_chart[[i]] %>%
     export_svg %>%
     charToRaw %>%
-    rsvg_png(paste0(here::here("post_check", "flow_chart", "plots"), "/", 
+    rsvg_png(paste0(here::here("post_check", "plots", "supplemental", "flow_charts"), "/", 
              "cohort_inclusion_", cohort, "_", patients_df[i, ]$subset, ".png"))
 }

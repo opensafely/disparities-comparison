@@ -7,6 +7,7 @@ library(ggplot2)
 library(cowplot)
 library(ggpubr)
 library(ggpmisc)
+library(egg)
 
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 
@@ -249,7 +250,9 @@ plot_combined <- function(df, pathogen, phenotype) {
               fill = "grey", alpha = 0.25, col = NA) +
     scale_y_continuous(
       limits = c(0, limits_mild),
-      sec.axis = sec_axis(trans = ~./coeff_mild, name = "")
+      sec.axis = sec_axis(trans = ~./coeff_mild, name = "",
+                          labels = scales::label_number(scale_cut = cut_si(""))),
+      labels = scales::label_number(scale_cut = cut_si(""))
     ) +
     scale_x_date(date_breaks = "1 years", date_labels = "%y") + 
     scale_color_manual(values = c(
@@ -261,7 +264,7 @@ plot_combined <- function(df, pathogen, phenotype) {
                                   "specific" = "Specific"),
                        na.translate = FALSE) +
     labs(x = "", y = "", colour = "Virus & Data Source",
-         alpha = "Phenotype Used") + theme_bw() +
+         alpha = "Phenotype Used") + theme_bw(base_size = 16) +
     theme(legend.position = "none")
 
   mild <- tag_facet(mild,
@@ -269,7 +272,7 @@ plot_combined <- function(df, pathogen, phenotype) {
                     hjust = 0, vjust = 0.5,
                     open = "", close = "",
                     fontface = 4,
-                    size = 3.5,
+                    size = 4,
                     family = "sans",
                     tag_pool = my_tag("Mild", pathogen, phenotype))
   
@@ -283,7 +286,9 @@ plot_combined <- function(df, pathogen, phenotype) {
               fill = "grey", alpha = 0.25, col = NA) +
     scale_y_continuous(
       limits = c(0, limits_severe),
-      sec.axis = sec_axis(trans = ~./coeff_severe, name = "")
+      sec.axis = sec_axis(trans = ~./coeff_severe, name = "",
+                          labels = scales::label_number(scale_cut = cut_si(""))),
+      labels = scales::label_number(scale_cut = cut_si(""))
     ) +
     scale_x_date(date_breaks = "1 years", date_labels = "%y") + 
     scale_color_manual(values = c(
@@ -295,7 +300,7 @@ plot_combined <- function(df, pathogen, phenotype) {
                                   "specific" = "Specific"),
                        na.translate = FALSE) +
     labs(x = "", y = "", colour = "Virus & Data Source",
-         alpha = "Phenotype Used") + theme_bw() +
+         alpha = "Phenotype Used") + theme_bw(base_size = 16) +
     theme(legend.position = "none")
 
     severe <- tag_facet(severe,
@@ -303,7 +308,7 @@ plot_combined <- function(df, pathogen, phenotype) {
                         hjust = 0, vjust = 0.5,
                         open = "", close = "",
                         fontface = 4,
-                        size = 3.5,
+                        size = 4,
                         family = "sans",
                         tag_pool = my_tag("Severe", pathogen, phenotype))
   
@@ -374,7 +379,7 @@ get_legend_2 <- function(df1, df2) {
                          na.translate = FALSE) +
       guides(colour = guide_legend("Virus & Data Source", order = 1),
              alpha = guide_legend("Phenotype Used", order = 3)) +
-      theme_bw() +
+      theme_bw(base_size = 12) +
       theme(legend.position = "bottom",
             legend.box = "horizontal",
             legend.title = element_text())
@@ -392,8 +397,8 @@ plot <- plot_grid(
   ncol = 1,
   label_size = 14
 ) %>% annotate_figure(
-  left = text_grob("Monthly Events Identified", rot = 90, vjust = 1),
-  right = text_grob("Monthly Surveillance Data", rot = 270, vjust = 1),
+  left = text_grob("Monthly Events Identified", rot = 90, vjust = 1, size = 16),
+  right = text_grob("Monthly Surveillance Data", rot = 270, vjust = 1, size = 16),
 )
 
 # Dummy data for the grey box
@@ -410,13 +415,13 @@ transmission_legend <- ggplot() +
   # Label to the right
   annotate("text", x = 0.5, y = 0.5,
            label = "Usual Transmission Period (Nov–Mar)",
-           hjust = 0, vjust = 0.5, size = 4) +
+           hjust = 0, vjust = 0.5, size = 5) +
   xlim(0, 3) + ylim(0, 0.75) +  # Give horizontal space
   theme_void() +
   theme(plot.margin = margin(3, -10, -75, -10))
 
 bottom_row <- plot_grid(
-  NULL, transmission_legend, ncol = 2, rel_widths = c(0.32, 0.8)
+  NULL, transmission_legend, ncol = 2, rel_widths = c(0.25, 0.8)
 )
 
 plot_grid(
@@ -430,7 +435,7 @@ plot_grid(
   # top = text_grob(
   #   "Monthly Counts of RSV, Influenza and COVID-19 in All Cohorts ",
   #   face = "bold", size = 14),
-  bottom = text_grob("Year (2016-2024)", vjust = -9.5)
+  bottom = text_grob("Year", vjust = -9.5, size = 15)
 )
 
 #save

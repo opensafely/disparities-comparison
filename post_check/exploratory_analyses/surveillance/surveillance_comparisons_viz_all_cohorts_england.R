@@ -435,9 +435,12 @@ legend <- get_legend_2(df_surv_mute, df_all)
 
 plot <- plot_grid(
   spec_rsv, sens_rsv,
+  NULL,
   spec_flu, sens_flu,
+  NULL,
   spec_covid, sens_covid,
   ncol = 1,
+  rel_heights = c(1, 1, -0.1, 1, 1, -0.1, 1, 1),
   label_size = 14
 ) %>% annotate_figure(
   left = text_grob("Monthly Events Identified", rot = 90, vjust = 1, size = 16),
@@ -473,12 +476,12 @@ plot_grid(
   bottom_row,
   NULL,
   ncol = 1,
-  rel_heights = c(0.02, 1, 0.05, 0.05)
+  rel_heights = c(0.02, 1, 0.05, 0.1)
 ) %>% annotate_figure(
   # top = text_grob(
   #   "Monthly Counts of RSV, Influenza and COVID-19 in All Cohorts ",
   #   face = "bold", size = 14),
-  bottom = text_grob("Year", vjust = -10.5, size = 15)
+  bottom = text_grob("Year", vjust = -14.5, size = 15)
 )
 
 #save

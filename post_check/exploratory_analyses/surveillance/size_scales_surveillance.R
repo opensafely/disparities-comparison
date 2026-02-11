@@ -204,6 +204,8 @@ sizes <- function(input) {
                         na.translate = FALSE,
                         guide = guide_legend(position = NULL)) +
       scale_y_log10() +
+      # geom_text(aes(y = fraction, x = codelist_type,
+      #               label = round(fraction, digits = 2)), size = 5) + 
       coord_cartesian(clip = "off", ylim = lims) +
       geom_hline(yintercept = 1, colour = "black", linewidth = 0.6) +
       facet_wrap(~year, scales = "fixed", nrow = 1) +
