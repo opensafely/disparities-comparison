@@ -83,7 +83,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     
   } else if (cohort == "children_and_adolescents") {
     
-    levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Male", "Female")
+    levels <- c("14-17y", "10-13y", "6-9y", "2-5y", "Male", "Female")
     
   } else if (cohort == "adults") {
     
@@ -729,8 +729,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
-          coord_cartesian(xlim = c(0.06, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
+          coord_cartesian(xlim = c(0.06, 20)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
@@ -797,8 +797,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
-          coord_cartesian(xlim = c(0.06, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
+          coord_cartesian(xlim = c(0.06, 20)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
@@ -903,8 +903,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
-          coord_cartesian(xlim = c(0.06, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
+          coord_cartesian(xlim = c(0.06, 20)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
@@ -948,9 +948,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               variable == "vax_status" & pathogen == "covid" ~ "Covid Vaccination (Yes)",
               variable == "time_since_last_covid_vaccination" ~ paste0(
                 label, " Since Last Covid Vaccination"),
-              variable == "prior_flu_vaccination" ~ paste0(
-                "Prior Flu Vaccination (", str_to_title(label),")"),
-              variable == "vax_status" & pathogen == "flu" ~ "Flu Vaccination (Yes)",
               TRUE ~ label
             ),
             subset = gsub("_", "-", subset)
@@ -958,7 +955,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           mutate(
             variable = case_when(
               variable == "vax_status" & pathogen == "covid" ~ "covid_vaccination",
-              variable == "vax_status" & pathogen == "flu" ~ "flu_vaccination",
               TRUE ~ variable
             ),
             plot_label = str_to_title(gsub("_", " ", variable))
@@ -979,8 +975,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               str_detect(label, regex("^6-12m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Autumn",
               str_detect(label, regex("^0-6m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Spring",
               str_detect(label, "12m") ~ "Not Vaccinated in Past Year",
-              str_detect(label, "Prior") & str_detect(label, "(Yes)") ~ "Eligible and Vaccinated Last Autumn",
-              str_detect(label, "Prior") & str_detect(label, "(No)") ~ "Not Vaccinated in Past Year",
               TRUE ~ label
             )
           ) %>%
@@ -1000,8 +994,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
-          coord_cartesian(xlim = c(0.06, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
+          coord_cartesian(xlim = c(0.06, 20)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
@@ -1106,8 +1100,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
-          coord_cartesian(xlim = c(0.06, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
+          coord_cartesian(xlim = c(0.06, 20)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
@@ -1775,8 +1769,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
-          coord_cartesian(xlim = c(0.06, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
+          coord_cartesian(xlim = c(0.06, 20)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
@@ -1839,8 +1833,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
-          coord_cartesian(xlim = c(0.06, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
+          coord_cartesian(xlim = c(0.06, 20)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
@@ -1919,8 +1913,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
-          coord_cartesian(xlim = c(0.06, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
+          coord_cartesian(xlim = c(0.06, 20)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
@@ -1990,8 +1984,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                breaks = c(16, 17, 15), labels = c(
                                  "Reference", "Specific", "Sensitive")) +
           geom_vline(xintercept = 1, linetype = 2) +
-          scale_x_log10(breaks = c(0.1, 0.5, 2, 10)) +
-          coord_cartesian(xlim = c(0.06, 10)) +
+          scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
+          coord_cartesian(xlim = c(0.06, 20)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
