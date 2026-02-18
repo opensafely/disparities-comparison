@@ -156,11 +156,11 @@ df_surv_mute <- df_surv_mute %>%
     coeff = case_when(
       virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 10,
       virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 5,
-      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 30,
-      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 6,
-      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 0.25,
-      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 0.25,
-      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 0.5,
+      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 25,
+      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 5,
+      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 1,
+      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 1,
+      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 1,
       virus == "Influenza" & event == "Severe" & codelist_type == "sensitive" ~ 1,
       virus == "COVID-19" & event == "Mild" & codelist_type == "specific" ~ 0.25,
       virus == "COVID-19" & event == "Severe" & codelist_type == "specific" ~ 0.01,
@@ -188,11 +188,11 @@ df_all <- df_all %>%
     ylims = case_when(
       virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 115000,
       virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 58000,
-      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 310000,
-      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 62000,
-      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 12500,
-      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 12500,
-      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 30000,
+      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 320000,
+      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 65000,
+      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 45000,
+      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 45000,
+      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 45000,
       virus == "Influenza" & event == "Severe" & codelist_type == "sensitive" ~ 60000,
       virus == "COVID-19" & event == "Mild" & codelist_type == "specific" ~ 1100500,
       virus == "COVID-19" & event == "Severe" & codelist_type == "specific" ~ 45000,
@@ -309,6 +309,13 @@ plot_combined <- function(df, pathogen, phenotype) {
           axis.text.x = element_text(angle = 45, hjust = 1),
           panel.border = element_blank(),
           axis.line = element_line(color = 'black'))
+  
+  if (phenotype == "specific") {
+
+    mild <- mild + theme(axis.text.x = element_blank(),
+                         axis.ticks.x = element_blank())
+
+  }
 
   mild <- tag_facet(mild,
                     x = df_plot$month[[1]], y = limits_mild,
@@ -349,6 +356,13 @@ plot_combined <- function(df, pathogen, phenotype) {
           axis.text.x = element_text(angle = 45, hjust = 1),
           panel.border = element_blank(),
           axis.line = element_line(color = 'black'))
+  
+    if (phenotype == "specific") {
+
+      severe <- severe + theme(axis.text.x = element_blank(),
+                               axis.ticks.x = element_blank())
+
+    }
 
     severe <- tag_facet(severe,
                         x = df_plot$month[[1]], y = limits_severe,
@@ -434,13 +448,13 @@ get_legend_2 <- function(df1, df2) {
 legend <- get_legend_2(df_surv_mute, df_all)
 
 plot <- plot_grid(
-  spec_rsv, sens_rsv,
+  plot_grid(spec_rsv, NULL, sens_rsv, nrow = 3, rel_heights = c(0.85, -0.1, 1)),
   NULL,
-  spec_flu, sens_flu,
+  plot_grid(spec_flu, NULL, sens_flu, nrow = 3, rel_heights = c(0.85, -0.1, 1)),
   NULL,
-  spec_covid, sens_covid,
+  plot_grid(spec_covid, NULL, sens_covid, nrow = 3, rel_heights = c(0.85, -0.1, 1)),
   ncol = 1,
-  rel_heights = c(1, 1, -0.1, 1, 1, -0.1, 1, 1),
+  rel_heights = c(1, -0.05, 1, -0.05, 1),
   label_size = 14
 ) %>% annotate_figure(
   left = text_grob("Monthly Events Identified", rot = 90, vjust = 1, size = 16),
@@ -473,15 +487,15 @@ bottom_row <- plot_grid(
 plot_grid(
   legend,
   plot,
-  bottom_row,
   NULL,
+  bottom_row,
   ncol = 1,
-  rel_heights = c(0.02, 1, 0.05, 0.1)
+  rel_heights = c(0.02, 1, -0.025, 0.05)
 ) %>% annotate_figure(
   # top = text_grob(
   #   "Monthly Counts of RSV, Influenza and COVID-19 in All Cohorts ",
   #   face = "bold", size = 14),
-  bottom = text_grob("Year", vjust = -14.5, size = 15)
+  bottom = text_grob("Year", vjust = -5, size = 15)
 )
 
 #save
