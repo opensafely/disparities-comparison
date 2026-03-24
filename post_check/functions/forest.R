@@ -9,6 +9,7 @@ library(egg)
 
 #import model functions
 source(here::here("post_check", "functions", "model.R"))
+source(here::here("post_check", "functions", "forest_over_time.R"))
 options(scipen = 999)
 
 #create function to filter collated results to models wanted and then plot
@@ -719,7 +720,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
-          filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23", "2023-24")) %>%
           unique() %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
                      color = labels, shape = shape)) +
@@ -816,18 +816,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       
       if (pathogen == "covid") {
 
-        if (investigation_type == "secondary") {
-
-          tidy_forest <- tidy_forest %>%
-            filter(subset %in% c("2017_18", "2018_19", "2020_21"))
-
-        } else if (investigation_type == "sensitivity") {
-
-          tidy_forest <- tidy_forest %>%
-            filter(subset %in% c("2017_18", "2018_19"))
-
-        }
-        
         tidy_forest %>%
           mutate(
             label = if_else(
@@ -893,7 +881,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
-          filter(subset %in% c("2019-20", "2020-21", "2021-22", "2022-23", "2023-24")) %>%
           unique() %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
                      color = labels, shape = shape)) +
@@ -984,7 +971,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
-          filter(subset %in% c("2020-21")) %>%
           unique() %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
                      color = labels, shape = shape)) +
@@ -1009,27 +995,6 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         
       } else {
 
-        if (investigation_type == "secondary") {
-
-          tidy_forest <- tidy_forest %>%
-            filter(subset %in% c("2017_18", "2018_19", "2020_21"))
-
-        } else if (investigation_type == "sensitivity") {
-
-          if (pathogen == "rsv") {
-
-            tidy_forest <- tidy_forest %>%
-              filter(subset == "2017_18")
-
-          } else if (pathogen == "flu") {
-
-            tidy_forest <- tidy_forest %>%
-              filter(subset == "2018_19")
-
-          }
-
-        }
-        
         tidy_forest %>%
           mutate(
             label = if_else(
@@ -1181,6 +1146,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                     size = 5,
                     family = "serif",
                     tag_pool = my_tag)
+  plot <- plot + theme(plot.title = element_blank())
   
   return(plot)
   
@@ -1360,7 +1326,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     if (nrow(df_model) != 0) {
       
       tidy_forest <- df_model %>%
-        filter(subset %in% c("2017_18", "2018_19", "2020_21", "2023_24")) %>%
         tidy_attach_model(dummy_model) %>%
         tidy_add_reference_rows() %>%
         tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
@@ -1623,36 +1588,24 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       
     }
     
-    if (model_type %in% c(
-      "composition", "ethnicity_composition", "ses_composition", "full")) {
-      
-      # Expand reference rows
-      reference_rows <- tidy_forest %>%
-        filter(reference_row) %>%
-        mutate(subset = c("2020_21"),
-               conf.low = 1,
-               conf.high = 1
-        ) %>%
-        mutate(codelist_type = "reference")
-      
-    } else {
-      
-      # Expand reference rows
-      reference_rows <- tidy_forest %>%
-        filter(reference_row) %>%
-        mutate(rn = row_number()) %>%
-        slice(rep(1:n(), each = 4)) %>%
-        group_by(rn) %>%
-        mutate(
-          subset = c("2017_18", "2018_19", "2020_21", "2023_24"),
-          conf.low = 1,
-          conf.high = 1
-        ) %>%
-        ungroup() %>%
-        select(-rn) %>%
-        mutate(codelist_type = "reference")
-      
-    }
+    all_subsets <- tidy_forest %>%
+      filter(!is.na(subset)) %>%
+      pull(subset) %>%
+      unique()
+
+    # Expand reference rows across every observed year in the data.
+    reference_rows <- tidy_forest %>%
+      filter(reference_row) %>%
+      mutate(rn = row_number()) %>%
+      select(-subset) %>%
+      tidyr::crossing(subset = all_subsets) %>%
+      ungroup() %>%
+      select(-rn) %>%
+      mutate(
+        conf.low = 1,
+        conf.high = 1,
+        codelist_type = "reference"
+      )
     
     if (nrow(df_few) != 0 & model_type %in% c("composition", "ethnicity_composition",
                                               "ses_composition", "full")) {
@@ -1759,7 +1712,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
-          filter(subset %in% c("2020-21", "2023-24")) %>%
           unique() %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
                      color = labels, shape = shape)) +
@@ -1903,7 +1855,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
-          filter(subset %in% c("2020-21", "2023-24")) %>%
           unique() %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
                      color = labels, shape = shape)) +
@@ -2003,57 +1954,14 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     
   }
   
-  if (pathogen == "covid") {
-    my_tag <- c("2020-21", "2023-24")
-  } else {
-    my_tag <- c("2017-18", "2018-19", "2020-21", "2023-24")
-  }
-  
   plot <- process_forest_plot(df_model)
-  
-  dat_ribbon <- plot$data %>%
-    select(variable, label, var_nlevels) %>%
-    unique() %>%
-    mutate(
-      xmin = 0.055,
-      xmax = 10,
-      label = factor(label, levels = levels)
-    ) %>%
-    arrange(label) %>%
-    mutate(
-      yposition = seq_len(n()),
-      ymin = yposition - 0.5,
-      ymax = yposition + 0.5
-    ) %>%
-    # assign a group order based on where each variable first appears in the arranged data
-    mutate(group_id = match(variable, unique(variable))) %>%
-    mutate(fill = if_else(group_id %% 2 == 1, "a", "b"))
-
-  dat_ribbon_long <- dat_ribbon %>%
-    pivot_longer(cols = c(xmin, xmax), values_to = "x",
-                 names_to = "xmin_xmax") %>%
-    select(-xmin_xmax)
-
-  plot <- plot +
-    geom_ribbon(
-      data = dat_ribbon_long,
-      aes(x = x, ymin = ymin, ymax = ymax, group = yposition, fill = fill),
-      inherit.aes = FALSE,
-      alpha = 0.2   # sets transparency for filled areas
-    ) +
-    scale_fill_manual(
-      values = c("a" = "transparent", "b" = "grey50"),
-      guide = "none"   # hide legend if not needed
-    )
-
-  plot <- tag_facet(plot,
-                    x = 0.045, y = Inf,
-                    hjust = -0.4,
-                    open = "", close = "",
-                    fontface = 4,
-                    size = 5,
-                    family = "serif",
-                    tag_pool = my_tag)
+  plot <- forest_over_time_plot(
+    forest_data = plot$data,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type
+  )
+  plot <- plot + theme(plot.title = element_blank())
   
   return(plot)
   

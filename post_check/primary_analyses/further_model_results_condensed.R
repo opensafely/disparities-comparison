@@ -135,37 +135,44 @@ covid_ethnicity_ses_severe <- forest_year_further_mult(
 rsv_plot <- rsv_ethnicity_ses_mild + theme(legend.position = "none",
                                            axis.text.x = element_blank(),
                                            axis.ticks = element_blank(),
-                                           axis.title.x = element_blank())
+                                           axis.title.x = element_blank(),
+                                           strip.text.y = element_blank(),
+                                           strip.background.y = element_blank())
 flu_plot <- flu_ethnicity_ses_mild + theme(legend.position = "none",
-                                           axis.title.x = element_text(size = 12))
+                                           axis.title.x = element_text(size = 12),
+                                           strip.text.y = element_blank(),
+                                           strip.background.y = element_blank())
 covid_plot <- covid_ethnicity_ses_mild + theme(legend.position = "none",
                                                axis.text.x = element_blank(),
                                                axis.ticks = element_blank(),
-                                               axis.title.x = element_blank())
+                                               axis.title.x = element_blank(),
+                                               strip.text.y = element_blank(),
+                                               strip.background.y = element_blank()) +
+  coord_cartesian(xlim = c(2019, 2023)) +
+  scale_x_continuous(
+    breaks = 2019:2023,
+    labels = paste0(2019:2023, "-", stringr::str_sub(as.character(2020:2024), 3, 4))
+  )
 
 # Extract the legend from the original plot
 legend <- get_legend(flu_ethnicity_ses_mild)
 
-# Create the bottom row with legend and COVID plot
-bottom_row <- plot_grid(
-  legend, 
-  covid_plot, 
-  NULL,
-  rel_widths = c(1, 3.15, -0.05), 
-  nrow = 1
-)
+# Build rows on a shared two-column scaffold so widths align.
+rsv_row <- plot_grid(NULL, rsv_plot, ncol = 2, rel_widths = c(0, 5.1), align = "h", axis = "tb")
+flu_row <- plot_grid(NULL, flu_plot, ncol = 2, rel_widths = c(0, 5.1), align = "h", axis = "tb")
+covid_row <- plot_grid(NULL, legend, covid_plot, NULL, ncol = 4, rel_widths = c(0.58, 0.8, 2.6, 0.01), align = "h", axis = "tb")
 
 # Combine all plots
 combined_plot_mild <- plot_grid(
-  rsv_plot,
+  rsv_row,
   NULL,
-  flu_plot,
+  flu_row,
   NULL,
-  bottom_row,
+  covid_row,
   ncol = 1,
   align = 'v',
   axis = 'lr',
-  rel_heights = c(1, -0.035, 1.25, -0.0475, 1.1)
+  rel_heights = c(1, -0.03, 1.25, -0.03, 1.35)
 )
 
 # Add annotations
@@ -182,8 +189,8 @@ ethnicity_ses_mild <- annotate_figure(
 )
 
 ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
-      paste0(cohort, "_mild_ethnicity_ses_further", ".png")),
-      ethnicity_ses_mild, height = 15, width = 15)
+      paste0(cohort, "_mild_ethnicity_ses_further_2", ".png")),
+      ethnicity_ses_mild, height = 18, width = 15)
 
 ##severe
 
@@ -191,37 +198,47 @@ ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
 rsv_plot <- rsv_ethnicity_ses_severe + theme(legend.position = "none",
                                              axis.text.x = element_blank(),
                                              axis.ticks = element_blank(),
-                                             axis.title.x = element_blank())
+                                             axis.title.x = element_blank(),
+                                             axis.title.y = element_blank(),
+                                             axis.text.y = element_blank(),
+                                             axis.ticks.y = element_blank())
 flu_plot <- flu_ethnicity_ses_severe + theme(legend.position = "none",
-                                             axis.title.x = element_text(size = 12))
+                                             axis.title.x = element_text(size = 12),
+                                             axis.title.y = element_blank(),
+                                             axis.text.y = element_blank(),
+                                             axis.ticks.y = element_blank())
 covid_plot <- covid_ethnicity_ses_severe + theme(legend.position = "none",
                                                  axis.text.x = element_blank(),
                                                  axis.ticks = element_blank(),
-                                                 axis.title.x = element_blank())
+                                                 axis.title.x = element_blank(),
+                                                 axis.title.y = element_blank(),
+                                                 axis.text.y = element_blank(),
+                                                 axis.ticks.y = element_blank()) +
+  coord_cartesian(xlim = c(2019, 2023)) +
+  scale_x_continuous(
+    breaks = 2019:2023,
+    labels = paste0(2019:2023, "-", stringr::str_sub(as.character(2020:2024), 3, 4))
+  )
 
 # Extract the legend from the original plot
 legend <- get_legend(flu_ethnicity_ses_severe)
 
-# Create the bottom row with legend and COVID plot
-bottom_row <- plot_grid(
-  legend, 
-  covid_plot,
-  NULL, 
-  rel_widths = c(1, 3.15, -0.05), 
-  nrow = 1
-)
+# Build rows on a shared two-column scaffold so widths align.
+rsv_row <- plot_grid(NULL, rsv_plot, ncol = 2, rel_widths = c(0, 5.1), align = "h", axis = "tb")
+flu_row <- plot_grid(NULL, flu_plot, ncol = 2, rel_widths = c(0, 5.1), align = "h", axis = "tb")
+covid_row <- plot_grid(NULL, legend, covid_plot, NULL, ncol = 4, rel_widths = c(0.38, 0.8, 2.6, 0.01), align = "h", axis = "tb")
 
 # Combine all plots
 combined_plot_severe <- plot_grid(
-  rsv_plot,
+  rsv_row,
   NULL,
-  flu_plot,
+  flu_row,
   NULL,
-  bottom_row,
+  covid_row,
   ncol = 1,
   align = 'v',
   axis = 'lr',
-  rel_heights = c(1, -0.035, 1.25, -0.0475, 1.1)
+  rel_heights = c(1, -0.03, 1.25, -0.03, 1.35)
 )
 
 # Add annotations
@@ -238,42 +255,22 @@ ethnicity_ses_severe <- annotate_figure(
 )
 
 ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
-            paste0(cohort, "_severe_ethnicity_ses_further", ".png")),
-      ethnicity_ses_severe, height = 15, width = 15)
+            paste0(cohort, "_severe_ethnicity_ses_further_2", ".png")),
+      ethnicity_ses_severe, height = 18, width = 15)
 
 #plot mild and severe together
 final_combined <- plot_grid(
-  NULL,
-  plot_grid(
-    annotate_figure(combined_plot_mild, top = text_grob(
-      "Mild Outcomes", hjust = -0.7, vjust = 1.45, size = 12.5, face = "bold")),
-    NULL,
-    annotate_figure(combined_plot_severe, top = text_grob(
-      "Severe Outcomes", hjust = -0.5, vjust = 1.45, size = 12.5, face = "bold")),
-    nrow = 3,
-    rel_heights = c(1, -0.01, 1)
-  ),
-  NULL,
-  ncol = 3,
-  rel_widths = c(-0.075, 1, -0.065)
-) %>%
-  annotate_figure(
-    left = text_grob(c("RSV", "Influenza",
-                       "RSV", "Influenza"), 
-                     x = 1,
-                     y = c(0.8844, 0.74,
-                           0.38685, 0.24305), 
-                     hjust = 0, vjust = -16,
-                     just = "left", face = "bold"),
-    right = text_grob(c("COVID-19", "COVID-19"),
-                      x = 1, y = c(0.5584, 0.061),
-                      hjust = 10, vjust = -16,
-                      just = "left", face = "bold")
-  )
+  annotate_figure(combined_plot_mild, top = text_grob(
+    "Mild Outcomes", hjust = 0.35, vjust = 0.8, size = 10, face = "bold")),
+  annotate_figure(combined_plot_severe, top = text_grob(
+    "Severe Outcomes", hjust = 0.78, vjust = 0.8, size = 10, face = "bold")),
+  ncol = 2,
+  rel_widths = c(1, 1)
+)
 
 ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
-            paste0(cohort, "_all_ethnicity_ses_further", ".png")),
-      final_combined, height = 21, width = 14)
+            paste0(cohort, "_all_ethnicity_ses_further_2", ".png")),
+      final_combined, height = 11.69, width = 8.27)
 
 ##overall respiratory
 pathogen <- "overall_and_all_cause"
@@ -331,7 +328,7 @@ nrow = 2
 )
 
 ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
-          paste0(cohort, "_overall_resp_ethnicity_ses_further", ".png")),
+          paste0(cohort, "_overall_resp_ethnicity_ses_further_2", ".png")),
       final_combined, height = 10, width = 18)
 
 ###--- adults
@@ -1079,37 +1076,44 @@ covid_ethnicity_ses_severe <- forest_year_further_mult(
 rsv_plot <- rsv_ethnicity_ses_mild + theme(legend.position = "none",
                                            axis.text.x = element_blank(),
                                            axis.ticks = element_blank(),
-                                           axis.title.x = element_blank())
+                                           axis.title.x = element_blank(),
+                                           strip.text.y = element_blank(),
+                                           strip.background.y = element_blank())
 flu_plot <- flu_ethnicity_ses_mild + theme(legend.position = "none",
-                                           axis.title.x = element_text(size = 12))
+                                           axis.title.x = element_text(size = 12),
+                                           strip.text.y = element_blank(),
+                                           strip.background.y = element_blank())
 covid_plot <- covid_ethnicity_ses_mild + theme(legend.position = "none",
                                                axis.text.x = element_blank(),
                                                axis.ticks = element_blank(),
-                                               axis.title.x = element_blank())
+                                               axis.title.x = element_blank(),
+                                               strip.text.y = element_blank(),
+                                               strip.background.y = element_blank()) +
+  coord_cartesian(xlim = c(2019, 2023)) +
+  scale_x_continuous(
+    breaks = 2019:2023,
+    labels = paste0(2019:2023, "-", stringr::str_sub(as.character(2020:2024), 3, 4))
+  )
 
 # Extract the legend from the original plot
 legend <- get_legend(flu_ethnicity_ses_mild)
 
-# Create the bottom row with legend and COVID plot
-bottom_row <- plot_grid(
-  legend, 
-  covid_plot, 
-  NULL,
-  rel_widths = c(1, 2.25, -0.025), 
-  nrow = 1
-)
+# Build rows on a shared two-column scaffold so widths align.
+rsv_row <- plot_grid(NULL, rsv_plot, ncol = 2, rel_widths = c(0, 5.1), align = "h", axis = "tb")
+flu_row <- plot_grid(NULL, flu_plot, ncol = 2, rel_widths = c(0, 5.1), align = "h", axis = "tb")
+covid_row <- plot_grid(NULL, legend, covid_plot, NULL, ncol = 4, rel_widths = c(0.58, 0.8, 2.6, 0.01), align = "h", axis = "tb")
 
 # Combine all plots
 combined_plot_mild <- plot_grid(
-  rsv_plot,
+  rsv_row,
   NULL,
-  flu_plot,
+  flu_row,
   NULL,
-  bottom_row,
+  covid_row,
   ncol = 1,
   align = 'v',
   axis = 'lr',
-  rel_heights = c(1, -0.035, 1.25, -0.0475, 1.1)
+  rel_heights = c(1, -0.03, 1.25, -0.03, 1.35)
 )
 
 # Add annotations
@@ -1126,8 +1130,8 @@ ethnicity_ses_mild <- annotate_figure(
 )
 
 ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
-      paste0(cohort, "_mild_ethnicity_ses_further", ".png")),
-      ethnicity_ses_mild, height = 15, width = 15)
+      paste0(cohort, "_mild_ethnicity_ses_further_2", ".png")),
+      ethnicity_ses_mild, height = 18, width = 15)
 
 ##severe
 
@@ -1135,37 +1139,47 @@ ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
 rsv_plot <- rsv_ethnicity_ses_severe + theme(legend.position = "none",
                                              axis.text.x = element_blank(),
                                              axis.ticks = element_blank(),
-                                             axis.title.x = element_blank())
+                                             axis.title.x = element_blank(),
+                                             axis.title.y = element_blank(),
+                                             axis.text.y = element_blank(),
+                                             axis.ticks.y = element_blank())
 flu_plot <- flu_ethnicity_ses_severe + theme(legend.position = "none",
-                                             axis.title.x = element_text(size = 12))
+                                             axis.title.x = element_text(size = 12),
+                                             axis.title.y = element_blank(),
+                                             axis.text.y = element_blank(),
+                                             axis.ticks.y = element_blank())
 covid_plot <- covid_ethnicity_ses_severe + theme(legend.position = "none",
                                                  axis.text.x = element_blank(),
                                                  axis.ticks = element_blank(),
-                                                 axis.title.x = element_blank())
+                                                 axis.title.x = element_blank(),
+                                                 axis.title.y = element_blank(),
+                                                 axis.text.y = element_blank(),
+                                                 axis.ticks.y = element_blank()) +
+  coord_cartesian(xlim = c(2019, 2023)) +
+  scale_x_continuous(
+    breaks = 2019:2023,
+    labels = paste0(2019:2023, "-", stringr::str_sub(as.character(2020:2024), 3, 4))
+  )
 
 # Extract the legend from the original plot
 legend <- get_legend(flu_ethnicity_ses_severe)
 
-# Create the bottom row with legend and COVID plot
-bottom_row <- plot_grid(
-  legend, 
-  covid_plot, 
-  NULL,
-  rel_widths = c(1, 2.25, -0.025), 
-  nrow = 1
-)
+# Build rows on a shared two-column scaffold so widths align.
+rsv_row <- plot_grid(NULL, rsv_plot, ncol = 2, rel_widths = c(0, 5.1), align = "h", axis = "tb")
+flu_row <- plot_grid(NULL, flu_plot, ncol = 2, rel_widths = c(0, 5.1), align = "h", axis = "tb")
+covid_row <- plot_grid(NULL, legend, covid_plot, NULL, ncol = 4, rel_widths = c(0.38, 0.8, 2.6, 0.01), align = "h", axis = "tb")
 
 # Combine all plots
 combined_plot_severe <- plot_grid(
-  rsv_plot,
+  rsv_row,
   NULL,
-  flu_plot,
+  flu_row,
   NULL,
-  bottom_row,
+  covid_row,
   ncol = 1,
   align = 'v',
   axis = 'lr',
-  rel_heights = c(1, -0.035, 1.25, -0.0475, 1.1)
+  rel_heights = c(1, -0.03, 1.25, -0.03, 1.35)
 )
 
 # Add annotations
@@ -1182,42 +1196,21 @@ ethnicity_ses_severe <- annotate_figure(
 )
 
 ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
-            paste0(cohort, "_severe_ethnicity_ses_further", ".png")),
-      ethnicity_ses_severe, height = 15, width = 15)
+            paste0(cohort, "_severe_ethnicity_ses_further_2", ".png")),
+      ethnicity_ses_severe, height = 18, width = 15)
 
-#plot mild and severe together
 final_combined <- plot_grid(
-  NULL,
-  plot_grid(
-    annotate_figure(combined_plot_mild, top = text_grob(
-      "Mild Outcomes", hjust = -0.5, vjust = 1.45, size = 12.5, face = "bold")),
-    NULL,
-    annotate_figure(combined_plot_severe, top = text_grob(
-      "Severe Outcomes", hjust = -0.325, vjust = 1.45, size = 12.5, face = "bold")),
-    nrow = 3,
-    rel_heights = c(1, -0.01, 1)
-  ),
-  NULL,
-  ncol = 3,
-  rel_widths = c(-0.075, 1, -0.065)
-) %>%
-  annotate_figure(
-    left = text_grob(c("RSV", "Influenza",
-                       "RSV", "Influenza"), 
-                     x = 0.35,
-                     y = c(0.8844, 0.74,
-                           0.38685, 0.24305), 
-                     hjust = 0, vjust = -16,
-                     just = "left", face = "bold"),
-    right = text_grob(c("COVID-19", "COVID-19"),
-                      x = 0.8, y = c(0.5584, 0.061),
-                      hjust = 10, vjust = -16,
-                      just = "left", face = "bold")
-  )
+  annotate_figure(combined_plot_mild, top = text_grob(
+    "Mild Outcomes", hjust = 0.35, vjust = 0.8, size = 10, face = "bold")),
+  annotate_figure(combined_plot_severe, top = text_grob(
+    "Severe Outcomes", hjust = 0.78, vjust = 0.8, size = 10, face = "bold")),
+  ncol = 2,
+  rel_widths = c(1, 1)
+)
 
 ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
-            paste0(cohort, "_all_ethnicity_ses_further", ".png")),
-      final_combined, height = 21, width = 14)
+            paste0(cohort, "_all_ethnicity_ses_further_2", ".png")),
+      final_combined, height = 11.69, width = 8.27)
 
 ##overall respiratory
 pathogen <- "overall_and_all_cause"
@@ -1270,10 +1263,10 @@ overall_resp_ethnicity_ses_severe %>%
     bottom = text_grob("Rate Ratio", vjust = -1, hjust = -0.5),
     left = text_grob("Overall Respiratory", vjust = -16.75, hjust = -0.75,
                       just = "left", face = "bold")
-  ),
-nrow = 2
+),
+ncol = 2
 )
 
 ggsave(here("post_check", "plots", "primary_analyses", "condensed_models",
-          paste0(cohort, "_overall_resp_ethnicity_ses_further", ".png")),
+          paste0(cohort, "_overall_resp_ethnicity_ses_further_2", ".png")),
       final_combined, height = 10, width = 18)
