@@ -1154,7 +1154,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
 
 #forest plot combined model results
 forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
-                                     outcome_type) {
+                                     outcome_type, return_data = FALSE) {
   
   pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
                       pathogen)
@@ -1955,11 +1955,18 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   }
   
   plot <- process_forest_plot(df_model)
+  
+  if (isTRUE(return_data)) {
+    return(plot$data %>% mutate(outcome_type = outcome_type))
+  }
+  
   plot <- forest_over_time_plot(
-    forest_data = plot$data,
+    forest_data = plot$data %>% mutate(outcome_type = outcome_type),
     pathogen = pathogen,
     model_type = model_type,
-    outcome_type = outcome_type
+    outcome_type = outcome_type,
+    facet_outcome = FALSE,
+    label_levels = FALSE
   )
   plot <- plot + theme(plot.title = element_blank())
   
