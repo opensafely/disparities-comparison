@@ -1,0 +1,8 @@
+A/B smoke report
+only v1: 0
+only v2: 0
+common: 2540
+different hash: 3
+- results/models/rsv_primary/rsv_ethnicity_model_outputs_older_adults_2016_2017_sensitive_primary.csv
+- results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_older_adults_2016_2017_sensitive_primary.csv
+- results/models/rsv_primary/rsv_ses_model_outputs_older_adults_2016_2017_sensitive_primary.csv
