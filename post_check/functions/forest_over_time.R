@@ -102,7 +102,7 @@ forest_over_time_plot <- function(
   outcome_type = NULL,
   facet_outcome = FALSE,
   label_levels = FALSE,
-  jitter_width = 0.12
+  jitter_width = 0.16
 ) {
   if (is.null(forest_data) || nrow(forest_data) == 0) {
     return(ggplot() + theme_void())
@@ -257,10 +257,60 @@ forest_over_time_plot <- function(
     cols
   }
 
+  # Jitter only when confidence intervals overlap (within group/year/outcome).
+  plot_df <- plot_df %>%
+    mutate(
+      conf.low = as.numeric(conf.low),
+      conf.high = as.numeric(conf.high)
+    ) %>%
+    group_by(labels, year, outcome_type) %>%
+    arrange(conf.low, conf.high, .by_group = TRUE) %>%
+    mutate(
+      # Build non-overlapping "clusters" of intervals by scanning sorted bounds.
+      cluster_id = cumsum(
+        dplyr::if_else(
+          dplyr::row_number() == 1,
+          TRUE,
+          conf.low > dplyr::lag(cummax(conf.high), default = -Inf)
+        )
+      ),
+      cluster_n = dplyr::n(),
+      cluster_size = dplyr::n_distinct(interaction(cluster_id)),
+      # Cluster size per row.
+      cluster_count = dplyr::n(),
+      .after = conf.high
+    ) %>%
+    group_by(labels, year, outcome_type, cluster_id) %>%
+    mutate(
+      cluster_count = dplyr::n(),
+      jitter_this = cluster_count > 1
+    ) %>%
+    ungroup() %>%
+    group_by(labels, year, outcome_type, cluster_id) %>%
+    arrange(shape_key, .by_group = TRUE) %>%
+    mutate(
+      jitter_rank = dplyr::row_number(),
+      jitter_n = dplyr::n(),
+      # Increase jitter span with overlap count.
+      # `span` is the total width occupied by the cluster around the true year.
+      span = dplyr::if_else(
+        jitter_this,
+        pmin(0.9, jitter_width * sqrt(pmax(jitter_n, 1L))),
+        0
+      ),
+      step = dplyr::if_else(jitter_n > 1, span / (jitter_n - 1), 0),
+      x_plot_raw = year + (jitter_rank - (jitter_n + 1) / 2) * step
+    ) %>%
+    mutate(
+      # Clamp to x limits so points can never go off-plot.
+      x_plot = pmin(pmax(x_plot_raw, min(year_breaks) + 0.001), max(year_breaks) - 0.001)
+    ) %>%
+    ungroup()
+
   base_plot <- ggplot(
     plot_df,
     aes(
-      x = year,
+      x = x_plot,
       y = estimate,
       ymin = conf.low,
       ymax = conf.high,
@@ -309,7 +359,11 @@ forest_over_time_plot <- function(
     labs(
       title = NULL,
       x = NULL,
-      y = paste(pathogen_title, "Rate Ratio", sep = " "),
+      y = if (!is.null(outcome_type)) {
+        paste(outcome_type, pathogen_title, "Rate Ratio")
+      } else {
+        paste(pathogen_title, "Rate Ratio")
+      },
       color = "Characteristic",
       shape = "Level"
     ) +
