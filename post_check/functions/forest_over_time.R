@@ -102,7 +102,9 @@ forest_over_time_plot <- function(
   outcome_type = NULL,
   facet_outcome = FALSE,
   label_levels = FALSE,
-  jitter_width = 0.2
+  jitter_width = 0.2,
+  show_ci = TRUE,
+  fixed_axes = FALSE
 ) {
   if (is.null(forest_data) || nrow(forest_data) == 0) {
     return(ggplot() + theme_void())
@@ -152,6 +154,12 @@ forest_over_time_plot <- function(
         levels = c("Reference", "Specific", "Sensitive")
       )
     ) %>%
+    mutate(
+      # "Reference level" rows in the model output are typically encoded as RR=1 with CI=(1,1).
+      # This is distinct from the "reference phenotype" (codelist_type == "reference").
+      is_ref_level = is.finite(estimate) & is.finite(conf.low) & is.finite(conf.high) &
+        abs(estimate - 1) < 1e-10 & abs(conf.low - 1) < 1e-10 & abs(conf.high - 1) < 1e-10
+    ) %>%
     filter(!is.na(year)) %>%
     arrange(characteristic, series, year)
 
@@ -168,6 +176,54 @@ forest_over_time_plot <- function(
   # For COVID-19 plots, only show years from 2019-20 onwards.
   year_breaks <- if (identical(pathogen, "covid")) 2019:2023 else 2016:2023
   x_breaks <- year_breaks
+
+  # Add reference-level placeholders only for *missing seasons*.
+  # Also drop reference-level rows from observed seasons to avoid clutter
+  # (otherwise every year shows a row of RR=1 points).
+  ref_level_template <- plot_df %>%
+    filter(is_ref_level) %>%
+    distinct(labels, outcome_type, variable, label, codelist_type, col, characteristic, characteristic_base)
+
+  plot_df <- plot_df %>% filter(!is_ref_level)
+
+  if (nrow(ref_level_template) > 0) {
+    years_present <- plot_df %>%
+      distinct(labels, outcome_type, year) %>%
+      group_by(labels, outcome_type) %>%
+      summarise(
+        year_min = min(year, na.rm = TRUE),
+        year_max = max(year, na.rm = TRUE),
+        years_present = list(sort(unique(year))),
+        .groups = "drop"
+      ) %>%
+      mutate(
+        inrange_years = purrr::map2(year_min, year_max, ~ year_breaks[year_breaks >= .x & year_breaks <= .y]),
+        missing_years = purrr::map2(inrange_years, years_present, ~ setdiff(.x, .y))
+      ) %>%
+      select(labels, outcome_type, missing_years) %>%
+      tidyr::unnest(missing_years, keep_empty = FALSE) %>%
+      rename(year = missing_years)
+
+    if (nrow(years_present) > 0) {
+      ref_dummy <- ref_level_template %>%
+        inner_join(years_present, by = c("labels", "outcome_type")) %>%
+        mutate(
+          subset = paste0(year, "-", stringr::str_sub(as.character(year + 1L), 3, 4)),
+          estimate = 1,
+          conf.low = 1,
+          conf.high = 1,
+          is_ref_level = TRUE,
+          std.error = NA_real_,
+          statistic = NA_real_,
+          p.value = NA_real_,
+          term = NA_character_,
+          model_name = NA_character_,
+          investigation_type = NA_character_
+        )
+
+      plot_df <- bind_rows(plot_df, ref_dummy)
+    }
+  }
 
   reference_lines <- plot_df %>%
     distinct(characteristic_base, labels, col, outcome_type) %>%
@@ -218,7 +274,7 @@ forest_over_time_plot <- function(
   # Use a small, distinguishable set (includes open square = 0).
   shape_pool <- c(15, 17, 18, 0, 2, 5, 6, 22, 23, 24, 25)
   max_nonref <- plot_df %>%
-    mutate(is_ref = tolower(as.character(codelist_type)) == "reference") %>%
+    mutate(is_ref = is_ref_level) %>%
     distinct(labels, label, is_ref) %>%
     group_by(labels) %>%
     summarise(n_nonref = sum(!is_ref), .groups = "drop") %>%
@@ -229,7 +285,7 @@ forest_over_time_plot <- function(
   }
 
   shape_key_df <- plot_df %>%
-    mutate(is_ref = tolower(as.character(codelist_type)) == "reference") %>%
+    mutate(is_ref = is_ref_level) %>%
     distinct(labels, label, is_ref) %>%
     arrange(labels, label) %>%
     group_by(labels) %>%
@@ -284,6 +340,19 @@ forest_over_time_plot <- function(
       color = labels
     )
   ) +
+    geom_rect(
+      data = tibble::tibble(year_band = c(2020, 2021)) %>%
+        dplyr::filter(year_band %in% x_breaks),
+      aes(
+        xmin = year_band - 0.5,
+        xmax = year_band + 0.5,
+        ymin = -Inf,
+        ymax = Inf
+      ),
+      inherit.aes = FALSE,
+      fill = "grey90",
+      alpha = 0.35
+    ) +
     geom_hline(
       data = reference_lines,
       aes(yintercept = yintercept, color = labels),
@@ -292,14 +361,25 @@ forest_over_time_plot <- function(
       linewidth = 0.4,
       alpha = 0.8
     ) +
-    geom_pointrange(
-      aes(shape = shape_key),
-      alpha = 0.8,
-      linewidth = 0.35,
-      fatten = 2.4,
-      na.rm = TRUE,
-      position = position_identity()
-    ) +
+    {
+      if (isTRUE(show_ci)) {
+        geom_pointrange(
+          aes(shape = shape_key),
+          alpha = 0.8,
+          linewidth = 0.35,
+          fatten = 2.4,
+          na.rm = TRUE,
+          position = position_identity()
+        )
+      } else {
+        geom_point(
+          aes(shape = shape_key),
+          alpha = 0.85,
+          size = 1.6,
+          na.rm = TRUE
+        )
+      }
+    } +
     scale_x_continuous(
       breaks = x_breaks,
       labels = paste0(x_breaks, "-", stringr::str_sub(as.character(x_breaks + 1), 3, 4)),
@@ -307,20 +387,44 @@ forest_over_time_plot <- function(
       #limits = c(min(year_breaks) - 0.6, max(year_breaks) + 0.6),
       expand = expansion(mult = c(0.08, 0.08))
     ) +
-    scale_y_log10(
-      breaks = function(x) {
-        rng <- range(x, finite = TRUE, na.rm = TRUE)
-        if (!is.finite(rng[1]) || !is.finite(rng[2])) return(numeric(0))
-        if (rng[1] <= 0) {
-          pos <- x[is.finite(x) & x > 0]
-          if (length(pos) == 0) return(numeric(0))
-          rng[1] <- min(pos)
+    {
+      if (isTRUE(fixed_axes)) {
+        # Enforce consistent tick labels across facets for "test_models".
+        fixed_breaks <- c(0.1, 0.5, 2, 10)
+
+        vals <- if (isTRUE(show_ci)) {
+          c(plot_df$estimate, plot_df$conf.low, plot_df$conf.high)
+        } else {
+          c(plot_df$estimate)
         }
-        if (rng[1] == rng[2]) return(rng[1])
-        seq(rng[1], rng[2], length.out = 3)
-      },
-      labels = scales::label_number(accuracy = 0.1)
-    ) +
+        vals <- vals[is.finite(vals) & vals > 0]
+        if (length(vals) == 0) vals <- fixed_breaks
+
+        # Expand limits so the fixed breaks always render.
+        lims <- range(c(vals, fixed_breaks))
+
+        scale_y_log10(
+          limits = lims,
+          breaks = fixed_breaks,
+          labels = scales::label_number(accuracy = 0.1)
+        )
+      } else {
+        scale_y_log10(
+          breaks = function(x) {
+            rng <- range(x, finite = TRUE, na.rm = TRUE)
+            if (!is.finite(rng[1]) || !is.finite(rng[2])) return(numeric(0))
+            if (rng[1] <= 0) {
+              pos <- x[is.finite(x) & x > 0]
+              if (length(pos) == 0) return(numeric(0))
+              rng[1] <- min(pos)
+            }
+            if (rng[1] == rng[2]) return(rng[1])
+            seq(rng[1], rng[2], length.out = 3)
+          },
+          labels = scales::label_number(accuracy = 0.1)
+        )
+      }
+    } +
     scale_color_manual(values = colour_map, drop = FALSE) +
     scale_shape_manual(values = shape_map, labels = shape_labels, drop = FALSE) +
     labs(
@@ -359,11 +463,12 @@ forest_over_time_plot <- function(
       )
     )
 
+  facet_scales <- if (isTRUE(fixed_axes)) "fixed" else "free_y"
   if (facet_outcome) {
     if (requireNamespace("ggh4x", quietly = TRUE)) {
       base_plot <- base_plot + ggh4x::facet_grid2(
         labels ~ outcome_type,
-        scales = "free_y",
+        scales = facet_scales,
         space = "fixed",
         axes = "y",
         labeller = labeller(labels = label_wrap_gen(width = 14))
@@ -371,7 +476,7 @@ forest_over_time_plot <- function(
     } else {
       base_plot <- base_plot + facet_grid(
         labels ~ outcome_type,
-        scales = "free_y",
+        scales = facet_scales,
         space = "fixed",
         labeller = labeller(labels = label_wrap_gen(width = 14))
       )
@@ -380,7 +485,7 @@ forest_over_time_plot <- function(
     if (requireNamespace("ggh4x", quietly = TRUE)) {
       base_plot <- base_plot + ggh4x::facet_grid2(
         labels ~ .,
-        scales = "free_y",
+        scales = facet_scales,
         space = "fixed",
         axes = "y",
         labeller = labeller(labels = label_wrap_gen(width = 14))
@@ -388,7 +493,7 @@ forest_over_time_plot <- function(
     } else {
       base_plot <- base_plot + facet_grid(
         labels ~ .,
-        scales = "free_y",
+        scales = facet_scales,
         space = "fixed",
         labeller = labeller(labels = label_wrap_gen(width = 14))
       )

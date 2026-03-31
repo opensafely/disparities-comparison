@@ -95,13 +95,22 @@ export_virus_mild_severe_plot <- function(cohort, pathogen, model_type, codelist
 
   if (is.null(dat) || nrow(dat) == 0) return(invisible(NULL))
 
+  # Match facet row height to the BASE test-model plots.
+  # Base exports are saved at height = 7.2 and typically show 4 facet rows
+  # (Sex, Age Group, Ethnicity, IMD Quintile).
+  base_height <- 7.2
+  base_rows <- 4L
+  facet_rows <- dplyr::n_distinct(dat$labels)
+  out_height <- base_height * (facet_rows / base_rows)
+
   # Mild/Severe in one plot (columns), with a single legend.
   p <- forest_over_time_plot(
     dat,
     pathogen = pathogen,
     model_type = model_type,
     facet_outcome = TRUE,
-    label_levels = FALSE
+    label_levels = FALSE,
+    fixed_axes = TRUE
   )
   # For test exports, keep COVID facet columns tight (no extra gap).
   if (identical(pathogen, "covid")) {
@@ -124,13 +133,13 @@ export_virus_mild_severe_plot <- function(cohort, pathogen, model_type, codelist
     filename = here::here(out_dir, fname),
     plot = p,
     width = 8.27,
-    height = 7.2
+    height = out_height
   )
 }
 
 # Driver: iterate all cohorts/pathogens/codelists and export test plots.
 run_test_models <- function(model_type = "ethnicity_ses") {
-  out_dir <- here::here("post_check", "plots", "primary_analyses", "test_models")
+  out_dir <- here::here("post_check", "plots", "primary_analyses", "condensed_models", "test_models")
   dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
   cohorts <- c("older_adults", "adults", "children_and_adolescents", "infants")

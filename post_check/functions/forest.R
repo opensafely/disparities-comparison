@@ -14,7 +14,7 @@ options(scipen = 999)
 
 #create function to filter collated results to models wanted and then plot
 forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
-                   further = "no") {
+                   further = "no", ...) {
 
   pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
                       pathogen)
@@ -1102,53 +1102,25 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
   }
   
   plot <- process_forest_plot(df_model)
-  
-  dat_ribbon <- plot$data %>%
-    select(variable, label, var_nlevels) %>%
-    unique() %>%
-    mutate(
-      xmin = 0.055,
-      xmax = 10,
-      label = factor(label, levels = levels)
-    ) %>%
-    arrange(label) %>%
-    mutate(
-      yposition = seq_len(n()),
-      ymin = yposition - 0.5,
-      ymax = yposition + 0.5
-    ) %>%
-    # assign a group order based on where each variable first appears in the arranged data
-    mutate(group_id = match(variable, unique(variable))) %>%
-    mutate(fill = if_else(group_id %% 2 == 1, "a", "b"))
-  
-  dat_ribbon_long <- dat_ribbon %>%
-    pivot_longer(cols = c(xmin, xmax), values_to = "x",
-                 names_to = "xmin_xmax") %>%
-    select(-xmin_xmax)
 
-  plot <- plot +
-    geom_ribbon(
-      data = dat_ribbon_long,
-      aes(x = x, ymin = ymin, ymax = ymax, group = yposition, fill = fill),
-      inherit.aes = FALSE,
-      alpha = 0.2   # sets transparency for filled areas
-    ) +
-    scale_fill_manual(
-      values = c("a" = "transparent", "b" = "grey50"),
-      guide = "none"   # hide legend if not needed
-    )
+  # Apply the shared "over time" plotting style to `forest()` too.
+  # We reuse the already-prepared ggplot data created in `process_forest_plot()`.
+  forest_data <- plot$data
+  if (is.null(forest_data) || nrow(forest_data) == 0) {
+    return(plot + theme(plot.title = element_blank()))
+  }
 
-  plot <- tag_facet(plot,
-                    x = 0.045, y = Inf,
-                    hjust = -0.4,
-                    open = "", close = "",
-                    fontface = 4,
-                    size = 5,
-                    family = "serif",
-                    tag_pool = my_tag)
-  plot <- plot + theme(plot.title = element_blank())
-  
-  return(plot)
+  plot_ot <- forest_over_time_plot(
+    forest_data = forest_data,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type,
+    facet_outcome = FALSE,
+    label_levels = FALSE,
+    ...
+  )
+
+  return(plot_ot)
   
   }
 
