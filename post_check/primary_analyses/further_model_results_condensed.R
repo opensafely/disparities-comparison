@@ -9,6 +9,11 @@
   library(patchwork)
   library(ggpubr)
 
+  # Prevent accidental base-graphics output from creating `Rplots.pdf` when running via Rscript.
+  # (ggsave() uses its own device, so this won't affect saved figures.)
+  grDevices::pdf(file = NULL)
+  on.exit(grDevices::dev.off(), add = TRUE)
+
   #import plot function
   source(here::here("post_check", "functions", "forest.R"))
   ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
@@ -64,9 +69,9 @@
     # Single column titles (once per page).
     if (requireNamespace("cowplot", quietly = TRUE)) {
       combined <- cowplot::ggdraw(combined) +
-        cowplot::draw_label("Mild", x = 0.275, y = 1, hjust = 0.5, vjust = 1.5,
+        cowplot::draw_label("A. Mild", x = 0.275, y = 1, hjust = 0.5, vjust = 1.5,
                             fontface = "bold", size = 9) +
-        cowplot::draw_label("Severe", x = 0.74, y = 1, hjust = 0.5, vjust = 1.5,
+        cowplot::draw_label("B. Severe", x = 0.74, y = 1, hjust = 0.5, vjust = 1.5,
                             fontface = "bold", size = 9)
     }
 
@@ -145,26 +150,59 @@
     groups_mid <- group_order[(split_idx + 1):length(group_order)]
     groups_mid <- groups_mid[!is.na(groups_mid)]
 
+    # Rurality always appears in the right-hand "flu" legend block (with other non-vax flu groups),
+    # not in the left column — avoids splitting rurality away from the rest of the flu legend.
+    groups_left_legend <- setdiff(groups_left, "Rurality")
+
     shared_legend_left <- get_legend({
       forest_over_time_plot(
-        legend_dat %>% filter(as.character(labels) %in% groups_left),
+        legend_dat %>% filter(as.character(labels) %in% groups_left_legend),
         pathogen = "flu",
         model_type = model_type,
         facet_outcome = TRUE,
-        label_levels = FALSE
+        label_levels = FALSE,
+        show_disruption_legend = FALSE
       ) +
         theme(legend.position = "left")
     })
 
-    shared_legend_mid <- if (length(groups_mid) > 0) get_legend({
-      legend_dat <- bind_rows(
-        forest_year_further_mult(df_input_flu, df_dummy_flu, "flu", model_type, "Mild", return_data = TRUE),
-        forest_year_further_mult(df_input_flu, df_dummy_flu, "flu", model_type, "Severe", return_data = TRUE)
-      ) %>% 
-        filter(codelist_type %in% c("reference", "specific"), as.character(labels) %in% groups_mid)
-      forest_over_time_plot(legend_dat, pathogen = "flu", model_type = model_type, facet_outcome = TRUE, label_levels = FALSE) +
-        theme(legend.position = "left")
-    }) else NULL
+    shared_legend_mid <- if (length(groups_mid) > 0) {
+      # Build the entire right-hand legend as ONE legend object so its internal
+      # alignment is handled by ggplot, not by stacking multiple grobs.
+      vax_groups <- c("Prior Vaccination", "Current Vaccination")
+
+      covid_vax_src <- bind_rows(
+        forest_year_further_mult(df_input_covid, df_dummy_covid, "covid", model_type, "Mild", return_data = TRUE),
+        forest_year_further_mult(df_input_covid, df_dummy_covid, "covid", model_type, "Severe", return_data = TRUE)
+      ) %>%
+        filter(
+          codelist_type %in% c("reference", "specific"),
+          as.character(labels) %in% intersect(vax_groups, groups_mid)
+        )
+
+      legend_dat_right <- bind_rows(
+        # Keep non-vaccination groups (and flu prior vaccination), but avoid duplicating
+        # current-vaccination entries which are sourced from COVID data below.
+        legend_dat %>%
+          filter(
+            as.character(labels) %in% groups_mid,
+            as.character(labels) != "Current Vaccination"
+          ),
+        covid_vax_src
+      )
+
+      get_legend({
+        forest_over_time_plot(
+          legend_dat_right,
+          pathogen = "flu",
+          model_type = model_type,
+          facet_outcome = TRUE,
+          label_levels = FALSE,
+          show_disruption_legend = TRUE
+        ) +
+          theme(legend.position = "left", legend.title = element_blank())
+      })
+    } else NULL
     
     specific_condensed <- assemble_condensed(rsv_plots$specific, flu_plots$specific, covid_plots$specific, shared_legend_left, shared_legend_mid)
     sensitive_condensed <- assemble_condensed(rsv_plots$sensitive, flu_plots$sensitive, covid_plots$sensitive, shared_legend_left, shared_legend_mid)

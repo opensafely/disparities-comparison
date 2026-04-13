@@ -583,16 +583,11 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
 
-    if (further == "yes") {
-      vacc_prev <- vacc_prev
-    } else {
-      vacc_prev <- "NONE"
-    }
-    
     cols2 <- tibble(
       variable = c("sex", "age_band", "latest_ethnicity_group", "imd_quintile",
                    "composition_category", "rurality_classification",
-                   vacc_prev, "vax_status", "flu_vaccination",
+                   "prior_flu_vaccination", "time_since_last_covid_vaccination",
+                   "vax_status", "flu_vaccination",
                    "covid_vaccination", "maternal_age", "maternal_smoking_status",
                    "smoking_status", "binary_variables", "maternal_drinking",
                    "maternal_drug_usage", "maternal_flu_vaccination",
@@ -603,7 +598,9 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                    "has_cancer", "immunosuppressed", "has_sickle_cell",
                    "hazardous_drinking", "drug_usage"),
       col = c('#1f77b4', '#ffbb78', '#2ca02c', '#ff9896',
-              '#aec7e8', '#ff7f0e', '#98df8a',
+              '#aec7e8', '#ff7f0e',
+              '#66C2A4',  # Prior vaccination (flu)
+              '#98DF8A',  # Prior vaccination (COVID) - original green
               '#d62728', '#d62728',
               '#d62728', '#9467bd',
               '#c49c94', '#9467bd', '#4e3f2c',
@@ -618,6 +615,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               '#8c564b', '#e377c2'),
       labels = c("Sex", "Age Group", "Ethnicity", "IMD Quintile",
                  "Household Composition", "Rurality", "Prior Vaccination",
+                 "Prior Vaccination",
                  "Current Vaccination", "Current Vaccination",
                  "Current Vaccination", "Age",
                  "Maternal Smoking Status", "Smoking Status", "Binary Variables",

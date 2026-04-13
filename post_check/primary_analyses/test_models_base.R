@@ -64,8 +64,11 @@ run_test_models_base <- function(model_type = "ethnicity_ses") {
         )
 
         leg <- cowplot::get_legend(mild_full + theme(legend.position = "right"))
-        mild <- mild_full + theme(legend.position = "none")
-        severe <- severe_full + theme(legend.position = "none")
+        mild <- mild_full +
+          theme(legend.position = "none")
+        severe <- severe_full +
+          labs(y = NULL) +
+          theme(legend.position = "none", axis.title.y = element_blank())
 
         combined <- cowplot::plot_grid(mild, severe, ncol = 2, align = "h", axis = "tb")
         final <- cowplot::plot_grid(combined, leg, ncol = 2, rel_widths = c(5.1, 0.9), align = "h", axis = "tb")
