@@ -17,9 +17,12 @@ population_size <- 100000
 
 #define index date and study start date
 source(here::here("analysis", "design", "design.R"))
-study_start_date <- as.Date(study_dates$season1_start_date) #change depending on season you want data for 
-study_end_date <- as.Date(study_dates$season1_end_date) #change depending on season you want data for
-index_date <- study_start_date
+if (!exists("study_start_date", inherits = FALSE) || !exists("study_end_date", inherits = FALSE)) {
+  if (!exists("season_id", inherits = FALSE)) season_id <- 1
+  study_start_date <- as.Date(study_dates[[paste0("season", season_id, "_start_date")]])
+  study_end_date <- as.Date(study_dates[[paste0("season", season_id, "_end_date")]])
+}
+index_date <- as.Date(study_start_date)
 
 #define index day and study start day
 index_day <- 0L
@@ -558,6 +561,15 @@ dummydata$patient_end_day <- study_end_day
 dummydata_processed <- dummydata %>%
   mutate(across(ends_with("_day"), ~ as.Date(as.character(index_date + .)))) %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
+
+# add validation bucket date
+dummydata_processed <- dummydata_processed %>%
+  mutate(
+    bucket_date = {
+      x <- pmin(rsv_primary_date, flu_primary_date, covid_primary_date, overall_resp_primary_date, na.rm = TRUE)
+      if_else(is.infinite(as.numeric(x)), as.Date(NA), x)
+    }
+  )
 
 dummydata_processed <- dummydata_processed %>%
   mutate(mother_id_present = if_else(is.na(mother_id), FALSE, TRUE))
