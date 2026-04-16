@@ -238,9 +238,8 @@ dataset.latest_ethnicity_group = (
   .to_category(codelists.ethnicity_codes)
 )
 
-#extract HES ethnicity to supplement ethnicity recording for infants
-if cohort == "infants" or cohort == "infants_subgroup" :
-  dataset.latest_ethnicity_group_hes = ethnicity_from_sus.code
+#extract HES ethnicity to supplement ethnicity recording
+dataset.latest_ethnicity_group_hes = ethnicity_from_sus.code
 
 #extract patients IMD rank
 dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
@@ -2328,6 +2327,275 @@ else :
       dataset.overall_resp_los_second = (
         diff_dates_hours(dataset.overall_resp_secondary_second_date, overall_resp_secondary_discharge_second)
       )
+
+
+#-- BUCKET FOR VALIDATION
+
+## date for validation bucketing
+# Use the *full* sensitive phenotype logic for RSV/flu/COVID (including cohort-specific
+# branches), but write results into local variables (not `dataset.*`, which depends on
+# `codelist_type`).
+
+## RSV (sensitive) primary date
+rsv_bucket_codes_date, rsv_bucket_code = (
+  get_codes_dates("rsv_sensitive_codelist", 4, index_date, 2)
+)
+
+rsv_bucket_med_date = (
+  prescribing_events.where(prescribing_events.dmd_code.is_in(codelists.rsv_prescriptions_codelist))
+  .date.minimum_for_patient()
+)
+
+rsv_bucket_exclusion_primary = (case(
+  when(
+    is_gp_event(codelists.rsv_primary_exclusion_codelist)
+    .where(gp_events.date.is_on_or_between(rsv_bucket_codes_date - days(30), rsv_bucket_codes_date + days(30)))
+    .exists_for_patient()
+  )
+  .then(True),
+  when(
+    is_gp_event(codelists.rsv_primary_exclusion_codelist)
+    .where(gp_events.date.is_on_or_between(rsv_bucket_med_date - days(30), rsv_bucket_med_date + days(30)))
+    .exists_for_patient()
+  )
+  .then(True),
+  otherwise = False)
+)
+
+rsv_bucket_med_inclusion_date = (case(
+  when(
+    is_gp_event(codelists.rsv_sensitive_codelist)
+    .where(gp_events.date.is_on_or_between(rsv_bucket_med_date - days(14), rsv_bucket_med_date + days(14)))
+    .exists_for_patient()
+  )
+  .then(
+    minimum_of(
+      (is_gp_event(codelists.rsv_sensitive_codelist)
+        .where(gp_events.date.is_on_or_between(rsv_bucket_med_date - days(14), rsv_bucket_med_date + days(14)))
+        .sort_by(gp_events.date).first_for_patient().date),
+      (rsv_bucket_med_date)
+    )
+  ),
+  otherwise = None)
+)
+
+if cohort == "infants" or cohort == "infants_subgroup":
+  rsv_bucket_primary_spec = (
+    minimum_of(
+      (first_gp_event(codelists.rsv_primary_codelist).date),
+      (emergency_care_diagnosis_matches(codelists.bronchiolitis_attendance)
+        .arrival_date.minimum_for_patient())
+    )
+  )
+
+  rsv_bucket_primary_date = (case(
+    when(rsv_bucket_primary_spec.is_not_null())
+    .then(rsv_bucket_primary_spec),
+    when((rsv_bucket_primary_spec.is_null()) & (~rsv_bucket_exclusion_primary))
+    .then(
+      minimum_of(
+        (rsv_bucket_codes_date),
+        (rsv_bucket_med_inclusion_date),
+        (emergency_care_diagnosis_matches(codelists.bronchiolitis_attendance)
+          .arrival_date.minimum_for_patient()),
+        (emergency_care_diagnosis_matches(codelists.wheeze_attendance)
+          .arrival_date.minimum_for_patient())
+      )
+    ),
+    otherwise = None)
+  )
+else:
+  rsv_bucket_primary_spec = (
+    first_gp_event(codelists.rsv_primary_codelist).date
+  )
+
+  rsv_bucket_primary_date = (case(
+    when(rsv_bucket_primary_spec.is_not_null())
+    .then(rsv_bucket_primary_spec),
+    when((rsv_bucket_primary_spec.is_null()) & (~rsv_bucket_exclusion_primary))
+    .then(minimum_of(rsv_bucket_codes_date, rsv_bucket_med_inclusion_date)),
+    otherwise = None)
+  )
+
+## Flu (sensitive) primary date
+ari_bucket_dates = (
+  get_codes_dates("ari_primary_codelist", 4, index_date, 1)
+)
+fever_bucket_dates = (
+  get_codes_dates("fever_codelist", 4, index_date, 1)
+)
+
+ILI_bucket_pairs = []
+ILI_bucket_date_cases = []
+
+for ari_date in ari_bucket_dates:
+  for fever_date in fever_bucket_dates:
+    close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
+    ILI_bucket_pairs.append(when(close_in_time).then(True))
+    ILI_bucket_date_cases.append(
+      when(close_in_time).then(minimum_of(ari_date, fever_date))
+    )
+
+ILI_bucket_case = case(*ILI_bucket_pairs, otherwise = False)
+ILI_bucket_date = case(*ILI_bucket_date_cases, otherwise = None)
+
+flu_bucket_med_date = (
+  prescribing_events.where(prescribing_events.dmd_code.is_in(codelists.flu_prescriptions_codelist))
+  .date.minimum_for_patient()
+)
+
+flu_bucket_exclusion_primary = (case(
+  when(
+    is_gp_event(codelists.flu_primary_exclusion_codelist)
+    .where(gp_events.date.is_on_or_between(ILI_bucket_date - days(30), ILI_bucket_date + days(30)))
+    .exists_for_patient()
+  )
+  .then(True),
+  when(
+    is_gp_event(codelists.flu_primary_exclusion_codelist)
+    .where(gp_events.date.is_on_or_between(flu_bucket_med_date - days(30), flu_bucket_med_date + days(30)))
+    .exists_for_patient()
+  )
+  .then(True),
+  otherwise = False)
+)
+
+flu_bucket_primary_spec = (
+  first_gp_event(codelists.flu_primary_codelist).date
+)
+
+flu_bucket_primary_date = (case(
+  when(flu_bucket_primary_spec.is_not_null())
+  .then(flu_bucket_primary_spec),
+  when((flu_bucket_primary_spec.is_null()) & (~flu_bucket_exclusion_primary))
+  .then(minimum_of(ILI_bucket_date, flu_bucket_med_date)),
+  otherwise = None)
+)
+
+## COVID-19 (sensitive) primary date
+if study_start_date >= covid_season_min:
+  covid_bucket_codes_date, covid_bucket_code = (
+    get_codes_dates("covid_sensitive_codelist", 4, index_date, 2)
+  )
+
+  covid_bucket_med_date = (
+    prescribing_events.where(prescribing_events.dmd_code.is_in(codelists.covid_prescriptions_codelist))
+    .date.minimum_for_patient()
+  )
+
+  covid_bucket_exclusion_primary = (case(
+    when(
+      is_gp_event(codelists.covid_primary_exclusion_codelist)
+      .where(gp_events.date.is_on_or_between(covid_bucket_codes_date - days(30), covid_bucket_codes_date + days(30)))
+      .exists_for_patient()
+    )
+    .then(True),
+    when(
+      is_gp_event(codelists.covid_primary_exclusion_codelist)
+      .where(gp_events.date.is_on_or_between(covid_bucket_med_date - days(30), covid_bucket_med_date + days(30)))
+      .exists_for_patient()
+    )
+    .then(True),
+    otherwise = False)
+  )
+
+  covid_bucket_primary_spec = (
+    first_gp_event(codelists.covid_primary_codelist).date
+  )
+
+  covid_bucket_primary_date = (case(
+    when(covid_bucket_primary_spec.is_not_null())
+    .then(covid_bucket_primary_spec),
+    when((covid_bucket_primary_spec.is_null()) & (~covid_bucket_exclusion_primary))
+    .then(minimum_of(covid_bucket_codes_date, covid_bucket_med_date)),
+    otherwise = None)
+  )
+else:
+  covid_bucket_primary_date = None
+
+# exclusion criteria
+bucket_codes_date, bucket_code = (
+  get_codes_dates("respiratory_virus_primary_codelist", 4, index_date, 2)
+)
+bucket_exclusion = (case(
+    when(
+      is_gp_event(codelists.respiratory_virus_primary_exclusion_codelist)
+      .where(gp_events.date.is_on_or_between(bucket_codes_date - days(30), bucket_codes_date + days(30)))
+      .exists_for_patient()
+    )
+    .then(True),
+    otherwise = False)
+  )
+
+## Combine (plus overall respiratory fallback)
+if study_start_date >= covid_season_min :
+  if cohort == "older_adults":
+    dataset.bucket_date = (case(
+      when((rsv_bucket_primary_date.is_not_null())|(flu_bucket_primary_date.is_not_null())|(covid_bucket_primary_date.is_not_null()))
+      .then(minimum_of(rsv_bucket_primary_date, flu_bucket_primary_date, covid_bucket_primary_date)),
+      when((rsv_bucket_primary_date.is_null()) & (flu_bucket_primary_date.is_null()) & (covid_bucket_primary_date.is_null()) & (~bucket_exclusion))
+      .then(
+        minimum_of(
+          (emergency_care_diagnosis_matches(codelists.rtri_attendance)
+            .arrival_date.minimum_for_patient()),
+          (emergency_care_diagnosis_matches(codelists.copd_exacerbation_attendance)
+            .arrival_date.minimum_for_patient()),
+          (first_gp_event(codelists.copd_exacerbation_primary_codelist).date),
+          (first_gp_event(codelists.asthma_exacerbation_primary_codelist).date)
+        )
+      ),
+      otherwise = None)
+    )
+  else:
+    dataset.bucket_date = (case(
+      when((rsv_bucket_primary_date.is_not_null())|(flu_bucket_primary_date.is_not_null())|(covid_bucket_primary_date.is_not_null()))
+      .then(minimum_of(rsv_bucket_primary_date, flu_bucket_primary_date, covid_bucket_primary_date)),
+      when((rsv_bucket_primary_date.is_null()) & (flu_bucket_primary_date.is_null()) & (covid_bucket_primary_date.is_null()) & (~bucket_exclusion))
+      .then(
+        minimum_of(
+          (first_gp_event(codelists.respiratory_virus_primary_codelist).date),
+          (emergency_care_diagnosis_matches(codelists.rtri_attendance)
+            .arrival_date.minimum_for_patient())
+        )
+      ),
+      otherwise = None)
+    )
+else :
+  if cohort == "older_adults":
+    dataset.bucket_date = (case(
+      when((rsv_bucket_primary_date.is_not_null())|(flu_bucket_primary_date.is_not_null()))
+      .then(minimum_of(rsv_bucket_primary_date, flu_bucket_primary_date)),
+      when((rsv_bucket_primary_date.is_null()) & (flu_bucket_primary_date.is_null()) & (~bucket_exclusion))
+      .then(
+        minimum_of(
+          (first_gp_event(codelists.respiratory_virus_primary_codelist).date),
+          (emergency_care_diagnosis_matches(codelists.rtri_attendance)
+            .where(emergency_events.arrival_date.is_on_or_between(index_date, followup_end_date))
+            .arrival_date.minimum_for_patient()),
+          (emergency_care_diagnosis_matches(codelists.copd_exacerbation_attendance)
+            .where(emergency_events.arrival_date.is_on_or_between(index_date, followup_end_date))
+            .arrival_date.minimum_for_patient()),
+          (bucket_codes_date),
+          (first_gp_event(codelists.copd_exacerbation_primary_codelist).date),
+          (first_gp_event(codelists.asthma_exacerbation_primary_codelist).date)
+        )
+      ),
+      otherwise = None)
+    )
+  else:
+    dataset.bucket_date = (case(
+      when((rsv_bucket_primary_date.is_not_null())|(flu_bucket_primary_date.is_not_null()))
+      .then(minimum_of(rsv_bucket_primary_date, flu_bucket_primary_date)),
+      when((rsv_bucket_primary_date.is_null()) & (flu_bucket_primary_date.is_null()) & (~bucket_exclusion))
+      .then(
+        minimum_of(
+          (first_gp_event(codelists.respiratory_virus_primary_codelist).date),
+          (emergency_care_diagnosis_matches(codelists.rtri_attendance)
+            .arrival_date.minimum_for_patient())
+        )
+      ),
+      otherwise = None)
+    )
 
 ## comorbidities for secondary investigation 
 
