@@ -28,16 +28,4 @@ analysis/old_model_files/*
 /post_check/supplemental/table1/*
 /post_check/supplemental/outcome_overlap/*
 
-# A/B smoke tests (keep reports, ignore snapshots)
-/smoke_ab/v1/
-/smoke_ab/v2/
-!/smoke_ab/reports/
-!/smoke_ab/reports/**
-
-# Local smoke-test backup file
-project.yaml.smoke_backup
-!reformat_table1.R
-!reformat_outcome_overlap.R
-!dashboard.qmd
-!_quarto.yml
-!.gitignore
+/smoke_ab/*
