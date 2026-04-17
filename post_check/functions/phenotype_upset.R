@@ -300,7 +300,7 @@ upset_plot <- function(input, seasons) {
             labels = c("RSV", "Influenza", "COVID-19"),
             name = "Virus"
           ) +
-          ggrepel::geom_text_repel(aes(label = size), size = 3, direction = "y") +
+          ggrepel::geom_text_repel(aes(label = size), size = 3, direction = "y", point.padding = NA, segment.color = NA) +
           labs(x = NULL) +
           scale_y_continuous(name = NULL, expand = expansion(mult = c(0, 0.1))) +
           #expand_limits(x = c(-0.1, 4)) +
@@ -338,16 +338,32 @@ upset_plot <- function(input, seasons) {
       )
       
     }
-    
-    plot_label <- ggdraw() +
+
+    plot_label <- list()
+
+    plot_label[["Mild"]] <- ggdraw() +
       draw_label(
-        "Specific Phenotype",
-        x = 0.5, y = 0, hjust = 1.35, vjust = 0.5,
+        "A. Specific Mild",
+        x = 0.5, y = 0.5, hjust = 1.35, vjust = 0.5,
         fontface = 'bold', size = 14# color = "#71797E"
       ) +
       draw_label(
-        "Sensitive Phenotype",
-        x = 1, y = 0, hjust = 1.55, vjust = 0.5,
+        "B. Sensitive Mild",
+        x = 1, y = 0.5, hjust = 1.55, vjust = 0.5,
+        fontface = 'bold', size = 14#, color = "#71797E"
+      ) +
+      theme(plot.background = element_rect(
+        fill = "white", colour = "white"))
+
+    plot_label[["Severe"]] <- ggdraw() +
+      draw_label(
+        "C. Specific Severe",
+        x = 0.5, y = 0.5, hjust = 1.35, vjust = 0.5,
+        fontface = 'bold', size = 14# color = "#71797E"
+      ) +
+      draw_label(
+        "D. Sensitive Severe",
+        x = 1, y = 0.5, hjust = 1.55, vjust = 0.5,
         fontface = 'bold', size = 14#, color = "#71797E"
       ) +
       theme(plot.background = element_rect(
@@ -381,13 +397,13 @@ upset_plot <- function(input, seasons) {
   }
   
   plot_final2 <- plot_grid(
-    NULL,
+    plot_label[["Mild"]],
     plot_grid(NULL, plots[["Mild"]], ncol = 2, rel_widths = c(0.05, 1)),
-    NULL,
+    plot_label[["Severe"]],
     plot_grid(NULL, plots[["Severe"]], ncol = 2, rel_widths = c(0.05, 1)),
-    nrow = 4,
-    rel_heights = c(0.035, 0.5, 0.02, 0.5),
-    labels = c("", "A. Mild", "", "B. Severe"),
+    nrow = 5,
+    rel_heights = c(0.025, 0.5, 0.025, 0.5),
+    labels = c("", "", "", ""),
     label_size = 14,
     label_fontface = "bold",
     hjust = c(0, -0.1, 0, -0.1), 
@@ -395,9 +411,8 @@ upset_plot <- function(input, seasons) {
   )
   plot_final <- plot_grid(
     legend,
-    plot_label,
     plot_final2,
-    nrow = 3, rel_heights = c(0.025, 0.01, 0.925)
+    nrow = 2, rel_heights = c(0.025, 0.925)
   ) #%>%
     # annotate_figure(
     #   top = text_grob(
@@ -701,7 +716,7 @@ upset_plot_supplement <- function(input, seasons) {
             labels = c("RSV", "Influenza", "COVID-19"),
             name = "Virus"
           ) +
-          ggrepel::geom_text_repel(aes(label = size), size = 3, direction = "y") +
+          ggrepel::geom_text_repel(aes(label = size), size = 3, direction = "y", point.padding = NA, segment.color = NA) +
           labs(x = NULL) +
           scale_y_continuous(name = NULL, expand = expansion(mult = c(0, 0.1))) +
           #expand_limits(x = c(-0.1, 4)) +

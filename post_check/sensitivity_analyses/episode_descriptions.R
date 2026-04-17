@@ -6,7 +6,7 @@ library(dplyr)
 #import functions
 source(here::here("post_check", "functions", "episodes.R"))
 
-seasons <- c("2017_18", "2018_19", "2020_21", "2023_24")
+seasons <- c("2016_17", "2017_18", "2018_19", "2019_20", "2020_21", "2021_22", "2022_23", "2023_24")
 
 ##older adults
 

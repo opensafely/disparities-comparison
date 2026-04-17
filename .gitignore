@@ -29,3 +29,8 @@ analysis/old_model_files/*
 /post_check/supplemental/outcome_overlap/*
 
 /smoke_ab/*
+!reformat_table1.R
+!reformat_outcome_overlap.R
+!dashboard.qmd
+!_quarto.yml
+!.gitignore

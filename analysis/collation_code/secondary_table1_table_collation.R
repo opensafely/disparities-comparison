@@ -30,7 +30,18 @@ collated_table1 = rbind(
     slice(-2) %>% 
     mutate(subset = "2017_18")  %>% 
     mutate(N = as.numeric(N)) %>%
-    mutate(N = roundmid_any(N)),
+    mutate(N = roundmid_any(N)) %>%
+    mutate(
+      `%` = if_else(
+        row_number() == 1,
+        "100%",
+        if_else(
+          is.na(N) | is.na(first(N)) | first(N) == 0,
+          NA_character_,
+          paste0(round(100 * N / first(N), 1), "%")
+        )
+      )
+    ),
   read_csv(here::here("output", "table1", paste0("secondary_table1_", cohort,
            "_2018_2019.csv"))) %>%     
     rename(all_of(tab_names)) %>%
@@ -39,7 +50,18 @@ collated_table1 = rbind(
     slice(-2) %>% 
     mutate(subset = "2018_19")  %>% 
     mutate(N = as.numeric(N)) %>%
-    mutate(N = roundmid_any(N)),
+    mutate(N = roundmid_any(N)) %>%
+    mutate(
+      `%` = if_else(
+        row_number() == 1,
+        "100%",
+        if_else(
+          is.na(N) | is.na(first(N)) | first(N) == 0,
+          NA_character_,
+          paste0(round(100 * N / first(N), 1), "%")
+        )
+      )
+    ),
   read_csv(here::here("output", "table1", paste0("secondary_table1_", cohort, 
            "_2020_2021.csv")))  %>%     
     rename(all_of(tab_names)) %>%
@@ -48,7 +70,18 @@ collated_table1 = rbind(
     slice(-2) %>% 
     mutate(subset = "2020_21")  %>% 
     mutate(N = as.numeric(N)) %>%
-    mutate(N = roundmid_any(N))
+    mutate(N = roundmid_any(N)) %>%
+    mutate(
+      `%` = if_else(
+        row_number() == 1,
+        "100%",
+        if_else(
+          is.na(N) | is.na(first(N)) | first(N) == 0,
+          NA_character_,
+          paste0(round(100 * N / first(N), 1), "%")
+        )
+      )
+    )
 )
 
 #rename N column

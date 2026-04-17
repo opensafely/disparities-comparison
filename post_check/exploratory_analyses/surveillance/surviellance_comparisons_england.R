@@ -384,25 +384,51 @@ for (season in seasons_post) {
   
 }
 
-# visualise the results over time
+#tidy the overall results
+pearson_tidy <- pearson_results %>%
+  mutate(
+    pathogen = case_when(
+      str_starts(test, "RSV") ~ "RSV",
+      str_starts(test, "Flu") ~ "Influenza",
+      str_starts(test, "COVID-19") ~ "COVID-19"
+    ),
+    severity = case_when(
+      str_detect(test, "Mild") ~ "Mild",
+      str_detect(test, "Severe") ~ "Severe"
+    ),
+    codelist_type = case_when(
+      str_detect(test, "Specific") ~ "Specific",
+      str_detect(test, "Sensitive") ~ "Sensitive"
+    ),
+    season = "All",
+    test = "Overall"
+  ) %>%
+  select(test, pathogen, severity, codelist_type, season, pearson)
+
+#visualise the results over time
 df_clean <- pearson_results_seasons %>%
   separate(test, into = c("pathogen", "severity", "codelist_type", "season"), 
-           sep = " ", remove = FALSE)
-df_clean <- df_clean %>%
+           sep = " ", remove = FALSE) %>% 
+  select(-p_value)
+df_clean <- df_clean %>% 
+  bind_rows(
+    pearson_tidy
+  ) %>%
   mutate(
     season = str_remove_all(season, "[()]"),
-    pathogen = case_when(pathogen == "Flu" ~ "Influenza", TRUE ~ pathogen)
-  ) %>% 
-  mutate(
+    pathogen = case_when(pathogen == "Flu" ~ "Influenza", TRUE ~ pathogen),
     pathogen = factor(pathogen, levels = c("RSV", "Influenza", "COVID-19")),
-    codelist_type = factor(codelist_type, levels = c("Specific", "Sensitive"))
+    codelist_type = factor(codelist_type, levels = c("Specific", "Sensitive")),
+    season_or_allseason = if_else(test == "Overall", "All Seasons", "Seasonal"),
+    season_or_allseason = factor(season_or_allseason, levels = c("Seasonal", "All Seasons"))
   )
 
 f <- function(pal) brewer.pal(3, pal)
 cols <- f("Set2")
 
 ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
-                     group = codelist_type, col = pathogen)) +
+                     group = interaction(season_or_allseason, codelist_type),
+                     col = pathogen, shape = season_or_allseason)) +
   geom_line(linewidth = 1) +
   geom_point(size = 6, stroke = NA) + #, alpha = p_value < 0.05)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
@@ -412,6 +438,11 @@ ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
       "COVID-19" = cols[3])) +
   scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
                        na.translate = FALSE) +
+  #scale_shape_manual(values = c("Seasonal" = 16, "All Seasons" = 3)) + 
+  # geom_point(aes(x = 8.45, y = pearson_overall, shape = 2), size = 4) +
+  # ggrepel::geom_label_repel(aes(x = 8.5, y = pearson_overall, label = pearson_overall),
+  #                           segment.color = NA, show.legend = FALSE,
+  #                           direction = "y") +
   theme_bw(base_size = 20) +
   labs(
     #title = "Pearson Correlation Between EHR and Surveillance Data Over Time",
@@ -419,7 +450,8 @@ ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
     x = "Season (September-September)",
     y = "Correlation (r)",
     alpha = "Codelist type",
-    color = "Virus"
+    color = "Virus",
+    shape = "Correlation Type"
   ) +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
@@ -431,8 +463,9 @@ ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
     axis.line = element_line(color = 'black')
   ) + 
   guides(
-    color = guide_legend(order = 1, override.aes = list(size = 8)),
-    alpha = guide_legend(order = 2, override.aes = list(size = 8))
+    color = guide_legend(order = 1, override.aes = list(size = 6)),
+    alpha = guide_legend(order = 2, override.aes = list(size = 6)),
+    shape = guide_legend(order = 3)
   )
 
 #save
