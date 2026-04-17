@@ -79,11 +79,11 @@ df_rsv <- bind_rows(
   bind_cols(
     events_older_adults = df_rsv_older_adults$total_events,
     events_adults = df_rsv_adults$total_events,
-    events_children = df_rsv_children_and_adolescents$total_events,
+    events_children_and_adolescents = df_rsv_children_and_adolescents$total_events,
     events_infants = df_rsv_infants$total_events
   ) %>% 
   select(
-    month, event, events_older_adults, events_adults, events_children,
+    month, event, events_older_adults, events_adults, events_children_and_adolescents,
     events_infants, total_events, codelist_type, virus, subset
   )
 
@@ -105,11 +105,11 @@ df_flu <- bind_rows(
   bind_cols(
     events_older_adults = df_flu_older_adults$total_events,
     events_adults = df_flu_adults$total_events,
-    events_children = df_flu_children_and_adolescents$total_events,
+    events_children_and_adolescents = df_flu_children_and_adolescents$total_events,
     events_infants = df_flu_infants$total_events
   ) %>% 
   select(
-    month, event, events_older_adults, events_adults, events_children,
+    month, event, events_older_adults, events_adults, events_children_and_adolescents,
     events_infants, total_events, codelist_type, virus, subset
   )
 
@@ -131,11 +131,11 @@ df_covid <- bind_rows(
   bind_cols(
     events_older_adults = df_covid_older_adults$total_events,
     events_adults = df_covid_adults$total_events,
-    events_children = df_covid_children_and_adolescents$total_events,
+    events_children_and_adolescents = df_covid_children_and_adolescents$total_events,
     events_infants = df_covid_infants$total_events
   ) %>% 
   select(
-    month, event, events_older_adults, events_adults, events_children,
+    month, event, events_older_adults, events_adults, events_children_and_adolescents,
     events_infants, total_events, codelist_type, virus, subset
   )
 
@@ -146,7 +146,7 @@ df_all <- bind_rows(
   df_covid
 ) %>% 
   pivot_longer(
-    cols = c(events_older_adults, events_adults, events_children, events_infants),
+    cols = c(events_older_adults, events_adults, events_children_and_adolescents, events_infants),
     names_to = "cohort",
     values_to = "cohort_events",
     names_prefix = "events_"
@@ -267,7 +267,7 @@ plot_cases_specific <- function(df) {
       cohort = factor(
         cohort,
         levels = c("Infants",
-                   "Children",
+                   "Children and Adolescents",
                    "Adults",
                    "Older Adults")
       ),
@@ -326,26 +326,51 @@ ggsave(here::here("post_check", "plots", "primary_analyses",
                   "viruses_burden_proportions_overtime_specific.png"),
        width = 14, height = 20)
 
-plot_burden_options <- function(df, option = c("1", "2")) {
+plot_burden_options <- function(df, option = c("1", "2"), older) {
   
   option <- match.arg(option)
   
-  df_plot <- df %>%
-    filter(str_to_title(codelist_type) == "Specific") %>%
-    mutate(
-      cohort = str_to_title(gsub("_", " ", cohort)),
-      cohort = factor(
-        cohort,
-        levels = c("Infants",
-                   "Children",
-                   "Adults",
-                   "Older Adults")
-      ),
-      virus = factor(
-        virus,
-        levels = c("RSV", "Influenza", "COVID-19")
+  if (older == "yes") {
+
+    df_plot <- df %>%
+      filter(
+        str_to_title(codelist_type) == "Specific" & 
+          cohort %in% c("adults", "older_adults")
+      ) %>%
+      mutate(
+        cohort = str_to_title(gsub("_", " ", cohort)),
+        cohort = factor(
+          cohort,
+          levels = c("Adults",
+                     "Older Adults")
+        ),
+        virus = factor(
+          virus,
+          levels = c("RSV", "Influenza", "COVID-19")
+        )
       )
-    )
+    
+  } else {
+
+    df_plot <- df %>%
+      filter(
+        str_to_title(codelist_type) == "Specific" & 
+          cohort %in% c("infants", "children_and_adolescents")
+      ) %>%
+      mutate(
+        cohort = str_to_title(gsub("_", " ", cohort)),
+        cohort = factor(
+          str_wrap(cohort, 20),
+          levels = c("Infants",
+                     "Children And\nAdolescents")
+        ),
+        virus = factor(
+          virus,
+          levels = c("RSV", "Influenza", "COVID-19")
+        )
+      )
+
+  }
   
   if (option == "1") {
     # ------------------------------------------------------------
@@ -370,6 +395,11 @@ plot_burden_options <- function(df, option = c("1", "2")) {
       )
     ) +
       geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+      geom_text(
+        aes(label = ifelse(cohort %in% c("Infants", "Adults"),
+                           ifelse(denom == 0, "", denom), ""), y = 0.8), 
+            size = 4, angle = 45
+      ) +
       facet_grid(virus ~ event) +
       #scale_fill_manual(values = cols) +
       scale_y_continuous(labels = scales::percent_format()) +
@@ -377,7 +407,7 @@ plot_burden_options <- function(df, option = c("1", "2")) {
         x = "Season",
         y = "% of pathogen cases",
         fill = "Cohort",
-        title = "Option 1: % of pathogen's cases accounted for by each cohort"
+        #title = "Option 1: % of pathogen's cases accounted for by each cohort"
       ) +
       theme_bw(base_size = 18) +
       theme(
@@ -385,7 +415,8 @@ plot_burden_options <- function(df, option = c("1", "2")) {
         strip.text = element_text(size = 18, face = "bold"),
         axis.text.x = element_text(angle = 45, hjust = 1),
         panel.border = element_blank(),
-        axis.line = element_line(colour = "black")
+        axis.line = element_line(colour = "black"),
+        legend.key.height=unit(1, "cm")
       )
     
   } else if (option == "2") {
@@ -411,6 +442,10 @@ plot_burden_options <- function(df, option = c("1", "2")) {
       )
     ) +
       geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+      geom_text(
+        aes(label = ifelse(virus == "Influenza", ifelse(denom == 0, "", denom), ""),
+            y = 0.8), size = 4, angle = 45
+      ) +
       facet_grid(cohort ~ event) +
       scale_fill_manual(
         values = c(
@@ -424,7 +459,7 @@ plot_burden_options <- function(df, option = c("1", "2")) {
         x = "Season",
         y = "% of cohort cases",
         fill = "Virus",
-        title = "Option 2: % of cohort's cases accounted for by each pathogen"
+        #title = "Option 2: % of cohort's cases accounted for by each pathogen"
       ) +
       theme_bw(base_size = 18) +
       theme(
@@ -432,25 +467,55 @@ plot_burden_options <- function(df, option = c("1", "2")) {
         strip.text = element_text(size = 18, face = "bold"),
         axis.text.x = element_text(angle = 45, hjust = 1),
         panel.border = element_blank(),
-        axis.line = element_line(colour = "black")
+        axis.line = element_line(colour = "black"),
+        legend.key.height=unit(1, "cm")
       )
   }
   
   return(p)
+
 }
 
-p1 <- plot_burden_options(df_all, option = "1")
+p1 <- plot_burden_options(df_all, option = "1", older = "yes")
 
 #save
 ggsave(here::here("post_check", "plots", "primary_analyses",
-                  "viruses_burden_proportions_overtime_pathogen_cases.png"),
+                  "viruses_burden_proportions_overtime_pathogen_cases_older.png"),
        width = 14, height = 20)
 
-p2 <- plot_burden_options(df_all, option = "2")
+p2 <- plot_burden_options(df_all, option = "2", older = "yes")
 
 #save
 ggsave(here::here("post_check", "plots", "primary_analyses",
-                  "viruses_burden_proportions_overtime_cohort_cases.png"),
+                  "viruses_burden_proportions_overtime_cohort_cases_older.png"),
+       width = 14, height = 20)
+
+plot_grid(p1, p2, nrow = 2)
+
+#save
+ggsave(here::here("post_check", "plots", "primary_analyses",
+                  "viruses_burden_proportions_overtime_older.png"),
+       width = 14, height = 20)
+
+p1 <- plot_burden_options(df_all, option = "1", older = "no")
+
+#save
+ggsave(here::here("post_check", "plots", "primary_analyses",
+                  "viruses_burden_proportions_overtime_pathogen_cases_younger.png"),
+       width = 14, height = 20)
+
+p2 <- plot_burden_options(df_all, option = "2", older = "no")
+
+#save
+ggsave(here::here("post_check", "plots", "primary_analyses",
+                  "viruses_burden_proportions_overtime_cohort_cases_younger.png"),
+       width = 14, height = 20)
+
+plot_grid(p1, p2, nrow = 2)
+
+#save
+ggsave(here::here("post_check", "plots", "primary_analyses",
+                  "viruses_burden_proportions_overtime_younger.png"),
        width = 14, height = 20)
 
 # plot_burden_allviruses <- function(df, ctype) {
