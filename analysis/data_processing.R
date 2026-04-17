@@ -93,7 +93,7 @@ df_input <- df_input %>%
     patient_index_date = patient_index_date - days(1)
   )
 
-#calculate age bands
+#calculate age bands - change REF
 if(cohort == "older_adults") {
   df_input <- df_input %>%
     mutate(age_band = case_when(
@@ -201,24 +201,22 @@ df_input <- df_input %>%
   )
 
 #ethnicity from HES
-if (cohort == "infants" | cohort == "infants_subgroup") {
-  df_input <- df_input %>%
-    mutate(
-      latest_ethnicity_group_hes = relevel(factor(recode(
-        latest_ethnicity_group_hes, "A" = "White", "B" = "White", "C" = "White",
-        "D" = "Mixed", "E" = "Mixed", "F" = "Mixed", "G" = "Mixed",
-        "H" = "Asian or Asian British", "J" = "Asian or Asian British",
-        "K" = "Asian or Asian British", "L" = "Asian or Asian British",
-        "M" = "Black or Black British", "N" = "Black or Black British",
-        "P" = "Black or Black British", "R" = "Other Ethnic Groups",
-        "S" = "Other Ethnic Groups"), ordered = F), ref = "White")
-    ) %>%
-    mutate(
-      latest_ethnicity_group = if_else(is.na(latest_ethnicity_group),
-                                       latest_ethnicity_group_hes,
-                                       latest_ethnicity_group)
-    )
-}
+df_input <- df_input %>%
+  mutate(
+    latest_ethnicity_group_hes = relevel(factor(recode(
+      latest_ethnicity_group_hes, "A" = "White", "B" = "White", "C" = "White",
+      "D" = "Mixed", "E" = "Mixed", "F" = "Mixed", "G" = "Mixed",
+      "H" = "Asian or Asian British", "J" = "Asian or Asian British",
+      "K" = "Asian or Asian British", "L" = "Asian or Asian British",
+      "M" = "Black or Black British", "N" = "Black or Black British",
+      "P" = "Black or Black British", "R" = "Other Ethnic Groups",
+      "S" = "Other Ethnic Groups"), ordered = F), ref = "White")
+  ) %>%
+  mutate(
+    latest_ethnicity_group = if_else(is.na(latest_ethnicity_group),
+                                      latest_ethnicity_group_hes,
+                                      latest_ethnicity_group)
+  )
 
 #household variables for when they are included (2020-21)
 if (study_start_date == as.Date("2020-09-01") &
@@ -298,7 +296,7 @@ if (study_start_date >= covid_prior_vacc_min & cohort != "infants" & cohort != "
         time_length(difftime(patient_index_date + days(1),
                              last_covid_vaccination_date,
                              units = "days"), "months") >= 12 ~ "12m+",
-        TRUE ~ "12m+")), ref = "0-6m")
+        TRUE ~ "12m+")), ref = "12m+")
     )
 }
 if (study_start_date >= covid_current_vacc_min & cohort != "infants" & cohort != "infants_subgroup") {

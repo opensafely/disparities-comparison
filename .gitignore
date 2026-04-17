@@ -27,6 +27,8 @@ analysis/old_model_files/*
 /post_check/supplemental/surveillance/*
 /post_check/supplemental/table1/*
 /post_check/supplemental/outcome_overlap/*
+
+/smoke_ab/*
 !reformat_table1.R
 !reformat_outcome_overlap.R
 !dashboard.qmd
