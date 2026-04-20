@@ -654,7 +654,8 @@ dummydata_processed <- dummydata_processed %>%
       x <- pmin(rsv_primary_date, flu_primary_date, covid_primary_date, overall_resp_primary_date, na.rm = TRUE)
       if_else(is.infinite(as.numeric(x)), as.Date(NA), x)
     }
-  )
+  )%>% 
+  mutate(broad_bucket_date = bucket_date)
 
 fs::dir_create(here::here("analysis", "dummydata", "data"))
 write_feather(dummydata_processed, sink = here::here("analysis", "dummydata", 

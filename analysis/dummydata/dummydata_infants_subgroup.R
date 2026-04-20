@@ -569,7 +569,8 @@ dummydata_processed <- dummydata_processed %>%
       x <- pmin(rsv_primary_date, flu_primary_date, covid_primary_date, overall_resp_primary_date, na.rm = TRUE)
       if_else(is.infinite(as.numeric(x)), as.Date(NA), x)
     }
-  )
+  )%>% 
+  mutate(broad_bucket_date = bucket_date)
 
 dummydata_processed <- dummydata_processed %>%
   mutate(mother_id_present = if_else(is.na(mother_id), FALSE, TRUE))
