@@ -213,9 +213,10 @@ df_input <- df_input %>%
       "S" = "Other Ethnic Groups"), ordered = F), ref = "White")
   ) %>%
   mutate(
-    latest_ethnicity_group = if_else(is.na(latest_ethnicity_group),
-                                      latest_ethnicity_group_hes,
-                                      latest_ethnicity_group)
+    latest_ethnicity_group = if_else(
+      is.na(latest_ethnicity_group),
+      if_else(is.na(latest_ethnicity_group_hes), "Unknown", latest_ethnicity_group_hes),
+      latest_ethnicity_group)
   )
 
 #household variables for when they are included (2020-21)
