@@ -2587,6 +2587,63 @@ else :
       otherwise = None)
     )
 
+respiratory_broad = (
+  codelists.rsv_primary_codelist + codelists.rsv_sensitive_codelist +
+  codelists.rsv_primary_exclusion_codelist + codelists.flu_primary_codelist +
+  codelists.flu_sensitive_codelist + codelists.ari_primary_codelist +
+  codelists.cough_codelist + codelists.flu_primary_exclusion_codelist +
+  codelists.covid_primary_codelist + codelists.covid_sensitive_codelist +
+  codelists.covid_primary_exclusion_codelist + codelists.respiratory_virus_primary_codelist +
+  codelists.respiratory_virus_primary_exclusion_codelist
+)
+
+respiratory_meds = (
+  codelists.rsv_prescriptions_codelist + codelists.flu_prescriptions_codelist +
+  codelists.covid_prescriptions_codelist
+)
+
+if cohort == "infants" or cohort == "infants_subgroup" :
+
+  dataset.broad_bucket_date = (
+    minimum_of(
+      (first_gp_event(respiratory_broad).date),
+      (prescribing_events.where(prescribing_events.dmd_code.is_in(respiratory_meds))
+        .date.minimum_for_patient()),
+      (emergency_care_diagnosis_matches(codelists.bronchiolitis_attendance)
+        .arrival_date.minimum_for_patient()),
+      (emergency_care_diagnosis_matches(codelists.wheeze_attendance)
+        .arrival_date.minimum_for_patient())
+    )
+  )
+
+elif cohort == "older_adults" :
+
+  dataset.broad_bucket_date = (
+    minimum_of(
+      (first_gp_event(respiratory_broad).date),
+      (prescribing_events.where(prescribing_events.dmd_code.is_in(respiratory_meds))
+        .date.minimum_for_patient()),
+      (emergency_care_diagnosis_matches(codelists.rtri_attendance)
+        .where(emergency_events.arrival_date.is_on_or_between(index_date, followup_end_date))
+        .arrival_date.minimum_for_patient()),
+      (emergency_care_diagnosis_matches(codelists.copd_exacerbation_attendance)
+        .where(emergency_events.arrival_date.is_on_or_between(index_date, followup_end_date))
+        .arrival_date.minimum_for_patient()),
+      (first_gp_event(codelists.copd_exacerbation_primary_codelist).date),
+      (first_gp_event(codelists.asthma_exacerbation_primary_codelist).date)
+    )
+  )
+
+else :
+  
+  dataset.broad_bucket_date = (
+    minimum_of(
+      (first_gp_event(respiratory_broad).date),
+      (prescribing_events.where(prescribing_events.dmd_code.is_in(respiratory_meds))
+        .date.minimum_for_patient())
+    )
+  )
+
 ## comorbidities for secondary investigation 
 
 if (investigation_type == "secondary") & (cohort == "older_adults"):
