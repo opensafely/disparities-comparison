@@ -238,9 +238,8 @@ dataset.latest_ethnicity_group = (
   .to_category(codelists.ethnicity_codes)
 )
 
-#extract HES ethnicity to supplement ethnicity recording for infants
-if cohort == "infants" or cohort == "infants_subgroup" :
-  dataset.latest_ethnicity_group_hes = ethnicity_from_sus.code
+#extract HES ethnicity to supplement ethnicity
+dataset.latest_ethnicity_group_hes = ethnicity_from_sus.code
 
 #extract patients IMD rank
 dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
