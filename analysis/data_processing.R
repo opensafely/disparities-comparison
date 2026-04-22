@@ -129,8 +129,13 @@ if(cohort == "older_adults") {
     ) %>%
     filter(!is.na(age_band))
 }
-
-df_input$age_band <- factor(df_input$age_band)
+age_ref = case_when(
+  cohort == "infants" | cohort == "infants_subgroup" ~ "0-2m",
+  cohort == "children_and_adolescents" ~ "2-5y",
+  cohort == "adults" ~ "18-39y",
+  cohort == "older_adults" ~ "65-74y"
+)
+df_input$age_band <- relevel(factor(df_input$age_band), ref = age_ref)
 
 #data manipulation
 df_input <- df_input %>%
