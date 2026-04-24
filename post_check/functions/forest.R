@@ -1122,6 +1122,44 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
   
   }
 
+forest_key_exposures <- function(
+  df,
+  df_dummy,
+  pathogen,
+  model_type,
+  outcome_type,
+  further = "no",
+  ...
+) {
+  p <- forest(
+    df = df,
+    df_dummy = df_dummy,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type,
+    further = further,
+    ...
+  )
+
+  forest_data <- p$data
+  if (is.null(forest_data) || nrow(forest_data) == 0) return(p)
+
+  key_vars <- key_exposure_variables()
+  key_vars <- intersect(key_vars, unique(forest_data$variable))
+  forest_data_key <- forest_data %>%
+    dplyr::filter(.data$variable %in% key_vars)
+
+  forest_over_time_plot(
+    forest_data = forest_data_key,
+    pathogen = if_else(pathogen == "overall_and_all_cause", "overall_resp", pathogen),
+    model_type = model_type,
+    outcome_type = outcome_type,
+    facet_outcome = FALSE,
+    label_levels = FALSE,
+    ...
+  )
+}
+
 #forest plot combined model results
 forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                                      outcome_type, return_data = FALSE) {

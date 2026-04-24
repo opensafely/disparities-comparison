@@ -95,6 +95,332 @@ get_level_order_forest <- function(cohort_val, model_type, pathogen, investigati
   levels
 }
 
+key_exposure_variables <- function() {
+  c(
+    "imd_quintile",                # IMD
+    "latest_ethnicity_group",      # Ethnicity
+    "composition_category"         # Household size/composition (project variable name)
+  )
+}
+
+key_exposure_display_names <- function() {
+  tibble::tibble(
+    variable = key_exposure_variables(),
+    exposure = c("IMD", "Ethnicity", "Household composition")
+  )
+}
+
+collect_key_exposure_forest_data <- function(
+  df,
+  df_dummy,
+  pathogen,
+  outcome_type,
+  model_types = c("ethnicity", "ses", "composition", "full"),
+  further = "no"
+) {
+  # `forest()` depends on several globals in this repo, notably `cohort` and `investigation_type`.
+  # We assume callers (scripts) set those appropriately, as existing plotting scripts do.
+  plots <- purrr::map(
+    model_types,
+    ~ forest(
+      df = df,
+      df_dummy = df_dummy,
+      pathogen = pathogen,
+      model_type = .x,
+      outcome_type = outcome_type,
+      further = further
+    )
+  )
+
+  forest_data <- purrr::map2_dfr(
+    plots,
+    model_types,
+    ~ {
+      d <- .x$data
+      if (is.null(d) || nrow(d) == 0) return(tibble())
+      d %>% dplyr::mutate(model_type = .y)
+    }
+  )
+
+  if (nrow(forest_data) == 0) return(forest_data)
+
+  key_vars <- key_exposure_variables()
+  key_vars <- intersect(key_vars, unique(forest_data$variable))
+  forest_data %>%
+    dplyr::filter(.data$variable %in% key_vars) %>%
+    dplyr::left_join(key_exposure_display_names(), by = "variable") %>%
+    dplyr::mutate(
+      exposure = dplyr::coalesce(.data$exposure, .data$variable),
+      subset = gsub("_", "-", .data$subset),
+      year = suppressWarnings(as.integer(stringr::str_extract(.data$subset, "^[0-9]{4}"))),
+      adjustment = dplyr::case_when(
+        .data$model_type == "full" ~ "Fully adjusted",
+        TRUE ~ "Minimally adjusted"
+      ),
+      adjustment = factor(.data$adjustment, levels = c("Minimally adjusted", "Fully adjusted"))
+    ) %>%
+    dplyr::filter(!is.na(.data$year))
+}
+
+forest_key_exposures_over_time_plot <- function(
+  df,
+  df_dummy,
+  pathogen,
+  outcome_type,
+  model_types = c(
+    "ses",
+    "ethnicity",
+    "composition",
+    "ethnicity_ses",
+    "ses_composition",
+    "ethnicity_composition",
+    "full"
+  ),
+  further = "no",
+  show_ci = TRUE
+) {
+  forest_data <- collect_key_exposure_forest_data(
+    df = df,
+    df_dummy = df_dummy,
+    pathogen = pathogen,
+    outcome_type = outcome_type,
+    model_types = model_types,
+    further = further
+  )
+
+  if (is.null(forest_data) || nrow(forest_data) == 0) {
+    return(ggplot() + theme_void())
+  }
+
+  pathogen_title <- dplyr::case_when(
+    pathogen == "rsv" ~ "RSV",
+    pathogen == "flu" ~ "Influenza",
+    pathogen == "covid" ~ "COVID-19",
+    pathogen == "overall_resp" ~ "Overall Respiratory Virus",
+    TRUE ~ pathogen
+  )
+
+  model_set_labels <- tibble::tibble(
+    model_type = c(
+      "ses",
+      "ethnicity",
+      "composition",
+      "ethnicity_ses",
+      "ses_composition",
+      "ethnicity_composition",
+      "full"
+    ),
+    model_set = c(
+      "IMD",
+      "Ethnicity",
+      "Household composition",
+      "IMD and ethnicity",
+      "IMD and household composition",
+      "Ethnicity and household composition",
+      "IMD, ethnicity, and household composition"
+    )
+  )
+
+  included_key_vars <- function(mt) {
+    switch(
+      mt,
+      ethnicity = c("latest_ethnicity_group"),
+      ses = c("imd_quintile"),
+      composition = c("composition_category"),
+      ethnicity_ses = c("latest_ethnicity_group", "imd_quintile"),
+      ethnicity_composition = c("latest_ethnicity_group", "composition_category"),
+      ses_composition = c("imd_quintile", "composition_category"),
+      full = key_exposure_variables(),
+      key_exposure_variables()
+    )
+  }
+
+  year_levels <- if (identical(pathogen, "covid")) {
+    c("2019-20", "2020-21", "2021-22", "2022-23", "2023-24")
+  } else {
+    c("2016-17", "2017-18", "2018-19", "2019-20", "2020-21", "2021-22", "2022-23", "2023-24")
+  }
+
+  # Expand the fully-adjusted (full) estimates into each model-set row,
+  # filtered to just the variables included in that minimally-adjusted model.
+  full_df <- forest_data %>%
+    dplyr::filter(.data$model_type == "full")
+
+  minimal_types <- setdiff(unique(forest_data$model_type), "full")
+  minimal_types <- intersect(minimal_types, model_set_labels$model_type)
+
+  minimal_df <- forest_data %>%
+    dplyr::filter(.data$model_type %in% minimal_types) %>%
+    dplyr::left_join(model_set_labels, by = "model_type") %>%
+    dplyr::mutate(adjustment = "Minimally adjusted")
+
+  full_expanded <- purrr::map_dfr(
+    minimal_types,
+    ~ {
+      vars <- included_key_vars(.x)
+      lab <- model_set_labels %>% dplyr::filter(.data$model_type == .x) %>% dplyr::pull(.data$model_set)
+      if (length(lab) == 0) lab <- .x
+      full_df %>%
+        dplyr::filter(.data$variable %in% vars) %>%
+        dplyr::mutate(
+          model_type = "full",
+          model_set = lab,
+          adjustment = "Fully adjusted"
+        )
+    }
+  )
+
+  # Keep a "full model-set" row too (fully adjusted only), if requested in `model_types`.
+  full_only <- tibble()
+  if ("full" %in% model_types) {
+    full_only <- full_df %>%
+      dplyr::mutate(
+        model_set = model_set_labels %>%
+          dplyr::filter(.data$model_type == "full") %>%
+          dplyr::pull(.data$model_set) %>%
+          dplyr::first(),
+        adjustment = "Fully adjusted"
+      )
+  }
+
+  plot_df <- dplyr::bind_rows(minimal_df, full_expanded, full_only) %>%
+    dplyr::filter(!is.na(.data$estimate), is.finite(.data$estimate)) %>%
+    dplyr::mutate(
+      subset = gsub("_", "-", .data$subset),
+      year_facet = factor(.data$subset, levels = year_levels),
+      characteristic = factor(
+        as.character(.data$exposure),
+        levels = c("IMD", "Ethnicity", "Household composition")
+      ),
+      adjustment = factor(.data$adjustment, levels = c("Minimally adjusted", "Fully adjusted")),
+      model_set = factor(
+        .data$model_set,
+        levels = model_set_labels$model_set
+      ),
+      label = as.character(.data$label)
+    ) %>%
+    dplyr::filter(!is.na(.data$model_set), !is.na(.data$characteristic), !is.na(.data$year_facet))
+
+  # Order level facets within each characteristic (keeps columns grouped and readable)
+  # while avoiding empty repeated panels across characteristics.
+  preferred_imd <- c("1 (most deprived)", "2", "3", "4", "5 (least deprived)")
+  preferred_eth <- c("White", "Mixed", "Asian or Asian British", "Black or Black British", "Other Ethnic Groups")
+  preferred_comp <- c(
+    "Multiple of the Same Generation",
+    "Living Alone",
+    "One Other Generation",
+    "Two Other Generations",
+    "Three Other Generations"
+  )
+  plot_df <- plot_df %>%
+    dplyr::mutate(level_facet_raw = paste(as.character(.data$characteristic), .data$label, sep = "||"))
+
+  # Build a stable level order *within each characteristic* by prefixing with the characteristic.
+  mk_keys <- function(char, preferred) {
+    labs <- plot_df %>%
+      dplyr::filter(.data$characteristic == char) %>%
+      dplyr::pull(.data$label) %>%
+      unique()
+    ordered <- c(intersect(preferred, labs), setdiff(labs, preferred))
+    paste(char, ordered, sep = "||")
+  }
+  level_order_keys <- c(
+    mk_keys("IMD", preferred_imd),
+    mk_keys("Ethnicity", preferred_eth),
+    mk_keys("Household composition", preferred_comp)
+  )
+  # Append any unexpected characteristic keys (should be rare).
+  extras <- setdiff(unique(plot_df$level_facet_raw), level_order_keys)
+  level_order_keys <- c(level_order_keys, extras)
+
+  plot_df <- plot_df %>%
+    dplyr::mutate(level_facet = factor(.data$level_facet_raw, levels = level_order_keys))
+
+  p <- ggplot(
+    plot_df,
+    aes(
+      x = year_facet,
+      y = .data$estimate,
+      ymin = .data$conf.low,
+      ymax = .data$conf.high,
+      colour = adjustment,
+      group = adjustment
+    )
+  ) +
+    geom_hline(yintercept = 1, linetype = 2, linewidth = 0.3, alpha = 0.7, color = "black") +
+    {
+      if (isTRUE(show_ci)) {
+        ggplot2::geom_pointrange(
+          position = position_dodge(width = 0.55),
+          linewidth = 0.25,
+          fatten = 1.6,
+          alpha = 0.9,
+          na.rm = TRUE
+        )
+      } else {
+        ggplot2::geom_point(
+          position = position_dodge(width = 0.55),
+          size = 1.4,
+          alpha = 0.9,
+          na.rm = TRUE
+        )
+      }
+    } +
+    scale_y_log10(
+      breaks = scales::log_breaks(n = 3),
+      labels = scales::label_number(accuracy = 0.1)
+    ) +
+    scale_colour_manual(
+      values = c("Minimally adjusted" = "#1f77b4", "Fully adjusted" = "#d62728"),
+      drop = FALSE
+    ) +
+    labs(
+      title = paste0(pathogen_title, " — ", outcome_type, ": key exposures over time"),
+      x = NULL,
+      y = paste0(pathogen_title, " rate ratio"),
+      colour = NULL
+    ) +
+    theme_bw(base_size = 11) +
+    theme(
+      axis.text.x = element_text(size = 6.5, angle = 45, hjust = 1),
+      axis.text.y = element_text(size = 6.2),
+      strip.background = element_blank(),
+      strip.text.x = element_text(size = 6.0),
+      strip.text.y = element_text(size = 7.1, face = "bold"),
+      panel.border = element_blank(),
+      axis.line = element_line(color = "black"),
+      legend.position = "top",
+      legend.text = element_text(size = 8),
+      panel.spacing.x = unit(0.12, "lines"),
+      panel.spacing.y = unit(0.25, "lines")
+    )
+
+  # Group columns by characteristic, then level.
+  if (requireNamespace("ggh4x", quietly = TRUE)) {
+    p <- p + ggh4x::facet_nested(
+      model_set ~ characteristic + level_facet,
+      scales = "free_y",
+      space = "free_y",
+      drop = TRUE,
+      labeller = labeller(
+        level_facet = function(x) sub("^.*\\|\\|", "", x)
+      )
+    )
+  } else {
+    p <- p + facet_grid(
+      model_set ~ level_facet,
+      scales = "free_y",
+      space = "free_y",
+      drop = TRUE,
+      labeller = labeller(
+        level_facet = function(x) sub("^.*\\|\\|", "", x)
+      )
+    )
+  }
+
+  p
+}
+
 forest_over_time_plot <- function(
   forest_data,
   pathogen,
