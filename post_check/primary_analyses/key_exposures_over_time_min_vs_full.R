@@ -11,11 +11,21 @@ ggsave <- function(..., bg = "white") ggplot2::ggsave(..., bg = bg)
 # `forest()` and helpers rely on these globals in this project.
 investigation_type <- "primary"
 
-load_collated_outputs <- function(cohort, pathogen) {
+load_collated_outputs_further <- function(cohort, pathogen) {
   read_csv(
     here::here(
       "post_check", "output", "collated", "analytic",
       paste0(cohort, "_further_", pathogen, "_model_outputs_collated.csv")
+    ),
+    show_col_types = FALSE
+  )
+}
+
+load_collated_outputs_base <- function(cohort, pathogen) {
+  read_csv(
+    here::here(
+      "post_check", "output", "collated", "analytic",
+      paste0(cohort, "_", pathogen, "_model_outputs_collated.csv")
     ),
     show_col_types = FALSE
   )
@@ -54,34 +64,37 @@ slug <- function(x) {
     stringr::str_replace_all("^_|_$", "")
 }
 
-run_one_key_exposures_over_time <- function(df, df_dummy, cohort, pathogen, phenotype, outcome_type, out_dir) {
+run_one_key_exposures_over_time <- function(df_min, df_full, df_dummy, cohort, pathogen, phenotype, outcome_type, out_dir) {
   # `forest()` uses global `cohort` in multiple places.
   cohort <<- cohort
+  
+  # Infants do not have household composition in the current pipelines.
+  is_infant <- cohort %in% c("infants", "infants_subgroup")
 
-  p <- forest_key_exposures_over_time_plot(
-    df = df,
+  p_min <- forest_key_exposures_three_column_plot(
+    df_min = df_min,
+    df_full = df_full,
     df_dummy = df_dummy,
     pathogen = pathogen,
     outcome_type = outcome_type,
-    further = "no",
+    adjustment = "base",
+    show_ci = TRUE
+  )
+  p_full <- forest_key_exposures_three_column_plot(
+    df_min = df_min,
+    df_full = df_full,
+    df_dummy = df_dummy,
+    pathogen = pathogen,
+    outcome_type = outcome_type,
+    adjustment = "further",
     show_ci = TRUE
   )
 
-  fname <- paste(
-    cohort,
-    pathogen,
-    phenotype,
-    outcome_type,
-    "key_exposures_min_vs_full_over_time",
-    sep = "_"
-  )
+  fname_min <- paste(cohort, pathogen, phenotype, outcome_type, "key_exposures_base_over_time", sep = "_")
+  fname_full <- paste(cohort, pathogen, phenotype, outcome_type, "key_exposures_further_over_time", sep = "_")
 
-  ggsave(
-    filename = here::here(out_dir, paste0(slug(fname), ".png")),
-    plot = p,
-    width = 11.69,
-    height = 8.27
-  )
+  ggsave(here::here(out_dir, paste0(slug(fname_min), ".png")), p_min, width = 11.69, height = 8.27)
+  ggsave(here::here(out_dir, paste0(slug(fname_full), ".png")), p_full, width = 11.69, height = 8.27)
 }
 
 run_all_key_exposures_over_time <- function() {
@@ -100,13 +113,15 @@ run_all_key_exposures_over_time <- function() {
 
       for (cohort in cohorts) {
         message("Running key-exposure over-time: ", cohort, " / ", pathogen, " / ", phenotype)
-        df <- load_collated_outputs(cohort, pathogen) %>%
+        df_min <- load_collated_outputs_base(cohort, pathogen) %>%
+          filter(tolower(codelist_type) %in% c("reference", tolower(phenotype)))
+        df_full <- load_collated_outputs_further(cohort, pathogen) %>%
           filter(tolower(codelist_type) %in% c("reference", tolower(phenotype)))
         df_dummy <- load_dummy_inputs(cohort, pathogen)
 
         for (outcome_type in outcomes) {
           tryCatch(
-            run_one_key_exposures_over_time(df, df_dummy, cohort, pathogen, phenotype, outcome_type, out_dir),
+            run_one_key_exposures_over_time(df_min, df_full, df_dummy, cohort, pathogen, phenotype, outcome_type, out_dir),
             error = function(e) {
               message(
                 "Failed key-exposure over-time plot: cohort=", cohort,
@@ -125,4 +140,3 @@ run_all_key_exposures_over_time <- function() {
 }
 
 run_all_key_exposures_over_time()
-

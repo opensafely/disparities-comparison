@@ -101,6 +101,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
                   "Urban City and Town", "Rural Town and Fringe",
                   "Rural Village and Dispersed",  "Other Ethnic Groups",
+                  "Unknown", "Other Ethnic Groups",
                   "Black or Black British", "Asian or Asian British",
                   "Mixed", "White"),
                 levels)
@@ -128,6 +129,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                   "Rural Town and Fringe", "1 (most deprived)",
                   "2", "3", "4", "5 (least deprived)",
                   "Other Ethnic Groups", "Black or Black British",
+                  "Unknown", "Other Ethnic Groups", "Black or Black British",
                   "Asian or Asian British", "Mixed", "White"), levels)
     
   } else if (model_type == "ethnicity_composition" & cohort != "infants" &
@@ -139,6 +141,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                   "Two Other Generations", "One Other Generation",
                   "Living Alone", "Multiple of the Same Generation",
                   "Other Ethnic Groups", "Black or Black British",
+                  "Unknown", "Other Ethnic Groups", "Black or Black British",
                   "Asian or Asian British", "Mixed", "White"), levels)
     
   } else if (model_type == "ses_composition" & cohort != "infants" &
@@ -162,6 +165,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                   "Living Alone", "Multiple of the Same Generation",
                   "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
                   "Other Ethnic Groups", "Black or Black British",
+                  "Unknown", "Other Ethnic Groups", "Black or Black British",
                   "Asian or Asian British", "Mixed", "White"), levels)
     
   }
@@ -1107,6 +1111,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
   if (is.null(forest_data) || nrow(forest_data) == 0) {
     return(plot + theme(plot.title = element_blank()))
   }
+  
+  # Ensure stable types for downstream binding/plotting (subset can be logical NA in some branches).
+  forest_data <- forest_data %>%
+    dplyr::mutate(subset = as.character(.data$subset))
 
   plot_ot <- forest_over_time_plot(
     forest_data = forest_data,
@@ -1117,6 +1125,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     label_levels = FALSE,
     ...
   )
+
+  # Keep the underlying tidy results accessible for downstream reuse (e.g. key-exposure plots).
+  # Do NOT rely on `$data` because ggplot overwrites this as it transforms data internally.
+  attr(plot_ot, "forest_data") <- forest_data
 
   return(plot_ot)
   
@@ -1241,6 +1253,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
                   "Urban City and Town", "Rural Town and Fringe",
                   "Rural Village and Dispersed",  "Other Ethnic Groups",
+                  "Unknown", "Other Ethnic Groups",
                   "Black or Black British", "Asian or Asian British",
                   "Mixed", "White"),
                 levels)
@@ -1268,6 +1281,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                   "Rural Town and Fringe", "1 (most deprived)",
                   "2", "3", "4", "5 (least deprived)",
                   "Other Ethnic Groups", "Black or Black British",
+                  "Unknown", "Other Ethnic Groups", "Black or Black British",
                   "Asian or Asian British", "Mixed", "White"), levels)
     
   } else if (model_type == "ethnicity_composition" & cohort != "infants" &
@@ -1279,6 +1293,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                   "Two Other Generations", "One Other Generation",
                   "Living Alone", "Multiple of the Same Generation",
                   "Other Ethnic Groups", "Black or Black British",
+                  "Unknown", "Other Ethnic Groups", "Black or Black British",
                   "Asian or Asian British", "Mixed", "White"), levels)
     
   } else if (model_type == "ses_composition" & cohort != "infants" &
@@ -1302,6 +1317,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                   "Living Alone", "Multiple of the Same Generation",
                   "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
                   "Other Ethnic Groups", "Black or Black British",
+                  "Unknown", "Other Ethnic Groups", "Black or Black British",
                   "Asian or Asian British", "Mixed", "White"), levels)
     
   }
