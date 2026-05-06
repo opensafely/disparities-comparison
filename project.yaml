@@ -1309,8 +1309,8 @@ actions:
         csv: output/results/models/covid_primary/*_older_adults_2019_2020_specific_*.csv
 
   analyse_dataset_older_adults_covid_further_s4_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults
-      season4_start_date season4_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults season4_start_date
+      season4_end_date specific primary
     needs:
     - process_dataset_older_adults_s4_specific_primary
     outputs:
@@ -1419,8 +1419,8 @@ actions:
         csv: output/results/models/covid_primary/*_older_adults_2020_2021_specific_*.csv
 
   analyse_dataset_older_adults_covid_further_s5_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults
-      season5_start_date season5_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults season5_start_date
+      season5_end_date specific primary
     needs:
     - process_dataset_older_adults_s5_specific_primary
     outputs:
@@ -1528,8 +1528,8 @@ actions:
         csv: output/results/models/covid_primary/*_older_adults_2021_2022_specific_*.csv
 
   analyse_dataset_older_adults_covid_further_s6_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults
-      season6_start_date season6_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults season6_start_date
+      season6_end_date specific primary
     needs:
     - process_dataset_older_adults_s6_specific_primary
     outputs:
@@ -1637,8 +1637,8 @@ actions:
         csv: output/results/models/covid_primary/*_older_adults_2022_2023_specific_*.csv
 
   analyse_dataset_older_adults_covid_further_s7_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults
-      season7_start_date season7_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults season7_start_date
+      season7_end_date specific primary
     needs:
     - process_dataset_older_adults_s7_specific_primary
     outputs:
@@ -1746,8 +1746,8 @@ actions:
         csv: output/results/models/covid_primary/*_older_adults_2023_2024_specific_*.csv
 
   analyse_dataset_older_adults_covid_further_s8_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults
-      season8_start_date season8_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults season8_start_date
+      season8_end_date specific primary
     needs:
     - process_dataset_older_adults_s8_specific_primary
     outputs:
@@ -1815,8 +1815,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2016_2017_specific_primary.csv
 
   analyse_dataset_adults_rsv_s1_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season1_start_date
-      season1_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season1_start_date season1_end_date
+      specific primary
     needs:
     - process_dataset_adults_s1_specific_primary
     outputs:
@@ -1833,8 +1833,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2016_2017_specific_*.csv
 
   analyse_dataset_adults_flu_s1_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season1_start_date
-      season1_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season1_start_date season1_end_date
+      specific primary
     needs:
     - process_dataset_adults_s1_specific_primary
     outputs:
@@ -1906,8 +1906,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2017_2018_specific_primary.csv
 
   analyse_dataset_adults_rsv_s2_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season2_start_date
-      season2_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season2_start_date season2_end_date
+      specific primary
     needs:
     - process_dataset_adults_s2_specific_primary
     outputs:
@@ -1924,8 +1924,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2017_2018_specific_*.csv
 
   analyse_dataset_adults_flu_s2_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season2_start_date
-      season2_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season2_start_date season2_end_date
+      specific primary
     needs:
     - process_dataset_adults_s2_specific_primary
     outputs:
@@ -1997,8 +1997,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2018_2019_specific_primary.csv
 
   analyse_dataset_adults_rsv_s3_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season3_start_date
-      season3_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season3_start_date season3_end_date
+      specific primary
     needs:
     - process_dataset_adults_s3_specific_primary
     outputs:
@@ -2015,8 +2015,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2018_2019_specific_*.csv
 
   analyse_dataset_adults_flu_s3_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season3_start_date
-      season3_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season3_start_date season3_end_date
+      specific primary
     needs:
     - process_dataset_adults_s3_specific_primary
     outputs:
@@ -2088,8 +2088,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2019_2020_specific_primary.csv
 
   analyse_dataset_adults_rsv_s4_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season4_start_date
-      season4_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season4_start_date season4_end_date
+      specific primary
     needs:
     - process_dataset_adults_s4_specific_primary
     outputs:
@@ -2106,8 +2106,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2019_2020_specific_*.csv
 
   analyse_dataset_adults_flu_s4_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season4_start_date
-      season4_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season4_start_date season4_end_date
+      specific primary
     needs:
     - process_dataset_adults_s4_specific_primary
     outputs:
@@ -2198,8 +2198,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2020_2021_specific_primary.csv
 
   analyse_dataset_adults_rsv_s5_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season5_start_date
-      season5_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season5_start_date season5_end_date
+      specific primary
     needs:
     - process_dataset_adults_s5_specific_primary
     outputs:
@@ -2216,8 +2216,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2020_2021_specific_*.csv
 
   analyse_dataset_adults_flu_s5_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season5_start_date
-      season5_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season5_start_date season5_end_date
+      specific primary
     needs:
     - process_dataset_adults_s5_specific_primary
     outputs:
@@ -2307,8 +2307,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2021_2022_specific_primary.csv
 
   analyse_dataset_adults_rsv_s6_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season6_start_date
-      season6_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season6_start_date season6_end_date
+      specific primary
     needs:
     - process_dataset_adults_s6_specific_primary
     outputs:
@@ -2325,8 +2325,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2021_2022_specific_*.csv
 
   analyse_dataset_adults_flu_s6_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season6_start_date
-      season6_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season6_start_date season6_end_date
+      specific primary
     needs:
     - process_dataset_adults_s6_specific_primary
     outputs:
@@ -2416,8 +2416,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2022_2023_specific_primary.csv
 
   analyse_dataset_adults_rsv_s7_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season7_start_date
-      season7_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season7_start_date season7_end_date
+      specific primary
     needs:
     - process_dataset_adults_s7_specific_primary
     outputs:
@@ -2434,8 +2434,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2022_2023_specific_*.csv
 
   analyse_dataset_adults_flu_s7_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season7_start_date
-      season7_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season7_start_date season7_end_date
+      specific primary
     needs:
     - process_dataset_adults_s7_specific_primary
     outputs:
@@ -2525,8 +2525,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2023_2024_specific_primary.csv
 
   analyse_dataset_adults_rsv_s8_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season8_start_date
-      season8_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season8_start_date season8_end_date
+      specific primary
     needs:
     - process_dataset_adults_s8_specific_primary
     outputs:
@@ -2543,8 +2543,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2023_2024_specific_*.csv
 
   analyse_dataset_adults_flu_s8_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season8_start_date
-      season8_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season8_start_date season8_end_date
+      specific primary
     needs:
     - process_dataset_adults_s8_specific_primary
     outputs:
@@ -2639,8 +2639,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2016_2017_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s1_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season1_start_date season1_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season1_start_date
+      season1_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s1_specific_primary
     outputs:
@@ -2657,8 +2657,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2016_2017_specific_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s1_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season1_start_date season1_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season1_start_date
+      season1_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s1_specific_primary
     outputs:
@@ -2730,8 +2730,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2017_2018_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s2_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season2_start_date season2_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season2_start_date
+      season2_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s2_specific_primary
     outputs:
@@ -2748,8 +2748,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2017_2018_specific_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s2_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season2_start_date season2_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season2_start_date
+      season2_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s2_specific_primary
     outputs:
@@ -2821,8 +2821,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2018_2019_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s3_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season3_start_date season3_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season3_start_date
+      season3_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s3_specific_primary
     outputs:
@@ -2839,8 +2839,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2018_2019_specific_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s3_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season3_start_date season3_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season3_start_date
+      season3_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s3_specific_primary
     outputs:
@@ -2912,8 +2912,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2019_2020_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s4_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season4_start_date season4_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season4_start_date
+      season4_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s4_specific_primary
     outputs:
@@ -2930,8 +2930,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2019_2020_specific_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s4_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season4_start_date season4_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season4_start_date
+      season4_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s4_specific_primary
     outputs:
@@ -3022,8 +3022,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2020_2021_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s5_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season5_start_date season5_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season5_start_date
+      season5_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s5_specific_primary
     outputs:
@@ -3040,8 +3040,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2020_2021_specific_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s5_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season5_start_date season5_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season5_start_date
+      season5_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s5_specific_primary
     outputs:
@@ -3131,8 +3131,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2021_2022_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s6_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season6_start_date season6_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season6_start_date
+      season6_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s6_specific_primary
     outputs:
@@ -3149,8 +3149,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2021_2022_specific_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s6_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season6_start_date season6_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season6_start_date
+      season6_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s6_specific_primary
     outputs:
@@ -3240,8 +3240,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2022_2023_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s7_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season7_start_date season7_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season7_start_date
+      season7_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s7_specific_primary
     outputs:
@@ -3258,8 +3258,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2022_2023_specific_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s7_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season7_start_date season7_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season7_start_date
+      season7_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s7_specific_primary
     outputs:
@@ -3349,8 +3349,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2023_2024_specific_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s8_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season8_start_date season8_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season8_start_date
+      season8_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s8_specific_primary
     outputs:
@@ -3367,8 +3367,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2023_2024_specific_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s8_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season8_start_date season8_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season8_start_date
+      season8_end_date specific primary
     needs:
     - process_dataset_children_and_adolescents_s8_specific_primary
     outputs:
@@ -3481,8 +3481,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2016_2017_specific_primary.csv
 
   analyse_dataset_infants_rsv_ses_s1_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season1_start_date
-      season1_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season1_start_date season1_end_date
+      specific primary
     needs:
     - process_dataset_infants_s1_specific_primary
     outputs:
@@ -3490,8 +3490,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2016_2017_specific_primary.csv
 
   analyse_dataset_infants_flu_ses_s1_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season1_start_date
-      season1_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season1_start_date season1_end_date
+      specific primary
     needs:
     - process_dataset_infants_s1_specific_primary
     outputs:
@@ -3553,8 +3553,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ses_model_outputs_infants_2016_2017_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s1_specific_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season1_start_date season1_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season1_start_date
+      season1_end_date specific primary
     needs:
     - process_dataset_infants_s1_specific_primary
     outputs:
@@ -3562,8 +3562,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2016_2017_specific_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s1_specific_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season1_start_date season1_end_date specific primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season1_start_date
+      season1_end_date specific primary
     needs:
     - process_dataset_infants_s1_specific_primary
     outputs:
@@ -3644,8 +3644,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2017_2018_specific_primary.csv
 
   analyse_dataset_infants_rsv_ses_s2_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season2_start_date
-      season2_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season2_start_date season2_end_date
+      specific primary
     needs:
     - process_dataset_infants_s2_specific_primary
     outputs:
@@ -3653,8 +3653,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2017_2018_specific_primary.csv
 
   analyse_dataset_infants_flu_ses_s2_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season2_start_date
-      season2_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season2_start_date season2_end_date
+      specific primary
     needs:
     - process_dataset_infants_s2_specific_primary
     outputs:
@@ -3716,8 +3716,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ses_model_outputs_infants_2017_2018_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s2_specific_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season2_start_date season2_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season2_start_date
+      season2_end_date specific primary
     needs:
     - process_dataset_infants_s2_specific_primary
     outputs:
@@ -3725,8 +3725,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2017_2018_specific_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s2_specific_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season2_start_date season2_end_date specific primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season2_start_date
+      season2_end_date specific primary
     needs:
     - process_dataset_infants_s2_specific_primary
     outputs:
@@ -3807,8 +3807,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2018_2019_specific_primary.csv
 
   analyse_dataset_infants_rsv_ses_s3_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season3_start_date
-      season3_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season3_start_date season3_end_date
+      specific primary
     needs:
     - process_dataset_infants_s3_specific_primary
     outputs:
@@ -3816,8 +3816,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2018_2019_specific_primary.csv
 
   analyse_dataset_infants_flu_ses_s3_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season3_start_date
-      season3_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season3_start_date season3_end_date
+      specific primary
     needs:
     - process_dataset_infants_s3_specific_primary
     outputs:
@@ -3879,8 +3879,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ses_model_outputs_infants_2018_2019_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s3_specific_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season3_start_date season3_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season3_start_date
+      season3_end_date specific primary
     needs:
     - process_dataset_infants_s3_specific_primary
     outputs:
@@ -3888,8 +3888,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2018_2019_specific_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s3_specific_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season3_start_date season3_end_date specific primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season3_start_date
+      season3_end_date specific primary
     needs:
     - process_dataset_infants_s3_specific_primary
     outputs:
@@ -3970,8 +3970,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_rsv_ses_s4_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season4_start_date
-      season4_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season4_start_date season4_end_date
+      specific primary
     needs:
     - process_dataset_infants_s4_specific_primary
     outputs:
@@ -3979,8 +3979,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_flu_ses_s4_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season4_start_date
-      season4_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season4_start_date season4_end_date
+      specific primary
     needs:
     - process_dataset_infants_s4_specific_primary
     outputs:
@@ -4042,8 +4042,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ses_model_outputs_infants_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s4_specific_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season4_start_date season4_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season4_start_date
+      season4_end_date specific primary
     needs:
     - process_dataset_infants_s4_specific_primary
     outputs:
@@ -4051,8 +4051,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s4_specific_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season4_start_date season4_end_date specific primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season4_start_date
+      season4_end_date specific primary
     needs:
     - process_dataset_infants_s4_specific_primary
     outputs:
@@ -4087,8 +4087,8 @@ actions:
         csv: output/results/models/covid_primary/covid_ethnicity_ses_model_outputs_infants_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_further_s4_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants
-      season4_start_date season4_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants season4_start_date
+      season4_end_date specific primary
     needs:
     - process_dataset_infants_s4_specific_primary
     outputs:
@@ -4187,8 +4187,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_rsv_ses_s5_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season5_start_date
-      season5_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season5_start_date season5_end_date
+      specific primary
     needs:
     - process_dataset_infants_s5_specific_primary
     outputs:
@@ -4196,8 +4196,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_flu_ses_s5_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season5_start_date
-      season5_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season5_start_date season5_end_date
+      specific primary
     needs:
     - process_dataset_infants_s5_specific_primary
     outputs:
@@ -4259,8 +4259,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ses_model_outputs_infants_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s5_specific_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season5_start_date season5_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season5_start_date
+      season5_end_date specific primary
     needs:
     - process_dataset_infants_s5_specific_primary
     outputs:
@@ -4268,8 +4268,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s5_specific_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season5_start_date season5_end_date specific primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season5_start_date
+      season5_end_date specific primary
     needs:
     - process_dataset_infants_s5_specific_primary
     outputs:
@@ -4304,8 +4304,8 @@ actions:
         csv: output/results/models/covid_primary/covid_ethnicity_ses_model_outputs_infants_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_further_s5_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants
-      season5_start_date season5_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants season5_start_date
+      season5_end_date specific primary
     needs:
     - process_dataset_infants_s5_specific_primary
     outputs:
@@ -4404,8 +4404,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_rsv_ses_s6_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season6_start_date
-      season6_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season6_start_date season6_end_date
+      specific primary
     needs:
     - process_dataset_infants_s6_specific_primary
     outputs:
@@ -4413,8 +4413,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_flu_ses_s6_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season6_start_date
-      season6_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season6_start_date season6_end_date
+      specific primary
     needs:
     - process_dataset_infants_s6_specific_primary
     outputs:
@@ -4476,8 +4476,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ses_model_outputs_infants_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s6_specific_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season6_start_date season6_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season6_start_date
+      season6_end_date specific primary
     needs:
     - process_dataset_infants_s6_specific_primary
     outputs:
@@ -4485,8 +4485,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s6_specific_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season6_start_date season6_end_date specific primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season6_start_date
+      season6_end_date specific primary
     needs:
     - process_dataset_infants_s6_specific_primary
     outputs:
@@ -4521,8 +4521,8 @@ actions:
         csv: output/results/models/covid_primary/covid_ethnicity_ses_model_outputs_infants_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_further_s6_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants
-      season6_start_date season6_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants season6_start_date
+      season6_end_date specific primary
     needs:
     - process_dataset_infants_s6_specific_primary
     outputs:
@@ -4621,8 +4621,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_rsv_ses_s7_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season7_start_date
-      season7_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season7_start_date season7_end_date
+      specific primary
     needs:
     - process_dataset_infants_s7_specific_primary
     outputs:
@@ -4630,8 +4630,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_flu_ses_s7_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season7_start_date
-      season7_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season7_start_date season7_end_date
+      specific primary
     needs:
     - process_dataset_infants_s7_specific_primary
     outputs:
@@ -4693,8 +4693,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ses_model_outputs_infants_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s7_specific_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season7_start_date season7_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season7_start_date
+      season7_end_date specific primary
     needs:
     - process_dataset_infants_s7_specific_primary
     outputs:
@@ -4702,8 +4702,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s7_specific_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season7_start_date season7_end_date specific primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season7_start_date
+      season7_end_date specific primary
     needs:
     - process_dataset_infants_s7_specific_primary
     outputs:
@@ -4738,8 +4738,8 @@ actions:
         csv: output/results/models/covid_primary/covid_ethnicity_ses_model_outputs_infants_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_further_s7_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants
-      season7_start_date season7_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants season7_start_date
+      season7_end_date specific primary
     needs:
     - process_dataset_infants_s7_specific_primary
     outputs:
@@ -4838,8 +4838,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ethnicity_model_outputs_infants_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_rsv_ses_s8_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season8_start_date
-      season8_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season8_start_date season8_end_date
+      specific primary
     needs:
     - process_dataset_infants_s8_specific_primary
     outputs:
@@ -4847,8 +4847,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_flu_ses_s8_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season8_start_date
-      season8_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season8_start_date season8_end_date
+      specific primary
     needs:
     - process_dataset_infants_s8_specific_primary
     outputs:
@@ -4910,8 +4910,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ses_model_outputs_infants_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s8_specific_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season8_start_date season8_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season8_start_date
+      season8_end_date specific primary
     needs:
     - process_dataset_infants_s8_specific_primary
     outputs:
@@ -4919,8 +4919,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s8_specific_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season8_start_date season8_end_date specific primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season8_start_date
+      season8_end_date specific primary
     needs:
     - process_dataset_infants_s8_specific_primary
     outputs:
@@ -4955,8 +4955,8 @@ actions:
         csv: output/results/models/covid_primary/covid_ethnicity_ses_model_outputs_infants_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_further_s8_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants
-      season8_start_date season8_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants season8_start_date
+      season8_end_date specific primary
     needs:
     - process_dataset_infants_s8_specific_primary
     outputs:
@@ -5039,8 +5039,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2016_2017_specific_primary.csv
 
   get_counts_infants_subgroup_s1_specific_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season1_start_date
-      season1_end_date specific primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season1_start_date season1_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s1_specific_primary
     outputs:
@@ -5057,8 +5057,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2016_2017_specific_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s1_specific_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season1_start_date
-      season1_end_date specific primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season1_start_date season1_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s1_specific_primary
     outputs:
@@ -5102,8 +5102,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2016_2017_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s1_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season1_start_date season1_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season1_start_date
+      season1_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s1_specific_primary
     outputs:
@@ -5111,8 +5111,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2016_2017_specific_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s1_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season1_start_date season1_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season1_start_date
+      season1_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s1_specific_primary
     outputs:
@@ -5226,8 +5226,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2017_2018_specific_primary.csv
 
   get_counts_infants_subgroup_s2_specific_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season2_start_date
-      season2_end_date specific primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season2_start_date season2_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s2_specific_primary
     outputs:
@@ -5244,8 +5244,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2017_2018_specific_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s2_specific_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season2_start_date
-      season2_end_date specific primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season2_start_date season2_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s2_specific_primary
     outputs:
@@ -5289,8 +5289,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2017_2018_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s2_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season2_start_date season2_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season2_start_date
+      season2_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s2_specific_primary
     outputs:
@@ -5298,8 +5298,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2017_2018_specific_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s2_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season2_start_date season2_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season2_start_date
+      season2_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s2_specific_primary
     outputs:
@@ -5413,8 +5413,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2018_2019_specific_primary.csv
 
   get_counts_infants_subgroup_s3_specific_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season3_start_date
-      season3_end_date specific primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season3_start_date season3_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s3_specific_primary
     outputs:
@@ -5431,8 +5431,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2018_2019_specific_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s3_specific_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season3_start_date
-      season3_end_date specific primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season3_start_date season3_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s3_specific_primary
     outputs:
@@ -5476,8 +5476,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2018_2019_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s3_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season3_start_date season3_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season3_start_date
+      season3_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s3_specific_primary
     outputs:
@@ -5485,8 +5485,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2018_2019_specific_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s3_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season3_start_date season3_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season3_start_date
+      season3_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s3_specific_primary
     outputs:
@@ -5600,8 +5600,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2019_2020_specific_primary.csv
 
   get_counts_infants_subgroup_s4_specific_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season4_start_date
-      season4_end_date specific primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season4_start_date season4_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s4_specific_primary
     outputs:
@@ -5618,8 +5618,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2019_2020_specific_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s4_specific_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season4_start_date
-      season4_end_date specific primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season4_start_date season4_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s4_specific_primary
     outputs:
@@ -5663,8 +5663,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s4_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season4_start_date season4_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season4_start_date
+      season4_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s4_specific_primary
     outputs:
@@ -5672,8 +5672,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s4_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season4_start_date season4_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season4_start_date
+      season4_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s4_specific_primary
     outputs:
@@ -5735,8 +5735,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ethnicity_ses_model_outputs_infants_subgroup_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s4_specific_primary:
-    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
-      season4_start_date season4_end_date specific primary
+    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup season4_start_date
+      season4_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s4_specific_primary
     outputs:
@@ -5771,8 +5771,8 @@ actions:
         csv: output/results/models/covid_primary/further_covid_ethnicity_model_outputs_infants_subgroup_2019_2020_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ses_further_s4_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup
-      season4_start_date season4_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup season4_start_date
+      season4_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s4_specific_primary
     outputs:
@@ -5841,8 +5841,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2020_2021_specific_primary.csv
 
   get_counts_infants_subgroup_s5_specific_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season5_start_date
-      season5_end_date specific primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season5_start_date season5_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s5_specific_primary
     outputs:
@@ -5859,8 +5859,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2020_2021_specific_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s5_specific_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season5_start_date
-      season5_end_date specific primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season5_start_date season5_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s5_specific_primary
     outputs:
@@ -5904,8 +5904,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s5_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season5_start_date season5_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season5_start_date
+      season5_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s5_specific_primary
     outputs:
@@ -5913,8 +5913,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s5_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season5_start_date season5_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season5_start_date
+      season5_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s5_specific_primary
     outputs:
@@ -5976,8 +5976,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ethnicity_ses_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s5_specific_primary:
-    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
-      season5_start_date season5_end_date specific primary
+    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup season5_start_date
+      season5_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s5_specific_primary
     outputs:
@@ -6012,8 +6012,8 @@ actions:
         csv: output/results/models/covid_primary/further_covid_ethnicity_model_outputs_infants_subgroup_2020_2021_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ses_further_s5_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup
-      season5_start_date season5_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup season5_start_date
+      season5_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s5_specific_primary
     outputs:
@@ -6082,8 +6082,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2021_2022_specific_primary.csv
 
   get_counts_infants_subgroup_s6_specific_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season6_start_date
-      season6_end_date specific primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season6_start_date season6_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s6_specific_primary
     outputs:
@@ -6100,8 +6100,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2021_2022_specific_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s6_specific_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season6_start_date
-      season6_end_date specific primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season6_start_date season6_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s6_specific_primary
     outputs:
@@ -6145,8 +6145,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s6_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season6_start_date season6_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season6_start_date
+      season6_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s6_specific_primary
     outputs:
@@ -6154,8 +6154,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s6_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season6_start_date season6_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season6_start_date
+      season6_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s6_specific_primary
     outputs:
@@ -6217,8 +6217,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ethnicity_ses_model_outputs_infants_subgroup_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s6_specific_primary:
-    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
-      season6_start_date season6_end_date specific primary
+    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup season6_start_date
+      season6_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s6_specific_primary
     outputs:
@@ -6253,8 +6253,8 @@ actions:
         csv: output/results/models/covid_primary/further_covid_ethnicity_model_outputs_infants_subgroup_2021_2022_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ses_further_s6_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup
-      season6_start_date season6_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup season6_start_date
+      season6_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s6_specific_primary
     outputs:
@@ -6323,8 +6323,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2022_2023_specific_primary.csv
 
   get_counts_infants_subgroup_s7_specific_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season7_start_date
-      season7_end_date specific primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season7_start_date season7_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s7_specific_primary
     outputs:
@@ -6341,8 +6341,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2022_2023_specific_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s7_specific_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season7_start_date
-      season7_end_date specific primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season7_start_date season7_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s7_specific_primary
     outputs:
@@ -6386,8 +6386,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s7_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season7_start_date season7_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season7_start_date
+      season7_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s7_specific_primary
     outputs:
@@ -6395,8 +6395,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s7_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season7_start_date season7_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season7_start_date
+      season7_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s7_specific_primary
     outputs:
@@ -6458,8 +6458,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ethnicity_ses_model_outputs_infants_subgroup_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s7_specific_primary:
-    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
-      season7_start_date season7_end_date specific primary
+    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup season7_start_date
+      season7_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s7_specific_primary
     outputs:
@@ -6494,8 +6494,8 @@ actions:
         csv: output/results/models/covid_primary/further_covid_ethnicity_model_outputs_infants_subgroup_2022_2023_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ses_further_s7_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup
-      season7_start_date season7_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup season7_start_date
+      season7_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s7_specific_primary
     outputs:
@@ -6564,8 +6564,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2023_2024_specific_primary.csv
 
   get_counts_infants_subgroup_s8_specific_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season8_start_date
-      season8_end_date specific primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season8_start_date season8_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s8_specific_primary
     outputs:
@@ -6582,8 +6582,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2023_2024_specific_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s8_specific_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season8_start_date
-      season8_end_date specific primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season8_start_date season8_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s8_specific_primary
     outputs:
@@ -6627,8 +6627,8 @@ actions:
         csv: output/results/models/flu_primary/flu_ses_model_outputs_infants_subgroup_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s8_specific_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season8_start_date season8_end_date specific primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season8_start_date
+      season8_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s8_specific_primary
     outputs:
@@ -6636,8 +6636,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s8_specific_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season8_start_date season8_end_date specific primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season8_start_date
+      season8_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s8_specific_primary
     outputs:
@@ -6699,8 +6699,8 @@ actions:
         csv: output/results/models/flu_primary/further_flu_ethnicity_ses_model_outputs_infants_subgroup_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s8_specific_primary:
-    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
-      season8_start_date season8_end_date specific primary
+    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup season8_start_date
+      season8_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s8_specific_primary
     outputs:
@@ -6735,8 +6735,8 @@ actions:
         csv: output/results/models/covid_primary/further_covid_ethnicity_model_outputs_infants_subgroup_2023_2024_specific_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ses_further_s8_specific_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup
-      season8_start_date season8_end_date specific primary
+    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup season8_start_date
+      season8_end_date specific primary
     needs:
     - process_dataset_infants_subgroup_s8_specific_primary
     outputs:
@@ -7206,8 +7206,8 @@ actions:
         csv: output/results/models/covid_primary/*_older_adults_2019_2020_sensitive_*.csv
 
   analyse_dataset_older_adults_covid_further_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults
-      season4_start_date season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults season4_start_date
+      season4_end_date sensitive primary
     needs:
     - process_dataset_older_adults_s4_sensitive_primary
     outputs:
@@ -7334,8 +7334,8 @@ actions:
         csv: output/results/models/covid_primary/*_older_adults_2020_2021_sensitive_*.csv
 
   analyse_dataset_older_adults_covid_further_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults
-      season5_start_date season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults season5_start_date
+      season5_end_date sensitive primary
     needs:
     - process_dataset_older_adults_s5_sensitive_primary
     outputs:
@@ -7461,8 +7461,8 @@ actions:
         csv: output/results/models/covid_primary/*_older_adults_2021_2022_sensitive_*.csv
 
   analyse_dataset_older_adults_covid_further_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults
-      season6_start_date season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults season6_start_date
+      season6_end_date sensitive primary
     needs:
     - process_dataset_older_adults_s6_sensitive_primary
     outputs:
@@ -7588,8 +7588,8 @@ actions:
         csv: output/results/models/covid_primary/*_older_adults_2022_2023_sensitive_*.csv
 
   analyse_dataset_older_adults_covid_further_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults
-      season7_start_date season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults season7_start_date
+      season7_end_date sensitive primary
     needs:
     - process_dataset_older_adults_s7_sensitive_primary
     outputs:
@@ -7715,8 +7715,8 @@ actions:
         csv: output/results/models/covid_primary/*_older_adults_2023_2024_sensitive_*.csv
 
   analyse_dataset_older_adults_covid_further_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults
-      season8_start_date season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_models_master.R older_adults season8_start_date
+      season8_end_date sensitive primary
     needs:
     - process_dataset_older_adults_s8_sensitive_primary
     outputs:
@@ -7784,8 +7784,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2016_2017_sensitive_primary.csv
 
   analyse_dataset_adults_rsv_s1_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season1_start_date
-      season1_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season1_start_date season1_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s1_sensitive_primary
     outputs:
@@ -7802,8 +7802,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2016_2017_sensitive_*.csv
 
   analyse_dataset_adults_flu_s1_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season1_start_date
-      season1_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season1_start_date season1_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s1_sensitive_primary
     outputs:
@@ -7893,8 +7893,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2017_2018_sensitive_primary.csv
 
   analyse_dataset_adults_rsv_s2_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season2_start_date
-      season2_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season2_start_date season2_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s2_sensitive_primary
     outputs:
@@ -7911,8 +7911,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2017_2018_sensitive_*.csv
 
   analyse_dataset_adults_flu_s2_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season2_start_date
-      season2_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season2_start_date season2_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s2_sensitive_primary
     outputs:
@@ -8002,8 +8002,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2018_2019_sensitive_primary.csv
 
   analyse_dataset_adults_rsv_s3_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season3_start_date
-      season3_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season3_start_date season3_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s3_sensitive_primary
     outputs:
@@ -8020,8 +8020,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2018_2019_sensitive_*.csv
 
   analyse_dataset_adults_flu_s3_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season3_start_date
-      season3_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season3_start_date season3_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s3_sensitive_primary
     outputs:
@@ -8111,8 +8111,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2019_2020_sensitive_primary.csv
 
   analyse_dataset_adults_rsv_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season4_start_date
-      season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season4_start_date season4_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s4_sensitive_primary
     outputs:
@@ -8129,8 +8129,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2019_2020_sensitive_*.csv
 
   analyse_dataset_adults_flu_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season4_start_date
-      season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season4_start_date season4_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s4_sensitive_primary
     outputs:
@@ -8239,8 +8239,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2020_2021_sensitive_primary.csv
 
   analyse_dataset_adults_rsv_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season5_start_date
-      season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season5_start_date season5_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s5_sensitive_primary
     outputs:
@@ -8257,8 +8257,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2020_2021_sensitive_*.csv
 
   analyse_dataset_adults_flu_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season5_start_date
-      season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season5_start_date season5_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s5_sensitive_primary
     outputs:
@@ -8366,8 +8366,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2021_2022_sensitive_primary.csv
 
   analyse_dataset_adults_rsv_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season6_start_date
-      season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season6_start_date season6_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s6_sensitive_primary
     outputs:
@@ -8384,8 +8384,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2021_2022_sensitive_*.csv
 
   analyse_dataset_adults_flu_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season6_start_date
-      season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season6_start_date season6_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s6_sensitive_primary
     outputs:
@@ -8493,8 +8493,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2022_2023_sensitive_primary.csv
 
   analyse_dataset_adults_rsv_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season7_start_date
-      season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season7_start_date season7_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s7_sensitive_primary
     outputs:
@@ -8511,8 +8511,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2022_2023_sensitive_*.csv
 
   analyse_dataset_adults_flu_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season7_start_date
-      season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season7_start_date season7_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s7_sensitive_primary
     outputs:
@@ -8620,8 +8620,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_adults_2023_2024_sensitive_primary.csv
 
   analyse_dataset_adults_rsv_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season8_start_date
-      season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season8_start_date season8_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s8_sensitive_primary
     outputs:
@@ -8638,8 +8638,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_adults_2023_2024_sensitive_*.csv
 
   analyse_dataset_adults_flu_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season8_start_date
-      season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season8_start_date season8_end_date
+      sensitive primary
     needs:
     - process_dataset_adults_s8_sensitive_primary
     outputs:
@@ -8752,8 +8752,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2016_2017_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s1_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season1_start_date season1_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season1_start_date
+      season1_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s1_sensitive_primary
     outputs:
@@ -8770,8 +8770,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2016_2017_sensitive_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s1_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season1_start_date season1_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season1_start_date
+      season1_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s1_sensitive_primary
     outputs:
@@ -8861,8 +8861,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2017_2018_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s2_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season2_start_date season2_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season2_start_date
+      season2_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s2_sensitive_primary
     outputs:
@@ -8879,8 +8879,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2017_2018_sensitive_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s2_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season2_start_date season2_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season2_start_date
+      season2_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s2_sensitive_primary
     outputs:
@@ -8970,8 +8970,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2018_2019_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s3_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season3_start_date season3_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season3_start_date
+      season3_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s3_sensitive_primary
     outputs:
@@ -8988,8 +8988,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2018_2019_sensitive_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s3_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season3_start_date season3_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season3_start_date
+      season3_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s3_sensitive_primary
     outputs:
@@ -9079,8 +9079,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2019_2020_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season4_start_date season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season4_start_date
+      season4_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s4_sensitive_primary
     outputs:
@@ -9097,8 +9097,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2019_2020_sensitive_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season4_start_date season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season4_start_date
+      season4_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s4_sensitive_primary
     outputs:
@@ -9207,8 +9207,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2020_2021_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season5_start_date season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season5_start_date
+      season5_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s5_sensitive_primary
     outputs:
@@ -9225,8 +9225,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2020_2021_sensitive_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season5_start_date season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season5_start_date
+      season5_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s5_sensitive_primary
     outputs:
@@ -9334,8 +9334,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2021_2022_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season6_start_date season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season6_start_date
+      season6_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s6_sensitive_primary
     outputs:
@@ -9352,8 +9352,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2021_2022_sensitive_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season6_start_date season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season6_start_date
+      season6_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s6_sensitive_primary
     outputs:
@@ -9461,8 +9461,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2022_2023_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season7_start_date season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season7_start_date
+      season7_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s7_sensitive_primary
     outputs:
@@ -9479,8 +9479,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2022_2023_sensitive_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season7_start_date season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season7_start_date
+      season7_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s7_sensitive_primary
     outputs:
@@ -9588,8 +9588,8 @@ actions:
         dataset: output/results/rates/weekly/all/rates_over_time_all_*_children_and_adolescents_2023_2024_sensitive_primary.csv
 
   analyse_dataset_children_and_adolescents_rsv_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season8_start_date season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season8_start_date
+      season8_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s8_sensitive_primary
     outputs:
@@ -9606,8 +9606,8 @@ actions:
         csv: output/results/models/rsv_primary/further_*_children_and_adolescents_2023_2024_sensitive_*.csv
 
   analyse_dataset_children_and_adolescents_flu_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season8_start_date season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season8_start_date
+      season8_end_date sensitive primary
     needs:
     - process_dataset_children_and_adolescents_s8_sensitive_primary
     outputs:
@@ -9747,8 +9747,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2016_2017_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ses_s1_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season1_start_date
-      season1_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season1_start_date season1_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s1_sensitive_primary
     outputs:
@@ -9756,8 +9756,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2016_2017_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ses_s1_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season1_start_date
-      season1_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season1_start_date season1_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s1_sensitive_primary
     outputs:
@@ -9855,8 +9855,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ses_model_outputs_infants_2016_2017_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s1_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season1_start_date season1_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season1_start_date
+      season1_end_date sensitive primary
     needs:
     - process_dataset_infants_s1_sensitive_primary
     outputs:
@@ -9864,8 +9864,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2016_2017_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s1_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season1_start_date season1_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season1_start_date
+      season1_end_date sensitive primary
     needs:
     - process_dataset_infants_s1_sensitive_primary
     outputs:
@@ -9964,8 +9964,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2017_2018_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ses_s2_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season2_start_date
-      season2_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season2_start_date season2_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s2_sensitive_primary
     outputs:
@@ -9973,8 +9973,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2017_2018_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ses_s2_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season2_start_date
-      season2_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season2_start_date season2_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s2_sensitive_primary
     outputs:
@@ -10072,8 +10072,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ses_model_outputs_infants_2017_2018_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s2_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season2_start_date season2_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season2_start_date
+      season2_end_date sensitive primary
     needs:
     - process_dataset_infants_s2_sensitive_primary
     outputs:
@@ -10081,8 +10081,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2017_2018_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s2_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season2_start_date season2_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season2_start_date
+      season2_end_date sensitive primary
     needs:
     - process_dataset_infants_s2_sensitive_primary
     outputs:
@@ -10181,8 +10181,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2018_2019_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ses_s3_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season3_start_date
-      season3_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season3_start_date season3_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s3_sensitive_primary
     outputs:
@@ -10190,8 +10190,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2018_2019_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ses_s3_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season3_start_date
-      season3_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season3_start_date season3_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s3_sensitive_primary
     outputs:
@@ -10289,8 +10289,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ses_model_outputs_infants_2018_2019_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s3_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season3_start_date season3_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season3_start_date
+      season3_end_date sensitive primary
     needs:
     - process_dataset_infants_s3_sensitive_primary
     outputs:
@@ -10298,8 +10298,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2018_2019_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s3_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season3_start_date season3_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season3_start_date
+      season3_end_date sensitive primary
     needs:
     - process_dataset_infants_s3_sensitive_primary
     outputs:
@@ -10398,8 +10398,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ses_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season4_start_date
-      season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season4_start_date season4_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s4_sensitive_primary
     outputs:
@@ -10407,8 +10407,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ses_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season4_start_date
-      season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season4_start_date season4_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s4_sensitive_primary
     outputs:
@@ -10506,8 +10506,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ses_model_outputs_infants_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season4_start_date season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season4_start_date
+      season4_end_date sensitive primary
     needs:
     - process_dataset_infants_s4_sensitive_primary
     outputs:
@@ -10515,8 +10515,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season4_start_date season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season4_start_date
+      season4_end_date sensitive primary
     needs:
     - process_dataset_infants_s4_sensitive_primary
     outputs:
@@ -10560,8 +10560,8 @@ actions:
         csv: output/results/models/covid_primary/covid_ethnicity_ses_model_outputs_infants_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_further_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants
-      season4_start_date season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants season4_start_date
+      season4_end_date sensitive primary
     needs:
     - process_dataset_infants_s4_sensitive_primary
     outputs:
@@ -10669,8 +10669,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2020_2021_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ses_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season5_start_date
-      season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season5_start_date season5_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s5_sensitive_primary
     outputs:
@@ -10678,8 +10678,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2020_2021_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ses_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season5_start_date
-      season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season5_start_date season5_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s5_sensitive_primary
     outputs:
@@ -10777,8 +10777,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ses_model_outputs_infants_2020_2021_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season5_start_date season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season5_start_date
+      season5_end_date sensitive primary
     needs:
     - process_dataset_infants_s5_sensitive_primary
     outputs:
@@ -10786,8 +10786,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2020_2021_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season5_start_date season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season5_start_date
+      season5_end_date sensitive primary
     needs:
     - process_dataset_infants_s5_sensitive_primary
     outputs:
@@ -10831,8 +10831,8 @@ actions:
         csv: output/results/models/covid_primary/covid_ethnicity_ses_model_outputs_infants_2020_2021_sensitive_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_further_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants
-      season5_start_date season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants season5_start_date
+      season5_end_date sensitive primary
     needs:
     - process_dataset_infants_s5_sensitive_primary
     outputs:
@@ -10940,8 +10940,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ses_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season6_start_date
-      season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season6_start_date season6_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s6_sensitive_primary
     outputs:
@@ -10949,8 +10949,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ses_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season6_start_date
-      season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season6_start_date season6_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s6_sensitive_primary
     outputs:
@@ -11048,8 +11048,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ses_model_outputs_infants_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season6_start_date season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season6_start_date
+      season6_end_date sensitive primary
     needs:
     - process_dataset_infants_s6_sensitive_primary
     outputs:
@@ -11057,8 +11057,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season6_start_date season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season6_start_date
+      season6_end_date sensitive primary
     needs:
     - process_dataset_infants_s6_sensitive_primary
     outputs:
@@ -11102,8 +11102,8 @@ actions:
         csv: output/results/models/covid_primary/covid_ethnicity_ses_model_outputs_infants_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_further_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants
-      season6_start_date season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants season6_start_date
+      season6_end_date sensitive primary
     needs:
     - process_dataset_infants_s6_sensitive_primary
     outputs:
@@ -11211,8 +11211,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2022_2023_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ses_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season7_start_date
-      season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season7_start_date season7_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s7_sensitive_primary
     outputs:
@@ -11220,8 +11220,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2022_2023_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ses_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season7_start_date
-      season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season7_start_date season7_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s7_sensitive_primary
     outputs:
@@ -11319,8 +11319,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ses_model_outputs_infants_2022_2023_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season7_start_date season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season7_start_date
+      season7_end_date sensitive primary
     needs:
     - process_dataset_infants_s7_sensitive_primary
     outputs:
@@ -11328,8 +11328,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2022_2023_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season7_start_date season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season7_start_date
+      season7_end_date sensitive primary
     needs:
     - process_dataset_infants_s7_sensitive_primary
     outputs:
@@ -11373,8 +11373,8 @@ actions:
         csv: output/results/models/covid_primary/covid_ethnicity_ses_model_outputs_infants_2022_2023_sensitive_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_further_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants
-      season7_start_date season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants season7_start_date
+      season7_end_date sensitive primary
     needs:
     - process_dataset_infants_s7_sensitive_primary
     outputs:
@@ -11482,8 +11482,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ethnicity_model_outputs_infants_2023_2024_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ses_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season8_start_date
-      season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season8_start_date season8_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s8_sensitive_primary
     outputs:
@@ -11491,8 +11491,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ses_model_outputs_infants_2023_2024_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ses_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season8_start_date
-      season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season8_start_date season8_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_s8_sensitive_primary
     outputs:
@@ -11590,8 +11590,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ses_model_outputs_infants_2023_2024_sensitive_primary.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season8_start_date season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season8_start_date
+      season8_end_date sensitive primary
     needs:
     - process_dataset_infants_s8_sensitive_primary
     outputs:
@@ -11599,8 +11599,8 @@ actions:
         csv: output/results/models/rsv_primary/further_rsv_ethnicity_ses_model_outputs_infants_2023_2024_sensitive_primary.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season8_start_date season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season8_start_date
+      season8_end_date sensitive primary
     needs:
     - process_dataset_infants_s8_sensitive_primary
     outputs:
@@ -11644,8 +11644,8 @@ actions:
         csv: output/results/models/covid_primary/covid_ethnicity_ses_model_outputs_infants_2023_2024_sensitive_primary.csv
 
   analyse_dataset_infants_covid_ethnicity_further_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants
-      season8_start_date season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_ethnicity_models.R infants season8_start_date
+      season8_end_date sensitive primary
     needs:
     - process_dataset_infants_s8_sensitive_primary
     outputs:
@@ -11728,8 +11728,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2016_2017_sensitive_primary.csv
 
   get_counts_infants_subgroup_s1_sensitive_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season1_start_date
-      season1_end_date sensitive primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season1_start_date season1_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s1_sensitive_primary
     outputs:
@@ -11746,8 +11746,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2016_2017_sensitive_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s1_sensitive_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season1_start_date
-      season1_end_date sensitive primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season1_start_date season1_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s1_sensitive_primary
     outputs:
@@ -11809,8 +11809,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2016_2017_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s1_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season1_start_date season1_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season1_start_date
+      season1_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s1_sensitive_primary
     outputs:
@@ -11818,8 +11818,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2016_2017_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s1_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season1_start_date season1_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season1_start_date
+      season1_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s1_sensitive_primary
     outputs:
@@ -11969,8 +11969,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2017_2018_sensitive_primary.csv
 
   get_counts_infants_subgroup_s2_sensitive_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season2_start_date
-      season2_end_date sensitive primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season2_start_date season2_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s2_sensitive_primary
     outputs:
@@ -11987,8 +11987,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2017_2018_sensitive_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s2_sensitive_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season2_start_date
-      season2_end_date sensitive primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season2_start_date season2_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s2_sensitive_primary
     outputs:
@@ -12050,8 +12050,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2017_2018_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s2_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season2_start_date season2_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season2_start_date
+      season2_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s2_sensitive_primary
     outputs:
@@ -12059,8 +12059,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2017_2018_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s2_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season2_start_date season2_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season2_start_date
+      season2_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s2_sensitive_primary
     outputs:
@@ -12210,8 +12210,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2018_2019_sensitive_primary.csv
 
   get_counts_infants_subgroup_s3_sensitive_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season3_start_date
-      season3_end_date sensitive primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season3_start_date season3_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s3_sensitive_primary
     outputs:
@@ -12228,8 +12228,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2018_2019_sensitive_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s3_sensitive_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season3_start_date
-      season3_end_date sensitive primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season3_start_date season3_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s3_sensitive_primary
     outputs:
@@ -12291,8 +12291,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2018_2019_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s3_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season3_start_date season3_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season3_start_date
+      season3_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s3_sensitive_primary
     outputs:
@@ -12300,8 +12300,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2018_2019_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s3_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season3_start_date season3_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season3_start_date
+      season3_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s3_sensitive_primary
     outputs:
@@ -12451,8 +12451,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2019_2020_sensitive_primary.csv
 
   get_counts_infants_subgroup_s4_sensitive_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season4_start_date
-      season4_end_date sensitive primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season4_start_date season4_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s4_sensitive_primary
     outputs:
@@ -12469,8 +12469,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2019_2020_sensitive_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s4_sensitive_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season4_start_date
-      season4_end_date sensitive primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season4_start_date season4_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s4_sensitive_primary
     outputs:
@@ -12532,8 +12532,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season4_start_date season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season4_start_date
+      season4_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s4_sensitive_primary
     outputs:
@@ -12541,8 +12541,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season4_start_date season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season4_start_date
+      season4_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s4_sensitive_primary
     outputs:
@@ -12640,8 +12640,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
-      season4_start_date season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup season4_start_date
+      season4_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s4_sensitive_primary
     outputs:
@@ -12676,8 +12676,8 @@ actions:
         csv: output/results/models/covid_primary/further_covid_ethnicity_model_outputs_infants_subgroup_2019_2020_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ses_further_s4_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup
-      season4_start_date season4_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup season4_start_date
+      season4_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s4_sensitive_primary
     outputs:
@@ -12746,8 +12746,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2020_2021_sensitive_primary.csv
 
   get_counts_infants_subgroup_s5_sensitive_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season5_start_date
-      season5_end_date sensitive primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season5_start_date season5_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s5_sensitive_primary
     outputs:
@@ -12764,8 +12764,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2020_2021_sensitive_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s5_sensitive_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season5_start_date
-      season5_end_date sensitive primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season5_start_date season5_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s5_sensitive_primary
     outputs:
@@ -12827,8 +12827,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2020_2021_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season5_start_date season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season5_start_date
+      season5_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s5_sensitive_primary
     outputs:
@@ -12836,8 +12836,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2020_2021_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season5_start_date season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season5_start_date
+      season5_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s5_sensitive_primary
     outputs:
@@ -12935,8 +12935,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2020_2021_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
-      season5_start_date season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup season5_start_date
+      season5_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s5_sensitive_primary
     outputs:
@@ -12971,8 +12971,8 @@ actions:
         csv: output/results/models/covid_primary/further_covid_ethnicity_model_outputs_infants_subgroup_2020_2021_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ses_further_s5_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup
-      season5_start_date season5_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup season5_start_date
+      season5_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s5_sensitive_primary
     outputs:
@@ -13041,8 +13041,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2021_2022_sensitive_primary.csv
 
   get_counts_infants_subgroup_s6_sensitive_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season6_start_date
-      season6_end_date sensitive primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season6_start_date season6_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s6_sensitive_primary
     outputs:
@@ -13059,8 +13059,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2021_2022_sensitive_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s6_sensitive_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season6_start_date
-      season6_end_date sensitive primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season6_start_date season6_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s6_sensitive_primary
     outputs:
@@ -13122,8 +13122,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season6_start_date season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season6_start_date
+      season6_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s6_sensitive_primary
     outputs:
@@ -13131,8 +13131,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season6_start_date season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season6_start_date
+      season6_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s6_sensitive_primary
     outputs:
@@ -13230,8 +13230,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
-      season6_start_date season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup season6_start_date
+      season6_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s6_sensitive_primary
     outputs:
@@ -13266,8 +13266,8 @@ actions:
         csv: output/results/models/covid_primary/further_covid_ethnicity_model_outputs_infants_subgroup_2021_2022_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ses_further_s6_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup
-      season6_start_date season6_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup season6_start_date
+      season6_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s6_sensitive_primary
     outputs:
@@ -13336,8 +13336,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2022_2023_sensitive_primary.csv
 
   get_counts_infants_subgroup_s7_sensitive_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season7_start_date
-      season7_end_date sensitive primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season7_start_date season7_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s7_sensitive_primary
     outputs:
@@ -13354,8 +13354,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2022_2023_sensitive_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s7_sensitive_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season7_start_date
-      season7_end_date sensitive primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season7_start_date season7_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s7_sensitive_primary
     outputs:
@@ -13417,8 +13417,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2022_2023_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season7_start_date season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season7_start_date
+      season7_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s7_sensitive_primary
     outputs:
@@ -13426,8 +13426,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2022_2023_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season7_start_date season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season7_start_date
+      season7_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s7_sensitive_primary
     outputs:
@@ -13525,8 +13525,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2022_2023_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
-      season7_start_date season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup season7_start_date
+      season7_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s7_sensitive_primary
     outputs:
@@ -13561,8 +13561,8 @@ actions:
         csv: output/results/models/covid_primary/further_covid_ethnicity_model_outputs_infants_subgroup_2022_2023_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ses_further_s7_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup
-      season7_start_date season7_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup season7_start_date
+      season7_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s7_sensitive_primary
     outputs:
@@ -13631,8 +13631,8 @@ actions:
         csv: output/results/rates/rates_infants_subgroup_2023_2024_sensitive_primary.csv
 
   get_counts_infants_subgroup_s8_sensitive_primary:
-    run: r:v2 analysis/counts_over_time.R infants_subgroup season8_start_date
-      season8_end_date sensitive primary
+    run: r:v2 analysis/counts_over_time.R infants_subgroup season8_start_date season8_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s8_sensitive_primary
     outputs:
@@ -13649,8 +13649,8 @@ actions:
         dataset: output/results/rates/weekly/rates_over_time_*_infants_subgroup_2023_2024_sensitive_primary.csv
 
   calculate_all_rates_over_time_infants_subgroup_s8_sensitive_primary:
-    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season8_start_date
-      season8_end_date sensitive primary
+    run: r:v2 analysis/rates_over_time_all.R infants_subgroup season8_start_date season8_end_date
+      sensitive primary
     needs:
     - process_dataset_infants_subgroup_s8_sensitive_primary
     outputs:
@@ -13712,8 +13712,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/overall_and_all_cause_ses_model_outputs_infants_subgroup_2023_2024_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season8_start_date season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season8_start_date
+      season8_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s8_sensitive_primary
     outputs:
@@ -13721,8 +13721,8 @@ actions:
         csv: output/results/models/rsv_primary/rsv_ethnicity_ses_model_outputs_infants_subgroup_2023_2024_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season8_start_date season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season8_start_date
+      season8_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s8_sensitive_primary
     outputs:
@@ -13820,8 +13820,8 @@ actions:
         csv: output/results/models/overall_and_all_cause_primary/further_overall_and_all_cause_ethnicity_ses_model_outputs_infants_subgroup_2023_2024_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ethnicity_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup
-      season8_start_date season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/covid_ethnicity_models.R infants_subgroup season8_start_date
+      season8_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s8_sensitive_primary
     outputs:
@@ -13856,8 +13856,8 @@ actions:
         csv: output/results/models/covid_primary/further_covid_ethnicity_model_outputs_infants_subgroup_2023_2024_sensitive_primary.csv
 
   analyse_dataset_infants_subgroup_covid_ses_further_s8_sensitive_primary:
-    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup
-      season8_start_date season8_end_date sensitive primary
+    run: r:v2 analysis/outcome_covid/further_covid_ses_models.R infants_subgroup season8_start_date
+      season8_end_date sensitive primary
     needs:
     - process_dataset_infants_subgroup_s8_sensitive_primary
     outputs:
@@ -15648,8 +15648,8 @@ actions:
   ## # # # # # # # # # # # # # # # # # # # 
 
   describe_cohort_infants_subgroup_s1:
-    run: r:v2 analysis/cohort_description.R infants_subgroup season1_start_date
-      season1_end_date specific primary
+    run: r:v2 analysis/cohort_description.R infants_subgroup season1_start_date season1_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s1_specific_primary
     outputs:
@@ -15657,8 +15657,8 @@ actions:
         csv: output/table1/table1_infants_subgroup_2016_2017.csv
 
   describe_cohort_infants_subgroup_s2:
-    run: r:v2 analysis/cohort_description.R infants_subgroup season2_start_date
-      season2_end_date specific primary
+    run: r:v2 analysis/cohort_description.R infants_subgroup season2_start_date season2_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s2_specific_primary
     outputs:
@@ -15666,8 +15666,8 @@ actions:
         csv: output/table1/table1_infants_subgroup_2017_2018.csv
 
   describe_cohort_infants_subgroup_s3:
-    run: r:v2 analysis/cohort_description.R infants_subgroup season3_start_date
-      season3_end_date specific primary
+    run: r:v2 analysis/cohort_description.R infants_subgroup season3_start_date season3_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s3_specific_primary
     outputs:
@@ -15675,8 +15675,8 @@ actions:
         csv: output/table1/table1_infants_subgroup_2018_2019.csv
 
   describe_cohort_infants_subgroup_s4:
-    run: r:v2 analysis/cohort_description.R infants_subgroup season4_start_date
-      season4_end_date specific primary
+    run: r:v2 analysis/cohort_description.R infants_subgroup season4_start_date season4_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s4_specific_primary
     outputs:
@@ -15684,8 +15684,8 @@ actions:
         csv: output/table1/table1_infants_subgroup_2019_2020.csv
 
   describe_cohort_infants_subgroup_s5:
-    run: r:v2 analysis/cohort_description.R infants_subgroup season5_start_date
-      season5_end_date specific primary
+    run: r:v2 analysis/cohort_description.R infants_subgroup season5_start_date season5_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s5_specific_primary
     outputs:
@@ -15693,8 +15693,8 @@ actions:
         csv: output/table1/table1_infants_subgroup_2020_2021.csv
 
   describe_cohort_infants_subgroup_s6:
-    run: r:v2 analysis/cohort_description.R infants_subgroup season6_start_date
-      season6_end_date specific primary
+    run: r:v2 analysis/cohort_description.R infants_subgroup season6_start_date season6_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s6_specific_primary
     outputs:
@@ -15702,8 +15702,8 @@ actions:
         csv: output/table1/table1_infants_subgroup_2021_2022.csv
 
   describe_cohort_infants_subgroup_s7:
-    run: r:v2 analysis/cohort_description.R infants_subgroup season7_start_date
-      season7_end_date specific primary
+    run: r:v2 analysis/cohort_description.R infants_subgroup season7_start_date season7_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s7_specific_primary
     outputs:
@@ -15711,8 +15711,8 @@ actions:
         csv: output/table1/table1_infants_subgroup_2022_2023.csv
 
   describe_cohort_infants_subgroup_s8:
-    run: r:v2 analysis/cohort_description.R infants_subgroup season8_start_date
-      season8_end_date specific primary
+    run: r:v2 analysis/cohort_description.R infants_subgroup season8_start_date season8_end_date
+      specific primary
     needs:
     - process_dataset_infants_subgroup_s8_specific_primary
     outputs:
@@ -15936,8 +15936,8 @@ actions:
   ## # # # # # # # # # # # # # # # # # # # 
 
   phenotype_sensitivity_older_adults_s1:
-    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
-      season1_start_date season1_end_date
+    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults season1_start_date
+      season1_end_date
     needs:
     - process_dataset_older_adults_s1_specific_primary
     - process_dataset_older_adults_s1_sensitive_primary
@@ -15972,9 +15972,19 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_older_adults_2016_2017_sensitive.csv
 
+  internal_validations_older_adults_s1:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R older_adults season1_start_date
+      season1_end_date
+    needs:
+    - process_dataset_older_adults_s1_specific_primary
+    - process_dataset_older_adults_s1_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_older_adults_2016_2017.csv
+
   phenotype_sensitivity_older_adults_s2:
-    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
-      season2_start_date season2_end_date
+    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults season2_start_date
+      season2_end_date
     needs:
     - process_dataset_older_adults_s2_specific_primary
     - process_dataset_older_adults_s2_sensitive_primary
@@ -16009,9 +16019,19 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_older_adults_2017_2018_sensitive.csv
 
+  internal_validations_older_adults_s2:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R older_adults season2_start_date
+      season2_end_date
+    needs:
+    - process_dataset_older_adults_s2_specific_primary
+    - process_dataset_older_adults_s2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_older_adults_2017_2018.csv
+
   phenotype_sensitivity_older_adults_s3:
-    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
-      season3_start_date season3_end_date
+    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults season3_start_date
+      season3_end_date
     needs:
     - process_dataset_older_adults_s3_specific_primary
     - process_dataset_older_adults_s3_sensitive_primary
@@ -16046,9 +16066,19 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_older_adults_2018_2019_sensitive.csv
 
+  internal_validations_older_adults_s3:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R older_adults season3_start_date
+      season3_end_date
+    needs:
+    - process_dataset_older_adults_s3_specific_primary
+    - process_dataset_older_adults_s3_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_older_adults_2018_2019.csv
+
   phenotype_sensitivity_older_adults_s4:
-    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
-      season4_start_date season4_end_date
+    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults season4_start_date
+      season4_end_date
     needs:
     - process_dataset_older_adults_s4_specific_primary
     - process_dataset_older_adults_s4_sensitive_primary
@@ -16083,9 +16113,19 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_older_adults_2019_2020_sensitive.csv
 
+  internal_validations_older_adults_s4:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R older_adults season4_start_date
+      season4_end_date
+    needs:
+    - process_dataset_older_adults_s4_specific_primary
+    - process_dataset_older_adults_s4_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_older_adults_2019_2020.csv
+
   phenotype_sensitivity_older_adults_s5:
-    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
-      season5_start_date season5_end_date
+    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults season5_start_date
+      season5_end_date
     needs:
     - process_dataset_older_adults_s5_specific_primary
     - process_dataset_older_adults_s5_sensitive_primary
@@ -16120,9 +16160,19 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_older_adults_2020_2021_sensitive.csv
 
+  internal_validations_older_adults_s5:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R older_adults season5_start_date
+      season5_end_date
+    needs:
+    - process_dataset_older_adults_s5_specific_primary
+    - process_dataset_older_adults_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_older_adults_2020_2021.csv
+
   phenotype_sensitivity_older_adults_s6:
-    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
-      season6_start_date season6_end_date
+    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults season6_start_date
+      season6_end_date
     needs:
     - process_dataset_older_adults_s6_specific_primary
     - process_dataset_older_adults_s6_sensitive_primary
@@ -16157,9 +16207,19 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_older_adults_2021_2022_sensitive.csv
 
+  internal_validations_older_adults_s6:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R older_adults season6_start_date
+      season6_end_date
+    needs:
+    - process_dataset_older_adults_s6_specific_primary
+    - process_dataset_older_adults_s6_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_older_adults_2021_2022.csv
+
   phenotype_sensitivity_older_adults_s7:
-    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
-      season7_start_date season7_end_date
+    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults season7_start_date
+      season7_end_date
     needs:
     - process_dataset_older_adults_s7_specific_primary
     - process_dataset_older_adults_s7_sensitive_primary
@@ -16194,9 +16254,19 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_older_adults_2022_2023_sensitive.csv
 
+  internal_validations_older_adults_s7:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R older_adults season7_start_date
+      season7_end_date
+    needs:
+    - process_dataset_older_adults_s7_specific_primary
+    - process_dataset_older_adults_s7_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_older_adults_2022_2023.csv
+
   phenotype_sensitivity_older_adults_s8:
-    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults
-      season8_start_date season8_end_date
+    run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R older_adults season8_start_date
+      season8_end_date
     needs:
     - process_dataset_older_adults_s8_specific_primary
     - process_dataset_older_adults_s8_sensitive_primary
@@ -16230,6 +16300,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_older_adults_2023_2024_sensitive.csv
+
+  internal_validations_older_adults_s8:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R older_adults season8_start_date
+      season8_end_date
+    needs:
+    - process_dataset_older_adults_s8_specific_primary
+    - process_dataset_older_adults_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_older_adults_2023_2024.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Adults 
@@ -16272,6 +16352,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_adults_2016_2017_sensitive.csv
 
+  internal_validations_adults_s1:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R adults season1_start_date
+      season1_end_date
+    needs:
+    - process_dataset_adults_s1_specific_primary
+    - process_dataset_adults_s1_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_adults_2016_2017.csv
+
   phenotype_sensitivity_adults_s2:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R adults season2_start_date
       season2_end_date
@@ -16308,6 +16398,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_adults_2017_2018_sensitive.csv
+
+  internal_validations_adults_s2:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R adults season2_start_date
+      season2_end_date
+    needs:
+    - process_dataset_adults_s2_specific_primary
+    - process_dataset_adults_s2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_adults_2017_2018.csv
 
   phenotype_sensitivity_adults_s3:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R adults season3_start_date
@@ -16346,6 +16446,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_adults_2018_2019_sensitive.csv
 
+  internal_validations_adults_s3:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R adults season3_start_date
+      season3_end_date
+    needs:
+    - process_dataset_adults_s3_specific_primary
+    - process_dataset_adults_s3_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_adults_2018_2019.csv
+
   phenotype_sensitivity_adults_s4:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R adults season4_start_date
       season4_end_date
@@ -16382,6 +16492,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_adults_2019_2020_sensitive.csv
+
+  internal_validations_adults_s4:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R adults season4_start_date
+      season4_end_date
+    needs:
+    - process_dataset_adults_s4_specific_primary
+    - process_dataset_adults_s4_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_adults_2019_2020.csv
 
   phenotype_sensitivity_adults_s5:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R adults season5_start_date
@@ -16420,6 +16540,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_adults_2020_2021_sensitive.csv
 
+  internal_validations_adults_s5:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R adults season5_start_date
+      season5_end_date
+    needs:
+    - process_dataset_adults_s5_specific_primary
+    - process_dataset_adults_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_adults_2020_2021.csv
+
   phenotype_sensitivity_adults_s6:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R adults season6_start_date
       season6_end_date
@@ -16456,6 +16586,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_adults_2021_2022_sensitive.csv
+
+  internal_validations_adults_s6:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R adults season6_start_date
+      season6_end_date
+    needs:
+    - process_dataset_adults_s6_specific_primary
+    - process_dataset_adults_s6_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_adults_2021_2022.csv
 
   phenotype_sensitivity_adults_s7:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R adults season7_start_date
@@ -16494,6 +16634,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_adults_2022_2023_sensitive.csv
 
+  internal_validations_adults_s7:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R adults season7_start_date
+      season7_end_date
+    needs:
+    - process_dataset_adults_s7_specific_primary
+    - process_dataset_adults_s7_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_adults_2022_2023.csv
+
   phenotype_sensitivity_adults_s8:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R adults season8_start_date
       season8_end_date
@@ -16530,6 +16680,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_adults_2023_2024_sensitive.csv
+
+  internal_validations_adults_s8:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R adults season8_start_date
+      season8_end_date
+    needs:
+    - process_dataset_adults_s8_specific_primary
+    - process_dataset_adults_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_adults_2023_2024.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Children and Adolescents 
@@ -16572,6 +16732,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2016_2017_sensitive.csv
 
+  internal_validations_children_and_adolescents_s1:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R children_and_adolescents
+      season1_start_date season1_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s1_specific_primary
+    - process_dataset_children_and_adolescents_s1_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_children_and_adolescents_2016_2017.csv
+
   phenotype_sensitivity_children_and_adolescents_s2:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season2_start_date season2_end_date
@@ -16608,6 +16778,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2017_2018_sensitive.csv
+
+  internal_validations_children_and_adolescents_s2:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R children_and_adolescents
+      season2_start_date season2_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s2_specific_primary
+    - process_dataset_children_and_adolescents_s2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_children_and_adolescents_2017_2018.csv
 
   phenotype_sensitivity_children_and_adolescents_s3:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -16646,6 +16826,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2018_2019_sensitive.csv
 
+  internal_validations_children_and_adolescents_s3:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R children_and_adolescents
+      season3_start_date season3_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s3_specific_primary
+    - process_dataset_children_and_adolescents_s3_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_children_and_adolescents_2018_2019.csv
+
   phenotype_sensitivity_children_and_adolescents_s4:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season4_start_date season4_end_date
@@ -16682,6 +16872,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2019_2020_sensitive.csv
+
+  internal_validations_children_and_adolescents_s4:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R children_and_adolescents
+      season4_start_date season4_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s4_specific_primary
+    - process_dataset_children_and_adolescents_s4_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_children_and_adolescents_2019_2020.csv
 
   phenotype_sensitivity_children_and_adolescents_s5:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -16720,6 +16920,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2020_2021_sensitive.csv
 
+  internal_validations_children_and_adolescents_s5:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R children_and_adolescents
+      season5_start_date season5_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s5_specific_primary
+    - process_dataset_children_and_adolescents_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_children_and_adolescents_2020_2021.csv
+
   phenotype_sensitivity_children_and_adolescents_s6:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season6_start_date season6_end_date
@@ -16756,6 +16966,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2021_2022_sensitive.csv
+
+  internal_validations_children_and_adolescents_s6:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R children_and_adolescents
+      season6_start_date season6_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s6_specific_primary
+    - process_dataset_children_and_adolescents_s6_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_children_and_adolescents_2021_2022.csv
 
   phenotype_sensitivity_children_and_adolescents_s7:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
@@ -16794,6 +17014,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2022_2023_sensitive.csv
 
+  internal_validations_children_and_adolescents_s7:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R children_and_adolescents
+      season7_start_date season7_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s7_specific_primary
+    - process_dataset_children_and_adolescents_s7_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_children_and_adolescents_2022_2023.csv
+
   phenotype_sensitivity_children_and_adolescents_s8:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R children_and_adolescents
       season8_start_date season8_end_date
@@ -16830,6 +17060,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_children_and_adolescents_2023_2024_sensitive.csv
+
+  internal_validations_children_and_adolescents_s8:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R children_and_adolescents
+      season8_start_date season8_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s8_specific_primary
+    - process_dataset_children_and_adolescents_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_children_and_adolescents_2023_2024.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Infants 
@@ -16872,6 +17112,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_2016_2017_sensitive.csv
 
+  internal_validations_infants_s1:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants season1_start_date
+      season1_end_date
+    needs:
+    - process_dataset_infants_s1_specific_primary
+    - process_dataset_infants_s1_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_2016_2017.csv
+
   phenotype_sensitivity_infants_s2:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants season2_start_date
       season2_end_date
@@ -16908,6 +17158,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_2017_2018_sensitive.csv
+
+  internal_validations_infants_s2:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants season2_start_date
+      season2_end_date
+    needs:
+    - process_dataset_infants_s2_specific_primary
+    - process_dataset_infants_s2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_2017_2018.csv
 
   phenotype_sensitivity_infants_s3:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants season3_start_date
@@ -16946,6 +17206,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_2018_2019_sensitive.csv
 
+  internal_validations_infants_s3:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants season3_start_date
+      season3_end_date
+    needs:
+    - process_dataset_infants_s3_specific_primary
+    - process_dataset_infants_s3_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_2018_2019.csv
+
   phenotype_sensitivity_infants_s4:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants season4_start_date
       season4_end_date
@@ -16982,6 +17252,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_2019_2020_sensitive.csv
+
+  internal_validations_infants_s4:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants season4_start_date
+      season4_end_date
+    needs:
+    - process_dataset_infants_s4_specific_primary
+    - process_dataset_infants_s4_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_2019_2020.csv
 
   phenotype_sensitivity_infants_s5:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants season5_start_date
@@ -17020,6 +17300,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_2020_2021_sensitive.csv
 
+  internal_validations_infants_s5:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants season5_start_date
+      season5_end_date
+    needs:
+    - process_dataset_infants_s5_specific_primary
+    - process_dataset_infants_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_2020_2021.csv
+
   phenotype_sensitivity_infants_s6:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants season6_start_date
       season6_end_date
@@ -17056,6 +17346,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_2021_2022_sensitive.csv
+
+  internal_validations_infants_s6:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants season6_start_date
+      season6_end_date
+    needs:
+    - process_dataset_infants_s6_specific_primary
+    - process_dataset_infants_s6_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_2021_2022.csv
 
   phenotype_sensitivity_infants_s7:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants season7_start_date
@@ -17094,6 +17394,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_2022_2023_sensitive.csv
 
+  internal_validations_infants_s7:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants season7_start_date
+      season7_end_date
+    needs:
+    - process_dataset_infants_s7_specific_primary
+    - process_dataset_infants_s7_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_2022_2023.csv
+
   phenotype_sensitivity_infants_s8:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants season8_start_date
       season8_end_date
@@ -17131,6 +17441,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_2023_2024_sensitive.csv
 
+  internal_validations_infants_s8:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants season8_start_date
+      season8_end_date
+    needs:
+    - process_dataset_infants_s8_specific_primary
+    - process_dataset_infants_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_2023_2024.csv
+
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Infants Subgroup 
   ## # # # # # # # # # # # # # # # # # # # 
@@ -17146,8 +17466,8 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2016_2017.csv
 
   multiple_episodes_infants_subgroup_s1:
-    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
-      season1_start_date season1_end_date
+    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup season1_start_date
+      season1_end_date
     needs:
     - process_dataset_infants_subgroup_s1_specific_primary
     outputs:
@@ -17172,6 +17492,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_subgroup_2016_2017_sensitive.csv
 
+  internal_validations_infants_subgroup_s1:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants_subgroup
+      season1_start_date season1_end_date
+    needs:
+    - process_dataset_infants_subgroup_s1_specific_primary
+    - process_dataset_infants_subgroup_s1_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_subgroup_2016_2017.csv
+
   phenotype_sensitivity_infants_subgroup_s2:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
       season2_start_date season2_end_date
@@ -17183,8 +17513,8 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2017_2018.csv
 
   multiple_episodes_infants_subgroup_s2:
-    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
-      season2_start_date season2_end_date
+    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup season2_start_date
+      season2_end_date
     needs:
     - process_dataset_infants_subgroup_s2_specific_primary
     outputs:
@@ -17209,6 +17539,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_subgroup_2017_2018_sensitive.csv
 
+  internal_validations_infants_subgroup_s2:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants_subgroup
+      season2_start_date season2_end_date
+    needs:
+    - process_dataset_infants_subgroup_s2_specific_primary
+    - process_dataset_infants_subgroup_s2_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_subgroup_2017_2018.csv
+
   phenotype_sensitivity_infants_subgroup_s3:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
       season3_start_date season3_end_date
@@ -17220,8 +17560,8 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2018_2019.csv
 
   multiple_episodes_infants_subgroup_s3:
-    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
-      season3_start_date season3_end_date
+    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup season3_start_date
+      season3_end_date
     needs:
     - process_dataset_infants_subgroup_s3_specific_primary
     outputs:
@@ -17246,6 +17586,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_subgroup_2018_2019_sensitive.csv
 
+  internal_validations_infants_subgroup_s3:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants_subgroup
+      season3_start_date season3_end_date
+    needs:
+    - process_dataset_infants_subgroup_s3_specific_primary
+    - process_dataset_infants_subgroup_s3_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_subgroup_2018_2019.csv
+
   phenotype_sensitivity_infants_subgroup_s4:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
       season4_start_date season4_end_date
@@ -17257,8 +17607,8 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2019_2020.csv
 
   multiple_episodes_infants_subgroup_s4:
-    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
-      season4_start_date season4_end_date
+    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup season4_start_date
+      season4_end_date
     needs:
     - process_dataset_infants_subgroup_s4_specific_primary
     outputs:
@@ -17283,6 +17633,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_subgroup_2019_2020_sensitive.csv
 
+  internal_validations_infants_subgroup_s4:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants_subgroup
+      season4_start_date season4_end_date
+    needs:
+    - process_dataset_infants_subgroup_s4_specific_primary
+    - process_dataset_infants_subgroup_s4_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_subgroup_2019_2020.csv
+
   phenotype_sensitivity_infants_subgroup_s5:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
       season5_start_date season5_end_date
@@ -17294,8 +17654,8 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2020_2021.csv
 
   multiple_episodes_infants_subgroup_s5:
-    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
-      season5_start_date season5_end_date
+    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup season5_start_date
+      season5_end_date
     needs:
     - process_dataset_infants_subgroup_s5_specific_primary
     outputs:
@@ -17320,6 +17680,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_subgroup_2020_2021_sensitive.csv
 
+  internal_validations_infants_subgroup_s5:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants_subgroup
+      season5_start_date season5_end_date
+    needs:
+    - process_dataset_infants_subgroup_s5_specific_primary
+    - process_dataset_infants_subgroup_s5_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_subgroup_2020_2021.csv
+
   phenotype_sensitivity_infants_subgroup_s6:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
       season6_start_date season6_end_date
@@ -17331,8 +17701,8 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2021_2022.csv
 
   multiple_episodes_infants_subgroup_s6:
-    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
-      season6_start_date season6_end_date
+    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup season6_start_date
+      season6_end_date
     needs:
     - process_dataset_infants_subgroup_s6_specific_primary
     outputs:
@@ -17357,6 +17727,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_subgroup_2021_2022_sensitive.csv
 
+  internal_validations_infants_subgroup_s6:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants_subgroup
+      season6_start_date season6_end_date
+    needs:
+    - process_dataset_infants_subgroup_s6_specific_primary
+    - process_dataset_infants_subgroup_s6_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_subgroup_2021_2022.csv
+
   phenotype_sensitivity_infants_subgroup_s7:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
       season7_start_date season7_end_date
@@ -17368,8 +17748,8 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2022_2023.csv
 
   multiple_episodes_infants_subgroup_s7:
-    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
-      season7_start_date season7_end_date
+    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup season7_start_date
+      season7_end_date
     needs:
     - process_dataset_infants_subgroup_s7_specific_primary
     outputs:
@@ -17394,6 +17774,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_subgroup_2022_2023_sensitive.csv
 
+  internal_validations_infants_subgroup_s7:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants_subgroup
+      season7_start_date season7_end_date
+    needs:
+    - process_dataset_infants_subgroup_s7_specific_primary
+    - process_dataset_infants_subgroup_s7_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_subgroup_2022_2023.csv
+
   phenotype_sensitivity_infants_subgroup_s8:
     run: r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R infants_subgroup
       season8_start_date season8_end_date
@@ -17405,8 +17795,8 @@ actions:
         csv: output/exploratory/phenotype_sensitivity_infants_subgroup_2023_2024.csv
 
   multiple_episodes_infants_subgroup_s8:
-    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup
-      season8_start_date season8_end_date
+    run: r:v2 analysis/exploratory_analyses/multiple_episodes.R infants_subgroup season8_start_date
+      season8_end_date
     needs:
     - process_dataset_infants_subgroup_s8_specific_primary
     outputs:
@@ -17431,6 +17821,16 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/reinfections_infants_subgroup_2023_2024_sensitive.csv
 
+  internal_validations_infants_subgroup_s8:
+    run: r:v2 analysis/exploratory_analyses/internal_validation.R infants_subgroup
+      season8_start_date season8_end_date
+    needs:
+    - process_dataset_infants_subgroup_s8_specific_primary
+    - process_dataset_infants_subgroup_s8_sensitive_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/internal_validation_*_infants_subgroup_2023_2024.csv
+
   ## # # # # # # # # # # # # # # # # # # # 
   ## SENSITIVITY ANALYSES: REDUCED SEASONS 
   ## # # # # # # # # # # # # # # # # # # # 
@@ -17440,8 +17840,8 @@ actions:
   ## # # # # # # # # # # # # # # # # # # # 
 
   process_dataset_older_adults_s2_specific_sensitivity:
-    run: r:v2 analysis/sensitivity_analyses/data_processing_sens.R older_adults
-      season2_start_date season2_end_date specific primary sensitivity
+    run: r:v2 analysis/sensitivity_analyses/data_processing_sens.R older_adults season2_start_date
+      season2_end_date specific primary sensitivity
     needs:
     - generate_dataset_older_adults_s2_specific_primary
     outputs:
@@ -17449,8 +17849,8 @@ actions:
         csv: output/data/input_processed_older_adults_2017_2018_specific_sensitivity.arrow
 
   describe_dataset_older_adults_s2_specific_sensitivity:
-    run: r:v2 analysis/sensitivity_analyses/season_summary_sens.R older_adults
-      season2_start_date season2_end_date specific sensitivity
+    run: r:v2 analysis/sensitivity_analyses/season_summary_sens.R older_adults season2_start_date
+      season2_end_date specific sensitivity
     needs:
     - process_dataset_older_adults_s2_specific_sensitivity
     outputs:
@@ -17476,8 +17876,8 @@ actions:
         csv: output/results/models/rsv_sensitivity/further_*_older_adults_2017_2018_specific_*.csv
 
   process_dataset_older_adults_s3_specific_sensitivity:
-    run: r:v2 analysis/sensitivity_analyses/data_processing_sens.R older_adults
-      season3_start_date season3_end_date specific primary sensitivity
+    run: r:v2 analysis/sensitivity_analyses/data_processing_sens.R older_adults season3_start_date
+      season3_end_date specific primary sensitivity
     needs:
     - generate_dataset_older_adults_s3_specific_primary
     outputs:
@@ -17485,8 +17885,8 @@ actions:
         csv: output/data/input_processed_older_adults_2018_2019_specific_sensitivity.arrow
 
   describe_dataset_older_adults_s3_specific_sensitivity:
-    run: r:v2 analysis/sensitivity_analyses/season_summary_sens.R older_adults
-      season3_start_date season3_end_date specific sensitivity
+    run: r:v2 analysis/sensitivity_analyses/season_summary_sens.R older_adults season3_start_date
+      season3_end_date specific sensitivity
     needs:
     - process_dataset_older_adults_s3_specific_sensitivity
     outputs:
@@ -17535,8 +17935,8 @@ actions:
         csv: output/results/rates/rates_adults_2017_2018_specific_sensitivity.csv
 
   analyse_dataset_adults_rsv_s2_specific_sensitivity:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season2_start_date
-      season2_end_date specific sensitivity
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R adults season2_start_date season2_end_date
+      specific sensitivity
     needs:
     - process_dataset_adults_s2_specific_sensitivity
     outputs:
@@ -17571,8 +17971,8 @@ actions:
         csv: output/results/rates/rates_adults_2018_2019_specific_sensitivity.csv
 
   analyse_dataset_adults_flu_s3_specific_sensitivity:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season3_start_date
-      season3_end_date specific sensitivity
+    run: r:v2 analysis/outcome_flu/flu_models_master.R adults season3_start_date season3_end_date
+      specific sensitivity
     needs:
     - process_dataset_adults_s3_specific_sensitivity
     outputs:
@@ -17612,8 +18012,8 @@ actions:
         csv: output/results/rates/rates_children_and_adolescents_2017_2018_specific_sensitivity.csv
 
   analyse_dataset_children_and_adolescents_rsv_s2_specific_sensitivity:
-    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents
-      season2_start_date season2_end_date specific sensitivity
+    run: r:v2 analysis/outcome_rsv/rsv_models_master.R children_and_adolescents season2_start_date
+      season2_end_date specific sensitivity
     needs:
     - process_dataset_children_and_adolescents_s2_specific_sensitivity
     outputs:
@@ -17648,8 +18048,8 @@ actions:
         csv: output/results/rates/rates_children_and_adolescents_2018_2019_specific_sensitivity.csv
 
   analyse_dataset_children_and_adolescents_flu_s3_specific_sensitivity:
-    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents
-      season3_start_date season3_end_date specific sensitivity
+    run: r:v2 analysis/outcome_flu/flu_models_master.R children_and_adolescents season3_start_date
+      season3_end_date specific sensitivity
     needs:
     - process_dataset_children_and_adolescents_s3_specific_sensitivity
     outputs:
@@ -17698,8 +18098,8 @@ actions:
         csv: output/results/models/rsv_sensitivity/rsv_ethnicity_model_outputs_infants_2017_2018_specific_sensitivity.csv
 
   analyse_dataset_infants_rsv_ses_s2_specific_sensitivity:
-    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season2_start_date
-      season2_end_date specific sensitivity
+    run: r:v2 analysis/outcome_rsv/rsv_ses_models.R infants season2_start_date season2_end_date
+      specific sensitivity
     needs:
     - process_dataset_infants_s2_specific_sensitivity
     outputs:
@@ -17734,8 +18134,8 @@ actions:
         csv: output/results/models/rsv_sensitivity/further_rsv_ses_model_outputs_infants_2017_2018_specific_sensitivity.csv
 
   analyse_dataset_infants_rsv_ethnicity_ses_further_s2_specific_sensitivity:
-    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants
-      season2_start_date season2_end_date specific sensitivity
+    run: r:v2 analysis/outcome_rsv/further_rsv_ethnicity_ses_models.R infants season2_start_date
+      season2_end_date specific sensitivity
     needs:
     - process_dataset_infants_s2_specific_sensitivity
     outputs:
@@ -17770,8 +18170,8 @@ actions:
         csv: output/results/models/flu_sensitivity/flu_ethnicity_model_outputs_infants_2018_2019_specific_sensitivity.csv
 
   analyse_dataset_infants_flu_ses_s3_specific_sensitivity:
-    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season3_start_date
-      season3_end_date specific sensitivity
+    run: r:v2 analysis/outcome_flu/flu_ses_models.R infants season3_start_date season3_end_date
+      specific sensitivity
     needs:
     - process_dataset_infants_s3_specific_sensitivity
     outputs:
@@ -17806,8 +18206,8 @@ actions:
         csv: output/results/models/flu_sensitivity/further_flu_ses_model_outputs_infants_2018_2019_specific_sensitivity.csv
 
   analyse_dataset_infants_flu_ethnicity_ses_further_s3_specific_sensitivity:
-    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants
-      season3_start_date season3_end_date specific sensitivity
+    run: r:v2 analysis/outcome_flu/further_flu_ethnicity_ses_models.R infants season3_start_date
+      season3_end_date specific sensitivity
     needs:
     - process_dataset_infants_s3_specific_sensitivity
     outputs:
@@ -17858,8 +18258,8 @@ actions:
         csv: output/results/models/rsv_sensitivity/rsv_ses_model_outputs_infants_subgroup_2017_2018_specific_sensitivity.csv
 
   analyse_dataset_infants_subgroup_rsv_ethnicity_ses_s2_specific_sensitivity:
-    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup
-      season2_start_date season2_end_date specific sensitivity
+    run: r:v2 analysis/outcome_rsv/rsv_ethnicity_ses_models.R infants_subgroup season2_start_date
+      season2_end_date specific sensitivity
     needs:
     - process_dataset_infants_subgroup_s2_specific_sensitivity
     outputs:
@@ -17932,8 +18332,8 @@ actions:
         csv: output/results/models/flu_sensitivity/flu_ses_model_outputs_infants_subgroup_2018_2019_specific_sensitivity.csv
 
   analyse_dataset_infants_subgroup_flu_ethnicity_ses_s3_specific_sensitivity:
-    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup
-      season3_start_date season3_end_date specific sensitivity
+    run: r:v2 analysis/outcome_flu/flu_ethnicity_ses_models.R infants_subgroup season3_start_date
+      season3_end_date specific sensitivity
     needs:
     - process_dataset_infants_subgroup_s3_specific_sensitivity
     outputs:
@@ -18077,8 +18477,7 @@ actions:
         csv: output/collated/descriptive/over_time/older_adults_counts_over_time_*.csv
 
   collate_rates_tables_rolling_primary_older_adults:
-    run: r:v2 analysis/collation_code/rates_table_rolling_primary_collation.R
-      older_adults
+    run: r:v2 analysis/collation_code/rates_table_rolling_primary_collation.R older_adults
     needs:
     - calculate_rates_rolling_older_adults_s1_specific_primary
     - calculate_rates_rolling_older_adults_s2_specific_primary
@@ -18312,8 +18711,7 @@ actions:
         csv: output/collated/analytic/secondary/older_adults_covid_model_outputs_collated_secondary.csv
 
   collate_phenotype_sensitivity_tables_older_adults:
-    run: r:v2 analysis/collation_code/phenotype_sensitivity_table_collation.R
-      older_adults
+    run: r:v2 analysis/collation_code/phenotype_sensitivity_table_collation.R older_adults
     needs:
     - phenotype_sensitivity_older_adults_s1
     - phenotype_sensitivity_older_adults_s2
@@ -18373,6 +18771,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/older_adults_reinfections_sensitive_collated.csv
+
+  collate_internal_validation_tables_older_adults:
+    run: r:v2 analysis/collation_code/validation_counts_table_collation.R older_adults
+    needs:
+    - internal_validations_older_adults_s1
+    - internal_validations_older_adults_s2
+    - internal_validations_older_adults_s3
+    - internal_validations_older_adults_s4
+    - internal_validations_older_adults_s5
+    - internal_validations_older_adults_s6
+    - internal_validations_older_adults_s7
+    - internal_validations_older_adults_s8
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/older_adults_validation_*_collated.csv
 
   collate_rsv_model_outputs_tables_older_adults_sensitivity:
     run: r:v2 analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R
@@ -18496,8 +18909,7 @@ actions:
         csv: output/collated/descriptive/over_time/adults_counts_over_time_*.csv
 
   collate_rates_tables_rolling_primary_adults:
-    run: r:v2 analysis/collation_code/rates_table_rolling_primary_collation.R
-      adults
+    run: r:v2 analysis/collation_code/rates_table_rolling_primary_collation.R adults
     needs:
     - calculate_rates_rolling_adults_s1_specific_primary
     - calculate_rates_rolling_adults_s2_specific_primary
@@ -18704,8 +19116,7 @@ actions:
         csv: output/collated/analytic/adults_further_overall_and_all_cause_model_outputs_collated.csv
 
   collate_phenotype_sensitivity_tables_adults:
-    run: r:v2 analysis/collation_code/phenotype_sensitivity_table_collation.R
-      adults
+    run: r:v2 analysis/collation_code/phenotype_sensitivity_table_collation.R adults
     needs:
     - phenotype_sensitivity_adults_s1
     - phenotype_sensitivity_adults_s2
@@ -18763,6 +19174,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/adults_reinfections_sensitive_collated.csv
+
+  collate_internal_validation_tables_adults:
+    run: r:v2 analysis/collation_code/validation_counts_table_collation.R adults
+    needs:
+    - internal_validations_adults_s1
+    - internal_validations_adults_s2
+    - internal_validations_adults_s3
+    - internal_validations_adults_s4
+    - internal_validations_adults_s5
+    - internal_validations_adults_s6
+    - internal_validations_adults_s7
+    - internal_validations_adults_s8
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/adults_validation_*_collated.csv
 
   collate_rsv_model_outputs_tables_adults_sensitivity:
     run: r:v2 analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R
@@ -18886,8 +19312,7 @@ actions:
         csv: output/collated/descriptive/over_time/children_and_adolescents_counts_over_time_*.csv
 
   collate_rates_tables_rolling_primary_children_and_adolescents:
-    run: r:v2 analysis/collation_code/rates_table_rolling_primary_collation.R
-      children_and_adolescents
+    run: r:v2 analysis/collation_code/rates_table_rolling_primary_collation.R children_and_adolescents
     needs:
     - calculate_rates_rolling_children_and_adolescents_s1_specific_primary
     - calculate_rates_rolling_children_and_adolescents_s2_specific_primary
@@ -19094,8 +19519,7 @@ actions:
         csv: output/collated/analytic/children_and_adolescents_further_overall_and_all_cause_model_outputs_collated.csv
 
   collate_phenotype_sensitivity_tables_children_and_adolescents:
-    run: r:v2 analysis/collation_code/phenotype_sensitivity_table_collation.R
-      children_and_adolescents
+    run: r:v2 analysis/collation_code/phenotype_sensitivity_table_collation.R children_and_adolescents
     needs:
     - phenotype_sensitivity_children_and_adolescents_s1
     - phenotype_sensitivity_children_and_adolescents_s2
@@ -19155,6 +19579,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/children_and_adolescents_reinfections_sensitive_collated.csv
+
+  collate_internal_validation_tables_children_and_adolescents:
+    run: r:v2 analysis/collation_code/validation_counts_table_collation.R children_and_adolescents
+    needs:
+    - internal_validations_children_and_adolescents_s1
+    - internal_validations_children_and_adolescents_s2
+    - internal_validations_children_and_adolescents_s3
+    - internal_validations_children_and_adolescents_s4
+    - internal_validations_children_and_adolescents_s5
+    - internal_validations_children_and_adolescents_s6
+    - internal_validations_children_and_adolescents_s7
+    - internal_validations_children_and_adolescents_s8
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/children_and_adolescents_validation_*_collated.csv
 
   collate_rsv_model_outputs_tables_children_and_adolescents_sensitivity:
     run: r:v2 analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R
@@ -19278,8 +19717,7 @@ actions:
         csv: output/collated/descriptive/over_time/infants_counts_over_time_*.csv
 
   collate_rates_tables_rolling_primary_infants:
-    run: r:v2 analysis/collation_code/rates_table_rolling_primary_collation.R
-      infants
+    run: r:v2 analysis/collation_code/rates_table_rolling_primary_collation.R infants
     needs:
     - calculate_rates_rolling_infants_s1_specific_primary
     - calculate_rates_rolling_infants_s2_specific_primary
@@ -19686,8 +20124,7 @@ actions:
         csv: output/collated/analytic/infants_further_overall_and_all_cause_model_outputs_collated.csv
 
   collate_phenotype_sensitivity_tables_infants:
-    run: r:v2 analysis/collation_code/phenotype_sensitivity_table_collation.R
-      infants
+    run: r:v2 analysis/collation_code/phenotype_sensitivity_table_collation.R infants
     needs:
     - phenotype_sensitivity_infants_s1
     - phenotype_sensitivity_infants_s2
@@ -19745,6 +20182,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_reinfections_sensitive_collated.csv
+
+  collate_internal_validation_tables_infants:
+    run: r:v2 analysis/collation_code/validation_counts_table_collation.R infants
+    needs:
+    - internal_validations_infants_s1
+    - internal_validations_infants_s2
+    - internal_validations_infants_s3
+    - internal_validations_infants_s4
+    - internal_validations_infants_s5
+    - internal_validations_infants_s6
+    - internal_validations_infants_s7
+    - internal_validations_infants_s8
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_validation_*_collated.csv
 
   collate_rsv_model_outputs_tables_infants_sensitivity:
     run: r:v2 analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R
@@ -19876,8 +20328,7 @@ actions:
         csv: output/collated/descriptive/over_time/infants_subgroup_counts_over_time_*.csv
 
   collate_rates_tables_rolling_primary_infants_subgroup:
-    run: r:v2 analysis/collation_code/rates_table_rolling_primary_collation.R
-      infants_subgroup
+    run: r:v2 analysis/collation_code/rates_table_rolling_primary_collation.R infants_subgroup
     needs:
     - calculate_rates_rolling_infants_subgroup_s1_specific_primary
     - calculate_rates_rolling_infants_subgroup_s2_specific_primary
@@ -20284,8 +20735,7 @@ actions:
         csv: output/collated/analytic/infants_subgroup_further_overall_and_all_cause_model_outputs_collated.csv
 
   collate_phenotype_sensitivity_tables_infants_subgroup:
-    run: r:v2 analysis/collation_code/phenotype_sensitivity_table_collation.R
-      infants_subgroup
+    run: r:v2 analysis/collation_code/phenotype_sensitivity_table_collation.R infants_subgroup
     needs:
     - phenotype_sensitivity_infants_subgroup_s1
     - phenotype_sensitivity_infants_subgroup_s2
@@ -20345,6 +20795,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_subgroup_reinfections_sensitive_collated.csv
+
+  collate_internal_validation_tables_infants_subgroup:
+    run: r:v2 analysis/collation_code/validation_counts_table_collation.R infants_subgroup
+    needs:
+    - internal_validations_infants_subgroup_s1
+    - internal_validations_infants_subgroup_s2
+    - internal_validations_infants_subgroup_s3
+    - internal_validations_infants_subgroup_s4
+    - internal_validations_infants_subgroup_s5
+    - internal_validations_infants_subgroup_s6
+    - internal_validations_infants_subgroup_s7
+    - internal_validations_infants_subgroup_s8
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/infants_subgroup_validation_*_collated.csv
 
   collate_rsv_model_outputs_tables_infants_subgroup_sensitivity:
     run: r:v2 analysis/collation_code/rsv_model_outputs_table_collation_sensitivity.R
