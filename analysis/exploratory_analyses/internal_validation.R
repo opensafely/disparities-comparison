@@ -173,6 +173,10 @@ if (study_start_date < covid_season_min) {
 
 }
 
+props <- props %>% 
+  unique() %>% 
+  pivot_longer(cols = everything(), names_to = "cat", values_to = "count_or_prop")
+
 #save
 write_csv(props, file = here::here("output", "exploratory",
           paste0("internal_validation_population_sizes_", cohort,  "_",
