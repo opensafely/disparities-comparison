@@ -93,7 +93,7 @@ df_input <- df_input %>%
     patient_index_date = patient_index_date - days(1)
   )
 
-#calculate age bands - change REF
+#calculate age bands
 if(cohort == "older_adults") {
   df_input <- df_input %>%
     mutate(age_band = case_when(
