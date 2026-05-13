@@ -106,8 +106,13 @@ if(cohort == "older_adults") {
     ) %>%
     filter(!is.na(age_band))
 }
-
-df_input$age_band <- factor(df_input$age_band)
+age_ref = case_when(
+  cohort == "infants" | cohort == "infants_subgroup" ~ "0-2m",
+  cohort == "children_and_adolescents" ~ "2-5y",
+  cohort == "adults" ~ "18-39y",
+  cohort == "older_adults" ~ "65-74y"
+)
+df_input$age_band <- relevel(factor(df_input$age_band), ref = age_ref)
 
 #data manipulation
 df_input <- df_input %>%
@@ -175,6 +180,25 @@ df_input <- df_input %>%
       rurality_code == "4" ~ "Rural Town and Fringe",
       rurality_code == "5" ~ "Rural Village and Dispersed",
       TRUE ~ NA_character_))
+  )
+
+#ethnicity from HES
+df_input <- df_input %>%
+  mutate(
+    latest_ethnicity_group_hes = relevel(factor(recode(
+      latest_ethnicity_group_hes, "A" = "White", "B" = "White", "C" = "White",
+      "D" = "Mixed", "E" = "Mixed", "F" = "Mixed", "G" = "Mixed",
+      "H" = "Asian or Asian British", "J" = "Asian or Asian British",
+      "K" = "Asian or Asian British", "L" = "Asian or Asian British",
+      "M" = "Black or Black British", "N" = "Black or Black British",
+      "P" = "Black or Black British", "R" = "Other Ethnic Groups",
+      "S" = "Other Ethnic Groups"), ordered = F), ref = "White")
+  ) %>%
+  mutate(
+    latest_ethnicity_group = if_else(
+      is.na(latest_ethnicity_group),
+      if_else(is.na(latest_ethnicity_group_hes), "Unknown", latest_ethnicity_group_hes),
+      latest_ethnicity_group)
   )
 
 #household variables for when they are included (2020-21)
