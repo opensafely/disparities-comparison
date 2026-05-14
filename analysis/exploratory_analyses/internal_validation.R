@@ -177,6 +177,9 @@ props <- props %>%
   unique() %>% 
   pivot_longer(cols = everything(), names_to = "cat", values_to = "count_or_prop")
 
+## create output directories ----
+fs::dir_create(here::here("output", "exploratory"))
+
 #save
 write_csv(props, file = here::here("output", "exploratory",
           paste0("internal_validation_population_sizes_", cohort,  "_",
