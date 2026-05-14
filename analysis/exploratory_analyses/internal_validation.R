@@ -9,7 +9,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   study_start_date <- "2016-09-01"
   study_end_date <- "2017-08-31"
-  cohort <- "adults"
+  cohort <- "infants"
 } else {
   cohort <- args[[1]]
   study_start_date <- study_dates[[args[[2]]]]
@@ -52,6 +52,16 @@ df_input_sens <- read_feather(
 df_input <- merge(
   df_input_spec, df_input_sens, by = "patient_id", suffixes = c("_spec", "_sens")
 )
+
+#select first row per patient ID for infants
+if (cohort %in% c("infants", "infants_subgroup")) {
+
+  df_input <- df_input %>% 
+    group_by(patient_id) %>% 
+    slice_head() %>% 
+    ungroup()
+
+}
 
 #create function to assess whether an outcome of interest (specific severe)
 #occurs within 30 days of a primary care attendance
