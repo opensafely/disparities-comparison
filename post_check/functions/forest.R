@@ -12,6 +12,15 @@ source(here::here("post_check", "functions", "model.R"))
 source(here::here("post_check", "functions", "forest_over_time.R"))
 options(scipen = 999)
 
+# Reorder plot labels; `fct_relevel()` fails when `level_order` has duplicates.
+relevel_forest_labels <- function(label, level_order) {
+  label_chr <- as.character(label)
+  level_order <- unique(as.character(unlist(level_order)))
+  level_order <- level_order[!is.na(level_order) & level_order != ""]
+  extras <- setdiff(unique(label_chr[!is.na(label_chr)]), level_order)
+  factor(label_chr, levels = c(level_order, extras))
+}
+
 #create function to filter collated results to models wanted and then plot
 forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                    further = "no", ...) {
@@ -47,6 +56,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     outcome_type == "Mild" ~ paste0("time_", pathogen, "_primary"),
     outcome_type == "Severe" ~ paste0("time_", pathogen, "_secondary")
   )
+
+  if ("composition_category" %in% exposure) {
+    df_dummy <- enrich_dummy_household_composition(df_dummy, cohort)
+  }
 
   if (further == "no") {
 
@@ -202,6 +215,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                 "Never", levels)
 
   }
+
+  levels <- unique(as.character(unlist(levels)))
   
   process_forest_plot <- function(df_model) {
     
@@ -220,7 +235,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         ) %>%
         mutate(
           reference_row = if_else(var_type == "continuous", FALSE, reference_row)
-        )
+        ) %>%
+        fix_covid_prior_vacc_reference_rows()
       
       if (cohort == "infants_subgroup" & further == "yes") {
         
@@ -570,8 +586,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         slice(rep(1:n(), each = 8)) %>%
         group_by(rn) %>%
         mutate(
-          subset = c("2016_17", "2017_18", "2018_19", "2019_20", "2020_21",
-                     "2021_22", "2022_23", "2023_24"),
+          subset = c(
+            "2016_17", "2017_18", "2018_19", "2019_20", "2020_21",
+            "2021_22", "2022_23", "2023_24"
+          )[dplyr::row_number()],
           conf.low = 1,
           conf.high = 1
         ) %>%
@@ -717,7 +735,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
             label = if_else(label == "Yes", plot_label, label)
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -783,7 +801,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
             label = if_else(label == "Yes", plot_label, label)
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels)
+            label = relevel_forest_labels(label, levels)
           ) %>%
           mutate(
             shape_order = factor(str_to_title(codelist_type), levels = c(
@@ -845,8 +863,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           mutate(
             label = case_when(
               variable == "vax_status" ~ "Covid Vaccination (Yes)",
-              variable == "time_since_last_covid_vaccination" ~ paste0(
-                label, " Since Last Covid Vaccination"),
+              variable == "time_since_last_covid_vaccination" ~
+                format_covid_prior_vacc_label(term, label, variable, reference_row),
               TRUE ~ label
             ),
             subset = gsub("_", "-", subset)
@@ -870,15 +888,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            label = case_when(
-              str_detect(label, regex("^6-12m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Autumn",
-              str_detect(label, regex("^0-6m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Spring",
-              str_detect(label, "12m") ~ "Not Vaccinated in Past Year",
-              TRUE ~ label
-            )
-          ) %>%
-          mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -935,8 +945,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           mutate(
             label = case_when(
               variable == "vax_status" & pathogen == "covid" ~ "Covid Vaccination (Yes)",
-              variable == "time_since_last_covid_vaccination" ~ paste0(
-                label, " Since Last Covid Vaccination"),
+              variable == "time_since_last_covid_vaccination" ~
+                format_covid_prior_vacc_label(term, label, variable, reference_row),
               TRUE ~ label
             ),
             subset = gsub("_", "-", subset)
@@ -960,15 +970,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            label = case_when(
-              str_detect(label, regex("^6-12m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Autumn",
-              str_detect(label, regex("^0-6m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Spring",
-              str_detect(label, "12m") ~ "Not Vaccinated in Past Year",
-              TRUE ~ label
-            )
-          ) %>%
-          mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -1053,7 +1055,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
             )
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -1153,7 +1155,10 @@ forest_key_exposures <- function(
     ...
   )
 
-  forest_data <- p$data
+  forest_data <- attr(p, "forest_data")
+  if (is.null(forest_data)) {
+    forest_data <- p$data
+  }
   if (is.null(forest_data) || nrow(forest_data) == 0) return(p)
 
   key_vars <- key_exposure_variables()
@@ -1170,6 +1175,52 @@ forest_key_exposures <- function(
     label_levels = FALSE,
     ...
   )
+}
+
+# Forest plot with age and the model-specific exposure(s) of interest only.
+# Defaults to further (fully adjusted) models, matching `forest_year_further_mult()`.
+forest_model_key_vars <- function(
+  df,
+  df_dummy,
+  pathogen,
+  model_type,
+  outcome_type,
+  further = "yes",
+  ...
+) {
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp", pathogen)
+
+  p <- forest(
+    df = df,
+    df_dummy = df_dummy,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type,
+    further = further,
+    ...
+  )
+
+  forest_data <- attr(p, "forest_data")
+  if (is.null(forest_data)) {
+    forest_data <- p$data
+  }
+  forest_data_key <- filter_forest_to_model_key_vars(forest_data, model_type)
+
+  if (is.null(forest_data_key) || nrow(forest_data_key) == 0) {
+    return(ggplot2::ggplot() + ggplot2::theme_void())
+  }
+
+  plot_ot <- forest_over_time_plot(
+    forest_data = forest_data_key,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type,
+    facet_outcome = FALSE,
+    label_levels = FALSE,
+    ...
+  )
+  attr(plot_ot, "forest_data") <- forest_data_key
+  plot_ot
 }
 
 #forest plot combined model results
@@ -1212,6 +1263,10 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     pathogen == "flu" ~ "prior_flu_vaccination",
     pathogen == "covid" ~ "time_since_last_covid_vaccination"
   )
+
+  if ("composition_category" %in% exposure) {
+    df_dummy <- enrich_dummy_household_composition(df_dummy, cohort)
+  }
   
   if (cohort == "infants" | cohort == "infants_subgroup") {
     
@@ -1344,6 +1399,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                 "Eligible and Vaccinated Last Spring", levels)
     
   }
+
+  levels <- unique(as.character(unlist(levels)))
   
   process_forest_plot <- function(df_model) {
     
@@ -1362,7 +1419,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
         ) %>%
         mutate(
           reference_row = if_else(var_type == "continuous", FALSE, reference_row)
-        )
+        ) %>%
+        fix_covid_prior_vacc_reference_rows()
       
       if (cohort == "infants_subgroup") {
         
@@ -1731,7 +1789,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             label = if_else(label == "Yes", plot_label, label)
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -1795,7 +1853,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             label = if_else(label == "Yes", plot_label, label)
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -1841,8 +1899,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           mutate(
             label = case_when(
               variable == "vax_status" ~ "Covid Vaccination (Yes)",
-              variable == "time_since_last_covid_vaccination" ~ paste0(
-                label, " Since Last Covid Vaccination"),
+              variable == "time_since_last_covid_vaccination" ~
+                format_covid_prior_vacc_label(term, label, variable, reference_row),
               TRUE ~ label
             ),
             subset = gsub("_", "-", subset)
@@ -1866,15 +1924,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            label = case_when(
-              str_detect(label, regex("^6-12m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Autumn",
-              str_detect(label, regex("^0-6m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Spring",
-              str_detect(label, "12m") ~ "Not Vaccinated in Past Year",
-              TRUE ~ label
-            )
-          ) %>%
-          mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -1945,7 +1995,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             )
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -1996,4 +2046,47 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   
   return(plot)
   
+}
+
+# Multi-season further models: age + model-specific exposures only.
+forest_year_further_mult_key_vars <- function(
+  df,
+  df_dummy,
+  pathogen,
+  model_type,
+  outcome_type,
+  return_data = FALSE
+) {
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp", pathogen)
+
+  forest_data <- forest_year_further_mult(
+    df = df,
+    df_dummy = df_dummy,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type,
+    return_data = TRUE
+  )
+
+  forest_data_key <- filter_forest_to_model_key_vars(forest_data, model_type)
+
+  if (isTRUE(return_data)) {
+    return(forest_data_key)
+  }
+
+  if (is.null(forest_data_key) || nrow(forest_data_key) == 0) {
+    return(ggplot2::ggplot() + ggplot2::theme_void())
+  }
+
+  plot <- forest_over_time_plot(
+    forest_data = forest_data_key,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type,
+    facet_outcome = FALSE,
+    label_levels = FALSE
+  )
+  plot <- plot + theme(plot.title = element_blank())
+  attr(plot, "forest_data") <- forest_data_key
+  plot
 }
