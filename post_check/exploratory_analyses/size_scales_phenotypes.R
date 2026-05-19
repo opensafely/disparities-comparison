@@ -3,6 +3,7 @@ library(here)
 library(ggplot2)
 library(egg)
 library(scales)
+library(RColorBrewer)
 
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 

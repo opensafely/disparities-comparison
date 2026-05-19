@@ -26,10 +26,7 @@ import <- function(pathogen, cohort) {
     mutate(virus = pathogen_title) %>%
     arrange(month) %>%
     mutate(
-      event = case_when(
-        str_detect(event, "primary") ~ "Mild",
-        str_detect(event, "secondary") ~ "Severe"
-      )
+      event = if_else(str_detect(event, "primary"), "Mild", "Severe")
     ) %>%
     select(c(month, event,
              total_events = n,
