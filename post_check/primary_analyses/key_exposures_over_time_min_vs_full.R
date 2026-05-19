@@ -1,13 +1,12 @@
 # Ethnicity_ses base vs further on selected seasons (Mild + Severe faceted).
 # Per-virus PNGs -> forest_models_by_virus/{specific,sensitive}/.
-# Condensed all-virus figure assembled here from the same panels (no separate script).
-# Three-column separate base/further PNGs: key_exposures_over_time_three_column.R
+# Condensed all-virus figure assembled here from the same panels.
 library(tidyverse)
 library(here)
-library(arrow)
 library(cowplot)
 
 source(here::here("post_check", "functions", "forest.R"))
+source(here::here("post_check", "functions", "condensed_figures.R"))
 
 ggsave <- function(..., bg = "white") ggplot2::ggsave(..., bg = bg)
 
@@ -16,62 +15,6 @@ df_few <- tibble()
 
 KEY_EXPOSURE_SEASONS <- c("2017_18", "2018_19", "2020_21")
 SEASON_SLUG <- paste(gsub("_", "", KEY_EXPOSURE_SEASONS), collapse = "_")
-
-load_collated_outputs_further <- function(cohort, pathogen) {
-  raw <- read_csv(
-    here::here(
-      "post_check", "output", "collated", "analytic",
-      paste0(cohort, "_further_", pathogen, "_model_outputs_collated.csv")
-    ),
-    show_col_types = FALSE
-  )
-  df_few <<- bind_rows(df_few, raw %>% filter(term == "too few events"))
-  raw %>% filter(term != "too few events")
-}
-
-load_collated_outputs_base <- function(cohort, pathogen) {
-  read_csv(
-    here::here(
-      "post_check", "output", "collated", "analytic",
-      paste0(cohort, "_", pathogen, "_model_outputs_collated.csv")
-    ),
-    show_col_types = FALSE
-  )
-}
-
-load_dummy_inputs <- function(cohort, pathogen) {
-  if (identical(pathogen, "covid")) {
-    read_feather(
-      here::here(
-        "output", "data",
-        paste0("input_processed_", cohort, "_2021_2022_specific_primary.arrow")
-      )
-    ) %>%
-      mutate(
-        covid_vaccination_immunity_date = if (
-          !"covid_vaccination_immunity_date" %in% names(.)
-        ) NA else covid_vaccination_immunity_date,
-        time_since_last_covid_vaccination = if (
-          !"time_since_last_covid_vaccination" %in% names(.)
-        ) NA_character_ else time_since_last_covid_vaccination
-      ) %>%
-      mutate(
-        subset = "2021_22",
-        time_since_last_covid_vaccination = if_else(
-          is.na(covid_vaccination_immunity_date),
-          "6-12m",
-          time_since_last_covid_vaccination
-        )
-      )
-  } else {
-    read_feather(
-      here::here(
-        "output", "data",
-        paste0("input_processed_", cohort, "_2020_2021_specific_primary.arrow")
-      )
-    )
-  }
-}
 
 slug <- function(x) {
   x %>%
@@ -114,7 +57,15 @@ save_per_virus_plot <- function(panel, cohort, pathogen, phenotype, out_dir) {
   )
 }
 
-save_condensed_plot <- function(panels, cohort, phenotype, df_min_covid, df_full_covid, df_dummy_covid, out_root) {
+save_condensed_plot <- function(
+    panels,
+    cohort,
+    phenotype,
+    df_min_covid,
+    df_full_covid,
+    df_dummy_covid,
+    out_root
+) {
   df_min_f <- df_min_covid %>%
     filter(tolower(codelist_type) %in% c("reference", tolower(phenotype)))
   df_full_f <- df_full_covid %>%
@@ -132,13 +83,12 @@ save_condensed_plot <- function(panels, cohort, phenotype, df_min_covid, df_full
     legend_dat, "covid", KEY_EXPOSURE_SEASONS
   )
 
-  condensed <- assemble_condensed_base_vs_further(
+  condensed <- assemble_condensed_figure(
     panels$rsv,
     panels$flu,
     panels$covid,
     shared_legends$left,
-    shared_legends$mid,
-    shared_legends$adj
+    shared_legends$mid
   )
 
   is_infant <- cohort %in% c("infants", "infants_subgroup")
@@ -171,7 +121,7 @@ run_all_key_exposures_over_time <- function() {
   phenotypes <- c("specific", "sensitive")
 
   for (cohort in cohorts) {
-    cohort <<- cohort
+    assign("cohort", cohort, envir = .GlobalEnv)
     message("Running ethnicity_ses base vs further: ", cohort)
 
     for (phenotype in phenotypes) {
@@ -191,8 +141,8 @@ run_all_key_exposures_over_time <- function() {
 
         tryCatch(
           {
-            df_min <- load_collated_outputs_base(cohort, pathogen)
-            df_full <- load_collated_outputs_further(cohort, pathogen)
+            df_min <- load_collated_base(cohort, pathogen)
+            df_full <- load_collated_further(cohort, pathogen)
             df_dummy <- load_dummy_inputs(cohort, pathogen)
 
             df_min_f <- df_min %>%

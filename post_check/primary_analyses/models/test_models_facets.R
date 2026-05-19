@@ -109,7 +109,6 @@ export_virus_mild_severe_plot <- function(cohort, pathogen, model_type, codelist
     pathogen = pathogen,
     model_type = model_type,
     facet_outcome = TRUE,
-    label_levels = FALSE,
     fixed_axes = TRUE
   )
   # For test exports, keep COVID facet columns tight (no extra gap).
