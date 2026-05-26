@@ -10,6 +10,7 @@ library(egg)
 #import model functions
 source(here::here("post_check", "functions", "model.R"))
 source(here::here("post_check", "functions", "forest_over_time.R"))
+source(here::here("post_check", "functions", "forest_over_time_all_seasons.R"))
 options(scipen = 999)
 
 # Reorder plot labels; `fct_relevel()` fails when `level_order` has duplicates.
@@ -2043,9 +2044,38 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     label_levels = FALSE
   )
   plot <- plot + theme(plot.title = element_blank())
-  
+
   return(plot)
-  
+
+}
+
+# Multi-season base + further models: key vars only, selected seasons (compare plots).
+forest_year_base_vs_further_mult_key_vars <- function(
+  df_min,
+  df_full,
+  df_dummy,
+  pathogen,
+  model_type,
+  outcome_type,
+  seasons = c("2017_18", "2018_19", "2020_21")
+) {
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp", pathogen)
+  pathogen_seasons <- if (is.null(seasons)) {
+    NULL
+  } else {
+    seasons_for_pathogen_compare(pathogen, seasons)
+  }
+
+  forest_data <- collect_ethnicity_ses_base_vs_further_data(
+    df_min = df_min,
+    df_full = df_full,
+    df_dummy = df_dummy,
+    pathogen = pathogen,
+    outcome_types = outcome_type,
+    seasons = pathogen_seasons
+  )
+
+  filter_forest_to_model_key_vars(forest_data, model_type)
 }
 
 # Multi-season further models: age + model-specific exposures only.
@@ -2089,4 +2119,33 @@ forest_year_further_mult_key_vars <- function(
   plot <- plot + theme(plot.title = element_blank())
   attr(plot, "forest_data") <- forest_data_key
   plot
+}
+
+# Multi-season base + further models: key vars only, selected seasons (compare plots).
+forest_year_base_vs_further_mult_key_vars <- function(
+  df_min,
+  df_full,
+  df_dummy,
+  pathogen,
+  model_type,
+  outcome_type,
+  seasons = c("2017_18", "2018_19", "2020_21")
+) {
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp", pathogen)
+  pathogen_seasons <- if (is.null(seasons)) {
+    NULL
+  } else {
+    seasons_for_pathogen_compare(pathogen, seasons)
+  }
+
+  forest_data <- collect_ethnicity_ses_base_vs_further_data(
+    df_min = df_min,
+    df_full = df_full,
+    df_dummy = df_dummy,
+    pathogen = pathogen,
+    outcome_types = outcome_type,
+    seasons = pathogen_seasons
+  )
+
+  filter_forest_to_model_key_vars(forest_data, model_type)
 }

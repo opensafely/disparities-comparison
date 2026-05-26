@@ -47,18 +47,32 @@ log_rate_ratio_axis_breaks <- function(limits) {
   candidates[which.min(pmax(rng[1] - candidates, candidates - rng[2]))]
 }
 
-# # Log-scale minor ticks (1–9 within each decade); omit values outside facet limits.
-# log_rate_ratio_axis_minor_breaks <- function(limits) {
-#   minor_breaks <- rep(1:9, 7) * (10^rep(-3:3, each = 9))
-#   rng <- range(limits, finite = TRUE, na.rm = TRUE)
-#   if (!is.finite(rng[1]) || !is.finite(rng[2])) return(numeric(0))
-#   if (rng[1] <= 0) {
-#     pos <- limits[is.finite(limits) & limits > 0]
-#     if (length(pos) == 0) return(numeric(0))
-#     rng[1] <- min(pos)
-#   }
-#   minor_breaks[minor_breaks >= rng[1] & minor_breaks <= rng[2]]
-# }
+# Linear y-axis breaks for ratio-of-RR plots (reference at 1).
+ratio_axis_breaks <- function(limits) {
+  vals <- limits[is.finite(limits)]
+  if (length(vals) == 0) {
+    return(numeric(0))
+  }
+  br <- pretty(range(vals, na.rm = TRUE), n = 5)
+  rng <- range(vals, na.rm = TRUE)
+  if (rng[1] <= 1 && rng[2] >= 1) {
+    br <- sort(unique(c(br, 1)))
+  }
+  br
+}
+
+# Log-scale minor ticks (1–9 within each decade); omit values outside facet limits.
+log_rate_ratio_axis_minor_breaks <- function(limits) {
+  minor_breaks <- rep(1:9, 7) * (10^rep(-3:3, each = 9))
+  rng <- range(limits, finite = TRUE, na.rm = TRUE)
+  if (!is.finite(rng[1]) || !is.finite(rng[2])) return(numeric(0))
+  if (rng[1] <= 0) {
+    pos <- limits[is.finite(limits) & limits > 0]
+    if (length(pos) == 0) return(numeric(0))
+    rng[1] <- min(pos)
+  }
+  minor_breaks[minor_breaks >= rng[1] & minor_breaks <= rng[2]]
+}
 
 # Map `time_since_last_covid_vaccination` model terms to plot/legend labels.
 # Terms are encoded like `time_since_last_covid_vaccination0-6m`, not `0-6m`.
@@ -611,10 +625,33 @@ filter_forest_to_seasons <- function(forest_data, seasons) {
   if (is.null(forest_data) || nrow(forest_data) == 0) {
     return(forest_data)
   }
+  if (is.null(seasons)) {
+    return(forest_data)
+  }
   seasons_norm <- normalize_season_label(seasons)
   forest_data %>%
     dplyr::mutate(subset = as.character(.data$subset)) %>%
     dplyr::filter(normalize_season_label(.data$subset) %in% seasons_norm)
+}
+
+seasons_to_years <- function(seasons) {
+  yrs <- suppressWarnings(
+    as.integer(stringr::str_extract(normalize_season_label(seasons), "^[0-9]{4}"))
+  )
+  sort(unique(yrs[!is.na(yrs)]))
+}
+
+# Compare figures: COVID data and x-axis are 2020-21 only; RSV/flu use all selected seasons.
+seasons_for_pathogen_compare <- function(
+    pathogen,
+    seasons = c("2017_18", "2018_19", "2020_21")
+) {
+  if (!identical(pathogen, "covid")) {
+    return(seasons)
+  }
+  norm <- normalize_season_label(seasons)
+  out <- seasons[norm == "2020-21"]
+  if (length(out) == 0) "2020_21" else out
 }
 
 # Collect ethnicity_ses forest data for base and further models (selected seasons).
@@ -663,6 +700,106 @@ collect_ethnicity_ses_base_vs_further_data <- function(
       )
     }
   )
+}
+
+# Ratio of fully- vs minimally-adjusted RRs (further / base); 1 = no attenuation.
+collapse_base_further_to_ratio <- function(
+  forest_data,
+  base_label = "Minimally adjusted",
+  further_label = "Fully adjusted"
+) {
+  if (is.null(forest_data) || nrow(forest_data) == 0) {
+    return(forest_data)
+  }
+  if (!"adjustment" %in% names(forest_data)) {
+    return(forest_data)
+  }
+
+  value_cols <- c("estimate", "conf.low", "conf.high", "std.error")
+  join_cols <- c(
+    "subset", "term", "variable", "label", "labels", "codelist_type", "col",
+    "outcome_type"
+  )
+  join_cols <- intersect(join_cols, names(forest_data))
+
+  dedupe_by_join <- function(df) {
+    df %>%
+      dplyr::arrange(dplyr::desc(is.finite(.data$estimate))) %>%
+      dplyr::distinct(dplyr::across(dplyr::all_of(join_cols)), .keep_all = TRUE)
+  }
+
+  base_df <- forest_data %>%
+    dplyr::filter(.data$adjustment == base_label) %>%
+    dedupe_by_join() %>%
+    dplyr::select(-dplyr::any_of("adjustment")) %>%
+    dplyr::rename_with(
+      ~ paste0(., "_base"),
+      .cols = dplyr::any_of(value_cols)
+    )
+
+  further_df <- forest_data %>%
+    dplyr::filter(.data$adjustment == further_label) %>%
+    dedupe_by_join() %>%
+    dplyr::select(-dplyr::any_of("adjustment")) %>%
+    dplyr::rename_with(
+      ~ paste0(., "_further"),
+      .cols = dplyr::any_of(value_cols)
+    )
+
+  merged <- dplyr::inner_join(base_df, further_df, by = join_cols)
+
+  se_log_rr_from_ci <- function(est, lo, hi) {
+    dplyr::if_else(
+      is.finite(est) & est > 0 & is.finite(lo) & lo > 0 & is.finite(hi) & hi > 0,
+      (log(hi) - log(lo)) / (2 * stats::qnorm(0.975)),
+      NA_real_
+    )
+  }
+
+  merged %>%
+    dplyr::mutate(
+      se_log_base = dplyr::coalesce(
+        .data$std.error_base,
+        se_log_rr_from_ci(
+          .data$estimate_base, .data$conf.low_base, .data$conf.high_base
+        )
+      ),
+      se_log_further = dplyr::coalesce(
+        .data$std.error_further,
+        se_log_rr_from_ci(
+          .data$estimate_further, .data$conf.low_further, .data$conf.high_further
+        )
+      ),
+      log_ratio = log(.data$estimate_further) - log(.data$estimate_base),
+      se_log_ratio = sqrt(.data$se_log_base^2 + .data$se_log_further^2),
+      estimate = exp(.data$log_ratio),
+      conf.low = exp(.data$log_ratio - stats::qnorm(0.975) * .data$se_log_ratio),
+      conf.high = exp(.data$log_ratio + stats::qnorm(0.975) * .data$se_log_ratio)
+    ) %>%
+    dplyr::mutate(
+      estimate = dplyr::if_else(
+        !is.finite(.data$estimate_base) | .data$estimate_base <= 0 |
+          !is.finite(.data$estimate_further) | .data$estimate_further <= 0,
+        NA_real_,
+        .data$estimate
+      ),
+      conf.low = dplyr::if_else(
+        !is.finite(.data$se_log_ratio) | .data$se_log_ratio <= 0,
+        .data$estimate,
+        .data$conf.low
+      ),
+      conf.high = dplyr::if_else(
+        !is.finite(.data$se_log_ratio) | .data$se_log_ratio <= 0,
+        .data$estimate,
+        .data$conf.high
+      )
+    ) %>%
+    dplyr::select(
+      -dplyr::ends_with("_base"),
+      -dplyr::ends_with("_further"),
+      -dplyr::starts_with("se_log_"),
+      -log_ratio
+    )
 }
 
 # One virus panel: ethnicity_ses, base vs further, Mild | Severe columns (no title/legend).
@@ -858,6 +995,37 @@ forest_ethnicity_ses_over_time_base_vs_further_plot <- function(
     )
 }
 
+# COVID: axis seasons and synthetic RR=1 points only where estimates exist.
+covid_x_breaks_from_data <- function(plot_df, year_breaks) {
+  data_years <- plot_df %>%
+    dplyr::filter(
+      is.finite(.data$estimate),
+      !.data$is_ref_level | abs(.data$estimate - 1) >= 1e-3
+    ) %>%
+    dplyr::pull(.data$year)
+  data_years <- sort(unique(as.integer(data_years[!is.na(data_years)])))
+  if (length(data_years) == 0L) {
+    data_years <- sort(unique(as.integer(plot_df$year[!is.na(plot_df$year)])))
+  }
+  if (length(data_years) == 0L) {
+    return(as.integer(year_breaks))
+  }
+  x_breaks <- intersect(as.integer(year_breaks), data_years)
+  if (length(x_breaks) == 0L) {
+    data_years
+  } else {
+    x_breaks
+  }
+}
+
+covid_filter_ref_to_axis_years <- function(plot_df, x_breaks, pathogen) {
+  if (!identical(pathogen, "covid") || length(x_breaks) == 0L) {
+    return(plot_df)
+  }
+  plot_df %>%
+    dplyr::filter(!.data$is_ref_level | .data$year %in% as.integer(x_breaks))
+}
+
 # Standard key-exposure over-time plots (all seasons, calendar year x-axis).
 # Used by forest_key_exposures_three_column_plot() and forest().
 forest_over_time_plot <- function(
@@ -870,7 +1038,9 @@ forest_over_time_plot <- function(
   jitter_width = 0.2,
   show_ci = TRUE,
   fixed_axes = FALSE,
-  show_disruption_legend = TRUE
+  show_disruption_legend = TRUE,
+  y_lab = NULL,
+  log_y = TRUE
 ) {
   if (is.null(forest_data) || nrow(forest_data) == 0) {
     return(ggplot() + theme_void())
@@ -968,10 +1138,10 @@ forest_over_time_plot <- function(
           (characteristic_base %in% c("Current\nVaccination", "Current Vaccination") & year < 2020) |
           (characteristic_base %in% c("Prior\nVaccination", "Prior Vaccination") & year < 2021)
       ))
+    x_breaks <- covid_x_breaks_from_data(plot_df, year_breaks)
   }
 
-  # Ensure every reference level has an RR=1 point in every plotted season.
-  # RSV/Flu: all x-axis seasons shown; COVID: 2019-20 onwards (x_breaks already reflects this).
+  # Ensure every reference level has an RR=1 point in each plotted season.
   ref_points <- plot_df %>%
     filter(is_ref_level) %>%
     distinct(labels, outcome_type, variable, label, codelist_type, col, characteristic, characteristic_base, year)
@@ -992,8 +1162,9 @@ forest_over_time_plot <- function(
         )
       )
 
+    ref_years <- x_breaks
     ref_grid <- ref_template %>%
-      tidyr::crossing(year = x_breaks) %>%
+      tidyr::crossing(year = ref_years) %>%
       filter(year >= min_year_allowed) %>%
       left_join(
         ref_points %>%
@@ -1025,6 +1196,8 @@ forest_over_time_plot <- function(
     }
   }
 
+  plot_df <- covid_filter_ref_to_axis_years(plot_df, x_breaks, pathogen)
+
   # Split prior-vaccination into pathogen-specific colour groups
   # while keeping the facet label as "Prior Vaccination".
   plot_df <- plot_df %>%
@@ -1040,7 +1213,7 @@ forest_over_time_plot <- function(
   reference_lines <- plot_df %>%
     distinct(characteristic_base, labels_col, col, outcome_type) %>%
     mutate(yintercept = 1)
-  
+
   colour_map <- plot_df %>%
     mutate(labels_col = as.character(labels_col), col = as.character(col)) %>%
     filter(!is.na(labels_col), !is.na(col)) %>%
@@ -1190,12 +1363,26 @@ forest_over_time_plot <- function(
     ) %>%
     ungroup()
 
-  # Shading band y-range must be finite and >0 for log scale.
   y_vals_for_range <- c(plot_df$estimate, plot_df$conf.low, plot_df$conf.high)
-  y_vals_for_range <- y_vals_for_range[is.finite(y_vals_for_range) & y_vals_for_range > 0]
-  if (length(y_vals_for_range) == 0) y_vals_for_range <- c(0.1, 10)
-  shade_ymin <- max(min(y_vals_for_range), 1e-6)
-  shade_ymax <- max(y_vals_for_range)
+  y_vals_for_range <- y_vals_for_range[is.finite(y_vals_for_range)]
+  if (isTRUE(log_y)) {
+    y_vals_for_range <- y_vals_for_range[y_vals_for_range > 0]
+    if (length(y_vals_for_range) == 0) {
+      y_vals_for_range <- c(0.1, 10)
+    }
+    shade_ymin <- max(min(y_vals_for_range), 1e-6)
+    shade_ymax <- max(y_vals_for_range)
+  } else {
+    if (length(y_vals_for_range) == 0) {
+      y_vals_for_range <- c(0.5, 1.5)
+    }
+    pad <- diff(range(y_vals_for_range)) * 0.05
+    if (!is.finite(pad) || pad <= 0) {
+      pad <- 0.1
+    }
+    shade_ymin <- min(y_vals_for_range) - pad
+    shade_ymax <- max(y_vals_for_range) + pad
+  }
   disruption_label <- "Disrupted routes of transmission"
   disruption_label_wrapped <- stringr::str_wrap(disruption_label, width = 18)
   shading_df <- tidyr::crossing(
@@ -1268,32 +1455,33 @@ forest_over_time_plot <- function(
       expand = expansion(mult = c(0.08, 0.08))
     ) +
     {
-      if (isTRUE(fixed_axes)) {
-        # Exactly 3 breaks per facet on a log scale (nice powers-of-10 style ticks).
-        scale_y_log10(
-          breaks = scales::log_breaks(n = 3),
-          minor_breaks = NULL,
-          labels = scales::label_number(accuracy = 0.1)
-        )
+      if (isTRUE(log_y)) {
+        if (isTRUE(fixed_axes)) {
+          scale_y_log10(
+            breaks = scales::log_breaks(n = 3),
+            minor_breaks = log_rate_ratio_axis_minor_breaks,
+            labels = scales::label_number(accuracy = 0.1)
+          )
+        } else {
+          scale_y_log10(
+            breaks = log_rate_ratio_axis_breaks,
+            minor_breaks = log_rate_ratio_axis_minor_breaks,
+            labels = scales::label_number(accuracy = 0.1)
+          )
+        }
       } else {
-        scale_y_log10(
-          breaks = function(x) {
-            rng <- range(x, finite = TRUE, na.rm = TRUE)
-            if (!is.finite(rng[1]) || !is.finite(rng[2])) return(numeric(0))
-            if (rng[1] <= 0) {
-              pos <- x[is.finite(x) & x > 0]
-              if (length(pos) == 0) return(numeric(0))
-              rng[1] <- min(pos)
-            }
-            if (rng[1] == rng[2]) return(rng[1])
-            seq(rng[1], rng[2], length.out = 3)
-          },
-          minor_breaks = NULL,
-          labels = scales::label_number(accuracy = 0.1)
+        scale_y_continuous(
+          breaks = ratio_axis_breaks,
+          labels = scales::label_number(accuracy = 0.01),
+          expand = ggplot2::expansion(mult = c(0.06, 0.06))
         )
       }
     } +
-    annotation_logticks(base = 10, sides = "l") +
+    {
+      if (isTRUE(log_y)) {
+        annotation_logticks(base = 10, sides = "l")
+      }
+    } +
     scale_color_manual(values = colour_map, drop = FALSE) +
     scale_fill_manual(
       values = setNames("grey85", disruption_label_wrapped),
@@ -1304,7 +1492,11 @@ forest_over_time_plot <- function(
     labs(
       title = NULL,
       x = NULL,
-      y = paste(pathogen_title, "Rate Ratio"),
+      y = if (!is.null(y_lab)) {
+        y_lab
+      } else {
+        paste(pathogen_title, "Rate Ratio")
+      },
       color = "Characteristic",
       fill = NULL,
       shape = "Level"
@@ -1401,8 +1593,12 @@ forest_over_time_plot_compare <- function(
   fixed_axes = FALSE,
   show_disruption_legend = TRUE,
   years_include = NULL,
+  season_axis_years = NULL,
+  disruption_season_width_scale = 1,
   adjustment_dodge_width = 0.22,
-  level_jitter_width = NULL
+  level_jitter_width = NULL,
+  y_lab = NULL,
+  log_y = TRUE
 ) {
   if (is.null(forest_data) || nrow(forest_data) == 0) {
     return(ggplot() + theme_void())
@@ -1543,10 +1739,20 @@ forest_over_time_plot_compare <- function(
           (characteristic_base %in% c("Current\nVaccination", "Current Vaccination") & year < 2020) |
           (characteristic_base %in% c("Prior\nVaccination", "Prior Vaccination") & year < 2021)
       ))
+    if (is.null(years_include)) {
+      x_breaks <- covid_x_breaks_from_data(plot_df, year_breaks)
+    } else {
+      x_breaks <- intersect(
+        as.integer(x_breaks),
+        covid_x_breaks_from_data(plot_df, year_breaks)
+      )
+      if (length(x_breaks) == 0L) {
+        x_breaks <- covid_x_breaks_from_data(plot_df, year_breaks)
+      }
+    }
   }
 
-  # Ensure every reference level has an RR=1 point in every plotted season.
-  # RSV/Flu: all x-axis seasons shown; COVID: 2019-20 onwards (x_breaks already reflects this).
+  # Ensure every reference level has an RR=1 point in each plotted season.
   ref_point_cols <- c(
     "labels", "outcome_type", "variable", "label", "codelist_type", "col",
     "characteristic", "characteristic_base", "year"
@@ -1583,8 +1789,22 @@ forest_over_time_plot_compare <- function(
       ref_join_cols <- c(ref_join_cols, "adjustment")
     }
 
+    ref_years <- x_breaks
+    if (identical(pathogen, "covid")) {
+      data_years <- plot_df %>%
+        dplyr::filter(
+          is.finite(.data$estimate),
+          !.data$is_ref_level | abs(.data$estimate - 1) >= 1e-3
+        ) %>%
+        dplyr::pull(.data$year) %>%
+        unique()
+      if (length(data_years) > 0L) {
+        ref_years <- intersect(as.integer(x_breaks), as.integer(data_years))
+      }
+    }
+
     ref_grid <- ref_template %>%
-      tidyr::crossing(year = x_breaks) %>%
+      tidyr::crossing(year = ref_years) %>%
       filter(year >= min_year_allowed) %>%
       left_join(
         ref_points %>%
@@ -1619,6 +1839,8 @@ forest_over_time_plot_compare <- function(
     }
   }
 
+  plot_df <- covid_filter_ref_to_axis_years(plot_df, x_breaks, pathogen)
+
   # Split prior-vaccination into pathogen-specific colour groups
   # while keeping the facet label as "Prior Vaccination".
   plot_df <- plot_df %>%
@@ -1634,7 +1856,7 @@ forest_over_time_plot_compare <- function(
   reference_lines <- plot_df %>%
     distinct(characteristic_base, labels_col, col, outcome_type) %>%
     mutate(yintercept = 1)
-  
+
   colour_map <- plot_df %>%
     mutate(labels_col = as.character(labels_col), col = as.character(col)) %>%
     filter(!is.na(labels_col), !is.na(col)) %>%
@@ -1887,12 +2109,26 @@ forest_over_time_plot_compare <- function(
       ungroup()
   }
 
-  # Shading band y-range must be finite and >0 for log scale.
   y_vals_for_range <- c(plot_df$estimate, plot_df$conf.low, plot_df$conf.high)
-  y_vals_for_range <- y_vals_for_range[is.finite(y_vals_for_range) & y_vals_for_range > 0]
-  if (length(y_vals_for_range) == 0) y_vals_for_range <- c(0.1, 10)
-  shade_ymin <- max(min(y_vals_for_range), 1e-6)
-  shade_ymax <- max(y_vals_for_range)
+  y_vals_for_range <- y_vals_for_range[is.finite(y_vals_for_range)]
+  if (isTRUE(log_y)) {
+    y_vals_for_range <- y_vals_for_range[y_vals_for_range > 0]
+    if (length(y_vals_for_range) == 0) {
+      y_vals_for_range <- c(0.1, 10)
+    }
+    shade_ymin <- max(min(y_vals_for_range), 1e-6)
+    shade_ymax <- max(y_vals_for_range)
+  } else {
+    if (length(y_vals_for_range) == 0) {
+      y_vals_for_range <- c(0.5, 1.5)
+    }
+    pad <- diff(range(y_vals_for_range)) * 0.05
+    if (!is.finite(pad) || pad <= 0) {
+      pad <- 0.1
+    }
+    shade_ymin <- min(y_vals_for_range) - pad
+    shade_ymax <- max(y_vals_for_range) + pad
+  }
   disruption_label <- "Disrupted routes of transmission"
   disruption_label_wrapped <- stringr::str_wrap(disruption_label, width = 18)
   shading_df <- tidyr::crossing(
@@ -2004,13 +2240,26 @@ forest_over_time_plot_compare <- function(
         )
       }
     } +
-    scale_y_log10(
-      breaks = log_rate_ratio_axis_breaks,
-      minor_breaks = NULL,
-      labels = scales::label_number(accuracy = 0.1)
-    ) +
-    # Log-scale tick marks on the y-axis only (not the x-axis).
-    annotation_logticks(base = 10, sides = "l") +
+    {
+      if (isTRUE(log_y)) {
+        scale_y_log10(
+          breaks = log_rate_ratio_axis_breaks,
+          minor_breaks = log_rate_ratio_axis_minor_breaks,
+          labels = scales::label_number(accuracy = 0.1)
+        )
+      } else {
+        scale_y_continuous(
+          breaks = ratio_axis_breaks,
+          labels = scales::label_number(accuracy = 0.01),
+          expand = ggplot2::expansion(mult = c(0.06, 0.06))
+        )
+      }
+    } +
+    {
+      if (isTRUE(log_y)) {
+        annotation_logticks(base = 10, sides = "l")
+      }
+    } +
     scale_color_manual(values = colour_map, drop = FALSE) +
     {
       if (show_adjustment) {
@@ -2032,7 +2281,11 @@ forest_over_time_plot_compare <- function(
     labs(
       title = NULL,
       x = NULL,
-      y = paste(pathogen_title, "Rate Ratio"),
+      y = if (!is.null(y_lab)) {
+        y_lab
+      } else {
+        paste(pathogen_title, "Rate Ratio")
+      },
       color = "Characteristic",
       fill = NULL,
       shape = "Level"
@@ -2338,4 +2591,70 @@ forest_year_facet_points_plot <- function(
   }
 
   p
+}
+
+# Ratio of adjustment levels on the same layout as forest_over_time_plot_compare().
+forest_over_time_plot_compare_ratio <- function(
+  forest_data,
+  pathogen,
+  model_type,
+  outcome_type = NULL,
+  facet_outcome = FALSE,
+  jitter_width = 0.2,
+  show_ci = TRUE,
+  fixed_axes = FALSE,
+  show_disruption_legend = TRUE,
+  years_include = NULL,
+  season_axis_years = NULL,
+  disruption_season_width_scale = 1,
+  level_jitter_width = NULL,
+  y_lab = "Ratio of RRs (further / minimal)",
+  base_label = "Minimally adjusted",
+  further_label = "Fully adjusted"
+) {
+  ratio_data <- collapse_base_further_to_ratio(
+    forest_data,
+    base_label = base_label,
+    further_label = further_label
+  )
+  if (is.null(ratio_data) || nrow(ratio_data) == 0) {
+    return(ggplot() + theme_void())
+  }
+
+  if (is.null(years_include)) {
+    return(
+      forest_over_time_plot_all_seasons(
+        forest_data = ratio_data,
+        pathogen = pathogen,
+        model_type = model_type,
+        outcome_type = outcome_type,
+        facet_outcome = facet_outcome,
+        jitter_width = jitter_width,
+        show_ci = show_ci,
+        fixed_axes = fixed_axes,
+        show_disruption_legend = show_disruption_legend,
+        y_lab = y_lab,
+        log_y = FALSE
+      )
+    )
+  }
+
+  forest_over_time_plot_compare(
+    forest_data = ratio_data,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type,
+    facet_outcome = facet_outcome,
+    jitter_width = jitter_width,
+    show_ci = show_ci,
+    fixed_axes = fixed_axes,
+    show_disruption_legend = show_disruption_legend,
+    years_include = years_include,
+    season_axis_years = season_axis_years,
+    disruption_season_width_scale = disruption_season_width_scale,
+    adjustment_dodge_width = 0,
+    level_jitter_width = if (is.null(level_jitter_width)) 0.12 else level_jitter_width,
+    y_lab = y_lab,
+    log_y = FALSE
+  )
 }
