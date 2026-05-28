@@ -75,8 +75,8 @@ load_dummy_inputs <- function(cohort, pathogen) {
   }
 }
 
-CONDENSED_FIG_WIDTH <- 8.27
-CONDENSED_FIG_HEIGHT <- 11.69
+CONDENSED_FIG_WIDTH <- 8.5
+CONDENSED_FIG_HEIGHT <- 14
 
 # Same cowplot layout as further_results_condensed_key_vars.R
 assemble_condensed_figure <- function(
@@ -121,6 +121,8 @@ assemble_condensed_figure <- function(
     }
   }
 
+  legend_col_width <- if (is.null(legend_mid)) -0.55 else -0.3
+
   covid_row <- cowplot::plot_grid(
     NULL,
     legend_left,
@@ -128,7 +130,7 @@ assemble_condensed_figure <- function(
     covid_body,
     NULL,
     ncol = 5,
-    rel_widths = c(0.2, -0.3, 1.5, 3.6, -0.1),
+    rel_widths = c(0.2, legend_col_width, 1.5, 3.6, -0.1),
     align = "h",
     axis = "tb"
   )
@@ -351,6 +353,54 @@ make_facet_outcome_plots_key_vars_seasons_base_vs_further <- function(
       years_include = years_include,
       adjustment_dodge_width = 0.58,
       level_jitter_width = 0.12
+    ) +
+      ggplot2::theme(legend.position = "none")
+  }
+
+  list(
+    specific = plot_one("specific"),
+    sensitive = plot_one("sensitive")
+  )
+}
+
+# Base vs further: minimally and fully adjusted connected by a line per level (no CIs).
+make_facet_outcome_plots_key_vars_seasons_base_vs_further_stacked <- function(
+    df_min,
+    df_full,
+    df_dummy,
+    pathogen,
+    model_type,
+    seasons = c("2017_18", "2018_19", "2020_21")
+) {
+  pathogen_seasons <- seasons_for_pathogen_compare(pathogen, seasons)
+  years_include <- seasons_to_years(pathogen_seasons)
+
+  mild_dat <- forest_year_base_vs_further_mult_key_vars(
+    df_min, df_full, df_dummy, pathogen, model_type, "Mild", seasons
+  )
+  severe_dat <- forest_year_base_vs_further_mult_key_vars(
+    df_min, df_full, df_dummy, pathogen, model_type, "Severe", seasons
+  )
+  both_dat <- dplyr::bind_rows(mild_dat, severe_dat)
+
+  plot_one <- function(phenotype) {
+    plot_dat <- both_dat %>%
+      dplyr::filter(
+        tolower(.data$codelist_type) %in% c("reference", tolower(phenotype))
+      )
+    if (nrow(plot_dat) == 0) {
+      return(ggplot2::ggplot() + ggplot2::theme_void())
+    }
+    forest_over_time_plot_compare(
+      forest_data = plot_dat,
+      pathogen = pathogen,
+      model_type = model_type,
+      facet_outcome = TRUE,
+      show_disruption_legend = FALSE,
+      show_ci = FALSE,
+      years_include = years_include,
+      adjustment_layout = "stack",
+      level_jitter_width = 0.28
     ) +
       ggplot2::theme(legend.position = "none")
   }
@@ -742,7 +792,10 @@ build_shared_legends_adjustment_ratio <- function(
     legend.justification = c(0, 0.5),
     legend.box.just = "left",
     legend.box = "vertical",
-    legend.text = ggplot2::element_text(size = 7.5)
+    legend.text = ggplot2::element_text(size = 7.5),
+    legend.key.width = ggplot2::unit(1.1, "lines"),
+    legend.key.height = ggplot2::unit(0.85, "lines"),
+    legend.spacing.y = ggplot2::unit(0.15, "lines")
   )
 
   legend_src <- legend_dat %>% dplyr::slice(1)
@@ -777,7 +830,7 @@ build_shared_legends_adjustment_ratio <- function(
       y_lab = y_lab
     ) +
       legend_theme +
-      ggplot2::guides(shape = "none", colour = "none")
+      ggplot2::guides(shape = "none", colour = "none", alpha = "none")
   )
 
   legend_left_parts <- list(legend_age_grob, legend_disruption_grob)
@@ -942,6 +995,233 @@ run_cohort_condensed_key_vars_seasons_base_vs_further <- function(
       per_virus = list(rsv = rsv_plots, flu = flu_plots, covid = covid_plots)
     )
   )
+}
+
+run_cohort_condensed_key_vars_seasons_base_vs_further_stacked <- function(
+    cohort,
+    seasons = c("2017_18", "2018_19", "2020_21"),
+    model_type = "ethnicity_ses",
+    out_root = here::here(
+      "post_check", "plots", "primary_analyses", "forest_models_by_virus"
+    ),
+    fig_width = CONDENSED_FIG_WIDTH,
+    fig_height = CONDENSED_FIG_HEIGHT
+) {
+  assign("cohort", cohort, envir = .GlobalEnv)
+  season_slug <- paste(gsub("_", "", seasons), collapse = "_")
+
+  pathogen <- "rsv"
+  df_min <- load_collated_base(cohort, pathogen)
+  df_full <- load_collated_further(cohort, pathogen)
+  df_dummy <- load_dummy_inputs(cohort, pathogen)
+  rsv_plots <- make_facet_outcome_plots_key_vars_seasons_base_vs_further_stacked(
+    df_min, df_full, df_dummy, pathogen, model_type, seasons
+  )
+
+  pathogen <- "flu"
+  df_min <- load_collated_base(cohort, pathogen)
+  df_full <- load_collated_further(cohort, pathogen)
+  df_dummy <- load_dummy_inputs(cohort, pathogen)
+  flu_plots <- make_facet_outcome_plots_key_vars_seasons_base_vs_further_stacked(
+    df_min, df_full, df_dummy, pathogen, model_type, seasons
+  )
+
+  pathogen <- "covid"
+  df_min <- load_collated_base(cohort, pathogen)
+  df_full <- load_collated_further(cohort, pathogen)
+  df_dummy <- load_dummy_inputs(cohort, pathogen)
+  covid_plots <- make_facet_outcome_plots_key_vars_seasons_base_vs_further_stacked(
+    df_min, df_full, df_dummy, pathogen, model_type, seasons
+  )
+
+  legend_dat <- dplyr::bind_rows(
+    forest_year_base_vs_further_mult_key_vars(
+      df_min, df_full, df_dummy, "covid", model_type, "Mild", seasons
+    ),
+    forest_year_base_vs_further_mult_key_vars(
+      df_min, df_full, df_dummy, "covid", model_type, "Severe", seasons
+    )
+  ) %>%
+    dplyr::filter(.data$codelist_type %in% c("reference", "specific"))
+
+  shared_legends <- build_shared_legends_base_vs_further_stacked(
+    legend_dat,
+    legend_pathogen = "covid",
+    seasons = seasons_for_pathogen_compare("covid", seasons)
+  )
+
+  specific_condensed <- assemble_condensed_figure(
+    rsv_plots$specific,
+    flu_plots$specific,
+    covid_plots$specific,
+    shared_legends$left,
+    shared_legends$mid
+  )
+  sensitive_condensed <- assemble_condensed_figure(
+    rsv_plots$sensitive,
+    flu_plots$sensitive,
+    covid_plots$sensitive,
+    shared_legends$left,
+    shared_legends$mid
+  )
+
+  dir.create(out_root, recursive = TRUE, showWarnings = FALSE)
+
+  ggplot2::ggsave(
+    here::here(
+      out_root,
+      paste0(
+        cohort, "_", model_type, "_base_vs_further_stacked_",
+        season_slug, "_specific_mild_vs_severe.png"
+      )
+    ),
+    specific_condensed,
+    width = fig_width,
+    height = fig_height,
+    bg = "white"
+  )
+  ggplot2::ggsave(
+    here::here(
+      out_root,
+      paste0(
+        cohort, "_", model_type, "_base_vs_further_stacked_",
+        season_slug, "_sensitive_mild_vs_severe.png"
+      )
+    ),
+    sensitive_condensed,
+    width = fig_width,
+    height = fig_height,
+    bg = "white"
+  )
+
+  invisible(
+    list(
+      specific = specific_condensed,
+      sensitive = sensitive_condensed,
+      per_virus = list(rsv = rsv_plots, flu = flu_plots, covid = covid_plots)
+    )
+  )
+}
+
+stacked_compare_legend_plot <- function(
+    legend_dat,
+    legend_pathogen,
+    years_include,
+    legend_theme,
+    show_disruption_legend = FALSE,
+    guides_keep = c("shape")
+) {
+  p <- forest_over_time_plot_compare(
+    legend_dat,
+    pathogen = legend_pathogen,
+    model_type = "ethnicity_ses",
+    facet_outcome = FALSE,
+    show_disruption_legend = show_disruption_legend,
+    show_ci = FALSE,
+    years_include = years_include,
+    adjustment_layout = "stack"
+  ) +
+    legend_theme +
+    ggplot2::theme(legend.title = element_blank())
+
+  guide_drop <- setdiff(c("shape", "alpha", "fill", "colour"), guides_keep)
+  guide_specs <- stats::setNames(
+    rep(list("none"), length(guide_drop)),
+    guide_drop
+  )
+  p + ggplot2::guides(!!!guide_specs)
+}
+
+build_shared_legends_base_vs_further_stacked <- function(
+    legend_dat,
+    legend_pathogen = "covid",
+    seasons = c("2017_18", "2018_19", "2020_21")
+) {
+  years_include <- seasons_to_years(seasons)
+  labels_present <- unique(as.character(legend_dat$labels))
+
+  legend_theme <- ggplot2::theme(
+    legend.position = "left",
+    legend.justification = c(0, 0.5),
+    legend.box.just = "left",
+    legend.box = "vertical",
+    legend.text = ggplot2::element_text(size = 7.5),
+    legend.key.width = ggplot2::unit(1.1, "lines"),
+    legend.key.height = ggplot2::unit(0.85, "lines"),
+    legend.spacing.y = ggplot2::unit(0.15, "lines")
+  )
+
+  legend_adj <- legend_dat %>%
+    dplyr::filter(!is.na(.data$adjustment)) %>%
+    dplyr::distinct(.data$adjustment, .keep_all = TRUE)
+
+  legend_src <- if (nrow(legend_adj) > 0) legend_adj else legend_dat %>% dplyr::slice(1)
+
+  legend_grob <- function(dat, guides_keep, show_disruption = FALSE) {
+    if (nrow(dat) == 0) {
+      return(NULL)
+    }
+    cowplot::get_legend(
+      stacked_compare_legend_plot(
+        dat,
+        legend_pathogen = legend_pathogen,
+        years_include = years_include,
+        legend_theme = legend_theme,
+        show_disruption_legend = show_disruption,
+        guides_keep = guides_keep
+      )
+    )
+  }
+
+  # Match the legacy condensed-figure legend layout:
+  # - left column: Adjustment + Age Group + Disruption
+  # - mid column (overlay on COVID): Ethnicity + IMD Quintile
+  legend_adj_grob <- if (nrow(legend_adj) > 0) legend_grob(legend_adj, guides_keep = "alpha") else NULL
+  legend_age_grob <- if ("Age Group" %in% labels_present) {
+    legend_grob(
+      legend_dat %>% dplyr::filter(as.character(.data$labels) == "Age Group"),
+      guides_keep = "shape"
+    )
+  } else {
+    NULL
+  }
+  legend_disruption_grob <- legend_grob(legend_src, guides_keep = "fill", show_disruption = TRUE)
+
+  legend_left_parts <- list(legend_adj_grob, legend_age_grob, legend_disruption_grob)
+  legend_left_parts <- legend_left_parts[!vapply(legend_left_parts, is.null, logical(1))]
+
+  legend_left <- if (length(legend_left_parts) == 0) {
+    NULL
+  } else if (length(legend_left_parts) == 1) {
+    legend_left_parts[[1]]
+  } else {
+    cowplot::plot_grid(
+      plotlist = legend_left_parts,
+      ncol = 1,
+      align = "v",
+      axis = "l",
+      rel_heights = rep(1, length(legend_left_parts))
+    )
+  }
+
+  legend_eth <- if ("Ethnicity" %in% labels_present) {
+    legend_grob(
+      legend_dat %>% dplyr::filter(as.character(.data$labels) == "Ethnicity"),
+      guides_keep = "shape"
+    )
+  } else {
+    NULL
+  }
+  legend_imd <- if ("IMD Quintile" %in% labels_present) {
+    legend_grob(
+      legend_dat %>% dplyr::filter(as.character(.data$labels) == "IMD Quintile"),
+      guides_keep = "shape"
+    )
+  } else {
+    NULL
+  }
+
+  list(left = legend_left, mid = list(eth = legend_eth, imd = legend_imd))
 }
 
 run_cohort_condensed_key_vars_seasons_adjustment_ratio <- function(

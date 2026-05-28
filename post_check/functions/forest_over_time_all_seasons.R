@@ -217,7 +217,9 @@ forest_over_time_plot_all_seasons <- function(
 
   cohort_val <- if (exists("cohort", envir = .GlobalEnv)) get("cohort", envir = .GlobalEnv) else NA_character_
   investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) get("investigation_type", envir = .GlobalEnv) else NA_character_
-  level_order <- get_forest_level_order(cohort_val, model_type, pathogen, investigation_val)
+  level_order <- get_forest_level_order(
+    cohort_val, model_type, pathogen, investigation_val, style = "year_mult"
+  )
   # Current vaccination: unify Yes/No wording in the legend.
   # (Keep this in sync with the `label = case_when(...)` recoding below.)
   level_order <- dplyr::if_else(
@@ -482,7 +484,8 @@ forest_over_time_plot_all_seasons <- function(
       plot.margin = margin(5.5, if (identical(pathogen, "covid")) 1 else 4, 5.5, 2.5),
       legend.text = element_text(size = 7),
       legend.title = element_text(size = 8),
-      legend.key.width = unit(1.4, "lines")
+      legend.key.width = unit(if (isTRUE(show_ci)) 1.4 else 2.2, "lines"),
+      legend.key.height = unit(if (isTRUE(show_ci)) 1.4 else 2.2, "lines")
     )
 
   base_plot <- base_plot +
@@ -500,7 +503,11 @@ forest_over_time_plot_all_seasons <- function(
       shape = guide_legend(
         ncol = 1,
         order = 1,
-        override.aes = list(size = 0.5, colour = shape_legend_cols, fill = shape_legend_cols)
+        override.aes = list(
+          size = 0.5,
+          colour = shape_legend_cols,
+          fill = shape_legend_cols
+        )
       )
     )
 

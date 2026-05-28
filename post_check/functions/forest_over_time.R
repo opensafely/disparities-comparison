@@ -119,103 +119,6 @@ repair_covid_prior_vacc_label <- function(label) {
   )
 }
 
-get_level_order_forest <- function(cohort_val, model_type, pathogen, investigation_val) {
-  levels <- list()
-  
-  if (cohort_val == "infants" | cohort_val == "infants_subgroup") {
-    levels <- c("12-23m", "6-11m", "3-5m", "0-2m", "Male", "Female")
-  } else if (cohort_val == "children_and_adolescents") {
-    levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Male", "Female")
-  } else if (cohort_val == "adults") {
-    levels <- c("40-64y", "18-39y", "Male", "Female")
-  } else {
-    levels <- c("90y+", "75-89y", "65-74y", "Male", "Female")
-  }
-  
-  if (model_type == "ethnicity") {
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Town and Fringe",
-                  "Rural Village and Dispersed", "Unknown", "Other Ethnic Groups",
-                  "Black or Black British", "Asian or Asian British",
-                  "Mixed", "White"),
-                levels)
-  } else if (model_type == "ses") {
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "1 (most deprived)",
-                  "2", "3", "4", "5 (least deprived)"), levels)
-  } else if (model_type == "composition" & cohort_val != "infants" &
-             cohort_val != "infants_subgroup") {
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation"), levels)
-  } else if (model_type == "ethnicity_ses") {
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "1 (most deprived)",
-                  "2", "3", "4", "5 (least deprived)",
-                  "Unknown", "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-  } else if (model_type == "ethnicity_composition" & cohort_val != "infants" &
-             cohort_val != "infants_subgroup") {
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "Unknown", "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-  } else if (model_type == "ses_composition" & cohort_val != "infants" &
-             cohort_val != "infants_subgroup") {
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "1 (most deprived)", "2", "3", "4",
-                  "5 (least deprived)"), levels)
-  } else if (model_type == "full" & cohort_val != "infants" &
-             cohort_val != "infants_subgroup") {
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
-                  "Unknown", "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-  }
-  
-  if (cohort_val == "infants_subgroup") {
-    levels <- c("Maternal Pertussis Vaccination",
-                "Maternal Flu Vaccination", "Maternal Drug Usage",
-                "Maternal Drinking", "Binary Variables (Reference)",
-                "Maternal Current Smoking", "Maternal Former Smoking",
-                "Maternal Never Smoking", "Maternal Age",
-                "Maternal Age (Average)", levels)
-  } else if (cohort_val != "infants" & pathogen == "flu" & investigation_val == "primary") {
-    levels <- c("Flu Vaccination (Yes)", "Flu Vaccination (No)",
-                "Eligible and Vaccinated Last Autumn",
-                "Not Vaccinated in Past Year", levels)
-  } else if (cohort_val != "infants" & pathogen == "covid" & investigation_val == "primary") {
-    levels <- c("Covid Vaccination (Yes)", "Covid Vaccination (No)",
-                "Not Vaccinated in Past Year",
-                "Eligible and Vaccinated Last Autumn",
-                "Eligible and Vaccinated Last Spring", levels)
-  } else if (investigation_val == "secondary") {
-    levels <- c("Drug Usage", "Hazardous Drinking", "Sickle Cell",
-                "Immunosuppressed", "Cancer Within 3 Yrs", "CND", "CKD",
-                "CLD", "CHD", "Severely Obese", "Addisons", "Diabetes",
-                "Other Resp. Cond.", "Cystic Fibrosis", "COPD", "Asthma",
-                "Binary Variables (Reference)", "Current", "Former",
-                "Never", levels)
-  }
-  
-  unique(as.character(unlist(levels)))
-}
-
 key_exposure_variables <- function() {
   c(
     "imd_quintile",                # IMD
@@ -1248,7 +1151,9 @@ forest_over_time_plot <- function(
 
   cohort_val <- if (exists("cohort", envir = .GlobalEnv)) get("cohort", envir = .GlobalEnv) else NA_character_
   investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) get("investigation_type", envir = .GlobalEnv) else NA_character_
-  level_order <- get_level_order_forest(cohort_val, model_type, pathogen, investigation_val)
+  level_order <- get_forest_level_order(
+    cohort_val, model_type, pathogen, investigation_val, style = "year_mult"
+  )
   # Current vaccination: unify Yes/No wording in the legend.
   # (Keep this in sync with the `label = case_when(...)` recoding below.)
   level_order <- dplyr::if_else(
@@ -1516,7 +1421,8 @@ forest_over_time_plot <- function(
       plot.margin = margin(5.5, if (identical(pathogen, "covid")) 1 else 4, 5.5, 2.5),
       legend.text = element_text(size = 7),
       legend.title = element_text(size = 8),
-      legend.key.width = unit(1.4, "lines")
+      legend.key.width = unit(if (isTRUE(show_ci)) 1.4 else 2.2, "lines"),
+      legend.key.height = unit(if (isTRUE(show_ci)) 1.4 else 2.2, "lines")
     )
 
   base_plot <- base_plot +
@@ -1534,7 +1440,11 @@ forest_over_time_plot <- function(
       shape = guide_legend(
         ncol = 1,
         order = 1,
-        override.aes = list(size = 0.5, colour = shape_legend_cols, fill = shape_legend_cols)
+        override.aes = list(
+          size = 0.5,
+          colour = shape_legend_cols,
+          fill = shape_legend_cols
+        )
       )
     )
 
@@ -1596,10 +1506,12 @@ forest_over_time_plot_compare <- function(
   season_axis_years = NULL,
   disruption_season_width_scale = 1,
   adjustment_dodge_width = 0.22,
+  adjustment_layout = c("dodge", "stack"),
   level_jitter_width = NULL,
   y_lab = NULL,
   log_y = TRUE
 ) {
+  adjustment_layout <- match.arg(adjustment_layout)
   if (is.null(forest_data) || nrow(forest_data) == 0) {
     return(ggplot() + theme_void())
   }
@@ -1853,10 +1765,6 @@ forest_over_time_plot_compare <- function(
       )
     )
 
-  reference_lines <- plot_df %>%
-    distinct(characteristic_base, labels_col, col, outcome_type) %>%
-    mutate(yintercept = 1)
-
   colour_map <- plot_df %>%
     mutate(labels_col = as.character(labels_col), col = as.character(col)) %>%
     filter(!is.na(labels_col), !is.na(col)) %>%
@@ -1892,7 +1800,9 @@ forest_over_time_plot_compare <- function(
 
   cohort_val <- if (exists("cohort", envir = .GlobalEnv)) get("cohort", envir = .GlobalEnv) else NA_character_
   investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) get("investigation_type", envir = .GlobalEnv) else NA_character_
-  level_order <- get_level_order_forest(cohort_val, model_type, pathogen, investigation_val)
+  level_order <- get_forest_level_order(
+    cohort_val, model_type, pathogen, investigation_val, style = "year_mult"
+  )
   # Current vaccination: unify Yes/No wording in the legend.
   # (Keep this in sync with the `label = case_when(...)` recoding below.)
   level_order <- dplyr::if_else(
@@ -2015,6 +1925,11 @@ forest_over_time_plot_compare <- function(
 
   show_adjustment <- "adjustment" %in% names(plot_df) &&
     length(unique(plot_df$adjustment[!is.na(plot_df$adjustment)])) > 1L
+  adjustment_stacked <- isTRUE(show_adjustment) && identical(adjustment_layout, "stack")
+  if (adjustment_stacked) {
+    show_ci <- FALSE
+  }
+
   if (show_adjustment) {
     plot_df <- plot_df %>%
       dplyr::filter(!is.na(.data$adjustment)) %>%
@@ -2031,16 +1946,23 @@ forest_over_time_plot_compare <- function(
       )
   }
 
-  # Horizontal positioning: when comparing adjustments, dodge base/further side by side
-  # at each season, then spread levels within each adjustment cluster.
+  reference_line_cols <- c(
+    "characteristic_base", "labels_col", "col", "outcome_type", "labels_facet"
+  )
+  reference_lines <- plot_df %>%
+    distinct(dplyr::across(dplyr::all_of(reference_line_cols))) %>%
+    mutate(yintercept = 1)
+
+  # Horizontal positioning: dodge side by side (default), or share a season column and
+  # connect minimally vs fully adjusted estimates with a line (adjustment_layout = "stack").
   within_adj_jitter <- if (!is.null(level_jitter_width)) {
     level_jitter_width
   } else {
     jitter_width
   }
-  within_adj_span_cap <- 0.16
+  within_adj_span_cap <- if (adjustment_stacked) 0.38 else 0.16
 
-  if (show_adjustment) {
+  if (show_adjustment && !adjustment_stacked) {
     plot_df <- plot_df %>%
       mutate(
         adj_offset = dplyr::if_else(
@@ -2083,6 +2005,50 @@ forest_over_time_plot_compare <- function(
         ) %>%
         ungroup()
     }
+  } else if (show_adjustment && adjustment_stacked) {
+    if (isTRUE(use_discrete_season_axis)) {
+      plot_df <- plot_df %>%
+        group_by(labels_facet, season_x, outcome_type) %>%
+        mutate(
+          level_id = paste(
+            as.character(.data$variable),
+            as.character(.data$label),
+            as.character(.data$codelist_type),
+            sep = " | "
+          ),
+          jitter_rank = dplyr::dense_rank(.data$level_id),
+          jitter_n = dplyr::n_distinct(.data$level_id),
+          span = pmin(
+            within_adj_span_cap,
+            within_adj_jitter * sqrt(pmax(jitter_n, 1L))
+          ),
+          step = dplyr::if_else(jitter_n > 1, span / (jitter_n - 1), 0),
+          level_offset = (jitter_rank - (jitter_n + 1) / 2) * step,
+          x_plot = season_x + level_offset
+        ) %>%
+        ungroup()
+    } else {
+      plot_df <- plot_df %>%
+        group_by(labels_facet, year, outcome_type) %>%
+        mutate(
+          level_id = paste(
+            as.character(.data$variable),
+            as.character(.data$label),
+            as.character(.data$codelist_type),
+            sep = " | "
+          ),
+          jitter_rank = dplyr::dense_rank(.data$level_id),
+          jitter_n = dplyr::n_distinct(.data$level_id),
+          span = pmin(
+            within_adj_span_cap,
+            within_adj_jitter * sqrt(pmax(jitter_n, 1L))
+          ),
+          step = dplyr::if_else(jitter_n > 1, span / (jitter_n - 1), 0),
+          level_offset = (jitter_rank - (jitter_n + 1) / 2) * step,
+          x_plot = year + level_offset
+        ) %>%
+        ungroup()
+    }
   } else if (isTRUE(use_discrete_season_axis)) {
     plot_df <- plot_df %>%
       group_by(labels_facet, season_x, outcome_type) %>%
@@ -2107,6 +2073,30 @@ forest_over_time_plot_compare <- function(
         x_plot = year + (jitter_rank - (jitter_n + 1) / 2) * step
       ) %>%
       ungroup()
+  }
+
+  if (adjustment_stacked) {
+    season_key <- if (isTRUE(use_discrete_season_axis)) "season_x" else "year"
+    plot_df <- plot_df %>%
+      dplyr::arrange(
+        .data$labels_facet,
+        .data$outcome_type,
+        .data[[season_key]],
+        .data$adjustment
+      ) %>%
+      dplyr::mutate(
+        connect_id = paste(
+          as.character(.data$labels_facet),
+          as.character(.data$outcome_type),
+          as.character(.data$variable),
+          as.character(.data$label),
+          as.character(.data$codelist_type),
+          as.character(.data$labels_col),
+          .data[[season_key]],
+          sprintf("%.4f", .data$x_plot),
+          sep = " | "
+        )
+      )
   }
 
   y_vals_for_range <- c(plot_df$estimate, plot_df$conf.low, plot_df$conf.high)
@@ -2195,6 +2185,17 @@ forest_over_time_plot_compare <- function(
       alpha = 0.8
     ) +
     {
+      if (adjustment_stacked) {
+        geom_line(
+          aes(group = connect_id),
+          linewidth = 0.35,
+          alpha = 0.75,
+          na.rm = TRUE,
+          show.legend = FALSE
+        )
+      }
+    } +
+    {
       if (isTRUE(show_ci)) {
         if (show_adjustment) {
           geom_pointrange(
@@ -2215,12 +2216,14 @@ forest_over_time_plot_compare <- function(
       } else if (show_adjustment) {
         geom_point(
           aes(shape = shape_key),
+          size = if (adjustment_stacked) 2.0 else 1.8,
           na.rm = TRUE
         )
       } else {
         geom_point(
           aes(shape = shape_key),
           alpha = 0.85,
+          size = if (adjustment_stacked) 2.0 else 1.8,
           na.rm = TRUE
         )
       }
@@ -2305,7 +2308,8 @@ forest_over_time_plot_compare <- function(
       plot.margin = margin(5.5, if (identical(pathogen, "covid")) 1 else 4, 5.5, 2.5),
       legend.text = element_text(size = 7),
       legend.title = element_text(size = 8),
-      legend.key.width = unit(1.4, "lines")
+      legend.key.width = unit(if (isTRUE(show_ci)) 1.4 else 2.2, "lines"),
+      legend.key.height = unit(if (isTRUE(show_ci)) 1.4 else 2.2, "lines")
     )
 
   base_plot <- base_plot +
@@ -2321,7 +2325,11 @@ forest_over_time_plot_compare <- function(
         "none"
       },
       alpha = if (show_adjustment) {
-        guide_legend(ncol = 1, order = 2)
+        guide_legend(
+          ncol = 1,
+          order = 2,
+          override.aes = list(shape = 16, size = if (adjustment_stacked) 2.0 else 1.4, colour = "black", fill = "black")
+        )
       } else {
         "none"
       },
@@ -2329,13 +2337,15 @@ forest_over_time_plot_compare <- function(
         ncol = 1,
         order = 1,
         override.aes = list(
-          size = 0.5,
+          size = if (adjustment_stacked || !isTRUE(show_ci)) 1.8 else 0.5,
           colour = shape_legend_cols,
           fill = shape_legend_cols,
-          alpha = if (show_adjustment) 1 else NULL
+          alpha = 1
         )
       )
     )
+
+  facet_labeller <- labeller(labels_facet = label_wrap_gen(width = 14))
 
   # For test-model style: keep panel heights fixed, but allow y-ranges to vary.
   facet_scales <- "free_y"
@@ -2346,14 +2356,14 @@ forest_over_time_plot_compare <- function(
         scales = facet_scales,
         space = "fixed",
         axes = "y",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = facet_labeller
       )
     } else {
       base_plot <- base_plot + facet_grid(
         labels_facet ~ outcome_type,
         scales = facet_scales,
         space = "fixed",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = facet_labeller
       )
     }
   } else {
@@ -2363,14 +2373,14 @@ forest_over_time_plot_compare <- function(
         scales = facet_scales,
         space = "fixed",
         axes = "y",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = facet_labeller
       )
     } else {
       base_plot <- base_plot + facet_grid(
         labels_facet ~ .,
         scales = facet_scales,
         space = "fixed",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = facet_labeller
       )
     }
   }
@@ -2408,7 +2418,11 @@ forest_year_facet_points_plot <- function(
   model_type_arg <- model_type
   pathogen_arg <- pathogen
   
-  get_level_order <- get_level_order_forest
+  get_level_order <- function(cohort_val, model_type, pathogen, investigation_val) {
+    get_forest_level_order(
+      cohort_val, model_type, pathogen, investigation_val, style = "year_mult"
+    )
+  }
 
   year_levels <- if (identical(pathogen, "covid")) {
     c("2019-20", "2020-21", "2021-22", "2022-23", "2023-24")
@@ -2601,7 +2615,7 @@ forest_over_time_plot_compare_ratio <- function(
   outcome_type = NULL,
   facet_outcome = FALSE,
   jitter_width = 0.2,
-  show_ci = TRUE,
+  show_ci = FALSE,
   fixed_axes = FALSE,
   show_disruption_legend = TRUE,
   years_include = NULL,
@@ -2620,6 +2634,8 @@ forest_over_time_plot_compare_ratio <- function(
   if (is.null(ratio_data) || nrow(ratio_data) == 0) {
     return(ggplot() + theme_void())
   }
+
+  show_ci <- FALSE
 
   if (is.null(years_include)) {
     return(

@@ -9,6 +9,7 @@ library(egg)
 
 #import model functions
 source(here::here("post_check", "functions", "model.R"))
+source(here::here("post_check", "functions", "forest_level_order.R"))
 source(here::here("post_check", "functions", "forest_over_time.R"))
 source(here::here("post_check", "functions", "forest_over_time_all_seasons.R"))
 options(scipen = 999)
@@ -89,135 +90,9 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
 
   }
   
-  #define levels
-  levels <- list()
-  
-  if (cohort == "infants" | cohort == "infants_subgroup") {
-    
-    levels <- c("12-23m", "6-11m", "3-5m", "0-2m", "Male", "Female")
-    
-  } else if (cohort == "children_and_adolescents") {
-    
-    levels <- c("14-17y", "10-13y", "6-9y", "2-5y", "Male", "Female")
-    
-  } else if (cohort == "adults") {
-    
-    levels <- c("40-64y", "18-39y", "Male", "Female")
-    
-  } else {
-    
-    levels <- c("90y+", "75-89y", "65-74y", "Male", "Female")
-    
-  }
-  
-  if (model_type == "ethnicity") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Town and Fringe",
-                  "Rural Village and Dispersed",  "Other Ethnic Groups",
-                  "Unknown", "Other Ethnic Groups",
-                  "Black or Black British", "Asian or Asian British",
-                  "Mixed", "White"),
-                levels)
-    
-  } else if (model_type == "ses") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "1 (most deprived)",
-                  "2", "3", "4", "5 (least deprived)"), levels)
-    
-  } else if (model_type == "composition" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation"), levels)
-    
-  } else if (model_type == "ethnicity_ses") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "1 (most deprived)",
-                  "2", "3", "4", "5 (least deprived)",
-                  "Other Ethnic Groups", "Black or Black British",
-                  "Unknown", "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-    
-  } else if (model_type == "ethnicity_composition" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "Other Ethnic Groups", "Black or Black British",
-                  "Unknown", "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-    
-  } else if (model_type == "ses_composition" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "1 (most deprived)", "2", "3", "4",
-                  "5 (least deprived)"), levels)
-    
-  } else if (model_type == "full" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
-                  "Other Ethnic Groups", "Black or Black British",
-                  "Unknown", "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-    
-  }
-  
-  if (cohort == "infants_subgroup") {
-    
-    levels <- c("Maternal Pertussis Vaccination",
-                "Maternal Flu Vaccination", "Maternal Drug Usage",
-                "Maternal Drinking", "Binary Variables (Reference)",
-                "Maternal Current Smoking", "Maternal Former Smoking",
-                "Maternal Never Smoking", "Maternal Age",
-                "Maternal Age (Average)", levels)
-    
-  } else if (cohort != "infants" & pathogen == "flu" & investigation_type == "primary") {
-    
-    levels <- c("Flu Vaccination (Yes)", "Flu Vaccination (No)",
-                "Eligible and Vaccinated Last Autumn",
-                "Not Vaccinated in Past Year", levels)
-    
-  } else if (cohort != "infants" & pathogen == "covid" & investigation_type == "primary") {
-    
-    levels <- c("Covid Vaccination (Yes)", "Covid Vaccination (No)",
-                "Not Vaccinated in Past Year",
-                "Eligible and Vaccinated Last Autumn",
-                "Eligible and Vaccinated Last Spring", levels)
-    
-  } else if (investigation_type == "secondary") {
-
-    levels <- c("Drug Usage", "Hazardous Drinking", "Sickle Cell",
-                "Immunosuppressed", "Cancer Within 3 Yrs", "CND", "CKD",
-                "CLD", "CHD", "Severely Obese", "Addisons", "Diabetes",
-                "Other Resp. Cond.", "Cystic Fibrosis", "COPD", "Asthma",
-                "Binary Variables (Reference)", "Current", "Former",
-                "Never", levels)
-
-  }
-
-  levels <- unique(as.character(unlist(levels)))
+  levels <- get_forest_level_order(
+    cohort, model_type, pathogen, investigation_type, style = "default"
+  )
   
   process_forest_plot <- function(df_model) {
     
@@ -1283,125 +1158,9 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     
   }
   
-  #define levels
-  levels <- list()
-  
-  if (cohort == "infants" | cohort == "infants_subgroup") {
-    
-    levels <- c("12-23m", "6-11m", "3-5m", "0-2m", "Male", "Female")
-    
-  } else if (cohort == "children_and_adolescents") {
-    
-    levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Female", "Male")
-    
-  } else if (cohort == "adults") {
-    
-    levels <- c("18-39y", "40-64y", "Female", "Male")
-    
-  } else {
-    
-    levels <- c("90y+", "75-89y", "65-74y", "Male", "Female")
-    
-  }
-  
-  if (model_type == "ethnicity") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Town and Fringe",
-                  "Rural Village and Dispersed",  "Other Ethnic Groups",
-                  "Unknown", "Other Ethnic Groups",
-                  "Black or Black British", "Asian or Asian British",
-                  "Mixed", "White"),
-                levels)
-    
-  } else if (model_type == "ses") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "1 (most deprived)",
-                  "2", "3", "4", "5 (least deprived)"), levels)
-    
-  } else if (model_type == "composition" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation"), levels)
-    
-  } else if (model_type == "ethnicity_ses") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "1 (most deprived)",
-                  "2", "3", "4", "5 (least deprived)",
-                  "Other Ethnic Groups", "Black or Black British",
-                  "Unknown", "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-    
-  } else if (model_type == "ethnicity_composition" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "Other Ethnic Groups", "Black or Black British",
-                  "Unknown", "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-    
-  } else if (model_type == "ses_composition" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "1 (most deprived)", "2", "3", "4",
-                  "5 (least deprived)"), levels)
-    
-  } else if (model_type == "full" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
-                  "Other Ethnic Groups", "Black or Black British",
-                  "Unknown", "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-    
-  }
-  
-  if (cohort == "infants_subgroup") {
-    
-    levels <- c(levels, "Maternal Pertussis Vaccination",
-                "Maternal Flu Vaccination", "Maternal Drug Usage",
-                "Maternal Drinking", "Binary Variables (Reference)",
-                "Current Smoker", "Former Smoker", "Never Smoker",
-                "Maternal Age", "Maternal Age (Average)")
-    
-  } else if (cohort != "infants" & pathogen == "flu") {
-    
-    levels <- c("Flu Vaccination (Yes)", "Flu Vaccination (No)",
-                "Eligible and Vaccinated Last Autumn",
-                "Not Vaccinated in Past Year", levels)
-    
-  } else if (cohort != "infants" & pathogen == "covid") {
-    
-    levels <- c("Covid Vaccination (Yes)", "Covid Vaccination (No)",
-                "Not Vaccinated in Past Year",
-                "Eligible and Vaccinated Last Autumn",
-                "Eligible and Vaccinated Last Spring", levels)
-    
-  }
-
-  levels <- unique(as.character(unlist(levels)))
+  levels <- get_forest_level_order(
+    cohort, model_type, pathogen, investigation_type, style = "year_mult"
+  )
   
   process_forest_plot <- function(df_model) {
     

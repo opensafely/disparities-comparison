@@ -234,8 +234,8 @@ run_cohort_condensed_key_vars <- function(cohort) {
       paste0(cohort, "_", model_type, "_further_specific_mild_vs_severe_key_vars.png")
     ),
     specific_condensed,
-    height = 11.69,
-    width = 8.27
+    height = 14,
+    width = 8.5
   )
   ggsave(
     here::here(
@@ -243,8 +243,8 @@ run_cohort_condensed_key_vars <- function(cohort) {
       paste0(cohort, "_", model_type, "_further_sensitive_mild_vs_severe_key_vars.png")
     ),
     sensitive_condensed,
-    height = 11.69,
-    width = 8.27
+    height = 14,
+    width = 8.5
   )
 }
 
