@@ -1,5 +1,6 @@
 library(tidyverse)
 library(here)
+library(data.table)
 
 ##  older adults 
 cohort <- "older_adults"
@@ -122,6 +123,6 @@ inclusion_df <- bind_rows(
 #save it 
 write_csv(
   inclusion_df,
-  here::here("post_check", "plots", "supplemental", "flow_charts",
-             "reformated_inclusion_collated.csv")
+  here::here("post_check", "supplemental", "flow_chart",
+             "reformatted_inclusion_collated.csv")
 )

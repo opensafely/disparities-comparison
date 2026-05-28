@@ -9,8 +9,19 @@ library(egg)
 
 #import model functions
 source(here::here("post_check", "functions", "model.R"))
+source(here::here("post_check", "functions", "forest_level_order.R"))
 source(here::here("post_check", "functions", "forest_over_time.R"))
+source(here::here("post_check", "functions", "forest_over_time_all_seasons.R"))
 options(scipen = 999)
+
+# Reorder plot labels; `fct_relevel()` fails when `level_order` has duplicates.
+relevel_forest_labels <- function(label, level_order) {
+  label_chr <- as.character(label)
+  level_order <- unique(as.character(unlist(level_order)))
+  level_order <- level_order[!is.na(level_order) & level_order != ""]
+  extras <- setdiff(unique(label_chr[!is.na(label_chr)]), level_order)
+  factor(label_chr, levels = c(level_order, extras))
+}
 
 #create function to filter collated results to models wanted and then plot
 forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
@@ -48,6 +59,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     outcome_type == "Severe" ~ paste0("time_", pathogen, "_secondary")
   )
 
+  if ("composition_category" %in% exposure) {
+    df_dummy <- enrich_dummy_household_composition(df_dummy, cohort)
+  }
+
   if (further == "no") {
 
     dummy_model <- glm_poisson(df_dummy, exposure, outcome, offset)
@@ -75,129 +90,9 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
 
   }
   
-  #define levels
-  levels <- list()
-  
-  if (cohort == "infants" | cohort == "infants_subgroup") {
-    
-    levels <- c("12-23m", "6-11m", "3-5m", "0-2m", "Male", "Female")
-    
-  } else if (cohort == "children_and_adolescents") {
-    
-    levels <- c("14-17y", "10-13y", "6-9y", "2-5y", "Male", "Female")
-    
-  } else if (cohort == "adults") {
-    
-    levels <- c("40-64y", "18-39y", "Male", "Female")
-    
-  } else {
-    
-    levels <- c("90y+", "75-89y", "65-74y", "Male", "Female")
-    
-  }
-  
-  if (model_type == "ethnicity") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Town and Fringe",
-                  "Rural Village and Dispersed",  "Other Ethnic Groups",
-                  "Black or Black British", "Asian or Asian British",
-                  "Mixed", "White"),
-                levels)
-    
-  } else if (model_type == "ses") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "1 (most deprived)",
-                  "2", "3", "4", "5 (least deprived)"), levels)
-    
-  } else if (model_type == "composition" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation"), levels)
-    
-  } else if (model_type == "ethnicity_ses") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "1 (most deprived)",
-                  "2", "3", "4", "5 (least deprived)",
-                  "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-    
-  } else if (model_type == "ethnicity_composition" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-    
-  } else if (model_type == "ses_composition" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "1 (most deprived)", "2", "3", "4",
-                  "5 (least deprived)"), levels)
-    
-  } else if (model_type == "full" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
-                  "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-    
-  }
-  
-  if (cohort == "infants_subgroup") {
-    
-    levels <- c("Maternal Pertussis Vaccination",
-                "Maternal Flu Vaccination", "Maternal Drug Usage",
-                "Maternal Drinking", "Binary Variables (Reference)",
-                "Maternal Current Smoking", "Maternal Former Smoking",
-                "Maternal Never Smoking", "Maternal Age",
-                "Maternal Age (Average)", levels)
-    
-  } else if (cohort != "infants" & pathogen == "flu" & investigation_type == "primary") {
-    
-    levels <- c("Flu Vaccination (Yes)", "Flu Vaccination (No)",
-                "Eligible and Vaccinated Last Autumn",
-                "Not Vaccinated in Past Year", levels)
-    
-  } else if (cohort != "infants" & pathogen == "covid" & investigation_type == "primary") {
-    
-    levels <- c("Covid Vaccination (Yes)", "Covid Vaccination (No)",
-                "Not Vaccinated in Past Year",
-                "Eligible and Vaccinated Last Autumn",
-                "Eligible and Vaccinated Last Spring", levels)
-    
-  } else if (investigation_type == "secondary") {
-
-    levels <- c("Drug Usage", "Hazardous Drinking", "Sickle Cell",
-                "Immunosuppressed", "Cancer Within 3 Yrs", "CND", "CKD",
-                "CLD", "CHD", "Severely Obese", "Addisons", "Diabetes",
-                "Other Resp. Cond.", "Cystic Fibrosis", "COPD", "Asthma",
-                "Binary Variables (Reference)", "Current", "Former",
-                "Never", levels)
-
-  }
+  levels <- get_forest_level_order(
+    cohort, model_type, pathogen, investigation_type, style = "default"
+  )
   
   process_forest_plot <- function(df_model) {
     
@@ -216,7 +111,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         ) %>%
         mutate(
           reference_row = if_else(var_type == "continuous", FALSE, reference_row)
-        )
+        ) %>%
+        fix_covid_prior_vacc_reference_rows()
       
       if (cohort == "infants_subgroup" & further == "yes") {
         
@@ -566,8 +462,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         slice(rep(1:n(), each = 8)) %>%
         group_by(rn) %>%
         mutate(
-          subset = c("2016_17", "2017_18", "2018_19", "2019_20", "2020_21",
-                     "2021_22", "2022_23", "2023_24"),
+          subset = c(
+            "2016_17", "2017_18", "2018_19", "2019_20", "2020_21",
+            "2021_22", "2022_23", "2023_24"
+          )[dplyr::row_number()],
           conf.low = 1,
           conf.high = 1
         ) %>%
@@ -713,7 +611,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
             label = if_else(label == "Yes", plot_label, label)
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -779,7 +677,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
             label = if_else(label == "Yes", plot_label, label)
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels)
+            label = relevel_forest_labels(label, levels)
           ) %>%
           mutate(
             shape_order = factor(str_to_title(codelist_type), levels = c(
@@ -841,8 +739,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           mutate(
             label = case_when(
               variable == "vax_status" ~ "Covid Vaccination (Yes)",
-              variable == "time_since_last_covid_vaccination" ~ paste0(
-                label, " Since Last Covid Vaccination"),
+              variable == "time_since_last_covid_vaccination" ~
+                format_covid_prior_vacc_label(term, label, variable, reference_row),
               TRUE ~ label
             ),
             subset = gsub("_", "-", subset)
@@ -866,15 +764,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            label = case_when(
-              str_detect(label, regex("^6-12m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Autumn",
-              str_detect(label, regex("^0-6m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Spring",
-              str_detect(label, "12m") ~ "Not Vaccinated in Past Year",
-              TRUE ~ label
-            )
-          ) %>%
-          mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -931,8 +821,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           mutate(
             label = case_when(
               variable == "vax_status" & pathogen == "covid" ~ "Covid Vaccination (Yes)",
-              variable == "time_since_last_covid_vaccination" ~ paste0(
-                label, " Since Last Covid Vaccination"),
+              variable == "time_since_last_covid_vaccination" ~
+                format_covid_prior_vacc_label(term, label, variable, reference_row),
               TRUE ~ label
             ),
             subset = gsub("_", "-", subset)
@@ -956,15 +846,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            label = case_when(
-              str_detect(label, regex("^6-12m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Autumn",
-              str_detect(label, regex("^0-6m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Spring",
-              str_detect(label, "12m") ~ "Not Vaccinated in Past Year",
-              TRUE ~ label
-            )
-          ) %>%
-          mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -1049,7 +931,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
             )
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -1107,6 +989,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
   if (is.null(forest_data) || nrow(forest_data) == 0) {
     return(plot + theme(plot.title = element_blank()))
   }
+  
+  # Ensure stable types for downstream binding/plotting (subset can be logical NA in some branches).
+  forest_data <- forest_data %>%
+    dplyr::mutate(subset = as.character(.data$subset))
 
   plot_ot <- forest_over_time_plot(
     forest_data = forest_data,
@@ -1118,9 +1004,100 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     ...
   )
 
+  # Keep the underlying tidy results accessible for downstream reuse (e.g. key-exposure plots).
+  # Do NOT rely on `$data` because ggplot overwrites this as it transforms data internally.
+  attr(plot_ot, "forest_data") <- forest_data
+
   return(plot_ot)
   
   }
+
+forest_key_exposures <- function(
+  df,
+  df_dummy,
+  pathogen,
+  model_type,
+  outcome_type,
+  further = "no",
+  ...
+) {
+  p <- forest(
+    df = df,
+    df_dummy = df_dummy,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type,
+    further = further,
+    ...
+  )
+
+  forest_data <- attr(p, "forest_data")
+  if (is.null(forest_data)) {
+    forest_data <- p$data
+  }
+  if (is.null(forest_data) || nrow(forest_data) == 0) return(p)
+
+  key_vars <- key_exposure_variables()
+  key_vars <- intersect(key_vars, unique(forest_data$variable))
+  forest_data_key <- forest_data %>%
+    dplyr::filter(.data$variable %in% key_vars)
+
+  forest_over_time_plot(
+    forest_data = forest_data_key,
+    pathogen = if_else(pathogen == "overall_and_all_cause", "overall_resp", pathogen),
+    model_type = model_type,
+    outcome_type = outcome_type,
+    facet_outcome = FALSE,
+    label_levels = FALSE,
+    ...
+  )
+}
+
+# Forest plot with age and the model-specific exposure(s) of interest only.
+# Defaults to further (fully adjusted) models, matching `forest_year_further_mult()`.
+forest_model_key_vars <- function(
+  df,
+  df_dummy,
+  pathogen,
+  model_type,
+  outcome_type,
+  further = "yes",
+  ...
+) {
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp", pathogen)
+
+  p <- forest(
+    df = df,
+    df_dummy = df_dummy,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type,
+    further = further,
+    ...
+  )
+
+  forest_data <- attr(p, "forest_data")
+  if (is.null(forest_data)) {
+    forest_data <- p$data
+  }
+  forest_data_key <- filter_forest_to_model_key_vars(forest_data, model_type)
+
+  if (is.null(forest_data_key) || nrow(forest_data_key) == 0) {
+    return(ggplot2::ggplot() + ggplot2::theme_void())
+  }
+
+  plot_ot <- forest_over_time_plot(
+    forest_data = forest_data_key,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type,
+    facet_outcome = FALSE,
+    label_levels = FALSE,
+    ...
+  )
+  attr(plot_ot, "forest_data") <- forest_data_key
+  plot_ot
+}
 
 #forest plot combined model results
 forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
@@ -1162,6 +1139,10 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     pathogen == "flu" ~ "prior_flu_vaccination",
     pathogen == "covid" ~ "time_since_last_covid_vaccination"
   )
+
+  if ("composition_category" %in% exposure) {
+    df_dummy <- enrich_dummy_household_composition(df_dummy, cohort)
+  }
   
   if (cohort == "infants" | cohort == "infants_subgroup") {
     
@@ -1177,119 +1158,9 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     
   }
   
-  #define levels
-  levels <- list()
-  
-  if (cohort == "infants" | cohort == "infants_subgroup") {
-    
-    levels <- c("12-23m", "6-11m", "3-5m", "0-2m", "Male", "Female")
-    
-  } else if (cohort == "children_and_adolescents") {
-    
-    levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Female", "Male")
-    
-  } else if (cohort == "adults") {
-    
-    levels <- c("18-39y", "40-64y", "Female", "Male")
-    
-  } else {
-    
-    levels <- c("90y+", "75-89y", "65-74y", "Male", "Female")
-    
-  }
-  
-  if (model_type == "ethnicity") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Town and Fringe",
-                  "Rural Village and Dispersed",  "Other Ethnic Groups",
-                  "Black or Black British", "Asian or Asian British",
-                  "Mixed", "White"),
-                levels)
-    
-  } else if (model_type == "ses") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "1 (most deprived)",
-                  "2", "3", "4", "5 (least deprived)"), levels)
-    
-  } else if (model_type == "composition" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation"), levels)
-    
-  } else if (model_type == "ethnicity_ses") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "1 (most deprived)",
-                  "2", "3", "4", "5 (least deprived)",
-                  "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-    
-  } else if (model_type == "ethnicity_composition" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-    
-  } else if (model_type == "ses_composition" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "1 (most deprived)", "2", "3", "4",
-                  "5 (least deprived)"), levels)
-    
-  } else if (model_type == "full" & cohort != "infants" &
-             cohort != "infants_subgroup") {
-    
-    levels <- c(c("Urban Major Conurbation", "Urban Minor Conurbation",
-                  "Urban City and Town", "Rural Village and Dispersed",
-                  "Rural Town and Fringe", "Three Other Generations",
-                  "Two Other Generations", "One Other Generation",
-                  "Living Alone", "Multiple of the Same Generation",
-                  "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
-                  "Other Ethnic Groups", "Black or Black British",
-                  "Asian or Asian British", "Mixed", "White"), levels)
-    
-  }
-  
-  if (cohort == "infants_subgroup") {
-    
-    levels <- c(levels, "Maternal Pertussis Vaccination",
-                "Maternal Flu Vaccination", "Maternal Drug Usage",
-                "Maternal Drinking", "Binary Variables (Reference)",
-                "Current Smoker", "Former Smoker", "Never Smoker",
-                "Maternal Age", "Maternal Age (Average)")
-    
-  } else if (cohort != "infants" & pathogen == "flu") {
-    
-    levels <- c("Flu Vaccination (Yes)", "Flu Vaccination (No)",
-                "Eligible and Vaccinated Last Autumn",
-                "Not Vaccinated in Past Year", levels)
-    
-  } else if (cohort != "infants" & pathogen == "covid") {
-    
-    levels <- c("Covid Vaccination (Yes)", "Covid Vaccination (No)",
-                "Not Vaccinated in Past Year",
-                "Eligible and Vaccinated Last Autumn",
-                "Eligible and Vaccinated Last Spring", levels)
-    
-  }
+  levels <- get_forest_level_order(
+    cohort, model_type, pathogen, investigation_type, style = "year_mult"
+  )
   
   process_forest_plot <- function(df_model) {
     
@@ -1308,7 +1179,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
         ) %>%
         mutate(
           reference_row = if_else(var_type == "continuous", FALSE, reference_row)
-        )
+        ) %>%
+        fix_covid_prior_vacc_reference_rows()
       
       if (cohort == "infants_subgroup") {
         
@@ -1677,7 +1549,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             label = if_else(label == "Yes", plot_label, label)
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -1741,7 +1613,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             label = if_else(label == "Yes", plot_label, label)
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -1787,8 +1659,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           mutate(
             label = case_when(
               variable == "vax_status" ~ "Covid Vaccination (Yes)",
-              variable == "time_since_last_covid_vaccination" ~ paste0(
-                label, " Since Last Covid Vaccination"),
+              variable == "time_since_last_covid_vaccination" ~
+                format_covid_prior_vacc_label(term, label, variable, reference_row),
               TRUE ~ label
             ),
             subset = gsub("_", "-", subset)
@@ -1812,15 +1684,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
               TRUE ~ plot_label)
           ) %>%
           mutate(
-            label = case_when(
-              str_detect(label, regex("^6-12m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Autumn",
-              str_detect(label, regex("^0-6m Since Last Covid Vaccination$")) ~ "Eligible and Vaccinated Last Spring",
-              str_detect(label, "12m") ~ "Not Vaccinated in Past Year",
-              TRUE ~ label
-            )
-          ) %>%
-          mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -1891,7 +1755,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
             )
           ) %>%
           mutate(
-            label = forcats::fct_relevel(label, levels),
+            label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
               "Reference", "Specific", "Sensitive")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
@@ -1939,7 +1803,108 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     label_levels = FALSE
   )
   plot <- plot + theme(plot.title = element_blank())
-  
+
   return(plot)
-  
+
+}
+
+# Multi-season base + further models: key vars only, selected seasons (compare plots).
+forest_year_base_vs_further_mult_key_vars <- function(
+  df_min,
+  df_full,
+  df_dummy,
+  pathogen,
+  model_type,
+  outcome_type,
+  seasons = c("2017_18", "2018_19", "2020_21")
+) {
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp", pathogen)
+  pathogen_seasons <- if (is.null(seasons)) {
+    NULL
+  } else {
+    seasons_for_pathogen_compare(pathogen, seasons)
+  }
+
+  forest_data <- collect_ethnicity_ses_base_vs_further_data(
+    df_min = df_min,
+    df_full = df_full,
+    df_dummy = df_dummy,
+    pathogen = pathogen,
+    outcome_types = outcome_type,
+    seasons = pathogen_seasons
+  )
+
+  filter_forest_to_model_key_vars(forest_data, model_type)
+}
+
+# Multi-season further models: age + model-specific exposures only.
+forest_year_further_mult_key_vars <- function(
+  df,
+  df_dummy,
+  pathogen,
+  model_type,
+  outcome_type,
+  return_data = FALSE
+) {
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp", pathogen)
+
+  forest_data <- forest_year_further_mult(
+    df = df,
+    df_dummy = df_dummy,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type,
+    return_data = TRUE
+  )
+
+  forest_data_key <- filter_forest_to_model_key_vars(forest_data, model_type)
+
+  if (isTRUE(return_data)) {
+    return(forest_data_key)
+  }
+
+  if (is.null(forest_data_key) || nrow(forest_data_key) == 0) {
+    return(ggplot2::ggplot() + ggplot2::theme_void())
+  }
+
+  plot <- forest_over_time_plot(
+    forest_data = forest_data_key,
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type,
+    facet_outcome = FALSE,
+    label_levels = FALSE
+  )
+  plot <- plot + theme(plot.title = element_blank())
+  attr(plot, "forest_data") <- forest_data_key
+  plot
+}
+
+# Multi-season base + further models: key vars only, selected seasons (compare plots).
+forest_year_base_vs_further_mult_key_vars <- function(
+  df_min,
+  df_full,
+  df_dummy,
+  pathogen,
+  model_type,
+  outcome_type,
+  seasons = c("2017_18", "2018_19", "2020_21")
+) {
+  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp", pathogen)
+  pathogen_seasons <- if (is.null(seasons)) {
+    NULL
+  } else {
+    seasons_for_pathogen_compare(pathogen, seasons)
+  }
+
+  forest_data <- collect_ethnicity_ses_base_vs_further_data(
+    df_min = df_min,
+    df_full = df_full,
+    df_dummy = df_dummy,
+    pathogen = pathogen,
+    outcome_types = outcome_type,
+    seasons = pathogen_seasons
+  )
+
+  filter_forest_to_model_key_vars(forest_data, model_type)
 }

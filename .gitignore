@@ -28,6 +28,7 @@ analysis/old_model_files/*
 /post_check/supplemental/surveillance/*
 /post_check/supplemental/table1/*
 /post_check/supplemental/outcome_overlap/*
+/post_check/supplemental/flow_chart/reformatted_inclusion_collated.csv
 
 /smoke_ab/*
 !reformat_table1.R

@@ -9,11 +9,6 @@
   library(patchwork)
   library(ggpubr)
 
-  # Prevent accidental base-graphics output from creating `Rplots.pdf` when running via Rscript.
-  # (ggsave() uses its own device, so this won't affect saved figures.)
-  grDevices::pdf(file = NULL)
-  on.exit(grDevices::dev.off(), add = TRUE)
-
   #import plot function
   source(here::here("post_check", "functions", "forest.R"))
   ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)

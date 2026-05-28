@@ -9,7 +9,7 @@ library(tibble)
 library(scales)
 library(forcats)
 library(cowplot)
-library(ingrid)
+#library(ingrid)
 
 #define function to create upset plot of multiple infection outcomes
 upset_plot <- function(input, seasons) {
