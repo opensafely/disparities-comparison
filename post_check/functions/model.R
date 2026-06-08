@@ -9,9 +9,13 @@ fs::dir_create(here::here("post_check", "functions"))
 #create function for poisson regression
 glm_poisson <- function(df, x, y, offset_var) {
   
-  #filter out NA survival times
+  #filter out NA survival times and fix ethnicity levels
   df <- df %>%
-    filter(!is.na(offset_var))
+    filter(!is.na(offset_var)) %>% 
+    mutate(
+      latest_ethnicity_group = relevel(factor(
+        latest_ethnicity_group, ordered = F), ref = "White")
+      )
   
   #define the base predictors
   predictors <- c(x, "age_band", "sex")
@@ -54,9 +58,13 @@ glm_poisson <- function(df, x, y, offset_var) {
 glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
                                 vacc_severe, offset_var) {
   
-  #filter out NA survival times
+  #filter out NA survival times and fix ethnicity levels
   df <- df %>%
-    filter(!is.na(offset_var))
+    filter(!is.na(offset_var)) %>% 
+    mutate(
+      latest_ethnicity_group = relevel(factor(
+        latest_ethnicity_group, ordered = F), ref = "White")
+      )
   
   #source tmerge alt
   source(here::here("post_check", "functions", "expand_with_tmerge.R"))
