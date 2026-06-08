@@ -10,17 +10,6 @@ character_viz <- function(df, scaling) {
   
   names(df) <- c("characteristic", "count", "percentage", "subset")
   
-  df <- df %>%
-    mutate(
-      characteristic = case_when(
-        characteristic == "1 (least deprived)" ~ "5 (least deprived)",
-        characteristic == "2" ~ "4",
-        characteristic == "4" ~ "2",
-        characteristic == "5 (most deprived)" ~ "1 (most deprived)",
-        TRUE ~ characteristic
-      )
-    )
-  
   age_groups <- case_when(
     cohort == "adults" ~ 2,
     cohort == "older_adults" ~ 3,
@@ -284,17 +273,6 @@ character_viz <- function(df, scaling) {
 character_viz_mult <- function(df, scaling) {
   
   names(df) <- c("characteristic", "count", "percentage", "subset")
-  
-  df <- df %>%
-    mutate(
-      characteristic = case_when(
-        characteristic == "1 (least deprived)" ~ "5 (least deprived)",
-        characteristic == "2" ~ "4",
-        characteristic == "4" ~ "2",
-        characteristic == "5 (most deprived)" ~ "1 (most deprived)",
-        TRUE ~ characteristic
-      )
-    )
   
   age_groups <- case_when(
     cohort == "adults" ~ 2,

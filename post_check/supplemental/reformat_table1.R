@@ -18,12 +18,6 @@ names(df_input) <- c("characteristic", "n", "perc", "subset")
 df_input_reformat <- df_input %>%
   filter(!is.na(n)) %>%
   mutate(
-    characteristic = case_when(
-      characteristic == "1 (least deprived)" ~ "5 (least deprived)",
-      characteristic == "2" ~ "4",
-      characteristic == "4" ~ "2",
-      characteristic == "5 (most deprived)" ~ "1 (most deprived)",
-      TRUE ~ characteristic),
     n_perc = paste0(n, " (", perc, ")")
   ) %>%
   select(-c(n, perc)) %>%
@@ -65,12 +59,6 @@ names(df_input) <- c("characteristic", "n", "perc", "subset")
 df_input_reformat <- df_input %>%
   filter(!is.na(n)) %>%
   mutate(
-    characteristic = case_when(
-      characteristic == "1 (least deprived)" ~ "5 (least deprived)",
-      characteristic == "2" ~ "4",
-      characteristic == "4" ~ "2",
-      characteristic == "5 (most deprived)" ~ "1 (most deprived)",
-      TRUE ~ characteristic),
     n_perc = paste0(n, " (", perc, ")")
   ) %>%
   select(-c(n, perc)) %>%
@@ -112,12 +100,6 @@ names(df_input) <- c("characteristic", "n", "perc", "subset")
 df_input_reformat <- df_input %>%
   filter(!is.na(n)) %>%
   mutate(
-    characteristic = case_when(
-      characteristic == "1 (least deprived)" ~ "5 (least deprived)",
-      characteristic == "2" ~ "4",
-      characteristic == "4" ~ "2",
-      characteristic == "5 (most deprived)" ~ "1 (most deprived)",
-      TRUE ~ characteristic),
     n_perc = paste0(n, " (", perc, ")")
   ) %>%
   select(-c(n, perc)) %>%
@@ -159,12 +141,6 @@ names(df_input) <- c("characteristic", "n", "perc", "subset")
 df_input_reformat <- df_input %>%
   filter(!is.na(n)) %>%
   mutate(
-    characteristic = case_when(
-      characteristic == "1 (least deprived)" ~ "5 (least deprived)",
-      characteristic == "2" ~ "4",
-      characteristic == "4" ~ "2",
-      characteristic == "5 (most deprived)" ~ "1 (most deprived)",
-      TRUE ~ characteristic),
     n_perc = paste0(n, " (", perc, ")")
   ) %>%
   select(-c(n, perc)) %>%
@@ -206,10 +182,6 @@ names(df_input) <- c("characteristic", "n", "perc", "subset")
 df_input_reformat <- df_input %>%
   mutate(
     characteristic = case_when(
-      characteristic == "1 (least deprived)" ~ "5 (least deprived)",
-      characteristic == "2" ~ "4",
-      characteristic == "4" ~ "2",
-      characteristic == "5 (most deprived)" ~ "1 (most deprived)",
       n < 100000 & characteristic == "Unknown" ~ "Unknown Ethnicity",
       n > 100000 & characteristic == "Unknown" ~ "Unknown Smoking Status",
       TRUE ~ characteristic),

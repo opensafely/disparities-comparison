@@ -21,16 +21,7 @@ create_rolling_plots <- function(season, phenotype) {
   df <- read_csv(here::here("post_check", "output", "results", "rates",
                  "weekly", paste0("rates_over_time_", pathogen, "_",
                  cohort, "_", start, "_", end, "_", phenotype, "_",
-                 investigation_type, ".csv"))) %>%
-    mutate(
-      group = case_when(
-        group == "1 (least deprived)" ~ "5 (least deprived)",
-        group == "2" ~ "4",
-        group == "4" ~ "2",
-        group == "5 (most deprived)" ~ "1 (most deprived)",
-        TRUE ~ group
-      )
-    )
+                 investigation_type, ".csv")))
   
   #define levels
   levels <- list()
@@ -140,16 +131,7 @@ create_rolling_plots_multi <- function(season, phenotype) {
   df <- read_csv(here::here("post_check", "output", "results", "rates",
                  "weekly", paste0("rates_over_time_multi_strata_", pathogen,
                  "_", cohort, "_", start, "_", end, "_", phenotype, "_",
-                 investigation_type, ".csv"))) %>%
-    mutate(
-      group2 = case_when(
-        group2 == "1 (least deprived)" ~ "5 (least deprived)",
-        group2 == "2" ~ "4",
-        group2 == "4" ~ "2",
-        group2 == "5 (most deprived)" ~ "1 (most deprived)",
-        TRUE ~ group2
-      )
-    )
+                 investigation_type, ".csv")))
   
   #define levels
   levels <- list()

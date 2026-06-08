@@ -352,18 +352,18 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       
       var_labels <- case_when(
         model_type == "ethnicity" ~ list(c("Female", age, "White")),
-        model_type == "ses" ~ list(c("Female", age, "5 (least deprived)")),
+        model_type == "ses" ~ list(c("Female", age, "1 (most deprived)")),
         model_type == "composition" ~ list(c(
           "Female", age, "Multiple of the Same Generation")),
         model_type == "ethnicity_ses" ~ list(c(
-          "Female", age, "White", "5 (least deprived)")),
+          "Female", age, "White", "1 (most deprived)")),
         model_type == "ethnicity_composition" ~ list(c(
           "Female", age, "White", "Multiple of the Same Generation")),
         model_type == "ses_composition" ~ list(c(
-          "Female", age, "5 (least deprived)",
+          "Female", age, "1 (most deprived)",
           "Multiple of the Same Generation")),
         model_type == "full" ~ list(c(
-          "Female", age, "White", "5 (least deprived)",
+          "Female", age, "White", "1 (most deprived)",
           "Multiple of the Same Generation"))
       )[[1]]
       
@@ -556,10 +556,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
         tidy_forest %>%
           mutate(
             label = case_when(
-              str_detect(term, "imd_quintile5") ~ "1 (most deprived)",
-              str_detect(term, "imd_quintile4") ~ "2",
-              str_detect(term, "imd_quintile2") ~ "4",
-              str_detect(term, "imd_quintile1") ~ "5 (least deprived)",
               label == "Current" ~ "Current Smoker",
               label == "Former" ~ "Former Smoker",
               label == "Never" ~ "Never Smoker",
@@ -621,10 +617,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
         tidy_forest %>%
           mutate(
             label = case_when(
-              str_detect(term, "imd_quintile5") ~ "1 (most deprived)",
-              str_detect(term, "imd_quintile4") ~ "2",
-              str_detect(term, "imd_quintile2") ~ "4",
-              str_detect(term, "imd_quintile1") ~ "5 (least deprived)",
               label == "Current" ~ "Current Smoker",
               label == "Former" ~ "Former Smoker",
               label == "Never" ~ "Never Smoker",
@@ -686,15 +678,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
         
         tidy_forest %>%
           mutate(
-            label = case_when(
-              str_detect(term, "imd_quintile5") ~ "1 (most deprived)",
-              str_detect(term, "imd_quintile4") ~ "2",
-              str_detect(term, "imd_quintile2") ~ "4",
-              str_detect(term, "imd_quintile1") ~ "5 (least deprived)",
-              TRUE ~ label
-            )
-          ) %>%
-          mutate(
             variable = case_when(
               variable == "vax_status" ~ "covid_vaccination",
               TRUE ~ variable
@@ -746,15 +729,6 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       } else {
         
         tidy_forest %>%
-          mutate(
-            label = case_when(
-              str_detect(term, "imd_quintile5") ~ "1 (most deprived)",
-              str_detect(term, "imd_quintile4") ~ "2",
-              str_detect(term, "imd_quintile2") ~ "4",
-              str_detect(term, "imd_quintile1") ~ "5 (least deprived)",
-              TRUE ~ label
-            )
-          ) %>%
           mutate(
             variable = case_when(
               variable == "vax_status" ~ "flu_vaccination",

@@ -7,17 +7,6 @@ library(stringr)
 #define a function to plot a characteristic over time
 rate_viz <- function(df, pathogen, outcome_type, interest = "no") {
   
-  df <- df %>%
-    mutate(
-      Group = case_when(
-        Group == "1 (least deprived)" ~ "5 (least deprived)",
-        Group == "2" ~ "4",
-        Group == "4" ~ "2",
-        Group == "5 (most deprived)" ~ "1 (most deprived)",
-        TRUE ~ Group
-      )
-    )
-  
   df_rates <- df %>%
     filter(str_detect(Outcome, pathogen),
            str_detect(Outcome, outcome_type)) 
@@ -340,17 +329,6 @@ rate_viz <- function(df, pathogen, outcome_type, interest = "no") {
 #define a function to plot a characteristic over time - different formatting
 rate_viz_season <- function(df, pathogen, outcome_type, interest = "no") {
   
-  df <- df %>%
-    mutate(
-      Group = case_when(
-        Group == "1 (least deprived)" ~ "5 (least deprived)",
-        Group == "2" ~ "4",
-        Group == "4" ~ "2",
-        Group == "5 (most deprived)" ~ "1 (most deprived)",
-        TRUE ~ Group
-      )
-    )
-  
   df_rates <- df %>%
     filter(str_detect(Outcome, pathogen),
            str_detect(Outcome, outcome_type)) 
@@ -643,17 +621,6 @@ rate_viz_season <- function(df, pathogen, outcome_type, interest = "no") {
 
 #define a function to plot a characteristic over time - different formatting
 rate_viz_mult <- function(df, pathogen, outcome_type, interest = "no") {
-  
-  df <- df %>%
-    mutate(
-      Group = case_when(
-        Group == "1 (least deprived)" ~ "5 (least deprived)",
-        Group == "2" ~ "4",
-        Group == "4" ~ "2",
-        Group == "5 (most deprived)" ~ "1 (most deprived)",
-        TRUE ~ Group
-      )
-    )
   
   df_rates <- df %>%
     filter(str_detect(Outcome, pathogen),

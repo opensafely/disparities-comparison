@@ -110,14 +110,7 @@ multiple_episodes <- function(df, severity) {
     filter(outcome_type == !!severity) %>%
     select(-c(outcome_type)) %>%
     mutate(
-      characteristic = case_when(
-        characteristic == "1 (least deprived)" ~ "5 (least deprived)",
-        characteristic == "2" ~ "4",
-        characteristic == "4" ~ "2",
-        characteristic == "5 (most deprived)" ~ "1 (most deprived)",
-        is.na(characteristic) ~ "Unknown",
-        TRUE ~ characteristic
-      )
+      characteristic = if_else(is.na(characteristic), "Unknown", characteristic)
     ) %>% 
     mutate(
       group = case_when(

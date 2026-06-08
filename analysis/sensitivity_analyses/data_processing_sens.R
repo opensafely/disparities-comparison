@@ -199,12 +199,8 @@ df_input_filt <- df_input_filt %>%
                                                 "Black or Black British",
                                                 "Other Ethnic Groups"),
                                      ordered = FALSE), ref = "White"),
-    #recode imd quintile 
-    imd_quintile = relevel(recode(imd_quintile,
-                           "1 (most deprived)" = "5 (most deprived)",
-                           "2" = "4", "3" = "3", "4" = "2",
-                           "5 (least deprived)" = "1 (least deprived)"),
-                           ref = "1 (least deprived)"),
+    #set imd quintile reference
+    imd_quintile = relevel(imd_quintile, ref = "1 (most deprived)"),
     #recode rurality to 5 levels
     rurality_code = recode(rural_urban_classification, "1" = "1", "2" = "2", 
                            "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
@@ -222,21 +218,22 @@ df_input_filt <- df_input_filt %>%
 #ethnicity from HES
 df_input_filt <- df_input_filt %>%
   mutate(
-    latest_ethnicity_group_hes = relevel(factor(recode(
+    latest_ethnicity_group_hes = recode(
       latest_ethnicity_group_hes, "A" = "White", "B" = "White", "C" = "White",
       "D" = "Mixed", "E" = "Mixed", "F" = "Mixed", "G" = "Mixed",
       "H" = "Asian or Asian British", "J" = "Asian or Asian British",
       "K" = "Asian or Asian British", "L" = "Asian or Asian British",
       "M" = "Black or Black British", "N" = "Black or Black British",
       "P" = "Black or Black British", "R" = "Other Ethnic Groups",
-      "S" = "Other Ethnic Groups"), ordered = F), ref = "White")
+      "S" = "Other Ethnic Groups")
   ) %>%
   mutate(
-    latest_ethnicity_group = if_else(
+    latest_ethnicity_group = relevel(factor(if_else(
       is.na(latest_ethnicity_group),
       if_else(is.na(latest_ethnicity_group_hes), "Unknown", latest_ethnicity_group_hes),
-      latest_ethnicity_group)
+      latest_ethnicity_group), ordered = F), ref = "White")
   )
+
 
 #household variables for when they are included (2020-21)
 if (study_start_date == as.Date("2020-09-01") &
