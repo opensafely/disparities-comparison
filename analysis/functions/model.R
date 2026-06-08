@@ -4,6 +4,7 @@ library(rlang)
 library(purrr)
 library(lmtest)
 library(sandwich)
+library(dplyr)
 
 ## create output directories ----
 fs::dir_create(here::here("analysis", "functions"))

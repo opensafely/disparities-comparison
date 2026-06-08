@@ -2,6 +2,7 @@ library(here)
 library(broom)
 library(rlang)
 library(purrr)
+library(dplyr)
 
 ## create output directories ----
 fs::dir_create(here::here("post_check", "functions"))
