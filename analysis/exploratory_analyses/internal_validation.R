@@ -176,17 +176,6 @@ make_population_table <- function(df, include_covid = FALSE) {
     ) %>%
     mutate(pct = 100 * count / denominator_n) %>%
     select(population, denominator, denominator_n, count, pct)
-
-  # Reference rows so denominators are explicit in the output table.
-  denom_rows <- tibble(
-    population = c("total_patients", "total_patients_sec"),
-    denominator = c("total_patients", "total_patients_sec"),
-    denominator_n = c(totals$total_patients, totals$total_patients_sec),
-    count = c(totals$total_patients, totals$total_patients_sec),
-    pct = NA_real_
-  )
-
-  bind_rows(pop_rows, denom_rows)
 }
 
 props <- make_population_table(
