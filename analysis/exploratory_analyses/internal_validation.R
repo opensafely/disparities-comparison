@@ -416,7 +416,8 @@ make_pop_flags <- function(df, pop_flag, secondary_date, window_days = 30,
     count(sens_stage, spec_stage, name = "n") %>%
     mutate(
       rounded = roundmid_any(n),
-      pct = 100 * rounded / sum(rounded)
+      denom = sum(rounded),
+      pct = 100 * rounded / denom
     ) %>%
     select(-n) %>%
     mutate(population = pop_name, .before = sens_stage)
