@@ -260,13 +260,15 @@ make_pop_flags <- function(df, pop_flag, secondary_date, window_days = 30,
           within(.data[[as_string(rp_sens_q)]], !!sec_q)
       },
 
-      # Multi-virus combos require index virus mild plus other virus(s) in window
+      # Multi-virus combos: both viruses in window plus index-virus mild
       rsv_flu_sens = if (include_covid) {
         !within(.data[[as_string(cp_sens_q)]], !!sec_q) &
           within(.data[[as_string(rp_sens_q)]], !!sec_q) &
+          within(.data[[as_string(fp_sens_q)]], !!sec_q) &
           .data[[index_mild_sens]]
       } else {
         within(.data[[as_string(rp_sens_q)]], !!sec_q) &
+          within(.data[[as_string(fp_sens_q)]], !!sec_q) &
           .data[[index_mild_sens]]
       },
 
@@ -328,9 +330,11 @@ make_pop_flags <- function(df, pop_flag, secondary_date, window_days = 30,
       rsv_flu_spec = if (include_covid) {
         !within(.data[[as_string(cp_spec_q)]], !!sec_q) &
           within(.data[[as_string(rp_spec_q)]], !!sec_q) &
+          within(.data[[as_string(fp_spec_q)]], !!sec_q) &
           .data[[index_mild_spec]]
       } else {
         within(.data[[as_string(rp_spec_q)]], !!sec_q) &
+          within(.data[[as_string(fp_spec_q)]], !!sec_q) &
           .data[[index_mild_spec]]
       },
 
