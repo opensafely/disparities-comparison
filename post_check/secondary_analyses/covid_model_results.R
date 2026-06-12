@@ -149,7 +149,7 @@ for(i in seq_along(plotlist)) {
   ggsave(
     here("post_check", "plots", "supplemental", "models", cohort, "secondary",
          paste0(cohort, "_", name, ".png")),
-    p, height = 8, width = 15
+    p, height = 10, width = 8
   )
 }
 
@@ -159,3 +159,28 @@ names(plotlist) <- plot_names
 #save Rdata
 save(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_covid_model_results_secondary.RData")))
+
+## ethnicity & SES — key exposure variables only
+key_vars_plotlist <- list(
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Mild",
+         key_vars_only = TRUE),
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Severe",
+         key_vars_only = TRUE)
+)
+key_vars_plot_names <- c(
+  "covid_ethnicity_ses_mild_key_vars",
+  "covid_ethnicity_ses_severe_key_vars"
+)
+
+for (i in seq_along(key_vars_plotlist)) {
+  p <- key_vars_plotlist[[i]]
+  name <- key_vars_plot_names[i]
+
+  print(p)
+
+  ggsave(
+    here("post_check", "plots", "secondary_analyses",
+         paste0(cohort, "_", name, ".png")),
+    p, height = 10, width = 8
+  )
+}

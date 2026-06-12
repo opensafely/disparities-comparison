@@ -116,7 +116,7 @@ assemble_condensed_key_vars <- function(
     ncol = 1,
     align = "v",
     axis = "lr",
-    rel_heights = c(0.05, 1, -0.03, 1.25, -0.03, 1.35)
+    rel_heights = c(0.05, 1, -0.02, 1.25, -0.02, 1.35)
   )
 
   cowplot::ggdraw(combined) +
@@ -234,7 +234,7 @@ run_cohort_condensed_key_vars <- function(cohort) {
       paste0(cohort, "_", model_type, "_further_specific_mild_vs_severe_key_vars.png")
     ),
     specific_condensed,
-    height = 14,
+    height = 13.5,
     width = 8.5
   )
   ggsave(
@@ -243,7 +243,7 @@ run_cohort_condensed_key_vars <- function(cohort) {
       paste0(cohort, "_", model_type, "_further_sensitive_mild_vs_severe_key_vars.png")
     ),
     sensitive_condensed,
-    height = 14,
+    height = 13.5,
     width = 8.5
   )
 }

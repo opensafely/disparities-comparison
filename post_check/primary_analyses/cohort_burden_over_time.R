@@ -116,7 +116,7 @@ df_all <- bind_rows(
     subset, month, event, virus, total_events, cohort, cohort_events, perc_burden
   )
 
-stacked <- function(virus, area = FALSE) {
+stacked <- function(virus, area = FALSE, show_event_labels = FALSE) {
 
   si_labels <- function(digits, width) {
     f <- label_number(accuracy = 10^(-digits), scale_cut = cut_si(""))
@@ -142,7 +142,7 @@ stacked <- function(virus, area = FALSE) {
       labs(x = "", y = paste0("Monthly ", virus, " Cases"), fill = "Cohort") +
       scale_fill_brewer(type = "seq", palette = "Set2") +
       theme(
-        strip.text = element_blank(),
+        strip.text = if (show_event_labels) element_text(face = "bold") else element_blank(),
         panel.border = element_blank(),
         axis.line = element_line(color = 'black')
       )
@@ -159,7 +159,7 @@ stacked <- function(virus, area = FALSE) {
       labs(x = "", y = paste0("Monthly ", virus, " Cases"), fill = "Cohort") +
       scale_fill_brewer(type = "seq", palette = "Set2") +
       theme(
-        strip.text = element_blank(),
+        strip.text = if (show_event_labels) element_text(face = "bold") else element_blank(),
         panel.border = element_blank(),
         axis.line = element_line(color = 'black')
       )
@@ -168,7 +168,7 @@ stacked <- function(virus, area = FALSE) {
 
 }
 
-rsv_area <- stacked("RSV", area = TRUE)
+rsv_area <- stacked("RSV", area = TRUE, show_event_labels = TRUE)
 flu_area <- stacked("Influenza", area = TRUE)
 covid_area <- stacked("COVID-19", area = TRUE)
 area <- ggarrange(
@@ -178,7 +178,7 @@ area <- ggarrange(
   ncol = 1,
   common.legend = TRUE
 )
-rsv_bar <- stacked("RSV")
+rsv_bar <- stacked("RSV", show_event_labels = TRUE)
 flu_bar <- stacked("Influenza")
 covid_bar <- stacked("COVID-19")
 bar <- ggarrange(

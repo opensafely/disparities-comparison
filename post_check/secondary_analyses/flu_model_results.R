@@ -32,4 +32,99 @@ df_few <- df_input %>%
 df_input <- df_input %>%
   filter(term != "too few events")
 
-#too few events for all models
+##create relevant forest plots - mild
+
+#ethnicity
+flu_ethnicity_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity", "Mild"
+)
+
+#ses
+flu_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ses", "Mild"
+)
+
+#ethnicity & ses
+flu_ethnicity_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)
+
+##create relevant forest plots - severe
+
+#ethnicity
+flu_ethnicity_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity", "Severe"
+)
+
+#ses
+flu_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ses", "Severe"
+)
+
+#ethnicity & ses
+flu_ethnicity_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
+)
+
+#create list of plots
+plotlist <- list(
+  flu_ethnicity_mild,
+  flu_ethnicity_severe, 
+  flu_ses_mild,
+  flu_ses_severe,
+  flu_ethnicity_ses_mild,
+  flu_ethnicity_ses_severe
+)
+plot_names <- c(
+  "flu_ethnicity_mild",
+  "flu_ethnicity_severe",
+  "flu_ses_mild",
+  "flu_ses_severe",
+  "flu_ethnicity_ses_mild",
+  "flu_ethnicity_ses_severe"
+)
+
+for(i in seq_along(plotlist)) {
+  p <- plotlist[[i]]
+  name <- plot_names[i]
+  
+  print(p)
+  
+  ggsave(
+    here("post_check", "plots", "supplemental", "models", cohort, "secondary",
+         paste0(cohort, "_", name, ".png")),
+    p, height = 10, width = 8
+  )
+}
+
+#assign plot names to list
+names(plotlist) <- plot_names
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_flu_model_results_secondary.RData")))
+
+## ethnicity & SES — key exposure variables only
+key_vars_plotlist <- list(
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Mild",
+         key_vars_only = TRUE),
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Severe",
+         key_vars_only = TRUE)
+)
+key_vars_plot_names <- c(
+  "flu_ethnicity_ses_mild_key_vars",
+  "flu_ethnicity_ses_severe_key_vars"
+)
+
+for (i in seq_along(key_vars_plotlist)) {
+  p <- key_vars_plotlist[[i]]
+  name <- key_vars_plot_names[i]
+
+  print(p)
+
+  ggsave(
+    here("post_check", "plots", "secondary_analyses",
+         paste0(cohort, "_", name, ".png")),
+    p, height = 10, width = 8
+  )
+}

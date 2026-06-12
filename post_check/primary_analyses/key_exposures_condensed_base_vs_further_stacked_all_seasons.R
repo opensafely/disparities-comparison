@@ -1,5 +1,8 @@
-# Ethnicity_ses further-model condensed figures (sensitivity phenotypes).
-# Output: post_check/plots/sensitivity_analyses/condensed_models_key_vars/
+# Ethnicity_ses base vs further condensed figures (RSV / flu / COVID stacked).
+# All seasons per virus (continuous year axis).
+# Minimally vs fully adjusted estimates are connected by a line per level (same season column);
+# points only (no confidence intervals).
+# Output: post_check/plots/primary_analyses/forest_models_by_virus/
 library(tidyverse)
 library(here)
 library(arrow)
@@ -10,7 +13,7 @@ source(here::here("post_check", "functions", "condensed_figures.R"))
 
 ggsave <- function(..., bg = "white") ggplot2::ggsave(..., bg = bg)
 
-investigation_type <- "sensitivity"
+investigation_type <- "primary"
 df_few <- tibble()
 model_type <- "ethnicity_ses"
 
@@ -20,9 +23,9 @@ cohorts <- c(
 )
 
 for (cohort in cohorts) {
-  message("Running sensitivity key-vars condensed (ethnicity_ses): ", cohort)
+  message("Running key-vars condensed (base vs further stacked, all seasons): ", cohort)
   tryCatch(
-    run_cohort_condensed_key_vars_sensitivity(
+    run_cohort_condensed_key_vars_base_vs_further_stacked(
       cohort = cohort,
       model_type = model_type
     ),

@@ -202,8 +202,11 @@ model_key_exposure_variables <- function(model_type, cohort = NULL) {
 }
 
 filter_forest_to_model_key_vars <- function(forest_data, model_type, cohort = NULL) {
-  if (is.null(forest_data) || !is.data.frame(forest_data) || nrow(forest_data) == 0) {
-    return(forest_data)
+  if (is_empty_forest_data(forest_data)) {
+    if (is.data.frame(forest_data)) {
+      return(forest_data[0, , drop = FALSE])
+    }
+    return(tibble::tibble())
   }
   vars_keep <- model_key_exposure_variables(model_type, cohort)
   vars_keep <- intersect(vars_keep, unique(forest_data$variable))
@@ -333,7 +336,7 @@ forest_key_exposures_over_time_plot <- function(
     model_types = c(model_type)
   )
 
-  if (is.null(forest_data) || nrow(forest_data) == 0) return(ggplot() + theme_void())
+  if (is_empty_forest_data(forest_data)) return(ggplot() + theme_void())
 
   target_adj <- if (identical(adjustment, "further")) "Fully adjusted" else "Minimally adjusted"
 
@@ -524,11 +527,48 @@ normalize_season_label <- function(x) {
   gsub("_", "-", as.character(x))
 }
 
+is_empty_forest_data <- function(forest_data) {
+  if (is.null(forest_data)) {
+    return(TRUE)
+  }
+  if (!is.data.frame(forest_data)) {
+    return(TRUE)
+  }
+  n <- nrow(forest_data)
+  isTRUE(is.na(n)) || n == 0L
+}
+
+# Sensitivity analyses use a single season per pathogen.
+sensitivity_season_for_pathogen <- function(pathogen) {
+  dplyr::case_when(
+    pathogen == "rsv" ~ "2017-18",
+    pathogen == "flu" ~ "2018-19",
+    pathogen == "covid" ~ "2020-21",
+    TRUE ~ NA_character_
+  )
+}
+
+sensitivity_plot_seasons <- function(pathogen, investigation_type) {
+  if (!identical(investigation_type, "sensitivity")) {
+    return(NULL)
+  }
+  season <- sensitivity_season_for_pathogen(pathogen)
+  if (is.na(season)) {
+    return(NULL)
+  }
+  season
+}
+
+# Condensed sensitivity figures show both RSV and flu seasons on every panel.
+sensitivity_all_plot_seasons <- function() {
+  c("2017-18", "2018-19")
+}
+
 filter_forest_to_seasons <- function(forest_data, seasons) {
-  if (is.null(forest_data) || nrow(forest_data) == 0) {
+  if (is_empty_forest_data(forest_data)) {
     return(forest_data)
   }
-  if (is.null(seasons)) {
+  if (is.null(seasons) || length(seasons) == 0 || all(is.na(seasons))) {
     return(forest_data)
   }
   seasons_norm <- normalize_season_label(seasons)
@@ -611,7 +651,7 @@ collapse_base_further_to_ratio <- function(
   base_label = "Minimally adjusted",
   further_label = "Fully adjusted"
 ) {
-  if (is.null(forest_data) || nrow(forest_data) == 0) {
+  if (is_empty_forest_data(forest_data)) {
     return(forest_data)
   }
   if (!"adjustment" %in% names(forest_data)) {
@@ -943,10 +983,20 @@ forest_over_time_plot <- function(
   fixed_axes = FALSE,
   show_disruption_legend = TRUE,
   y_lab = NULL,
-  log_y = TRUE
+  log_y = TRUE,
+  seasons = NULL,
+  equal_season_widths = FALSE,
+  shape_legend_nrow = 1L
 ) {
-  if (is.null(forest_data) || nrow(forest_data) == 0) {
+  if (is_empty_forest_data(forest_data)) {
     return(ggplot() + theme_void())
+  }
+
+  if (!is.null(seasons) && !all(is.na(seasons))) {
+    forest_data <- filter_forest_to_seasons(forest_data, seasons)
+    if (is_empty_forest_data(forest_data)) {
+      return(ggplot() + theme_void())
+    }
   }
 
   pathogen_title <- case_when(
@@ -1028,6 +1078,12 @@ forest_over_time_plot <- function(
   # For COVID-19 plots, only show years from 2019-20 onwards.
   year_breaks <- if (identical(pathogen, "covid")) 2019:2023 else 2016:2023
   x_breaks <- year_breaks
+  if (!is.null(seasons)) {
+    season_years <- seasons_to_years(seasons)
+    if (length(season_years) > 0) {
+      x_breaks <- season_years
+    }
+  }
 
   # Remove vaccination points in early COVID seasons.
   # - Current COVID vaccination: suppress before 2020-21 (year < 2020)
@@ -1355,9 +1411,16 @@ forest_over_time_plot <- function(
     scale_x_continuous(
       breaks = x_breaks,
       labels = paste0(x_breaks, "-", stringr::str_sub(as.character(x_breaks + 1), 3, 4)),
-      # Add extra padding so jittered points never clip at edges.
-      #limits = c(min(year_breaks) - 0.6, max(year_breaks) + 0.6),
-      expand = expansion(mult = c(0.08, 0.08))
+      limits = if (isTRUE(equal_season_widths) && length(x_breaks) >= 2L) {
+        c(min(x_breaks) - 0.5, max(x_breaks) + 0.5)
+      } else {
+        NULL
+      },
+      expand = if (isTRUE(equal_season_widths) && length(x_breaks) >= 2L) {
+        ggplot2::expansion(mult = c(0, 0))
+      } else {
+        ggplot2::expansion(mult = c(0.08, 0.08))
+      }
     ) +
     {
       if (isTRUE(log_y)) {
@@ -1438,7 +1501,8 @@ forest_over_time_plot <- function(
         "none"
       },
       shape = guide_legend(
-        ncol = 1,
+        nrow = shape_legend_nrow,
+        byrow = TRUE,
         order = 1,
         override.aes = list(
           size = 0.5,
@@ -1449,7 +1513,7 @@ forest_over_time_plot <- function(
     )
 
   # For test-model style: keep panel heights fixed, but allow y-ranges to vary.
-  facet_scales <- "free_y"
+  facet_scales <- if (isTRUE(equal_season_widths)) "fixed" else "free_y"
   if (facet_outcome) {
     if (requireNamespace("ggh4x", quietly = TRUE)) {
       base_plot <- base_plot + ggh4x::facet_grid2(
@@ -1508,11 +1572,12 @@ forest_over_time_plot_compare <- function(
   adjustment_dodge_width = 0.22,
   adjustment_layout = c("dodge", "stack"),
   level_jitter_width = NULL,
+  level_jitter_span_cap = NULL,
   y_lab = NULL,
   log_y = TRUE
 ) {
   adjustment_layout <- match.arg(adjustment_layout)
-  if (is.null(forest_data) || nrow(forest_data) == 0) {
+  if (is_empty_forest_data(forest_data)) {
     return(ggplot() + theme_void())
   }
 
@@ -1960,7 +2025,13 @@ forest_over_time_plot_compare <- function(
   } else {
     jitter_width
   }
-  within_adj_span_cap <- if (adjustment_stacked) 0.38 else 0.16
+  within_adj_span_cap <- if (!is.null(level_jitter_span_cap)) {
+    level_jitter_span_cap
+  } else if (adjustment_stacked) {
+    0.38
+  } else {
+    0.16
+  }
 
   if (show_adjustment && !adjustment_stacked) {
     plot_df <- plot_df %>%
@@ -2399,7 +2470,7 @@ forest_year_facet_points_plot <- function(
   model_type,
   facet_outcome = TRUE
 ) {
-  if (is.null(forest_data) || nrow(forest_data) == 0) {
+  if (is_empty_forest_data(forest_data)) {
     return(ggplot() + theme_void())
   }
 

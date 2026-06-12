@@ -25,7 +25,7 @@ relevel_forest_labels <- function(label, level_order) {
 
 #create function to filter collated results to models wanted and then plot
 forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
-                   further = "no", ...) {
+                   further = "no", key_vars_only = FALSE, ...) {
 
   pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
                       pathogen)
@@ -356,6 +356,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       )
 
     }
+
+    if (!exists("tidy_forest", inherits = FALSE)) {
+      return(ggplot() + theme_void())
+    }
     
     if (cohort == "infants_subgroup" & further == "yes") {
       
@@ -452,6 +456,24 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                conf.high = 1
         ) %>%
         mutate(codelist_type = "reference")
+      
+    } else if (investigation_type == "sensitivity") {
+      
+      sensitivity_subset <- gsub(
+        "-", "_", sensitivity_season_for_pathogen(pathogen)
+      )
+      if (is.na(sensitivity_subset)) {
+        return(ggplot() + theme_void())
+      }
+      
+      reference_rows <- tidy_forest %>%
+        filter(reference_row) %>%
+        mutate(
+          subset = sensitivity_subset,
+          conf.low = 1,
+          conf.high = 1,
+          codelist_type = "reference"
+        )
       
     } else {
       
@@ -986,13 +1008,22 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
   # Apply the shared "over time" plotting style to `forest()` too.
   # We reuse the already-prepared ggplot data created in `process_forest_plot()`.
   forest_data <- plot$data
-  if (is.null(forest_data) || nrow(forest_data) == 0) {
+  if (is_empty_forest_data(forest_data)) {
     return(plot + theme(plot.title = element_blank()))
   }
   
   # Ensure stable types for downstream binding/plotting (subset can be logical NA in some branches).
   forest_data <- forest_data %>%
     dplyr::mutate(subset = as.character(.data$subset))
+
+  if (isTRUE(key_vars_only)) {
+    forest_data <- filter_forest_to_model_key_vars(forest_data, model_type)
+    if (is_empty_forest_data(forest_data)) {
+      return(ggplot2::ggplot() + ggplot2::theme_void())
+    }
+  }
+
+  seasons_plot <- sensitivity_plot_seasons(pathogen, investigation_type)
 
   plot_ot <- forest_over_time_plot(
     forest_data = forest_data,
@@ -1001,6 +1032,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     outcome_type = outcome_type,
     facet_outcome = FALSE,
     label_levels = FALSE,
+    seasons = seasons_plot,
     ...
   )
 
@@ -1035,7 +1067,7 @@ forest_key_exposures <- function(
   if (is.null(forest_data)) {
     forest_data <- p$data
   }
-  if (is.null(forest_data) || nrow(forest_data) == 0) return(p)
+  if (is_empty_forest_data(forest_data)) return(p)
 
   key_vars <- key_exposure_variables()
   key_vars <- intersect(key_vars, unique(forest_data$variable))
@@ -1064,39 +1096,16 @@ forest_model_key_vars <- function(
   further = "yes",
   ...
 ) {
-  pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp", pathogen)
-
-  p <- forest(
+  forest(
     df = df,
     df_dummy = df_dummy,
     pathogen = pathogen,
     model_type = model_type,
     outcome_type = outcome_type,
     further = further,
+    key_vars_only = TRUE,
     ...
   )
-
-  forest_data <- attr(p, "forest_data")
-  if (is.null(forest_data)) {
-    forest_data <- p$data
-  }
-  forest_data_key <- filter_forest_to_model_key_vars(forest_data, model_type)
-
-  if (is.null(forest_data_key) || nrow(forest_data_key) == 0) {
-    return(ggplot2::ggplot() + ggplot2::theme_void())
-  }
-
-  plot_ot <- forest_over_time_plot(
-    forest_data = forest_data_key,
-    pathogen = pathogen,
-    model_type = model_type,
-    outcome_type = outcome_type,
-    facet_outcome = FALSE,
-    label_levels = FALSE,
-    ...
-  )
-  attr(plot_ot, "forest_data") <- forest_data_key
-  plot_ot
 }
 
 #forest plot combined model results
@@ -1389,6 +1398,10 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
         )
       )
       
+    }
+
+    if (!exists("tidy_forest", inherits = FALSE)) {
+      return(ggplot() + theme_void())
     }
     
     if (cohort == "infants_subgroup") {
@@ -1791,21 +1804,39 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   plot <- process_forest_plot(df_model)
   
   if (isTRUE(return_data)) {
-    return(plot$data %>% mutate(outcome_type = outcome_type))
+    forest_data <- plot$data
+    if (is_empty_forest_data(forest_data)) {
+      if (is.data.frame(forest_data)) {
+        return(forest_data)
+      }
+      return(tibble::tibble())
+    }
+    return(forest_data %>% mutate(outcome_type = outcome_type))
+  }
+
+  seasons_plot <- sensitivity_plot_seasons(pathogen, investigation_type)
+  forest_data <- plot$data
+  if (is_empty_forest_data(forest_data)) {
+    return(ggplot() + theme_void() + theme(plot.title = element_blank()))
   }
   
   plot <- forest_over_time_plot(
-    forest_data = plot$data %>% mutate(outcome_type = outcome_type),
+    forest_data = forest_data %>% mutate(outcome_type = outcome_type),
     pathogen = pathogen,
     model_type = model_type,
     outcome_type = outcome_type,
     facet_outcome = FALSE,
-    label_levels = FALSE
+    label_levels = FALSE,
+    seasons = seasons_plot
   )
   plot <- plot + theme(plot.title = element_blank())
 
   return(plot)
 
+}
+
+forest_year_further_mult_sens <- function(...) {
+  forest_year_further_mult(...)
 }
 
 # Multi-season base + further models: key vars only, selected seasons (compare plots).
@@ -1863,7 +1894,7 @@ forest_year_further_mult_key_vars <- function(
     return(forest_data_key)
   }
 
-  if (is.null(forest_data_key) || nrow(forest_data_key) == 0) {
+  if (is_empty_forest_data(forest_data_key)) {
     return(ggplot2::ggplot() + ggplot2::theme_void())
   }
 
@@ -1873,7 +1904,8 @@ forest_year_further_mult_key_vars <- function(
     model_type = model_type,
     outcome_type = outcome_type,
     facet_outcome = FALSE,
-    label_levels = FALSE
+    label_levels = FALSE,
+    seasons = sensitivity_plot_seasons(pathogen, investigation_type)
   )
   plot <- plot + theme(plot.title = element_blank())
   attr(plot, "forest_data") <- forest_data_key

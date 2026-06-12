@@ -25,7 +25,6 @@ df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2017_2018_specific_sensitivity.arrow"))) 
 
-
 #extract models for which there were too few events
 df_few <- df_input %>%
   filter(term == "too few events")
@@ -35,26 +34,54 @@ df_input <- df_input %>%
 
 ##create relevant forest plots - mild
 
+#ethnicity
+rsv_ethnicity_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity", "Mild"
+)
+
 #ses
 rsv_ses_mild <- forest(
   df_input, df_dummy, pathogen, "ses", "Mild"
 )
 
+#ethnicity & ses
+rsv_ethnicity_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)
+
 ##create relevant forest plots - severe
+
+#ethnicity
+rsv_ethnicity_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity", "Severe"
+)
 
 #ses
 rsv_ses_severe <- forest(
   df_input, df_dummy, pathogen, "ses", "Severe"
 )
 
+#ethnicity & ses
+rsv_ethnicity_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
+)
+
 #create list of plots
 plotlist <- list(
+  rsv_ethnicity_mild,
+  rsv_ethnicity_severe, 
   rsv_ses_mild,
-  rsv_ses_severe
+  rsv_ses_severe,
+  rsv_ethnicity_ses_mild,
+  rsv_ethnicity_ses_severe
 )
 plot_names <- c(
+  "rsv_ethnicity_mild",
+  "rsv_ethnicity_severe",
   "rsv_ses_mild",
-  "rsv_ses_severe"
+  "rsv_ses_severe",
+  "rsv_ethnicity_ses_mild",
+  "rsv_ethnicity_ses_severe"
 )
 
 for(i in seq_along(plotlist)) {
@@ -77,9 +104,34 @@ names(plotlist) <- plot_names
 save(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_rsv_model_results_sensitivity.RData")))
 
-###infants
+## ethnicity & SES — key exposure variables only
+key_vars_plotlist <- list(
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Mild",
+         key_vars_only = TRUE),
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Severe",
+         key_vars_only = TRUE)
+)
+key_vars_plot_names <- c(
+  "rsv_ethnicity_ses_mild_key_vars",
+  "rsv_ethnicity_ses_severe_key_vars"
+)
 
-cohort <- "infants"
+for (i in seq_along(key_vars_plotlist)) {
+  p <- key_vars_plotlist[[i]]
+  name <- key_vars_plot_names[i]
+
+  print(p)
+
+  ggsave(
+    here("post_check", "plots", "sensitivity_analyses",
+         paste0(cohort, "_", name, ".png")),
+    p, height = 10, width = 8
+  )
+}
+
+###adults
+
+cohort <- "adults"
 
 #import collated model outputs
 df_input <- read_csv(here::here("post_check", "output", "collated",
@@ -88,7 +140,10 @@ df_input <- read_csv(here::here("post_check", "output", "collated",
 df_dummy <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, 
              "_2017_2018_specific_sensitivity.arrow"))) 
-
+df_dummy <- df_dummy %>%
+  mutate(
+    age_band = if_else(age_band == "18-29y", "18-39y", age_band)
+  )
 
 #extract models for which there were too few events
 df_few <- df_input %>%
@@ -167,5 +222,377 @@ names(plotlist) <- plot_names
 
 #save Rdata
 save(plotlist, file = here("post_check", "supplemental", "dashboard",
-                           paste0(cohort, "_rsv_model_results_sensitivity.RData"))
-    )
+                           paste0(cohort, "_rsv_model_results_sensitivity.RData")))
+
+## ethnicity & SES — key exposure variables only
+key_vars_plotlist <- list(
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Mild",
+         key_vars_only = TRUE),
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Severe",
+         key_vars_only = TRUE)
+)
+key_vars_plot_names <- c(
+  "rsv_ethnicity_ses_mild_key_vars",
+  "rsv_ethnicity_ses_severe_key_vars"
+)
+
+for (i in seq_along(key_vars_plotlist)) {
+  p <- key_vars_plotlist[[i]]
+  name <- key_vars_plot_names[i]
+
+  print(p)
+
+  ggsave(
+    here("post_check", "plots", "sensitivity_analyses",
+         paste0(cohort, "_", name, ".png")),
+    p, height = 10, width = 8
+  )
+}
+
+###children and adolescents
+
+cohort <- "children_and_adolescents"
+
+#import collated model outputs
+df_input <- read_csv(here::here("post_check", "output", "collated",
+                     "analytic", "sensitivity", paste0(cohort, "_", pathogen,
+                     "_model_outputs_collated_sensitivity.csv")))
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2017_2018_specific_sensitivity.arrow"))) 
+
+#extract models for which there were too few events
+df_few <- df_input %>%
+  filter(term == "too few events")
+
+df_input <- df_input %>%
+  filter(term != "too few events")
+
+##create relevant forest plots - mild
+
+#ethnicity
+rsv_ethnicity_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity", "Mild"
+)
+
+#ses
+rsv_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ses", "Mild"
+)
+
+#ethnicity & ses
+rsv_ethnicity_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)
+
+##create relevant forest plots - severe
+
+#ethnicity
+rsv_ethnicity_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity", "Severe"
+)
+
+#ses
+rsv_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ses", "Severe"
+)
+
+#ethnicity & ses
+rsv_ethnicity_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
+)
+
+#create list of plots
+plotlist <- list(
+  rsv_ethnicity_mild,
+  rsv_ethnicity_severe, 
+  rsv_ses_mild,
+  rsv_ses_severe,
+  rsv_ethnicity_ses_mild,
+  rsv_ethnicity_ses_severe
+)
+plot_names <- c(
+  "rsv_ethnicity_mild",
+  "rsv_ethnicity_severe",
+  "rsv_ses_mild",
+  "rsv_ses_severe",
+  "rsv_ethnicity_ses_mild",
+  "rsv_ethnicity_ses_severe"
+)
+
+for(i in seq_along(plotlist)) {
+  p <- plotlist[[i]]
+  name <- plot_names[i]
+  
+  print(p)
+  
+  ggsave(
+    here("post_check", "plots", "supplemental", "models", cohort, "sensitivity",
+         paste0(cohort, "_", name, ".png")),
+    p, height = 8, width = 15
+  )
+}
+
+#assign plot names to list
+names(plotlist) <- plot_names
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_rsv_model_results_sensitivity.RData")))
+
+## ethnicity & SES — key exposure variables only
+key_vars_plotlist <- list(
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Mild",
+         key_vars_only = TRUE),
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Severe",
+         key_vars_only = TRUE)
+)
+key_vars_plot_names <- c(
+  "rsv_ethnicity_ses_mild_key_vars",
+  "rsv_ethnicity_ses_severe_key_vars"
+)
+
+for (i in seq_along(key_vars_plotlist)) {
+  p <- key_vars_plotlist[[i]]
+  name <- key_vars_plot_names[i]
+
+  print(p)
+
+  ggsave(
+    here("post_check", "plots", "sensitivity_analyses",
+         paste0(cohort, "_", name, ".png")),
+    p, height = 10, width = 8
+  )
+}
+
+###infants
+
+cohort <- "infants"
+
+#import collated model outputs
+df_input <- read_csv(here::here("post_check", "output", "collated",
+                     "analytic", "sensitivity", paste0(cohort, "_", pathogen,
+                     "_model_outputs_collated_sensitivity.csv")))
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2017_2018_specific_sensitivity.arrow"))) 
+
+#extract models for which there were too few events
+df_few <- df_input %>%
+  filter(term == "too few events")
+
+df_input <- df_input %>%
+  filter(term != "too few events")
+
+##create relevant forest plots - mild
+
+#ethnicity
+rsv_ethnicity_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity", "Mild"
+)
+
+#ses
+rsv_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ses", "Mild"
+)
+
+#ethnicity & ses
+rsv_ethnicity_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)
+
+##create relevant forest plots - severe
+
+#ethnicity
+rsv_ethnicity_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity", "Severe"
+)
+
+#ses
+rsv_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ses", "Severe"
+)
+
+#ethnicity & ses
+rsv_ethnicity_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
+)
+
+#create list of plots
+plotlist <- list(
+  rsv_ethnicity_mild,
+  rsv_ethnicity_severe, 
+  rsv_ses_mild,
+  rsv_ses_severe,
+  rsv_ethnicity_ses_mild,
+  rsv_ethnicity_ses_severe
+)
+plot_names <- c(
+  "rsv_ethnicity_mild",
+  "rsv_ethnicity_severe",
+  "rsv_ses_mild",
+  "rsv_ses_severe",
+  "rsv_ethnicity_ses_mild",
+  "rsv_ethnicity_ses_severe"
+)
+
+for(i in seq_along(plotlist)) {
+  p <- plotlist[[i]]
+  name <- plot_names[i]
+  
+  print(p)
+  
+  ggsave(
+    here("post_check", "plots", "supplemental", "models", cohort, "sensitivity",
+         paste0(cohort, "_", name, ".png")),
+    p, height = 8, width = 15
+  )
+}
+
+#assign plot names to list
+names(plotlist) <- plot_names
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_rsv_model_results_sensitivity.RData")))
+
+## ethnicity & SES — key exposure variables only
+key_vars_plotlist <- list(
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Mild",
+         key_vars_only = TRUE),
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Severe",
+         key_vars_only = TRUE)
+)
+key_vars_plot_names <- c(
+  "rsv_ethnicity_ses_mild_key_vars",
+  "rsv_ethnicity_ses_severe_key_vars"
+)
+
+for (i in seq_along(key_vars_plotlist)) {
+  p <- key_vars_plotlist[[i]]
+  name <- key_vars_plot_names[i]
+
+  print(p)
+
+  ggsave(
+    here("post_check", "plots", "sensitivity_analyses",
+         paste0(cohort, "_", name, ".png")),
+    p, height = 10, width = 8
+  )
+}
+
+###infants_subgroup
+
+cohort <- "infants_subgroup"
+
+#import collated model outputs
+df_input <- read_csv(here::here("post_check", "output", "collated",
+                     "analytic", "sensitivity", paste0(cohort, "_", pathogen,
+                     "_model_outputs_collated_sensitivity.csv")))
+df_dummy <- read_feather(
+  here::here("output", "data", paste0("input_processed_", cohort, 
+             "_2017_2018_specific_sensitivity.arrow"))) 
+
+#extract models for which there were too few events
+df_few <- df_input %>%
+  filter(term == "too few events")
+
+df_input <- df_input %>%
+  filter(term != "too few events")
+
+##create relevant forest plots - mild
+
+#ethnicity
+rsv_ethnicity_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity", "Mild"
+)
+
+#ses
+rsv_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ses", "Mild"
+)
+
+#ethnicity & ses
+rsv_ethnicity_ses_mild <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Mild"
+)
+
+##create relevant forest plots - severe
+
+#ethnicity
+rsv_ethnicity_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity", "Severe"
+)
+
+#ses
+rsv_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ses", "Severe"
+)
+
+#ethnicity & ses
+rsv_ethnicity_ses_severe <- forest(
+  df_input, df_dummy, pathogen, "ethnicity_ses", "Severe"
+)
+
+#create list of plots
+plotlist <- list(
+  rsv_ethnicity_mild,
+  rsv_ethnicity_severe, 
+  rsv_ses_mild,
+  rsv_ses_severe,
+  rsv_ethnicity_ses_mild,
+  rsv_ethnicity_ses_severe
+)
+plot_names <- c(
+  "rsv_ethnicity_mild",
+  "rsv_ethnicity_severe",
+  "rsv_ses_mild",
+  "rsv_ses_severe",
+  "rsv_ethnicity_ses_mild",
+  "rsv_ethnicity_ses_severe"
+)
+
+for(i in seq_along(plotlist)) {
+  p <- plotlist[[i]]
+  name <- plot_names[i]
+  
+  print(p)
+  
+  ggsave(
+    here("post_check", "plots", "supplemental", "models", cohort, "sensitivity",
+         paste0(cohort, "_", name, ".png")),
+    p, height = 8, width = 15
+  )
+}
+
+#assign plot names to list
+names(plotlist) <- plot_names
+
+#save Rdata
+save(plotlist, file = here("post_check", "supplemental", "dashboard",
+                           paste0(cohort, "_rsv_model_results_sensitivity.RData")))
+
+## ethnicity & SES — key exposure variables only
+key_vars_plotlist <- list(
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Mild",
+         key_vars_only = TRUE),
+  forest(df_input, df_dummy, pathogen, "ethnicity_ses", "Severe",
+         key_vars_only = TRUE)
+)
+key_vars_plot_names <- c(
+  "rsv_ethnicity_ses_mild_key_vars",
+  "rsv_ethnicity_ses_severe_key_vars"
+)
+
+for (i in seq_along(key_vars_plotlist)) {
+  p <- key_vars_plotlist[[i]]
+  name <- key_vars_plot_names[i]
+
+  print(p)
+
+  ggsave(
+    here("post_check", "plots", "sensitivity_analyses",
+         paste0(cohort, "_", name, ".png")),
+    p, height = 10, width = 8
+  )
+}
