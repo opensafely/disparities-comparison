@@ -231,7 +231,6 @@ make_pop_flags <- function(df, pop_flag, secondary_date, window_days = 30,
   broad_only_name <- "broad_sens"
   bucket_sens_name <- "bucket_sens"
   bucket_spec_name <- "bucket_spec"
-  other_sens_name <- "other_sens"
 
   out <- df %>%
     filter(!!pop_q) %>%
@@ -260,34 +259,37 @@ make_pop_flags <- function(df, pop_flag, secondary_date, window_days = 30,
           within(.data[[as_string(rp_sens_q)]], !!sec_q)
       },
 
-      # Multi-virus combos: both viruses in window plus index-virus mild
+      # Multi-virus combos: symmetric, based only on in-window primaries.
+      # Pairwise combos exclude the third pathogen (when COVID in scope).
       rsv_flu_sens = if (include_covid) {
-        !within(.data[[as_string(cp_sens_q)]], !!sec_q) &
-          within(.data[[as_string(rp_sens_q)]], !!sec_q) &
+        within(.data[[as_string(rp_sens_q)]], !!sec_q) &
           within(.data[[as_string(fp_sens_q)]], !!sec_q) &
-          .data[[index_mild_sens]]
+          !within(.data[[as_string(cp_sens_q)]], !!sec_q)
       } else {
         within(.data[[as_string(rp_sens_q)]], !!sec_q) &
-          within(.data[[as_string(fp_sens_q)]], !!sec_q) &
-          .data[[index_mild_sens]]
+          within(.data[[as_string(fp_sens_q)]], !!sec_q)
       },
 
-      rsv_covid_sens = if (include_covid)
+      rsv_covid_sens = if (include_covid) {
         within(.data[[as_string(rp_sens_q)]], !!sec_q) &
           within(.data[[as_string(cp_sens_q)]], !!sec_q) &
-          !.data[[index_mild_sens]] else FALSE,
-      flu_covid_sens = if (include_covid)
-        !within(.data[[as_string(rp_sens_q)]], !!sec_q) &
+          !within(.data[[as_string(fp_sens_q)]], !!sec_q)
+      } else FALSE,
+
+      flu_covid_sens = if (include_covid) {
+        within(.data[[as_string(fp_sens_q)]], !!sec_q) &
           within(.data[[as_string(cp_sens_q)]], !!sec_q) &
-          .data[[index_mild_sens]] else FALSE,
+          !within(.data[[as_string(rp_sens_q)]], !!sec_q)
+      } else FALSE,
       covid_sens = if (include_covid)
         !within(.data[[as_string(fp_sens_q)]], !!sec_q) &
           !within(.data[[as_string(rp_sens_q)]], !!sec_q) &
           within(.data[[as_string(cp_sens_q)]], !!sec_q) else FALSE,
-      rsv_flu_covid_sens = if (include_covid)
+      rsv_flu_covid_sens = if (include_covid) {
         within(.data[[as_string(rp_sens_q)]], !!sec_q) &
-          within(.data[[as_string(cp_sens_q)]], !!sec_q) &
-          .data[[index_mild_sens]] else FALSE,
+          within(.data[[as_string(fp_sens_q)]], !!sec_q) &
+          within(.data[[as_string(cp_sens_q)]], !!sec_q)
+      } else FALSE,
 
       # Bucket / broad: no index-virus or RSV/covid sens primary in window.
       # bucket_sens = bucket in window and broad not in window.
@@ -302,6 +304,7 @@ make_pop_flags <- function(df, pop_flag, secondary_date, window_days = 30,
 
       !!broad_only_name :=
         !within(.data[[as_string(rp_sens_q)]], !!sec_q) &
+        !within(.data[[as_string(fp_sens_q)]], !!sec_q) &
         (if (include_covid) !within(.data[[as_string(cp_sens_q)]], !!sec_q) else TRUE) &
         !.data[[index_mild_sens]] &
         within(.data[[as_string(bb_sens_q)]], !!sec_q),
@@ -328,14 +331,12 @@ make_pop_flags <- function(df, pop_flag, secondary_date, window_days = 30,
       },
 
       rsv_flu_spec = if (include_covid) {
-        !within(.data[[as_string(cp_spec_q)]], !!sec_q) &
-          within(.data[[as_string(rp_spec_q)]], !!sec_q) &
-          within(.data[[as_string(fp_spec_q)]], !!sec_q) &
-          .data[[index_mild_spec]]
-      } else {
         within(.data[[as_string(rp_spec_q)]], !!sec_q) &
           within(.data[[as_string(fp_spec_q)]], !!sec_q) &
-          .data[[index_mild_spec]]
+          !within(.data[[as_string(cp_spec_q)]], !!sec_q)
+      } else {
+        within(.data[[as_string(rp_spec_q)]], !!sec_q) &
+          within(.data[[as_string(fp_spec_q)]], !!sec_q)
       },
 
       !!bucket_spec_name :=
@@ -344,31 +345,25 @@ make_pop_flags <- function(df, pop_flag, secondary_date, window_days = 30,
         !.data[[index_mild_spec]] &
         within(.data[[as_string(b_spec_q)]], !!sec_q),
 
-      rsv_covid_spec = if (include_covid)
+      rsv_covid_spec = if (include_covid) {
         within(.data[[as_string(rp_spec_q)]], !!sec_q) &
           within(.data[[as_string(cp_spec_q)]], !!sec_q) &
-          !.data[[index_mild_spec]] else FALSE,
-      flu_covid_spec = if (include_covid)
-        !within(.data[[as_string(rp_spec_q)]], !!sec_q) &
+          !within(.data[[as_string(fp_spec_q)]], !!sec_q)
+      } else FALSE,
+      flu_covid_spec = if (include_covid) {
+        within(.data[[as_string(fp_spec_q)]], !!sec_q) &
           within(.data[[as_string(cp_spec_q)]], !!sec_q) &
-          .data[[index_mild_spec]] else FALSE,
+          !within(.data[[as_string(rp_spec_q)]], !!sec_q)
+      } else FALSE,
       covid_spec = if (include_covid)
         !within(.data[[as_string(fp_spec_q)]], !!sec_q) &
           !within(.data[[as_string(rp_spec_q)]], !!sec_q) &
           within(.data[[as_string(cp_spec_q)]], !!sec_q) else FALSE,
-      rsv_flu_covid_spec = if (include_covid)
+      rsv_flu_covid_spec = if (include_covid) {
         within(.data[[as_string(rp_spec_q)]], !!sec_q) &
-          within(.data[[as_string(cp_spec_q)]], !!sec_q) &
-          .data[[index_mild_spec]] else FALSE,
-
-      # Residual sensitive category: broad attendance in window but not bucket,
-      # after pathogen / bucket / broad rules above have been applied
-      !!other_sens_name :=
-        within(.data[[as_string(bb_sens_q)]], !!sec_q) &
-        !within(.data[[as_string(b_sens_q)]], !!sec_q) &
-        !rsv_sens & !flu_sens & !covid_sens &
-        !rsv_flu_sens & !rsv_covid_sens & !flu_covid_sens & !rsv_flu_covid_sens &
-        !.data[[bucket_sens_name]] & !.data[[broad_only_name]]
+          within(.data[[as_string(fp_spec_q)]], !!sec_q) &
+          within(.data[[as_string(cp_spec_q)]], !!sec_q)
+      } else FALSE
 
     )
 
@@ -384,7 +379,6 @@ make_pop_flags <- function(df, pop_flag, secondary_date, window_days = 30,
     "covid_sens",
     bucket_sens_name,
     broad_only_name,
-    other_sens_name,
     "rsv_flu_covid_spec",
     "rsv_flu_spec",
     "rsv_covid_spec",
