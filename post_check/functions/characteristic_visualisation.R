@@ -6,7 +6,9 @@ library(stringr)
 library(khroma)
 
 #define a function to plot a characteristic over time
-character_viz <- function(df, scaling, household_comp = "no") {
+character_viz <- function(df, scaling, household_comp = "no",
+                          plot_title = "Participant Characteristics",
+                          included_groups = NULL) {
   
   names(df) <- c("characteristic", "count", "percentage", "subset")
   
@@ -124,6 +126,11 @@ character_viz <- function(df, scaling, household_comp = "no") {
   if (household_comp == "no") {
     df <- df %>% 
       filter(group != "Household Composition")
+  }
+
+  if (!is.null(included_groups)) {
+    df <- df %>%
+      filter(group %in% included_groups)
   }
   
   df <- df %>%
@@ -278,7 +285,7 @@ character_viz <- function(df, scaling, household_comp = "no") {
                alpha = 0.5) +
     facet_wrap(~group, scales = scales, ncol = 3) +
     theme_bw() + scale_fill_manual(values = cc) +
-    labs(title = "Participant Characteristics", x = "Characteristic",
+    labs(title = plot_title, x = "Characteristic",
          y = "Percentage (%)") +
     guides(fill = guide_legend(title = "Season")) +
     theme(text = element_text(size = 12))
@@ -635,9 +642,9 @@ character_viz_mult <- function(df, scaling) {
     
   } else if (investigation_type == "primary" & cohort == "infants_subgroup") {
     
-    plot_title <- ggdraw() + 
+    infant_title <- ggdraw() + 
       draw_label(
-        "Participant Characteristics by Season",
+        "Infant Characteristics by Season",
         x = 0,
         hjust = 0
       ) + theme_bw() +
@@ -646,22 +653,37 @@ character_viz_mult <- function(df, scaling) {
         panel.border = element_blank(),
       )
     
-    title1 <- "Participant Characteristics by Season (Panel A)"
-    title2 <- "Participant Characteristics by Season (Panel B)"
-    title3 <- "Participant Characteristics by Season (Panel C)"
+    maternal_title <- ggdraw() + 
+      draw_label(
+        "Maternal Characteristics by Season",
+        x = 0,
+        hjust = 0
+      ) + theme_bw() +
+      theme(
+        plot.margin = margin(0, 0, 0, 7),
+        panel.border = element_blank(),
+      )
     
-    plot_row1 <- plot_grid(plotlist = plot_list[1:4], nrow = 2)
-    plot_row2 <- plot_grid(plotlist = plot_list[5:8], nrow = 2)
-    plot_row3 <- plot_grid(plotlist = plot_list[9:10], nrow = 2)
+    title1 <- "Infant_Characteristics_by_Season_Panel_A"
+    title2 <- "Infant_Characteristics_by_Season_Panel_B"
+    title3 <- "Maternal_Characteristics_by_Season_Panel_A"
+    title4 <- "Maternal_Characteristics_by_Season_Panel_B"
     
-    one <- plot_grid(plot_title, plot_row1, ncol = 1,
+    infant_row1 <- plot_grid(plotlist = plot_list[1:3], nrow = 2)
+    infant_row2 <- plot_grid(plotlist = plot_list[4:5], nrow = 2)
+    maternal_row1 <- plot_grid(plotlist = plot_list[6:8], nrow = 2)
+    maternal_row2 <- plot_grid(plotlist = plot_list[9:10], nrow = 2)
+    
+    one <- plot_grid(infant_title, infant_row1, ncol = 1,
                      rel_heights = c(0.1, 1))
-    two <- plot_grid(plot_title, plot_row2, ncol = 1,
+    two <- plot_grid(infant_title, infant_row2, ncol = 1,
                      rel_heights = c(0.1, 1))
-    three <- plot_grid(plot_title, plot_row3, ncol = 1,
+    three <- plot_grid(maternal_title, maternal_row1, ncol = 1,
                        rel_heights = c(0.1, 1))
+    four <- plot_grid(maternal_title, maternal_row2, ncol = 1,
+                      rel_heights = c(0.1, 1))
     
-    return(list(one, two, three, title1, title2, title3))
+    return(list(one, two, three, four, title1, title2, title3, title4))
     
   } else {
     
