@@ -251,7 +251,7 @@ if (cohort == "infants_subgroup") {
       maternal_smoking_status = relevel(
         forcats::fct_na_value_to_level(
           factor(maternal_smoking_status, ordered = FALSE),
-          na_level = "Unknown Smoking Status"),
+          level = "Unknown Smoking Status"),
         ref = "Never"
       )
     )
