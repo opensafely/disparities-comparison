@@ -248,8 +248,12 @@ if (cohort == "infants_subgroup") {
   df_input <- df_input %>%
     mutate(
       #create smoking status factor
-      maternal_smoking_status = relevel(factor(maternal_smoking_status,
-                                        ordered = FALSE), ref = "Never")
+      maternal_smoking_status = relevel(
+        forcats::fct_na_value_to_level(
+          factor(maternal_smoking_status, ordered = FALSE),
+          na_level = "Unknown Smoking Status"),
+        ref = "Never"
+      )
     )
 }
 
