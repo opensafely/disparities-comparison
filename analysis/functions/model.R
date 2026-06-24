@@ -80,7 +80,7 @@ glm_poisson <- function(df, x, y, offset_var) {
 #create function for poisson regression with further adjustment
 glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
   
-  #filter out NA survival times and fix ethniity levels 
+  #filter out NA survival times and fix ethnicity levels 
   df <- df %>%
     filter(!is.na(offset_var)) %>% 
     mutate(
