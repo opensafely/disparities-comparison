@@ -65,24 +65,53 @@ make_facet_outcome_plots_key_vars <- function(df_input, df_dummy, pathogen, mode
   )
   both_dat <- bind_rows(mild_dat, severe_dat)
 
+  plot_one <- function(phenotype) {
+    plot_dat <- both_dat %>% filter(codelist_type %in% c("reference", phenotype))
+    forest_over_time_plot_all_seasons(
+      forest_data = plot_dat,
+      pathogen = pathogen,
+      model_type = model_type,
+      facet_outcome = TRUE,
+      show_disruption_legend = FALSE,
+      log_y = TRUE
+    ) +
+      theme(legend.position = "none")
+  }
+
   list(
-    specific = forest_over_time_plot(
-      both_dat %>% filter(codelist_type %in% c("reference", "specific")),
-      pathogen = pathogen,
-      model_type = model_type,
-      facet_outcome = TRUE,
-      label_levels = FALSE,
-      show_disruption_legend = FALSE
-    ) + theme(legend.position = "none"),
-    sensitive = forest_over_time_plot(
-      both_dat %>% filter(codelist_type %in% c("reference", "sensitive")),
-      pathogen = pathogen,
-      model_type = model_type,
-      facet_outcome = TRUE,
-      label_levels = FALSE,
-      show_disruption_legend = FALSE
-    ) + theme(legend.position = "none")
+    specific = plot_one("specific"),
+    sensitive = plot_one("sensitive")
   )
+}
+
+stack_left_aligned_legend_grobs <- function(grobs, rel_heights = NULL) {
+  grobs <- grobs[!vapply(grobs, is.null, logical(1))]
+  n <- length(grobs)
+  if (n == 0L) {
+    return(NULL)
+  }
+  if (n == 1L) {
+    return(grobs[[1L]])
+  }
+  if (is.null(rel_heights)) {
+    rel_heights <- rep(1, n)
+  }
+  stopifnot(length(rel_heights) == n)
+
+  stacked <- cowplot::plot_grid(
+    plotlist = grobs,
+    ncol = 1,
+    align = "v",
+    axis = "l",
+    rel_heights = rel_heights
+  )
+  ggplot2::ggplotGrob(stacked)
+}
+
+is_split_mid_legend <- function(legend_mid) {
+  is.list(legend_mid) &&
+    !inherits(legend_mid, "grob") &&
+    any(c("eth", "imd", "age") %in% names(legend_mid))
 }
 
 assemble_condensed_key_vars <- function(
@@ -94,8 +123,37 @@ assemble_condensed_key_vars <- function(
 ) {
   covid_plot_with_mid <- covid_plot
   if (!is.null(legend_mid)) {
-    covid_plot_with_mid <- cowplot::ggdraw(covid_plot) +
-      cowplot::draw_grob(legend_mid, x = 0.44, y = 0.08, width = 0.12, height = 0.84)
+    if (is_split_mid_legend(legend_mid)) {
+      mid_parts <- legend_mid[c("eth", "imd")]
+      mid_parts <- mid_parts[!vapply(mid_parts, is.null, logical(1))]
+      mid_grob <- stack_left_aligned_legend_grobs(
+        mid_parts,
+        rel_heights = if (length(mid_parts) == 2L) c(0.55, 0.45) else NULL
+      )
+      if (!is.null(mid_grob)) {
+        covid_plot_with_mid <- cowplot::ggdraw(covid_plot_with_mid) +
+          cowplot::draw_grob(
+            mid_grob,
+            x = 0.40,
+            y = 0.08,
+            width = 0.12,
+            height = 0.84,
+            hjust = 0,
+            vjust = 0
+          )
+      }
+    } else {
+      covid_plot_with_mid <- cowplot::ggdraw(covid_plot_with_mid) +
+        cowplot::draw_grob(
+          legend_mid,
+          x = 0.40,
+          y = 0.08,
+          width = 0.12,
+          height = 0.84,
+          hjust = 0,
+          vjust = 0
+        )
+    }
   }
 
   covid_row <- plot_grid(
@@ -131,45 +189,72 @@ assemble_condensed_key_vars <- function(
 }
 
 build_shared_legends_key_vars <- function(legend_dat, model_type, legend_pathogen = "covid") {
-  groups_left <- intersect("Age Group", unique(as.character(legend_dat$labels)))
-  groups_mid <- intersect(
-    c("Ethnicity", "IMD Quintile"),
-    unique(as.character(legend_dat$labels))
+  labels_present <- unique(as.character(legend_dat$labels))
+
+  legend_theme <- theme(
+    legend.position = "left",
+    legend.justification = c(0, 0.5),
+    legend.box.just = "left",
+    legend.box = "vertical",
+    legend.text = element_text(size = 7.5),
+    legend.key.width = unit(1.1, "lines"),
+    legend.box.margin = margin(0, 0, 0, 0)
   )
 
-  legend_left <- if (length(groups_left) > 0) {
-    get_legend({
-      forest_over_time_plot(
-        legend_dat %>% filter(as.character(labels) %in% groups_left),
+  legend_left <- if ("Age Group" %in% labels_present) {
+    get_legend(
+      forest_over_time_plot_all_seasons(
+        legend_dat %>% filter(as.character(labels) == "Age Group"),
         pathogen = legend_pathogen,
         model_type = model_type,
         facet_outcome = TRUE,
-        label_levels = FALSE,
-        show_disruption_legend = TRUE
+        show_disruption_legend = TRUE,
+        log_y = TRUE
       ) +
-        theme(legend.position = "left", legend.title = element_blank())
-    })
+        legend_theme +
+        theme(legend.title = element_blank())
+    )
   } else {
     NULL
   }
 
-  legend_mid <- if (length(groups_mid) > 0) {
-    get_legend({
-      forest_over_time_plot(
-        legend_dat %>% filter(as.character(labels) %in% groups_mid),
+  legend_eth <- if ("Ethnicity" %in% labels_present) {
+    get_legend(
+      forest_over_time_plot_all_seasons(
+        legend_dat %>% filter(as.character(labels) == "Ethnicity"),
         pathogen = legend_pathogen,
         model_type = model_type,
         facet_outcome = TRUE,
-        label_levels = FALSE,
-        show_disruption_legend = FALSE
+        show_disruption_legend = FALSE,
+        log_y = TRUE
       ) +
-        theme(legend.position = "left", legend.title = element_blank())
-    })
+        legend_theme +
+        theme(legend.title = element_blank()) +
+        guides(fill = "none", alpha = "none")
+    )
   } else {
     NULL
   }
 
-  list(left = legend_left, mid = legend_mid)
+  legend_imd <- if ("IMD Quintile" %in% labels_present) {
+    get_legend(
+      forest_over_time_plot_all_seasons(
+        legend_dat %>% filter(as.character(labels) == "IMD Quintile"),
+        pathogen = legend_pathogen,
+        model_type = model_type,
+        facet_outcome = TRUE,
+        show_disruption_legend = FALSE,
+        log_y = TRUE
+      ) +
+        legend_theme +
+        theme(legend.title = element_blank()) +
+        guides(fill = "none", alpha = "none")
+    )
+  } else {
+    NULL
+  }
+
+  list(left = legend_left, mid = list(eth = legend_eth, imd = legend_imd))
 }
 
 run_cohort_condensed_key_vars <- function(cohort) {
@@ -234,7 +319,7 @@ run_cohort_condensed_key_vars <- function(cohort) {
       paste0(cohort, "_", model_type, "_further_specific_mild_vs_severe_key_vars.png")
     ),
     specific_condensed,
-    height = 13.5,
+    height = 13,
     width = 8.5
   )
   ggsave(
@@ -243,7 +328,7 @@ run_cohort_condensed_key_vars <- function(cohort) {
       paste0(cohort, "_", model_type, "_further_sensitive_mild_vs_severe_key_vars.png")
     ),
     sensitive_condensed,
-    height = 13.5,
+    height = 13,
     width = 8.5
   )
 }

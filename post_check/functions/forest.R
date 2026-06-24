@@ -112,7 +112,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         mutate(
           reference_row = if_else(var_type == "continuous", FALSE, reference_row)
         ) %>%
-        fix_covid_prior_vacc_reference_rows()
+        fix_covid_prior_vacc_reference_rows() %>%
+        clean_forest_term_labels()
       
       if (cohort == "infants_subgroup" & further == "yes") {
         
@@ -477,17 +478,17 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       
     } else {
       
+      base_seasons <- primary_plot_seasons_underscore(pathogen)
+      n_seasons <- length(base_seasons)
+
       # Expand reference rows
       reference_rows <- tidy_forest %>%
         filter(reference_row) %>%
         mutate(rn = row_number()) %>%
-        slice(rep(1:n(), each = 8)) %>%
+        slice(rep(1:n(), each = n_seasons)) %>%
         group_by(rn) %>%
         mutate(
-          subset = c(
-            "2016_17", "2017_18", "2018_19", "2019_20", "2020_21",
-            "2021_22", "2022_23", "2023_24"
-          )[dplyr::row_number()],
+          subset = base_seasons[dplyr::row_number()],
           conf.low = 1,
           conf.high = 1
         ) %>%
@@ -649,12 +650,12 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
-          geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
+          geom_pointrange(position = position_dodge(width = 0.75), size = FOREST_CLASSIC_POINTRANGE_SIZE) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
           facet_wrap( ~ subset, ncol = 4, nrow = 2) + 
-          labs(title = title, x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
-          theme(text = element_text(size = 14),
+          labs(title = title, x = "Rate Ratio", y = "") + theme_bw(base_size = FOREST_CLASSIC_BASE_SIZE) +
+          theme(text = element_text(size = FOREST_CLASSIC_TEXT_SIZE),
                 strip.text.x = element_blank(),
                 panel.border = element_blank(),
                 axis.line = element_line(color = 'black'),
@@ -717,12 +718,12 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
-          geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
+          geom_pointrange(position = position_dodge(width = 0.75), size = FOREST_CLASSIC_POINTRANGE_SIZE) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
           facet_wrap(~ subset, ncol = 4, nrow = 2) + 
-          labs(title = title, x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
-          theme(text = element_text(size = 14),
+          labs(title = title, x = "Rate Ratio", y = "") + theme_bw(base_size = FOREST_CLASSIC_BASE_SIZE) +
+          theme(text = element_text(size = FOREST_CLASSIC_TEXT_SIZE),
                 strip.text.x = element_blank(),
                 panel.border = element_blank(),
                 axis.line = element_line(color = 'black'),
@@ -802,12 +803,12 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
-          geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
+          geom_pointrange(position = position_dodge(width = 0.75), size = FOREST_CLASSIC_POINTRANGE_SIZE) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
           facet_wrap(~ subset, nrow = 2, ncol = 4) + 
-          labs(title = title, x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
-          theme(text = element_text(size = 14),
+          labs(title = title, x = "Rate Ratio", y = "") + theme_bw(base_size = FOREST_CLASSIC_BASE_SIZE) +
+          theme(text = element_text(size = FOREST_CLASSIC_TEXT_SIZE),
                 strip.text.x = element_blank(),
                 panel.border = element_blank(),
                 axis.line = element_line(color = 'black'),
@@ -884,12 +885,12 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
-          geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
+          geom_pointrange(position = position_dodge(width = 0.75), size = FOREST_CLASSIC_POINTRANGE_SIZE) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
           facet_wrap(~ subset, nrow = 2, ncol = 4) + 
-          labs(title = title, x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
-          theme(text = element_text(size = 14),
+          labs(title = title, x = "Rate Ratio", y = "") + theme_bw(base_size = FOREST_CLASSIC_BASE_SIZE) +
+          theme(text = element_text(size = FOREST_CLASSIC_TEXT_SIZE),
                 strip.text.x = element_blank(),
                 panel.border = element_blank(),
                 axis.line = element_line(color = 'black'),
@@ -969,12 +970,12 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
-          geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
+          geom_pointrange(position = position_dodge(width = 0.75), size = FOREST_CLASSIC_POINTRANGE_SIZE) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
           facet_wrap(~ subset, nrow = 2, ncol = 4) + 
-          labs(title = title, x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
-          theme(text = element_text(size = 14),
+          labs(title = title, x = "Rate Ratio", y = "") + theme_bw(base_size = FOREST_CLASSIC_BASE_SIZE) +
+          theme(text = element_text(size = FOREST_CLASSIC_TEXT_SIZE),
                 strip.text.x = element_blank(),
                 panel.border = element_blank(),
                 axis.line = element_line(color = 'black'),
@@ -1024,6 +1025,14 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
   }
 
   seasons_plot <- sensitivity_plot_seasons(pathogen, investigation_type)
+  if (is.null(seasons_plot) && identical(pathogen, "covid")) {
+    forest_data <- filter_forest_to_seasons(
+      forest_data, primary_plot_seasons(pathogen)
+    )
+    if (is_empty_forest_data(forest_data)) {
+      return(ggplot2::ggplot() + ggplot2::theme_void())
+    }
+  }
 
   plot_ot <- forest_over_time_plot(
     forest_data = forest_data,
@@ -1039,6 +1048,11 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
   # Keep the underlying tidy results accessible for downstream reuse (e.g. key-exposure plots).
   # Do NOT rely on `$data` because ggplot overwrites this as it transforms data internally.
   attr(plot_ot, "forest_data") <- forest_data
+  attr(plot_ot, "forest_meta") <- list(
+    pathogen = pathogen,
+    model_type = model_type,
+    outcome_type = outcome_type
+  )
 
   return(plot_ot)
   
@@ -1189,7 +1203,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
         mutate(
           reference_row = if_else(var_type == "continuous", FALSE, reference_row)
         ) %>%
-        fix_covid_prior_vacc_reference_rows()
+        fix_covid_prior_vacc_reference_rows() %>%
+        clean_forest_term_labels()
       
       if (cohort == "infants_subgroup") {
         
@@ -1462,18 +1477,9 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
         codelist_type = "reference"
       )
     
-    if (nrow(df_few) != 0 & model_type %in% c("composition", "ethnicity_composition",
-                                              "ses_composition", "full")) {
-      
-      tidy_forest <- tidy_forest
-      
-    } else {
-      
-      tidy_forest <- tidy_forest %>%
-        filter(!reference_row) %>%
-        bind_rows(reference_rows)
-      
-    }
+    tidy_forest <- tidy_forest %>%
+      filter(!reference_row) %>%
+      bind_rows(reference_rows)
     
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
     
@@ -1578,12 +1584,12 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
-          geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
+          geom_pointrange(position = position_dodge(width = 0.75), size = FOREST_CLASSIC_POINTRANGE_SIZE) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
-          labs(x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
-          theme(text = element_text(size = 14),
+          labs(x = "Rate Ratio", y = "") + theme_bw(base_size = FOREST_CLASSIC_BASE_SIZE) +
+          theme(text = element_text(size = FOREST_CLASSIC_TEXT_SIZE),
                 strip.text.x = element_blank(),
                 panel.border = element_blank(),
                 axis.line = element_line(color = 'black'),
@@ -1642,12 +1648,12 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
-          geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
+          geom_pointrange(position = position_dodge(width = 0.75), size = FOREST_CLASSIC_POINTRANGE_SIZE) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
           facet_grid(faceting ~ subset, scales = "free_y", space = "free_y") + 
-          labs(x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
-          theme(text = element_text(size = 14),
+          labs(x = "Rate Ratio", y = "") + theme_bw(base_size = FOREST_CLASSIC_BASE_SIZE) +
+          theme(text = element_text(size = FOREST_CLASSIC_TEXT_SIZE),
                 strip.text.x = element_blank(),
                 panel.border = element_blank(),
                 axis.line = element_line(color = 'black'),
@@ -1713,12 +1719,12 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
-          geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
+          geom_pointrange(position = position_dodge(width = 0.75), size = FOREST_CLASSIC_POINTRANGE_SIZE) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
-          labs(x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
-          theme(text = element_text(size = 14),
+          labs(x = "Rate Ratio", y = "") + theme_bw(base_size = FOREST_CLASSIC_BASE_SIZE) +
+          theme(text = element_text(size = FOREST_CLASSIC_TEXT_SIZE),
                 strip.text.x = element_blank(),
                 panel.border = element_blank(),
                 axis.line = element_line(color = 'black'),
@@ -1784,12 +1790,12 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
-          geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
+          geom_pointrange(position = position_dodge(width = 0.75), size = FOREST_CLASSIC_POINTRANGE_SIZE) +
           guides(color = guide_legend("Characteristic", order = 2),
                  shape = guide_legend("Est. Type"), order = 1) +
           facet_wrap(~ subset, nrow = 1, ncol = 4) + 
-          labs(x = "Rate Ratio", y = "") + theme_bw(base_size = 18) +
-          theme(text = element_text(size = 14),
+          labs(x = "Rate Ratio", y = "") + theme_bw(base_size = FOREST_CLASSIC_BASE_SIZE) +
+          theme(text = element_text(size = FOREST_CLASSIC_TEXT_SIZE),
                 strip.text.x = element_blank(),
                 panel.border = element_blank(),
                 axis.line = element_line(color = 'black'),
@@ -1939,4 +1945,71 @@ forest_year_base_vs_further_mult_key_vars <- function(
   )
 
   filter_forest_to_model_key_vars(forest_data, model_type)
+}
+
+# Replot a forest plot with reference + one phenotype only (specific or sensitive).
+forest_plot_phenotype <- function(p, phenotype) {
+  forest_data <- attr(p, "forest_data")
+  meta <- attr(p, "forest_meta")
+  if (is.null(forest_data) || is.null(meta) || is_empty_forest_data(forest_data)) {
+    return(p)
+  }
+
+  plot_dat <- forest_data %>%
+    dplyr::filter(.data$codelist_type %in% c("reference", phenotype))
+  if (is_empty_forest_data(plot_dat)) {
+    return(ggplot2::ggplot() + ggplot2::theme_void())
+  }
+
+  investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) {
+    get("investigation_type", envir = .GlobalEnv)
+  } else {
+    "primary"
+  }
+
+  plot_ot <- forest_over_time_plot(
+    forest_data = plot_dat,
+    pathogen = meta$pathogen,
+    model_type = meta$model_type,
+    outcome_type = meta$outcome_type,
+    facet_outcome = FALSE,
+    label_levels = FALSE,
+    seasons = sensitivity_plot_seasons(meta$pathogen, investigation_val)
+  )
+  plot_ot + ggplot2::theme(plot.title = ggplot2::element_blank())
+}
+
+# Save primary base-model supplemental plots split by phenotype.
+save_supplemental_base_model_plots <- function(
+    plotlist,
+    plot_names,
+    cohort,
+    height = 8,
+    width = 15
+) {
+  phenotypes <- c("specific", "sensitive")
+  plotlists_out <- stats::setNames(vector("list", 2L), phenotypes)
+
+  for (ph in phenotypes) {
+    plotlists_out[[ph]] <- stats::setNames(vector("list", length(plotlist)), plot_names)
+  }
+
+  for (i in seq_along(plotlist)) {
+    p <- plotlist[[i]]
+    name <- plot_names[i]
+    for (ph in phenotypes) {
+      p_ph <- forest_plot_phenotype(p, ph)
+      plotlists_out[[ph]][[name]] <- p_ph
+      print(p_ph)
+      ggsave(
+        here::here(
+          "post_check", "plots", "supplemental", "models", cohort, ph,
+          paste0(cohort, "_", name, ".png")
+        ),
+        p_ph, height = height, width = width
+      )
+    }
+  }
+
+  invisible(plotlists_out)
 }

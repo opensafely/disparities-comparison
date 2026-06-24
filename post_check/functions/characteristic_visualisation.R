@@ -6,7 +6,7 @@ library(stringr)
 library(khroma)
 
 #define a function to plot a characteristic over time
-character_viz <- function(df, scaling) {
+character_viz <- function(df, scaling, household_comp = "no") {
   
   names(df) <- c("characteristic", "count", "percentage", "subset")
   
@@ -120,6 +120,11 @@ character_viz <- function(df, scaling) {
   df <- df %>%
     filter(!is.na(percentage)) %>%
     cbind(df_groups)
+
+  if (household_comp == "no") {
+    df <- df %>% 
+      filter(group != "Household Composition")
+  }
   
   df <- df %>%
     mutate(

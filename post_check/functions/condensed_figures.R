@@ -159,6 +159,53 @@ assemble_condensed_figure <- function(
     )
 }
 
+assemble_condensed_figure_legends_below <- function(
+    rsv_plot,
+    flu_plot,
+    covid_plot,
+    legend_bottom,
+    legend_rel_height = 0.30
+) {
+  legend_row <- if (is.null(legend_bottom)) {
+    NULL
+  } else {
+    cowplot::plot_grid(
+      NULL,
+      legend_bottom,
+      NULL,
+      ncol = 3,
+      rel_widths = c(0.001, 0.998, 0.001),
+      align = "h",
+      axis = "tb"
+    )
+  }
+
+  plot_rows <- list(NULL, rsv_plot, NULL, flu_plot, NULL, covid_plot)
+  rel_heights <- c(0.05, 1, -0.02, 1.25, -0.02, 1.35)
+  if (!is.null(legend_row)) {
+    plot_rows <- c(plot_rows, list(NULL, legend_row))
+    rel_heights <- c(rel_heights, 0.02, legend_rel_height)
+  }
+
+  combined <- cowplot::plot_grid(
+    plotlist = plot_rows,
+    ncol = 1,
+    align = "v",
+    axis = "lr",
+    rel_heights = rel_heights
+  )
+
+  cowplot::ggdraw(combined) +
+    cowplot::draw_label(
+      "A. Mild", x = 0.275, y = 1, hjust = 0.5, vjust = 1.5,
+      fontface = "bold", size = 9
+    ) +
+    cowplot::draw_label(
+      "B. Severe", x = 0.74, y = 1, hjust = 0.5, vjust = 1.5,
+      fontface = "bold", size = 9
+    )
+}
+
 # ---- Further-only (all seasons on each virus plot) ----------------------------
 
 make_facet_outcome_plots_key_vars <- function(df_input, df_dummy, pathogen, model_type) {
@@ -303,6 +350,255 @@ run_cohort_condensed_key_vars <- function(
     sensitive_condensed,
     width = CONDENSED_FIG_WIDTH,
     height = CONDENSED_FIG_HEIGHT,
+    bg = "white"
+  )
+
+  invisible(
+    list(
+      specific = specific_condensed,
+      sensitive = sensitive_condensed,
+      per_virus = list(rsv = rsv_plots, flu = flu_plots, covid = covid_plots)
+    )
+  )
+}
+
+# ---- Further-only, selected seasons (compare plots) ---------------------------
+
+condensed_seasons_further_full_model <- function(model_type) {
+  model_type %in% c(
+    "composition", "ethnicity_composition", "ses_composition", "full"
+  )
+}
+
+# Slightly larger points/text for full-model condensed figures (extra facet row
+# and bottom legend shrink panels when cowplot assembles the figure).
+CONDENSED_SEASONS_FURTHER_FULL_MODEL_SIZE_SCALE <- 1.15
+
+apply_condensed_seasons_further_full_model_size <- function(p, model_type) {
+  if (!condensed_seasons_further_full_model(model_type)) {
+    return(p)
+  }
+
+  scale <- CONDENSED_SEASONS_FURTHER_FULL_MODEL_SIZE_SCALE
+
+  p <- p +
+    ggplot2::theme(
+      axis.text.y = ggplot2::element_text(size = FOREST_AXIS_TEXT_Y_SIZE * scale),
+      axis.title.y = ggplot2::element_text(size = FOREST_BASE_SIZE * scale),
+      strip.text.y.right = ggplot2::element_text(
+        size = FOREST_STRIP_TEXT_SIZE * scale,
+        face = "bold"
+      ),
+      legend.text = ggplot2::element_text(size = FOREST_LEGEND_TEXT_SIZE * scale)
+    )
+
+  for (i in seq_along(p$layers)) {
+    if (inherits(p$layers[[i]]$geom, "GeomPointrange")) {
+      p$layers[[i]]$geom_params$fatten <- FOREST_POINTRANGE_FATTEN * scale
+      if (!is.null(p$layers[[i]]$geom_params$linewidth)) {
+        p$layers[[i]]$geom_params$linewidth <- FOREST_POINTRANGE_LINEWIDTH * scale
+      }
+    }
+  }
+
+  p
+}
+
+make_facet_outcome_plots_key_vars_seasons_further <- function(
+    df_input,
+    df_dummy,
+    pathogen,
+    model_type,
+    seasons = c("2020_21")
+) {
+  pathogen_seasons <- seasons_for_pathogen_compare(pathogen, seasons)
+  years_include <- seasons_to_years(pathogen_seasons)
+
+  mild_dat <- forest_year_further_mult_key_vars(
+    df_input, df_dummy, pathogen, model_type, "Mild", return_data = TRUE
+  ) %>%
+    filter_forest_to_seasons(pathogen_seasons)
+  severe_dat <- forest_year_further_mult_key_vars(
+    df_input, df_dummy, pathogen, model_type, "Severe", return_data = TRUE
+  ) %>%
+    filter_forest_to_seasons(pathogen_seasons)
+  both_dat <- dplyr::bind_rows(mild_dat, severe_dat)
+
+  plot_one <- function(phenotype) {
+    plot_dat <- both_dat %>%
+      dplyr::filter(.data$codelist_type %in% c("reference", phenotype))
+    if (nrow(plot_dat) == 0L) {
+      return(ggplot2::ggplot() + ggplot2::theme_void())
+    }
+    (forest_over_time_plot_compare(
+      forest_data = plot_dat,
+      pathogen = pathogen,
+      model_type = model_type,
+      facet_outcome = TRUE,
+      show_disruption_legend = FALSE,
+      years_include = years_include,
+      log_y = TRUE,
+      compact_layout = TRUE
+    ) +
+      ggplot2::theme(legend.position = "none")) %>%
+      apply_condensed_seasons_further_full_model_size(model_type)
+  }
+
+  list(
+    specific = plot_one("specific"),
+    sensitive = plot_one("sensitive")
+  )
+}
+
+build_shared_legends_key_vars_seasons_further <- function(
+    legend_dat,
+    model_type,
+    seasons = c("2020_21"),
+    legend_pathogen = "covid",
+    shape_legend_nrow = 2L
+) {
+  years_include <- seasons_to_years(
+    seasons_for_pathogen_compare(legend_pathogen, seasons)
+  )
+
+  if (is_empty_forest_data(legend_dat)) {
+    return(list(bottom = NULL))
+  }
+
+  legend_shape_nrow <- if (condensed_seasons_further_full_model(model_type)) {
+    3L
+  } else {
+    shape_legend_nrow
+  }
+
+  legend_plot <- (forest_over_time_plot_compare(
+    legend_dat,
+    pathogen = legend_pathogen,
+    model_type = model_type,
+    facet_outcome = FALSE,
+    label_levels = FALSE,
+    show_disruption_legend = TRUE,
+    years_include = years_include,
+    log_y = TRUE,
+    legend_position = "bottom",
+    shape_legend_nrow = legend_shape_nrow,
+    compact_layout = TRUE
+  ) +
+    ggplot2::theme(
+      legend.title = element_blank(),
+      legend.key.width = ggplot2::unit(1.1, "lines"),
+      legend.key.height = ggplot2::unit(0.85, "lines"),
+      legend.spacing.x = ggplot2::unit(0.2, "lines"),
+      legend.spacing.y = ggplot2::unit(0.1, "lines"),
+      legend.margin = ggplot2::margin(2, 2, 2, 2),
+      plot.margin = ggplot2::margin(2, 4, 6, 4)
+    )) %>%
+    apply_condensed_seasons_further_full_model_size(model_type)
+
+  list(bottom = cowplot::get_legend(legend_plot))
+}
+
+run_cohort_condensed_key_vars_seasons_further <- function(
+    cohort,
+    seasons = c("2020_21"),
+    model_type = "full",
+    out_root = here::here(
+      "post_check", "plots", "supplemental", "condensed_models_key_vars"
+    )
+) {
+  assign("cohort", cohort, envir = .GlobalEnv)
+
+  pathogen <- "rsv"
+  df_input <- load_collated_further(cohort, pathogen)
+  df_dummy <- load_dummy_inputs(cohort, pathogen)
+  rsv_plots <- make_facet_outcome_plots_key_vars_seasons_further(
+    df_input, df_dummy, pathogen, model_type, seasons
+  )
+
+  pathogen <- "flu"
+  df_input <- load_collated_further(cohort, pathogen)
+  df_dummy <- load_dummy_inputs(cohort, pathogen)
+  flu_plots <- make_facet_outcome_plots_key_vars_seasons_further(
+    df_input, df_dummy, pathogen, model_type, seasons
+  )
+
+  pathogen <- "covid"
+  df_input <- load_collated_further(cohort, pathogen)
+  df_dummy <- load_dummy_inputs(cohort, pathogen)
+  covid_plots <- make_facet_outcome_plots_key_vars_seasons_further(
+    df_input, df_dummy, pathogen, model_type, seasons
+  )
+
+  pathogen_seasons <- seasons_for_pathogen_compare("covid", seasons)
+  legend_dat <- dplyr::bind_rows(
+    forest_year_further_mult_key_vars(
+      df_input, df_dummy, "covid", model_type, "Mild", return_data = TRUE
+    ),
+    forest_year_further_mult_key_vars(
+      df_input, df_dummy, "covid", model_type, "Severe", return_data = TRUE
+    )
+  ) %>%
+    filter_forest_to_seasons(pathogen_seasons) %>%
+    dplyr::filter(.data$codelist_type %in% c("reference", "specific"))
+
+  shared_legends <- build_shared_legends_key_vars_seasons_further(
+    legend_dat,
+    model_type = model_type,
+    seasons = seasons
+  )
+
+  legend_rel_height <- if (condensed_seasons_further_full_model(model_type)) {
+    0.38
+  } else {
+    0.30
+  }
+  fig_height <- if (condensed_seasons_further_full_model(model_type)) {
+    CONDENSED_FIG_HEIGHT + 0.5
+  } else {
+    CONDENSED_FIG_HEIGHT
+  }
+  fig_width <- if (condensed_seasons_further_full_model(model_type)) {
+    CONDENSED_FIG_WIDTH + 2
+  } else {
+    CONDENSED_FIG_WIDTH
+  }
+
+  specific_condensed <- assemble_condensed_figure_legends_below(
+    rsv_plots$specific,
+    flu_plots$specific,
+    covid_plots$specific,
+    shared_legends$bottom,
+    legend_rel_height = legend_rel_height
+  )
+  sensitive_condensed <- assemble_condensed_figure_legends_below(
+    rsv_plots$sensitive,
+    flu_plots$sensitive,
+    covid_plots$sensitive,
+    shared_legends$bottom,
+    legend_rel_height = legend_rel_height
+  )
+
+  dir.create(out_root, recursive = TRUE, showWarnings = FALSE)
+  season_slug <- paste(gsub("_", "", seasons), collapse = "_")
+
+  ggplot2::ggsave(
+    here::here(
+      out_root,
+      paste0(cohort, "_", model_type, "_further_", season_slug, "_specific_mild_vs_severe_key_vars.png")
+    ),
+    specific_condensed,
+    width = fig_width,
+    height = fig_height,
+    bg = "white"
+  )
+  ggplot2::ggsave(
+    here::here(
+      out_root,
+      paste0(cohort, "_", model_type, "_further_", season_slug, "_sensitive_mild_vs_severe_key_vars.png")
+    ),
+    sensitive_condensed,
+    width = fig_width,
+    height = fig_height,
     bg = "white"
   )
 
