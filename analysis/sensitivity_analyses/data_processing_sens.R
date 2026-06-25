@@ -259,7 +259,7 @@ if (study_start_date == as.Date("2020-09-01") &
 
 #maternal characteristics
 if (cohort == "infants_subgroup") {
-  df_input <- df_input %>%
+  df_input_filt <- df_input_filt %>%
     mutate(
       #create smoking status factor
       maternal_smoking_status = relevel(
