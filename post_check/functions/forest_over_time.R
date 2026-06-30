@@ -97,10 +97,37 @@ FOREST_YEAR_FACET_POINT_SIZE <- 1.6
 FOREST_CLASSIC_BASE_SIZE <- 22
 FOREST_CLASSIC_TEXT_SIZE <- 17
 FOREST_CLASSIC_POINTRANGE_SIZE <- 0.8
+FOREST_DISRUPTION_LABEL_WRAP_WIDTH <- 10L
+FOREST_DISRUPTION_LEGEND_TEXT_SIZE <- 7
+FOREST_DISRUPTION_LEGEND_KEY_WIDTH <- 0.75
+FOREST_DISRUPTION_LEGEND_KEY_HEIGHT <- 0.55
 FOREST_DISRUPTION_LABEL <- stringr::str_wrap(
   "Disrupted routes of transmission",
-  width = 18
+  width = FOREST_DISRUPTION_LABEL_WRAP_WIDTH
 )
+
+forest_disruption_fill_guide <- function(
+    legend_position = c("bottom", "right"),
+    order = 2L,
+    show_adjustment = FALSE
+) {
+  legend_position <- match.arg(legend_position)
+  ggplot2::guide_legend(
+    nrow = 1L,
+    ncol = if (identical(legend_position, "bottom")) NULL else 1L,
+    order = if (isTRUE(show_adjustment)) 3L else order,
+    override.aes = list(alpha = 0.5),
+    theme = ggplot2::theme(
+      legend.text = ggplot2::element_text(
+        size = FOREST_DISRUPTION_LEGEND_TEXT_SIZE,
+        lineheight = 0.85
+      ),
+      legend.key.width = ggplot2::unit(FOREST_DISRUPTION_LEGEND_KEY_WIDTH, "lines"),
+      legend.key.height = ggplot2::unit(FOREST_DISRUPTION_LEGEND_KEY_HEIGHT, "lines"),
+      legend.spacing.y = ggplot2::unit(0.05, "lines")
+    )
+  )
+}
 
 # Strip variable-name prefixes from broom.helpers reference labels
 # (e.g. age_band10-13y -> 10-13y, latest_ethnicity_groupWhite -> White).
@@ -1027,6 +1054,13 @@ is_maternally_linked_infant_cohort <- function(cohort = NULL) {
 }
 
 covid_x_breaks_from_data <- function(plot_df, year_breaks, cohort = NULL) {
+  # For maternally linked infants, keep the full COVID season axis even when
+  # a season has no fitted estimates (e.g. severe COVID models suppressed due
+  # to sparse events). This matches how other panels retain "empty" seasons.
+  if (is_maternally_linked_infant_cohort(cohort)) {
+    return(as.integer(year_breaks))
+  }
+
   data_years <- plot_df %>%
     dplyr::filter(
       is.finite(.data$estimate),
@@ -1043,9 +1077,6 @@ covid_x_breaks_from_data <- function(plot_df, year_breaks, cohort = NULL) {
   x_breaks <- intersect(as.integer(year_breaks), data_years)
   if (length(x_breaks) == 0L) {
     x_breaks <- data_years
-  }
-  if (is_maternally_linked_infant_cohort(cohort) && 2019L %in% as.integer(year_breaks)) {
-    x_breaks <- sort(unique(c(x_breaks, 2019L)))
   }
   x_breaks
 }
@@ -1627,7 +1658,7 @@ forest_over_time_plot <- function(
       },
       color = "Characteristic",
       fill = NULL,
-      shape = "Level"
+      shape = NULL
     ) +
     theme_bw(base_size = FOREST_BASE_SIZE) +
     theme(
@@ -1642,7 +1673,8 @@ forest_over_time_plot <- function(
       strip.text.x = element_blank(),
       panel.spacing.x = unit(if (identical(pathogen, "covid")) 8.3 else 0.18, "lines"),
       plot.margin = margin(
-        5.5, 4,
+        5.5,
+        if (identical(legend_position, "right")) 12 else 4,
         if (identical(legend_position, "bottom")) 14 else 5.5,
         2.5
       ),
@@ -1659,15 +1691,12 @@ forest_over_time_plot <- function(
     guides(
       color = "none",
       fill = if (isTRUE(show_disruption_legend)) {
-        guide_legend(
-          ncol = 1,
-          order = 2,
-          override.aes = list(alpha = 0.5)
-        )
+        forest_disruption_fill_guide(legend_position = legend_position)
       } else {
         "none"
       },
       shape = guide_legend(
+        title = NULL,
         nrow = shape_legend_rows,
         byrow = TRUE,
         order = 1,
@@ -2174,7 +2203,9 @@ forest_over_time_plot_compare <- function(
       ceiling(length(shape_map) / shape_per_row)
     )
   } else {
-    1L
+    # Vertical legend: let ggplot stack items (nrow = NULL); do not fix nrow = 1
+    # with ncol = 1, which fails when there are multiple shape breaks.
+    NULL
   }
 
   panel_spacing_x <- if (isTRUE(compact_layout)) {
@@ -2416,7 +2447,12 @@ forest_over_time_plot_compare <- function(
     ) +
     {
       if (adjustment_stacked) {
+        line_ids <- plot_df %>%
+          dplyr::count(.data$connect_id, name = "n") %>%
+          dplyr::filter(.data$n >= 2L) %>%
+          dplyr::pull(.data$connect_id)
         geom_line(
+          data = dplyr::filter(plot_df, .data$connect_id %in% line_ids),
           aes(group = connect_id),
           linewidth = 0.35,
           alpha = 0.75,
@@ -2526,7 +2562,7 @@ forest_over_time_plot_compare <- function(
       },
       color = "Characteristic",
       fill = NULL,
-      shape = "Level"
+      shape = NULL
     ) +
     theme_bw(base_size = FOREST_BASE_SIZE) +
     theme(
@@ -2559,11 +2595,9 @@ forest_over_time_plot_compare <- function(
     guides(
       color = "none",
       fill = if (isTRUE(show_disruption_legend)) {
-        guide_legend(
-          nrow = if (identical(legend_position, "bottom")) 1L else 1L,
-          ncol = if (identical(legend_position, "bottom")) NULL else 1L,
-          order = if (show_adjustment) 3 else 2,
-          override.aes = list(alpha = 0.5)
+        forest_disruption_fill_guide(
+          legend_position = if (is.null(legend_position)) "right" else legend_position,
+          show_adjustment = show_adjustment
         )
       } else {
         "none"
@@ -2578,6 +2612,7 @@ forest_over_time_plot_compare <- function(
         "none"
       },
       shape = guide_legend(
+        title = NULL,
         nrow = shape_legend_rows,
         ncol = if (identical(legend_position, "bottom")) NULL else 1L,
         byrow = identical(legend_position, "bottom"),

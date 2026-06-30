@@ -23,9 +23,67 @@ relevel_forest_labels <- function(label, level_order) {
   factor(label_chr, levels = c(level_order, extras))
 }
 
+# Collated terms absent from the dummy GLM are sometimes marked as intercept
+# rows by broom.helpers and then dropped by tidy_remove_intercept().
+misattached_forest_variable <- function(term) {
+  prefixes <- c(
+    "latest_ethnicity_group", "imd_quintile", "composition_category",
+    "rurality_classification", "age_band", "sex",
+    "time_since_last_covid_vaccination", "prior_flu_vaccination",
+    "flu_vaccination", "covid_vaccination", "maternal_age",
+    "maternal_smoking_status", "smoking_status",
+    "maternal_drinking", "maternal_drug_usage", "maternal_flu_vaccination",
+    "maternal_pertussis_vaccination", "binary_variables", "has_asthma",
+    "has_copd", "has_cystic_fibrosis", "has_other_resp", "has_diabetes",
+    "has_addisons", "severe_obesity", "has_chd", "has_ckd", "has_cld",
+    "has_cnd", "has_cancer", "immunosuppressed", "has_sickle_cell",
+    "hazardous_drinking", "drug_usage"
+  )
+  prefixes <- prefixes[order(-nchar(prefixes))]
+  matched <- prefixes[
+    purrr::map_lgl(prefixes, ~ stringr::str_starts(term, .x) && nchar(term) > nchar(.x))
+  ]
+  if (length(matched) == 0) {
+    return(NA_character_)
+  }
+  matched[[1]]
+}
+
+restore_collated_attach_var_types <- function(tidy_forest, df_model) {
+  collated_terms <- df_model %>%
+    dplyr::ungroup() %>%
+    dplyr::distinct(.data$term) %>%
+    dplyr::pull(.data$term)
+
+  misattached <- tidy_forest$term %in% collated_terms &
+    tidy_forest$var_type == "intercept" &
+    tidy_forest$term != "(Intercept)"
+  fixed_variable <- vapply(
+    tidy_forest$term,
+    misattached_forest_variable,
+    character(1)
+  )
+
+  tidy_forest %>%
+    dplyr::mutate(
+      var_type = dplyr::if_else(misattached, "dichotomous", .data$var_type),
+      reference_row = dplyr::if_else(misattached, FALSE, .data$reference_row),
+      variable = dplyr::if_else(
+        misattached & !is.na(fixed_variable),
+        fixed_variable,
+        .data$variable
+      ),
+      var_label = dplyr::if_else(
+        misattached & !is.na(fixed_variable),
+        fixed_variable,
+        .data$var_label
+      )
+    )
+}
+
 #create function to filter collated results to models wanted and then plot
 forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
-                   further = "no", key_vars_only = FALSE, ...) {
+                   further = "no", key_vars_only = TRUE, ...) {
 
   pathogen <- if_else(pathogen == "overall_and_all_cause", "overall_resp",
                       pathogen)
@@ -104,6 +162,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
                                             conf.level = 95) %>%
         tidy_add_term_labels() %>%
+        restore_collated_attach_var_types(df_model) %>%
         tidy_remove_intercept() %>%
         mutate(
           conf.low = if_else(conf.low < 1e-100, NA_real_, conf.low),
@@ -396,7 +455,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       
       tidy_forest <- tidy_forest %>%
         filter(!(str_detect(term, "Yes"))) %>%
-        filter(!(str_detect(term, "No"))) %>%
+        filter(!(str_detect(term, "No$"))) %>%
         bind_rows(binaries)
       
     } else if (investigation_type == "secondary") {
@@ -441,7 +500,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       
       tidy_forest <- tidy_forest %>%
         filter(!(str_detect(term, "Yes"))) %>%
-        filter(!(str_detect(term, "No"))) %>%
+        filter(!(str_detect(term, "No$"))) %>%
         bind_rows(binaries)
       
     }
@@ -606,6 +665,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               label == "Current" ~ "Maternal Current Smoking",
               label == "Former" ~ "Maternal Former Smoking",
               label == "Never" ~ "Maternal Never Smoking",
+              label == "Unknown Smoking Status" ~ "Maternal Unknown Smoking Status",
               str_detect(label, "Age") ~ "Maternal Age (Average)",
               label == "maternal_age" ~ "Maternal Age",
               TRUE ~ label
@@ -673,6 +733,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               label == "Current" ~ "Maternal Current Smoking",
               label == "Former" ~ "Maternal Former Smoking",
               label == "Never" ~ "Maternal Never Smoking",
+              label == "Unknown Smoking Status" ~ "Maternal Unknown Smoking Status",
               str_detect(label, "Age") ~ "Maternal Age (Average)",
               label == "maternal_age" ~ "Maternal Age",
               TRUE ~ label
@@ -1195,6 +1256,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
         tidy_add_estimate_to_reference_rows(exponentiate = TRUE,
                                             conf.level = 95) %>%
         tidy_add_term_labels() %>%
+        restore_collated_attach_var_types(df_model) %>%
         tidy_remove_intercept() %>%
         mutate(
           conf.low = if_else(conf.low < 1e-100, NA_real_, conf.low),
@@ -1453,7 +1515,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       
       tidy_forest <- tidy_forest %>%
         filter(!(str_detect(term, "Yes"))) %>%
-        filter(!(str_detect(term, "No"))) %>%
+        filter(!(str_detect(term, "No$"))) %>%
         bind_rows(binaries)
       
     }
@@ -1985,7 +2047,8 @@ save_supplemental_base_model_plots <- function(
     plot_names,
     cohort,
     height = 8,
-    width = 15
+    width = 15,
+    plot_name_suffix = ""
 ) {
   phenotypes <- c("specific", "sensitive")
   plotlists_out <- stats::setNames(vector("list", 2L), phenotypes)
@@ -2004,7 +2067,7 @@ save_supplemental_base_model_plots <- function(
       ggsave(
         here::here(
           "post_check", "plots", "supplemental", "models", cohort, ph,
-          paste0(cohort, "_", name, ".png")
+          paste0(cohort, "_", name, plot_name_suffix, ".png")
         ),
         p_ph, height = height, width = width
       )

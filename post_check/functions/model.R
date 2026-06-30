@@ -7,6 +7,21 @@ library(dplyr)
 ## create output directories ----
 fs::dir_create(here::here("post_check", "functions"))
 
+ethnicity_factor_white_ref <- function(x) {
+  relevel(
+    factor(
+      x,
+      levels = c(
+        "White", "Mixed", "Asian or Asian British",
+        "Black or Black British", "Other Ethnic Groups", "Unknown"
+      ),
+      ordered = FALSE,
+      exclude = NULL
+    ),
+    ref = "White"
+  )
+}
+
 #create function for poisson regression
 glm_poisson <- function(df, x, y, offset_var) {
   
@@ -14,9 +29,8 @@ glm_poisson <- function(df, x, y, offset_var) {
   df <- df %>%
     filter(!is.na(offset_var)) %>% 
     mutate(
-      latest_ethnicity_group = relevel(factor(
-        latest_ethnicity_group, ordered = F), ref = "White")
-      )
+      latest_ethnicity_group = ethnicity_factor_white_ref(latest_ethnicity_group)
+    )
   
   #define the base predictors
   predictors <- c(x, "age_band", "sex")
@@ -63,9 +77,8 @@ glm_poisson_further <- function(df, x, y, prior_vacc, vacc_mild,
   df <- df %>%
     filter(!is.na(offset_var)) %>% 
     mutate(
-      latest_ethnicity_group = relevel(factor(
-        latest_ethnicity_group, ordered = F), ref = "White")
-      )
+      latest_ethnicity_group = ethnicity_factor_white_ref(latest_ethnicity_group)
+    )
   
   #source tmerge alt
   source(here::here("post_check", "functions", "expand_with_tmerge.R"))

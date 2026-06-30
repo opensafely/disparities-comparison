@@ -164,7 +164,8 @@ assemble_condensed_figure_legends_below <- function(
     flu_plot,
     covid_plot,
     legend_bottom,
-    legend_rel_height = 0.30
+    legend_rel_height = 0.30,
+    legend_bottom_pad = 0
 ) {
   legend_row <- if (is.null(legend_bottom)) {
     NULL
@@ -185,6 +186,10 @@ assemble_condensed_figure_legends_below <- function(
   if (!is.null(legend_row)) {
     plot_rows <- c(plot_rows, list(NULL, legend_row))
     rel_heights <- c(rel_heights, 0.02, legend_rel_height)
+    if (legend_bottom_pad > 0) {
+      plot_rows <- c(plot_rows, list(NULL))
+      rel_heights <- c(rel_heights, legend_bottom_pad)
+    }
   }
 
   combined <- cowplot::plot_grid(
@@ -370,6 +375,15 @@ condensed_seasons_further_full_model <- function(model_type) {
   )
 }
 
+# Extra bottom-legend space for condensed further-season figures that include
+# household composition (extra facet row and legend rows). Not used for
+# ethnicity_ses-only condensed figures (e.g. infant cohorts).
+condensed_household_composition_legend_layout <- function(model_type) {
+  model_type %in% c(
+    "composition", "ethnicity_composition", "ses_composition", "full"
+  )
+}
+
 # Slightly larger points/text for full-model condensed figures (extra facet row
 # and bottom legend shrink panels when cowplot assembles the figure).
 CONDENSED_SEASONS_FURTHER_FULL_MODEL_SIZE_SCALE <- 1.15
@@ -471,6 +485,12 @@ build_shared_legends_key_vars_seasons_further <- function(
     shape_legend_nrow
   }
 
+  legend_plot_bottom_margin <- if (condensed_household_composition_legend_layout(model_type)) {
+    14
+  } else {
+    6
+  }
+
   legend_plot <- (forest_over_time_plot_compare(
     legend_dat,
     pathogen = legend_pathogen,
@@ -491,7 +511,7 @@ build_shared_legends_key_vars_seasons_further <- function(
       legend.spacing.x = ggplot2::unit(0.2, "lines"),
       legend.spacing.y = ggplot2::unit(0.1, "lines"),
       legend.margin = ggplot2::margin(2, 2, 2, 2),
-      plot.margin = ggplot2::margin(2, 4, 6, 4)
+      plot.margin = ggplot2::margin(2, 4, legend_plot_bottom_margin, 4)
     )) %>%
     apply_condensed_seasons_further_full_model_size(model_type)
 
@@ -547,15 +567,23 @@ run_cohort_condensed_key_vars_seasons_further <- function(
     seasons = seasons
   )
 
-  legend_rel_height <- if (condensed_seasons_further_full_model(model_type)) {
-    0.38
+  legend_rel_height <- if (condensed_household_composition_legend_layout(model_type)) {
+    0.48
   } else {
     0.30
+  }
+  legend_bottom_pad <- if (condensed_household_composition_legend_layout(model_type)) {
+    0.06
+  } else {
+    0
   }
   fig_height <- if (condensed_seasons_further_full_model(model_type)) {
     CONDENSED_FIG_HEIGHT + 0.5
   } else {
     CONDENSED_FIG_HEIGHT
+  }
+  if (condensed_household_composition_legend_layout(model_type)) {
+    fig_height <- fig_height + 1
   }
   fig_width <- if (condensed_seasons_further_full_model(model_type)) {
     CONDENSED_FIG_WIDTH + 2
@@ -568,14 +596,16 @@ run_cohort_condensed_key_vars_seasons_further <- function(
     flu_plots$specific,
     covid_plots$specific,
     shared_legends$bottom,
-    legend_rel_height = legend_rel_height
+    legend_rel_height = legend_rel_height,
+    legend_bottom_pad = legend_bottom_pad
   )
   sensitive_condensed <- assemble_condensed_figure_legends_below(
     rsv_plots$sensitive,
     flu_plots$sensitive,
     covid_plots$sensitive,
     shared_legends$bottom,
-    legend_rel_height = legend_rel_height
+    legend_rel_height = legend_rel_height,
+    legend_bottom_pad = legend_bottom_pad
   )
 
   dir.create(out_root, recursive = TRUE, showWarnings = FALSE)
@@ -1740,7 +1770,7 @@ run_cohort_condensed_key_vars_seasons_base_vs_further_stacked <- function(
     seasons = c("2017_18", "2018_19", "2020_21"),
     model_type = "ethnicity_ses",
     out_root = here::here(
-      "post_check", "plots", "primary_analyses", "forest_models_by_virus"
+      "post_check", "plots", "primary_analyses", "condensed_models_key_vars", "sequential_adjustment"
     ),
     fig_width = CONDENSED_FIG_WIDTH,
     fig_height = CONDENSED_FIG_HEIGHT

@@ -160,7 +160,7 @@ get_forest_level_order <- function(
     } else {
       c(
         "Maternal Current Smoking", "Maternal Former Smoking",
-        "Maternal Never Smoking"
+        "Maternal Never Smoking", "Maternal Unknown Smoking Status"
       )
     }
     levels <- c(

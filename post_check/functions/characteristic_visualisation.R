@@ -288,7 +288,17 @@ character_viz <- function(df, scaling, household_comp = "no",
     labs(title = plot_title, x = "Characteristic",
          y = "Percentage (%)") +
     guides(fill = guide_legend(title = "Season")) +
-    theme(text = element_text(size = 12))
+    theme(
+      text = element_text(size = 12),
+      legend.position = if (identical(investigation_type, "secondary")) "bottom" else "right",
+      legend.box = if (identical(investigation_type, "secondary")) "horizontal" else "vertical",
+      plot.margin = margin(
+        5.5,
+        if (identical(investigation_type, "secondary")) 8 else 5.5,
+        if (identical(investigation_type, "secondary")) 10 else 5.5,
+        5.5
+      )
+    )
   
 }
 

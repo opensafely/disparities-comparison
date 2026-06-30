@@ -442,7 +442,7 @@ forest_over_time_plot_all_seasons <- function(
       y = if (!is.null(y_lab)) y_lab else paste(pathogen_title, "Rate Ratio"),
       color = "Characteristic",
       fill = NULL,
-      shape = "Level"
+      shape = NULL
     ) +
     theme_bw(base_size = FOREST_BASE_SIZE) +
     theme(
@@ -467,15 +467,12 @@ forest_over_time_plot_all_seasons <- function(
     guides(
       color = "none",
       fill = if (isTRUE(show_disruption_legend)) {
-        guide_legend(
-          ncol = 1,
-          order = 2,
-          override.aes = list(alpha = 0.5)
-        )
+        forest_disruption_fill_guide(legend_position = "right")
       } else {
         "none"
       },
       shape = guide_legend(
+        title = NULL,
         ncol = 1,
         order = 1,
         override.aes = list(
