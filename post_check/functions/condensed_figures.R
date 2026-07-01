@@ -1306,7 +1306,7 @@ assemble_condensed_figure_stacked_all_seasons <- function(
         covid_plot_with_mid <- cowplot::ggdraw(covid_plot_with_mid) +
           cowplot::draw_grob(
             legend_mid$eth,
-            x = 0.44,
+            x = 0.42,
             y = 0.52,
             width = 0.12,
             height = 0.4
@@ -1316,7 +1316,7 @@ assemble_condensed_figure_stacked_all_seasons <- function(
         covid_plot_with_mid <- cowplot::ggdraw(covid_plot_with_mid) +
           cowplot::draw_grob(
             legend_mid$imd,
-            x = 0.44,
+            x = 0.42,
             y = 0.06,
             width = 0.12,
             height = 0.4
