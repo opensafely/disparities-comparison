@@ -77,6 +77,9 @@ load_dummy_inputs <- function(cohort, pathogen) {
 
 CONDENSED_FIG_WIDTH <- 8.5
 CONDENSED_FIG_HEIGHT <- 13.5
+CONDENSED_SEQUENTIAL_OUT_ROOT <- here::here(
+  "post_check", "plots", "primary_analyses", "condensed_models_key_vars", "sequential_adjustment"
+)
 
 # Same cowplot layout as further_results_condensed_key_vars.R
 assemble_condensed_figure <- function(
@@ -869,7 +872,7 @@ make_facet_outcome_plots_key_vars_sensitivity <- function(
     log_y = TRUE,
     equal_season_widths = TRUE
   ) +
-    ggplot2::theme(legend.position = "none")
+    ggplot2::theme(legend.position = "none", plot.title = ggplot2::element_blank())
 }
 
 build_shared_legends_key_vars_sensitivity <- function(
@@ -895,6 +898,7 @@ build_shared_legends_key_vars_sensitivity <- function(
     shape_legend_nrow = 2L
   ) +
     ggplot2::theme(
+      plot.title = ggplot2::element_blank(),
       legend.position = "bottom",
       legend.title = element_blank(),
       legend.box = "horizontal",
@@ -916,6 +920,7 @@ run_cohort_condensed_key_vars_sensitivity <- function(
     )
 ) {
   assign("cohort", cohort, envir = .GlobalEnv)
+  assign("investigation_type", "sensitivity", envir = .GlobalEnv)
 
   pathogen <- "rsv"
   df_input_rsv <- load_collated_further_sensitivity(cohort, pathogen)
@@ -1769,11 +1774,9 @@ run_cohort_condensed_key_vars_seasons_base_vs_further_stacked <- function(
     cohort,
     seasons = c("2017_18", "2018_19", "2020_21"),
     model_type = "ethnicity_ses",
-    out_root = here::here(
-      "post_check", "plots", "primary_analyses", "condensed_models_key_vars", "sequential_adjustment"
-    ),
+    out_root = CONDENSED_SEQUENTIAL_OUT_ROOT,
     fig_width = CONDENSED_FIG_WIDTH,
-    fig_height = CONDENSED_FIG_HEIGHT
+    fig_height = 12
 ) {
   assign("cohort", cohort, envir = .GlobalEnv)
   season_slug <- paste(gsub("_", "", seasons), collapse = "_")
@@ -1814,6 +1817,7 @@ run_cohort_condensed_key_vars_seasons_base_vs_further_stacked <- function(
 
   shared_legends <- build_shared_legends_base_vs_further_stacked(
     legend_dat,
+    model_type = model_type,
     legend_pathogen = "covid",
     seasons = seasons_for_pathogen_compare("covid", seasons)
   )
@@ -1835,32 +1839,23 @@ run_cohort_condensed_key_vars_seasons_base_vs_further_stacked <- function(
 
   dir.create(out_root, recursive = TRUE, showWarnings = FALSE)
 
-  ggplot2::ggsave(
-    here::here(
-      out_root,
-      paste0(
-        cohort, "_", model_type, "_base_vs_further_stacked_",
-        season_slug, "_specific_mild_vs_severe.png"
-      )
-    ),
-    specific_condensed,
-    width = fig_width,
-    height = fig_height,
-    bg = "white"
+  specific_path <- file.path(
+    out_root,
+    paste0(
+      cohort, "_", model_type, "_base_vs_further_stacked_",
+      season_slug, "_specific_mild_vs_severe.png"
+    )
   )
-  ggplot2::ggsave(
-    here::here(
-      out_root,
-      paste0(
-        cohort, "_", model_type, "_base_vs_further_stacked_",
-        season_slug, "_sensitive_mild_vs_severe.png"
-      )
-    ),
-    sensitive_condensed,
-    width = fig_width,
-    height = fig_height,
-    bg = "white"
+  sensitive_path <- file.path(
+    out_root,
+    paste0(
+      cohort, "_", model_type, "_base_vs_further_stacked_",
+      season_slug, "_sensitive_mild_vs_severe.png"
+    )
   )
+  message("Saving stacked sequential figures to: ", out_root)
+  ggplot2::ggsave(specific_path, specific_condensed, width = fig_width, height = fig_height, bg = "white")
+  ggplot2::ggsave(sensitive_path, sensitive_condensed, width = fig_width, height = fig_height, bg = "white")
 
   invisible(
     list(
@@ -1874,11 +1869,9 @@ run_cohort_condensed_key_vars_seasons_base_vs_further_stacked <- function(
 run_cohort_condensed_key_vars_base_vs_further_stacked <- function(
     cohort,
     model_type = "ethnicity_ses",
-    out_root = here::here(
-      "post_check", "plots", "primary_analyses", "forest_models_by_virus"
-    ),
+    out_root = CONDENSED_SEQUENTIAL_OUT_ROOT,
     fig_width = CONDENSED_FIG_WIDTH,
-    fig_height = CONDENSED_FIG_HEIGHT
+    fig_height = 12
 ) {
   assign("cohort", cohort, envir = .GlobalEnv)
 
@@ -1918,6 +1911,7 @@ run_cohort_condensed_key_vars_base_vs_further_stacked <- function(
 
   shared_legends <- build_shared_legends_base_vs_further_stacked(
     legend_dat,
+    model_type = model_type,
     legend_pathogen = "covid",
     seasons = NULL
   )
@@ -1939,32 +1933,23 @@ run_cohort_condensed_key_vars_base_vs_further_stacked <- function(
 
   dir.create(out_root, recursive = TRUE, showWarnings = FALSE)
 
-  ggplot2::ggsave(
-    here::here(
-      out_root,
-      paste0(
-        cohort, "_", model_type,
-        "_base_vs_further_stacked_specific_mild_vs_severe.png"
-      )
-    ),
-    specific_condensed,
-    width = fig_width,
-    height = fig_height,
-    bg = "white"
+  specific_path <- file.path(
+    out_root,
+    paste0(
+      cohort, "_", model_type,
+      "_base_vs_further_stacked_specific_mild_vs_severe.png"
+    )
   )
-  ggplot2::ggsave(
-    here::here(
-      out_root,
-      paste0(
-        cohort, "_", model_type,
-        "_base_vs_further_stacked_sensitive_mild_vs_severe.png"
-      )
-    ),
-    sensitive_condensed,
-    width = fig_width,
-    height = fig_height,
-    bg = "white"
+  sensitive_path <- file.path(
+    out_root,
+    paste0(
+      cohort, "_", model_type,
+      "_base_vs_further_stacked_sensitive_mild_vs_severe.png"
+    )
   )
+  message("Saving stacked sequential figures to: ", out_root)
+  ggplot2::ggsave(specific_path, specific_condensed, width = fig_width, height = fig_height, bg = "white")
+  ggplot2::ggsave(sensitive_path, sensitive_condensed, width = fig_width, height = fig_height, bg = "white")
 
   invisible(
     list(
@@ -1978,21 +1963,34 @@ run_cohort_condensed_key_vars_base_vs_further_stacked <- function(
 stacked_compare_legend_plot <- function(
     legend_dat,
     legend_pathogen,
+    model_type,
     years_include,
     legend_theme,
     show_disruption_legend = FALSE,
     guides_keep = c("shape")
 ) {
-  p <- forest_over_time_plot_compare(
-    legend_dat,
-    pathogen = legend_pathogen,
-    model_type = "ethnicity_ses",
-    facet_outcome = FALSE,
-    show_disruption_legend = show_disruption_legend,
-    show_ci = FALSE,
-    years_include = years_include,
-    adjustment_layout = "stack"
-  ) +
+  p <- if (identical(guides_keep, "shape")) {
+    forest_over_time_plot_all_seasons(
+      legend_dat,
+      pathogen = legend_pathogen,
+      model_type = model_type,
+      facet_outcome = TRUE,
+      show_disruption_legend = show_disruption_legend,
+      log_y = TRUE
+    )
+  } else {
+    forest_over_time_plot_compare(
+      legend_dat,
+      pathogen = legend_pathogen,
+      model_type = model_type,
+      facet_outcome = FALSE,
+      show_disruption_legend = show_disruption_legend,
+      show_ci = FALSE,
+      years_include = years_include,
+      adjustment_layout = "stack"
+    )
+  }
+  p <- p +
     legend_theme +
     ggplot2::theme(legend.title = element_blank())
 
@@ -2006,6 +2004,7 @@ stacked_compare_legend_plot <- function(
 
 build_shared_legends_base_vs_further_stacked <- function(
     legend_dat,
+    model_type = "ethnicity_ses",
     legend_pathogen = "covid",
     seasons = c("2017_18", "2018_19", "2020_21")
 ) {
@@ -2037,6 +2036,7 @@ build_shared_legends_base_vs_further_stacked <- function(
       stacked_compare_legend_plot(
         dat,
         legend_pathogen = legend_pathogen,
+        model_type = model_type,
         years_include = years_include,
         legend_theme = legend_theme,
         show_disruption_legend = show_disruption,

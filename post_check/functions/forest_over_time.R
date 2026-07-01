@@ -81,6 +81,7 @@ FOREST_AXIS_TEXT_Y_SIZE <- 8
 FOREST_STRIP_TEXT_SIZE <- 8
 FOREST_LEGEND_TEXT_SIZE <- 9
 FOREST_LEGEND_TITLE_SIZE <- 10
+FOREST_TITLE_SIZE <- 10
 FOREST_POINT_SIZE <- 2.0
 FOREST_POINT_SIZE_ADJ <- 2.3
 FOREST_POINT_SIZE_ADJ_STACKED <- 2.6
@@ -1043,8 +1044,9 @@ forest_ethnicity_ses_over_time_base_vs_further_plot <- function(
     )
 }
 
-# COVID: axis seasons and synthetic RR=1 points only where estimates exist.
-# Maternally linked infants always retain 2019-20 on the axis even with no estimates.
+# COVID: for *primary* supplemental plots, keep all seasons from 2019-20 onwards
+# on the axis even when sparse events suppress fitted estimates (reference-only seasons).
+# For secondary/sensitivity plots, keep the original behaviour (only seasons with estimates).
 is_maternally_linked_infant_cohort <- function(cohort = NULL) {
   cohort_val <- cohort
   if (is.null(cohort_val) && exists("cohort", envir = .GlobalEnv)) {
@@ -1053,14 +1055,18 @@ is_maternally_linked_infant_cohort <- function(cohort = NULL) {
   cohort_val %in% c("infants", "infants_subgroup")
 }
 
-covid_x_breaks_from_data <- function(plot_df, year_breaks, cohort = NULL) {
-  # For maternally linked infants, keep the full COVID season axis even when
-  # a season has no fitted estimates (e.g. severe COVID models suppressed due
-  # to sparse events). This matches how other panels retain "empty" seasons.
-  if (is_maternally_linked_infant_cohort(cohort)) {
+covid_x_breaks_from_data <- function(
+    plot_df,
+    year_breaks,
+    cohort = NULL,
+    investigation_type = "primary"
+) {
+  # Primary supplemental plots: always retain the full COVID axis (2019-20 onwards).
+  if (identical(investigation_type, "primary")) {
     return(as.integer(year_breaks))
   }
 
+  # Secondary/sensitivity: retain only seasons with non-reference fitted estimates.
   data_years <- plot_df %>%
     dplyr::filter(
       is.finite(.data$estimate),
@@ -1296,6 +1302,12 @@ forest_over_time_plot <- function(
     }
   }
 
+  investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) {
+    get("investigation_type", envir = .GlobalEnv)
+  } else {
+    "primary"
+  }
+
   # Remove vaccination points in early COVID seasons.
   # - Current COVID vaccination: suppress before 2020-21 (year < 2020)
   # - Prior COVID vaccination: suppress before 2021-22 (year < 2021)
@@ -1308,7 +1320,11 @@ forest_over_time_plot <- function(
           (characteristic_base %in% c("Current\nVaccination", "Current Vaccination") & year < 2020) |
           (characteristic_base %in% c("Prior\nVaccination", "Prior Vaccination") & year < 2021)
       ))
-    x_breaks <- covid_x_breaks_from_data(plot_df, year_breaks)
+    x_breaks <- covid_x_breaks_from_data(
+      plot_df, year_breaks,
+      cohort = cohort_val,
+      investigation_type = investigation_val
+    )
   }
 
   # Ensure every reference level has an RR=1 point in each plotted season.
@@ -1493,25 +1509,9 @@ forest_over_time_plot <- function(
     stop("Not enough distinct shapes for number of levels within a group. Please extend `shape_pool`.")
   }
 
-  shape_key_df <- plot_df %>%
-    group_by(labels_col, variable, label) %>%
-    summarise(is_ref = any(is_ref_level), .groups = "drop") %>%
-    arrange(labels_col, variable, label) %>%
-    group_by(labels_col, variable) %>%
-    mutate(
-      nonref_idx = cumsum(!is_ref),
-      shape_val = dplyr::if_else(
-        is_ref,
-        16L,
-        as.integer(shape_pool[pmax(nonref_idx, 1L)])
-      ),
-      shape_key = paste0(as.character(labels_col), " | ", as.character(variable), " | ", as.character(label))
-    ) %>%
-    ungroup()
+  shape_key_df <- build_forest_shape_key_df(plot_df, level_order, shape_pool)
 
-  plot_df <- plot_df %>%
-    left_join(shape_key_df %>% select(labels_col, variable, label, shape_key), by = c("labels_col", "variable", "label")) %>%
-    mutate(shape_key = factor(shape_key, levels = shape_key_df$shape_key))
+  plot_df <- join_forest_shape_keys(plot_df, shape_key_df)
 
   shape_map <- stats::setNames(shape_key_df$shape_val, shape_key_df$shape_key)
   shape_labels <- stats::setNames(stringr::str_wrap(as.character(shape_key_df$label), width = 18), shape_key_df$shape_key)
@@ -1649,7 +1649,7 @@ forest_over_time_plot <- function(
     ) +
     scale_shape_manual(values = shape_map, labels = shape_labels, drop = FALSE) +
     labs(
-      title = NULL,
+      title = title,
       x = NULL,
       y = if (!is.null(y_lab)) {
         y_lab
@@ -1662,6 +1662,11 @@ forest_over_time_plot <- function(
     ) +
     theme_bw(base_size = FOREST_BASE_SIZE) +
     theme(
+      plot.title = element_text(
+        size = FOREST_TITLE_SIZE,
+        face = "plain",
+        hjust = 0
+      ),
       panel.grid.minor = element_blank(),
       axis.text.x = element_text(size = FOREST_AXIS_TEXT_X_SIZE),
       axis.text.y = element_text(size = FOREST_AXIS_TEXT_Y_SIZE),
@@ -1905,6 +1910,17 @@ forest_over_time_plot_compare <- function(
       dplyr::left_join(season_axis, by = "year")
   }
 
+  cohort_val <- if (exists("cohort", envir = .GlobalEnv)) {
+    get("cohort", envir = .GlobalEnv)
+  } else {
+    NA_character_
+  }
+  investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) {
+    get("investigation_type", envir = .GlobalEnv)
+  } else {
+    "primary"
+  }
+
   # Remove vaccination points in early COVID seasons.
   # - Current COVID vaccination: suppress before 2020-21 (year < 2020)
   # - Prior COVID vaccination: suppress before 2021-22 (year < 2021)
@@ -1918,14 +1934,26 @@ forest_over_time_plot_compare <- function(
           (characteristic_base %in% c("Prior\nVaccination", "Prior Vaccination") & year < 2021)
       ))
     if (is.null(years_include)) {
-      x_breaks <- covid_x_breaks_from_data(plot_df, year_breaks)
+      x_breaks <- covid_x_breaks_from_data(
+        plot_df, year_breaks,
+        cohort = cohort_val,
+        investigation_type = investigation_val
+      )
     } else {
       x_breaks <- intersect(
         as.integer(x_breaks),
-        covid_x_breaks_from_data(plot_df, year_breaks)
+        covid_x_breaks_from_data(
+          plot_df, year_breaks,
+          cohort = cohort_val,
+          investigation_type = investigation_val
+        )
       )
       if (length(x_breaks) == 0L) {
-        x_breaks <- covid_x_breaks_from_data(plot_df, year_breaks)
+        x_breaks <- covid_x_breaks_from_data(
+          plot_df, year_breaks,
+          cohort = cohort_val,
+          investigation_type = investigation_val
+        )
       }
     }
   }
@@ -2064,8 +2092,6 @@ forest_over_time_plot_compare <- function(
   )
   colour_map <- colour_map[group_order]
 
-  cohort_val <- if (exists("cohort", envir = .GlobalEnv)) get("cohort", envir = .GlobalEnv) else NA_character_
-  investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) get("investigation_type", envir = .GlobalEnv) else NA_character_
   level_order <- get_forest_level_order(
     cohort_val, model_type, pathogen, investigation_val, style = "year_mult"
   )
@@ -2161,25 +2187,9 @@ forest_over_time_plot_compare <- function(
     stop("Not enough distinct shapes for number of levels within a group. Please extend `shape_pool`.")
   }
 
-  shape_key_df <- plot_df %>%
-    group_by(labels_col, variable, label) %>%
-    summarise(is_ref = any(is_ref_level), .groups = "drop") %>%
-    arrange(labels_col, variable, label) %>%
-    group_by(labels_col, variable) %>%
-    mutate(
-      nonref_idx = cumsum(!is_ref),
-      shape_val = dplyr::if_else(
-        is_ref,
-        16L,
-        as.integer(shape_pool[pmax(nonref_idx, 1L)])
-      ),
-      shape_key = paste0(as.character(labels_col), " | ", as.character(variable), " | ", as.character(label))
-    ) %>%
-    ungroup()
+  shape_key_df <- build_forest_shape_key_df(plot_df, level_order, shape_pool)
 
-  plot_df <- plot_df %>%
-    left_join(shape_key_df %>% select(labels_col, variable, label, shape_key), by = c("labels_col", "variable", "label")) %>%
-    mutate(shape_key = factor(shape_key, levels = shape_key_df$shape_key))
+  plot_df <- join_forest_shape_keys(plot_df, shape_key_df)
 
   shape_map <- stats::setNames(shape_key_df$shape_val, shape_key_df$shape_key)
   shape_labels <- stats::setNames(
@@ -2279,106 +2289,60 @@ forest_over_time_plot_compare <- function(
       )
 
     if (isTRUE(use_discrete_season_axis)) {
-      plot_df <- plot_df %>%
-        group_by(labels_facet, season_x, outcome_type, adjustment) %>%
-        arrange(as.integer(shape_key), .by_group = TRUE) %>%
-        mutate(
-          jitter_rank = dplyr::row_number(),
-          jitter_n = dplyr::n(),
-          span = pmin(
-            within_adj_span_cap,
-            within_adj_jitter * sqrt(pmax(jitter_n, 1L))
-          ),
-          step = dplyr::if_else(jitter_n > 1, span / (jitter_n - 1), 0),
-          level_offset = (jitter_rank - (jitter_n + 1) / 2) * step,
-          x_plot = season_x + adj_offset + level_offset
-        ) %>%
-        ungroup()
+      plot_df <- assign_forest_shape_jitter(
+        plot_df,
+        group_cols = c("labels_facet", "season_x", "outcome_type", "adjustment"),
+        x_col = "season_x",
+        jitter_scale = within_adj_jitter,
+        span_cap = within_adj_span_cap,
+        dodge_offset_col = "adj_offset"
+      )
     } else {
-      plot_df <- plot_df %>%
-        group_by(labels_facet, year, outcome_type, adjustment) %>%
-        arrange(as.integer(shape_key), .by_group = TRUE) %>%
-        mutate(
-          jitter_rank = dplyr::row_number(),
-          jitter_n = dplyr::n(),
-          span = pmin(
-            within_adj_span_cap,
-            within_adj_jitter * sqrt(pmax(jitter_n, 1L))
-          ),
-          step = dplyr::if_else(jitter_n > 1, span / (jitter_n - 1), 0),
-          level_offset = (jitter_rank - (jitter_n + 1) / 2) * step,
-          x_plot = year + adj_offset + level_offset
-        ) %>%
-        ungroup()
+      plot_df <- assign_forest_shape_jitter(
+        plot_df,
+        group_cols = c("labels_facet", "year", "outcome_type", "adjustment"),
+        x_col = "year",
+        jitter_scale = within_adj_jitter,
+        span_cap = within_adj_span_cap,
+        dodge_offset_col = "adj_offset"
+      )
     }
   } else if (show_adjustment && adjustment_stacked) {
     if (isTRUE(use_discrete_season_axis)) {
-      plot_df <- plot_df %>%
-        group_by(labels_facet, season_x, outcome_type) %>%
-        mutate(
-          level_id = paste(
-            as.character(.data$variable),
-            as.character(.data$label),
-            as.character(.data$codelist_type),
-            sep = " | "
-          ),
-          jitter_rank = dplyr::dense_rank(.data$level_id),
-          jitter_n = dplyr::n_distinct(.data$level_id),
-          span = pmin(
-            within_adj_span_cap,
-            within_adj_jitter * sqrt(pmax(jitter_n, 1L))
-          ),
-          step = dplyr::if_else(jitter_n > 1, span / (jitter_n - 1), 0),
-          level_offset = (jitter_rank - (jitter_n + 1) / 2) * step,
-          x_plot = season_x + level_offset
-        ) %>%
-        ungroup()
+      plot_df <- assign_forest_shape_jitter(
+        plot_df,
+        group_cols = c("labels_facet", "season_x", "outcome_type"),
+        x_col = "season_x",
+        jitter_scale = within_adj_jitter,
+        span_cap = within_adj_span_cap,
+        one_rank_per_shape = TRUE
+      )
     } else {
-      plot_df <- plot_df %>%
-        group_by(labels_facet, year, outcome_type) %>%
-        mutate(
-          level_id = paste(
-            as.character(.data$variable),
-            as.character(.data$label),
-            as.character(.data$codelist_type),
-            sep = " | "
-          ),
-          jitter_rank = dplyr::dense_rank(.data$level_id),
-          jitter_n = dplyr::n_distinct(.data$level_id),
-          span = pmin(
-            within_adj_span_cap,
-            within_adj_jitter * sqrt(pmax(jitter_n, 1L))
-          ),
-          step = dplyr::if_else(jitter_n > 1, span / (jitter_n - 1), 0),
-          level_offset = (jitter_rank - (jitter_n + 1) / 2) * step,
-          x_plot = year + level_offset
-        ) %>%
-        ungroup()
+      plot_df <- assign_forest_shape_jitter(
+        plot_df,
+        group_cols = c("labels_facet", "year", "outcome_type"),
+        x_col = "year",
+        jitter_scale = within_adj_jitter,
+        span_cap = within_adj_span_cap,
+        one_rank_per_shape = TRUE
+      )
     }
   } else if (isTRUE(use_discrete_season_axis)) {
-    plot_df <- plot_df %>%
-      group_by(labels_facet, season_x, outcome_type) %>%
-      arrange(as.integer(shape_key), .by_group = TRUE) %>%
-      mutate(
-        jitter_rank = dplyr::row_number(),
-        jitter_n = dplyr::n(),
-        span = pmin(0.9, jitter_width * sqrt(pmax(jitter_n, 1L))),
-        step = dplyr::if_else(jitter_n > 1, span / (jitter_n - 1), 0),
-        x_plot = season_x + (jitter_rank - (jitter_n + 1) / 2) * step
-      ) %>%
-      ungroup()
+    plot_df <- assign_forest_shape_jitter(
+      plot_df,
+      group_cols = c("labels_facet", "season_x", "outcome_type"),
+      x_col = "season_x",
+      jitter_scale = jitter_width,
+      span_cap = 0.9
+    )
   } else {
-    plot_df <- plot_df %>%
-      group_by(labels_facet, year, outcome_type) %>%
-      arrange(as.integer(shape_key), .by_group = TRUE) %>%
-      mutate(
-        jitter_rank = dplyr::row_number(),
-        jitter_n = dplyr::n(),
-        span = pmin(0.9, jitter_width * sqrt(pmax(jitter_n, 1L))),
-        step = dplyr::if_else(jitter_n > 1, span / (jitter_n - 1), 0),
-        x_plot = year + (jitter_rank - (jitter_n + 1) / 2) * step
-      ) %>%
-      ungroup()
+    plot_df <- assign_forest_shape_jitter(
+      plot_df,
+      group_cols = c("labels_facet", "year", "outcome_type"),
+      x_col = "year",
+      jitter_scale = jitter_width,
+      span_cap = 0.9
+    )
   }
 
   if (adjustment_stacked) {
@@ -2538,8 +2502,8 @@ forest_over_time_plot_compare <- function(
           range = c(0.55, 1),
           breaks = c(1, 0.55),
           labels = c(
-            stringr::str_wrap("Minimally adjusted (base)", adjustment_label_wrap_width),
-            stringr::str_wrap("Fully adjusted (further)", adjustment_label_wrap_width)
+            stringr::str_wrap("Minimally adjusted", adjustment_label_wrap_width),
+            stringr::str_wrap("Fully adjusted", adjustment_label_wrap_width)
           ),
           name = "Adjustment",
           limits = c(0.55, 1)

@@ -108,7 +108,21 @@ forest_over_time_plot_all_seasons <- function(
           (characteristic_base %in% c("Current\nVaccination", "Current Vaccination") & year < 2020) |
           (characteristic_base %in% c("Prior\nVaccination", "Prior Vaccination") & year < 2021)
       ))
-    x_breaks <- covid_x_breaks_from_data(plot_df, year_breaks)
+    investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) {
+      get("investigation_type", envir = .GlobalEnv)
+    } else {
+      "primary"
+    }
+    cohort_val <- if (exists("cohort", envir = .GlobalEnv)) {
+      get("cohort", envir = .GlobalEnv)
+    } else {
+      NA_character_
+    }
+    x_breaks <- covid_x_breaks_from_data(
+      plot_df, year_breaks,
+      cohort = cohort_val,
+      investigation_type = investigation_val
+    )
   }
 
   # Ensure every reference level has an RR=1 point in each plotted season.
@@ -301,25 +315,9 @@ forest_over_time_plot_all_seasons <- function(
     stop("Not enough distinct shapes for number of levels within a group. Please extend `shape_pool`.")
   }
 
-  shape_key_df <- plot_df %>%
-    group_by(labels_col, variable, label) %>%
-    summarise(is_ref = any(is_ref_level), .groups = "drop") %>%
-    arrange(labels_col, variable, label) %>%
-    group_by(labels_col, variable) %>%
-    mutate(
-      nonref_idx = cumsum(!is_ref),
-      shape_val = dplyr::if_else(
-        is_ref,
-        16L,
-        as.integer(shape_pool[pmax(nonref_idx, 1L)])
-      ),
-      shape_key = paste0(as.character(labels_col), " | ", as.character(variable), " | ", as.character(label))
-    ) %>%
-    ungroup()
+  shape_key_df <- build_forest_shape_key_df(plot_df, level_order, shape_pool)
 
-  plot_df <- plot_df %>%
-    left_join(shape_key_df %>% select(labels_col, variable, label, shape_key), by = c("labels_col", "variable", "label")) %>%
-    mutate(shape_key = factor(shape_key, levels = shape_key_df$shape_key))
+  plot_df <- join_forest_shape_keys(plot_df, shape_key_df)
 
   shape_map <- stats::setNames(shape_key_df$shape_val, shape_key_df$shape_key)
   shape_labels <- stats::setNames(stringr::str_wrap(as.character(shape_key_df$label), width = 18), shape_key_df$shape_key)
@@ -333,18 +331,13 @@ forest_over_time_plot_all_seasons <- function(
 
   # Always jitter horizontally within each group/year/outcome to improve separation.
   # Offsets follow the legend order of `shape_key`.
-  plot_df <- plot_df %>%
-    group_by(labels_facet, year, outcome_type) %>%
-    arrange(as.integer(shape_key), .by_group = TRUE) %>%
-    mutate(
-      jitter_rank = dplyr::row_number(),
-      jitter_n = dplyr::n(),
-      # Total horizontal span occupied by the set around the true year.
-      span = pmin(0.9, jitter_width * sqrt(pmax(jitter_n, 1L))),
-      step = dplyr::if_else(jitter_n > 1, span / (jitter_n - 1), 0),
-      x_plot = year + (jitter_rank - (jitter_n + 1) / 2) * step
-    ) %>%
-    ungroup()
+  plot_df <- assign_forest_shape_jitter(
+    plot_df,
+    group_cols = c("labels_facet", "year", "outcome_type"),
+    x_col = "year",
+    jitter_scale = jitter_width,
+    span_cap = 0.9
+  )
 
   shading_df <- forest_disruption_shading_df(
     plot_df = plot_df,

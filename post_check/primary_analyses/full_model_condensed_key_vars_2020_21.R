@@ -21,9 +21,7 @@ cohort_specs <- tibble::tribble(
   ~cohort,                   ~model_type,
   "older_adults",            "full",
   "adults",                  "full",
-  "children_and_adolescents", "full",
-  "infants",                 "ethnicity_ses",
-  "infants_subgroup",        "ethnicity_ses"
+  "children_and_adolescents", "full"
 )
 
 for (i in seq_len(nrow(cohort_specs))) {

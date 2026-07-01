@@ -2038,7 +2038,7 @@ forest_plot_phenotype <- function(p, phenotype) {
     label_levels = FALSE,
     seasons = sensitivity_plot_seasons(meta$pathogen, investigation_val)
   )
-  plot_ot + ggplot2::theme(plot.title = ggplot2::element_blank())
+  plot_ot
 }
 
 # Save primary base-model supplemental plots split by phenotype.
