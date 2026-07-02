@@ -84,7 +84,7 @@ FOREST_LEGEND_TITLE_SIZE <- 10
 FOREST_TITLE_SIZE <- 10
 FOREST_POINT_SIZE <- 2.0
 FOREST_POINT_SIZE_ADJ <- 2.3
-FOREST_POINT_SIZE_ADJ_STACKED <- 2.6
+FOREST_POINT_SIZE_ADJ_STACKED <- 2.3
 FOREST_POINTRANGE_FATTEN <- 3.0
 FOREST_POINTRANGE_LINEWIDTH <- 0.45
 FOREST_LEGEND_KEY_CI <- 1.8
@@ -2582,7 +2582,13 @@ forest_over_time_plot_compare <- function(
         byrow = identical(legend_position, "bottom"),
         order = 1,
         override.aes = list(
-          size = if (adjustment_stacked || !isTRUE(show_ci)) FOREST_LEGEND_OVERRIDE_POINT else FOREST_LEGEND_OVERRIDE_CI,
+          size = if (adjustment_stacked) {
+            FOREST_POINT_SIZE_ADJ_STACKED
+          } else if (!isTRUE(show_ci)) {
+            FOREST_LEGEND_OVERRIDE_POINT
+          } else {
+            FOREST_LEGEND_OVERRIDE_CI
+          },
           colour = shape_legend_cols,
           fill = shape_legend_cols,
           alpha = 1
