@@ -144,6 +144,17 @@ cohort_colours <- setNames(
 cohort_levels <- names(cohort_colours)
 Y_AXIS_EXPAND <- 0.1    # extra y-axis space above the data
 Y_LABEL_SPACING <- 5     # multiplier on gap between labels (>1 = further apart)
+BURDEN_BAR_WIDTH_DAYS <- 25  # monthly bars on date axis (default ~25 days)
+
+virus_row_colours <- setNames(
+  scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(c(2 / 8, 3 / 8, 5 / 8)),
+  c("RSV", "Influenza", "COVID-19")
+)
+
+rate_y_breaks <- function(x) {
+  x <- range(x, 0, na.rm = TRUE)
+  sort(unique(c(0, scales::extended_breaks()(x))))
+}
 
 load_rates_season_all <- function() {
   cohort_ids <- c("older_adults", "adults", "children_and_adolescents", "infants")
@@ -259,11 +270,7 @@ build_burden_labels_all <- function(
   )
 }
 
-stacked <- function(
-    area = FALSE,
-    show_legend = FALSE,
-    rate_cohorts_overlay = NULL
-) {
+stacked <- function(area = FALSE, show_legend = FALSE) {
 
   si_labels <- function(digits, width) {
     f <- label_number(accuracy = 10^(-digits), scale_cut = cut_si(""))
@@ -292,66 +299,6 @@ stacked <- function(
 
   label_data <- build_burden_labels_all(plot_data)
 
-  rate_overlay_data <- NULL
-  rate_to_count_scale <- NULL
-  if (!is.null(rate_cohorts_overlay)) {
-    facet_count_max <- plot_data %>%
-      group_by(virus, event, month) %>%
-      summarise(stack_total = sum(cohort_events), .groups = "drop") %>%
-      group_by(virus, event) %>%
-      summarise(max_count = max(stack_total), .groups = "drop")
-
-    rate_overlay_data <- rates_season_all %>%
-      filter(
-        cohort %in% rate_cohorts_overlay,
-        codelist_type == "specific"
-      ) %>%
-      mutate(
-        virus = factor(virus, levels = c("RSV", "Influenza", "COVID-19")),
-        event = factor(event, levels = c("A. Mild", "B. Severe"))
-      ) %>%
-      left_join(facet_count_max, by = c("virus", "event")) %>%
-      group_by(virus, event) %>%
-      mutate(
-        max_rate = max(rate_1000_py_midpoint10_derived, na.rm = TRUE),
-        rate_to_count_scale = if_else(
-          is.finite(max_rate) & max_rate > 0,
-          max_count / max_rate,
-          1
-        )
-      ) %>%
-      ungroup() %>%
-      mutate(
-        rate_y = rate_1000_py_midpoint10_derived * rate_to_count_scale
-      )
-
-    rate_to_count_scale <- rate_overlay_data %>%
-      group_by(virus, event) %>%
-      summarise(rate_to_count_scale = dplyr::first(rate_to_count_scale), .groups = "drop") %>%
-      summarise(scale_ref = median(rate_to_count_scale, na.rm = TRUE)) %>%
-      pull(scale_ref)
-
-    if (!is.finite(rate_to_count_scale) || rate_to_count_scale <= 0) {
-      rate_to_count_scale <- 1
-    }
-  }
-
-  y_scale <- if (is.null(rate_cohorts_overlay)) {
-    scale_y_continuous(
-      labels = si_labels(digits = 1, width = 8),
-      expand = expansion(mult = c(0, Y_AXIS_EXPAND))
-    )
-  } else {
-    scale_y_continuous(
-      labels = si_labels(digits = 1, width = 8),
-      expand = expansion(mult = c(0, Y_AXIS_EXPAND)),
-      sec.axis = sec_axis(
-        transform = ~ . / rate_to_count_scale,
-        name = "Rate per 1000 person-years"
-      )
-    )
-  }
-
   p <- plot_data %>%
     ggplot(aes(x = month, y = cohort_events, fill = cohort, group = cohort)) +
     ggh4x::facet_grid2(
@@ -362,9 +309,13 @@ stacked <- function(
     ) +
     theme_bw() +
     x_scale +
-    y_scale +
+    scale_y_continuous(
+      labels = si_labels(digits = 1, width = 8),
+      expand = expansion(mult = c(0, Y_AXIS_EXPAND))
+    ) +
     labs(x = "", y = "Monthly Cases", fill = "Cohort") +
     scale_fill_manual(values = cohort_colours) +
+    scale_color_manual(values = cohort_colours, guide = "none") +
     theme(
       strip.text.x = element_blank(),
       strip.text.y = element_text(face = "bold"),
@@ -378,41 +329,11 @@ stacked <- function(
   if (area) {
     p <- p + geom_area(stat = "identity", position = "stack")
   } else {
-    p <- p + geom_bar(stat = "identity", position = "stack")
-  }
-
-  if (is.null(rate_cohorts_overlay)) {
-    p <- p + scale_color_manual(values = cohort_colours, guide = "none")
-  } else {
-    p <- p +
-      geom_line(
-        data = rate_overlay_data,
-        aes(
-          x = month,
-          y = rate_y,
-          colour = cohort,
-          group = cohort
-        ),
-        inherit.aes = FALSE,
-        linewidth = 0.55,
-        alpha = 0.5
-      ) +
-      geom_point(
-        data = rate_overlay_data,
-        aes(x = month, y = rate_y, colour = cohort),
-        inherit.aes = FALSE,
-        size = 1.8,
-        alpha = 0.95
-      ) +
-      scale_colour_manual(
-        values = cohort_colours,
-        breaks = rate_cohorts_overlay,
-        name = "Rate (cohort)"
-      ) +
-      guides(
-        fill = guide_legend(order = 1),
-        colour = guide_legend(order = 2)
-      )
+    p <- p + geom_bar(
+      stat = "identity",
+      position = "stack",
+      width = BURDEN_BAR_WIDTH_DAYS
+    )
   }
 
   p + geom_text(
@@ -425,6 +346,248 @@ stacked <- function(
     show.legend = FALSE
   )
 
+}
+
+burden_x_scale <- function() {
+  scale_x_date(
+    limits = c(ymd("2016-01-01"), ymd("2025-06-01")),
+    breaks = seq(ymd("2016-01-01"), ymd("2025-01-01"), by = "1 year"),
+    date_labels = "%Y",
+    expand = expansion(mult = c(0, 0.04))
+  )
+}
+
+burden_facet_theme <- function(show_legend = FALSE) {
+  theme(
+    strip.text.x = element_blank(),
+    strip.text.y = element_text(face = "bold"),
+    strip.background = element_blank(),
+    panel.border = element_blank(),
+    axis.line = element_line(color = "black"),
+    legend.position = if (show_legend) "top" else "none",
+    plot.margin = margin(10, 22, 5.5, 5.5)
+  )
+}
+
+stacked_with_rate_facets <- function(
+    rate_cohorts,
+    area = FALSE,
+    show_legend = FALSE
+) {
+  virus_levels <- c("RSV", "Influenza", "COVID-19")
+  event_levels <- c("A. Mild", "B. Severe")
+  panel_levels <- c("Rate", "Monthly cases")
+
+  si_labels <- function(digits, width) {
+    f <- label_number(accuracy = 10^(-digits), scale_cut = cut_si(""))
+    function(x) sprintf(paste0("%", width, "s"), f(x))
+  }
+
+  plot_data <- df_all %>%
+    mutate(
+      virus = factor(virus, levels = virus_levels),
+      event = factor(event, levels = c("Mild", "Severe"), labels = event_levels),
+      panel_type = factor("Monthly cases", levels = panel_levels)
+    )
+
+  rate_data <- rates_season_all %>%
+    filter(
+      cohort %in% rate_cohorts,
+      codelist_type == "specific"
+    ) %>%
+    mutate(
+      virus = factor(virus, levels = virus_levels),
+      event = factor(event, levels = event_levels),
+      panel_type = factor("Rate", levels = panel_levels)
+    )
+
+  label_data <- build_burden_labels_all(plot_data %>% select(-panel_type)) %>%
+    mutate(panel_type = factor("Monthly cases", levels = panel_levels))
+
+  facet_background <- tidyr::expand_grid(
+    virus = factor(virus_levels, levels = virus_levels),
+    panel_type = factor(panel_levels, levels = panel_levels),
+    event = factor(event_levels, levels = event_levels)
+  )
+
+  metric_labels <- facet_background %>%
+    mutate(
+      label = if_else(panel_type == "Rate", "Rate per 1,000 PY", "Monthly cases"),
+      x = ymd("2016-02-01"),
+      y = Inf
+    )
+
+  rate_metric_labels <- metric_labels %>% filter(panel_type == "Rate")
+  count_metric_labels <- metric_labels %>% filter(panel_type == "Monthly cases")
+
+  virus_labels <- facet_background %>%
+    filter(panel_type == "Rate") %>%
+    mutate(
+      label = as.character(virus),
+      x = ymd("2016-02-01"),
+      y = Inf
+    )
+
+  flu_rate_top_pad <- rate_data %>%
+    filter(virus == "Influenza") %>%
+    group_by(virus, event, panel_type) %>%
+    summarise(
+      month = min(month, na.rm = TRUE),
+      rate_1000_py_midpoint10_derived = max(rate_1000_py_midpoint10_derived, na.rm = TRUE) * 1.18,
+      .groups = "drop"
+    )
+
+  p <- ggplot() +
+    ggh4x::facet_grid2(
+      virus + panel_type ~ event,
+      scales = "free_y",
+      independent = "y",
+      space = "fixed",
+      labeller = labeller(
+        panel_type = as_labeller(c(Rate = "", `Monthly cases` = "")),
+        virus = as_labeller(function(x) rep("", length(x)))
+      )
+    ) +
+    theme_bw() +
+    burden_x_scale() +
+    ggh4x::facetted_pos_scales(
+      y = list(
+        panel_type == "Rate" ~ scale_y_continuous(
+          name = NULL,
+          labels = label_number(accuracy = 0.1),
+          breaks = rate_y_breaks,
+          limits = c(0, NA),
+          expand = expansion(mult = c(0.05, 0.12))
+        ),
+        panel_type == "Monthly cases" ~ scale_y_continuous(
+          name = NULL,
+          labels = si_labels(digits = 1, width = 8),
+          expand = expansion(mult = c(0, Y_AXIS_EXPAND))
+        )
+      )
+    ) +
+    labs(x = "", fill = "Cohort") +
+    scale_fill_manual(values = cohort_colours) +
+    scale_colour_manual(
+      values = cohort_colours,
+      breaks = rate_cohorts,
+      name = "Rate (cohort)"
+    ) +
+    guides(
+      fill = guide_legend(order = 1),
+      colour = guide_legend(order = 2)
+    ) +
+    burden_facet_theme(show_legend = show_legend) +
+    theme(
+      panel.spacing.y = unit(0.25, "lines")
+    )
+
+  if (area) {
+    p <- p + geom_area(
+      data = plot_data,
+      aes(x = month, y = cohort_events, fill = cohort, group = cohort),
+      stat = "identity",
+      position = "stack"
+    )
+  } else {
+    p <- p + geom_bar(
+      data = plot_data,
+      aes(x = month, y = cohort_events, fill = cohort, group = cohort),
+      stat = "identity",
+      position = "stack",
+      width = BURDEN_BAR_WIDTH_DAYS
+    )
+  }
+
+  p +
+    geom_blank(
+      data = flu_rate_top_pad,
+      aes(x = month, y = rate_1000_py_midpoint10_derived),
+      inherit.aes = FALSE
+    ) +
+    geom_line(
+      data = rate_data,
+      aes(
+        x = month,
+        y = rate_1000_py_midpoint10_derived,
+        colour = cohort,
+        group = cohort
+      ),
+      linewidth = 0.55,
+      alpha = 0.5
+    ) +
+    geom_point(
+      data = rate_data,
+      aes(
+        x = month,
+        y = rate_1000_py_midpoint10_derived,
+        colour = cohort
+      ),
+      size = 1.2,
+      alpha = 0.95
+    ) +
+    geom_text(
+      data = rate_metric_labels,
+      aes(x = x, y = y, label = label),
+      inherit.aes = FALSE,
+      hjust = 0,
+      vjust = 2.4,
+      size = 3
+    ) +
+    geom_text(
+      data = count_metric_labels,
+      aes(x = x, y = y, label = label),
+      inherit.aes = FALSE,
+      hjust = 0,
+      vjust = 1.1,
+      size = 3
+    ) +
+    geom_text(
+      data = virus_labels,
+      aes(x = x, y = y, label = label),
+      inherit.aes = FALSE,
+      hjust = 0,
+      vjust = 1.1,
+      fontface = "bold",
+      size = 3.2
+    ) +
+    geom_text(
+      data = label_data,
+      aes(x = month, y = y_anchor, label = label, color = cohort),
+      inherit.aes = FALSE,
+      hjust = 0,
+      size = 3.2,
+      fontface = "bold",
+      show.legend = FALSE
+    ) +
+    ggh4x::force_panelsizes(
+      rows = unit(rep(c(0.5, 1), length(virus_levels)), "null"),
+      respect = FALSE
+    )
+}
+
+rate_legend_plot <- function(rate_cohorts) {
+  rates_season_all %>%
+    filter(
+      virus == "RSV",
+      cohort %in% rate_cohorts,
+      codelist_type == "specific"
+    ) %>%
+    ggplot(aes(
+      x = month,
+      y = rate_1000_py_midpoint10_derived,
+      colour = cohort,
+      group = cohort
+    )) +
+    geom_line(linewidth = 0.55, alpha = 0.5) +
+    geom_point(size = 1.2, alpha = 0.95) +
+    scale_colour_manual(
+      values = cohort_colours,
+      breaks = rate_cohorts,
+      name = "Rate (cohort)"
+    ) +
+    theme_void() +
+    theme(legend.position = "top")
 }
 
 assemble_cohort_burden_figure <- function(plot_body, legend_plot) {
@@ -456,6 +619,51 @@ assemble_cohort_burden_figure <- function(plot_body, legend_plot) {
     )
 }
 
+assemble_cohort_burden_with_rates_figure <- function(plot_body, rate_cohorts) {
+  legend <- cowplot::get_legend(
+    rate_legend_plot(rate_cohorts) +
+      theme(
+        legend.position = "top",
+        legend.box = "horizontal",
+        legend.justification = "center"
+      )
+  )
+
+  cohort_legend <- cowplot::get_legend(
+    stacked(show_legend = TRUE) +
+      theme(
+        legend.position = "top",
+        legend.box = "horizontal",
+        legend.justification = "center"
+      )
+  )
+
+  legend <- cowplot::plot_grid(
+    cohort_legend,
+    legend,
+    ncol = 2,
+    rel_widths = c(1, 1)
+  )
+
+  combined <- cowplot::plot_grid(
+    legend,
+    NULL,
+    plot_body,
+    ncol = 1,
+    rel_heights = c(0.07, 0.02, 1)
+  )
+
+  cowplot::ggdraw(combined) +
+    cowplot::draw_label(
+      "A. Mild", x = 0.26, y = 0.925, hjust = 0.5, vjust = 0.5,
+      fontface = "bold", size = 10
+    ) +
+    cowplot::draw_label(
+      "B. Severe", x = 0.72, y = 0.925, hjust = 0.5, vjust = 0.5,
+      fontface = "bold", size = 10
+    )
+}
+
 area <- assemble_cohort_burden_figure(
   stacked(area = TRUE),
   stacked(area = TRUE, show_legend = TRUE)
@@ -482,33 +690,27 @@ ggsave(
   height = 6
 )
 
-bar_adults_rates <- assemble_cohort_burden_figure(
-  stacked(rate_cohorts_overlay = c("Older Adults", "Adults")),
-  stacked(
-    rate_cohorts_overlay = c("Older Adults", "Adults"),
-    show_legend = TRUE
-  )
+bar_adults_rates <- assemble_cohort_burden_with_rates_figure(
+  stacked_with_rate_facets(c("Older Adults", "Adults")),
+  c("Older Adults", "Adults")
 )
 
-bar_children_rates <- assemble_cohort_burden_figure(
-  stacked(rate_cohorts_overlay = c("Infants", "Children and Young People")),
-  stacked(
-    rate_cohorts_overlay = c("Infants", "Children and Young People"),
-    show_legend = TRUE
-  )
+bar_children_rates <- assemble_cohort_burden_with_rates_figure(
+  stacked_with_rate_facets(c("Infants", "Children and Young People")),
+  c("Infants", "Children and Young People")
 )
 
 ggsave(
   here::here(out_dir, "cohort_burden_over_time_overlay_rates_adults_older_adults.png"),
   bar_adults_rates,
   width = 10,
-  height = 6
+  height = 9
 )
 ggsave(
   here::here(out_dir, "cohort_burden_over_time_overlay_rates_infants_children.png"),
   bar_children_rates,
   width = 10,
-  height = 6
+  height = 9
 )
 
 ## rates per 1000 person years in each cohort over time
