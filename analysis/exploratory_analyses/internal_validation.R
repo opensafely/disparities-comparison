@@ -31,15 +31,16 @@ source(here::here("analysis", "functions", "redaction.R"))
 # Columns needed depend on whether COVID is in scope for this season.
 if (study_start_date < covid_season_min) {
   vars <- c(
-    "patient_id", "rsv_primary_date", "rsv_secondary_date",
-    "flu_primary_date", "flu_secondary_date", "bucket_date",
-    "broad_bucket_date"
+    "patient_id", "rsv_primary_date", "rsv_secondary_date", "rsv_secondary_inf",
+    "flu_primary_date", "flu_secondary_date", "flu_secondary_inf",
+    "bucket_date", "broad_bucket_date"
   )
 } else {
   vars <- c(
-    "patient_id", "rsv_primary_date", "rsv_secondary_date",
-    "flu_primary_date", "flu_secondary_date", "covid_primary_date",
-    "covid_secondary_date", "bucket_date", "broad_bucket_date"
+    "patient_id", "rsv_primary_date", "rsv_secondary_date", "rsv_secondary_inf",
+    "flu_primary_date", "flu_secondary_date", "flu_secondary_inf",
+    "covid_primary_date", "covid_secondary_date", "covid_secondary_inf",
+    "bucket_date", "broad_bucket_date"
   )
 }
 
@@ -49,18 +50,43 @@ df_input_spec <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_",
              year(study_start_date), "_", year(study_end_date), "_",
              "specific", "_", "primary",".arrow"))) %>%
-  select(all_of(vars))
+  select(all_of(vars)) %>%
+  # filter out censored outcomes
+  mutate(
+    rsv_secondary_date = if_else(rsv_secondary_inf == 1, rsv_secondary_date, as.Date(NA)),
+    flu_secondary_date = if_else(flu_secondary_inf == 1, flu_secondary_date, as.Date(NA))
+  )
+
+if (study_start_date >= covid_season_min) {
+  df_input_spec <- df_input_spec %>%
+    mutate(
+      covid_secondary_date = if_else(covid_secondary_inf == 1, covid_secondary_date, as.Date(NA))
+    )
+}
 
 df_input_sens <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_",
              year(study_start_date), "_", year(study_end_date), "_",
              "sensitive", "_", "primary",".arrow"))) %>%
-  select(all_of(vars))
+  select(all_of(vars)) %>% 
+  # filter out censored outcomes
+  mutate(
+    rsv_secondary_date = if_else(rsv_secondary_inf == 1, rsv_secondary_date, as.Date(NA)),
+    flu_secondary_date = if_else(flu_secondary_inf == 1, flu_secondary_date, as.Date(NA))
+  )
+
+if (study_start_date >= covid_season_min) {
+  df_input_sens <- df_input_sens %>%
+    mutate(
+      covid_secondary_date = if_else(covid_secondary_inf == 1, covid_secondary_date, as.Date(NA))
+    )
+}
 
 # One row per patient with _spec and _sens suffixes on overlapping columns.
 df_input <- merge(
   df_input_spec, df_input_sens, by = "patient_id", suffixes = c("_spec", "_sens")
-)
+) %>% 
+  select(-c(contains("_inf")))  # no longer needed after filtering above
 
 # Infant cohorts can have multiple index rows; keep the first episode only.
 if (cohort %in% c("infants", "infants_subgroup")) {
@@ -108,7 +134,9 @@ if (study_start_date < covid_season_min) {
         n_days = 30
       ),
       # Denominator: patients with any specific severe outcome this season
-      sec_flag = (!is.na(rsv_secondary_date_spec)|!is.na(flu_secondary_date_spec))
+      sec_flag = (!is.na(rsv_secondary_date_spec)|!is.na(flu_secondary_date_spec)),
+      rsv_flag = (!is.na(rsv_secondary_date_spec)),
+      flu_flag = (!is.na(flu_secondary_date_spec))
     )
 
 } else {
@@ -139,7 +167,10 @@ if (study_start_date < covid_season_min) {
                          "broad_bucket_date_sens"),
         n_days = 30
       ),
-      sec_flag = (!is.na(rsv_secondary_date_spec)|!is.na(flu_secondary_date_spec)|!is.na(covid_secondary_date_spec))
+      sec_flag = (!is.na(rsv_secondary_date_spec)|!is.na(flu_secondary_date_spec)|!is.na(covid_secondary_date_spec)),
+      rsv_flag = (!is.na(rsv_secondary_date_spec)),
+      flu_flag = (!is.na(flu_secondary_date_spec)),
+      covid_flag = (!is.na(covid_secondary_date_spec))
     )
 
 }
@@ -154,8 +185,13 @@ make_population_table <- function(df, include_covid = FALSE) {
     summarise(
       across(all_of(pop_cols), ~ roundmid_any(sum(.x))),
       total_patients = roundmid_any(n()),
-      total_patients_sec = roundmid_any(sum(sec_flag))
+      total_patients_sec = roundmid_any(sum(sec_flag)),
+      total_patients_rsv = roundmid_any(sum(rsv_flag)),
+      total_patients_flu = roundmid_any(sum(flu_flag)),
+      total_patients_covid = if (include_covid) roundmid_any(sum(covid_flag)) else NA_integer_
     )
+  
+  if (!include_covid) totals <- totals %>% select(-total_patients_covid)  # drop NA column if COVID not in scope
 
   # One row per population × denominator, with separate count and pct columns.
   pop_rows <- totals %>%
@@ -166,16 +202,25 @@ make_population_table <- function(df, include_covid = FALSE) {
     ) %>%
     mutate(
       total_patients_dn = totals$total_patients,
-      total_patients_sec_dn = totals$total_patients_sec
-    ) %>%
+      total_patients_sec_dn = totals$total_patients_sec,
+      total_patients_rsv_dn = totals$total_patients_rsv,
+      total_patients_flu_dn = totals$total_patients_flu,
+      total_patients_covid_dn = if (include_covid) totals$total_patients_covid else NA_integer_
+    )
+  
+  if (!include_covid) pop_rows <- pop_rows %>% select(-total_patients_covid_dn)  # drop NA column if COVID not in scope
+  
+  pop_rows <- pop_rows %>%
     pivot_longer(
-      cols = c(total_patients_dn, total_patients_sec_dn),
+      cols = starts_with("total_patients"),
       names_to = "denominator",
       values_to = "denominator_n",
       names_pattern = "(.*)_dn$"
     ) %>%
     mutate(pct = 100 * count / denominator_n) %>%
-    select(population, denominator, denominator_n, count, pct)
+    select(population, denominator, denominator_n, count, pct) %>% 
+    filter(!is.na(denominator))
+
 }
 
 props <- make_population_table(
