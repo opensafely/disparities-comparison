@@ -428,14 +428,22 @@ stacked_with_rate_facets <- function(
       y = Inf
     )
 
-  flu_rate_top_pad <- rate_data %>%
-    filter(virus == "Influenza") %>%
+  rate_top_pad <- rate_data %>%
     group_by(virus, event, panel_type) %>%
     summarise(
       month = min(month, na.rm = TRUE),
-      rate_1000_py_midpoint10_derived = max(rate_1000_py_midpoint10_derived, na.rm = TRUE) * 1.18,
+      ymax = max(rate_1000_py_midpoint10_derived, na.rm = TRUE),
       .groups = "drop"
-    )
+    ) %>%
+    mutate(
+      pad_mult = case_when(
+        virus == "Influenza" ~ 1.18,
+        virus == "COVID-19" & event == "B. Severe" ~ 1.25,
+        TRUE ~ NA_real_
+      ),
+      rate_1000_py_midpoint10_derived = ymax * pad_mult
+    ) %>%
+    filter(!is.na(pad_mult))
 
   p <- ggplot() +
     ggh4x::facet_grid2(
@@ -457,7 +465,7 @@ stacked_with_rate_facets <- function(
           labels = label_number(accuracy = 0.1),
           breaks = rate_y_breaks,
           limits = c(0, NA),
-          expand = expansion(mult = c(0.05, 0.12))
+          expand = expansion(mult = c(0.05, 0.15))
         ),
         panel_type == "Monthly cases" ~ scale_y_continuous(
           name = NULL,
@@ -471,7 +479,7 @@ stacked_with_rate_facets <- function(
     scale_colour_manual(
       values = cohort_colours,
       breaks = rate_cohorts,
-      name = "Rate (cohort)"
+      name = ""
     ) +
     guides(
       fill = guide_legend(order = 1),
@@ -501,7 +509,7 @@ stacked_with_rate_facets <- function(
 
   p +
     geom_blank(
-      data = flu_rate_top_pad,
+      data = rate_top_pad,
       aes(x = month, y = rate_1000_py_midpoint10_derived),
       inherit.aes = FALSE
     ) +
@@ -584,7 +592,7 @@ rate_legend_plot <- function(rate_cohorts) {
     scale_colour_manual(
       values = cohort_colours,
       breaks = rate_cohorts,
-      name = "Rate (cohort)"
+      name = ""
     ) +
     theme_void() +
     theme(legend.position = "top")
@@ -620,30 +628,31 @@ assemble_cohort_burden_figure <- function(plot_body, legend_plot) {
 }
 
 assemble_cohort_burden_with_rates_figure <- function(plot_body, rate_cohorts) {
-  legend <- cowplot::get_legend(
-    rate_legend_plot(rate_cohorts) +
-      theme(
-        legend.position = "top",
-        legend.box = "horizontal",
-        legend.justification = "center"
-      )
-  )
-
   cohort_legend <- cowplot::get_legend(
     stacked(show_legend = TRUE) +
       theme(
         legend.position = "top",
         legend.box = "horizontal",
-        legend.justification = "center"
+        legend.justification = "center",
+        legend.margin = margin(0, 0, 0, 0),
+        legend.box.margin = margin(0, 0, 0, 0)
       )
   )
 
-  legend <- cowplot::plot_grid(
-    cohort_legend,
-    legend,
-    ncol = 2,
-    rel_widths = c(1, 1)
+  rate_legend <- cowplot::get_legend(
+    rate_legend_plot(rate_cohorts) +
+      theme(
+        legend.position = "top",
+        legend.box = "horizontal",
+        legend.justification = "center",
+        legend.margin = margin(0, 0, 0, 0),
+        legend.box.margin = margin(0, 0, 0, 0)
+      )
   )
+
+  legend <- cowplot::ggdraw() +
+    cowplot::draw_grob(cohort_legend, x = 0.365, y = 0.5, hjust = 0.5, vjust = 0.5) +
+    cowplot::draw_grob(rate_legend, x = 0.75, y = 0.5, hjust = 0.5, vjust = 0.5)
 
   combined <- cowplot::plot_grid(
     legend,
