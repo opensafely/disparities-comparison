@@ -145,6 +145,7 @@ cohort_levels <- names(cohort_colours)
 Y_AXIS_EXPAND <- 0.1    # extra y-axis space above the data
 Y_LABEL_SPACING <- 5     # multiplier on gap between labels (>1 = further apart)
 BURDEN_BAR_WIDTH_DAYS <- 25  # monthly bars on date axis (default ~25 days)
+BURDEN_LABEL_X_OFFSET_DAYS <- 30  # nudge burden % labels left from bar edge
 
 virus_row_colours <- setNames(
   scales::seq_gradient_pal("#F05039", "#1F449c", "Lab")(c(2 / 8, 3 / 8, 5 / 8)),
@@ -248,7 +249,8 @@ build_burden_labels <- function(
       panel_ymax = .data$facet_ymax * (1 + .env$y_axis_expand),
       label_margin = .data$facet_ymax * .env$y_axis_expand,
       label_gap = (.data$label_margin / (n_labels - 1)) * .env$label_spacing,
-      y_anchor = .data$panel_ymax - (rank - 1) * label_gap
+      y_anchor = .data$panel_ymax - (rank - 1) * label_gap,
+      label_x = .data$month - lubridate::days(BURDEN_LABEL_X_OFFSET_DAYS)
     )
 }
 
@@ -278,8 +280,8 @@ stacked <- function(area = FALSE, show_legend = FALSE) {
   }
 
   x_scale <- scale_x_date(
-    limits = c(ymd("2016-01-01"), ymd("2025-06-01")),
-    breaks = seq(ymd("2016-01-01"), ymd("2025-01-01"), by = "1 year"),
+    limits = c(ymd("2016-01-01"), ymd("2024-12-31")),
+    breaks = seq(ymd("2016-01-01"), ymd("2024-01-01"), by = "1 year"),
     date_labels = "%Y",
     expand = expansion(mult = c(0, 0.04))
   )
@@ -338,7 +340,7 @@ stacked <- function(area = FALSE, show_legend = FALSE) {
 
   p + geom_text(
     data = label_data,
-    aes(x = month, y = y_anchor, label = label, color = cohort),
+    aes(x = label_x, y = y_anchor, label = label, color = cohort),
     inherit.aes = FALSE,
     hjust = 0,
     size = 3.2,
@@ -350,8 +352,8 @@ stacked <- function(area = FALSE, show_legend = FALSE) {
 
 burden_x_scale <- function() {
   scale_x_date(
-    limits = c(ymd("2016-01-01"), ymd("2025-06-01")),
-    breaks = seq(ymd("2016-01-01"), ymd("2025-01-01"), by = "1 year"),
+    limits = c(ymd("2016-01-01"), ymd("2024-12-31")),
+    breaks = seq(ymd("2016-01-01"), ymd("2024-01-01"), by = "1 year"),
     date_labels = "%Y",
     expand = expansion(mult = c(0, 0.04))
   )
@@ -561,7 +563,7 @@ stacked_with_rate_facets <- function(
     ) +
     geom_text(
       data = label_data,
-      aes(x = month, y = y_anchor, label = label, color = cohort),
+      aes(x = label_x, y = y_anchor, label = label, color = cohort),
       inherit.aes = FALSE,
       hjust = 0,
       size = 3.2,
