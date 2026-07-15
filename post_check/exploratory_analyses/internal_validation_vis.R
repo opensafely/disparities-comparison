@@ -30,8 +30,8 @@ STACK_ORDER <- rev(OUTCOME_ORDER)
 
 import_validation_counts <- function(cohort) {
 
-  readr::read_csv(here::here(
-    "output", "collated", "descriptive",
+  read_csv(here::here(
+    "post_check", "output", "collated", "descriptive",
     paste0(cohort, "_validation_counts_collated.csv")
   ))
 
@@ -39,8 +39,8 @@ import_validation_counts <- function(cohort) {
 
 import_validation_pops <- function(cohort) {
 
-  readr::read_csv(here::here(
-    "output", "collated", "descriptive",
+  read_csv(here::here(
+    "post_check", "output", "collated", "descriptive",
     paste0(cohort, "_validation_pops_collated.csv")
   ))
 
@@ -101,10 +101,12 @@ prep_flow_counts <- function(df_counts, df_pops, population, season) {
         names_to = "phenotype",
         values_to = "outcome"
       ) %>% 
-      select(c(population, outcome, denom, rounded, pct, subset, phenotype)) %>% 
+      # Marginal totals per phenotype: source rows are a sens × spec cross-tab
+      group_by(population, phenotype, outcome, subset) %>%
+      summarise(rounded = sum(rounded, na.rm = TRUE), .groups = "drop") %>%
       mutate(
         denom = df_pops_filt$denom,
-        pct = 100* rounded/denom
+        pct = 100 * rounded / denom
       )
 
     flow_counts <- bind_rows(
@@ -178,6 +180,33 @@ flow_base_theme <- function(plot_margin = margin(12, -2, -1, 5)) {
     )
 }
 
+# Compute outcome % label positions per facet so they match geom_sankey
+# stacking (ggsankey's own geom_sankey_text defaults different space/width and
+# can reorder across panels).
+sankey_outcome_label_data <- function(sankey_long, space, width, flow_palette) {
+  sankey_long %>%
+    filter(x == "Outcome") %>%
+    group_by(population, phenotype) %>%
+    arrange(match(outcome_code, STACK_ORDER), .by_group = TRUE) %>%
+    mutate(
+      n_x = as.numeric(x),
+      freq = value,
+      ymax = cumsum(freq) + (row_number() - 1) * space,
+      ymin = ymax - freq
+    ) %>%
+    mutate(
+      ymin = ymin - max(ymax) / 2,
+      ymax = ymax - max(ymax) / 2,
+      y = (ymin + ymax) / 2,
+      # Place just to the right of the (transparent) outcome node band
+      x_pos = n_x + width / 2,
+      label = sprintf("%.2f%%", pct),
+      pct_colour = unname(flow_palette[fillcode])
+    ) %>%
+    ungroup() %>%
+    select(population, phenotype, x_pos, y, label, pct_colour)
+}
+
 prep_sankey_ggsankey_long <- function(df, label_with_pct = FALSE, use_pct = TRUE) {
 
   edges <- df %>%
@@ -230,13 +259,19 @@ prep_sankey_ggsankey_long <- function(df, label_with_pct = FALSE, use_pct = TRUE
       node = target,
       next_node = source,
       value,
+      pct,
+      node_label = NA_character_,
       outcome_code = as.character(outcome_code),
       fillcode = as.character(outcome_code)
     )
 
   node_rows <- edges %>%
     group_by(population, phenotype, source) %>%
-    summarise(value = sum(value, na.rm = TRUE), .groups = "drop") %>%
+    summarise(
+      value = sum(value, na.rm = TRUE),
+      hosp_n = dplyr::first(denom),
+      .groups = "drop"
+    ) %>%
     transmute(
       population,
       phenotype,
@@ -244,7 +279,15 @@ prep_sankey_ggsankey_long <- function(df, label_with_pct = FALSE, use_pct = TRUE
       next_x = factor(NA_character_, levels = x_levels),
       node = source,
       next_node = NA_character_,
-      value = if (isTRUE(use_pct)) 100 else value,
+      # Match the left-node height to the sum of flowing outcomes (not a
+      # hardcoded 100), so the white box aligns with where flows attach.
+      value,
+      pct = NA_real_,
+      node_label = paste0(
+        source,
+        "\nn = ",
+        format(hosp_n, big.mark = ",", trim = TRUE, scientific = FALSE)
+      ),
       outcome_code = NA_character_,
       fillcode = "hosp"
     )
@@ -285,6 +328,10 @@ plot_sankey_ggsankey <- function(
   space = 4,
   smooth = 8,
   width = 0.4,
+  # --- Left hospitalisation box (white outline) — edit these to resize ---
+  hosp_width = 0.55,      # x-axis units; slightly wider than flow `width` (0.4)
+  hosp_height_pad = 0,    # extra height in y-units, split top/bottom (0 = flush)
+  # ---------------------------------------------------------------------
   label_with_pct = FALSE,
   use_pct = TRUE
 ) {
@@ -311,6 +358,18 @@ plot_sankey_ggsankey <- function(
     space <- max(0.1, space * panel_total)
   }
 
+  # Geometry for the opaque left-node rectangle (see hosp_width / hosp_height_pad)
+  hosp_box <- sankey_long %>%
+    filter(x == "Hospitalisation") %>%
+    distinct(population, phenotype, x, value) %>%
+    mutate(
+      n_x = as.numeric(x),
+      xmin = n_x - hosp_width / 2,
+      xmax = n_x + hosp_width / 2,
+      ymin = -value / 2 - hosp_height_pad / 2,
+      ymax = value / 2 + hosp_height_pad / 2
+    )
+
   plot <- ggplot(
     sankey_long,
     aes(
@@ -319,12 +378,12 @@ plot_sankey_ggsankey <- function(
       node = node,
       next_node = next_node,
       value = value,
-      label = if_else(x == "Hospitalisation", as.character(node), NA_character_),
+      label = node_label,
       fill = factor(fillcode, levels = c(OUTCOME_ORDER, "hosp")),
       colour = if_else(x == "Hospitalisation", "grey30", NA_character_)
     )
   ) +
-    ggsankey::geom_sankey(
+    geom_sankey(
       space = space,
       smooth = smooth,
       width = width,
@@ -335,49 +394,61 @@ plot_sankey_ggsankey <- function(
       node.fill = NA,
       node.alpha = 1
     ) +
-    # Left hospitalisation node: opaque white with outline; not in legend.
-    ggplot2::geom_rect(
-      data = sankey_long %>%
-        dplyr::filter(x == "Hospitalisation") %>%
-        dplyr::distinct(population, phenotype, x, value) %>%
-        dplyr::mutate(
-          n_x = as.numeric(x),
-          xmin = n_x - width / 2,
-          xmax = n_x + width / 2,
-          ymin = -value / 2,
-          ymax = value / 2
-        ),
-      ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+    # Left hospitalisation node: opaque white with outline; sized by hosp_box.
+    geom_rect(
+      data = hosp_box,
+      aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
       inherit.aes = FALSE,
       fill = "white",
       colour = "grey30",
       linewidth = 0.5,
       alpha = 1
     ) +
-    ggsankey::geom_sankey_text(
-      data = dplyr::filter(sankey_long, x == "Hospitalisation"),
+    geom_sankey_text(
+      data = filter(sankey_long, x == "Hospitalisation"),
+      space = space,
+      width = hosp_width,
       size = 3.2,
       colour = "black",
       lineheight = 0.9,
       na.rm = TRUE
     ) +
-    facet_grid(population ~ phenotype) +
+    geom_text(
+      data = sankey_outcome_label_data(sankey_long, space, width, flow_palette),
+      aes(
+        x = x_pos,
+        y = y,
+        label = label,
+        colour = pct_colour
+      ),
+      inherit.aes = FALSE,
+      size = 2.8,
+      hjust = -0.1,
+      lineheight = 0.9,
+      na.rm = TRUE
+    ) +
+    # Free y-ranges stop one pathogen row with large/redacted percentages from
+    # setting the scale for every row. Row heights stay fixed because
+    # `space = "free_y"` is not used.
+    facet_grid(population ~ phenotype, scales = "free_y") +
     scale_fill_manual(
       values = flow_palette,
       breaks = OUTCOME_ORDER,
       labels = unname(PHENOTYPE_LABELS[OUTCOME_ORDER]),
+      limits = c(OUTCOME_ORDER, "hosp"),
+      drop = FALSE,
       name = NULL,
-      guide = ggplot2::guide_legend(nrow = 1, byrow = TRUE)
+      guide = guide_legend(nrow = 1, byrow = TRUE)
     ) +
     scale_colour_identity(guide = "none") +
-    scale_x_discrete(expand = ggplot2::expansion(add = 0.15)) +
-    scale_y_continuous(expand = ggplot2::expansion(mult = 0.002)) +
+    scale_x_discrete(expand = expansion(add = c(0.15, 0.55))) +
+    scale_y_continuous(expand = expansion(mult = 0.002)) +
     labs(
       x = NULL,
       y = if (isTRUE(use_pct)) "% of Hospitalisations" else "Hospitalisations (count)"
     ) +
     coord_cartesian(clip = "off") +
-    flow_base_theme(plot_margin = margin(2, 4, 1, 14)) +
+    flow_base_theme(plot_margin = margin(2, 28, 1, 14)) +
     theme(
       axis.title.y = element_text(margin = margin(r = 10)),
       legend.position = "bottom",
@@ -397,6 +468,9 @@ plot_sankey_between_legend <- function(
   space = 4,
   smooth = 8,
   width = 0.4,
+  # Left hospitalisation box — passed through to plot_sankey_ggsankey
+  hosp_width = 0.55,
+  hosp_height_pad = 0,
   label_with_pct = FALSE,
   use_pct = TRUE,
   legend_rel_width = 0.45
@@ -409,6 +483,8 @@ plot_sankey_between_legend <- function(
     space = space,
     smooth = smooth,
     width = width,
+    hosp_width = hosp_width,
+    hosp_height_pad = hosp_height_pad,
     label_with_pct = label_with_pct,
     use_pct = use_pct
   ) +
@@ -425,6 +501,8 @@ plot_sankey_between_legend <- function(
     space = space,
     smooth = smooth,
     width = width,
+    hosp_width = hosp_width,
+    hosp_height_pad = hosp_height_pad,
     label_with_pct = label_with_pct,
     use_pct = use_pct
   ) +
@@ -436,12 +514,16 @@ plot_sankey_between_legend <- function(
       strip.background = element_blank()
     )
 
-  # Extract a single vertical legend.
+  # Extract a single vertical legend from the full data so outcomes that
+  # appear in only one phenotype (e.g. broad = Sensitive-only) still get a
+  # colour key, not just a label.
   legend_plot <- plot_sankey_ggsankey(
-    df_spec,
+    df,
     space = space,
     smooth = smooth,
     width = width,
+    hosp_width = hosp_width,
+    hosp_height_pad = hosp_height_pad,
     label_with_pct = label_with_pct,
     use_pct = use_pct
   ) +
@@ -454,16 +536,45 @@ plot_sankey_between_legend <- function(
       strip.background = element_blank()
     )
 
-  legend <- cowplot::get_legend(legend_plot)
+  legend <- get_legend(legend_plot)
 
-  cowplot::plot_grid(
+  plot_row <- plot_grid(
     left,
+    NULL,
     legend,
     right,
     nrow = 1,
-    rel_widths = c(1, legend_rel_width, 1),
+    rel_widths = c(1, -0.1, legend_rel_width, 1),
     align = "h",
     axis = "tb"
+  )
+
+  cohort_label <- case_when(
+    cohort == "older_adults" ~ "Older Adults",
+    cohort == "adults" ~ "Adults", 
+    cohort == "children_and_adolescents" ~ "Children and Young People",
+    cohort == "infants" ~ "Infants",
+    cohort == "infants_subgroup" ~ "Maternally Linked Infants"
+  )
+
+  title <- ggdraw() + 
+    draw_label(
+      paste(cohort_label, gsub("_", "-", season)),
+      fontface = 'bold',
+      x = 0,
+      hjust = 0
+    ) +
+    theme(
+      # add margin on the left of the drawing canvas,
+      # so title is aligned with left edge of first plot
+      plot.margin = margin(0, 0, 0, 7)
+    )
+
+  plot_grid(
+    title, plot_row,
+    ncol = 1,
+    # rel_heights values control vertical title margins
+    rel_heights = c(0.1, 1)
   )
 }
 
@@ -474,4 +585,61 @@ df_counts <- import_validation_counts(cohort)
 df_pops <- import_validation_pops(cohort)
 
 flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
-plot_sankey_between_legend(flow_counts, space = 4, legend_rel_width = 0.6)
+plot_sankey_between_legend(flow_counts, space = 4, legend_rel_width = 0.4)
+
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0(cohort, "_internal_validation_", season, ".png")),
+       height = 10, width = 14)
+
+cohort <- "adults"
+season <- "2023_24"
+
+df_counts <- import_validation_counts(cohort)
+df_pops <- import_validation_pops(cohort)
+
+flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
+plot_sankey_between_legend(flow_counts, space = 4, legend_rel_width = 0.4)
+
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0(cohort, "_internal_validation_", season, ".png")),
+       height = 10, width = 14)
+
+cohort <- "children_and_adolescents"
+season <- "2023_24"
+
+df_counts <- import_validation_counts(cohort)
+df_pops <- import_validation_pops(cohort)
+
+flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
+plot_sankey_between_legend(flow_counts, space = 4, legend_rel_width = 0.4)
+
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0(cohort, "_internal_validation_", season, ".png")),
+       height = 10, width = 14)
+
+cohort <- "infants"
+season <- "2023_24"
+
+df_counts <- import_validation_counts(cohort)
+df_pops <- import_validation_pops(cohort)
+
+flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
+plot_sankey_between_legend(flow_counts, space = 4, legend_rel_width = 0.4)
+
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0(cohort, "_internal_validation_", season, ".png")),
+       height = 10, width = 14)
+
+cohort <- "infants_subgroup"
+season <- "2023_24"
+
+df_counts <- import_validation_counts(cohort)
+df_pops <- import_validation_pops(cohort)
+
+flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
+plot_sankey_between_legend(flow_counts, space = 4, legend_rel_width = 0.4)
+
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0(cohort, "_internal_validation_", season, ".png")),
+       height = 10, width = 14)
+
