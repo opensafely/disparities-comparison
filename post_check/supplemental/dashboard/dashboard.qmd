@@ -25,33 +25,30 @@ phenotypes <- c("Specific", "Sensitive")
 investigation_lookup <- tribble(
   ~cohort, ~pathogen, ~valid_investigations,
 
-  # Older Adults
+  # Secondary RSV/flu may be reference-only when all models had too few events.
+  # Sensitivity included where sensitivity .RData caches are produced.
   "Older Adults", "RSV", c("Primary", "Secondary", "Sensitivity"),
   "Older Adults", "Influenza", c("Primary", "Secondary", "Sensitivity"),
   "Older Adults", "COVID-19", c("Primary", "Secondary"),
   "Older Adults", "Overall Respiratory Virus", c("Primary"),
 
-  # Adults
-  "Adults", "RSV", c("Primary"),
-  "Adults", "Influenza", c("Primary"),
+  "Adults", "RSV", c("Primary", "Sensitivity"),
+  "Adults", "Influenza", c("Primary", "Sensitivity"),
   "Adults", "COVID-19", c("Primary"),
   "Adults", "Overall Respiratory Virus", c("Primary"),
 
-  # Children and adolescents
-  "Children and Adolescents", "RSV", c("Primary"),
-  "Children and Adolescents", "Influenza", c("Primary"),
+  "Children and Adolescents", "RSV", c("Primary", "Sensitivity"),
+  "Children and Adolescents", "Influenza", c("Primary", "Sensitivity"),
   "Children and Adolescents", "COVID-19", c("Primary"),
   "Children and Adolescents", "Overall Respiratory Virus", c("Primary"),
 
-  # Infants
   "Infants", "RSV", c("Primary", "Sensitivity"),
   "Infants", "Influenza", c("Primary", "Sensitivity"),
   "Infants", "COVID-19", c("Primary"),
   "Infants", "Overall Respiratory Virus", c("Primary"),
 
-  # Maternally Linked Infants
-  "Maternally Linked Infants", "RSV", c("Primary"),
-  "Maternally Linked Infants", "Influenza", c("Primary"),
+  "Maternally Linked Infants", "RSV", c("Primary", "Sensitivity"),
+  "Maternally Linked Infants", "Influenza", c("Primary", "Sensitivity"),
   "Maternally Linked Infants", "COVID-19", c("Primary"),
   "Maternally Linked Infants", "Overall Respiratory Virus", c("Primary")
 )
@@ -130,8 +127,13 @@ prettify_plot_names <- function(plot_names) {
         gsub("_", " ", .) %>%
         # Capitalize first letter of each word
         tools::toTitleCase(.) %>%
-        # Replace common abbreviations
+        # Replace common abbreviations / multi-exposure wording
         gsub("Ses", "IMD", .) %>%
+        gsub("Ethnicity IMD", "Ethnicity and IMD", .) %>%
+        gsub("Ethnicity Composition", "Ethnicity and Composition", .) %>%
+        gsub("IMD Composition", "IMD and Composition", .) %>%
+        gsub("^Full$", "Ethnicity, IMD, and Composition", .) %>%
+        gsub("^Full ", "Ethnicity, IMD, and Composition ", .) %>%
         gsub("Mild", "(Mild)", .) %>%
         gsub("Severe", "(Severe)", .)
     )
@@ -158,8 +160,9 @@ cohort_code <- function(cohort_label) {
   )
 }
 
-# Primary investigations use phenotype-specific cache files; secondary and
-# sensitivity investigations always use the default (specific) routing.
+# Primary investigations use phenotype-specific cache files when available;
+# overall respiratory virus falls back to unsuffixed caches.
+# Secondary and sensitivity investigations always use investigation suffixes.
 get_cache_paths <- function(
     cohort,
     pathogen,
@@ -169,16 +172,45 @@ get_cache_paths <- function(
 ) {
   path <- paste0(cohort_code(cohort), "_", pathogen_code(pathogen))
   base_dir <- dashboard_cache_dir
+  pathogen_code_val <- pathogen_code(pathogen)
+  phenotype_code <- tolower(phenotype)
 
-  if (further) {
-    phenotype_code <- tolower(phenotype)
-    list(
-      cache_file = file.path(
+  resolve_primary_cache <- function(further = FALSE) {
+    if (further) {
+      preferred <- file.path(
         base_dir,
         paste0(path, "_further_model_results_", phenotype_code, ".RData")
-      ),
-      cache_key = paste0(path, "_further_", phenotype_code)
-    )
+      )
+      fallback <- file.path(
+        base_dir,
+        paste0(path, "_further_model_results.RData")
+      )
+      cache_key <- paste0(path, "_further_", phenotype_code)
+    } else {
+      preferred <- file.path(
+        base_dir,
+        paste0(path, "_model_results_", phenotype_code, ".RData")
+      )
+      fallback <- file.path(
+        base_dir,
+        paste0(path, "_model_results.RData")
+      )
+      cache_key <- paste0(path, "_", phenotype_code)
+    }
+
+    cache_file <- if (file.exists(preferred)) {
+      preferred
+    } else if (identical(pathogen_code_val, "overall_resp") && file.exists(fallback)) {
+      fallback
+    } else {
+      preferred
+    }
+
+    list(cache_file = cache_file, cache_key = cache_key)
+  }
+
+  if (further) {
+    resolve_primary_cache(further = TRUE)
   } else if (investigation == "Secondary") {
     list(
       cache_file = file.path(base_dir, paste0(path, "_model_results_secondary.RData")),
@@ -190,14 +222,7 @@ get_cache_paths <- function(
       cache_key = paste0(path, "_sensitivity")
     )
   } else {
-    phenotype_code <- tolower(phenotype)
-    list(
-      cache_file = file.path(
-        base_dir,
-        paste0(path, "_model_results_", phenotype_code, ".RData")
-      ),
-      cache_key = paste0(path, "_", phenotype_code)
-    )
+    resolve_primary_cache(further = FALSE)
   }
 }
 

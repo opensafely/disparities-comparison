@@ -101,7 +101,7 @@ for(i in seq_along(plotlist)) {
 names(plotlist) <- plot_names
 
 #save Rdata
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_rsv_model_results_sensitivity.RData")))
 
 ## ethnicity & SES — key exposure variables only
@@ -221,7 +221,7 @@ for(i in seq_along(plotlist)) {
 names(plotlist) <- plot_names
 
 #save Rdata
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_rsv_model_results_sensitivity.RData")))
 
 ## ethnicity & SES — key exposure variables only
@@ -337,7 +337,7 @@ for(i in seq_along(plotlist)) {
 names(plotlist) <- plot_names
 
 #save Rdata
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_rsv_model_results_sensitivity.RData")))
 
 ## ethnicity & SES — key exposure variables only
@@ -453,7 +453,7 @@ for(i in seq_along(plotlist)) {
 names(plotlist) <- plot_names
 
 #save Rdata
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_rsv_model_results_sensitivity.RData")))
 
 ## ethnicity & SES — key exposure variables only
@@ -569,7 +569,7 @@ for(i in seq_along(plotlist)) {
 names(plotlist) <- plot_names
 
 #save Rdata
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_rsv_model_results_sensitivity.RData")))
 
 ## ethnicity & SES — key exposure variables only

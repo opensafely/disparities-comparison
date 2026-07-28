@@ -1,11 +1,20 @@
 project:
   type: website
+  output-dir: _site
+  render:
+    - index.qmd
+
+website:
+  title: "Social Determinants of Respiratory Virus Outcomes"
+  navbar: false
 
 format:
   html:
     theme: cosmo
     toc: false
     page-layout: full
+    resources:
+      - www/
 
-website:
-  title: "Social Determinants of Respiratory Virus Outcomes"
+execute:
+  freeze: true

@@ -177,13 +177,11 @@ phenotype_plotlists <- save_supplemental_base_model_plots(
 plotlist_specific <- phenotype_plotlists$specific
 plotlist_sensitive <- phenotype_plotlists$sensitive
 
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_covid_further_model_results.RData")))
-save(plotlist_specific,
-     file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist_specific, file = here("post_check", "supplemental", "dashboard",
                  paste0(cohort, "_covid_further_model_results_specific.RData")))
-save(plotlist_sensitive,
-     file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist_sensitive, file = here("post_check", "supplemental", "dashboard",
                  paste0(cohort, "_covid_further_model_results_sensitive.RData")))
 
 ###adults
@@ -350,13 +348,11 @@ phenotype_plotlists <- save_supplemental_base_model_plots(
 plotlist_specific <- phenotype_plotlists$specific
 plotlist_sensitive <- phenotype_plotlists$sensitive
 
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_covid_further_model_results.RData")))
-save(plotlist_specific,
-     file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist_specific, file = here("post_check", "supplemental", "dashboard",
                  paste0(cohort, "_covid_further_model_results_specific.RData")))
-save(plotlist_sensitive,
-     file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist_sensitive, file = here("post_check", "supplemental", "dashboard",
                  paste0(cohort, "_covid_further_model_results_sensitive.RData")))
 
 ###children and adolescents
@@ -523,13 +519,11 @@ phenotype_plotlists <- save_supplemental_base_model_plots(
 plotlist_specific <- phenotype_plotlists$specific
 plotlist_sensitive <- phenotype_plotlists$sensitive
 
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_covid_further_model_results.RData")))
-save(plotlist_specific,
-     file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist_specific, file = here("post_check", "supplemental", "dashboard",
                  paste0(cohort, "_covid_further_model_results_specific.RData")))
-save(plotlist_sensitive,
-     file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist_sensitive, file = here("post_check", "supplemental", "dashboard",
                  paste0(cohort, "_covid_further_model_results_sensitive.RData")))
 
 ###infants
@@ -612,13 +606,11 @@ phenotype_plotlists <- save_supplemental_base_model_plots(
 plotlist_specific <- phenotype_plotlists$specific
 plotlist_sensitive <- phenotype_plotlists$sensitive
 
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_covid_further_model_results.RData")))
-save(plotlist_specific,
-     file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist_specific, file = here("post_check", "supplemental", "dashboard",
                  paste0(cohort, "_covid_further_model_results_specific.RData")))
-save(plotlist_sensitive,
-     file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist_sensitive, file = here("post_check", "supplemental", "dashboard",
                  paste0(cohort, "_covid_further_model_results_sensitive.RData")))
 
 ###infants_subgroup
@@ -701,11 +693,9 @@ phenotype_plotlists <- save_supplemental_base_model_plots(
 plotlist_specific <- phenotype_plotlists$specific
 plotlist_sensitive <- phenotype_plotlists$sensitive
 
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_covid_further_model_results.RData")))
-save(plotlist_specific,
-     file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist_specific, file = here("post_check", "supplemental", "dashboard",
                  paste0(cohort, "_covid_further_model_results_specific.RData")))
-save(plotlist_sensitive,
-     file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist_sensitive, file = here("post_check", "supplemental", "dashboard",
                  paste0(cohort, "_covid_further_model_results_sensitive.RData")))
