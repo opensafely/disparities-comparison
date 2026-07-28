@@ -115,6 +115,7 @@ multiple_episodes <- function(df, severity) {
         characteristic == "2" ~ "4",
         characteristic == "4" ~ "2",
         characteristic == "5 (most deprived)" ~ "1 (most deprived)",
+        characteristic == "Other Ethnic Groups" ~ "Chinese or Other",
         is.na(characteristic) ~ "Unknown",
         TRUE ~ characteristic
       )
@@ -127,7 +128,7 @@ multiple_episodes <- function(df, severity) {
                               "65-74y", "75-89y", "90y+") ~ "Age",
         characteristic %in% c("Male", "Female") ~ "Sex",
         characteristic %in% c("White", "Mixed", "Asian or Asian British",
-                              "Black or Black British", "Other Ethnic Groups",
+                              "Black or Black British", "Chinese or Other",
                               "Unknown") ~ "Ethnicity",
         characteristic %in% c("5 (least deprived)", "4", "3", "2",
                               "1 (most deprived)") ~ "IMD",

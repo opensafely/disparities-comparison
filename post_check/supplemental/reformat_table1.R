@@ -23,6 +23,7 @@ df_input_reformat <- df_input %>%
       characteristic == "2" ~ "4",
       characteristic == "4" ~ "2",
       characteristic == "5 (most deprived)" ~ "1 (most deprived)",
+      characteristic == "Other Ethnic Groups" ~ "Chinese or Other",
       TRUE ~ characteristic),
     n_perc = paste0(n, " (", perc, ")")
   ) %>%
@@ -35,7 +36,7 @@ df_input_reformat <- df_input %>%
     characteristic = factor(characteristic, levels = c(
       "Total", "65-74y", "75-89y", "90y+", "Female", "Male", "White",
       "Mixed", "Asian or Asian British", "Black or Black British", 
-      "Other Ethnic Groups", "Unknown", "5 (least deprived)", "4",
+      "Chinese or Other", "Unknown", "5 (least deprived)", "4",
       "3", "2", "1 (most deprived)", "Multiple of the Same Generation",
       "Living Alone", "One Other Generation", "Two Other Generations",
       "Three Other Generations", "Rural Town and Fringe",
@@ -70,6 +71,7 @@ df_input_reformat <- df_input %>%
       characteristic == "2" ~ "4",
       characteristic == "4" ~ "2",
       characteristic == "5 (most deprived)" ~ "1 (most deprived)",
+      characteristic == "Other Ethnic Groups" ~ "Chinese or Other",
       TRUE ~ characteristic),
     n_perc = paste0(n, " (", perc, ")")
   ) %>%
@@ -82,7 +84,7 @@ df_input_reformat <- df_input %>%
     characteristic = factor(characteristic, levels = c(
       "Total", "18-39y", "40-64y", "Female", "Male", "White",
       "Mixed", "Asian or Asian British", "Black or Black British", 
-      "Other Ethnic Groups", "Unknown", "5 (least deprived)", "4",
+      "Chinese or Other", "Unknown", "5 (least deprived)", "4",
       "3", "2", "1 (most deprived)", "Multiple of the Same Generation",
       "Living Alone", "One Other Generation", "Two Other Generations",
       "Three Other Generations", "Rural Town and Fringe",
@@ -117,6 +119,7 @@ df_input_reformat <- df_input %>%
       characteristic == "2" ~ "4",
       characteristic == "4" ~ "2",
       characteristic == "5 (most deprived)" ~ "1 (most deprived)",
+      characteristic == "Other Ethnic Groups" ~ "Chinese or Other",
       TRUE ~ characteristic),
     n_perc = paste0(n, " (", perc, ")")
   ) %>%
@@ -129,7 +132,7 @@ df_input_reformat <- df_input %>%
     characteristic = factor(characteristic, levels = c(
       "Total", "2-5y", "6-9y", "10-13y", "14-17y", "Female", "Male", "White",
       "Mixed", "Asian or Asian British", "Black or Black British", 
-      "Other Ethnic Groups", "Unknown", "5 (least deprived)", "4",
+      "Chinese or Other", "Unknown", "5 (least deprived)", "4",
       "3", "2", "1 (most deprived)", "Multiple of the Same Generation",
       "Living Alone", "One Other Generation", "Two Other Generations",
       "Three Other Generations", "Rural Town and Fringe",
@@ -164,6 +167,7 @@ df_input_reformat <- df_input %>%
       characteristic == "2" ~ "4",
       characteristic == "4" ~ "2",
       characteristic == "5 (most deprived)" ~ "1 (most deprived)",
+      characteristic == "Other Ethnic Groups" ~ "Chinese or Other",
       TRUE ~ characteristic),
     n_perc = paste0(n, " (", perc, ")")
   ) %>%
@@ -176,7 +180,7 @@ df_input_reformat <- df_input %>%
     characteristic = factor(characteristic, levels = c(
       "Total","0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
       "Mixed", "Asian or Asian British", "Black or Black British", 
-      "Other Ethnic Groups", "Unknown", "5 (least deprived)", "4",
+      "Chinese or Other", "Unknown", "5 (least deprived)", "4",
       "3", "2", "1 (most deprived)", "Multiple of the Same Generation",
       "Living Alone", "One Other Generation", "Two Other Generations",
       "Three Other Generations", "Rural Town and Fringe",
@@ -210,6 +214,7 @@ df_input_reformat <- df_input %>%
       characteristic == "2" ~ "4",
       characteristic == "4" ~ "2",
       characteristic == "5 (most deprived)" ~ "1 (most deprived)",
+      characteristic == "Other Ethnic Groups" ~ "Chinese or Other",
       n < 100000 & characteristic == "Unknown" ~ "Unknown Ethnicity",
       n > 100000 & characteristic == "Unknown" ~ "Unknown Smoking Status",
       TRUE ~ characteristic),
@@ -235,7 +240,7 @@ df_input_reformat <- df_input %>%
     characteristic = factor(characteristic, levels = c(
       "Total", "0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
       "Mixed", "Asian or Asian British", "Black or Black British", 
-      "Other Ethnic Groups", "Unknown Ethnicity", "5 (least deprived)", "4",
+      "Chinese or Other", "Unknown Ethnicity", "5 (least deprived)", "4",
       "3", "2", "1 (most deprived)", "Rural Town and Fringe",
       "Rural Village and Dispersed", "Urban City and Town", "Urban Major Conurbation",
       "Urban Minor Conurbation", "Maternal Age", "Never", "Former", "Current",

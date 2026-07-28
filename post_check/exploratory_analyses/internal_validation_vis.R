@@ -28,6 +28,13 @@ PHENOTYPE_LABELS <- c(
 OUTCOME_ORDER <- names(PHENOTYPE_LABELS)
 STACK_ORDER <- rev(OUTCOME_ORDER)
 
+validation_flow_palette <- function() {
+  c(
+    setNames(scales::hue_pal()(length(OUTCOME_ORDER)), OUTCOME_ORDER),
+    hosp = "white"
+  )
+}
+
 import_validation_counts <- function(cohort) {
 
   read_csv(here::here(
@@ -207,6 +214,73 @@ sankey_outcome_label_data <- function(sankey_long, space, width, flow_palette) {
     select(population, phenotype, x_pos, y, label, pct_colour)
 }
 
+pathogen_code_for_population <- function(population) {
+  recode(
+    as.character(population),
+    RSV = "rsv",
+    Influenza = "flu",
+    `COVID-19` = "covid",
+    .default = NA_character_
+  )
+}
+
+sankey_relevant_line_data <- function(sankey_long, space, width, flow_palette,
+                                      line_gap = 0.33,
+                                      line_width = 0.32,
+                                      label_gap = 0.05) {
+  outcome_positions <- sankey_long %>%
+    filter(x == "Outcome") %>%
+    group_by(population, phenotype) %>%
+    arrange(match(outcome_code, STACK_ORDER), .by_group = TRUE) %>%
+    mutate(
+      n_x = as.numeric(x),
+      freq = value,
+      ymax = cumsum(freq) + (row_number() - 1) * space,
+      ymin = ymax - freq
+    ) %>%
+    mutate(
+      ymin = ymin - max(ymax) / 2,
+      ymax = ymax - max(ymax) / 2,
+      pathogen_code = pathogen_code_for_population(population),
+      is_relevant = !is.na(pathogen_code) &
+        str_detect(outcome_code, fixed(pathogen_code))
+    ) %>%
+    ungroup()
+
+  relevant_labels <- outcome_positions %>%
+    filter(is_relevant) %>%
+    group_by(population, phenotype, pathogen_code) %>%
+    summarise(
+      ymin = min(ymin),
+      ymax = max(ymax),
+      x = first(n_x) + width / 2 + line_gap + line_width + label_gap,
+      relevant_pct = sum(pct, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      y = (ymin + ymax) / 2,
+      label = sprintf("Relevant\n%.1f%%", relevant_pct)
+    )
+
+  relevant_lines <- outcome_positions %>%
+    filter(is_relevant) %>%
+    left_join(
+      relevant_labels %>%
+        select(population, phenotype, pathogen_code, label_x = x, label_y = y),
+      by = c("population", "phenotype", "pathogen_code")
+    ) %>%
+    mutate(
+      x = n_x + width / 2 + line_gap,
+      xend = label_x - label_gap,
+      y = (ymin + ymax) / 2,
+      yend = label_y,
+      line_colour = unname(flow_palette[fillcode])
+    ) %>%
+    select(population, phenotype, x, xend, y, yend, line_colour)
+
+  list(lines = relevant_lines, labels = relevant_labels)
+}
+
 prep_sankey_ggsankey_long <- function(df, label_with_pct = FALSE, use_pct = TRUE) {
 
   edges <- df %>%
@@ -341,10 +415,7 @@ plot_sankey_ggsankey <- function(
     label_with_pct = label_with_pct,
     use_pct = use_pct
   )
-  flow_palette <- c(
-    setNames(scales::hue_pal()(length(OUTCOME_ORDER)), OUTCOME_ORDER),
-    hosp = "white"
-  )
+  flow_palette <- validation_flow_palette()
 
   # In ggsankey, `space` is in y-axis units (percent if `use_pct = TRUE`,
   # otherwise counts), not a proportion.
@@ -357,6 +428,8 @@ plot_sankey_ggsankey <- function(
       pull(total)
     space <- max(0.1, space * panel_total)
   }
+
+  relevant_lines <- sankey_relevant_line_data(sankey_long, space, width, flow_palette)
 
   # Geometry for the opaque left-node rectangle (see hosp_width / hosp_height_pad)
   hosp_box <- sankey_long %>%
@@ -427,6 +500,24 @@ plot_sankey_ggsankey <- function(
       lineheight = 0.9,
       na.rm = TRUE
     ) +
+    geom_segment(
+      data = relevant_lines$lines,
+      aes(x = x, xend = xend, y = y, yend = yend, colour = line_colour),
+      inherit.aes = FALSE,
+      linewidth = 0.55,
+      lineend = "round",
+      na.rm = TRUE
+    ) +
+    geom_text(
+      data = relevant_lines$labels,
+      aes(x = x, y = y, label = label),
+      inherit.aes = FALSE,
+      size = 2.6,
+      hjust = 0,
+      lineheight = 0.9,
+      colour = "grey25",
+      na.rm = TRUE
+    ) +
     # Free y-ranges stop one pathogen row with large/redacted percentages from
     # setting the scale for every row. Row heights stay fixed because
     # `space = "free_y"` is not used.
@@ -441,14 +532,14 @@ plot_sankey_ggsankey <- function(
       guide = guide_legend(nrow = 1, byrow = TRUE)
     ) +
     scale_colour_identity(guide = "none") +
-    scale_x_discrete(expand = expansion(add = c(0.15, 0.55))) +
+    scale_x_discrete(expand = expansion(add = c(0.15, 1.2))) +
     scale_y_continuous(expand = expansion(mult = 0.002)) +
     labs(
       x = NULL,
       y = if (isTRUE(use_pct)) "% of Hospitalisations" else "Hospitalisations (count)"
     ) +
     coord_cartesian(clip = "off") +
-    flow_base_theme(plot_margin = margin(2, 28, 1, 14)) +
+    flow_base_theme(plot_margin = margin(2, 60, 1, 14)) +
     theme(
       axis.title.y = element_text(margin = margin(r = 10)),
       legend.position = "bottom",
@@ -469,7 +560,7 @@ plot_sankey_between_legend <- function(
   smooth = 8,
   width = 0.4,
   # Left hospitalisation box — passed through to plot_sankey_ggsankey
-  hosp_width = 0.55,
+  hosp_width = 0.8,
   hosp_height_pad = 0,
   label_with_pct = FALSE,
   use_pct = TRUE,
@@ -514,26 +605,29 @@ plot_sankey_between_legend <- function(
       strip.background = element_blank()
     )
 
-  # Extract a single vertical legend from the full data so outcomes that
-  # appear in only one phenotype (e.g. broad = Sensitive-only) still get a
-  # colour key, not just a label.
-  legend_plot <- plot_sankey_ggsankey(
-    df,
-    space = space,
-    smooth = smooth,
-    width = width,
-    hosp_width = hosp_width,
-    hosp_height_pad = hosp_height_pad,
-    label_with_pct = label_with_pct,
-    use_pct = use_pct
-  ) +
-    guides(fill = guide_legend(ncol = 1)) +
+  # Build the legend from all possible outcomes, not only those present in
+  # this cohort/season, so rare or absent categories still have colour keys.
+  legend_plot <- tibble(
+    outcome = factor(OUTCOME_ORDER, levels = OUTCOME_ORDER),
+    x = 1,
+    y = seq_along(OUTCOME_ORDER)
+  ) %>%
+    ggplot(aes(x = x, y = y, fill = outcome)) +
+    geom_tile() +
+    scale_fill_manual(
+      values = validation_flow_palette()[OUTCOME_ORDER],
+      breaks = OUTCOME_ORDER,
+      labels = unname(PHENOTYPE_LABELS[OUTCOME_ORDER]),
+      limits = OUTCOME_ORDER,
+      drop = FALSE,
+      name = NULL,
+      guide = guide_legend(ncol = 1)
+    ) +
+    theme_void() +
     theme(
       legend.position = "right",
       legend.direction = "vertical",
-      legend.box = "vertical",
-      strip.text.x = element_blank(),
-      strip.background = element_blank()
+      legend.box = "vertical"
     )
 
   legend <- get_legend(legend_plot)

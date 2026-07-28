@@ -8,12 +8,13 @@ library(dplyr)
 fs::dir_create(here::here("post_check", "functions"))
 
 ethnicity_factor_white_ref <- function(x) {
+  x <- if_else(x == "Other Ethnic Groups", "Chinese or Other", x)
   relevel(
     factor(
       x,
       levels = c(
         "White", "Mixed", "Asian or Asian British",
-        "Black or Black British", "Other Ethnic Groups", "Unknown"
+        "Black or Black British", "Chinese or Other", "Unknown"
       ),
       ordered = FALSE,
       exclude = NULL

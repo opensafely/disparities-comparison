@@ -28,6 +28,7 @@ create_rolling_plots <- function(season, phenotype) {
         group == "2" ~ "4",
         group == "4" ~ "2",
         group == "5 (most deprived)" ~ "1 (most deprived)",
+        group == "Other Ethnic Groups" ~ "Chinese or Other",
         TRUE ~ group
       )
     )
@@ -39,7 +40,7 @@ create_rolling_plots <- function(season, phenotype) {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "Chinese or Other", "Unknown", "1 (most deprived)",
                 "2", "3", "4", "5 (least deprived)", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed")
@@ -48,7 +49,7 @@ create_rolling_plots <- function(season, phenotype) {
     
     levels <- c("65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2",
+                "Chinese or Other", "Unknown", "1 (most deprived)", "2",
                 "3", "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
@@ -65,7 +66,7 @@ create_rolling_plots <- function(season, phenotype) {
                      "75-89y", "90y+") ~ "Age Group",
         group %in% c("Female", "Male") ~ "Sex",
         group %in% c("White", "Mixed", "Asian or Asian British",
-                     "Black or Black British", "Other Ethnic Groups",
+                     "Black or Black British", "Chinese or Other",
                      "Unknown") ~ "Ethnicity",
         group %in% c("1 (most deprived)", "2", "3", "4",
                      "5 (least deprived)") ~ "IMD Quintile",
@@ -158,7 +159,7 @@ create_rolling_plots_multi <- function(season, phenotype) {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "Chinese or Other", "Unknown", "1 (most deprived)",
                 "2", "3", "4", "5 (least deprived)", "Urban Major Conurbation",
                 "Urban Minor Conurbation", "Urban City and Town",
                 "Rural Town and Fringe", "Rural Village and Dispersed")
@@ -167,7 +168,7 @@ create_rolling_plots_multi <- function(season, phenotype) {
     
     levels <- c("65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2",
+                "Chinese or Other", "Unknown", "1 (most deprived)", "2",
                 "3", "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",

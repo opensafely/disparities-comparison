@@ -261,9 +261,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         
       }
       
-    } else if (nrow(df_model) == 0 & model_type %in% c(
-      "composition", "ethnicity_composition", "ses_composition", "full")) {
-      
+    } else if (nrow(df_model) == 0) {
+      # Too-few-events (or otherwise empty) models: still draw reference-level
+      # RR=1 points so the panel structure is visible rather than blank.
+      # Covariates must match the model that would have been fit (minimal vs further).
       age <- case_when(
         cohort == "older_adults" ~ "65-74y",
         cohort == "adults" ~ "18-39y",
@@ -271,51 +272,79 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         cohort == "infants" ~ "0-2m",
         cohort == "infants_subgroup" ~ "0-2m"
       )
-      
-      vars <- case_when(
-        model_type == "ethnicity" ~ list(c("sex", "age_band", "latest_ethnicity_group",
-                                           "rurality_classification")),
-        model_type == "ses" ~ list(c("sex", "age_band", "imd_quintile",
-                                     "rurality_classification")),
-        model_type == "composition" ~ list(c(
-          "sex", "age_band", "composition_category", "rurality_classification")),
-        model_type == "ethnicity_ses" ~ list(c(
-          "sex", "age_band", "latest_ethnicity_group", "imd_quintile",
-          "rurality_classification")),
-        model_type == "ethnicity_composition" ~ list(c(
-          "sex", "age_band", "ethnicity", "composition_category",
-          "rurality_classification")),
-        model_type == "ses_composition" ~ list(c(
-          "sex", "age_band", "imd_quintile", "composition_category",
-          "rurality_classification")),
-        model_type == "full" ~ list(c(
-          "sex", "age_band", "ethnicity", "imd_quintile", "composition_category",
-          "rurality_classification"))
-      )[[1]]
-      
-      var_labels <- case_when(
-        model_type == "ethnicity" ~ list(c("Female", age, "White",
-                                           "Rural Town and Fringe")),
-        model_type == "ses" ~ list(c("Female", age, "5 (least deprived)",
-                                     "Rural Town and Fringe")),
-        model_type == "composition" ~ list(c(
-          "Female", age, "Multiple of the Same Generation", "Rural Town and Fringe")),
-        model_type == "ethnicity_ses" ~ list(c(
-          "Female", age, "White", "5 (least deprived)", "Rural Town and Fringe")),
-        model_type == "ethnicity_composition" ~ list(c(
-          "Female", age, "White", "Multiple of the Same Generation",
-          "Rural Town and Fringe")),
-        model_type == "ses_composition" ~ list(c(
-          "Female", age, "5 (least deprived)", "Multiple of the Same Generation",
-          "Rural Town and Fringe")),
-        model_type == "full" ~ list(c(
-          "Female", age, "White", "5 (least deprived)", "Multiple of the Same Generation",
-          "Rural Town and Fringe"))
-      )[[1]]
+
+      empty_subset <- if (investigation_type %in% c("secondary", "sensitivity")) {
+        gsub("-", "_", sensitivity_season_for_pathogen(pathogen))
+      } else {
+        "2020_21"
+      }
+      if (is.na(empty_subset) || !nzchar(empty_subset)) {
+        empty_subset <- "2020_21"
+      }
+
+      # Exposure block for this model_type (order: ethnicity, IMD, composition).
+      exposure_vars <- switch(
+        model_type,
+        ethnicity = "latest_ethnicity_group",
+        ses = "imd_quintile",
+        composition = "composition_category",
+        ethnicity_ses = c("latest_ethnicity_group", "imd_quintile"),
+        ethnicity_composition = c("latest_ethnicity_group", "composition_category"),
+        ses_composition = c("imd_quintile", "composition_category"),
+        full = c(
+          "latest_ethnicity_group", "imd_quintile", "composition_category"
+        ),
+        character(0)
+      )
+      exposure_labels <- switch(
+        model_type,
+        ethnicity = "White",
+        ses = "5 (least deprived)",
+        composition = "Multiple of the Same Generation",
+        ethnicity_ses = c("White", "5 (least deprived)"),
+        ethnicity_composition = c("White", "Multiple of the Same Generation"),
+        ses_composition = c(
+          "5 (least deprived)", "Multiple of the Same Generation"
+        ),
+        full = c(
+          "White", "5 (least deprived)", "Multiple of the Same Generation"
+        ),
+        character(0)
+      )
+
+      # Secondary older-adults minimal models: exposure + age + sex + comorbidities
+      # (see glm_poisson()). Primary/further empty shells keep rurality instead.
+      if (identical(investigation_type, "secondary") &&
+          identical(cohort, "older_adults")) {
+        comorbidity_vars <- c(
+          "has_asthma", "has_copd", "has_cystic_fibrosis", "has_other_resp",
+          "has_diabetes", "has_addisons", "severe_obesity", "has_chd", "has_ckd",
+          "has_cld", "has_cnd", "has_cancer", "immunosuppressed",
+          "has_sickle_cell", "smoking_status", "hazardous_drinking",
+          "drug_usage"
+        )
+        comorbidity_labels <- c(
+          "Asthma", "COPD", "Cystic Fibrosis",
+          "Other Chronic Respiratory Disease", "Diabetes", "Addison's Disease",
+          "Severely Obese", "Chronic Heart Disease", "Chronic Kidney Disease",
+          "Chronic Liver Disease", "Chronic Neurological Disease",
+          "Cancer Within 3 Years", "Immunosuppressed", "Sickle Cell Disease",
+          "Never", "Hazardous Drinking", "Drug Usage"
+        )
+        vars <- c("age_band", exposure_vars, "sex", comorbidity_vars)
+        var_labels <- c(age, exposure_labels, "Female", comorbidity_labels)
+      } else {
+        vars <- c(
+          "age_band", exposure_vars, "sex", "rurality_classification"
+        )
+        var_labels <- c(
+          age, exposure_labels, "Female", "Rural Town and Fringe"
+        )
+      }
       
       tidy_forest <- bind_rows(
         tibble(
-          term = NA,
+          term = paste0(vars, "Reference"),
           variable = vars,
           var_label = var_labels,
           var_class = NA,
@@ -334,10 +363,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           model_type = !!model_type,
           codelist_type = "specific",
           investigation_type = investigation_type,
-          subset = "2020_21"
+          subset = empty_subset
         ),
         tibble(
-          term = NA,
+          term = paste0(vars, "Reference"),
           variable = vars,
           var_label = var_labels,
           var_class = NA,
@@ -356,10 +385,10 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           model_type = !!model_type,
           codelist_type = "sensitive",
           investigation_type = investigation_type,
-          subset = "2020_21"
+          subset = empty_subset
         ),
         tibble(
-          term = NA,
+          term = paste0(vars, "Reference"),
           variable = vars,
           var_label = var_labels,
           var_class = NA,
@@ -378,7 +407,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           model_type = !!model_type,
           codelist_type = "reference",
           investigation_type = investigation_type,
-          subset = "2020_21"
+          subset = empty_subset
         )
       )
       
@@ -421,89 +450,9 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
       return(ggplot() + theme_void())
     }
     
-    if (cohort == "infants_subgroup" & further == "yes") {
-      
-      binaries <- tidy_forest %>%
-        filter(str_detect(term, "Yes")) %>%
-        rowwise() %>%
-        mutate(
-          label = str_to_title(label)
-        ) %>%
-        rbind(tibble(
-          term = "are_binary_variablesYes",
-          variable = "binary_variables",
-          var_label = "binary_variables",
-          var_class = "factor",
-          var_type = "dichotomous",
-          var_nlevels = 2,
-          contrasts = "contr.treatment",
-          contrasts_type = "treatment",
-          reference_row = TRUE,
-          label = "Binary Variables (Reference)",
-          model_name = NA,
-          estimate = 1,
-          std.error = 0,
-          statistic = NA_real_,
-          p.value = NA_real_,
-          conf.low = 1,
-          conf.high = 1,
-          model_type = !!model_type,
-          codelist_type = "reference",
-          investigation_type = investigation_type,
-          subset = NA)
-        ) 
-      
-      tidy_forest <- tidy_forest %>%
-        filter(!(str_detect(term, "Yes"))) %>%
-        filter(!(str_detect(term, "No$"))) %>%
-        bind_rows(binaries)
-      
-    } else if (investigation_type == "secondary") {
-    
-      binaries <- tidy_forest %>%
-        filter(str_detect(term, "Yes")) %>%
-        rowwise() %>%
-        mutate(
-          label = case_when(
-            str_detect(label, "Chd") ~ gsub("Chd", "CHD", label),
-            str_detect(label, "Ckd") ~ gsub("Ckd", "CKD", label),
-            str_detect(label, "Cld") ~ gsub("Cld", "CLD", label),
-            str_detect(label, "Cnd") ~ gsub("Cnd", "CND", label),
-            str_detect(label, "Copd") ~ gsub("Copd", "COPD", label),
-            str_detect(label, "Cancer") ~ gsub("Cancer",
-                                               "Cancer Within 3 Yrs", label),
-            TRUE ~ str_to_title(label))
-        ) %>%
-        rbind(tibble(
-            term = "are_binary_variablesYes",
-            variable = "binary_variables",
-            var_label = "binary_variables",
-            var_class = "factor",
-            var_type = "dichotomous",
-            var_nlevels = 2,
-            contrasts = "contr.treatment",
-            contrasts_type = "treatment",
-            reference_row = TRUE,
-            label = "Binary Variables (Reference)",
-            model_name = NA,
-            estimate = 1,
-            std.error = 0,
-            statistic = NA,
-            p.value = NA,
-            conf.low = 1,
-            conf.high = 1,
-            model_type = !!model_type,
-            codelist_type = "reference",
-            investigation_type = "secondary",
-            subset = NA)
-        ) 
-      
-      tidy_forest <- tidy_forest %>%
-        filter(!(str_detect(term, "Yes"))) %>%
-        filter(!(str_detect(term, "No$"))) %>%
-        bind_rows(binaries)
-      
-    }
+    # Do not synthesise a shared "Binary Variables (Reference)" row for
+    # secondary investigations or infants_subgroup; keep each dichotomous
+    # exposure with its own Yes/No (reference) levels.
     
     if (model_type %in% c(
       "composition", "ethnicity_composition", "ses_composition", "full")) {
@@ -517,19 +466,20 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
         ) %>%
         mutate(codelist_type = "reference")
       
-    } else if (investigation_type == "sensitivity") {
+    } else if (investigation_type %in% c("sensitivity", "secondary")) {
       
-      sensitivity_subset <- gsub(
+      season_subset <- gsub(
         "-", "_", sensitivity_season_for_pathogen(pathogen)
       )
-      if (is.na(sensitivity_subset)) {
+      if (is.na(season_subset) || !nzchar(season_subset)) {
         return(ggplot() + theme_void())
       }
       
       reference_rows <- tidy_forest %>%
         filter(reference_row) %>%
         mutate(
-          subset = sensitivity_subset,
+          subset = season_subset,
+          estimate = dplyr::coalesce(estimate, 1),
           conf.low = 1,
           conf.high = 1,
           codelist_type = "reference"
@@ -597,7 +547,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                  "Household Composition", "Rurality", "Prior Vaccination",
                  "Prior Vaccination",
                  "Current Vaccination", "Current Vaccination",
-                 "Current Vaccination", "Age",
+                 "Current Vaccination", "Maternal Age",
                  "Maternal Smoking Status", "Smoking Status", "Binary Variables",
                  "Maternal Drinking", "Maternal Drug Usage",
                  "Maternal Flu Vaccination", "Maternal Pertussis Vaccination",
@@ -1078,6 +1028,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
   forest_data <- forest_data %>%
     dplyr::mutate(subset = as.character(.data$subset))
 
+  forest_data_full <- forest_data
+
   if (isTRUE(key_vars_only)) {
     forest_data <- filter_forest_to_model_key_vars(forest_data, model_type)
     if (is_empty_forest_data(forest_data)) {
@@ -1109,10 +1061,16 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
   # Keep the underlying tidy results accessible for downstream reuse (e.g. key-exposure plots).
   # Do NOT rely on `$data` because ggplot overwrites this as it transforms data internally.
   attr(plot_ot, "forest_data") <- forest_data
+  attr(plot_ot, "forest_data_full") <- forest_data_full
   attr(plot_ot, "forest_meta") <- list(
     pathogen = pathogen,
     model_type = model_type,
-    outcome_type = outcome_type
+    outcome_type = outcome_type,
+    cohort = if (exists("cohort", envir = .GlobalEnv)) {
+      get("cohort", envir = .GlobalEnv)
+    } else {
+      NA_character_
+    }
   )
 
   return(plot_ot)
@@ -1481,44 +1439,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       return(ggplot() + theme_void())
     }
     
-    if (cohort == "infants_subgroup") {
-      
-      binaries <- tidy_forest %>%
-        filter(str_detect(term, "Yes")) %>%
-        rowwise() %>%
-        mutate(
-          label = str_to_title(label)
-        ) %>%
-        rbind(tibble(
-          term = "are_binary_variablesYes",
-          variable = "binary_variables",
-          var_label = "binary_variables",
-          var_class = "factor",
-          var_type = "dichotomous",
-          var_nlevels = 2,
-          contrasts = "contr.treatment",
-          contrasts_type = "treatment",
-          reference_row = TRUE,
-          label = "Binary Variables (Reference)",
-          model_name = NA,
-          estimate = 1,
-          std.error = 0,
-          statistic = NA_real_,
-          p.value = NA_real_,
-          conf.low = 1,
-          conf.high = 1,
-          model_type = !!model_type,
-          codelist_type = "reference",
-          investigation_type = investigation_type,
-          subset = NA)
-        ) 
-      
-      tidy_forest <- tidy_forest %>%
-        filter(!(str_detect(term, "Yes"))) %>%
-        filter(!(str_detect(term, "No$"))) %>%
-        bind_rows(binaries)
-      
-    }
+    # Do not synthesise a shared "Binary Variables (Reference)" row for
+    # infants_subgroup; keep each dichotomous exposure with its own Yes/No.
     
     all_subsets <- tidy_forest %>%
       filter(!is.na(subset)) %>%
@@ -1563,7 +1485,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       labels = c("Sex", "Age Group", "Ethnicity", "IMD Quintile",
                  "Household Composition", "Rurality", "Prior Vaccination",
                  "Current Vaccination", "Current Vaccination",
-                 "Current Vaccination", "Age", "Smoking Status",
+                 "Current Vaccination", "Maternal Age", "Smoking Status",
                  "Drinking", "Drug Usage", "Flu Vaccination",
                  "Pertussis Vaccination", "Binary Variables")
     )
@@ -2012,6 +1934,7 @@ forest_year_base_vs_further_mult_key_vars <- function(
 # Replot a forest plot with reference + one phenotype only (specific or sensitive).
 forest_plot_phenotype <- function(p, phenotype) {
   forest_data <- attr(p, "forest_data")
+  forest_data_full <- attr(p, "forest_data_full")
   meta <- attr(p, "forest_meta")
   if (is.null(forest_data) || is.null(meta) || is_empty_forest_data(forest_data)) {
     return(p)
@@ -2038,7 +1961,124 @@ forest_plot_phenotype <- function(p, phenotype) {
     label_levels = FALSE,
     seasons = sensitivity_plot_seasons(meta$pathogen, investigation_val)
   )
+  attr(plot_ot, "forest_data") <- plot_dat
+  if (!is.null(forest_data_full) && is.data.frame(forest_data_full)) {
+    attr(plot_ot, "forest_data_full") <- forest_data_full %>%
+      dplyr::filter(.data$codelist_type %in% c("reference", phenotype))
+  }
+  attr(plot_ot, "forest_meta") <- meta
   plot_ot
+}
+
+dashboard_forest_plot <- function(p) {
+  forest_data_full <- attr(p, "forest_data_full")
+  forest_data <- attr(p, "forest_data")
+  meta <- attr(p, "forest_meta")
+
+  plot_dat <- if (!is.null(forest_data_full) && is.data.frame(forest_data_full)) {
+    forest_data_full
+  } else {
+    forest_data
+  }
+
+  if (is.null(plot_dat) || is.null(meta) || is_empty_forest_data(plot_dat)) {
+    return(p)
+  }
+
+  plot_dat <- plot_dat %>%
+    dplyr::mutate(subset = as.character(.data$subset))
+
+  investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) {
+    get("investigation_type", envir = .GlobalEnv)
+  } else {
+    "primary"
+  }
+
+  cohort_val <- if (!is.null(meta$cohort) && length(meta$cohort) == 1L &&
+      !is.na(meta$cohort) && nzchar(meta$cohort)) {
+    as.character(meta$cohort)[[1]]
+  } else if (exists("cohort", envir = .GlobalEnv)) {
+    as.character(get("cohort", envir = .GlobalEnv))[[1]]
+  } else {
+    NA_character_
+  }
+
+  if (!is.na(cohort_val) && nzchar(cohort_val)) {
+    assign("cohort", cohort_val, envir = .GlobalEnv)
+  }
+
+  # Existing .RData caches may still contain the synthesised binary reference
+  # group; drop it for secondary and infants_subgroup at export time.
+  suppress_binary_ref <- identical(cohort_val, "infants_subgroup") ||
+    identical(as.character(investigation_val)[[1]], "secondary")
+  if (suppress_binary_ref) {
+    plot_dat <- plot_dat %>%
+      dplyr::filter(
+        !(.data$variable %in% "binary_variables"),
+        !(as.character(.data$labels) %in% c(
+          "Binary Variables", "Binary Variables (Reference)"
+        )),
+        !(as.character(.data$label) %in% "Binary Variables (Reference)")
+      )
+  }
+
+  # Display-only remap: maternal_age was labelled "Age" in older caches.
+  if (identical(cohort_val, "infants_subgroup") ||
+      identical(cohort_val, "infants")) {
+    plot_dat <- plot_dat %>%
+      dplyr::mutate(
+        labels = dplyr::case_when(
+          .data$variable == "maternal_age" &
+            as.character(.data$labels) %in% c("Age", "Age Group") ~
+            "Maternal Age",
+          TRUE ~ as.character(.data$labels)
+        )
+      )
+  }
+
+  seasons_plot <- sensitivity_plot_seasons(meta$pathogen, investigation_val)
+  if (is.null(seasons_plot) && identical(meta$pathogen, "covid")) {
+    plot_dat <- filter_forest_to_seasons(
+      plot_dat, primary_plot_seasons(meta$pathogen)
+    )
+    if (is_empty_forest_data(plot_dat)) {
+      return(ggplot2::ggplot() + ggplot2::theme_void())
+    }
+  }
+
+  plot_ot <- forest_over_time_plot(
+    forest_data = plot_dat,
+    pathogen = meta$pathogen,
+    model_type = meta$model_type,
+    outcome_type = meta$outcome_type,
+    facet_outcome = FALSE,
+    label_levels = FALSE,
+    seasons = seasons_plot,
+    key_groups_first = TRUE,
+    # Half-width dashboard PNGs. Leave legend_items_per_row NULL so the
+    # compact_legend default in forest_over_time_plot() applies (edit that 2L/4L).
+    compact_legend = TRUE,
+    legend_items_per_row = NULL,
+    legend_label_wrap_width = 10L
+  )
+
+  attr(plot_ot, "forest_data") <- plot_dat
+  attr(plot_ot, "forest_data_full") <- plot_dat
+  attr(plot_ot, "forest_meta") <- meta
+  plot_ot
+}
+
+dashboard_plotlist <- function(plotlist) {
+  out <- lapply(plotlist, dashboard_forest_plot)
+  stats::setNames(out, names(plotlist))
+}
+
+# `save()` needs an object name, not an expression. Convert for the dashboard
+# only, keep the saved object named `plotlist` for loaders, and leave the
+# caller's working plotlist unchanged for PNG / condensed outputs.
+save_dashboard_plotlist <- function(plotlist, file) {
+  plotlist <- dashboard_plotlist(plotlist)
+  save(plotlist, file = file)
 }
 
 # Save primary base-model supplemental plots split by phenotype.

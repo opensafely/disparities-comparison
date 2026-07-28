@@ -6,7 +6,7 @@ FOREST_IMD_LEVELS <- c(
 )
 FOREST_ETHNICITY_LEVELS <- c(
   "White",
-  "Other Ethnic Groups",
+  "Chinese or Other",
   "Mixed",
   "Black or Black British",
   "Asian or Asian British",
@@ -228,7 +228,7 @@ get_forest_level_order <- function(
     levels <- c(
       "Maternal Pertussis Vaccination",
       "Maternal Flu Vaccination", "Maternal Drug Usage",
-      "Maternal Drinking", "Binary Variables (Reference)",
+      "Maternal Drinking",
       smoking,
       "Maternal Age", "Maternal Age (Average)", levels
     )
@@ -257,7 +257,7 @@ get_forest_level_order <- function(
       "Immunosuppressed", "Cancer Within 3 Yrs", "CND", "CKD",
       "CLD", "CHD", "Severely Obese", "Addisons", "Diabetes",
       "Other Resp. Cond.", "Cystic Fibrosis", "COPD", "Asthma",
-      "Binary Variables (Reference)", "Current", "Former",
+      "Current", "Former",
       "Never", levels
     )
   }

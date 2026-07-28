@@ -107,6 +107,25 @@ FOREST_DISRUPTION_LABEL <- stringr::str_wrap(
   width = FOREST_DISRUPTION_LABEL_WRAP_WIDTH
 )
 
+# Facet-strip labels: force "Maternal Age" onto two lines; wrap other long
+# labels at width 14 (same as previous label_wrap_gen default).
+# Pass as labeller(labels_facet = forest_facet_labeller) — plain function, like
+# label_wrap_gen(), not as_labeller() (nesting breaks the strip wrap).
+forest_facet_labeller <- function(labels) {
+  vapply(
+    as.character(labels),
+    function(lab) {
+      if (identical(lab, "Maternal Age")) {
+        "Maternal\nAge"
+      } else {
+        stringr::str_wrap(lab, width = 14L)
+      }
+    },
+    character(1),
+    USE.NAMES = FALSE
+  )
+}
+
 forest_disruption_fill_guide <- function(
     legend_position = c("bottom", "right"),
     order = 2L,
@@ -156,7 +175,12 @@ clean_forest_term_labels <- function(.data) {
   }
   .data %>%
     dplyr::mutate(
-      label = clean_forest_term_label(.data$label, .data$variable)
+      label = {
+        cleaned <- clean_forest_term_label(.data$label, .data$variable)
+        # Normalise ethnicity display labels so ordering in
+        # `get_forest_level_order()` (and downstream `condensed_key_vars`) matches.
+        if_else(cleaned == "Other Ethnic Groups", "Chinese or Other", cleaned)
+      }
     )
 }
 
@@ -308,6 +332,63 @@ key_exposure_display_names <- function() {
     variable = key_exposure_variables(),
     exposure = c("IMD", "Ethnicity", "Household composition")
   )
+}
+
+forest_group_priority <- function(model_type, cohort = NULL) {
+  model_type <- as.character(model_type)[[1]]
+  cohort_val <- cohort
+  if (is.null(cohort_val) && exists("cohort", envir = .GlobalEnv)) {
+    cohort_val <- get("cohort", envir = .GlobalEnv)
+  }
+  if (length(cohort_val) != 1L || is.na(cohort_val)) {
+    cohort_val <- NA_character_
+  } else {
+    cohort_val <- as.character(cohort_val)[[1]]
+  }
+
+  label_map <- c(
+    latest_ethnicity_group = "Ethnicity",
+    imd_quintile = "IMD Quintile",
+    composition_category = "Household Composition"
+  )
+
+  exposure_vars <- setdiff(
+    model_key_exposure_variables(model_type, cohort_val),
+    "age_band"
+  )
+  key_exposures <- unique(stats::na.omit(unname(label_map[exposure_vars])))
+  exposure_order <- c("Ethnicity", "IMD Quintile", "Household Composition")
+
+  # infants_subgroup Further (key_groups_first): Age Group → Ethnicity → IMD
+  # → Sex → Rurality → Maternal Age → maternal vaccinations → other maternal_*.
+  # Facet labels use "Maternal Flu Vaccination" (not "Influenza").
+  # Other cohorts keep Age Group → Ethnicity → IMD → Composition → Sex.
+  maternal_other <- c(
+    "Maternal Pertussis Vaccination",
+    "Maternal Flu Vaccination",
+    "Maternal Smoking Status",
+    "Maternal Drinking",
+    "Maternal Drug Usage"
+  )
+
+  if (identical(cohort_val, "infants_subgroup")) {
+    c(
+      "Age Group",
+      intersect(exposure_order, key_exposures),
+      "Sex",
+      "Rurality",
+      "Maternal Age",
+      maternal_other
+    ) %>%
+      unique()
+  } else {
+    c(
+      "Age Group",
+      intersect(exposure_order, key_exposures),
+      "Sex"
+    ) %>%
+      unique()
+  }
 }
 
 collect_key_exposure_forest_data <- function(
@@ -1100,6 +1181,24 @@ forest_disruption_shade_bounds <- function(plot_df, log_y = TRUE) {
     is.factor(plot_df$outcome_type) &&
     length(levels(plot_df$outcome_type)) > 0L
 
+  # Keep facet columns as factors with the same level order as `plot_df`.
+  # Using `levels()` (character) in tidyr::crossing makes ggplot sort panels
+  # alphabetically, which puts Current Vaccination above Prior Vaccination.
+  labels_facet_levels <- if (is.factor(plot_df$labels_facet)) {
+    levels(plot_df$labels_facet)
+  } else {
+    unique(as.character(plot_df$labels_facet))
+  }
+  labels_facet_levels <- labels_facet_levels[
+    !is.na(labels_facet_levels) & labels_facet_levels != ""
+  ]
+
+  outcome_type_levels <- if (isTRUE(facet_by_outcome)) {
+    levels(plot_df$outcome_type)
+  } else {
+    NA_character_
+  }
+
   y_vals_for_range <- c(plot_df$estimate, plot_df$conf.low, plot_df$conf.high)
   y_vals_for_range <- y_vals_for_range[is.finite(y_vals_for_range)]
 
@@ -1132,8 +1231,12 @@ forest_disruption_shade_bounds <- function(plot_df, log_y = TRUE) {
   }
 
   facet_grid <- tidyr::crossing(
-    labels_facet = levels(plot_df$labels_facet),
-    outcome_type = if (isTRUE(facet_by_outcome)) levels(plot_df$outcome_type) else NA_character_
+    labels_facet = factor(labels_facet_levels, levels = labels_facet_levels),
+    outcome_type = if (isTRUE(facet_by_outcome)) {
+      factor(outcome_type_levels, levels = outcome_type_levels)
+    } else {
+      factor(NA_character_)
+    }
   )
 
   facet_grid %>%
@@ -1199,7 +1302,12 @@ forest_over_time_plot <- function(
   seasons = NULL,
   equal_season_widths = FALSE,
   shape_legend_nrow = 1L,
-  legend_position = "bottom"
+  legend_position = "bottom",
+  key_groups_first = FALSE,
+  compact_legend = FALSE,
+  # NULL → use compact (4) or default (6) below. Dashboard leaves this NULL.
+  legend_items_per_row = NULL,
+  legend_label_wrap_width = 18L
 ) {
   if (is_empty_forest_data(forest_data)) {
     return(ggplot() + theme_void())
@@ -1248,6 +1356,7 @@ forest_over_time_plot <- function(
         characteristic == "Prior Vaccination" ~ "Prior\nVaccination",
         characteristic == "IMD Quintile" ~ "IMD\nQuintile",
         characteristic == "Age Group" ~ "Age\nGroup",
+        characteristic == "Maternal Age" ~ "Maternal\nAge",
         TRUE ~ characteristic
       ),
       series = paste(variable, label, codelist_type, sep = " | "),
@@ -1415,26 +1524,43 @@ forest_over_time_plot <- function(
     colour_map[["Prior Vaccination (COVID)"]] <- "#98DF8A"
   }
 
-  # Enforce stable group ordering across all plots/legends.
-  preferred_group_order <- c(
-    "Sex",
-    "Age Group",
-    "Ethnicity",
-    "IMD Quintile",
-    "Household Composition",
-    "Rurality",
+  cohort_val <- if (exists("cohort", envir = .GlobalEnv)) get("cohort", envir = .GlobalEnv) else NA_character_
+  investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) get("investigation_type", envir = .GlobalEnv) else NA_character_
+
+  # Preserve the historical group order unless a caller explicitly asks for
+  # key exposure groups first (used for the dashboard only).
+  vaccination_groups_col <- c(
     "Prior Vaccination (Flu)",
     "Prior Vaccination (COVID)",
     "Current Vaccination"
   )
-  group_order <- c(
-    intersect(preferred_group_order, names(colour_map)),
-    setdiff(names(colour_map), preferred_group_order)
-  )
+  preferred_group_order <- if (isTRUE(key_groups_first)) {
+    forest_group_priority(model_type, cohort_val)
+  } else {
+    c(
+      "Sex",
+      "Age Group",
+      "Maternal Age",
+      "Ethnicity",
+      "IMD Quintile",
+      "Household Composition",
+      "Rurality",
+      vaccination_groups_col
+    )
+  }
+  group_order <- if (isTRUE(key_groups_first)) {
+    c(
+      intersect(preferred_group_order, names(colour_map)),
+      setdiff(names(colour_map), c(preferred_group_order, vaccination_groups_col)),
+      intersect(vaccination_groups_col, names(colour_map))
+    )
+  } else {
+    c(
+      intersect(preferred_group_order, names(colour_map)),
+      setdiff(names(colour_map), preferred_group_order)
+    )
+  }
   colour_map <- colour_map[group_order]
-
-  cohort_val <- if (exists("cohort", envir = .GlobalEnv)) get("cohort", envir = .GlobalEnv) else NA_character_
-  investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) get("investigation_type", envir = .GlobalEnv) else NA_character_
   level_order <- get_forest_level_order(
     cohort_val, model_type, pathogen, investigation_val, style = "year_mult"
   )
@@ -1453,6 +1579,30 @@ forest_over_time_plot <- function(
 
   plot_df <- clean_forest_term_labels(plot_df)
 
+  vaccination_groups_facet <- c("Prior Vaccination", "Current Vaccination")
+  facet_group_order <- if (isTRUE(key_groups_first)) {
+    forest_group_priority(model_type, cohort_val)
+  } else {
+    c(
+      "Sex", "Age Group", "Maternal Age", "Ethnicity", "IMD Quintile", "Household Composition",
+      "Rurality", vaccination_groups_facet
+    )
+  }
+
+  observed_facets <- unique(as.character(plot_df$labels_facet))
+  facet_levels <- if (isTRUE(key_groups_first)) {
+    c(
+      intersect(facet_group_order, observed_facets),
+      setdiff(observed_facets, c(facet_group_order, vaccination_groups_facet)),
+      intersect(vaccination_groups_facet, observed_facets)
+    )
+  } else {
+    c(
+      intersect(facet_group_order, observed_facets),
+      setdiff(observed_facets, facet_group_order)
+    )
+  }
+
   # Shapes:
   # - legend shows level names (no "(Reference)" entry)
   # - any reference level is shown as a filled circle (in plot + legend)
@@ -1466,10 +1616,7 @@ forest_over_time_plot <- function(
         labels == "Current Vaccination" & stringr::str_detect(as.character(label), "\\(No\\)\\s*$") ~ "Vaccinated in Current Year (No)",
         TRUE ~ as.character(label)
       ),
-      labels_facet = factor(labels_facet, levels = c(
-        intersect(c("Sex", "Age Group", "Ethnicity", "IMD Quintile", "Household Composition", "Rurality", "Prior Vaccination", "Current Vaccination"), unique(labels_facet)),
-        setdiff(unique(labels_facet), c("Sex", "Age Group", "Ethnicity", "IMD Quintile", "Household Composition", "Rurality", "Prior Vaccination", "Current Vaccination"))
-      )),
+      labels_facet = factor(labels_facet, levels = facet_levels),
       labels_col = factor(labels_col, levels = group_order),
       label = as.character(label)
     )
@@ -1514,7 +1661,13 @@ forest_over_time_plot <- function(
   plot_df <- join_forest_shape_keys(plot_df, shape_key_df)
 
   shape_map <- stats::setNames(shape_key_df$shape_val, shape_key_df$shape_key)
-  shape_labels <- stats::setNames(stringr::str_wrap(as.character(shape_key_df$label), width = 18), shape_key_df$shape_key)
+  shape_labels <- stats::setNames(
+    stringr::str_wrap(
+      as.character(shape_key_df$label),
+      width = as.integer(legend_label_wrap_width)
+    ),
+    shape_key_df$shape_key
+  )
   shape_legend_cols <- {
     keys <- names(shape_map)
     grp <- sub("\\s*\\|\\s*.*$", "", keys)
@@ -1522,11 +1675,44 @@ forest_over_time_plot <- function(
     cols[is.na(cols)] <- "black"
     cols
   }
+  items_per_row <- if (!is.null(legend_items_per_row)) {
+    max(1L, as.integer(legend_items_per_row))
+  } else if (isTRUE(compact_legend)) {
+    4L
+  } else {
+    6L
+  }
   shape_legend_rows <- if (identical(legend_position, "bottom")) {
-    max(2L, shape_legend_nrow, ceiling(length(shape_map) / 6))
+    max(2L, shape_legend_nrow, ceiling(length(shape_map) / items_per_row))
   } else {
     shape_legend_nrow
   }
+  # Prefer ncol so "items per row" maps directly; nrow is kept as a fallback
+  # for non-bottom legends.
+  shape_legend_ncol <- if (identical(legend_position, "bottom")) {
+    items_per_row
+  } else {
+    NULL
+  }
+  legend_box_dir <- if (identical(legend_position, "bottom")) {
+    "horizontal"
+  } else {
+    "vertical"
+  }
+
+  # Compact differs from non-compact only via items_per_row above; sizes and
+  # spacing match the standard (non-compact) legend for both modes.
+  legend_text_size <- FOREST_LEGEND_TEXT_SIZE
+  legend_title_size <- FOREST_LEGEND_TITLE_SIZE
+  legend_key_size <- if (isTRUE(show_ci)) {
+    FOREST_LEGEND_KEY_CI
+  } else {
+    FOREST_LEGEND_KEY_POINT
+  }
+  legend_override_size <- FOREST_LEGEND_OVERRIDE_CI
+  legend_bottom_margin <- 14
+  legend_spacing <- 0.4
+  legend_key_spacing <- ggplot2::unit(0.2, "lines")
 
   # Always jitter horizontally within each group/year/outcome to improve separation.
   # Offsets follow the legend order of `shape_key`.
@@ -1680,16 +1866,20 @@ forest_over_time_plot <- function(
       plot.margin = margin(
         5.5,
         if (identical(legend_position, "right")) 12 else 4,
-        if (identical(legend_position, "bottom")) 14 else 5.5,
+        if (identical(legend_position, "bottom")) legend_bottom_margin else 5.5,
         2.5
       ),
       legend.position = legend_position,
-      legend.box = if (identical(legend_position, "bottom")) "horizontal" else "vertical",
+      legend.box = legend_box_dir,
       legend.box.just = if (identical(legend_position, "bottom")) "left" else "center",
-      legend.text = element_text(size = FOREST_LEGEND_TEXT_SIZE),
-      legend.title = element_text(size = FOREST_LEGEND_TITLE_SIZE),
-      legend.key.width = unit(if (isTRUE(show_ci)) FOREST_LEGEND_KEY_CI else FOREST_LEGEND_KEY_POINT, "lines"),
-      legend.key.height = unit(if (isTRUE(show_ci)) FOREST_LEGEND_KEY_CI else FOREST_LEGEND_KEY_POINT, "lines")
+      legend.text = element_text(size = legend_text_size),
+      legend.title = element_text(size = legend_title_size),
+      legend.key.width = unit(legend_key_size, "lines"),
+      legend.key.height = unit(legend_key_size, "lines"),
+      legend.spacing.x = unit(legend_spacing, "lines"),
+      legend.spacing.y = unit(legend_spacing * 0.5, "lines"),
+      legend.key.spacing.x = legend_key_spacing,
+      legend.key.spacing.y = legend_key_spacing
     )
 
   base_plot <- base_plot +
@@ -1700,17 +1890,31 @@ forest_over_time_plot <- function(
       } else {
         "none"
       },
-      shape = guide_legend(
-        title = NULL,
-        nrow = shape_legend_rows,
-        byrow = TRUE,
-        order = 1,
-        override.aes = list(
-          size = FOREST_LEGEND_OVERRIDE_CI,
-          colour = shape_legend_cols,
-          fill = shape_legend_cols
+      shape = if (!is.null(shape_legend_ncol)) {
+        guide_legend(
+          title = NULL,
+          ncol = shape_legend_ncol,
+          byrow = TRUE,
+          order = 1,
+          override.aes = list(
+            size = legend_override_size,
+            colour = shape_legend_cols,
+            fill = shape_legend_cols
+          )
         )
-      )
+      } else {
+        guide_legend(
+          title = NULL,
+          nrow = shape_legend_rows,
+          byrow = TRUE,
+          order = 1,
+          override.aes = list(
+            size = legend_override_size,
+            colour = shape_legend_cols,
+            fill = shape_legend_cols
+          )
+        )
+      }
     )
 
   # For test-model style: keep panel heights fixed, but allow y-ranges to vary.
@@ -1722,14 +1926,14 @@ forest_over_time_plot <- function(
         scales = facet_scales,
         space = "fixed",
         axes = "y",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = labeller(labels_facet = forest_facet_labeller)
       )
     } else {
       base_plot <- base_plot + facet_grid(
         labels_facet ~ outcome_type,
         scales = facet_scales,
         space = "fixed",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = labeller(labels_facet = forest_facet_labeller)
       )
     }
   } else {
@@ -1739,14 +1943,14 @@ forest_over_time_plot <- function(
         scales = facet_scales,
         space = "fixed",
         axes = "y",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = labeller(labels_facet = forest_facet_labeller)
       )
     } else {
       base_plot <- base_plot + facet_grid(
         labels_facet ~ .,
         scales = facet_scales,
         space = "fixed",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = labeller(labels_facet = forest_facet_labeller)
       )
     }
   }
@@ -1780,7 +1984,8 @@ forest_over_time_plot_compare <- function(
   adjustment_label_wrap_width = 14,
   legend_position = NULL,
   shape_legend_nrow = 1L,
-  compact_layout = FALSE
+  compact_layout = FALSE,
+  key_groups_first = FALSE
 ) {
   adjustment_layout <- match.arg(adjustment_layout)
   if (is_empty_forest_data(forest_data)) {
@@ -1824,6 +2029,7 @@ forest_over_time_plot_compare <- function(
         characteristic == "IMD Quintile" ~ "IMD\nQuintile",
         characteristic == "Household Composition" ~ "Household\nComposition",
         characteristic == "Age Group" ~ "Age\nGroup",
+        characteristic == "Maternal Age" ~ "Maternal\nAge",
         TRUE ~ characteristic
       ),
       series = {
@@ -2074,22 +2280,39 @@ forest_over_time_plot_compare <- function(
     colour_map[["Prior Vaccination (COVID)"]] <- "#98DF8A"
   }
 
-  # Enforce stable group ordering across all plots/legends.
-  preferred_group_order <- c(
-    "Sex",
-    "Age Group",
-    "Ethnicity",
-    "IMD Quintile",
-    "Household Composition",
-    "Rurality",
+  # Preserve the historical group order unless a caller explicitly asks for
+  # key exposure groups first (used for the dashboard only).
+  vaccination_groups_col <- c(
     "Prior Vaccination (Flu)",
     "Prior Vaccination (COVID)",
     "Current Vaccination"
   )
-  group_order <- c(
-    intersect(preferred_group_order, names(colour_map)),
-    setdiff(names(colour_map), preferred_group_order)
-  )
+  preferred_group_order <- if (isTRUE(key_groups_first)) {
+    forest_group_priority(model_type, cohort_val)
+  } else {
+    c(
+      "Sex",
+      "Age Group",
+      "Maternal Age",
+      "Ethnicity",
+      "IMD Quintile",
+      "Household Composition",
+      "Rurality",
+      vaccination_groups_col
+    )
+  }
+  group_order <- if (isTRUE(key_groups_first)) {
+    c(
+      intersect(preferred_group_order, names(colour_map)),
+      setdiff(names(colour_map), c(preferred_group_order, vaccination_groups_col)),
+      intersect(vaccination_groups_col, names(colour_map))
+    )
+  } else {
+    c(
+      intersect(preferred_group_order, names(colour_map)),
+      setdiff(names(colour_map), preferred_group_order)
+    )
+  }
   colour_map <- colour_map[group_order]
 
   level_order <- get_forest_level_order(
@@ -2109,6 +2332,30 @@ forest_over_time_plot_compare <- function(
   )
 
   plot_df <- clean_forest_term_labels(plot_df)
+
+  vaccination_groups_facet <- c("Prior Vaccination", "Current Vaccination")
+  facet_group_order <- if (isTRUE(key_groups_first)) {
+    forest_group_priority(model_type, cohort_val)
+  } else {
+    c(
+      "Sex", "Age Group", "Maternal Age", "Ethnicity", "IMD Quintile", "Household Composition",
+      "Rurality", vaccination_groups_facet
+    )
+  }
+
+  observed_facets <- unique(as.character(plot_df$labels_facet))
+  facet_levels <- if (isTRUE(key_groups_first)) {
+    c(
+      intersect(facet_group_order, observed_facets),
+      setdiff(observed_facets, c(facet_group_order, vaccination_groups_facet)),
+      intersect(vaccination_groups_facet, observed_facets)
+    )
+  } else {
+    c(
+      intersect(facet_group_order, observed_facets),
+      setdiff(observed_facets, facet_group_order)
+    )
+  }
 
   # Shapes:
   # - legend shows level names (no "(Reference)" entry)
@@ -2132,22 +2379,7 @@ forest_over_time_plot_compare <- function(
           repair_covid_prior_vacc_label(.data$label),
         TRUE ~ as.character(.data$label)
       ),
-      labels_facet = factor(labels_facet, levels = c(
-        intersect(
-          c(
-            "Sex", "Age Group", "Ethnicity", "IMD Quintile", "Household Composition",
-            "Rurality", "Prior Vaccination", "Current Vaccination"
-          ),
-          unique(labels_facet)
-        ),
-        setdiff(
-          unique(labels_facet),
-          c(
-            "Sex", "Age Group", "Ethnicity", "IMD Quintile", "Household Composition",
-            "Rurality", "Prior Vaccination", "Current Vaccination"
-          )
-        )
-      )),
+      labels_facet = factor(labels_facet, levels = facet_levels),
       labels_col = factor(labels_col, levels = group_order),
       label = as.character(label)
     )
@@ -2596,7 +2828,7 @@ forest_over_time_plot_compare <- function(
       )
     )
 
-  facet_labeller <- labeller(labels_facet = label_wrap_gen(width = 14))
+  facet_labeller <- labeller(labels_facet = forest_facet_labeller)
 
   # For test-model style: keep panel heights fixed, but allow y-ranges to vary.
   facet_scales <- "free_y"

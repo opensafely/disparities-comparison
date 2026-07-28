@@ -52,6 +52,7 @@ forest_over_time_plot_all_seasons <- function(
         characteristic == "Prior Vaccination" ~ "Prior\nVaccination",
         characteristic == "IMD Quintile" ~ "IMD\nQuintile",
         characteristic == "Age Group" ~ "Age\nGroup",
+        characteristic == "Maternal Age" ~ "Maternal\nAge",
         TRUE ~ characteristic
       ),
       series = paste(variable, label, codelist_type, sep = " | "),
@@ -485,14 +486,14 @@ forest_over_time_plot_all_seasons <- function(
         scales = facet_scales,
         space = "fixed",
         axes = "y",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = labeller(labels_facet = forest_facet_labeller)
       )
     } else {
       base_plot <- base_plot + facet_grid(
         labels_facet ~ outcome_type,
         scales = facet_scales,
         space = "fixed",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = labeller(labels_facet = forest_facet_labeller)
       )
     }
   } else {
@@ -502,14 +503,14 @@ forest_over_time_plot_all_seasons <- function(
         scales = facet_scales,
         space = "fixed",
         axes = "y",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = labeller(labels_facet = forest_facet_labeller)
       )
     } else {
       base_plot <- base_plot + facet_grid(
         labels_facet ~ .,
         scales = facet_scales,
         space = "fixed",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = labeller(labels_facet = forest_facet_labeller)
       )
     }
   }
