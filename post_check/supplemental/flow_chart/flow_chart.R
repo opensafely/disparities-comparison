@@ -385,7 +385,7 @@ for (i in 1:nrow(patients_df)) {
                                 start = 1, stop = 4), "-09-01 (n = ", format(
                                 patients_df[i, ]$total, big.mark = ","),")")
   
-  follow_up_excl_label[i] <- paste0("Registation does not exist at during follow-up","\n(n = ", 
+  follow_up_excl_label[i] <- paste0("Registation does not exist during follow-up","\n(n = ", 
                                     format(patients_df[i, ]$not_registered, big.mark = ","), ")")
   
   follow_up_label[i] <- paste0("Current registration exists during study period \n 01-09-", 
@@ -504,7 +504,7 @@ for (i in 1:nrow(patients_df)) {
                                 start = 1, stop = 4), "-09-01 (n = ", format(
                                 patients_df[i, ]$total, big.mark = ","),")")
   
-  follow_up_excl_label[i] <- paste0("Registation does not exist at during follow-up",
+  follow_up_excl_label[i] <- paste0("Registation does not exist during follow-up",
                                     "\n or maternal registration not available", "\n(n = ", 
                                     format(patients_df[i, ]$not_registered, big.mark = ","), ")")
   
