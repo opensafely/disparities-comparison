@@ -31,6 +31,10 @@ analysis/old_model_files/*
 /post_check/supplemental/flow_chart/reformatted_inclusion_collated.csv
 /post_check/supplemental/model_estimates/*
 /post_check/supplemental/dashboard/*
+/post_check/supplemental/rates_primary/*
+/post_check/supplemental/all_cohort_cases/*
+/post_check/supplemental/correlations/*
+/post_check/supplemental/internal_validation/*
 
 /smoke_ab/*
 !reformat_table1.R
