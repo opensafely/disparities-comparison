@@ -757,12 +757,12 @@ upset_plot_supplement <- function(input, seasons) {
     
     plot_label <- ggdraw() +
       draw_label(
-        "Specific Phenotype",
+        "A. Specific Phenotype",
         x = 0.5, y = 0, hjust = 1.35, vjust = -0.75,
         fontface = 'bold', size = 14# color = "#71797E"
       ) +
       draw_label(
-        "Sensitive Phenotype",
+        "B. Sensitive Phenotype",
         x = 1, y = 0, hjust = 1.55, vjust = -0.75,
         fontface = 'bold', size = 14#, color = "#71797E"
       ) +

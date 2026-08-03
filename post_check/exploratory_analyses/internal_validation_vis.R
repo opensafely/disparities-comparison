@@ -9,7 +9,7 @@ ggsave <- function(..., bg = "white") ggplot2::ggsave(..., bg = bg)
 NODE_LEVELS <- c(
   "no_mild", "rsv", "flu", "covid",
   "rsv_flu", "rsv_covid", "flu_covid", "rsv_flu_covid",
-  "broad", "bucket", "other"
+  "broad", "bucket"
 )
 
 PHENOTYPE_LABELS <- c(
@@ -25,8 +25,35 @@ PHENOTYPE_LABELS <- c(
   broad = "Mild Respiratory Attendance"
 )
 
+# Spec-stage "other" = sensitive mild in window but no specific mild.
+# Fold into broad if sens was broad, otherwise into bucket.
+fold_spec_other <- function(df) {
+  df %>%
+    mutate(
+      spec_stage = case_when(
+        spec_stage != "other" ~ spec_stage,
+        sens_stage == "broad" ~ "broad",
+        TRUE ~ "bucket"
+      )
+    )
+}
+
 OUTCOME_ORDER <- names(PHENOTYPE_LABELS)
 STACK_ORDER <- rev(OUTCOME_ORDER)
+
+# Outcomes excluded from the curly brace (no mild / overall / broad attendance)
+BRACE_EXCLUDE <- c("no_mild", "bucket", "broad")
+
+# Stack so brace-eligible (virus-coded) outcomes are contiguous.
+# Within the brace block, pathogen-matching outcomes are grouped together.
+# Display top-to-bottom: no_mild, bucket, broad, other viruses..., pathogen-specific...
+stack_order_for_pathogen <- function(pathogen_code) {
+  brace_outcomes <- setdiff(OUTCOME_ORDER, BRACE_EXCLUDE)
+  is_match <- str_detect(brace_outcomes, fixed(pathogen_code))
+  pathogen_specific <- brace_outcomes[is_match]
+  other_virus <- brace_outcomes[!is_match]
+  rev(c(BRACE_EXCLUDE, other_virus, pathogen_specific))
+}
 
 validation_flow_palette <- function() {
   c(
@@ -98,16 +125,17 @@ prep_flow_counts <- function(df_counts, df_pops, population, season) {
         outcome == paste0("total_patients_", pathogen)
       )
 
-    df_counts_filt <- df_counts %>% 
+    df_counts_filt <- df_counts %>%
       mutate(
         population = gsub("_pop$", "", population)
       ) %>%
-      filter(population == pathogen) %>% 
+      filter(population == pathogen) %>%
+      fold_spec_other() %>%
       pivot_longer(
         cols = ends_with("_stage"),
         names_to = "phenotype",
         values_to = "outcome"
-      ) %>% 
+      ) %>%
       # Marginal totals per phenotype: source rows are a sens × spec cross-tab
       group_by(population, phenotype, outcome, subset) %>%
       summarise(rounded = sum(rounded, na.rm = TRUE), .groups = "drop") %>%
@@ -190,11 +218,12 @@ flow_base_theme <- function(plot_margin = margin(12, -2, -1, 5)) {
 # Compute outcome % label positions per facet so they match geom_sankey
 # stacking (ggsankey's own geom_sankey_text defaults different space/width and
 # can reorder across panels).
-sankey_outcome_label_data <- function(sankey_long, space, width, flow_palette) {
+sankey_outcome_label_data <- function(sankey_long, space, width, flow_palette,
+                                      stack_order = STACK_ORDER) {
   sankey_long %>%
     filter(x == "Outcome") %>%
     group_by(population, phenotype) %>%
-    arrange(match(outcome_code, STACK_ORDER), .by_group = TRUE) %>%
+    arrange(match(outcome_code, stack_order), .by_group = TRUE) %>%
     mutate(
       n_x = as.numeric(x),
       freq = value,
@@ -224,14 +253,68 @@ pathogen_code_for_population <- function(population) {
   )
 }
 
-sankey_relevant_line_data <- function(sankey_long, space, width, flow_palette,
-                                      line_gap = 0.33,
-                                      line_width = 0.32,
-                                      label_gap = 0.05) {
+pathogen_label_for_population <- function(population) {
+  recode(
+    as.character(population),
+    RSV = "RSV",
+    Influenza = "Influenza",
+    `COVID-19` = "COVID-19",
+    .default = as.character(population)
+  )
+}
+
+# Cubic Bezier helper for curly-brace paths
+bezier_cubic <- function(p1, p2, p3, p4, n = 40) {
+  t <- seq(0, 1, length.out = n)
+  tibble(
+    x = (1 - t)^3 * p1[1] + 3 * (1 - t)^2 * t * p2[1] +
+      3 * (1 - t) * t^2 * p3[1] + t^3 * p4[1],
+    y = (1 - t)^3 * p1[2] + 3 * (1 - t)^2 * t * p2[2] +
+      3 * (1 - t) * t^2 * p3[2] + t^3 * p4[2]
+  )
+}
+
+# Right-pointing curly brace spanning [ymin, ymax], tip at x + width
+make_curly_brace <- function(x, ymin, ymax, width = 0.12, n_per = 40) {
+  ymid <- (ymin + ymax) / 2
+  w <- width
+  bind_rows(
+    bezier_cubic(
+      c(x, ymax), c(x + w * 0.55, ymax),
+      c(x + w * 0.55, ymid + (ymax - ymid) * 0.55),
+      c(x + w * 0.55, ymid + (ymax - ymid) * 0.12),
+      n_per
+    ),
+    bezier_cubic(
+      c(x + w * 0.55, ymid + (ymax - ymid) * 0.12),
+      c(x + w * 0.55, ymid),
+      c(x + w, ymid), c(x + w, ymid),
+      n_per
+    ),
+    bezier_cubic(
+      c(x + w, ymid), c(x + w, ymid),
+      c(x + w * 0.55, ymid),
+      c(x + w * 0.55, ymid - (ymid - ymin) * 0.12),
+      n_per
+    ),
+    bezier_cubic(
+      c(x + w * 0.55, ymid - (ymid - ymin) * 0.12),
+      c(x + w * 0.55, ymid - (ymid - ymin) * 0.55),
+      c(x + w * 0.55, ymin), c(x, ymin),
+      n_per
+    )
+  )
+}
+
+sankey_pathogen_brace_data <- function(sankey_long, space, width,
+                                       stack_order = STACK_ORDER,
+                                       brace_gap = 0.5,
+                                       brace_width = 0.14,
+                                       label_gap = 0.06) {
   outcome_positions <- sankey_long %>%
     filter(x == "Outcome") %>%
     group_by(population, phenotype) %>%
-    arrange(match(outcome_code, STACK_ORDER), .by_group = TRUE) %>%
+    arrange(match(outcome_code, stack_order), .by_group = TRUE) %>%
     mutate(
       n_x = as.numeric(x),
       freq = value,
@@ -242,46 +325,66 @@ sankey_relevant_line_data <- function(sankey_long, space, width, flow_palette,
       ymin = ymin - max(ymax) / 2,
       ymax = ymax - max(ymax) / 2,
       pathogen_code = pathogen_code_for_population(population),
-      is_relevant = !is.na(pathogen_code) &
+      # Brace: all virus-coded mild outcomes (exclude no_mild / bucket / broad)
+      in_brace = !outcome_code %in% BRACE_EXCLUDE,
+      is_pathogen_specific = !is.na(pathogen_code) &
         str_detect(outcome_code, fixed(pathogen_code))
     ) %>%
     ungroup()
 
-  relevant_labels <- outcome_positions %>%
-    filter(is_relevant) %>%
+  # Brace spans virus-coded outcomes (excl. no_mild / bucket / broad).
+  # Label % = pathogen-matching share of all detected mild outcomes
+  # (everything except no_mild).
+  brace_meta <- outcome_positions %>%
     group_by(population, phenotype, pathogen_code) %>%
     summarise(
-      ymin = min(ymin),
-      ymax = max(ymax),
-      x = first(n_x) + width / 2 + line_gap + line_width + label_gap,
-      relevant_pct = sum(pct, na.rm = TRUE),
+      ymin = min(ymin[in_brace], na.rm = TRUE),
+      ymax = max(ymax[in_brace], na.rm = TRUE),
+      n_x = first(n_x),
+      detected_pct = sum(pct[!outcome_code %in% "no_mild"], na.rm = TRUE),
+      pathogen_pct = sum(pct[is_pathogen_specific], na.rm = TRUE),
+      has_brace = any(in_brace),
       .groups = "drop"
     ) %>%
+    filter(has_brace, is.finite(ymin), is.finite(ymax)) %>%
     mutate(
+      pathogen_share = if_else(
+        detected_pct > 0,
+        100 * pathogen_pct / detected_pct,
+        NA_real_
+      ),
+      pathogen_label = pathogen_label_for_population(population),
+      brace_x = n_x + width / 2 + brace_gap,
       y = (ymin + ymax) / 2,
-      label = sprintf("Relevant\n%.1f%%", relevant_pct)
+      label_x = brace_x + brace_width + label_gap,
+      label = sprintf("%% %s\n%.1f%%", pathogen_label, pathogen_share)
     )
 
-  relevant_lines <- outcome_positions %>%
-    filter(is_relevant) %>%
-    left_join(
-      relevant_labels %>%
-        select(population, phenotype, pathogen_code, label_x = x, label_y = y),
-      by = c("population", "phenotype", "pathogen_code")
-    ) %>%
-    mutate(
-      x = n_x + width / 2 + line_gap,
-      xend = label_x - label_gap,
-      y = (ymin + ymax) / 2,
-      yend = label_y,
-      line_colour = unname(flow_palette[fillcode])
-    ) %>%
-    select(population, phenotype, x, xend, y, yend, line_colour)
+  if (nrow(brace_meta) == 0) {
+    return(list(
+      braces = tibble(
+        population = factor(), phenotype = factor(),
+        x = numeric(), y = numeric(), group = character()
+      ),
+      labels = brace_meta
+    ))
+  }
 
-  list(lines = relevant_lines, labels = relevant_labels)
+  braces <- brace_meta %>%
+    mutate(group = paste(population, phenotype, sep = "__")) %>%
+    rowwise() %>%
+    reframe(
+      population,
+      phenotype,
+      group,
+      make_curly_brace(brace_x, ymin, ymax, width = brace_width)
+    )
+
+  list(braces = braces, labels = brace_meta)
 }
 
-prep_sankey_ggsankey_long <- function(df, label_with_pct = FALSE, use_pct = TRUE) {
+prep_sankey_ggsankey_long <- function(df, label_with_pct = FALSE, use_pct = TRUE,
+                                      stack_order = STACK_ORDER) {
 
   edges <- df %>%
     filter(outcome != "mild", rounded > 0) %>%
@@ -312,10 +415,10 @@ prep_sankey_ggsankey_long <- function(df, label_with_pct = FALSE, use_pct = TRUE
   }
 
   # ggsankey stacks bottom-up; use reversed order so the visual top-to-bottom
-  # matches PHENOTYPE_LABELS.
+  # matches the intended display order.
   edges <- edges %>%
     group_by(population, phenotype) %>%
-    arrange(match(as.character(outcome_code), STACK_ORDER), .by_group = TRUE) %>%
+    arrange(match(as.character(outcome_code), stack_order), .by_group = TRUE) %>%
     ungroup()
 
   # ggsankey colours each flow by its *source* node. To colour flows by the
@@ -358,8 +461,8 @@ prep_sankey_ggsankey_long <- function(df, label_with_pct = FALSE, use_pct = TRUE
       value,
       pct = NA_real_,
       node_label = paste0(
-        source,
-        "\nn = ",
+        as.character(population),
+        "\nHospitalisation\nn = ",
         format(hosp_n, big.mark = ",", trim = TRUE, scientific = FALSE)
       ),
       outcome_code = NA_character_,
@@ -374,13 +477,13 @@ prep_sankey_ggsankey_long <- function(df, label_with_pct = FALSE, use_pct = TRUE
       population,
       phenotype,
       x,
-      match(outcome_code, STACK_ORDER)
+      match(outcome_code, stack_order)
     )
 
   # ggsankey stacks using factor level order after group_by; per-panel levels
   # get merged into an inconsistent global level set when faceting. Use one
   # shared level order for all panels instead.
-  stack_labels <- unname(PHENOTYPE_LABELS[STACK_ORDER])
+  stack_labels <- unname(PHENOTYPE_LABELS[stack_order])
   hosp_labels <- long_df %>%
     filter(x == "Hospitalisation") %>%
     distinct(node) %>%
@@ -397,41 +500,41 @@ prep_sankey_ggsankey_long <- function(df, label_with_pct = FALSE, use_pct = TRUE
   long_df
 }
 
-plot_sankey_ggsankey <- function(
+plot_sankey_one_population <- function(
   df,
+  pathogen,
   space = 4,
   smooth = 8,
   width = 0.4,
-  # --- Left hospitalisation box (white outline) — edit these to resize ---
-  hosp_width = 0.55,      # x-axis units; slightly wider than flow `width` (0.4)
-  hosp_height_pad = 0,    # extra height in y-units, split top/bottom (0 = flush)
-  # ---------------------------------------------------------------------
+  hosp_width = 0.85,
+  hosp_height_pad = 0,
   label_with_pct = FALSE,
   use_pct = TRUE
 ) {
 
+  stack_order <- stack_order_for_pathogen(pathogen)
+
   sankey_long <- prep_sankey_ggsankey_long(
     df,
     label_with_pct = label_with_pct,
-    use_pct = use_pct
+    use_pct = use_pct,
+    stack_order = stack_order
   )
   flow_palette <- validation_flow_palette()
 
-  # In ggsankey, `space` is in y-axis units (percent if `use_pct = TRUE`,
-  # otherwise counts), not a proportion.
-  # If a small fractional value is supplied, treat it as a proportion of the
-  # panel total as a convenience.
+  space_use <- space
   if (is.numeric(space) && length(space) == 1 && space > 0 && space < 1) {
     panel_total <- sankey_long %>%
       filter(x == "Hospitalisation") %>%
       summarise(total = sum(value, na.rm = TRUE)) %>%
       pull(total)
-    space <- max(0.1, space * panel_total)
+    space_use <- max(0.1, space * panel_total)
   }
 
-  relevant_lines <- sankey_relevant_line_data(sankey_long, space, width, flow_palette)
+  pathogen_braces <- sankey_pathogen_brace_data(
+    sankey_long, space_use, width, stack_order = stack_order
+  )
 
-  # Geometry for the opaque left-node rectangle (see hosp_width / hosp_height_pad)
   hosp_box <- sankey_long %>%
     filter(x == "Hospitalisation") %>%
     distinct(population, phenotype, x, value) %>%
@@ -443,7 +546,7 @@ plot_sankey_ggsankey <- function(
       ymax = value / 2 + hosp_height_pad / 2
     )
 
-  plot <- ggplot(
+  ggplot(
     sankey_long,
     aes(
       x = x,
@@ -457,17 +560,15 @@ plot_sankey_ggsankey <- function(
     )
   ) +
     geom_sankey(
-      space = space,
+      space = space_use,
       smooth = smooth,
       width = width,
       flow.alpha = 0.85,
       flow.colour = NA,
       node.colour = NA,
-      # Right-hand nodes: no fill (transparent). We'll draw the left node separately.
       node.fill = NA,
       node.alpha = 1
     ) +
-    # Left hospitalisation node: opaque white with outline; sized by hosp_box.
     geom_rect(
       data = hosp_box,
       aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
@@ -479,15 +580,17 @@ plot_sankey_ggsankey <- function(
     ) +
     geom_sankey_text(
       data = filter(sankey_long, x == "Hospitalisation"),
-      space = space,
+      space = space_use,
       width = hosp_width,
-      size = 3.2,
+      size = 4,
       colour = "black",
       lineheight = 0.9,
       na.rm = TRUE
     ) +
     geom_text(
-      data = sankey_outcome_label_data(sankey_long, space, width, flow_palette),
+      data = sankey_outcome_label_data(
+        sankey_long, space_use, width, flow_palette, stack_order = stack_order
+      ),
       aes(
         x = x_pos,
         y = y,
@@ -495,32 +598,30 @@ plot_sankey_ggsankey <- function(
         colour = pct_colour
       ),
       inherit.aes = FALSE,
-      size = 2.8,
+      size = 3.4,
       hjust = -0.1,
       lineheight = 0.9,
       na.rm = TRUE
     ) +
-    geom_segment(
-      data = relevant_lines$lines,
-      aes(x = x, xend = xend, y = y, yend = yend, colour = line_colour),
+    geom_path(
+      data = pathogen_braces$braces,
+      aes(x = x, y = y, group = group),
       inherit.aes = FALSE,
+      colour = "grey25",
       linewidth = 0.55,
       lineend = "round",
       na.rm = TRUE
     ) +
     geom_text(
-      data = relevant_lines$labels,
-      aes(x = x, y = y, label = label),
+      data = pathogen_braces$labels,
+      aes(x = label_x, y = y, label = label),
       inherit.aes = FALSE,
-      size = 2.6,
+      size = 3.4,
       hjust = 0,
       lineheight = 0.9,
       colour = "grey25",
       na.rm = TRUE
     ) +
-    # Free y-ranges stop one pathogen row with large/redacted percentages from
-    # setting the scale for every row. Row heights stay fixed because
-    # `space = "free_y"` is not used.
     facet_grid(population ~ phenotype, scales = "free_y") +
     scale_fill_manual(
       values = flow_palette,
@@ -529,29 +630,82 @@ plot_sankey_ggsankey <- function(
       limits = c(OUTCOME_ORDER, "hosp"),
       drop = FALSE,
       name = NULL,
-      guide = guide_legend(nrow = 1, byrow = TRUE)
+      guide = "none"
     ) +
     scale_colour_identity(guide = "none") +
-    scale_x_discrete(expand = expansion(add = c(0.15, 1.2))) +
+    scale_x_discrete(expand = expansion(add = c(0.15, 1.55))) +
     scale_y_continuous(expand = expansion(mult = 0.002)) +
     labs(
       x = NULL,
       y = if (isTRUE(use_pct)) "% of Hospitalisations" else "Hospitalisations (count)"
     ) +
     coord_cartesian(clip = "off") +
-    flow_base_theme(plot_margin = margin(2, 60, 1, 14)) +
+    flow_base_theme(plot_margin = margin(2, 78, 12, 14)) +
     theme(
-      axis.title.y = element_text(margin = margin(r = 10)),
-      legend.position = "bottom",
-      legend.box = "horizontal",
-      legend.direction = "horizontal",
+      axis.title.y = element_text(size = 12, margin = margin(r = 10)),
+      legend.position = "none",
       panel.spacing.x = unit(2, "pt"),
       panel.spacing.y = unit(3, "pt"),
-      strip.text.x = element_text(size = 12, face = "bold"),
+      strip.text.x = element_blank(),
       strip.text.y = element_blank()
     )
+}
 
-  plot
+plot_sankey_ggsankey <- function(
+  df,
+  space = 4,
+  smooth = 8,
+  width = 0.4,
+  # --- Left hospitalisation box (white outline) — edit these to resize ---
+  hosp_width = 0.85,      # x-axis units; slightly wider than flow `width` (0.4)
+  hosp_height_pad = 0,    # extra height in y-units, split top/bottom (0 = flush)
+  # ---------------------------------------------------------------------
+  label_with_pct = FALSE,
+  use_pct = TRUE,
+  facet_gap = 0.12
+) {
+
+  # One panel per pathogen so pathogen-specific outcomes can stack contiguously
+  # for the curly brace (shared facet factor levels cannot do this).
+  pathogens <- c("rsv", "flu", "covid")
+  pathogens <- pathogens[pathogens %in% unique(df$population)]
+
+  panels <- lapply(pathogens, function(pathogen) {
+    plot_sankey_one_population(
+      df = df %>% filter(population == pathogen),
+      pathogen = pathogen,
+      space = space,
+      smooth = smooth,
+      width = width,
+      hosp_width = hosp_width,
+      hosp_height_pad = hosp_height_pad,
+      label_with_pct = label_with_pct,
+      use_pct = use_pct
+    )
+  })
+
+  # Insert vertical gaps between pathogen panels (the three "facets")
+  if (length(panels) <= 1) {
+    return(panels[[1]])
+  }
+
+  plotlist <- vector("list", length(panels) * 2 - 1)
+  rel_heights <- numeric(length(panels) * 2 - 1)
+  for (i in seq_along(panels)) {
+    idx <- 2 * i - 1
+    plotlist[[idx]] <- panels[[i]]
+    rel_heights[idx] <- 1
+    if (i < length(panels)) {
+      plotlist[[idx + 1]] <- NULL
+      rel_heights[idx + 1] <- facet_gap
+    }
+  }
+
+  plot_grid(
+    plotlist = plotlist, ncol = 1,
+    rel_heights = rel_heights,
+    align = "v", axis = "lr"
+  )
 }
 
 plot_sankey_between_legend <- function(
@@ -560,11 +714,12 @@ plot_sankey_between_legend <- function(
   smooth = 8,
   width = 0.4,
   # Left hospitalisation box — passed through to plot_sankey_ggsankey
-  hosp_width = 0.8,
+  hosp_width = 1.15,
   hosp_height_pad = 0,
   label_with_pct = FALSE,
   use_pct = TRUE,
-  legend_rel_width = 0.45
+  legend_rel_width = 0.45,
+  facet_gap = 0.12
 ) {
   df_spec <- df %>% filter(phenotype == "spec_stage")
   df_sens <- df %>% filter(phenotype == "sens_stage")
@@ -577,11 +732,12 @@ plot_sankey_between_legend <- function(
     hosp_width = hosp_width,
     hosp_height_pad = hosp_height_pad,
     label_with_pct = label_with_pct,
-    use_pct = use_pct
+    use_pct = use_pct,
+    facet_gap = facet_gap
   ) +
     ggtitle("Specific") +
     theme(
-      plot.title = element_text(hjust = 0.5, face = "bold"),
+      plot.title = element_text(vjust = 2.5, face = "bold", size = 16),
       legend.position = "none",
       strip.text.x = element_blank(),
       strip.background = element_blank()
@@ -595,11 +751,12 @@ plot_sankey_between_legend <- function(
     hosp_width = hosp_width,
     hosp_height_pad = hosp_height_pad,
     label_with_pct = label_with_pct,
-    use_pct = use_pct
+    use_pct = use_pct,
+    facet_gap = facet_gap
   ) +
     ggtitle("Sensitive") +
     theme(
-      plot.title = element_text(hjust = 0.5, face = "bold"),
+      plot.title = element_text(vjust = 2.5, face = "bold", size = 16),
       legend.position = "none",
       strip.text.x = element_blank(),
       strip.background = element_blank()
@@ -627,7 +784,9 @@ plot_sankey_between_legend <- function(
     theme(
       legend.position = "right",
       legend.direction = "vertical",
-      legend.box = "vertical"
+      legend.box = "vertical",
+      legend.text = element_text(size = 11),
+      legend.margin = margin(t = 0, r = 24, b = 0, l = 0)
     )
 
   legend <- get_legend(legend_plot)
@@ -655,6 +814,7 @@ plot_sankey_between_legend <- function(
     draw_label(
       paste(cohort_label, gsub("_", "-", season)),
       fontface = 'bold',
+      size = 16,
       x = 0,
       hjust = 0
     ) +
@@ -679,7 +839,7 @@ df_counts <- import_validation_counts(cohort)
 df_pops <- import_validation_pops(cohort)
 
 flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
-plot_sankey_between_legend(flow_counts, space = 4, legend_rel_width = 0.4)
+plot_sankey_between_legend(flow_counts, space = 8, legend_rel_width = 0.4)
 
 ggsave(here::here("post_check", "plots", "supplemental",
             paste0(cohort, "_internal_validation_", season, ".png")),
@@ -692,7 +852,7 @@ df_counts <- import_validation_counts(cohort)
 df_pops <- import_validation_pops(cohort)
 
 flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
-plot_sankey_between_legend(flow_counts, space = 4, legend_rel_width = 0.4)
+plot_sankey_between_legend(flow_counts, space = 8, legend_rel_width = 0.4)
 
 ggsave(here::here("post_check", "plots", "supplemental",
             paste0(cohort, "_internal_validation_", season, ".png")),
@@ -705,7 +865,7 @@ df_counts <- import_validation_counts(cohort)
 df_pops <- import_validation_pops(cohort)
 
 flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
-plot_sankey_between_legend(flow_counts, space = 4, legend_rel_width = 0.4)
+plot_sankey_between_legend(flow_counts, space = 8, legend_rel_width = 0.4)
 
 ggsave(here::here("post_check", "plots", "supplemental",
             paste0(cohort, "_internal_validation_", season, ".png")),
@@ -718,7 +878,7 @@ df_counts <- import_validation_counts(cohort)
 df_pops <- import_validation_pops(cohort)
 
 flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
-plot_sankey_between_legend(flow_counts, space = 4, legend_rel_width = 0.4)
+plot_sankey_between_legend(flow_counts, space = 8, legend_rel_width = 0.4)
 
 ggsave(here::here("post_check", "plots", "supplemental",
             paste0(cohort, "_internal_validation_", season, ".png")),
@@ -731,7 +891,7 @@ df_counts <- import_validation_counts(cohort)
 df_pops <- import_validation_pops(cohort)
 
 flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
-plot_sankey_between_legend(flow_counts, space = 4, legend_rel_width = 0.4)
+plot_sankey_between_legend(flow_counts, space = 8, legend_rel_width = 0.4)
 
 ggsave(here::here("post_check", "plots", "supplemental",
             paste0(cohort, "_internal_validation_", season, ".png")),
