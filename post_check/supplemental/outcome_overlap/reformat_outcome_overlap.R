@@ -75,6 +75,13 @@ perc_overlap <- function(cohort) {
     mutate(codelist_type = factor(codelist_type, 
                                   levels = c("Specific", "Sensitive")))
 
+  panel_labels <- expand_grid(
+    outcome_type = c("Mild", "Severe"),
+    codelist_type = factor(c("Specific", "Sensitive"),
+                           levels = c("Specific", "Sensitive"))
+  ) %>%
+    mutate(label = LETTERS[seq_len(n())])
+
   #create a plot
   ggplot(
     df_plot,
@@ -88,6 +95,14 @@ perc_overlap <- function(cohort) {
       color = "steelblue",
       size = 5
     ) + # label in middle of overlapping segment [web:5][web:10]
+    geom_text(
+      data = panel_labels,
+      aes(x = -Inf, y = Inf, label = label),
+      hjust = -0.3, vjust = 1.5,
+      inherit.aes = FALSE,
+      fontface = "bold",
+      size = 6
+    ) +
     facet_grid(outcome_type ~ codelist_type, scales = "free_y") +  # facet by two variables [web:6][web:9][web:12]
     scale_fill_manual(
       values = c(non_overlapping = "#555555", total_overlapping = "steelblue"),
@@ -195,6 +210,11 @@ perc_bucket <- function(cohort) {
 
   cohort_title <- if_else(cohort == "infants_subgroup",
                           "maternally_linked_infants", cohort)
+
+  panel_labels <- tibble(
+    outcome_type = c("Mild", "Severe"),
+    label = c("A", "B")
+  )
   
   #create a plot
   ggplot(
@@ -209,6 +229,14 @@ perc_bucket <- function(cohort) {
       color = "white",
       size = 5
     ) + # label in middle of overlapping segment [web:5][web:10]
+    geom_text(
+      data = panel_labels,
+      aes(x = -Inf, y = Inf, label = label),
+      hjust = -0.3, vjust = 1.5,
+      inherit.aes = FALSE,
+      fontface = "bold",
+      size = 6
+    ) +
     facet_wrap(~outcome_type, scales = "free") +  # facet by two variables [web:6][web:9][web:12]
     scale_fill_manual(
       values = c(bucket_only = "#bd592c", total_cases = "#555555"),

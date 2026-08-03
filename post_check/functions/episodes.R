@@ -120,7 +120,7 @@ multiple_episodes <- function(df, severity) {
                               "65-74y", "75-89y", "90y+") ~ "Age",
         characteristic %in% c("Male", "Female") ~ "Sex",
         characteristic %in% c("White", "Mixed", "Asian or Asian British",
-                              "Black or Black British", "Other Ethnic Groups",
+                              "Black or Black British", "Chinese or Other",
                               "Unknown") ~ "Ethnicity",
         characteristic %in% c("5 (least deprived)", "4", "3", "2",
                               "1 (most deprived)") ~ "IMD",

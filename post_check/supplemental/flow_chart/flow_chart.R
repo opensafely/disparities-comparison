@@ -13,6 +13,8 @@ options(scipen = 999)
 ## create output directories ----
 fs::dir_create(here("post_check", "plots", "supplemental", "flow_charts"))
 
+fmt_n <- function(x) format(x, big.mark = ",")
+
 ##  older adults 
 cohort <- "older_adults"
 
@@ -25,16 +27,18 @@ names(patients_df) <- c("total", "registered", "registered_sex", "registered_imd
 "perc_registered_imd", "perc_registered_no_carehome", "perc_included", "subset")
 patients_df <- patients_df[, not_registered := total - registered, by = .(subset)]
 patients_df <- patients_df[, not_eligible := registered - included, by = .(subset)]
+patients_df <- patients_df[, excl_sex := registered - registered_sex, by = .(subset)]
+patients_df <- patients_df[, excl_imd := registered - registered_imd, by = .(subset)]
+patients_df <- patients_df[, excl_care_home := registered - registered_no_carehome, by = .(subset)]
 
 #pre-allocate vectors and lists outside the loop
 org_cohort_label <- vector("character", nrow(patients_df))
 follow_up_excl_label <- vector("character", nrow(patients_df))
 follow_up_label <- vector("character", nrow(patients_df))
-# age_cut_excl <- vector("character", nrow(patients_df))
-# age_excl_label <- vector("character", nrow(patients_df))
-# age_cut_incl <- vector("character", nrow(patients_df))
-# age_label <- vector("character", nrow(patients_df))
 excluded_label <- vector("character", nrow(patients_df))
+excl_sex_label <- vector("character", nrow(patients_df))
+excl_imd_label <- vector("character", nrow(patients_df))
+excl_care_home_label <- vector("character", nrow(patients_df))
 included_label <- vector("character", nrow(patients_df))
 flow_chart <- vector("list", nrow(patients_df))
 
@@ -44,47 +48,32 @@ for (i in 1:nrow(patients_df)) {
   #construct label strings with variable values
   org_cohort_label[i] <- paste0("Living population of correct age (65y+)", 
                                 "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
-                                start = 1, stop = 4), "-09-01 (n = ", format(
-                                patients_df[i, ]$total, big.mark = ","),")")
+                                start = 1, stop = 4), "-09-01 (n = ", fmt_n(
+                                patients_df[i, ]$total),")")
   
   follow_up_excl_label[i] <- paste0("Less than three months of prior follow-up","\n(n = ", 
-                                    format(patients_df[i, ]$not_registered, big.mark = ","), ")")
+                                    fmt_n(patients_df[i, ]$not_registered), ")")
   
   follow_up_label[i] <- paste0("At least three months of registration during study period \n 01-09-", 
                                substr(patients_df[i, ]$subset, start = 1, stop = 4),
                                " to 31-08-20", substr(patients_df[i, ]$subset, start = 6, stop = 7),
                                "\nafter which follow-up begins (n = ",
-                               format(patients_df[i,]$registered, big.mark = ","), ")")
+                               fmt_n(patients_df[i,]$registered), ")")
   
-  # #use case_when to assign the correct exclusion labels
-  # age_cut_excl[i] <- case_when(
-  #   cohort == "older_adults" ~ "Under 65 years of age \nthroughout season",
-  #   cohort == "adults" ~ "Not between 18 and 64 years of age \nthroughout season",
-  #   cohort == "children_and_adolescents"~ "Not between 2 and 17 years of age \nthroughout season",
-  #   cohort == "infants" ~ "Over 2 years old \nthroughout season",
-  #   cohort == "infants_subgroup" ~ "Over 2 years old \nthroughout season"
-  # )
+  excluded_label[i] <- paste0("Fits exclusion criteria", "\n(n = ", fmt_n(
+    patients_df[i, ]$not_eligible), ")")
   
-  # age_excl_label[i] <- paste0(age_cut_excl[i], " (n = ", format(
-  #   patients_df[i, ]$not_age_count, big.mark = ","), ")")
+  excl_sex_label[i] <- paste0("Missing or unknown sex", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_sex), ")")
   
-  # #use case_when to assign the correct inclusion labels
-  # age_cut_incl[i] <- case_when(
-  #   cohort == "older_adults" ~ "Aged 65 and over \nwithin season",
-  #   cohort == "adults" ~ "Between 18 and 64 years of age \nwithin season",
-  #   cohort == "children_and_adolescents"~ "Between 2 and 17 years of age \nwithin season",
-  #   cohort == "infants" ~ "Under 2 years old \nwithin season",
-  #   cohort == "infants_subgroup" ~ "Under 2 years old \nwithin season"
-  # )
+  excl_imd_label[i] <- paste0("Missing IMD", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_imd), ")")
   
-  # age_label[i] <- paste0(age_cut_incl[i], " (n = ", format(
-  #   patients_df[i, ]$age_count, big.mark = ","), ")")
+  excl_care_home_label[i] <- paste0("Care home resident", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_care_home), ")")
   
-  excluded_label[i] <- paste0("Fits exclusion criteria", "\n(n = ", format(
-    patients_df[i, ]$not_eligible, big.mark = ","), ")")
-  
-  included_label[i] <- paste0("Final included in study population", "\n(n = ", format(
-    patients_df[i, ]$included, big.mark = ","), ")")
+  included_label[i] <- paste0("Final included in study population", "\n(n = ", fmt_n(
+    patients_df[i, ]$included), ")")
   
   #render graph and store in the flow_chart list
   flow_chart[[i]] <- 
@@ -99,17 +88,25 @@ for (i in 1:nrow(patients_df)) {
         follow_up[label = "%s"]
         included[label = "%s"]
         excluded[label = "%s"]
+        excl_sex[label = "%s"]
+        excl_imd[label = "%s"]
+        excl_care_home[label = "%s"]
         
         {rank = same; org_cohort; follow_up_excl}
         {rank = same; follow_up; excluded}
+        {rank = same; excl_sex; excl_imd; excl_care_home}
     
         org_cohort -> follow_up_excl
         org_cohort -> follow_up
         follow_up -> included
         follow_up -> excluded
+        excluded -> excl_sex
+        excluded -> excl_imd
+        excluded -> excl_care_home
       }
     ', org_cohort_label[i], follow_up_excl_label[i], follow_up_label[i], 
-              included_label[i], excluded_label[i])
+              included_label[i], excluded_label[i], excl_sex_label[i],
+              excl_imd_label[i], excl_care_home_label[i])
     )
 }
 
@@ -137,16 +134,18 @@ names(patients_df) <- c("total", "registered", "registered_sex", "registered_imd
 "perc_registered_imd", "perc_registered_no_carehome", "perc_included", "subset")
 patients_df <- patients_df[, not_registered := total - registered, by = .(subset)]
 patients_df <- patients_df[, not_eligible := registered - included, by = .(subset)]
+patients_df <- patients_df[, excl_sex := registered - registered_sex, by = .(subset)]
+patients_df <- patients_df[, excl_imd := registered - registered_imd, by = .(subset)]
+patients_df <- patients_df[, excl_care_home := registered - registered_no_carehome, by = .(subset)]
 
 #pre-allocate vectors and lists outside the loop
 org_cohort_label <- vector("character", nrow(patients_df))
 follow_up_excl_label <- vector("character", nrow(patients_df))
 follow_up_label <- vector("character", nrow(patients_df))
-# age_cut_excl <- vector("character", nrow(patients_df))
-# age_excl_label <- vector("character", nrow(patients_df))
-# age_cut_incl <- vector("character", nrow(patients_df))
-# age_label <- vector("character", nrow(patients_df))
 excluded_label <- vector("character", nrow(patients_df))
+excl_sex_label <- vector("character", nrow(patients_df))
+excl_imd_label <- vector("character", nrow(patients_df))
+excl_care_home_label <- vector("character", nrow(patients_df))
 included_label <- vector("character", nrow(patients_df))
 flow_chart <- vector("list", nrow(patients_df))
 
@@ -156,47 +155,32 @@ for (i in 1:nrow(patients_df)) {
   #construct label strings with variable values
   org_cohort_label[i] <- paste0("Living population of correct age (18-64y)", 
                                 "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
-                                start = 1, stop = 4), "-09-01 (n = ", format(
-                                patients_df[i, ]$total, big.mark = ","),")")
+                                start = 1, stop = 4), "-09-01 (n = ", fmt_n(
+                                patients_df[i, ]$total),")")
   
   follow_up_excl_label[i] <- paste0("Less than three months of prior follow-up","\n(n = ", 
-                                    format(patients_df[i, ]$not_registered, big.mark = ","), ")")
+                                    fmt_n(patients_df[i, ]$not_registered), ")")
   
   follow_up_label[i] <- paste0("At least three months of follow-up during study period \n 01-09-", 
                                substr(patients_df[i, ]$subset, start = 1, stop = 4),
                                " to 31-08-20", substr(patients_df[i, ]$subset, start = 6, stop = 7),
                                "\nafter which follow-up begins (n = ",
-                               format(patients_df[i,]$registered, big.mark = ","), ")")
+                               fmt_n(patients_df[i,]$registered), ")")
   
-  # #use case_when to assign the correct exclusion labels
-  # age_cut_excl[i] <- case_when(
-  #   cohort == "older_adults" ~ "Under 65 years of age \nthroughout season",
-  #   cohort == "adults" ~ "Not between 18 and 64 years of age \nthroughout season",
-  #   cohort == "children_and_adolescents"~ "Not between 2 and 17 years of age \nthroughout season",
-  #   cohort == "infants" ~ "Over 2 years old \nthroughout season",
-  #   cohort == "infants_subgroup" ~ "Over 2 years old \nthroughout season"
-  # )
+  excluded_label[i] <- paste0("Fits exclusion criteria", "\n(n = ", fmt_n(
+    patients_df[i, ]$not_eligible), ")")
   
-  # age_excl_label[i] <- paste0(age_cut_excl[i], " (n = ", format(
-  #   patients_df[i, ]$not_age_count, big.mark = ","), ")")
+  excl_sex_label[i] <- paste0("Missing or unknown sex", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_sex), ")")
   
-  # #use case_when to assign the correct inclusion labels
-  # age_cut_incl[i] <- case_when(
-  #   cohort == "older_adults" ~ "Aged 65 and over \nwithin season",
-  #   cohort == "adults" ~ "Between 18 and 64 years of age \nwithin season",
-  #   cohort == "children_and_adolescents"~ "Between 2 and 17 years of age \nwithin season",
-  #   cohort == "infants" ~ "Under 2 years old \nwithin season",
-  #   cohort == "infants_subgroup" ~ "Under 2 years old \nwithin season"
-  # )
+  excl_imd_label[i] <- paste0("Missing IMD", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_imd), ")")
   
-  # age_label[i] <- paste0(age_cut_incl[i], " (n = ", format(
-  #   patients_df[i, ]$age_count, big.mark = ","), ")")
+  excl_care_home_label[i] <- paste0("Care home resident", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_care_home), ")")
   
-  excluded_label[i] <- paste0("Fits exclusion criteria", "\n(n = ", format(
-    patients_df[i, ]$not_eligible, big.mark = ","), ")")
-  
-  included_label[i] <- paste0("Final included in study population", "\n(n = ", format(
-    patients_df[i, ]$included, big.mark = ","), ")")
+  included_label[i] <- paste0("Final included in study population", "\n(n = ", fmt_n(
+    patients_df[i, ]$included), ")")
   
   #render graph and store in the flow_chart list
   flow_chart[[i]] <- 
@@ -211,17 +195,25 @@ for (i in 1:nrow(patients_df)) {
         follow_up[label = "%s"]
         included[label = "%s"]
         excluded[label = "%s"]
+        excl_sex[label = "%s"]
+        excl_imd[label = "%s"]
+        excl_care_home[label = "%s"]
         
         {rank = same; org_cohort; follow_up_excl}
         {rank = same; follow_up; excluded}
+        {rank = same; excl_sex; excl_imd; excl_care_home}
     
         org_cohort -> follow_up_excl
         org_cohort -> follow_up
         follow_up -> included
         follow_up -> excluded
+        excluded -> excl_sex
+        excluded -> excl_imd
+        excluded -> excl_care_home
       }
     ', org_cohort_label[i], follow_up_excl_label[i], follow_up_label[i], 
-              included_label[i], excluded_label[i])
+              included_label[i], excluded_label[i], excl_sex_label[i],
+              excl_imd_label[i], excl_care_home_label[i])
     )
 }
 
@@ -249,16 +241,18 @@ names(patients_df) <- c("total", "registered", "registered_sex", "registered_imd
 "perc_registered_imd", "perc_registered_no_carehome", "perc_included", "subset")
 patients_df <- patients_df[, not_registered := total - registered, by = .(subset)]
 patients_df <- patients_df[, not_eligible := registered - included, by = .(subset)]
+patients_df <- patients_df[, excl_sex := registered - registered_sex, by = .(subset)]
+patients_df <- patients_df[, excl_imd := registered - registered_imd, by = .(subset)]
+patients_df <- patients_df[, excl_care_home := registered - registered_no_carehome, by = .(subset)]
 
 #pre-allocate vectors and lists outside the loop
 org_cohort_label <- vector("character", nrow(patients_df))
 follow_up_excl_label <- vector("character", nrow(patients_df))
 follow_up_label <- vector("character", nrow(patients_df))
-# age_cut_excl <- vector("character", nrow(patients_df))
-# age_excl_label <- vector("character", nrow(patients_df))
-# age_cut_incl <- vector("character", nrow(patients_df))
-# age_label <- vector("character", nrow(patients_df))
 excluded_label <- vector("character", nrow(patients_df))
+excl_sex_label <- vector("character", nrow(patients_df))
+excl_imd_label <- vector("character", nrow(patients_df))
+excl_care_home_label <- vector("character", nrow(patients_df))
 included_label <- vector("character", nrow(patients_df))
 flow_chart <- vector("list", nrow(patients_df))
 
@@ -268,47 +262,32 @@ for (i in 1:nrow(patients_df)) {
   #construct label strings with variable values
   org_cohort_label[i] <- paste0("Living population of correct age (2-17y)", 
                                 "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
-                                start = 1, stop = 4), "-09-01 (n = ", format(
-                                patients_df[i, ]$total, big.mark = ","),")")
+                                start = 1, stop = 4), "-09-01 (n = ", fmt_n(
+                                patients_df[i, ]$total),")")
   
   follow_up_excl_label[i] <- paste0("Less than three months of prior follow-up","\n(n = ", 
-                                    format(patients_df[i, ]$not_registered, big.mark = ","), ")")
+                                    fmt_n(patients_df[i, ]$not_registered), ")")
   
   follow_up_label[i] <- paste0("At least three months of follow-up during study period \n 01-09-", 
                                substr(patients_df[i, ]$subset, start = 1, stop = 4),
                                " to 31-08-20", substr(patients_df[i, ]$subset, start = 6, stop = 7),
                                "\nafter which follow-up begins (n = ",
-                               format(patients_df[i,]$registered, big.mark = ","), ")")
+                               fmt_n(patients_df[i,]$registered), ")")
   
-  # #use case_when to assign the correct exclusion labels
-  # age_cut_excl[i] <- case_when(
-  #   cohort == "older_adults" ~ "Under 65 years of age \nthroughout season",
-  #   cohort == "adults" ~ "Not between 18 and 64 years of age \nthroughout season",
-  #   cohort == "children_and_adolescents"~ "Not between 2 and 17 years of age \nthroughout season",
-  #   cohort == "infants" ~ "Over 2 years old \nthroughout season",
-  #   cohort == "infants_subgroup" ~ "Over 2 years old \nthroughout season"
-  # )
+  excluded_label[i] <- paste0("Fits exclusion criteria", "\n(n = ", fmt_n(
+    patients_df[i, ]$not_eligible), ")")
   
-  # age_excl_label[i] <- paste0(age_cut_excl[i], " (n = ", format(
-  #   patients_df[i, ]$not_age_count, big.mark = ","), ")")
+  excl_sex_label[i] <- paste0("Missing or unknown sex", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_sex), ")")
   
-  # #use case_when to assign the correct inclusion labels
-  # age_cut_incl[i] <- case_when(
-  #   cohort == "older_adults" ~ "Aged 65 and over \nwithin season",
-  #   cohort == "adults" ~ "Between 18 and 64 years of age \nwithin season",
-  #   cohort == "children_and_adolescents"~ "Between 2 and 17 years of age \nwithin season",
-  #   cohort == "infants" ~ "Under 2 years old \nwithin season",
-  #   cohort == "infants_subgroup" ~ "Under 2 years old \nwithin season"
-  # )
+  excl_imd_label[i] <- paste0("Missing IMD", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_imd), ")")
   
-  # age_label[i] <- paste0(age_cut_incl[i], " (n = ", format(
-  #   patients_df[i, ]$age_count, big.mark = ","), ")")
+  excl_care_home_label[i] <- paste0("Care home resident", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_care_home), ")")
   
-  excluded_label[i] <- paste0("Fits exclusion criteria", "\n(n = ", format(
-    patients_df[i, ]$not_eligible, big.mark = ","), ")")
-  
-  included_label[i] <- paste0("Final included in study population", "\n(n = ", format(
-    patients_df[i, ]$included, big.mark = ","), ")")
+  included_label[i] <- paste0("Final included in study population", "\n(n = ", fmt_n(
+    patients_df[i, ]$included), ")")
   
   #render graph and store in the flow_chart list
   flow_chart[[i]] <- 
@@ -323,17 +302,25 @@ for (i in 1:nrow(patients_df)) {
         follow_up[label = "%s"]
         included[label = "%s"]
         excluded[label = "%s"]
+        excl_sex[label = "%s"]
+        excl_imd[label = "%s"]
+        excl_care_home[label = "%s"]
         
         {rank = same; org_cohort; follow_up_excl}
         {rank = same; follow_up; excluded}
+        {rank = same; excl_sex; excl_imd; excl_care_home}
     
         org_cohort -> follow_up_excl
         org_cohort -> follow_up
         follow_up -> included
         follow_up -> excluded
+        excluded -> excl_sex
+        excluded -> excl_imd
+        excluded -> excl_care_home
       }
     ', org_cohort_label[i], follow_up_excl_label[i], follow_up_label[i], 
-              included_label[i], excluded_label[i])
+              included_label[i], excluded_label[i], excl_sex_label[i],
+              excl_imd_label[i], excl_care_home_label[i])
     )
 }
 
@@ -363,16 +350,21 @@ names(patients_df) <- c("total", "registered", "registered_sex", "registered_imd
 "perc_registered_no_immune",  "perc_included", "subset")
 patients_df <- patients_df[, not_registered := total - registered, by = .(subset)]
 patients_df <- patients_df[, not_eligible := registered - included, by = .(subset)]
+patients_df <- patients_df[, excl_sex := registered - registered_sex, by = .(subset)]
+patients_df <- patients_df[, excl_imd := registered - registered_imd, by = .(subset)]
+patients_df <- patients_df[, excl_care_home := registered - registered_no_carehome, by = .(subset)]
+patients_df <- patients_df[, palivizumab := (registered - registered_no_riskgroup) +
+  (registered - registered_no_immune), by = .(subset)]
 
 #pre-allocate vectors and lists outside the loop
 org_cohort_label <- vector("character", nrow(patients_df))
 follow_up_excl_label <- vector("character", nrow(patients_df))
 follow_up_label <- vector("character", nrow(patients_df))
-# age_cut_excl <- vector("character", nrow(patients_df))
-# age_excl_label <- vector("character", nrow(patients_df))
-# age_cut_incl <- vector("character", nrow(patients_df))
-# age_label <- vector("character", nrow(patients_df))
 excluded_label <- vector("character", nrow(patients_df))
+excl_sex_label <- vector("character", nrow(patients_df))
+excl_imd_label <- vector("character", nrow(patients_df))
+excl_care_home_label <- vector("character", nrow(patients_df))
+palivizumab_label <- vector("character", nrow(patients_df))
 included_label <- vector("character", nrow(patients_df))
 flow_chart <- vector("list", nrow(patients_df))
 
@@ -382,47 +374,35 @@ for (i in 1:nrow(patients_df)) {
   #construct label strings with variable values
   org_cohort_label[i] <- paste0("Living population of correct age (under 2y)", 
                                 "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
-                                start = 1, stop = 4), "-09-01 (n = ", format(
-                                patients_df[i, ]$total, big.mark = ","),")")
+                                start = 1, stop = 4), "-09-01 (n = ", fmt_n(
+                                patients_df[i, ]$total),")")
   
-  follow_up_excl_label[i] <- paste0("Registation does not exist at during follow-up","\n(n = ", 
-                                    format(patients_df[i, ]$not_registered, big.mark = ","), ")")
+  follow_up_excl_label[i] <- paste0("Registation does not exist during follow-up","\n(n = ", 
+                                    fmt_n(patients_df[i, ]$not_registered), ")")
   
   follow_up_label[i] <- paste0("Current registration exists during study period \n 01-09-", 
                                substr(patients_df[i, ]$subset, start = 1, stop = 4),
                                " to 31-08-20", substr(patients_df[i, ]$subset, start = 6, stop = 7),
                                "\nafter which follow-up begins (n = ",
-                               format(patients_df[i,]$registered, big.mark = ","), ")")
+                               fmt_n(patients_df[i,]$registered), ")")
   
-  # #use case_when to assign the correct exclusion labels
-  # age_cut_excl[i] <- case_when(
-  #   cohort == "older_adults" ~ "Under 65 years of age \nthroughout season",
-  #   cohort == "adults" ~ "Not between 18 and 64 years of age \nthroughout season",
-  #   cohort == "children_and_adolescents"~ "Not between 2 and 17 years of age \nthroughout season",
-  #   cohort == "infants" ~ "Over 2 years old \nthroughout season",
-  #   cohort == "infants_subgroup" ~ "Over 2 years old \nthroughout season"
-  # )
+  excluded_label[i] <- paste0("Fits exclusion criteria", "\n(n = ", fmt_n(
+    patients_df[i, ]$not_eligible), ")")
   
-  # age_excl_label[i] <- paste0(age_cut_excl[i], " (n = ", format(
-  #   patients_df[i, ]$not_age_count, big.mark = ","), ")")
+  excl_sex_label[i] <- paste0("Missing or unknown sex", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_sex), ")")
   
-  # #use case_when to assign the correct inclusion labels
-  # age_cut_incl[i] <- case_when(
-  #   cohort == "older_adults" ~ "Aged 65 and over \nwithin season",
-  #   cohort == "adults" ~ "Between 18 and 64 years of age \nwithin season",
-  #   cohort == "children_and_adolescents"~ "Between 2 and 17 years of age \nwithin season",
-  #   cohort == "infants" ~ "Under 2 years old \nwithin season",
-  #   cohort == "infants_subgroup" ~ "Under 2 years old \nwithin season"
-  # )
+  excl_imd_label[i] <- paste0("Missing IMD", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_imd), ")")
   
-  # age_label[i] <- paste0(age_cut_incl[i], " (n = ", format(
-  #   patients_df[i, ]$age_count, big.mark = ","), ")")
+  excl_care_home_label[i] <- paste0("Care home resident", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_care_home), ")")
   
-  excluded_label[i] <- paste0("Fits exclusion criteria", "\n(n = ", format(
-    patients_df[i, ]$not_eligible, big.mark = ","), ")")
+  palivizumab_label[i] <- paste0("Excluded due to Palivizumab eligibility", "\n(n = ",
+    fmt_n(patients_df[i, ]$palivizumab), ")")
   
-  included_label[i] <- paste0("Final included in study population", "\n(n = ", format(
-    patients_df[i, ]$included, big.mark = ","), ")")
+  included_label[i] <- paste0("Final included in study population", "\n(n = ", fmt_n(
+    patients_df[i, ]$included), ")")
   
   #render graph and store in the flow_chart list
   flow_chart[[i]] <- 
@@ -437,17 +417,27 @@ for (i in 1:nrow(patients_df)) {
         follow_up[label = "%s"]
         included[label = "%s"]
         excluded[label = "%s"]
+        excl_sex[label = "%s"]
+        excl_imd[label = "%s"]
+        excl_care_home[label = "%s"]
+        palivizumab[label = "%s"]
         
         {rank = same; org_cohort; follow_up_excl}
         {rank = same; follow_up; excluded}
+        {rank = same; excl_sex; excl_imd; excl_care_home; palivizumab}
     
         org_cohort -> follow_up_excl
         org_cohort -> follow_up
         follow_up -> included
         follow_up -> excluded
+        excluded -> excl_sex
+        excluded -> excl_imd
+        excluded -> excl_care_home
+        excluded -> palivizumab
       }
     ', org_cohort_label[i], follow_up_excl_label[i], follow_up_label[i], 
-              included_label[i], excluded_label[i])
+              included_label[i], excluded_label[i], excl_sex_label[i],
+              excl_imd_label[i], excl_care_home_label[i], palivizumab_label[i])
     )
 }
 
@@ -482,16 +472,25 @@ names(patients_df) <- c("total", "registered", "mother_registered",
 "perc_registered_mother_registered_no_immune", "perc_included",  "subset")
 patients_df <- patients_df[, not_registered := total - registered_mother_registered, by = .(subset)]
 patients_df <- patients_df[, not_eligible := registered_mother_registered - included, by = .(subset)]
+patients_df <- patients_df[, excl_sex := registered_mother_registered -
+  registered_mother_registered_sex, by = .(subset)]
+patients_df <- patients_df[, excl_imd := registered_mother_registered -
+  registered_mother_registered_imd, by = .(subset)]
+patients_df <- patients_df[, excl_care_home := registered_mother_registered -
+  registered_mother_registered_no_carehome, by = .(subset)]
+patients_df <- patients_df[, palivizumab := (registered_mother_registered -
+  registered_mother_registered_no_riskgroup) + (registered_mother_registered -
+  registered_mother_registered_no_immune), by = .(subset)]
 
 #pre-allocate vectors and lists outside the loop
 org_cohort_label <- vector("character", nrow(patients_df))
 follow_up_excl_label <- vector("character", nrow(patients_df))
 follow_up_label <- vector("character", nrow(patients_df))
-# age_cut_excl <- vector("character", nrow(patients_df))
-# age_excl_label <- vector("character", nrow(patients_df))
-# age_cut_incl <- vector("character", nrow(patients_df))
-# age_label <- vector("character", nrow(patients_df))
 excluded_label <- vector("character", nrow(patients_df))
+excl_sex_label <- vector("character", nrow(patients_df))
+excl_imd_label <- vector("character", nrow(patients_df))
+excl_care_home_label <- vector("character", nrow(patients_df))
+palivizumab_label <- vector("character", nrow(patients_df))
 included_label <- vector("character", nrow(patients_df))
 flow_chart <- vector("list", nrow(patients_df))
 
@@ -501,49 +500,37 @@ for (i in 1:nrow(patients_df)) {
   #construct label strings with variable values
   org_cohort_label[i] <- paste0("Living population of correct age (under 2y) with maternal linkage", 
                                 "\nin practices using TPP software on \n", substr(patients_df[i, ]$subset,
-                                start = 1, stop = 4), "-09-01 (n = ", format(
-                                patients_df[i, ]$total, big.mark = ","),")")
+                                start = 1, stop = 4), "-09-01 (n = ", fmt_n(
+                                patients_df[i, ]$total),")")
   
-  follow_up_excl_label[i] <- paste0("Registation does not exist at during follow-up",
+  follow_up_excl_label[i] <- paste0("Registation does not exist during follow-up",
                                     "\n or maternal registration not available", "\n(n = ", 
-                                    format(patients_df[i, ]$not_registered, big.mark = ","), ")")
+                                    fmt_n(patients_df[i, ]$not_registered), ")")
   
   follow_up_label[i] <- paste0("Current registration exists during study period \n 01-09-", 
                                substr(patients_df[i, ]$subset, start = 1, stop = 4),
                                " to 31-08-20", substr(patients_df[i, ]$subset, start = 6, stop = 7),
                                "\n and one year of maternal registration exists prior to follow-up",
                                "\nafter which follow-up begins (n = ",
-                               format(patients_df[i,]$registered, big.mark = ","), ")")
+                               fmt_n(patients_df[i,]$registered_mother_registered), ")")
   
-  # #use case_when to assign the correct exclusion labels
-  # age_cut_excl[i] <- case_when(
-  #   cohort == "older_adults" ~ "Under 65 years of age \nthroughout season",
-  #   cohort == "adults" ~ "Not between 18 and 64 years of age \nthroughout season",
-  #   cohort == "children_and_adolescents"~ "Not between 2 and 17 years of age \nthroughout season",
-  #   cohort == "infants" ~ "Over 2 years old \nthroughout season",
-  #   cohort == "infants_subgroup" ~ "Over 2 years old \nthroughout season"
-  # )
+  excluded_label[i] <- paste0("Fits exclusion criteria", "\n(n = ", fmt_n(
+    patients_df[i, ]$not_eligible), ")")
   
-  # age_excl_label[i] <- paste0(age_cut_excl[i], " (n = ", format(
-  #   patients_df[i, ]$not_age_count, big.mark = ","), ")")
+  excl_sex_label[i] <- paste0("Missing or unknown sex", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_sex), ")")
   
-  # #use case_when to assign the correct inclusion labels
-  # age_cut_incl[i] <- case_when(
-  #   cohort == "older_adults" ~ "Aged 65 and over \nwithin season",
-  #   cohort == "adults" ~ "Between 18 and 64 years of age \nwithin season",
-  #   cohort == "children_and_adolescents"~ "Between 2 and 17 years of age \nwithin season",
-  #   cohort == "infants" ~ "Under 2 years old \nwithin season",
-  #   cohort == "infants_subgroup" ~ "Under 2 years old \nwithin season"
-  # )
+  excl_imd_label[i] <- paste0("Missing IMD", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_imd), ")")
   
-  # age_label[i] <- paste0(age_cut_incl[i], " (n = ", format(
-  #   patients_df[i, ]$age_count, big.mark = ","), ")")
+  excl_care_home_label[i] <- paste0("Care home resident", "\n(n = ", fmt_n(
+    patients_df[i, ]$excl_care_home), ")")
   
-  excluded_label[i] <- paste0("Fits exclusion criteria", "\n(n = ", format(
-    patients_df[i, ]$not_eligible, big.mark = ","), ")")
+  palivizumab_label[i] <- paste0("Excluded due to Palivizumab eligibility", "\n(n = ",
+    fmt_n(patients_df[i, ]$palivizumab), ")")
   
-  included_label[i] <- paste0("Final included in study population", "\n(n = ", format(
-    patients_df[i, ]$included, big.mark = ","), ")")
+  included_label[i] <- paste0("Final included in study population", "\n(n = ", fmt_n(
+    patients_df[i, ]$included), ")")
   
   #render graph and store in the flow_chart list
   flow_chart[[i]] <- 
@@ -558,17 +545,27 @@ for (i in 1:nrow(patients_df)) {
         follow_up[label = "%s"]
         included[label = "%s"]
         excluded[label = "%s"]
+        excl_sex[label = "%s"]
+        excl_imd[label = "%s"]
+        excl_care_home[label = "%s"]
+        palivizumab[label = "%s"]
         
         {rank = same; org_cohort; follow_up_excl}
         {rank = same; follow_up; excluded}
+        {rank = same; excl_sex; excl_imd; excl_care_home; palivizumab}
     
         org_cohort -> follow_up_excl
         org_cohort -> follow_up
         follow_up -> included
         follow_up -> excluded
+        excluded -> excl_sex
+        excluded -> excl_imd
+        excluded -> excl_care_home
+        excluded -> palivizumab
       }
     ', org_cohort_label[i], follow_up_excl_label[i], follow_up_label[i], 
-              included_label[i], excluded_label[i])
+              included_label[i], excluded_label[i], excl_sex_label[i],
+              excl_imd_label[i], excl_care_home_label[i], palivizumab_label[i])
     )
 }
 

@@ -6,7 +6,9 @@ library(stringr)
 library(khroma)
 
 #define a function to plot a characteristic over time
-character_viz <- function(df, scaling) {
+character_viz <- function(df, scaling, household_comp = "no",
+                          plot_title = "Participant Characteristics",
+                          included_groups = NULL) {
   
   names(df) <- c("characteristic", "count", "percentage", "subset")
   
@@ -109,6 +111,16 @@ character_viz <- function(df, scaling) {
   df <- df %>%
     filter(!is.na(percentage)) %>%
     cbind(df_groups)
+
+  if (household_comp == "no") {
+    df <- df %>% 
+      filter(group != "Household Composition")
+  }
+
+  if (!is.null(included_groups)) {
+    df <- df %>%
+      filter(group %in% included_groups)
+  }
   
   df <- df %>%
     mutate(
@@ -127,46 +139,46 @@ character_viz <- function(df, scaling) {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
-                "2", "3", "4", "5 (least deprived)", "Urban Major Conurbation",
-                "Urban Minor Conurbation", "Urban City and Town",
-                "Rural Town and Fringe", "Rural Village and Dispersed")
+                "Chinese or Other", "Unknown", "1 (most deprived)",
+                "2", "3", "4", "5 (least deprived)", "Rural Town and Fringe",
+                "Rural Village and Dispersed", "Urban City and Town",
+                "Urban Minor Conurbation", "Urban Major Conurbation")
     
   } else if (cohort == "infants_subgroup") {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
-                "2", "3", "4", "5 (least deprived)", "Urban Major Conurbation",
-                "Urban Minor Conurbation", "Urban City and Town",
-                "Rural Town and Fringe", "Rural Village and Dispersed",
+                "Chinese or Other", "Unknown", "1 (most deprived)",
+                "2", "3", "4", "5 (least deprived)", "Rural Town and Fringe",
+                "Rural Village and Dispersed", "Urban City and Town",
+                "Urban Minor Conurbation", "Urban Major Conurbation",
                 "Yes", "Never", "Former", "Current")
     
   } else if (cohort == "children_and_adolescents") {
     
     levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Female",
                 "Male", "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Other Ethnic Groups",
+                "Black or Black British", "Chinese or Other",
                 "Unknown", "1 (most deprived)", "2", "3", "4",
                 "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation",
                 "Two Other Generations", "Three Other Generations",
-                "Urban Major Conurbation", "Urban Minor Conurbation",
-                "Urban City and Town", "Rural Town and Fringe",
-                "Rural Village and Dispersed", "Yes",
+                "Rural Town and Fringe", "Rural Village and Dispersed",
+                "Urban City and Town", "Urban Minor Conurbation",
+                "Urban Major Conurbation", "Yes",
                 "0-6m", "6-12m", "12m+")
     
   } else if (cohort == "adults") {
     
     levels <- c("18-39y", "40-64y", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "Chinese or Other", "Unknown", "1 (most deprived)",
                 "2", "3", "4", "5 (least deprived)",
                 "Multiple of the Same Generation", "Living Alone",
                 "One Other Generation", "Two Other Generations",
-                "Three Other Generations", "Urban Major Conurbation",
-                "Urban Minor Conurbation", "Urban City and Town",
-                "Rural Town and Fringe", "Rural Village and Dispersed",
+                "Three Other Generations", "Rural Town and Fringe",
+                "Rural Village and Dispersed", "Urban City and Town",
+                "Urban Minor Conurbation", "Urban Major Conurbation",
                 "Yes", "0-6m", "6-12m", "12m+")
     
   } else if (cohort == "older_adults" & investigation_type == "secondary") {
@@ -177,12 +189,12 @@ character_viz <- function(df, scaling) {
     
     levels <- c("65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2", "3",
+                "Chinese or Other", "Unknown", "1 (most deprived)", "2", "3",
                 "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
-                "Three Other Generations", "Urban Major Conurbation",
-                "Urban Minor Conurbation", "Urban City and Town",
-                "Rural Town and Fringe", "Rural Village and Dispersed",
+                "Three Other Generations", "Rural Town and Fringe",
+                "Rural Village and Dispersed", "Urban City and Town",
+                "Urban Minor Conurbation", "Urban Major Conurbation",
                 "Yes", "0-6m", "6-12m", "12m+")
     
   }
@@ -262,10 +274,20 @@ character_viz <- function(df, scaling) {
                alpha = 0.5) +
     facet_wrap(~group, scales = scales, ncol = 3) +
     theme_bw() + scale_fill_manual(values = cc) +
-    labs(title = "Participant Characteristics", x = "Characteristic",
+    labs(title = plot_title, x = "Characteristic",
          y = "Percentage (%)") +
     guides(fill = guide_legend(title = "Season")) +
-    theme(text = element_text(size = 12))
+    theme(
+      text = element_text(size = 12),
+      legend.position = if (identical(investigation_type, "secondary")) "bottom" else "right",
+      legend.box = if (identical(investigation_type, "secondary")) "horizontal" else "vertical",
+      plot.margin = margin(
+        5.5,
+        if (identical(investigation_type, "secondary")) 8 else 5.5,
+        if (identical(investigation_type, "secondary")) 10 else 5.5,
+        5.5
+      )
+    )
   
 }
 
@@ -391,46 +413,46 @@ character_viz_mult <- function(df, scaling) {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
-                "2", "3", "4", "5 (least deprived)", "Urban Major Conurbation",
-                "Urban Minor Conurbation", "Urban City and Town",
-                "Rural Town and Fringe", "Rural Village and Dispersed")
+                "Chinese or Other", "Unknown", "1 (most deprived)",
+                "2", "3", "4", "5 (least deprived)", "Rural Town and Fringe",
+                "Rural Village and Dispersed", "Urban City and Town",
+                "Urban Minor Conurbation", "Urban Major Conurbation")
     
   } else if (cohort == "infants_subgroup") {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
-                "2", "3", "4", "5 (least deprived)", "Urban Major Conurbation",
-                "Urban Minor Conurbation", "Urban City and Town",
-                "Rural Town and Fringe", "Rural Village and Dispersed",
+                "Chinese or Other", "Unknown", "1 (most deprived)",
+                "2", "3", "4", "5 (least deprived)", "Rural Town and Fringe",
+                "Rural Village and Dispersed", "Urban City and Town",
+                "Urban Minor Conurbation", "Urban Major Conurbation",
                 "Yes", "Never", "Former", "Current")
     
   } else if (cohort == "children_and_adolescents") {
     
     levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Female",
                 "Male", "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Other Ethnic Groups",
+                "Black or Black British", "Chinese or Other",
                 "Unknown", "1 (most deprived)", "2", "3", "4",
                 "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation",
                 "Two Other Generations", "Three Other Generations",
-                "Urban Major Conurbation", "Urban Minor Conurbation",
-                "Urban City and Town", "Rural Town and Fringe",
-                "Rural Village and Dispersed", "Yes",
+                "Rural Town and Fringe", "Rural Village and Dispersed",
+                "Urban City and Town", "Urban Minor Conurbation",
+                "Urban Major Conurbation", "Yes",
                 "0-6m", "6-12m", "12m+")
     
   } else if (cohort == "adults") {
     
     levels <- c("18-39y", "40-64y", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "Chinese or Other", "Unknown", "1 (most deprived)",
                 "2", "3", "4", "5 (least deprived)",
                 "Multiple of the Same Generation", "Living Alone",
                 "One Other Generation", "Two Other Generations",
-                "Three Other Generations", "Urban Major Conurbation",
-                "Urban Minor Conurbation", "Urban City and Town",
-                "Rural Town and Fringe", "Rural Village and Dispersed",
+                "Three Other Generations", "Rural Town and Fringe",
+                "Rural Village and Dispersed", "Urban City and Town",
+                "Urban Minor Conurbation", "Urban Major Conurbation",
                 "Yes", "0-6m", "6-12m", "12m+")
     
   } else if (cohort == "older_adults" & investigation_type == "secondary") {
@@ -441,12 +463,12 @@ character_viz_mult <- function(df, scaling) {
     
     levels <- c("65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2", "3",
+                "Chinese or Other", "Unknown", "1 (most deprived)", "2", "3",
                 "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
-                "Three Other Generations", "Urban Major Conurbation",
-                "Urban Minor Conurbation", "Urban City and Town",
-                "Rural Town and Fringe", "Rural Village and Dispersed",
+                "Three Other Generations", "Rural Town and Fringe",
+                "Rural Village and Dispersed", "Urban City and Town",
+                "Urban Minor Conurbation", "Urban Major Conurbation",
                 "Yes", "0-6m", "6-12m", "12m+")
     
   }
@@ -608,9 +630,9 @@ character_viz_mult <- function(df, scaling) {
     
   } else if (investigation_type == "primary" & cohort == "infants_subgroup") {
     
-    plot_title <- ggdraw() + 
+    infant_title <- ggdraw() + 
       draw_label(
-        "Participant Characteristics by Season",
+        "Infant Characteristics by Season",
         x = 0,
         hjust = 0
       ) + theme_bw() +
@@ -619,22 +641,37 @@ character_viz_mult <- function(df, scaling) {
         panel.border = element_blank(),
       )
     
-    title1 <- "Participant Characteristics by Season (Panel A)"
-    title2 <- "Participant Characteristics by Season (Panel B)"
-    title3 <- "Participant Characteristics by Season (Panel C)"
+    maternal_title <- ggdraw() + 
+      draw_label(
+        "Maternal Characteristics by Season",
+        x = 0,
+        hjust = 0
+      ) + theme_bw() +
+      theme(
+        plot.margin = margin(0, 0, 0, 7),
+        panel.border = element_blank(),
+      )
     
-    plot_row1 <- plot_grid(plotlist = plot_list[1:4], nrow = 2)
-    plot_row2 <- plot_grid(plotlist = plot_list[5:8], nrow = 2)
-    plot_row3 <- plot_grid(plotlist = plot_list[9:10], nrow = 2)
+    title1 <- "Infant_Characteristics_by_Season_Panel_A"
+    title2 <- "Infant_Characteristics_by_Season_Panel_B"
+    title3 <- "Maternal_Characteristics_by_Season_Panel_A"
+    title4 <- "Maternal_Characteristics_by_Season_Panel_B"
     
-    one <- plot_grid(plot_title, plot_row1, ncol = 1,
+    infant_row1 <- plot_grid(plotlist = plot_list[1:3], nrow = 2)
+    infant_row2 <- plot_grid(plotlist = plot_list[4:5], nrow = 2)
+    maternal_row1 <- plot_grid(plotlist = plot_list[6:8], nrow = 2)
+    maternal_row2 <- plot_grid(plotlist = plot_list[9:10], nrow = 2)
+    
+    one <- plot_grid(infant_title, infant_row1, ncol = 1,
                      rel_heights = c(0.1, 1))
-    two <- plot_grid(plot_title, plot_row2, ncol = 1,
+    two <- plot_grid(infant_title, infant_row2, ncol = 1,
                      rel_heights = c(0.1, 1))
-    three <- plot_grid(plot_title, plot_row3, ncol = 1,
+    three <- plot_grid(maternal_title, maternal_row1, ncol = 1,
                        rel_heights = c(0.1, 1))
+    four <- plot_grid(maternal_title, maternal_row2, ncol = 1,
+                      rel_heights = c(0.1, 1))
     
-    return(list(one, two, three, title1, title2, title3))
+    return(list(one, two, three, four, title1, title2, title3, title4))
     
   } else {
     

@@ -278,6 +278,12 @@ for(p in plotlist2) {
 cohort <- "infants_subgroup"
 investigation_type <- "primary"
 
+infant_groups <- c("Age Group", "Sex", "Ethnicity", "IMD", "Rurality")
+maternal_groups <- c(
+  "Maternal Smoking Status", "Maternal Drinking", "Maternal Drug Usage",
+  "Maternal Flu Vaccination", "Maternal Pertussis Vaccination"
+)
+
 #import collated table 1 outputs
 df_input <- read_csv(here::here("post_check", "output", "collated",
                      "descriptive", paste0(cohort, "_table1_collated.csv")))
@@ -287,8 +293,22 @@ df_input <- df_input %>%
 ##create relevant plots
 
 #season
-infants_subgroup_season <- character_viz(df_input, "none")
-infants_subgroup_season_scaled <- character_viz(df_input, "yes")
+infants_subgroup_season_infant <- character_viz(
+  df_input, "none", plot_title = "Infant Characteristics",
+  included_groups = infant_groups
+)
+infants_subgroup_season_infant_scaled <- character_viz(
+  df_input, "yes", plot_title = "Infant Characteristics",
+  included_groups = infant_groups
+)
+infants_subgroup_season_maternal <- character_viz(
+  df_input, "none", plot_title = "Maternal Characteristics",
+  included_groups = maternal_groups
+)
+infants_subgroup_season_maternal_scaled <- character_viz(
+  df_input, "yes", plot_title = "Maternal Characteristics",
+  included_groups = maternal_groups
+)
 
 #characteristic
 infants_subgroup_characters <- character_viz_mult(df_input, "none")
@@ -297,26 +317,32 @@ infants_subgroup_characters_scaled <- character_viz_mult(df_input, "yes")
 #create list of plots
 plotlist1 <- list(infants_subgroup_characters_scaled[[1]],
                   infants_subgroup_characters_scaled[[2]],
-                  infants_subgroup_characters_scaled[[3]])
+                  infants_subgroup_characters_scaled[[3]],
+                  infants_subgroup_characters_scaled[[4]])
 plotlist2 <- list(infants_subgroup_characters[[1]],
                   infants_subgroup_characters[[2]],
-                  infants_subgroup_characters[[3]])
+                  infants_subgroup_characters[[3]],
+                  infants_subgroup_characters[[4]])
 
 #plot all
-print(infants_subgroup_season)
-title_name <- infants_subgroup_season$labels$title
-saveas <- paste0(gsub(" ", "_", title_name))
+print(infants_subgroup_season_infant)
 ggsave(here("post_check", "plots", "primary_analyses",
-            paste0(str_to_title(cohort), "_", saveas, ".png")),
-       infants_subgroup_season, height = 8, width = 15)
-print(infants_subgroup_season_scaled)
-title_name <- infants_subgroup_season_scaled$labels$title
-saveas <- paste0(gsub(" ", "_", title_name), "_scaled")
+            paste0(str_to_title(cohort), "_Infant_Characteristics.png")),
+       infants_subgroup_season_infant, height = 8, width = 15)
+print(infants_subgroup_season_infant_scaled)
 ggsave(here("post_check", "plots", "primary_analyses",
-            paste0(str_to_title(cohort), "_", saveas, ".png")),
-       infants_subgroup_season_scaled, height = 8, width = 15)
+            paste0(str_to_title(cohort), "_Infant_Characteristics_scaled.png")),
+       infants_subgroup_season_infant_scaled, height = 8, width = 15)
+print(infants_subgroup_season_maternal)
+ggsave(here("post_check", "plots", "primary_analyses",
+            paste0(str_to_title(cohort), "_Maternal_Characteristics.png")),
+       infants_subgroup_season_maternal, height = 8, width = 15)
+print(infants_subgroup_season_maternal_scaled)
+ggsave(here("post_check", "plots", "primary_analyses",
+            paste0(str_to_title(cohort), "_Maternal_Characteristics_scaled.png")),
+       infants_subgroup_season_maternal_scaled, height = 8, width = 15)
 
-t <- 3
+t <- 4
 for(p in plotlist1) {
   
   print(p)
@@ -329,7 +355,7 @@ for(p in plotlist1) {
   
 }
 
-u <- 3
+u <- 4
 for(p in plotlist2) {
   
   print(p)

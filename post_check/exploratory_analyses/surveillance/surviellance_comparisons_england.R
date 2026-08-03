@@ -4,6 +4,7 @@ library(lmtest)
 library(data.table)
 library(ggpubr)
 library(ggpmisc)
+library(RColorBrewer)
 
 #create function to import data
 import <- function(pathogen) {
@@ -237,6 +238,30 @@ pearson_results <- data.frame(
               pearson_covid_mild_sens$estimate,
               pearson_covid_severe_spec$estimate,
               pearson_covid_severe_sens$estimate),
+  ci_lower = c(pearson_rsv_mild_spec$conf.int[1],
+               pearson_rsv_mild_sens$conf.int[1],
+               pearson_rsv_severe_spec$conf.int[1],
+               pearson_rsv_severe_sens$conf.int[1],
+               pearson_flu_mild_spec$conf.int[1],
+               pearson_flu_mild_sens$conf.int[1],
+               pearson_flu_severe_spec$conf.int[1],
+               pearson_flu_severe_sens$conf.int[1],
+               pearson_covid_mild_spec$conf.int[1],
+               pearson_covid_mild_sens$conf.int[1],
+               pearson_covid_severe_spec$conf.int[1],
+               pearson_covid_severe_sens$conf.int[1]),
+  ci_upper = c(pearson_rsv_mild_spec$conf.int[2],
+               pearson_rsv_mild_sens$conf.int[2],
+               pearson_rsv_severe_spec$conf.int[2],
+               pearson_rsv_severe_sens$conf.int[2],
+               pearson_flu_mild_spec$conf.int[2],
+               pearson_flu_mild_sens$conf.int[2],
+               pearson_flu_severe_spec$conf.int[2],
+               pearson_flu_severe_sens$conf.int[2],
+               pearson_covid_mild_spec$conf.int[2],
+               pearson_covid_mild_sens$conf.int[2],
+               pearson_covid_severe_spec$conf.int[2],
+               pearson_covid_severe_sens$conf.int[2]),
   p_value = c(pearson_rsv_mild_spec$p.value,
               pearson_rsv_mild_sens$p.value,
               pearson_rsv_severe_spec$p.value,
@@ -250,6 +275,32 @@ pearson_results <- data.frame(
               pearson_covid_severe_spec$p.value,
               pearson_covid_severe_sens$p.value)
 )
+
+#format and save pearson_results as supplemental table
+pearson_results_formatted <- pearson_results %>%
+  mutate(
+    Outcome = case_when(
+      str_detect(test, "RSV") & str_detect(test, "Mild") ~ "Mild RSV",
+      str_detect(test, "RSV") & str_detect(test, "Severe") ~ "Severe RSV",
+      str_detect(test, "Flu") & str_detect(test, "Mild") ~ "Mild Influenza",
+      str_detect(test, "Flu") & str_detect(test, "Severe") ~ "Severe Influenza",
+      str_detect(test, "COVID-19") & str_detect(test, "Mild") ~ "Mild COVID-19",
+      str_detect(test, "COVID-19") & str_detect(test, "Severe") ~ "Severe COVID-19"
+    ),
+    Phenotype = case_when(
+      str_detect(test, "Specific") ~ "Specific",
+      str_detect(test, "Sensitive") ~ "Sensitive"
+    ),
+    `Correlation Coefficient` = round(pearson, 2),
+    `95% CI` = paste0("(", round(ci_lower, 2), ", ", round(ci_upper, 2), ")")
+  ) %>%
+  select(Outcome, Phenotype, `Correlation Coefficient`, `95% CI`)
+
+dir.create(here::here("post_check", "supplemental", "correlations"),
+           showWarnings = FALSE, recursive = TRUE)
+write_csv(pearson_results_formatted,
+          here::here("post_check", "supplemental", "correlations",
+                     "pearson_results_formatted.csv"))
 
 #now do the same by season
 seasons_pre <- c("2016-17", "2017-18", "2018-19")
@@ -293,6 +344,22 @@ for (season in seasons_pre) {
                 pearson_flu_mild_sens$estimate,
                 pearson_flu_severe_spec$estimate,
                 pearson_flu_severe_sens$estimate),
+    ci_lower = c(pearson_rsv_mild_spec$conf.int[1],
+                 pearson_rsv_mild_sens$conf.int[1],
+                 pearson_rsv_severe_spec$conf.int[1],
+                 pearson_rsv_severe_sens$conf.int[1],
+                 pearson_flu_mild_spec$conf.int[1],
+                 pearson_flu_mild_sens$conf.int[1],
+                 pearson_flu_severe_spec$conf.int[1],
+                 pearson_flu_severe_sens$conf.int[1]),
+    ci_upper = c(pearson_rsv_mild_spec$conf.int[2],
+                 pearson_rsv_mild_sens$conf.int[2],
+                 pearson_rsv_severe_spec$conf.int[2],
+                 pearson_rsv_severe_sens$conf.int[2],
+                 pearson_flu_mild_spec$conf.int[2],
+                 pearson_flu_mild_sens$conf.int[2],
+                 pearson_flu_severe_spec$conf.int[2],
+                 pearson_flu_severe_sens$conf.int[2]),
     p_value = c(pearson_rsv_mild_spec$p.value,
                 pearson_rsv_mild_sens$p.value,
                 pearson_rsv_severe_spec$p.value,
@@ -363,6 +430,30 @@ for (season in seasons_post) {
                 pearson_covid_mild_sens$estimate,
                 pearson_covid_severe_spec$estimate,
                 pearson_covid_severe_sens$estimate),
+    ci_lower = c(pearson_rsv_mild_spec$conf.int[1],
+                 pearson_rsv_mild_sens$conf.int[1],
+                 pearson_rsv_severe_spec$conf.int[1],
+                 pearson_rsv_severe_sens$conf.int[1],
+                 pearson_flu_mild_spec$conf.int[1],
+                 pearson_flu_mild_sens$conf.int[1],
+                 pearson_flu_severe_spec$conf.int[1],
+                 pearson_flu_severe_sens$conf.int[1],
+                 pearson_covid_mild_spec$conf.int[1],
+                 pearson_covid_mild_sens$conf.int[1],
+                 pearson_covid_severe_spec$conf.int[1],
+                 pearson_covid_severe_sens$conf.int[1]),
+    ci_upper = c(pearson_rsv_mild_spec$conf.int[2],
+                 pearson_rsv_mild_sens$conf.int[2],
+                 pearson_rsv_severe_spec$conf.int[2],
+                 pearson_rsv_severe_sens$conf.int[2],
+                 pearson_flu_mild_spec$conf.int[2],
+                 pearson_flu_mild_sens$conf.int[2],
+                 pearson_flu_severe_spec$conf.int[2],
+                 pearson_flu_severe_sens$conf.int[2],
+                 pearson_covid_mild_spec$conf.int[2],
+                 pearson_covid_mild_sens$conf.int[2],
+                 pearson_covid_severe_spec$conf.int[2],
+                 pearson_covid_severe_sens$conf.int[2]),
     p_value = c(pearson_rsv_mild_spec$p.value,
                 pearson_rsv_mild_sens$p.value,
                 pearson_rsv_severe_spec$p.value,
@@ -383,6 +474,39 @@ for (season in seasons_post) {
   )  
   
 }
+
+#format and save seasonal pearson results as supplemental table
+pearson_results_seasons_formatted <- pearson_results_seasons %>%
+  mutate(
+    Outcome = case_when(
+      str_detect(test, "RSV") & str_detect(test, "Mild") ~ "Mild RSV",
+      str_detect(test, "RSV") & str_detect(test, "Severe") ~ "Severe RSV",
+      str_detect(test, "Flu") & str_detect(test, "Mild") ~ "Mild Influenza",
+      str_detect(test, "Flu") & str_detect(test, "Severe") ~ "Severe Influenza",
+      str_detect(test, "COVID-19") & str_detect(test, "Mild") ~ "Mild COVID-19",
+      str_detect(test, "COVID-19") & str_detect(test, "Severe") ~ "Severe COVID-19"
+    ),
+    Phenotype = case_when(
+      str_detect(test, "Specific") ~ "Specific",
+      str_detect(test, "Sensitive") ~ "Sensitive"
+    ),
+    Season = str_extract(test, "(?<=\\()[^)]+(?=\\))"),
+    value = paste0(
+      round(pearson, 2), " (", round(ci_lower, 2), ", ", round(ci_upper, 2), ")"
+    ),
+    Outcome = factor(Outcome, levels = c(
+      "Mild RSV", "Severe RSV", "Mild Influenza", "Severe Influenza",
+      "Mild COVID-19", "Severe COVID-19"
+    )),
+    Phenotype = factor(Phenotype, levels = c("Specific", "Sensitive"))
+  ) %>%
+  select(Outcome, Phenotype, Season, value) %>%
+  pivot_wider(names_from = Season, values_from = value) %>%
+  arrange(Outcome, Phenotype)
+
+write_csv(pearson_results_seasons_formatted,
+          here::here("post_check", "supplemental", "correlations",
+                     "pearson_results_seasons_formatted.csv"))
 
 #tidy the overall results
 pearson_tidy <- pearson_results %>%

@@ -1,5 +1,8 @@
-# Ethnicity_ses adjustment-ratio condensed figures (all seasons per virus).
-# Output: post_check/plots/primary_analyses/condensed_model_ratios_key_vars/
+# Ethnicity_ses base vs further condensed figures (RSV / flu / COVID stacked).
+# All seasons per virus (continuous year axis).
+# Minimally vs fully adjusted estimates are connected by a line per level (same season column);
+# points only (no confidence intervals).
+# Output: post_check/plots/primary_analyses/condensed_models_key_vars/sequential_adjustment/
 library(tidyverse)
 library(here)
 library(arrow)
@@ -20,11 +23,12 @@ cohorts <- c(
 )
 
 for (cohort in cohorts) {
-  message("Running key-vars condensed (adjustment ratio, all seasons): ", cohort)
+  message("Running key-vars condensed (base vs further stacked, all seasons): ", cohort)
   tryCatch(
-    run_cohort_condensed_key_vars_adjustment_ratio(
+    run_cohort_condensed_key_vars_base_vs_further_stacked(
       cohort = cohort,
-      model_type = model_type
+      model_type = model_type,
+      out_root = CONDENSED_SEQUENTIAL_OUT_ROOT
     ),
     error = function(e) {
       message(

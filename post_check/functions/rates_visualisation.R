@@ -31,7 +31,7 @@ rate_viz <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male",
                 "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Other Ethnic Groups", "Unknown",
+                "Black or Black British", "Chinese or Other", "Unknown",
                 "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
                 "Urban Major Conurbation", "Urban Minor Conurbation",
                 "Urban City and Town", "Rural Town and Fringe",
@@ -41,7 +41,7 @@ rate_viz <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male",
                 "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Other Ethnic Groups", "Unknown",
+                "Black or Black British", "Chinese or Other", "Unknown",
                 "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
                 "Urban Major Conurbation", "Urban Minor Conurbation",
                 "Urban City and Town", "Rural Town and Fringe",
@@ -52,7 +52,7 @@ rate_viz <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "2-5y", "6-9y", "10-13y", "14-17y", "Female",
                 "Male", "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Other Ethnic Groups",
+                "Black or Black British", "Chinese or Other",
                 "Unknown", "1 (most deprived)", "2", "3", "4",
                 "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation",
@@ -75,7 +75,7 @@ rate_viz <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "18-39y", "40-64y", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "Chinese or Other", "Unknown", "1 (most deprived)",
                 "2", "3", "4", "5 (least deprived)",
                 "Multiple of the Same Generation", "Living Alone",
                 "One Other Generation", "Two Other Generations",
@@ -97,7 +97,7 @@ rate_viz <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2", "3",
+                "Chinese or Other", "Unknown", "1 (most deprived)", "2", "3",
                 "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
@@ -109,7 +109,7 @@ rate_viz <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2", "3",
+                "Chinese or Other", "Unknown", "1 (most deprived)", "2", "3",
                 "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
@@ -353,7 +353,7 @@ rate_viz_season <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male",
                 "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Other Ethnic Groups", "Unknown",
+                "Black or Black British", "Chinese or Other", "Unknown",
                 "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
                 "Urban Major Conurbation", "Urban Minor Conurbation",
                 "Urban City and Town", "Rural Town and Fringe",
@@ -363,7 +363,7 @@ rate_viz_season <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male",
                 "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Other Ethnic Groups", "Unknown",
+                "Black or Black British", "Chinese or Other", "Unknown",
                 "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
                 "Urban Major Conurbation", "Urban Minor Conurbation",
                 "Urban City and Town", "Rural Town and Fringe",
@@ -374,7 +374,7 @@ rate_viz_season <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "2-5y", "6-9y", "10-13y", "14-17y", "Female",
                 "Male", "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Other Ethnic Groups",
+                "Black or Black British", "Chinese or Other",
                 "Unknown", "1 (most deprived)", "2", "3", "4",
                 "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation",
@@ -397,7 +397,7 @@ rate_viz_season <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "18-39y", "40-64y", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "Chinese or Other", "Unknown", "1 (most deprived)",
                 "2", "3", "4", "5 (least deprived)",
                 "Multiple of the Same Generation", "Living Alone",
                 "One Other Generation", "Two Other Generations",
@@ -419,7 +419,7 @@ rate_viz_season <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2", "3",
+                "Chinese or Other", "Unknown", "1 (most deprived)", "2", "3",
                 "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
@@ -431,7 +431,7 @@ rate_viz_season <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2", "3",
+                "Chinese or Other", "Unknown", "1 (most deprived)", "2", "3",
                 "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
@@ -646,7 +646,7 @@ rate_viz_mult <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male",
                 "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Other Ethnic Groups", "Unknown",
+                "Black or Black British", "Chinese or Other", "Unknown",
                 "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
                 "Urban Major Conurbation", "Urban Minor Conurbation",
                 "Urban City and Town", "Rural Town and Fringe",
@@ -656,7 +656,7 @@ rate_viz_mult <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male",
                 "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Other Ethnic Groups", "Unknown",
+                "Black or Black British", "Chinese or Other", "Unknown",
                 "1 (most deprived)", "2", "3", "4", "5 (least deprived)",
                 "Urban Major Conurbation", "Urban Minor Conurbation",
                 "Urban City and Town", "Rural Town and Fringe",
@@ -667,7 +667,7 @@ rate_viz_mult <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "2-5y", "6-9y", "10-13y", "14-17y", "Female",
                 "Male", "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Other Ethnic Groups",
+                "Black or Black British", "Chinese or Other",
                 "Unknown", "1 (most deprived)", "2", "3", "4",
                 "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation",
@@ -690,7 +690,7 @@ rate_viz_mult <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "18-39y", "40-64y", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)",
+                "Chinese or Other", "Unknown", "1 (most deprived)",
                 "2", "3", "4", "5 (least deprived)",
                 "Multiple of the Same Generation", "Living Alone",
                 "One Other Generation", "Two Other Generations",
@@ -712,7 +712,7 @@ rate_viz_mult <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2", "3",
+                "Chinese or Other", "Unknown", "1 (most deprived)", "2", "3",
                 "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",
@@ -724,7 +724,7 @@ rate_viz_mult <- function(df, pathogen, outcome_type, interest = "no") {
     
     levels <- c("All", "65-74y", "75-89y", "90y+", "Female", "Male", "White",
                 "Mixed", "Asian or Asian British", "Black or Black British",
-                "Other Ethnic Groups", "Unknown", "1 (most deprived)", "2", "3",
+                "Chinese or Other", "Unknown", "1 (most deprived)", "2", "3",
                 "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
                 "Three Other Generations", "Urban Major Conurbation",

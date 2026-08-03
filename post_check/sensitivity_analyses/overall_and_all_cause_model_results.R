@@ -157,7 +157,7 @@ for(i in seq_along(plotlist)) {
 names(plotlist) <- plot_names
 
 #save Rdata
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_overall_resp_model_results.RData")))
 
 ###adults
@@ -308,7 +308,7 @@ for(i in seq_along(plotlist)) {
 names(plotlist) <- plot_names
 
 #save Rdata
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_overall_resp_model_results.RData")))
 
 ###children and adolescents
@@ -455,7 +455,7 @@ for(i in seq_along(plotlist)) {
 names(plotlist) <- plot_names
 
 #save Rdata
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_overall_resp_model_results.RData")))
 
 ###infants
@@ -546,7 +546,7 @@ for(i in seq_along(plotlist)) {
 names(plotlist) <- plot_names
 
 #save Rdata
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_overall_resp_model_results.RData")))
 
 ###infants_subgroup
@@ -637,5 +637,5 @@ for(i in seq_along(plotlist)) {
 names(plotlist) <- plot_names
 
 #save Rdata
-save(plotlist, file = here("post_check", "supplemental", "dashboard",
+save_dashboard_plotlist(plotlist, file = here("post_check", "supplemental", "dashboard",
                            paste0(cohort, "_overall_resp_model_results.RData")))

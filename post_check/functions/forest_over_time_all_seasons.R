@@ -52,6 +52,7 @@ forest_over_time_plot_all_seasons <- function(
         characteristic == "Prior Vaccination" ~ "Prior\nVaccination",
         characteristic == "IMD Quintile" ~ "IMD\nQuintile",
         characteristic == "Age Group" ~ "Age\nGroup",
+        characteristic == "Maternal Age" ~ "Maternal\nAge",
         TRUE ~ characteristic
       ),
       series = paste(variable, label, codelist_type, sep = " | "),
@@ -108,7 +109,21 @@ forest_over_time_plot_all_seasons <- function(
           (characteristic_base %in% c("Current\nVaccination", "Current Vaccination") & year < 2020) |
           (characteristic_base %in% c("Prior\nVaccination", "Prior Vaccination") & year < 2021)
       ))
-    x_breaks <- covid_x_breaks_from_data(plot_df, year_breaks)
+    investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) {
+      get("investigation_type", envir = .GlobalEnv)
+    } else {
+      "primary"
+    }
+    cohort_val <- if (exists("cohort", envir = .GlobalEnv)) {
+      get("cohort", envir = .GlobalEnv)
+    } else {
+      NA_character_
+    }
+    x_breaks <- covid_x_breaks_from_data(
+      plot_df, year_breaks,
+      cohort = cohort_val,
+      investigation_type = investigation_val
+    )
   }
 
   # Ensure every reference level has an RR=1 point in each plotted season.
@@ -204,6 +219,7 @@ forest_over_time_plot_all_seasons <- function(
     "Age Group",
     "Ethnicity",
     "IMD Quintile",
+    "Household Composition",
     "Rurality",
     "Prior Vaccination (Flu)",
     "Prior Vaccination (COVID)",
@@ -233,6 +249,8 @@ forest_over_time_plot_all_seasons <- function(
     level_order
   )
 
+  plot_df <- clean_forest_term_labels(plot_df)
+
   # Shapes:
   # - legend shows level names (no "(Reference)" entry)
   # - any reference level is shown as a filled circle (in plot + legend)
@@ -256,8 +274,8 @@ forest_over_time_plot_all_seasons <- function(
         TRUE ~ as.character(label)
       ),
       labels_facet = factor(labels_facet, levels = c(
-        intersect(c("Sex", "Age Group", "Ethnicity", "IMD Quintile", "Rurality", "Prior Vaccination", "Current Vaccination"), unique(labels_facet)),
-        setdiff(unique(labels_facet), c("Sex", "Age Group", "Ethnicity", "IMD Quintile", "Rurality", "Prior Vaccination", "Current Vaccination"))
+        intersect(c("Sex", "Age Group", "Ethnicity", "IMD Quintile", "Household Composition", "Rurality", "Prior Vaccination", "Current Vaccination"), unique(labels_facet)),
+        setdiff(unique(labels_facet), c("Sex", "Age Group", "Ethnicity", "IMD Quintile", "Household Composition", "Rurality", "Prior Vaccination", "Current Vaccination"))
       )),
       labels_col = factor(labels_col, levels = group_order),
       label = as.character(label)
@@ -298,25 +316,9 @@ forest_over_time_plot_all_seasons <- function(
     stop("Not enough distinct shapes for number of levels within a group. Please extend `shape_pool`.")
   }
 
-  shape_key_df <- plot_df %>%
-    group_by(labels_col, variable, label) %>%
-    summarise(is_ref = any(is_ref_level), .groups = "drop") %>%
-    arrange(labels_col, variable, label) %>%
-    group_by(labels_col, variable) %>%
-    mutate(
-      nonref_idx = cumsum(!is_ref),
-      shape_val = dplyr::if_else(
-        is_ref,
-        16L,
-        as.integer(shape_pool[pmax(nonref_idx, 1L)])
-      ),
-      shape_key = paste0(as.character(labels_col), " | ", as.character(variable), " | ", as.character(label))
-    ) %>%
-    ungroup()
+  shape_key_df <- build_forest_shape_key_df(plot_df, level_order, shape_pool)
 
-  plot_df <- plot_df %>%
-    left_join(shape_key_df %>% select(labels_col, variable, label, shape_key), by = c("labels_col", "variable", "label")) %>%
-    mutate(shape_key = factor(shape_key, levels = shape_key_df$shape_key))
+  plot_df <- join_forest_shape_keys(plot_df, shape_key_df)
 
   shape_map <- stats::setNames(shape_key_df$shape_val, shape_key_df$shape_key)
   shape_labels <- stats::setNames(stringr::str_wrap(as.character(shape_key_df$label), width = 18), shape_key_df$shape_key)
@@ -330,52 +332,19 @@ forest_over_time_plot_all_seasons <- function(
 
   # Always jitter horizontally within each group/year/outcome to improve separation.
   # Offsets follow the legend order of `shape_key`.
-  plot_df <- plot_df %>%
-    group_by(labels_facet, year, outcome_type) %>%
-    arrange(as.integer(shape_key), .by_group = TRUE) %>%
-    mutate(
-      jitter_rank = dplyr::row_number(),
-      jitter_n = dplyr::n(),
-      # Total horizontal span occupied by the set around the true year.
-      span = pmin(0.9, jitter_width * sqrt(pmax(jitter_n, 1L))),
-      step = dplyr::if_else(jitter_n > 1, span / (jitter_n - 1), 0),
-      x_plot = year + (jitter_rank - (jitter_n + 1) / 2) * step
-    ) %>%
-    ungroup()
+  plot_df <- assign_forest_shape_jitter(
+    plot_df,
+    group_cols = c("labels_facet", "year", "outcome_type"),
+    x_col = "year",
+    jitter_scale = jitter_width,
+    span_cap = 0.9
+  )
 
-  y_vals_for_range <- c(plot_df$estimate, plot_df$conf.low, plot_df$conf.high)
-  y_vals_for_range <- y_vals_for_range[is.finite(y_vals_for_range)]
-  if (isTRUE(log_y)) {
-    y_vals_for_range <- y_vals_for_range[y_vals_for_range > 0]
-    if (length(y_vals_for_range) == 0) {
-      y_vals_for_range <- c(0.1, 10)
-    }
-    shade_ymin <- max(min(y_vals_for_range), 1e-6)
-    shade_ymax <- max(y_vals_for_range)
-  } else {
-    if (length(y_vals_for_range) == 0) {
-      y_vals_for_range <- c(0.5, 1.5)
-    }
-    pad <- diff(range(y_vals_for_range)) * 0.05
-    if (!is.finite(pad) || pad <= 0) {
-      pad <- 0.1
-    }
-    shade_ymin <- min(y_vals_for_range) - pad
-    shade_ymax <- max(y_vals_for_range) + pad
-  }
-  disruption_label <- "Disrupted routes of transmission"
-  disruption_label_wrapped <- stringr::str_wrap(disruption_label, width = 18)
-  shading_df <- tidyr::crossing(
-    year_band = c(2020, 2021),
-    labels_facet = levels(plot_df$labels_facet),
-    outcome_type = if (isTRUE(facet_outcome)) levels(plot_df$outcome_type) else NA_character_
-  ) %>%
-    dplyr::filter(year_band %in% x_breaks) %>%
-    mutate(
-      ymin = shade_ymin,
-      ymax = shade_ymax,
-      disruption = disruption_label_wrapped
-    )
+  shading_df <- forest_disruption_shading_df(
+    plot_df = plot_df,
+    x_breaks = x_breaks,
+    log_y = log_y
+  )
 
   base_plot <- ggplot(
     plot_df,
@@ -391,8 +360,8 @@ forest_over_time_plot_all_seasons <- function(
     geom_rect(
       data = shading_df,
       aes(
-        xmin = year_band - 0.5,
-        xmax = year_band + 0.5,
+        xmin = xmin,
+        xmax = xmax,
         ymin = ymin,
         ymax = ymax,
         fill = disruption
@@ -413,8 +382,8 @@ forest_over_time_plot_all_seasons <- function(
         geom_pointrange(
           aes(shape = shape_key),
           alpha = 0.8,
-          linewidth = 0.35,
-          fatten = 2.4,
+          linewidth = FOREST_POINTRANGE_LINEWIDTH,
+          fatten = FOREST_POINTRANGE_FATTEN,
           na.rm = TRUE,
           position = position_identity()
         )
@@ -422,7 +391,7 @@ forest_over_time_plot_all_seasons <- function(
         geom_point(
           aes(shape = shape_key),
           alpha = 0.85,
-          size = 1.6,
+          size = FOREST_POINT_SIZE,
           na.rm = TRUE
         )
       }
@@ -456,8 +425,8 @@ forest_over_time_plot_all_seasons <- function(
     } +
     scale_color_manual(values = colour_map, drop = FALSE) +
     scale_fill_manual(
-      values = setNames("grey85", disruption_label_wrapped),
-      breaks = disruption_label_wrapped,
+      values = setNames("grey85", FOREST_DISRUPTION_LABEL),
+      breaks = FOREST_DISRUPTION_LABEL,
       drop = FALSE
     ) +
     scale_shape_manual(values = shape_map, labels = shape_labels, drop = FALSE) +
@@ -467,44 +436,41 @@ forest_over_time_plot_all_seasons <- function(
       y = if (!is.null(y_lab)) y_lab else paste(pathogen_title, "Rate Ratio"),
       color = "Characteristic",
       fill = NULL,
-      shape = "Level"
+      shape = NULL
     ) +
-    theme_bw(base_size = 11) +
+    theme_bw(base_size = FOREST_BASE_SIZE) +
     theme(
       panel.grid.minor = element_blank(),
-      axis.text.x = element_text(size = 6.5),
-      axis.text.y = element_text(size = 6.5),
+      axis.text.x = element_text(size = FOREST_AXIS_TEXT_X_SIZE),
+      axis.text.y = element_text(size = FOREST_AXIS_TEXT_Y_SIZE),
       panel.border = element_blank(),
       axis.line = element_line(color = "black"),
       strip.background = element_blank(),
       strip.text.y.left = element_blank(),
-      strip.text.y.right = element_text(size = 6.25, face = "bold"),
+      strip.text.y.right = element_text(size = FOREST_STRIP_TEXT_SIZE, face = "bold"),
       strip.text.x = element_blank(),
       panel.spacing.x = unit(if (identical(pathogen, "covid")) 8.3 else 0.18, "lines"),
       plot.margin = margin(5.5, if (identical(pathogen, "covid")) 1 else 4, 5.5, 2.5),
-      legend.text = element_text(size = 7),
-      legend.title = element_text(size = 8),
-      legend.key.width = unit(if (isTRUE(show_ci)) 1.4 else 2.2, "lines"),
-      legend.key.height = unit(if (isTRUE(show_ci)) 1.4 else 2.2, "lines")
+      legend.text = element_text(size = FOREST_LEGEND_TEXT_SIZE),
+      legend.title = element_text(size = FOREST_LEGEND_TITLE_SIZE),
+      legend.key.width = unit(if (isTRUE(show_ci)) FOREST_LEGEND_KEY_CI else FOREST_LEGEND_KEY_POINT, "lines"),
+      legend.key.height = unit(if (isTRUE(show_ci)) FOREST_LEGEND_KEY_CI else FOREST_LEGEND_KEY_POINT, "lines")
     )
 
   base_plot <- base_plot +
     guides(
       color = "none",
       fill = if (isTRUE(show_disruption_legend)) {
-        guide_legend(
-          ncol = 1,
-          order = 2,
-          override.aes = list(alpha = 0.5)
-        )
+        forest_disruption_fill_guide(legend_position = "right")
       } else {
         "none"
       },
       shape = guide_legend(
+        title = NULL,
         ncol = 1,
         order = 1,
         override.aes = list(
-          size = 0.5,
+          size = FOREST_LEGEND_OVERRIDE_CI,
           colour = shape_legend_cols,
           fill = shape_legend_cols
         )
@@ -520,14 +486,14 @@ forest_over_time_plot_all_seasons <- function(
         scales = facet_scales,
         space = "fixed",
         axes = "y",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = labeller(labels_facet = forest_facet_labeller)
       )
     } else {
       base_plot <- base_plot + facet_grid(
         labels_facet ~ outcome_type,
         scales = facet_scales,
         space = "fixed",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = labeller(labels_facet = forest_facet_labeller)
       )
     }
   } else {
@@ -537,14 +503,14 @@ forest_over_time_plot_all_seasons <- function(
         scales = facet_scales,
         space = "fixed",
         axes = "y",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = labeller(labels_facet = forest_facet_labeller)
       )
     } else {
       base_plot <- base_plot + facet_grid(
         labels_facet ~ .,
         scales = facet_scales,
         space = "fixed",
-        labeller = labeller(labels_facet = label_wrap_gen(width = 14))
+        labeller = labeller(labels_facet = forest_facet_labeller)
       )
     }
   }
