@@ -41,8 +41,8 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
                                   "Black or Black British", "Mixed",
                                   "Other Ethnic Groups", "White",
                                   "Unknown") ~ "Ethnicity",
-            characteristic %in% c("1 (least deprived)", "2", "3", "4",
-                                  "5 (most deprived)") ~ "IMD",
+            characteristic %in% c("1 (most deprived)", "2", "3", "4",
+                                  "5 (least deprived)") ~ "IMD",
             characteristic %in% c("Rural", "Urban") ~ "Rurality",
             characteristic %in% c("Living Alone",
                                   "Multiple of the Same Generation",
@@ -79,8 +79,8 @@ collate_rates_season <- function(seasons, pathogen, characteristic) {
                                 "Black or Black British", "Mixed",
                                 "Other Ethnic Groups", "White",
                                 "Unknown") ~ "Ethnicity",
-          characteristic %in% c("1 (least deprived)", "2", "3", "4",
-                                "5 (most deprived)") ~ "IMD",
+          characteristic %in% c("1 (most deprived)", "2", "3", "4",
+                                "5 (least deprived)") ~ "IMD",
           characteristic %in% c(
             "Rural Town and Fringe", "Rural Village and Dispersed",
             "Urban City and Town", "Urban Major Conurbation",
@@ -196,16 +196,16 @@ collate_rates_season_multi <- function(seasons, pathogen, char1, char2) {
                                   "Black or Black British", "Mixed",
                                   "Other Ethnic Groups", "White",
                                   "Unknown") ~ "Ethnicity",
-            characteristic1 %in% c("1 (least deprived)", "2", "3", "4",
-                                  "5 (most deprived)") ~ "IMD"
+            characteristic1 %in% c("1 (most deprived)", "2", "3", "4",
+                                  "5 (least deprived)") ~ "IMD"
           ),
           group2 = case_when(
             characteristic2 %in% c("Asian or Asian British",
                                    "Black or Black British", "Mixed",
                                    "Other Ethnic Groups", "White",
                                    "Unknown") ~ "Ethnicity",
-            characteristic2 %in% c("1 (least deprived)", "2", "3", "4",
-                                   "5 (most deprived)") ~ "IMD"
+            characteristic2 %in% c("1 (most deprived)", "2", "3", "4",
+                                   "5 (least deprived)") ~ "IMD"
           )
         )
       
@@ -231,16 +231,16 @@ collate_rates_season_multi <- function(seasons, pathogen, char1, char2) {
                                  "Black or Black British", "Mixed",
                                  "Other Ethnic Groups", "White",
                                  "Unknown") ~ "Ethnicity",
-          characteristic1 %in% c("1 (least deprived)", "2", "3", "4",
-                                 "5 (most deprived)") ~ "IMD"
+          characteristic1 %in% c("1 (most deprived)", "2", "3", "4",
+                                 "5 (least deprived)") ~ "IMD"
         ),
         group2 = case_when(
           characteristic2 %in% c("Asian or Asian British",
                                  "Black or Black British", "Mixed",
                                  "Other Ethnic Groups", "White",
                                  "Unknown") ~ "Ethnicity",
-          characteristic2 %in% c("1 (least deprived)", "2", "3", "4",
-                                 "5 (most deprived)") ~ "IMD"
+          characteristic2 %in% c("1 (most deprived)", "2", "3", "4",
+                                 "5 (least deprived)") ~ "IMD"
         )
       )
     
