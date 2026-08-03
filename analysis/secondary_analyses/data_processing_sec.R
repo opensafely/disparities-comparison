@@ -160,7 +160,7 @@ df_input <- df_input %>%
                                             labels = c("White", "Mixed",
                                                        "Asian or Asian British",
                                                        "Black or Black British",
-                                                       "Other Ethnic Groups"),
+                                                       "Chinese or Other"),
                                             ordered = FALSE), ref = "White"),
     #set imd quintile reference
     imd_quintile = relevel(imd_quintile, ref = "1 (most deprived)"),
@@ -187,8 +187,8 @@ df_input <- df_input %>%
       "H" = "Asian or Asian British", "J" = "Asian or Asian British",
       "K" = "Asian or Asian British", "L" = "Asian or Asian British",
       "M" = "Black or Black British", "N" = "Black or Black British",
-      "P" = "Black or Black British", "R" = "Other Ethnic Groups",
-      "S" = "Other Ethnic Groups")
+      "P" = "Black or Black British", "R" = "Chinese or Other",
+      "S" = "Chinese or Other")
   ) %>%
   mutate(
     latest_ethnicity_group = relevel(factor(if_else(
