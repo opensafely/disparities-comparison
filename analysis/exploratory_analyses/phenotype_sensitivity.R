@@ -24,6 +24,9 @@ covid_season_min <- as.Date("2019-09-01")
 covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
 covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
+#import redaction function
+source(here::here("analysis", "functions", "redaction.R"))
+
 df_input_specific <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
              year(study_start_date), "_", year(study_end_date), "_", 
@@ -78,6 +81,8 @@ if (investigation_type == "additional_sensitivity") {
 
 }
 
+}
+
 #select necessary columns
 if (study_start_date >= covid_season_min) {
   df_input_sensitive <- df_input_sensitive %>% 
@@ -118,6 +123,25 @@ if (study_start_date >= covid_season_min) {
       overall_resp_secondary_date
     )
 }
+
+# infants are month-expanded; collapse to one row per patient for phenotype counts
+collapse_infant_person_months <- function(df) {
+  if (!(cohort %in% c("infants", "infants_subgroup"))) {
+    return(df)
+  }
+  inf_cols <- names(df)[endsWith(names(df), "_inf")]
+  date_cols <- names(df)[endsWith(names(df), "_date")]
+  df %>%
+    group_by(patient_id) %>%
+    summarise(
+      across(all_of(inf_cols), ~ as.integer(any(.x == 1, na.rm = TRUE))),
+      across(all_of(date_cols), ~ if (all(is.na(.x))) as.Date(NA) else min(.x, na.rm = TRUE)),
+      .groups = "drop"
+    )
+}
+
+df_input_specific <- collapse_infant_person_months(df_input_specific)
+df_input_sensitive <- collapse_infant_person_months(df_input_sensitive)
 
 ##define a function to create a text coding for outcomes 
 alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {

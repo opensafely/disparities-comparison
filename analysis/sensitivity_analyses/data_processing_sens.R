@@ -339,7 +339,8 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
         rsv_primary_censor = case_when(
           is.na(rsv_primary_date) ~ 1, # no event
           rsv_primary_inf_date < rsv_primary_date ~ 1, # event after censoring
-          rsv_primary_date >= date & rsv_primary_date <= date_month ~ 0 # event within interval of interest
+          rsv_primary_date >= date & rsv_primary_date <= date_month ~ 0, # event within interval of interest
+          TRUE ~ 1  # already occurred / outside this window
         ),
         #infer mild rsv outcome 
         rsv_primary_inf = if_else(rsv_primary_censor == 0, 1, 0),
@@ -351,7 +352,8 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
         rsv_secondary_censor = case_when(
           is.na(rsv_secondary_date) ~ 1, # no event
           rsv_secondary_inf_date < rsv_secondary_date ~ 1, # event after censoring
-          rsv_secondary_date >= date & rsv_secondary_date <= date_month ~ 0 # event within interval of interest
+          rsv_secondary_date >= date & rsv_secondary_date <= date_month ~ 0, # event within interval of interest
+          TRUE ~ 1  # already occurred / outside this window
         ),
         #infer severe rsv outcome
         rsv_secondary_inf = if_else(rsv_secondary_censor == 0, 1, 0),
@@ -363,7 +365,8 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
         flu_primary_censor = case_when(
           is.na(flu_primary_date) ~ 1, # no event
           flu_primary_inf_date < flu_primary_date ~ 1, # event after censoring
-          flu_primary_date >= date & flu_primary_date <= date_month ~ 0 # event within interval of interest
+          flu_primary_date >= date & flu_primary_date <= date_month ~ 0, # event within interval of interest
+          TRUE ~ 1  # already occurred / outside this window
         ),
         #infer mild flu outcome
         flu_primary_inf = if_else(flu_primary_censor == 0, 1, 0),
@@ -375,7 +378,8 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
         flu_secondary_censor = case_when(
           is.na(flu_secondary_date) ~ 1, # no event
           flu_secondary_inf_date < flu_secondary_date ~ 1, # event after censoring
-          flu_secondary_date >= date & flu_secondary_date <= date_month ~ 0 # event within interval of interest
+          flu_secondary_date >= date & flu_secondary_date <= date_month ~ 0, # event within interval of interest
+          TRUE ~ 1  # already occurred / outside this window
         ),
         #infer severe flu outcome
         flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0)
