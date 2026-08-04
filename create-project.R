@@ -3618,6 +3618,54 @@ action_visualise <- function(cohort) {
   
 }
 
+action_phenotype_testing <- function(cohort, season, dates,
+                                     season_start_date, season_end_date,
+                                     codelist_type, investigation_type) {
+  
+  splice(
+    
+    action(
+      name = glue("phenotype_testing_generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("ehrql:v1 generate-dataset analysis/dataset_definition.py
+      --output output/data/input_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow
+      --dummy-data-file analysis/dummydata/data/dummyextract_{cohort}_{dates}.arrow
+      -- {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = NULL,
+      highly_sensitive = lst(
+        dataset = glue("output/data/input_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow")
+      )
+    ),
+    
+    action(
+      name = glue("phenotype_testing_process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:v2 analysis/data_processing.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("phenotype_testing_generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      highly_sensitive = lst(
+        dataset = glue("output/data/input_processed_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow")
+      )
+    ),
+
+    action(
+      name = glue("phenotype_testing_phenotype_sensitivity_{cohort}_{season}_{codelist_type}"),
+      run = glue("r:v2 analysis/exploratory_analyses/phenotype_sensitivity.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_specific_primary"),
+                   glue("phenotype_testing_process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        csv = glue("output/exploratory/phenotype_sensitivity_testing_{cohort}_{dates}_{codelist_type}.csv"))
+    ),
+    
+    action(
+      name = glue("phenotype_testing_reinfections_{cohort}_{season}_{codelist_type}"),
+      run = glue("r:v2 analysis/exploratory_analyses/reinfections.R {cohort} {season_start_date} {season_end_date} {codelist_type}"),
+      needs = list(glue("phenotype_testing_process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        csv = glue("output/exploratory/reinfections_{cohort}_{dates}_{codelist_type}.csv"))
+    ),
+
+  )
+  
+}
+
 # specify project ----
 
 ## defaults ----
@@ -4232,6 +4280,13 @@ actions_list <- splice (
   action_visualise("infants"),
   # action_visualise("infants_subgroup"),
 
+  comment("# # # # # # # # # # # # # # # # # # #", "Phenotype Testing", "# # # # # # # # # # # # # # # # # # #"),
+
+  action_phenotype_testing("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "alternative", "additional_sensitivity"),
+  action_phenotype_testing("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative", "additional_sensitivity"),
+  action_phenotype_testing("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date", "alternative", "additional_sensitivity"),
+  action_phenotype_testing("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative", "additional_sensitivity"),
+
   comment("# # # # # # # # # # # # # # # # # # #", "End", "# # # # # # # # # # # # # # # # # # #")
 
 )
@@ -4289,7 +4344,7 @@ names(actions_list) %>% tibble(action=.) %>%
 
 actions_list %>% 
   names() %>% 
-  str_subset("validation") %>% 
+  str_subset("phenotype_testing") %>% 
   tibble(action=.) %>% 
   mutate(
     model = action==""  & lag(action!="", 1, TRUE),
