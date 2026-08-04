@@ -4,7 +4,7 @@ import json, sys
 from pathlib import Path
 from datetime import datetime
 
-from ehrql.codes import ICD10Code, CTV3Code
+from ehrql.codes import ICD10Code, CTV3Code, SNOMEDCTCode
 from ehrql import case, days, when, years, months, maximum_of, minimum_of
 from ehrql.tables.tpp import (
     emergency_care_attendances, 
@@ -203,9 +203,11 @@ def first_gp_event(codelist, where = True):
 
 
 #emergency attendances occuring after index date but before end of follow up
+#where the discharge destination is home
 emergency_events = (
   emergency_care_attendances.where(emergency_care_attendances
   .arrival_date.is_on_or_between(index_date, followup_end_date))
+  .where(emergency_care_attendances.discharge_destination == SNOMEDCTCode("306689006"))
 )
 
 #prescriptions occuring after index date but before end of follow up
@@ -261,6 +263,64 @@ def get_codes_dates(codelist_name, num_events, start_date, num_codes):
         # Check if there are multiple distinct codes within 14 days
         events_in_date_window = all_events.where(
             all_events.date.is_on_or_between(event.date, event.date + days(14))
+        )
+        has_multiple_codes = (
+            events_in_date_window.snomedct_code.count_distinct_for_patient() >= num_codes
+        )
+        # Append this event to the lists of cases
+        if num_codes == 1:
+          date_cases.append(event.date)
+        else:
+          date_cases.append(
+            when(has_multiple_codes).then(event.date)
+          )
+        code_cases.append(
+            when(has_multiple_codes).then(event.snomedct_code)
+        )
+        # Get the next event after this one and repeat
+        event = all_events.where(
+            all_events.date.is_after(event.date)
+        ).first_for_patient()
+
+    if num_codes != 1:
+      codes_date = case(*date_cases, otherwise = None)
+    code = case(*code_cases, otherwise = None)
+
+    if num_codes == 1: 
+      return(date_cases) 
+    else:
+      return(codes_date, code)
+
+##define function for outcome identification
+def get_codes_dates_long(codelist_name, num_events, start_date, num_codes):
+
+    # Dynamically get the codelist object
+    pathogen_codelist = getattr(codelists, codelist_name)
+
+    # Get all relevant events sorted by date
+    all_events = (
+        clinical_events.where(
+            clinical_events.date.is_on_or_between(start_date, followup_end_date)
+        )
+        .where(clinical_events.snomedct_code.is_in(pathogen_codelist))
+        .sort_by(clinical_events.date)
+    )
+
+    # Get the first event
+    event = all_events.first_for_patient()
+
+    # # Use this as the default if we don't match any others
+    # default_event = event
+
+    # Start with an empty list of possible cases for the date and code
+    date_cases = []
+    code_cases = []
+
+    # For the next three events ...
+    for n in range(num_events):
+        # Check if there are multiple distinct codes within 28 days
+        events_in_date_window = all_events.where(
+            all_events.date.is_on_or_between(event.date, event.date + days(28))
         )
         has_multiple_codes = (
             events_in_date_window.snomedct_code.count_distinct_for_patient() >= num_codes

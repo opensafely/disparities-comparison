@@ -72,6 +72,9 @@ rsv_sensitive_codelist = codelist_from_csv(
   column = "code",
 )
 
+# rsv primary - sensitive, alternative
+rsv_sensitive_codelist_alt = set(rsv_sensitive_codelist) - set("49727002")
+
 # rsv emergency attendances - sensitive
 wheeze_attendance = ["4120002", "276191000000107"]
 
@@ -136,6 +139,9 @@ cough_codelist = codelist_from_csv(
   column = "code",
 )
 
+# fever + cough
+fever_cough_codelist = fever_codelist + cough_codelist
+
 # flu primary - sensitive (prescriptions)
 flu_prescriptions_codelist = codelist_from_csv(
   "codelists/opensafely-influenza-identification-prescriptions-maximal-sensitivity-dmd.csv",
@@ -154,6 +160,10 @@ ari_secondary_codelist = codelist_from_csv(
   column = "code",
 )
 ari_secondary_codelist = expand_three_char_icd10_codes(ari_secondary_codelist)
+
+# acute respiratory illness secondary - alternative
+ari_secondary_codelist_alt1 = set(ari_secondary_codelist) - set("J069")
+ari_secondary_codelist_alt2 = set(ari_secondary_codelist) - set("J219")
 
 # flu secondary exclusion
 flu_secondary_exclusion_codelist = codelist_from_csv(
@@ -182,6 +192,9 @@ covid_sensitive_codelist = codelist_from_csv(
   column = "code",
 )
 
+# covid primary - sensitive, alternative
+covid_sensitive_codelist_alt = set(covid_sensitive_codelist) - set("49727002")
+
 # covid primary - sensitive (prescriptions)
 covid_prescriptions_codelist = codelist_from_csv(
   "codelists/opensafely-covid-19-identification-prescriptions-dmd.csv",
@@ -196,6 +209,9 @@ covid_primary_exclusion_codelist = codelist_from_csv(
 
 # covid secondary - sensitive
 coronavirus_unspecified = ["B972", "B342"]
+
+# covid secondary - sensitive, alternative
+coronavirus_unspecified_alt = ["B342"]
 
 # covid secondary exclusion
 covid_secondary_exclusion_codelist = codelist_from_csv(

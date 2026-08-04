@@ -17,6 +17,8 @@ if (length(args) == 0) {
   cohort <- args[[1]]
   study_start_date <- study_dates[[args[[2]]]]
   study_end_date <- study_dates[[args[[3]]]]
+  codelist_type <- args[[4]]
+  investigation_type <- args[[5]]
 }
 covid_season_min <- as.Date("2019-09-01")
 covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
@@ -60,10 +62,22 @@ if (study_start_date >= covid_season_min) {
     )
 }
 
-df_input_sensitive <- read_feather(
+if (investigation_type == "additional_sensitivity") {
+
+  df_input_sensitive <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_", 
              year(study_start_date), "_", year(study_end_date), "_", 
-             "sensitive", "_", "primary",".arrow")))
+             codelist_type, "_", "additional_sensitivity",".arrow")))
+
+} else {
+
+  df_input_sensitive <- read_feather(
+    here::here("output", "data", paste0("input_processed_", cohort, "_", 
+              year(study_start_date), "_", year(study_end_date), "_", 
+              "sensitive", "_", "primary",".arrow")))
+
+}
+
 
 #select necessary columns
 if (study_start_date >= covid_season_min) {
@@ -830,6 +844,16 @@ patients_combined <- patients_specific %>%
 fs::dir_create(here::here("output", "exploratory"))
 
 #write to file
-write_csv(patients_combined, paste0(here::here("output", "exploratory"),
-          "/", "phenotype_sensitivity_", cohort, "_", year(study_start_date), "_", 
-          year(study_end_date), ".csv"))
+if (investigation_type == "additional_sensitivity") {
+
+  write_csv(patients_combined, paste0(here::here("output", "exploratory"),
+            "/", "phenotype_sensitivity_testing_", cohort, "_", year(study_start_date), "_", 
+            year(study_end_date), "_", codelist_type, ".csv"))
+
+} else {
+
+  write_csv(patients_combined, paste0(here::here("output", "exploratory"),
+            "/", "phenotype_sensitivity_", cohort, "_", year(study_start_date), "_", 
+            year(study_end_date), ".csv"))
+
+}
