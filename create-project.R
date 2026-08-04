@@ -3651,7 +3651,7 @@ action_phenotype_testing <- function(cohort, season, dates,
       needs = list(glue("process_dataset_{cohort}_{season}_specific_primary"),
                    glue("phenotype_testing_process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        csv = glue("output/exploratory/phenotype_sensitivity_testing_{cohort}_{dates}_{codelist_type}.csv"))
+        csv = glue("output/additional_sensitivity/phenotype_sensitivity_testing_{cohort}_{dates}_{codelist_type}.csv"))
     ),
     
     action(
@@ -3659,7 +3659,7 @@ action_phenotype_testing <- function(cohort, season, dates,
       run = glue("r:v2 analysis/exploratory_analyses/reinfections.R {cohort} {season_start_date} {season_end_date} {codelist_type}"),
       needs = list(glue("phenotype_testing_process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       moderately_sensitive = lst(
-        csv = glue("output/exploratory/reinfections_{cohort}_{dates}_{codelist_type}.csv"))
+        csv = glue("output/additional_sensitivity/reinfections_{cohort}_{dates}_{codelist_type}.csv"))
     ),
 
   )
@@ -4284,6 +4284,10 @@ actions_list <- splice (
 
   action_phenotype_testing("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "alternative", "additional_sensitivity"),
   action_phenotype_testing("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative", "additional_sensitivity"),
+  action_phenotype_testing("adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "alternative", "additional_sensitivity"),
+  action_phenotype_testing("adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative", "additional_sensitivity"),
+  action_phenotype_testing("children_and_adolescents", "s8", "2023_2024", "season8_start_date", "season8_end_date", "alternative", "additional_sensitivity"),
+  action_phenotype_testing("children_and_adolescents", "s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative", "additional_sensitivity"),
   action_phenotype_testing("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date", "alternative", "additional_sensitivity"),
   action_phenotype_testing("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative", "additional_sensitivity"),
 
