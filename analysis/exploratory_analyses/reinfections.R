@@ -745,8 +745,19 @@ patients <- patients[, c("infection_type", "outcome_type",
 
 ## create output directories ----
 fs::dir_create(here::here("output", "exploratory"))
+fs::dir_create(here::here("output", "additional_sensitivity"))
 
 #write to file
-write_csv(patients, paste0(here::here("output", "exploratory"),
-          "/", "reinfections_", cohort, "_", year(study_start_date), "_", 
-          year(study_end_date), "_", codelist_type, ".csv"))
+if (investigation_type == "additional_sensitivity") {
+
+  write_csv(patients, paste0(here::here("output", "additional_sensitivity"),
+            "/", "reinfections_", cohort, "_", year(study_start_date), "_", 
+            year(study_end_date), "_", codelist_type, ".csv"))
+
+} else {
+
+  write_csv(patients, paste0(here::here("output", "exploratory"),
+            "/", "reinfections_", cohort, "_", year(study_start_date), "_", 
+            year(study_end_date), "_", codelist_type, ".csv"))
+
+}

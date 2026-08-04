@@ -78,7 +78,6 @@ if (investigation_type == "additional_sensitivity") {
 
 }
 
-
 #select necessary columns
 if (study_start_date >= covid_season_min) {
   df_input_sensitive <- df_input_sensitive %>% 
@@ -842,11 +841,14 @@ patients_combined <- patients_specific %>%
 
 ## create output directories ----
 fs::dir_create(here::here("output", "exploratory"))
+fs::dir_create(here::here("output", "additional_sensitivity"))
 
 #write to file
 if (investigation_type == "additional_sensitivity") {
 
-  write_csv(patients_combined, paste0(here::here("output", "exploratory"),
+  patients_combined <- patients_combined %>% 
+    mutate(n = roundmid_any(n))
+  write_csv(patients_combined, paste0(here::here("output", "additional_sensitivity"),
             "/", "phenotype_sensitivity_testing_", cohort, "_", year(study_start_date), "_", 
             year(study_end_date), "_", codelist_type, ".csv"))
 
