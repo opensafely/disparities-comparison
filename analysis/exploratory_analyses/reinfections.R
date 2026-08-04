@@ -29,10 +29,21 @@ covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 #import redaction function
 source(here::here("analysis", "functions", "redaction.R"))
 
-df_input <- read_feather(
-  here::here("output", "data", paste0("input_processed_", cohort, "_", 
-             year(study_start_date), "_", year(study_end_date), "_", 
-             codelist_type, "_", "primary",".arrow")))
+if (codelist_type %in% c("alternative", "second_alternative")) {
+
+  df_input <- read_feather(
+    here::here("output", "data", paste0("input_processed_", cohort, "_", 
+              year(study_start_date), "_", year(study_end_date), "_", 
+              codelist_type, "_additional_sensitivity.arrow")))
+
+} else {
+
+  df_input <- read_feather(
+    here::here("output", "data", paste0("input_processed_", cohort, "_", 
+              year(study_start_date), "_", year(study_end_date), "_", 
+              codelist_type, "_", "primary",".arrow")))
+
+}
 
 #select necessary columns
 if (study_start_date >= covid_season_min) {
