@@ -748,7 +748,7 @@ fs::dir_create(here::here("output", "exploratory"))
 fs::dir_create(here::here("output", "additional_sensitivity"))
 
 #write to file
-if (investigation_type == "additional_sensitivity") {
+if (codelist_type %in% c("alternative", "second_alternative")) {
 
   write_csv(patients, paste0(here::here("output", "additional_sensitivity"),
             "/", "reinfections_", cohort, "_", year(study_start_date), "_", 
