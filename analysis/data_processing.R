@@ -398,7 +398,7 @@ if (study_start_date >= covid_season_min) {
     )
 }
 
-if (codelist_type == "sensitive") {
+if (codelist_type != "specific") {
   df_input <- df_input %>%
     mutate(
       #infer presence of mild overall respiratory
@@ -473,7 +473,7 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
         flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0)
       )
     #for sensitive analyses define overall respiratory outcomes
-    if (codelist_type == "sensitive") {
+    if (codelist_type != "specific") {
       df_input <- df_input %>%
         mutate(
           #infer mild case date for overall respiratory
@@ -581,7 +581,7 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
         covid_secondary_inf = if_else(covid_secondary_censor == 0, 1, 0)
       )
     #for sensitive analyses define overall respiratory outcomes
-    if (codelist_type == "sensitive") {
+    if (codelist_type != "specific") {
       df_input <- df_input %>%
         mutate(
           #infer mild case date for overall respiratory
@@ -658,7 +658,7 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
         flu_secondary_inf = if_else(flu_secondary_censor == 0, 1, 0)
       )
     #for sensitive analyses define overall respiratory outcomes
-    if (codelist_type == "sensitive") {
+    if (codelist_type != "specific") {
       df_input <- df_input %>%
         mutate(
           #infer mild case date for overall respiratory
@@ -744,7 +744,7 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
         covid_secondary_inf = if_else(covid_secondary_censor == 0, 1, 0)
       )
     #for sensitive analyses define overall respiratory outcomes
-    if (codelist_type == "sensitive") {
+    if (codelist_type != "specific") {
       df_input <- df_input %>%
         mutate(
           #infer mild case date for overall respiratory
@@ -803,7 +803,7 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
         time_flu_secondary = if_else(
           date > flu_secondary_inf_date, NA_real_, time_flu_secondary)
       )
-    if (codelist_type == "sensitive") {
+    if (codelist_type != "specific") {
       df_input <- df_input %>%
         mutate(
           #time until mild overall respiratory outcome
@@ -860,7 +860,7 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
           time_covid_secondary = if_else(
             date > covid_secondary_inf_date, NA_real_, time_covid_secondary)
         )
-      if (codelist_type == "sensitive") {
+      if (codelist_type != "specific") {
         df_input <- df_input %>%
           mutate(
             #time until mild overall respiratory outcome
@@ -902,7 +902,7 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
         time_flu_secondary = time_length(difftime(flu_secondary_inf_date, 
                              patient_index_date, "weeks"), "years")
       )
-    if (codelist_type == "sensitive") {
+    if (codelist_type != "specific") {
       df_input <- df_input %>%
         mutate(
           #time until mild overall respiratory outcome
@@ -937,7 +937,7 @@ if (cohort == "infants" | cohort == "infants_subgroup") {
         time_covid_secondary = time_length(difftime(covid_secondary_inf_date, 
                                patient_index_date, "weeks"), "years")
       )
-    if (codelist_type == "sensitive") {
+    if (codelist_type != "specific") {
       df_input <- df_input %>%
         mutate(
           #time until mild overall respiratory outcome
