@@ -539,7 +539,7 @@ if codelist_type == "specific" :
 
 #-- SENSITIVE PHENOTYPES
 
-else :
+elif codelist_type == "sensitive" :
 
   ##RSV outcomes
 
@@ -966,19 +966,24 @@ else :
   ari_dates = (
     get_codes_dates("ari_primary_codelist", 4, index_date, 1)
   )
-  fever_dates = (
-    get_codes_dates("fever_codelist", 4, index_date, 1)
+  # fever_dates = (
+  #   get_codes_dates("fever_codelist", 4, index_date, 1)
+  # )
+  # cough_dates = (
+  #   get_codes_dates("cough_codelist", 4, index_date, 1)
+  # )
+  fever_cough_dates = (
+    get_codes_dates("fever_cough_codelist", 4, index_date, 1)
   )
   
   ILI_pairs = []
   ILI_date_cases = []
 
   for ari_date in ari_dates:
-      for fever_date in fever_dates:
-          close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
-          ILI_pairs.append(when(close_in_time).then(True))
-          ILI_date_cases.append(when(close_in_time)
-          .then(minimum_of(ari_date, fever_date)))
+    for fever_cough_date in fever_cough_dates:
+      close_in_time = diff_dates_days(ari_date, fever_cough_date).absolute() <= 14
+      ILI_pairs.append(when(close_in_time).then(True))
+      ILI_date_cases.append(when(close_in_time).then(minimum_of(ari_date, fever_cough_date)))
 
   ILI_case = case(*ILI_pairs, otherwise = False)
   ILI_date = case(*ILI_date_cases, otherwise = None)
@@ -1025,20 +1030,27 @@ else :
     get_codes_dates("ari_primary_codelist", 4,
                     dataset.flu_primary_date + days(14), 1)
   )
-  fever_second_dates = (
-    get_codes_dates("fever_codelist", 4,
+  # fever_second_dates = (
+  #   get_codes_dates("fever_codelist", 4,
+  #                   dataset.flu_primary_date + days(14), 1)
+  # )
+  # cough_second_dates = (
+  #   get_codes_dates("cough_codelist", 4,
+  #                   dataset.flu_primary_date + days(14), 1)    
+  # )
+  fever_cough_second_dates = (
+    get_codes_dates("fever_cough_codelist", 4,
                     dataset.flu_primary_date + days(14), 1)
   )
-  
+
   ILI_pairs_second = []
   ILI_second_date_cases = []
 
   for ari_date in ari_second_dates:
-      for fever_date in fever_second_dates:
-          close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
-          ILI_pairs_second.append(when(close_in_time).then(True))
-          ILI_second_date_cases.append(when(close_in_time)
-          .then(minimum_of(ari_date, fever_date)))
+    for fever_cough_date in fever_cough_second_dates:
+      close_in_time = diff_dates_days(ari_date, fever_cough_date).absolute() <= 14
+      ILI_pairs_second.append(when(close_in_time).then(True))
+      ILI_second_date_cases.append(when(close_in_time).then(minimum_of(ari_date, fever_cough_date)))
 
   ILI_case_second = case(*ILI_pairs_second, otherwise = False)
   ILI_second_date = case(*ILI_second_date_cases, otherwise = None)
@@ -2412,20 +2424,24 @@ else:
 ari_bucket_dates = (
   get_codes_dates("ari_primary_codelist", 4, index_date, 1)
 )
-fever_bucket_dates = (
-  get_codes_dates("fever_codelist", 4, index_date, 1)
+# fever_bucket_dates = (
+#   get_codes_dates("fever_codelist", 4, index_date, 1)
+# )
+# cough_bucket_dates = (
+#   get_codes_dates("cough_codelist", 4, index_date, 1)  
+# )
+fever_cough_bucket_dates = (
+  get_codes_dates("fever_cough_codelist", 4, index_date, 1)  
 )
 
 ILI_bucket_pairs = []
 ILI_bucket_date_cases = []
 
 for ari_date in ari_bucket_dates:
-  for fever_date in fever_bucket_dates:
-    close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
+  for fever_cough_date in fever_cough_bucket_dates:
+    close_in_time = diff_dates_days(ari_date, fever_cough_date).absolute() <= 14
     ILI_bucket_pairs.append(when(close_in_time).then(True))
-    ILI_bucket_date_cases.append(
-      when(close_in_time).then(minimum_of(ari_date, fever_date))
-    )
+    ILI_bucket_date_cases.append(when(close_in_time).then(minimum_of(ari_date, fever_cough_date)))
 
 ILI_bucket_case = case(*ILI_bucket_pairs, otherwise = False)
 ILI_bucket_date = case(*ILI_bucket_date_cases, otherwise = None)
@@ -2673,3 +2689,42 @@ if (investigation_type == "secondary") & (cohort == "older_adults"):
   dataset.has_cancer = has_cancer
   dataset.immunosuppressed = immunosuppressed
   dataset.has_sickle_cell = has_sickle_cell
+
+## sensitivity analyses for phenotype definitions
+if (investigation_type == "additional_sensitivity") & (codelist_type == "alternative")|(codelist_type == "second_alternative"):
+
+  from dataset_definition_sensitivity import (
+    rsv_primary_date, rsv_primary_second_date,
+    rsv_secondary_date, rsv_secondary_second_date,
+    flu_primary_date, flu_primary_second_date,
+    flu_secondary_date, flu_secondary_second_date
+  )
+
+  if study_start_date >= covid_season_min:
+
+    from dataset_definition_sensitivity import (
+      covid_primary_date, covid_primary_second_date,
+      covid_secondary_date, covid_secondary_second_date
+    ) 
+
+  from dataset_definition_sensitivity import (
+    overall_resp_primary_date, overall_resp_primary_second_date,
+    overall_resp_secondary_date, overall_resp_secondary_second_date
+  )
+
+  dataset.rsv_primary_date = rsv_primary_date
+  dataset.rsv_primary_second_date = rsv_primary_second_date
+  dataset.rsv_secondary_date = rsv_secondary_date
+  dataset.rsv_secondary_second_date = rsv_secondary_second_date
+  dataset.flu_primary_date = flu_primary_date
+  dataset.flu_primary_second_date = flu_primary_second_date
+  dataset.flu_secondary_date = flu_secondary_date
+  dataset.flu_secondary_second_date = flu_secondary_second_date
+  dataset.covid_primary_date = covid_primary_date
+  dataset.covid_primary_second_date = covid_primary_second_date
+  dataset.covid_secondary_date = covid_secondary_date
+  dataset.covid_secondary_second_date = covid_secondary_second_date
+  dataset.overall_resp_primary_date = overall_resp_primary_date
+  dataset.overall_resp_primary_second_date = overall_resp_primary_second_date
+  dataset.overall_resp_secondary_date = overall_resp_secondary_date
+  dataset.overall_resp_secondary_second_date = overall_resp_secondary_second_date
