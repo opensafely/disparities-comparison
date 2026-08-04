@@ -27,6 +27,21 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              "specific", "_", "primary",".arrow")))
 
+# infants are month-expanded; collapse to one row per patient for episode counts
+if (cohort %in% c("infants", "infants_subgroup")) {
+  inf_cols <- names(df_input)[endsWith(names(df_input), "_inf")]
+  date_cols <- names(df_input)[endsWith(names(df_input), "_date")]
+  other_cols <- setdiff(names(df_input), c("patient_id", inf_cols, date_cols))
+  df_input <- df_input %>%
+    group_by(patient_id) %>%
+    summarise(
+      across(all_of(inf_cols), ~ as.integer(any(.x == 1, na.rm = TRUE))),
+      across(all_of(date_cols), ~ if (all(is.na(.x))) as.Date(NA) else min(.x, na.rm = TRUE)),
+      across(all_of(other_cols), first),
+      .groups = "drop"
+    )
+}
+
 ##define a function to create a text coding for outcomes 
 alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {
   
