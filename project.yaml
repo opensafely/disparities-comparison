@@ -21009,6 +21009,16 @@ actions:
       moderately_sensitive:
         csv: output/additional_sensitivity/reinfections_older_adults_2023_2024_alternative.csv
 
+  phenotype_testing_changes_older_adults_s8_alternative:
+    run: r:v2 analysis/sensitivity_analyses/phenotype_definition_comparisons.R older_adults
+      season8_start_date season8_end_date alternative
+    needs:
+    - phenotype_testing_phenotype_sensitivity_older_adults_s8_alternative
+    - phenotype_testing_reinfections_older_adults_s8_alternative
+    outputs:
+      moderately_sensitive:
+        csv: output/additional_sensitivity/changes_in_*_older_adults_2023_2024_alternative.csv
+
   phenotype_testing_generate_dataset_older_adults_s8_second_alternative_additional_sensitivity:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -21046,6 +21056,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/additional_sensitivity/reinfections_older_adults_2023_2024_second_alternative.csv
+
+  phenotype_testing_changes_older_adults_s8_second_alternative:
+    run: r:v2 analysis/sensitivity_analyses/phenotype_definition_comparisons.R older_adults
+      season8_start_date season8_end_date second_alternative
+    needs:
+    - phenotype_testing_phenotype_sensitivity_older_adults_s8_second_alternative
+    - phenotype_testing_reinfections_older_adults_s8_second_alternative
+    outputs:
+      moderately_sensitive:
+        csv: output/additional_sensitivity/changes_in_*_older_adults_2023_2024_second_alternative.csv
 
   phenotype_testing_generate_dataset_adults_s8_alternative_additional_sensitivity:
     run: |-
@@ -21085,6 +21105,16 @@ actions:
       moderately_sensitive:
         csv: output/additional_sensitivity/reinfections_adults_2023_2024_alternative.csv
 
+  phenotype_testing_changes_adults_s8_alternative:
+    run: r:v2 analysis/sensitivity_analyses/phenotype_definition_comparisons.R adults
+      season8_start_date season8_end_date alternative
+    needs:
+    - phenotype_testing_phenotype_sensitivity_adults_s8_alternative
+    - phenotype_testing_reinfections_adults_s8_alternative
+    outputs:
+      moderately_sensitive:
+        csv: output/additional_sensitivity/changes_in_*_adults_2023_2024_alternative.csv
+
   phenotype_testing_generate_dataset_adults_s8_second_alternative_additional_sensitivity:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -21122,6 +21152,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/additional_sensitivity/reinfections_adults_2023_2024_second_alternative.csv
+
+  phenotype_testing_changes_adults_s8_second_alternative:
+    run: r:v2 analysis/sensitivity_analyses/phenotype_definition_comparisons.R adults
+      season8_start_date season8_end_date second_alternative
+    needs:
+    - phenotype_testing_phenotype_sensitivity_adults_s8_second_alternative
+    - phenotype_testing_reinfections_adults_s8_second_alternative
+    outputs:
+      moderately_sensitive:
+        csv: output/additional_sensitivity/changes_in_*_adults_2023_2024_second_alternative.csv
 
   phenotype_testing_generate_dataset_children_and_adolescents_s8_alternative_additional_sensitivity:
     run: |-
@@ -21161,6 +21201,16 @@ actions:
       moderately_sensitive:
         csv: output/additional_sensitivity/reinfections_children_and_adolescents_2023_2024_alternative.csv
 
+  phenotype_testing_changes_children_and_adolescents_s8_alternative:
+    run: r:v2 analysis/sensitivity_analyses/phenotype_definition_comparisons.R children_and_adolescents
+      season8_start_date season8_end_date alternative
+    needs:
+    - phenotype_testing_phenotype_sensitivity_children_and_adolescents_s8_alternative
+    - phenotype_testing_reinfections_children_and_adolescents_s8_alternative
+    outputs:
+      moderately_sensitive:
+        csv: output/additional_sensitivity/changes_in_*_children_and_adolescents_2023_2024_alternative.csv
+
   phenotype_testing_generate_dataset_children_and_adolescents_s8_second_alternative_additional_sensitivity:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -21198,6 +21248,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/additional_sensitivity/reinfections_children_and_adolescents_2023_2024_second_alternative.csv
+
+  phenotype_testing_changes_children_and_adolescents_s8_second_alternative:
+    run: r:v2 analysis/sensitivity_analyses/phenotype_definition_comparisons.R children_and_adolescents
+      season8_start_date season8_end_date second_alternative
+    needs:
+    - phenotype_testing_phenotype_sensitivity_children_and_adolescents_s8_second_alternative
+    - phenotype_testing_reinfections_children_and_adolescents_s8_second_alternative
+    outputs:
+      moderately_sensitive:
+        csv: output/additional_sensitivity/changes_in_*_children_and_adolescents_2023_2024_second_alternative.csv
 
   phenotype_testing_generate_dataset_infants_s8_alternative_additional_sensitivity:
     run: |-
@@ -21237,6 +21297,16 @@ actions:
       moderately_sensitive:
         csv: output/additional_sensitivity/reinfections_infants_2023_2024_alternative.csv
 
+  phenotype_testing_changes_infants_s8_alternative:
+    run: r:v2 analysis/sensitivity_analyses/phenotype_definition_comparisons.R infants
+      season8_start_date season8_end_date alternative
+    needs:
+    - phenotype_testing_phenotype_sensitivity_infants_s8_alternative
+    - phenotype_testing_reinfections_infants_s8_alternative
+    outputs:
+      moderately_sensitive:
+        csv: output/additional_sensitivity/changes_in_*_infants_2023_2024_alternative.csv
+
   phenotype_testing_generate_dataset_infants_s8_second_alternative_additional_sensitivity:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -21274,6 +21344,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/additional_sensitivity/reinfections_infants_2023_2024_second_alternative.csv
+
+  phenotype_testing_changes_infants_s8_second_alternative:
+    run: r:v2 analysis/sensitivity_analyses/phenotype_definition_comparisons.R infants
+      season8_start_date season8_end_date second_alternative
+    needs:
+    - phenotype_testing_phenotype_sensitivity_infants_s8_second_alternative
+    - phenotype_testing_reinfections_infants_s8_second_alternative
+    outputs:
+      moderately_sensitive:
+        csv: output/additional_sensitivity/changes_in_*_infants_2023_2024_second_alternative.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## End 
