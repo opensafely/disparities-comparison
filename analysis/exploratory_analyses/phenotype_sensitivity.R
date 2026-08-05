@@ -17,8 +17,12 @@ if (length(args) == 0) {
   cohort <- args[[1]]
   study_start_date <- study_dates[[args[[2]]]]
   study_end_date <- study_dates[[args[[3]]]]
-  codelist_type <- args[[4]]
-  investigation_type <- args[[5]]
+  if (length(args) == 5) {
+    codelist_type <- args[[4]]
+    investigation_type <- args[[5]]
+  } else {
+    investigation_type <- "primary"
+  }
 }
 covid_season_min <- as.Date("2019-09-01")
 covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")

@@ -3665,7 +3665,9 @@ action_phenotype_testing <- function(cohort, season, dates,
     action(
       name = glue("phenotype_testing_changes_{cohort}_{season}_{codelist_type}"),
       run = glue("r:v2 analysis/sensitivity_analyses/phenotype_definition_comparisons.R {cohort} {season_start_date} {season_end_date} {codelist_type}"),
-      needs = list(glue("phenotype_testing_phenotype_sensitivity_{cohort}_{season}_{codelist_type}"),
+      needs = list(glue("phenotype_sensitivity_{cohort}_{season}"),
+                   glue("reinfections_{cohort}_{season}_sensitive"),
+                   glue("phenotype_testing_phenotype_sensitivity_{cohort}_{season}_{codelist_type}"),
                    glue("phenotype_testing_reinfections_{cohort}_{season}_{codelist_type}")),
       moderately_sensitive = lst(
         csv = glue("output/additional_sensitivity/changes_in_*_{cohort}_{dates}_{codelist_type}.csv"))      
