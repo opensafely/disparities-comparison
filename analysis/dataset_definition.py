@@ -966,24 +966,18 @@ elif codelist_type == "sensitive" :
   ari_dates = (
     get_codes_dates("ari_primary_codelist", 4, index_date, 1)
   )
-  # fever_dates = (
-  #   get_codes_dates("fever_codelist", 4, index_date, 1)
-  # )
-  # cough_dates = (
-  #   get_codes_dates("cough_codelist", 4, index_date, 1)
-  # )
-  fever_cough_dates = (
-    get_codes_dates("fever_cough_codelist", 4, index_date, 1)
+  fever_dates = (
+    get_codes_dates("fever_codelist", 4, index_date, 1)
   )
   
   ILI_pairs = []
   ILI_date_cases = []
 
   for ari_date in ari_dates:
-    for fever_cough_date in fever_cough_dates:
-      close_in_time = diff_dates_days(ari_date, fever_cough_date).absolute() <= 14
+    for fever_date in fever_dates:
+      close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
       ILI_pairs.append(when(close_in_time).then(True))
-      ILI_date_cases.append(when(close_in_time).then(minimum_of(ari_date, fever_cough_date)))
+      ILI_date_cases.append(when(close_in_time).then(minimum_of(ari_date, fever_date)))
 
   ILI_case = case(*ILI_pairs, otherwise = False)
   ILI_date = case(*ILI_date_cases, otherwise = None)
@@ -1030,16 +1024,8 @@ elif codelist_type == "sensitive" :
     get_codes_dates("ari_primary_codelist", 4,
                     dataset.flu_primary_date + days(14), 1)
   )
-  # fever_second_dates = (
-  #   get_codes_dates("fever_codelist", 4,
-  #                   dataset.flu_primary_date + days(14), 1)
-  # )
-  # cough_second_dates = (
-  #   get_codes_dates("cough_codelist", 4,
-  #                   dataset.flu_primary_date + days(14), 1)    
-  # )
-  fever_cough_second_dates = (
-    get_codes_dates("fever_cough_codelist", 4,
+  fever_second_dates = (
+    get_codes_dates("fever_codelist", 4,
                     dataset.flu_primary_date + days(14), 1)
   )
 
@@ -1047,10 +1033,10 @@ elif codelist_type == "sensitive" :
   ILI_second_date_cases = []
 
   for ari_date in ari_second_dates:
-    for fever_cough_date in fever_cough_second_dates:
-      close_in_time = diff_dates_days(ari_date, fever_cough_date).absolute() <= 14
+    for fever_date in fever_second_dates:
+      close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
       ILI_pairs_second.append(when(close_in_time).then(True))
-      ILI_second_date_cases.append(when(close_in_time).then(minimum_of(ari_date, fever_cough_date)))
+      ILI_second_date_cases.append(when(close_in_time).then(minimum_of(ari_date, fever_date)))
 
   ILI_case_second = case(*ILI_pairs_second, otherwise = False)
   ILI_second_date = case(*ILI_second_date_cases, otherwise = None)
