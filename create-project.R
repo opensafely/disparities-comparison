@@ -3637,12 +3637,28 @@ action_phenotype_testing <- function(cohort, season, dates,
     ),
     
     action(
+      name = glue("phenotype_testing_skim_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:v2 analysis/data_skim.R output/data/input_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow output/data/"),
+      needs = list(glue("phenotype_testing_generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        txt = glue("output/data/*{cohort}_{dates}_{codelist_type}_{investigation_type}*.txt"))
+    ),
+    
+    action(
       name = glue("phenotype_testing_process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
       run = glue("r:v2 analysis/data_processing.R {cohort} {season_start_date} {season_end_date} {codelist_type} {investigation_type}"),
       needs = list(glue("phenotype_testing_generate_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
       highly_sensitive = lst(
         dataset = glue("output/data/input_processed_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow")
       )
+    ),
+
+    action(
+      name = glue("phenotype_testing_skim_processed_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}"),
+      run = glue("r:v2 analysis/data_skim.R output/data/input_processed_{cohort}_{dates}_{codelist_type}_{investigation_type}.arrow output/data/"),
+      needs = list(glue("phenotype_testing_process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        txt = glue("output/data/*processed*{cohort}_{dates}_{codelist_type}_{investigation_type}*.txt"))
     ),
 
     action(
