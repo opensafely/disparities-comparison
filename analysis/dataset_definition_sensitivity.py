@@ -82,243 +82,12 @@ first_registration_date = (
 #so that patients are the correct age for the cohort when looking at records
 index_date = maximum_of(study_start_date, age_date, first_registration_date)
 
-# #define date for registration period
-# registration_date = index_date - months(3)
-
 #set end date as earliest date of either end date or age out date 
 #so that patients are the correct age for the cohort when looking at records
 followup_end_date = minimum_of(study_end_date, age_out_date)
 
-# #extract patient specific follow up dates
-# dataset.patient_index_date = index_date
-# dataset.patient_end_date = followup_end_date
-
-# #define patients status: alive/dead: use ONS record if present, otherwise use GP record
-# death_date = ons_deaths.date.when_null_then(patients.date_of_death)
-# was_alive = death_date.is_after(index_date) | death_date.is_null()
-
-# #define patients age
-# age_at_start = patients.age_on(study_start_date)
-# age_at_end = patients.age_on(study_end_date)
-# age_months = (index_date - patients.date_of_birth).months
-# age_at_start_months = (study_start_date - patients.date_of_birth).months
-# age_at_end_months = (study_end_date - patients.date_of_birth).months
-
-# #get patients who meet registration criteria
-# #(3 months continuous registration, for non-infants)
-# if cohort == "infants" or cohort == "infants_subgroup" :
-#   registered_patients = (
-#     (registration_date < (age_date + months(3))) | (
-#       practice_registrations.for_patient_on(index_date).exists_for_patient()
-#       )
-#   )
-# else :
-#   registered_patients = (
-#     has_a_continuous_practice_registration_spanning(registration_date, index_date)
-#   )
-
-# #get patients that are either male or female
-# is_female_or_male = patients.sex.is_in(["female", "male"])
-
-# #get patients of appropriate age for the cohort
-# if cohort == "infants" or cohort == "infants_subgroup" :
-#   is_appropriate_age = (age_at_start_months < 24) & (age_at_end_months >= 0)
-# elif cohort == "children_and_adolescents" :
-#   is_appropriate_age = (age_at_start < 18) & (age_at_end >= 2)
-# elif cohort == "adults" :
-#   is_appropriate_age = (age_at_start < 65) & (age_at_end >= 18)
-# else :
-#   is_appropriate_age = (age_at_start < 110) & (age_at_end >= 65)
-
-# #get patients who have information on IMD
-# has_imd = addresses.for_patient_on(index_date).imd_rounded.is_not_null()
-
-# ##exclusion criteria
-
-# #combined severe immunodeficiency syndrome
-# if cohort == "infants" or cohort == "infants_subgroup" :
-#   severe_immunodeficiency = (
-#     has_prior_event(codelists.severe_immunodeficiency_code)
-#   )
-
-# #infant risk group (cardiac disease, pulmonary hypertension)
-# if cohort == "infants" or cohort == "infants_subgroup" :
-#   risk_group_infants = (case(
-#     when(age_months < 12)
-#     .then(hospitalisation_diagnosis_matches(codelists.ventilation_codes).exists_for_patient()),
-#     when(
-#       (age_months >=12) &
-#       (age_months <= 23) &
-#       ((clinical_events.where(clinical_events.snomedct_code.is_in(codelists.cardiac_disease_codelist)).exists_for_patient())|
-#        (clinical_events.where(clinical_events.snomedct_code.is_in(codelists.pulmonary_hypertension_codelist)).exists_for_patient()))
-#     )
-#     .then(hospitalisation_diagnosis_matches(codelists.ventilation_codes).exists_for_patient()),
-#     otherwise = False)
-#   )
-
-# #care home resident - currently excluses anyone with a care home code
-# #or a care home flag
-# care_home_tpp = (
-#   addresses.for_patient_on(index_date).care_home_is_potential_match.when_null_then(False)
-# )
-# care_home_code = has_prior_event(codelists.carehome_codelist)
-# care_home = (care_home_tpp) | (care_home_code)
-
-# # #presence of maternal linkage for infants subgroup 
-# # if cohort == "infants_subgroup" :
-# #   mother_id_present = parents.mother_id.is_not_null()
-
-# ##define populations
-
-# #infants
-# if cohort == "infants" :
-#   dataset.define_population(
-#     was_alive
-#     & registered_patients
-#     & is_female_or_male
-#     & is_appropriate_age
-#     & has_imd
-#     & (~severe_immunodeficiency)
-#     & (~risk_group_infants)
-#     & (~care_home)
-#   )
-# # #infants linked to mothers
-# # elif cohort == "infants_subgroup" :
-# #   dataset.define_population(
-# #     was_alive
-# #     & registered_patients
-# #     & is_female_or_male
-# #     & is_appropriate_age
-# #     & has_imd
-# #     & mother_id_present
-# #     & (~severe_immunodeficiency)
-# #     & (~risk_group_infants)
-# #     & (~care_home)
-# #   )
-# #everyone else
-# else :
-#   dataset.define_population(
-#     was_alive
-#     & registered_patients
-#     & is_female_or_male
-#     & is_appropriate_age
-#     & has_imd
-#     & (~care_home)
-#   )
-
-# #extract registration and sex  
-# dataset.registered = registered_patients
-# dataset.sex = patients.sex
-
-# #extract age (for infants in months)
-# if cohort == "infants" or cohort == "infants_subgroup" :
-#   dataset.age = age_months
-# else:
-#   dataset.age = patients.age_on(index_date) #gets the patients age on their specific index date
-
-# #extract date of death
-# dataset.death_date = death_date
-
-# #extract latest ethnicity code for patient
-# dataset.latest_ethnicity_group = (
-#   clinical_events.where(clinical_events.snomedct_code.is_in(codelists.ethnicity_codes))
-#   .where(clinical_events.date.is_on_or_before(index_date))
-#   .sort_by(clinical_events.date)
-#   .last_for_patient().snomedct_code
-#   .to_category(codelists.ethnicity_codes)
-# )
-
-# #extract HES ethnicity to supplement ethnicity
-# dataset.latest_ethnicity_group_hes = ethnicity_from_sus.code
-
-# #extract patients IMD rank
-# dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
-
-# #extract rural/urban classification
-# dataset.rural_urban_classification = (
-#   addresses.for_patient_on(index_date).rural_urban_classification
-# )
-
-# # #extract patients household info
-# # if study_start_date == datetime.strptime("2020-09-01", "%Y-%m-%d").date() :
-# #   dataset.household_pseudo_id = household_memberships_2020.household_pseudo_id
-# #   dataset.household_size = household_memberships_2020.household_size
-
-# # #extract patients practice's pseudonymised identifier
-# # dataset.practice_pseudo_id = (
-# #   (practice_registrations.for_patient_on(index_date)).practice_pseudo_id
-# # )
-# # 
-# # #extract practice region and stp
-# # dataset.region = (
-# #   (practice_registrations.for_patient_on(index_date)).practice_nuts1_region_name
-# # )
-# # dataset.stp = (
-# #   (practice_registrations.for_patient_on(index_date)).practice_stp
-# # )
-
-# #extract date deregistered from practice
-# dataset.deregistration_date = (
-#   (practice_registrations.for_patient_on(index_date)).end_date
-# )
-
-# # #extract mothers ID for infants subgroup and the infants D.O.B.
-# # if cohort == "infants_subgroup" :
-# #   dataset.mother_id = parents.mother_id
-# #   dataset.birth_date = patients.date_of_birth
-
-# ##define comorbidities
-
-# #define earliest date to look for prior vaccination (1 year prior)
-# prior_vaccination_date = study_start_date - years(1)
-
 #define first season for covid outcomes
 covid_season_min = datetime.strptime("2019-09-01", "%Y-%m-%d").date()
-
-# #define first season for covid vaccinations (looking at *current* season)
-# covid_current_vacc_min = datetime.strptime("2020-09-01", "%Y-%m-%d").date()
-
-# #define first season for covid vaccination (looking at *previous* season)
-# covid_prior_vacc_min = datetime.strptime("2021-09-01", "%Y-%m-%d").date()
-
-# #extract vaccination information
-# if cohort == "adults" or cohort == "older_adults" or cohort == "children_and_adolescents" :
-  
-#   #extract flu vaccination in previous season
-#   dataset.prior_flu_vaccination = (
-#     vaccinations.where(vaccinations.target_disease.is_in(["INFLUENZA"]))
-#     .sort_by(vaccinations.date)
-#     .where(vaccinations.date.is_on_or_between(prior_vaccination_date, index_date))
-#     .exists_for_patient()
-#   )
-  
-#   #extract flu vaccination in current season
-#   dataset.flu_vaccination_date = (
-#     vaccinations.where(vaccinations.target_disease.is_in(["INFLUENZA"]))
-#     .sort_by(vaccinations.date)
-#     .where(vaccinations.date.is_on_or_between(index_date, followup_end_date))
-#     .first_for_patient().date
-#   )
-  
-#   #extract covid vaccination in previous season if applicable
-#   if study_start_date >= covid_prior_vacc_min :
-    
-#     dataset.last_covid_vaccination_date = (
-#       vaccinations.where(vaccinations.target_disease.is_in(["SARS-2 Coronavirus"]))
-#       .sort_by(vaccinations.date)
-#       .where(vaccinations.date.is_on_or_before(index_date))
-#       .last_for_patient().date
-#     )
-  
-#   #extract covid vaccination in current season if applicable
-#   if study_start_date >= covid_current_vacc_min :
-    
-#     dataset.covid_vaccination_date = (
-#       vaccinations.where(vaccinations.target_disease.is_in(["SARS-2 Coronavirus"]))
-#       .sort_by(vaccinations.date)
-#       .where(vaccinations.date.is_on_or_between(index_date, followup_end_date))
-#       .first_for_patient().date
-#     )
 
 ##define outcomes
 
@@ -329,56 +98,75 @@ covid_season_min = datetime.strptime("2019-09-01", "%Y-%m-%d").date()
 #extract rsv primary care dates for 'sensitive' phenotype
   
 #get dates of events and corresponding codes 
-rsv_codes_date, rsv_code = (
-  get_codes_dates("rsv_sensitive_codelist_alt", 4, index_date, 2)
-)
-  
-#get the date of the occurrence of first relevant prescription
-rsv_med_date = (
-  prescribing_events.where(prescribing_events.dmd_code.is_in(codelists.rsv_prescriptions_codelist))
-  .date.minimum_for_patient()
-)
-  
-#get occurrence of event in exclusion list within one month of rsv_codes_date 
-# - looking at the first date for which there is a code in the RSV exclusion
-#codelist within one month before or after the date of rsv_codes_date, or a 
-#code in the RSV prescriptions codelist within one month before or after the
-#date of rsv_codes_date
-rsv_exclusion_primary = (case(
-  when(
-    is_gp_event(codelists.rsv_primary_exclusion_codelist)
-    .where(gp_events.date.is_on_or_between(rsv_codes_date - days(30), rsv_codes_date + days(30)))
-    .exists_for_patient()
+if codelist_type == "alternative" :
+  rsv_codes_date, rsv_code = (
+    get_codes_dates("rsv_sensitive_codelist_alt", 4, index_date, 2)
   )
-  .then(True),
-  when(
-    is_gp_event(codelists.rsv_primary_exclusion_codelist)
-    .where(gp_events.date.is_on_or_between(rsv_med_date - days(30), rsv_med_date + days(30)))
-    .exists_for_patient()
+elif codelist_type == "second_alternative":
+  rsv_codes_date, rsv_code = (
+    get_codes_dates("rsv_sensitive_codelist", 4, index_date, 2)
   )
-  .then(True),
-  otherwise = False)
-)
-  
-#define prescription inclusion - i.e. presence of a code from codelist with
-#relevant prescription - the presence of a code from the sensitive codelist
-#is required for inclusion 
-rsv_med_inclusion_date = (case(
-  when(
-    is_gp_event(codelists.rsv_sensitive_codelist)
-    .where(gp_events.date.is_on_or_between(rsv_med_date - days(14), rsv_med_date + days(14)))
-    .exists_for_patient()
+
+if codelist_type == "alternative":
+  #get the date of the occurrence of first relevant prescription
+  rsv_med_date = (
+    prescribing_events.where(prescribing_events.dmd_code.is_in(codelists.rsv_prescriptions_codelist))
+    .date.minimum_for_patient()
   )
-  .then(
-    minimum_of(
-      (is_gp_event(codelists.rsv_sensitive_codelist)
-        .where(gp_events.date.is_on_or_between(rsv_med_date - days(14), rsv_med_date + days(14)))
-        .sort_by(gp_events.date).first_for_patient().date),
-      (rsv_med_date)
+
+  #get occurrence of event in exclusion list within one month of rsv_codes_date 
+  # - looking at the first date for which there is a code in the RSV exclusion
+  #codelist within one month before or after the date of rsv_codes_date, or a 
+  #code in the RSV prescriptions codelist within one month before or after the
+  #date of rsv_codes_date
+  rsv_exclusion_primary = (case(
+    when(
+      is_gp_event(codelists.rsv_primary_exclusion_codelist)
+      .where(gp_events.date.is_on_or_between(rsv_codes_date - days(30), rsv_codes_date + days(30)))
+      .exists_for_patient()
     )
-  ),
-  otherwise = None)
-)
+    .then(True),
+    when(
+      is_gp_event(codelists.rsv_primary_exclusion_codelist)
+      .where(gp_events.date.is_on_or_between(rsv_med_date - days(30), rsv_med_date + days(30)))
+      .exists_for_patient()
+    )
+    .then(True),
+    otherwise = False)
+  )
+
+  #define prescription inclusion - i.e. presence of a code from codelist with
+  #relevant prescription - the presence of a code from the sensitive codelist
+  #is required for inclusion 
+  rsv_med_inclusion_date = (case(
+    when(
+      is_gp_event(codelists.rsv_sensitive_codelist_alt)
+      .where(gp_events.date.is_on_or_between(rsv_med_date - days(14), rsv_med_date + days(14)))
+      .exists_for_patient()
+    )
+    .then(
+      minimum_of(
+        (is_gp_event(codelists.rsv_sensitive_codelist_alt)
+          .where(gp_events.date.is_on_or_between(rsv_med_date - days(14), rsv_med_date + days(14)))
+          .sort_by(gp_events.date).first_for_patient().date),
+        (rsv_med_date)
+      )
+    ),
+    otherwise = None)
+  )
+elif codelist_type == "second_alternative":
+  #get occurrence of event in exclusion list within one month of rsv_codes_date 
+  # - looking at the first date for which there is a code in the RSV exclusion
+  #codelist within one month before or after the date of rsv_codes_date
+  rsv_exclusion_primary = (case(
+    when(
+      is_gp_event(codelists.rsv_primary_exclusion_codelist)
+      .where(gp_events.date.is_on_or_between(rsv_codes_date - days(30), rsv_codes_date + days(30)))
+      .exists_for_patient()
+    )
+    .then(True),
+    otherwise = False)
+  )
 
 #infant and infant subroup cohorts
 if cohort == "infants" or cohort == "infants_subgroup" :
@@ -399,90 +187,131 @@ if cohort == "infants" or cohort == "infants_subgroup" :
     )
   )
   #then extract date - prioritising inclusion from specific phenotype
-  rsv_primary_date = (case(
-    when(rsv_primary_spec.is_not_null())
-    .then(rsv_primary_spec),
-    when((rsv_primary_spec.is_null()) & (~rsv_exclusion_primary))
-    .then(
-      minimum_of(
-        (rsv_codes_date),
-        (rsv_med_inclusion_date),
-        (emergency_care_diagnosis_matches(codelists.bronchiolitis_attendance)
-          .arrival_date.minimum_for_patient()),
-        (emergency_care_diagnosis_matches(codelists.wheeze_attendance)
-          .arrival_date.minimum_for_patient())
-      )
-    ),
-    otherwise = None)
-  )
+  if codelist_type == "alternative":
+    rsv_primary_date = (case(
+      when(rsv_primary_spec.is_not_null())
+      .then(rsv_primary_spec),
+      when((rsv_primary_spec.is_null()) & (~rsv_exclusion_primary))
+      .then(
+        minimum_of(
+          (rsv_codes_date),
+          (rsv_med_inclusion_date),
+          (emergency_care_diagnosis_matches(codelists.bronchiolitis_attendance)
+            .arrival_date.minimum_for_patient()),
+          (emergency_care_diagnosis_matches(codelists.wheeze_attendance)
+            .arrival_date.minimum_for_patient())
+        )
+      ),
+      otherwise = None)
+    )
+  elif codelist_type == "second_alternative":
+    rsv_primary_date = (case(
+      when(rsv_primary_spec.is_not_null())
+      .then(rsv_primary_spec),
+      when((rsv_primary_spec.is_null()) & (~rsv_exclusion_primary))
+      .then(
+        minimum_of(
+          (rsv_codes_date),
+          (emergency_care_diagnosis_matches(codelists.bronchiolitis_attendance)
+            .arrival_date.minimum_for_patient()),
+          (emergency_care_diagnosis_matches(codelists.wheeze_attendance)
+            .arrival_date.minimum_for_patient())
+        )
+      ),
+      otherwise = None)
+    )
     
   #get dates of events and corresponding codes 
-  rsv_codes_second_date, rsv_code_second = (
-    get_codes_dates("rsv_sensitive_codelist_alt", 4,
-                    rsv_primary_date + days(14), 2)
-  )
-  
-  #get the date of the occurrence of first relevant prescription
-  # - looking at the second episode
-  rsv_med_second_date = (
-    prescribing_events.where(prescribing_events.dmd_code.is_in(codelists.rsv_prescriptions_codelist))
-    .where(prescribing_events.date.is_on_or_after(rsv_primary_date + days(14)))
-    .date.minimum_for_patient()
-  )
+  if codelist_type == "alternative":
+    rsv_codes_second_date, rsv_code_second = (
+      get_codes_dates("rsv_sensitive_codelist_alt", 4,
+                      rsv_primary_date + days(14), 2)
+    )
+  elif codelist_type == "second_alternative":
+    rsv_codes_second_date, rsv_code_second = (
+      get_codes_dates("rsv_sensitive_codelist", 4,
+                      rsv_primary_date + days(14), 2)
+    )  
+
+  if codelist_type == "alternative":
+    #get the date of the occurrence of first relevant prescription
+    # - looking at the second episode
+    rsv_med_second_date = (
+      prescribing_events.where(prescribing_events.dmd_code.is_in(codelists.rsv_prescriptions_codelist))
+      .where(prescribing_events.date.is_on_or_after(rsv_primary_date + days(14)))
+      .date.minimum_for_patient()
+    )
     
-  #get occurrence of event in exclusion list within one month of 
-  #rsv_codes_second_date - looking at the same criteria as the first episode
-  rsv_exclusion_primary_second = (case(
-    when(
-      is_gp_event(codelists.rsv_primary_exclusion_codelist)
-      .where(
-        gp_events.date.is_on_or_between(
-          maximum_of(rsv_primary_date + days(14), rsv_codes_second_date - days(30)),
-          rsv_codes_second_date + days(30)
-        )
-      ).exists_for_patient()
-    )
-    .then(True),
-    when(
-      is_gp_event(codelists.rsv_primary_exclusion_codelist)
-      .where(
-        gp_events.date.is_on_or_between(
-          maximum_of(rsv_primary_date + days(14), rsv_med_second_date - days(30)),
-          rsv_med_second_date + days(30)
-        )
-      ).exists_for_patient()
-    )
-    .then(True),
-    otherwise = False)
-  )
-    
-  #define prescription inclusion - i.e. presence of a code from codelist with
-  #relevant prescription - the presence of a code from the sensitive codelist
-  #is required for inclusion 
-  rsv_med_inclusion_second_date = (case(
-    when(
-      is_gp_event(codelists.rsv_sensitive_codelist)
-      .where(
-        gp_events.date.is_on_or_between(
-          rsv_med_second_date - days(14), rsv_med_second_date + days(14)
-        )
-      ).exists_for_patient()
-    )
-    .then(
-      minimum_of(
-        (is_gp_event(codelists.rsv_sensitive_codelist)
-         .where(
-           gp_events.date.is_on_or_between(
-             maximum_of(rsv_med_second_date - days(14), rsv_primary_date + days(14)),
-             rsv_med_second_date + days(14)
-           )
-         ).sort_by(gp_events.date).first_for_patient().date),
-        (rsv_med_second_date)
+    #get occurrence of event in exclusion list within one month of 
+    #rsv_codes_second_date - looking at the same criteria as the first episode
+    rsv_exclusion_primary_second = (case(
+      when(
+        is_gp_event(codelists.rsv_primary_exclusion_codelist)
+        .where(
+          gp_events.date.is_on_or_between(
+            maximum_of(rsv_primary_date + days(14), rsv_codes_second_date - days(30)),
+            rsv_codes_second_date + days(30)
+          )
+        ).exists_for_patient()
       )
-    ),
-    otherwise = None)
-  )
+      .then(True),
+      when(
+        is_gp_event(codelists.rsv_primary_exclusion_codelist)
+        .where(
+          gp_events.date.is_on_or_between(
+            maximum_of(rsv_primary_date + days(14), rsv_med_second_date - days(30)),
+            rsv_med_second_date + days(30)
+          )
+        ).exists_for_patient()
+      )
+      .then(True),
+      otherwise = False)
+    )
+      
+    #define prescription inclusion - i.e. presence of a code from codelist with
+    #relevant prescription - the presence of a code from the sensitive codelist
+    #is required for inclusion 
+    rsv_med_inclusion_second_date = (case(
+      when(
+        is_gp_event(codelists.rsv_sensitive_codelist_alt)
+        .where(
+          gp_events.date.is_on_or_between(
+            rsv_med_second_date - days(14), rsv_med_second_date + days(14)
+          )
+        ).exists_for_patient()
+      )
+      .then(
+        minimum_of(
+          (is_gp_event(codelists.rsv_sensitive_codelist_alt)
+          .where(
+            gp_events.date.is_on_or_between(
+              maximum_of(rsv_med_second_date - days(14), rsv_primary_date + days(14)),
+              rsv_med_second_date + days(14)
+            )
+          ).sort_by(gp_events.date).first_for_patient().date),
+          (rsv_med_second_date)
+        )
+      ),
+      otherwise = None)
+    )
   
+  elif codelist_type == "second_alternative":
+    #get occurrence of event in exclusion list within one month of 
+    #rsv_codes_second_date - looking at the same criteria as the first episode
+    rsv_exclusion_primary_second = (case(
+      when(
+        is_gp_event(codelists.rsv_primary_exclusion_codelist)
+        .where(
+          gp_events.date.is_on_or_between(
+            maximum_of(rsv_primary_date + days(14), rsv_codes_second_date - days(30)),
+            rsv_codes_second_date + days(30)
+          )
+        ).exists_for_patient()
+      )
+      .then(True),
+      otherwise = False)
+    )
+    
   #first get inclusion from specific phenotype
   rsv_primary_spec_second = (
     minimum_of(
@@ -496,24 +325,43 @@ if cohort == "infants" or cohort == "infants_subgroup" :
   )
     
   #extract date of second episode - using the same criteria as the first episode
-  rsv_primary_second_date = (case(
-    when(rsv_primary_spec_second.is_not_null())
-    .then(rsv_primary_spec_second),
-    when((rsv_primary_spec_second.is_null()) & (~rsv_exclusion_primary_second))
-    .then(
-      minimum_of(
-        (rsv_codes_second_date),
-        (rsv_med_inclusion_second_date),
-        (emergency_care_diagnosis_matches(codelists.bronchiolitis_attendance)
-          .where(emergency_events.arrival_date.is_on_or_after(rsv_primary_date + days(14)))
-          .arrival_date.minimum_for_patient()),
-        (emergency_care_diagnosis_matches(codelists.wheeze_attendance)
-          .where(emergency_events.arrival_date.is_on_or_after(rsv_primary_date + days(14)))
-          .arrival_date.minimum_for_patient())
-      )
-    ),
-    otherwise = None)
-  )
+  if codelist_type == "alternative":
+    rsv_primary_second_date = (case(
+      when(rsv_primary_spec_second.is_not_null())
+      .then(rsv_primary_spec_second),
+      when((rsv_primary_spec_second.is_null()) & (~rsv_exclusion_primary_second))
+      .then(
+        minimum_of(
+          (rsv_codes_second_date),
+          (rsv_med_inclusion_second_date),
+          (emergency_care_diagnosis_matches(codelists.bronchiolitis_attendance)
+            .where(emergency_events.arrival_date.is_on_or_after(rsv_primary_date + days(14)))
+            .arrival_date.minimum_for_patient()),
+          (emergency_care_diagnosis_matches(codelists.wheeze_attendance)
+            .where(emergency_events.arrival_date.is_on_or_after(rsv_primary_date + days(14)))
+            .arrival_date.minimum_for_patient())
+        )
+      ),
+      otherwise = None)
+    )
+  elif codelist_type == "second_alternative":
+    rsv_primary_second_date = (case(
+      when(rsv_primary_spec_second.is_not_null())
+      .then(rsv_primary_spec_second),
+      when((rsv_primary_spec_second.is_null()) & (~rsv_exclusion_primary_second))
+      .then(
+        minimum_of(
+          (rsv_codes_second_date),
+          (emergency_care_diagnosis_matches(codelists.bronchiolitis_attendance)
+            .where(emergency_events.arrival_date.is_on_or_after(rsv_primary_date + days(14)))
+            .arrival_date.minimum_for_patient()),
+          (emergency_care_diagnosis_matches(codelists.wheeze_attendance)
+            .where(emergency_events.arrival_date.is_on_or_after(rsv_primary_date + days(14)))
+            .arrival_date.minimum_for_patient())
+        )
+      ),
+      otherwise = None)
+    )
     
 #all cohorts above the age of 2 
 else :
@@ -529,77 +377,109 @@ else :
     first_gp_event(codelists.rsv_primary_codelist).date
   )
   #then extract date - prioritising inclusion from specific phenotype
-  rsv_primary_date = (case(
-    when(rsv_primary_spec.is_not_null())
-    .then(rsv_primary_spec),
-    when((rsv_primary_spec.is_null()) & (~rsv_exclusion_primary))
-    .then(minimum_of(rsv_codes_date, rsv_med_inclusion_date)),
-    otherwise = None)
-  )
+  if codelist_type == "alternative":
+    rsv_primary_date = (case(
+      when(rsv_primary_spec.is_not_null())
+      .then(rsv_primary_spec),
+      when((rsv_primary_spec.is_null()) & (~rsv_exclusion_primary))
+      .then(minimum_of(rsv_codes_date, rsv_med_inclusion_date)),
+      otherwise = None)
+    )
+  elif codelist_type == "second_alternative":
+    rsv_primary_date = (case(
+      when(rsv_primary_spec.is_not_null())
+      .then(rsv_primary_spec),
+      when((rsv_primary_spec.is_null()) & (~rsv_exclusion_primary))
+      .then(rsv_codes_date),
+      otherwise = None)
+    )
     
   #get dates of events and corresponding codes 
-  rsv_codes_second_date, rsv_code_second = (
-    get_codes_dates("rsv_sensitive_codelist_alt", 4,
-                    rsv_primary_date + days(14), 2)
-  )
-    
-  #get the date of the occurrence of first relevant prescription
-  # - looking at the second episode
-  rsv_med_second_date = (
-    prescribing_events.where(prescribing_events.dmd_code.is_in(codelists.rsv_prescriptions_codelist))
-    .where(prescribing_events.date.is_on_or_after(rsv_primary_date + days(14)))
-    .date.minimum_for_patient()
-  )
-    
-  #get occurrence of event in exclusion list within one month of 
-  #rsv_codes_second_date - looking at the same criteria as the first episode
-  rsv_exclusion_primary_second = (case(
-    when(
-      is_gp_event(codelists.rsv_primary_exclusion_codelist)
-      .where(
-        gp_events.date.is_on_or_between(
-          maximum_of(rsv_primary_date + days(14), rsv_codes_second_date - days(30)),
-          rsv_codes_second_date + days(30)
-        )
-      ).exists_for_patient()
+  if codelist_type == "alternative":
+    rsv_codes_second_date, rsv_code_second = (
+      get_codes_dates("rsv_sensitive_codelist_alt", 4,
+                      rsv_primary_date + days(14), 2)
     )
-    .then(True),
-    when(
-      is_gp_event(codelists.rsv_primary_exclusion_codelist)
-      .where(
-        gp_events.date.is_on_or_between(
-          maximum_of(rsv_primary_date + days(14), rsv_med_second_date - days(30)),
-          rsv_med_second_date + days(30)
-        )
-      ).exists_for_patient()
+  elif codelist_type == "second_alternative":
+    rsv_codes_second_date, rsv_code_second = (
+      get_codes_dates("rsv_sensitive_codelist", 4,
+                      rsv_primary_date + days(14), 2)
     )
-    .then(True),
-    otherwise = False)
-  )
     
-  #define prescription inclusion - i.e. presence of a code from codelist with
-  #relevant prescription - the presence of a code from the sensitive codelist
-  #is required for inclusion 
-  rsv_med_inclusion_second_date = (case(
-    when(
-      is_gp_event(codelists.rsv_sensitive_codelist)
-      .where(gp_events.date.is_on_or_between(rsv_med_second_date - days(14), rsv_med_second_date + days(14)))
-      .exists_for_patient()
+  if codelist_type == "alternative":
+    #get the date of the occurrence of first relevant prescription
+    # - looking at the second episode
+    rsv_med_second_date = (
+      prescribing_events.where(prescribing_events.dmd_code.is_in(codelists.rsv_prescriptions_codelist))
+      .where(prescribing_events.date.is_on_or_after(rsv_primary_date + days(14)))
+      .date.minimum_for_patient()
     )
-    .then(
-      minimum_of(
-        (is_gp_event(codelists.rsv_sensitive_codelist)
-         .where(
-           gp_events.date.is_on_or_between(
-             maximum_of(rsv_med_second_date - days(14), rsv_primary_date + days(14)),
-             rsv_med_second_date + days(14)
-           )
-         ).sort_by(gp_events.date).first_for_patient().date),
-        (rsv_med_second_date)
+
+    #get occurrence of event in exclusion list within one month of 
+    #rsv_codes_second_date - looking at the same criteria as the first episode
+    rsv_exclusion_primary_second = (case(
+      when(
+        is_gp_event(codelists.rsv_primary_exclusion_codelist)
+        .where(
+          gp_events.date.is_on_or_between(
+            maximum_of(rsv_primary_date + days(14), rsv_codes_second_date - days(30)),
+            rsv_codes_second_date + days(30)
+          )
+        ).exists_for_patient()
       )
-    ),
-    otherwise = None)
-  )
+      .then(True),
+      when(
+        is_gp_event(codelists.rsv_primary_exclusion_codelist)
+        .where(
+          gp_events.date.is_on_or_between(
+            maximum_of(rsv_primary_date + days(14), rsv_med_second_date - days(30)),
+            rsv_med_second_date + days(30)
+          )
+        ).exists_for_patient()
+      )
+      .then(True),
+      otherwise = False)
+    )
+      
+    #define prescription inclusion - i.e. presence of a code from codelist with
+    #relevant prescription - the presence of a code from the sensitive codelist
+    #is required for inclusion 
+    rsv_med_inclusion_second_date = (case(
+      when(
+        is_gp_event(codelists.rsv_sensitive_codelist_alt)
+        .where(gp_events.date.is_on_or_between(rsv_med_second_date - days(14), rsv_med_second_date + days(14)))
+        .exists_for_patient()
+      )
+      .then(
+        minimum_of(
+          (is_gp_event(codelists.rsv_sensitive_codelist_alt)
+          .where(
+            gp_events.date.is_on_or_between(
+              maximum_of(rsv_med_second_date - days(14), rsv_primary_date + days(14)),
+              rsv_med_second_date + days(14)
+            )
+          ).sort_by(gp_events.date).first_for_patient().date),
+          (rsv_med_second_date)
+        )
+      ),
+      otherwise = None)
+    )
+  elif codelist_type == "second_alternative":
+    #get occurrence of event in exclusion list within one month of 
+    #rsv_codes_second_date - looking at the same criteria as the first episode
+    rsv_exclusion_primary_second = (case(
+      when(
+        is_gp_event(codelists.rsv_primary_exclusion_codelist)
+        .where(
+          gp_events.date.is_on_or_between(
+            maximum_of(rsv_primary_date + days(14), rsv_codes_second_date - days(30)),
+            rsv_codes_second_date + days(30)
+          )
+        ).exists_for_patient()
+      )
+      .then(True),
+      otherwise = False)
+    )    
     
   #first get inclusion from specific phenotype
   rsv_primary_spec_second = (
@@ -609,13 +489,22 @@ else :
   )
     
   #extract date of second episode - using the same criteria as the first episode
-  rsv_primary_second_date = (case(
-    when(rsv_primary_spec_second.is_not_null())
-    .then(rsv_primary_spec_second),
-    when((rsv_primary_spec_second.is_null()) & (~rsv_exclusion_primary_second))
-    .then(minimum_of(rsv_codes_second_date, rsv_med_inclusion_second_date)),
-    otherwise = None)
-  )
+  if codelist_type == "alternative":
+    rsv_primary_second_date = (case(
+      when(rsv_primary_spec_second.is_not_null())
+      .then(rsv_primary_spec_second),
+      when((rsv_primary_spec_second.is_null()) & (~rsv_exclusion_primary_second))
+      .then(minimum_of(rsv_codes_second_date, rsv_med_inclusion_second_date)),
+      otherwise = None)
+    )
+  elif codelist_type == "second_alternative":
+    rsv_primary_second_date = (case(
+      when(rsv_primary_spec_second.is_not_null())
+      .then(rsv_primary_spec_second),
+      when((rsv_primary_spec_second.is_null()) & (~rsv_exclusion_primary_second))
+      .then(rsv_codes_second_date),
+      otherwise = None)
+    )
 
 #extract rsv secondary care dates for 'sensitive' phenotype
 
@@ -702,24 +591,44 @@ rsv_secondary_second_date = (case(
 #extract flu primary care dates for 'sensitive' phenotype
 
 #get date of first case of either ARI or fever for first episode
-ari_dates = (
-  get_codes_dates("ari_primary_codelist", 4, index_date, 1)
-)
-fever_dates = (
-  get_codes_dates("fever_codelist", 4, index_date, 1)
-)
+if codelist_type == "alternative":
+  ari_dates = (
+    get_codes_dates("ari_primary_codelist", 4, index_date, 1)
+  )
+  fever_cough_dates = (
+    get_codes_dates("fever_cough_codelist", 4, index_date, 1)
+  )
+    
+  ILI_pairs = []
+  ILI_date_cases = []
+
+  for ari_date in ari_dates:
+    for fever_cough_date in fever_cough_dates:
+      close_in_time = diff_dates_days(ari_date, fever_cough_date).absolute() <= 14
+      ILI_pairs.append(when(close_in_time).then(True))
+      ILI_date_cases.append(when(close_in_time).then(minimum_of(ari_date, fever_cough_date)))
+
+  ILI_case = case(*ILI_pairs, otherwise = False)
+  ILI_date = case(*ILI_date_cases, otherwise = None)
+elif codelist_type == "second_alternative":
+  ari_dates = (
+    get_codes_dates("ari_primary_codelist_alt", 4, index_date, 1)
+  )
+  fever_dates = (
+    get_codes_dates("fever_codelist", 4, index_date, 1)
+  )
   
-ILI_pairs = []
-ILI_date_cases = []
+  ILI_pairs = []
+  ILI_date_cases = []
 
-for ari_date in ari_dates:
+  for ari_date in ari_dates:
     for fever_date in fever_dates:
-        close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
-        ILI_pairs.append(when(close_in_time).then(True))
-        ILI_date_cases.append(when(close_in_time).then(minimum_of(ari_date, fever_date)))
+      close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
+      ILI_pairs.append(when(close_in_time).then(True))
+      ILI_date_cases.append(when(close_in_time).then(minimum_of(ari_date, fever_date)))
 
-ILI_case = case(*ILI_pairs, otherwise = False)
-ILI_date = case(*ILI_date_cases, otherwise = None)
+  ILI_case = case(*ILI_pairs, otherwise = False)
+  ILI_date = case(*ILI_date_cases, otherwise = None)
 
 #get date of occurrence of first relevant prescription
 flu_med_date = (
@@ -759,27 +668,48 @@ flu_primary_date = (case(
 )
   
 #get date of first case of either ARI or fever for second episode
-ari_second_dates = (
-  get_codes_dates("ari_primary_codelist", 4,
-                  flu_primary_date + days(14), 1)
-)
-fever_second_dates = (
-  get_codes_dates("fever_codelist", 4,
-                  flu_primary_date + days(14), 1)
-)
-  
-ILI_pairs_second = []
-ILI_second_date_cases = []
+if codelist_type == "alternative":
+  ari_second_dates = (
+    get_codes_dates("ari_primary_codelist", 4,
+                    flu_primary_date + days(14), 1)
+  )
+  fever_cough_second_dates = (
+    get_codes_dates("fever_cough_codelist", 4,
+                    flu_primary_date + days(14), 1)
+  )
 
-for ari_date in ari_second_dates:
+  ILI_pairs_second = []
+  ILI_second_date_cases = []
+
+  for ari_date in ari_second_dates:
+    for fever_cough_date in fever_cough_second_dates:
+      close_in_time = diff_dates_days(ari_date, fever_cough_date).absolute() <= 14
+      ILI_pairs_second.append(when(close_in_time).then(True))
+      ILI_second_date_cases.append(when(close_in_time).then(minimum_of(ari_date, fever_cough_date)))
+
+  ILI_case_second = case(*ILI_pairs_second, otherwise = False)
+  ILI_second_date = case(*ILI_second_date_cases, otherwise = None)
+elif codelist_type == "second_alternative":
+  ari_second_dates = (
+    get_codes_dates("ari_primary_codelist_alt", 4,
+                    flu_primary_date + days(14), 1)
+  )
+  fever_second_dates = (
+    get_codes_dates("fever_codelist", 4,
+                    flu_primary_date + days(14), 1)
+  )
+
+  ILI_pairs_second = []
+  ILI_second_date_cases = []
+
+  for ari_date in ari_second_dates:
     for fever_date in fever_second_dates:
-        close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
-        ILI_pairs_second.append(when(close_in_time).then(True))
-        ILI_second_date_cases.append(when(close_in_time)
-        .then(minimum_of(ari_date, fever_date)))
+      close_in_time = diff_dates_days(ari_date, fever_date).absolute() <= 14
+      ILI_pairs_second.append(when(close_in_time).then(True))
+      ILI_second_date_cases.append(when(close_in_time).then(minimum_of(ari_date, fever_date)))
 
-ILI_case_second = case(*ILI_pairs_second, otherwise = False)
-ILI_second_date = case(*ILI_second_date_cases, otherwise = None)
+  ILI_case_second = case(*ILI_pairs_second, otherwise = False)
+  ILI_second_date = case(*ILI_second_date_cases, otherwise = None)
  
 #get date of occurrence of first relevant prescription
 flu_med_second_date = (

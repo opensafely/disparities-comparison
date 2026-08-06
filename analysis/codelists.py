@@ -127,6 +127,9 @@ ari_primary_codelist = codelist_from_csv(
   column = "code",
 )
 
+# acute respiratory illness primary - alternative
+ari_primary_codelist_alt = ari_primary_codelist + ["49727002"]
+
 # fever 
 fever_codelist = codelist_from_csv(
   "codelists/opensafely-symptoms-fever.csv",
