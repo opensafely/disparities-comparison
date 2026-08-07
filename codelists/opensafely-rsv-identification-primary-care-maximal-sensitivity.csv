@@ -6,11 +6,8 @@ code,term
 102496004,Spiking fever
 103001002,Feeling feverish
 1030271000000105,Respiratory syncytial virus nucleic acid detection assay
-1036671000000106,Severe sepsis
 105592009,Septicemia
 10625551000119103,Bronchopneumonia caused by respiratory syncytial virus
-1076281000000108,Amber flag sepsis
-1092461000119104,Sepsis without acute organ dysfunction
 11140008,"Respiratory assist, manual"
 1163073003,Encephalitis caused by human respiratory syncytial virus
 117089007,"Administration of Respiratory Syncytial virus immune globulin, human"
@@ -54,6 +51,7 @@ code,term
 141511009,O/E - fever character NOS
 141512002,O/E - fever NOS
 143587007,RSV antigen level
+15199004,Acute bronchiolitis with bronchospasm
 1532007,Viral pharyngitis
 154313001,Septicaemia
 154372003,Viral infection NOS
@@ -84,9 +82,6 @@ code,term
 162481009,Breathing aggravates symptom
 162896002,On examination - stertorous breathing
 162900004,On examination - air hunger
-162913005,On examination - rate of respiration
-162915003,On examination - rate of respiration slow
-162916002,On examination - tachypnea
 162920003,On examination - shallow breathing
 164284002,Fever: [examination of] or [O/E]
 164285001,On examination - fever - general
@@ -110,6 +105,7 @@ code,term
 166223009,RSV antigen level
 166771000000103,Respiratory syncytial virus serology
 168501000000102,Respiratory syncytial virus serology
+17077006,Abnormal respiratory rate
 173081000000100,Respiratory syncytial virus serology
 17361004,Tracheal breathing
 17986004,Barking cough
@@ -140,7 +136,6 @@ code,term
 204561000000109,Respiratory syncytial virus nucleic acid detection
 20573003,Ineffective breathing pattern
 206304007,Perinatal hemoptysis of fetus and/or neonate
-206376005,Sepsis of the newborn
 20670007,Brassy cough
 206758001,[D]Pyrexia of unknown origin
 206760004,[D]Chills with fever
@@ -163,9 +158,6 @@ code,term
 233602006,Acute viral bronchiolitis
 233785003,Infectious disorder of trachea
 233812001,Sepsis-associated lung injury
-234173007,Hyperdynamic septic shock
-234174001,Hypodynamic septic shock
-238150007,Sepsis syndrome
 238151006,Sepsis-associated organ dysfunction
 238152004,Sepsis-related gastrointestinal ulceration
 24612001,Wheeze - rhonchi
@@ -262,7 +254,6 @@ code,term
 301287002,Expiratory stridor
 301288007,Quiet respiration
 301703002,Expiratory polyphonic wheeze
-301708006,Chest clear
 301826004,Intermittent stridor
 304213008,Low grade pyrexia
 306321000000105,Green traffic light - low risk of serious illness (Feverish illness in children 2007)
@@ -313,11 +304,11 @@ code,term
 366956000,Cough with fever
 367171008,Feverish cold
 367181007,Cough with fever
-371044001,Transient respiratory distress with sepsis
 373904004,Feels hot/feverish
 373906002,Fever with sweating
 383350451000119103,Subacute cough
 386305005,Treatment of fever
+386614005,Slow shallow breathing
 386661006,Fever
 386813002,Abnormal breathing
 390757000,Respiratory syncytial virus antigen assay
@@ -364,7 +355,6 @@ code,term
 441761000000105,"[X]Relapsing fever, unspecified"
 444814009,Viral sinusitis
 445241004,Persistent cough after viral respiratory infection
-447931005,Clinical sepsis
 46107006,Relapsing fever
 464581000000103,[X]Other viral infections of unspecified site
 464591000000101,"[X]Viral infection, unspecified"
@@ -406,7 +396,7 @@ code,term
 598631000000100,On examination - fever character NOS
 59921000237106,Qualitative result of respiratory syncytial virus antigen in nasopharyngeal aspirate
 59994004,Hacking cough
-60025004,Transitory fever of newborn
+60025004,Neonatal transitory fever
 602893011000119101,Acute nasopharyngitis caused by respiratory syncytial virus
 615621000000101,Respiratory syncytial virus as the cause of diseases classified to other chapters
 621031000000103,Acute bronchiolitis NOS
@@ -444,18 +434,15 @@ code,term
 755591000000104,Moderate wheeze
 755601000000105,Severe wheeze
 755611000000107,Very severe wheeze
-76571007,Septic shock
 767467006,Respiratory Syncytial Virus (RSV) immune globulin
 769210005,Strength of cough
 769211009,No cough strength
-770349000,Sepsis caused by virus
 77047003,Vesicular breathing
 773117009,Laryngeal stridor
 773551000000105,Fever care management
 77957000,Intermittent fever
 781651000000101,Respiratory bronchiolitis associated interstitial lung disease
 788062371000119104,Acute cough
-789043007,Sepsis without septic shock
 79451004,Bronchial breathing
 79479005,Respiratory syncytial virus bronchitis
 807861000000106,Respiratory bronchiolitis associated interstitial lung disease
@@ -467,8 +454,8 @@ code,term
 832371000000100,Sepsis
 8442000,Purulent rhinitis
 85377008,Post-tussive crackles
-859701000000104,Suspected sepsis
 862231000000103,Massive haemoptysis
+86684002,Slow respiration
 867311000000104,Constant wheezing
 867411000000108,Respiratory syncytial virus monoclonal antibody prophylaxis
 876251000000103,Respiratory syncytial virus monoclonal antibody prophylaxis
@@ -477,11 +464,8 @@ code,term
 903729901000119103,Acute upper respiratory infection caused by respiratory syncytial virus
 908401000000100,Respiratory syncytial virus nucleic acid detection assay
 908411000000103,RSV nucleic acid detection assay 
-91302008,Sepsis
 926181000000107,Wheezing in absence of colds
 935211000000102,Respiratory syncytial virus ribonucleic acid detection assay
 935221000000108,Respiratory syncytial virus ribonucleic acid detection assay 
-95627000,Fever of newborn
-957421000000104,Uncomplicated sepsis
-957431000000102,Red flag sepsis
+95627000,Neonatal fever
 9763007,Expiratory wheezing

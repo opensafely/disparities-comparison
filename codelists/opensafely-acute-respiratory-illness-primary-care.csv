@@ -18,6 +18,7 @@ code,term
 155616009,Bronchitis NOS
 15805002,Acute sinusitis
 16146001,Viral bronchitis
+162397003,Pain in throat
 17357005,Acute suppuration of frontal sinus
 18643000,Ethmoidal sinusitis
 195648002,(Acute nasopharyngitis or rhinitis) or (common cold)
@@ -67,6 +68,7 @@ code,term
 266375001,Respiratory infection: [acute] or [upper]
 266377009,(Acute nasopharyngitis) or (common cold) or (acute coryza) or (acute rhinitis) or (sniffles) or (snuffles)
 266380005,Acute: [bronchitis] or [chest infections] or [tracheobronchitis]
+267102003,Sore throat
 275499005,Acute wheezy bronchitis
 276443001,Acute laryngitis and/or tracheitis
 281794004,Viral upper respiratory tract infection
@@ -74,11 +76,13 @@ code,term
 301824001,Acute viral laryngotracheitis
 312371005,Acute infective bronchitis
 312400008,Acute infective tracheobronchitis
+312422001,Infective pharyngitis
 312423006,Infective laryngitis
 32398004,Bronchitis
 35301006,Acute tracheobronchitis
 363746003,Acute pharyngitis
 36971009,Sinusitis
+405737000,Pharyngitis
 408669002,Acute laryngitis with obstruction
 411271000000104,[X]Other acute upper respiratory infections of multiple sites
 4120002,Bronchiolitis
@@ -91,6 +95,8 @@ code,term
 45913009,Laryngitis
 5028002,Acute pansinusitis
 51476001,Nasopharyngitis
+54150009,Upper respiratory infection
+54398005,Acute upper respiratory infection
 5505005,Acute bronchiolitis
 55355000,Acute laryngopharyngitis
 576581000000107,Acute viral laryngitis unspecified

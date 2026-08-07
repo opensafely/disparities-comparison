@@ -19,16 +19,16 @@
       "sha": "ab9f9712939394b9b8f6a261ab3afb2d9f94daa4"
     },
     "opensafely-rsv-identification-primary-care-maximal-sensitivity.csv": {
-      "id": "opensafely/rsv-identification-primary-care-maximal-sensitivity/2c9fe48a",
-      "url": "https://www.opencodelists.org/codelist/opensafely/rsv-identification-primary-care-maximal-sensitivity/2c9fe48a/",
-      "downloaded_at": "2025-11-05 08:29:42.689198Z",
-      "sha": "3c1e86c1bfd23be4d4d913fd16aba6d95c7d470a"
+      "id": "opensafely/rsv-identification-primary-care-maximal-sensitivity/2a39834a",
+      "url": "https://www.opencodelists.org/codelist/opensafely/rsv-identification-primary-care-maximal-sensitivity/2a39834a/",
+      "downloaded_at": "2026-08-07 08:15:11.192405Z",
+      "sha": "5e42319d9050c68ab9b4c659d762cee9bebe7a09"
     },
     "opensafely-rsv-identification-prescriptions-maximal-sensitivity-dmd.csv": {
-      "id": "opensafely/rsv-identification-prescriptions-maximal-sensitivity-dmd/210e3123",
-      "url": "https://www.opencodelists.org/codelist/opensafely/rsv-identification-prescriptions-maximal-sensitivity-dmd/210e3123/",
-      "downloaded_at": "2025-11-05 08:29:42.829740Z",
-      "sha": "72ed6706ec41831fd9f9be73c85241ccf2dbe168"
+      "id": "opensafely/rsv-identification-prescriptions-maximal-sensitivity-dmd/00f99051",
+      "url": "https://www.opencodelists.org/codelist/opensafely/rsv-identification-prescriptions-maximal-sensitivity-dmd/00f99051/",
+      "downloaded_at": "2026-08-07 08:15:11.280347Z",
+      "sha": "2bb6297b72f87fc81703de7db01c861430d03941"
     },
     "opensafely-rsv-exclusion-primary-care-maximal-sensitivity.csv": {
       "id": "opensafely/rsv-exclusion-primary-care-maximal-sensitivity/02993e02",
@@ -97,10 +97,10 @@
       "sha": "3c62c02ea13b06e97c667abadd1359ae29e5d586"
     },
     "opensafely-acute-respiratory-illness-primary-care.csv": {
-      "id": "opensafely/acute-respiratory-illness-primary-care/3a1da458",
-      "url": "https://www.opencodelists.org/codelist/opensafely/acute-respiratory-illness-primary-care/3a1da458/",
-      "downloaded_at": "2025-11-05 08:29:44.455585Z",
-      "sha": "0705097b348887dec424e101aad7e0670b2347c9"
+      "id": "opensafely/acute-respiratory-illness-primary-care/42c421db",
+      "url": "https://www.opencodelists.org/codelist/opensafely/acute-respiratory-illness-primary-care/42c421db/",
+      "downloaded_at": "2026-08-07 08:15:12.897938Z",
+      "sha": "9bb71296a4ac128d44be9e9b54e188a7dc76fda1"
     },
     "opensafely-symptoms-fever.csv": {
       "id": "opensafely/symptoms-fever/3cd0644e",
