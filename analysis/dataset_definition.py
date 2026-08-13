@@ -2677,7 +2677,7 @@ if (investigation_type == "secondary") & (cohort == "older_adults"):
   dataset.has_sickle_cell = has_sickle_cell
 
 ## sensitivity analyses for phenotype definitions
-if (investigation_type == "additional_sensitivity") & (codelist_type == "alternative")|(codelist_type == "second_alternative"):
+if investigation_type == "additional_sensitivity":
 
   from dataset_definition_sensitivity import (
     rsv_primary_date, rsv_primary_second_date,

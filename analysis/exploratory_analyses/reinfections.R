@@ -29,7 +29,7 @@ covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 #import redaction function
 source(here::here("analysis", "functions", "redaction.R"))
 
-if (codelist_type %in% c("alternative", "second_alternative")) {
+if (codelist_type %in% c("alternative", "second_alternative", "third_alternative", "fourth_alternative")) {
 
   df_input <- read_feather(
     here::here("output", "data", paste0("input_processed_", cohort, "_", 
@@ -748,7 +748,7 @@ fs::dir_create(here::here("output", "exploratory"))
 fs::dir_create(here::here("output", "additional_sensitivity"))
 
 #write to file
-if (codelist_type %in% c("alternative", "second_alternative")) {
+if (codelist_type %in% c("alternative", "second_alternative", "third_alternative", "fourth_alternative")) {
 
   write_csv(patients, paste0(here::here("output", "additional_sensitivity"),
             "/", "reinfections_", cohort, "_", year(study_start_date), "_", 

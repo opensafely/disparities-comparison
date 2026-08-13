@@ -4311,12 +4311,20 @@ actions_list <- splice (
 
   action_phenotype_testing("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "alternative", "additional_sensitivity"),
   action_phenotype_testing("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative", "additional_sensitivity"),
+  action_phenotype_testing("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "third_alternative", "additional_sensitivity"),
+  action_phenotype_testing("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "fourth_alternative", "additional_sensitivity"),
   action_phenotype_testing("adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "alternative", "additional_sensitivity"),
   action_phenotype_testing("adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative", "additional_sensitivity"),
+  action_phenotype_testing("adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "third_alternative", "additional_sensitivity"),
+  action_phenotype_testing("adults", "s8", "2023_2024", "season8_start_date", "season8_end_date", "fourth_alternative", "additional_sensitivity"),
   action_phenotype_testing("children_and_adolescents", "s8", "2023_2024", "season8_start_date", "season8_end_date", "alternative", "additional_sensitivity"),
   action_phenotype_testing("children_and_adolescents", "s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative", "additional_sensitivity"),
+  action_phenotype_testing("children_and_adolescents", "s8", "2023_2024", "season8_start_date", "season8_end_date", "third_alternative", "additional_sensitivity"),
+  action_phenotype_testing("children_and_adolescents", "s8", "2023_2024", "season8_start_date", "season8_end_date", "fourth_alternative", "additional_sensitivity"),
   action_phenotype_testing("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date", "alternative", "additional_sensitivity"),
   action_phenotype_testing("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative", "additional_sensitivity"),
+  action_phenotype_testing("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date", "third_alternative", "additional_sensitivity"),
+  action_phenotype_testing("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date", "fourth_alternative", "additional_sensitivity"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "End", "# # # # # # # # # # # # # # # # # # #")
 
