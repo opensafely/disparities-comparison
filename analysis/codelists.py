@@ -73,7 +73,7 @@ rsv_sensitive_codelist = codelist_from_csv(
 )
 
 # rsv primary - sensitive, alternative
-rsv_sensitive_codelist_alt = set(rsv_sensitive_codelist) - set("49727002")
+rsv_sensitive_codelist_alt = set(rsv_sensitive_codelist) - set(["49727002"])
 
 # rsv emergency attendances - sensitive
 wheeze_attendance = ["4120002", "276191000000107"]
@@ -165,8 +165,8 @@ ari_secondary_codelist = codelist_from_csv(
 ari_secondary_codelist = expand_three_char_icd10_codes(ari_secondary_codelist)
 
 # acute respiratory illness secondary - alternative
-ari_secondary_codelist_alt1 = set(ari_secondary_codelist) - set("J069")
-ari_secondary_codelist_alt2 = set(ari_secondary_codelist) - set("J219")
+ari_secondary_codelist_alt1 = set(ari_secondary_codelist) - set(["J069"])
+ari_secondary_codelist_alt2 = set(ari_secondary_codelist) - set(["J219"])
 
 # flu secondary exclusion
 flu_secondary_exclusion_codelist = codelist_from_csv(
@@ -196,7 +196,7 @@ covid_sensitive_codelist = codelist_from_csv(
 )
 
 # covid primary - sensitive, alternative
-covid_sensitive_codelist_alt = set(covid_sensitive_codelist) - set("49727002")
+covid_sensitive_codelist_alt = set(covid_sensitive_codelist) - set(["49727002"])
 
 # covid primary - sensitive (prescriptions)
 covid_prescriptions_codelist = codelist_from_csv(
