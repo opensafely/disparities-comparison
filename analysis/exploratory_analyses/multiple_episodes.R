@@ -136,24 +136,30 @@ if (study_start_date >= covid_season_min) {
            rsv_severe_alt_combo, flu_severe_alt_combo)
 }
 
-#reformat from wide to long
+# Stack pathogen combo columns, then keep one row per patient per combo.
+# Overlap labels are written to every involved pathogen column, so stacking
+# without de-duplicating counted those patients 2-3 times.
 if (study_start_date >= covid_season_min) {
   df_spec_mild <- df_spec %>%
     pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo, covid_mild_alt_combo), 
                  names_to = "mild_combo", values_to = "combo") %>%
+    distinct(patient_id, combo, .keep_all = TRUE) %>%
     select(-c(rsv_severe_alt_combo, flu_severe_alt_combo, covid_severe_alt_combo))
   df_spec_severe <- df_spec %>%
     pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo, covid_severe_alt_combo), 
                  names_to = "severe_combo", values_to = "combo") %>%
+    distinct(patient_id, combo, .keep_all = TRUE) %>%
     select(-c(rsv_mild_alt_combo, flu_mild_alt_combo, covid_mild_alt_combo))
 } else {
   df_spec_mild <- df_spec %>%
     pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo),
                  names_to = "mild_combo", values_to = "combo") %>%
+    distinct(patient_id, combo, .keep_all = TRUE) %>%
     select(-c(rsv_severe_alt_combo, flu_severe_alt_combo))
   df_spec_severe <- df_spec %>% 
     pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo),
                  names_to = "severe_combo", values_to = "combo") %>%
+    distinct(patient_id, combo, .keep_all = TRUE) %>%
     select(-c(rsv_mild_alt_combo, flu_mild_alt_combo))
 }
 

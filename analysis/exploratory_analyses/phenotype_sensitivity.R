@@ -640,73 +640,85 @@ if (study_start_date >= covid_season_min) {
            flu_severe_alt_combo, overall_severe_alt_combo)
 }
 
-#reformat from wide to long
+# Stack pathogen combo columns, then keep one row per patient per combo.
+# Overlap labels are written to every involved pathogen column, so stacking
+# without de-duplicating counted those patients 2-3 times.
+combo_counts_long <- function(df, combo_cols, name, codelist_type) {
+  df %>%
+    pivot_longer(
+      all_of(combo_cols),
+      names_to = name,
+      values_to = "combo"
+    ) %>%
+    distinct(patient_id, combo) %>%
+    mutate(codelist_type = codelist_type) %>%
+    select(combo, codelist_type)
+}
+
 if (study_start_date >= covid_season_min) {
-  df_spec_mild <- df_spec %>%
-    pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo, covid_mild_alt_combo), 
-                 names_to = "mild_combo", values_to = "combo") %>%
-    mutate(codelist_type = "specific") %>%
-    select(combo, codelist_type)
-  df_spec_severe <- df_spec %>%
-    pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo, covid_severe_alt_combo), 
-                 names_to = "severe_combo", values_to = "combo") %>%
-    mutate(codelist_type = "specific") %>%
-    select(combo, codelist_type)
-  df_sens_mild <- df_sens %>%
-    pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo, covid_mild_alt_combo), 
-                 names_to = "mild_combo", values_to = "combo") %>%
-    mutate(codelist_type = "sensitive") %>%
-    select(combo, codelist_type)
-  df_sens_mild_overall <- df_sens_overall %>%
-    pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo, covid_mild_alt_combo, 
-                   overall_resp_mild_alt_combo), 
-                 names_to = "mild_combo", values_to = "combo") %>%
-    mutate(codelist_type = "sensitive") %>%
-    select(combo, codelist_type)
-  df_sens_severe <- df_sens %>%
-    pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo, covid_severe_alt_combo), 
-                 names_to = "severe_combo", values_to = "combo") %>%
-    mutate(codelist_type = "sensitive") %>%
-    select(combo, codelist_type)
-  df_sens_severe_overall <- df_sens_overall %>%
-    pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo, covid_severe_alt_combo, 
-                   overall_severe_alt_combo), 
-                 names_to = "severe_combo", values_to = "combo") %>%
-    mutate(codelist_type = "sensitive") %>%
-    select(combo, codelist_type)
+  df_spec_mild <- combo_counts_long(
+    df_spec,
+    c("rsv_mild_alt_combo", "flu_mild_alt_combo", "covid_mild_alt_combo"),
+    "mild_combo", "specific"
+  )
+  df_spec_severe <- combo_counts_long(
+    df_spec,
+    c("rsv_severe_alt_combo", "flu_severe_alt_combo", "covid_severe_alt_combo"),
+    "severe_combo", "specific"
+  )
+  df_sens_mild <- combo_counts_long(
+    df_sens,
+    c("rsv_mild_alt_combo", "flu_mild_alt_combo", "covid_mild_alt_combo"),
+    "mild_combo", "sensitive"
+  )
+  df_sens_mild_overall <- combo_counts_long(
+    df_sens_overall,
+    c("rsv_mild_alt_combo", "flu_mild_alt_combo", "covid_mild_alt_combo",
+      "overall_resp_mild_alt_combo"),
+    "mild_combo", "sensitive"
+  )
+  df_sens_severe <- combo_counts_long(
+    df_sens,
+    c("rsv_severe_alt_combo", "flu_severe_alt_combo", "covid_severe_alt_combo"),
+    "severe_combo", "sensitive"
+  )
+  df_sens_severe_overall <- combo_counts_long(
+    df_sens_overall,
+    c("rsv_severe_alt_combo", "flu_severe_alt_combo", "covid_severe_alt_combo",
+      "overall_severe_alt_combo"),
+    "severe_combo", "sensitive"
+  )
 } else {
-  df_spec_mild <- df_spec %>%
-    pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo),
-                 names_to = "mild_combo", values_to = "combo") %>%
-    mutate(codelist_type = "specific") %>%
-    select(combo, codelist_type)
-  df_spec_severe <- df_spec %>% 
-    pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo),
-                 names_to = "severe_combo", values_to = "combo") %>%
-    mutate(codelist_type = "specific") %>%
-    select(combo, codelist_type)
-  df_sens_mild <- df_sens %>%
-    pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo), 
-                 names_to = "mild_combo", values_to = "combo") %>%
-    mutate(codelist_type = "sensitive") %>%
-    select(combo, codelist_type)
-  df_sens_mild_overall <- df_sens_overall %>%
-    pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo, 
-                   overall_resp_mild_alt_combo), 
-                 names_to = "mild_combo", values_to = "combo") %>%
-    mutate(codelist_type = "sensitive") %>%
-    select(combo, codelist_type)
-  df_sens_severe <- df_sens %>%
-    pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo), 
-                 names_to = "severe_combo", values_to = "combo") %>%
-    mutate(codelist_type = "sensitive") %>%
-    select(combo, codelist_type)
-  df_sens_severe_overall <- df_sens_overall %>%
-    pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo, 
-                   overall_severe_alt_combo), 
-                 names_to = "severe_combo", values_to = "combo") %>%
-    mutate(codelist_type = "sensitive") %>%
-    select(combo, codelist_type)
+  df_spec_mild <- combo_counts_long(
+    df_spec,
+    c("rsv_mild_alt_combo", "flu_mild_alt_combo"),
+    "mild_combo", "specific"
+  )
+  df_spec_severe <- combo_counts_long(
+    df_spec,
+    c("rsv_severe_alt_combo", "flu_severe_alt_combo"),
+    "severe_combo", "specific"
+  )
+  df_sens_mild <- combo_counts_long(
+    df_sens,
+    c("rsv_mild_alt_combo", "flu_mild_alt_combo"),
+    "mild_combo", "sensitive"
+  )
+  df_sens_mild_overall <- combo_counts_long(
+    df_sens_overall,
+    c("rsv_mild_alt_combo", "flu_mild_alt_combo", "overall_resp_mild_alt_combo"),
+    "mild_combo", "sensitive"
+  )
+  df_sens_severe <- combo_counts_long(
+    df_sens,
+    c("rsv_severe_alt_combo", "flu_severe_alt_combo"),
+    "severe_combo", "sensitive"
+  )
+  df_sens_severe_overall <- combo_counts_long(
+    df_sens_overall,
+    c("rsv_severe_alt_combo", "flu_severe_alt_combo", "overall_severe_alt_combo"),
+    "severe_combo", "sensitive"
+  )
 }
 
 ##count number of patients in each category for phenotypes - separately for mild and severe 
