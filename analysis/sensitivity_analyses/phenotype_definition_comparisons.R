@@ -56,6 +56,56 @@ write_csv(df_change, here::here("output", "additional_sensitivity", paste0(
   "changes_in_phenotype_sensitivity_", cohort, "_", year(study_start_date), "_", 
   year(study_end_date), "_", codelist_type, ".csv")))
 
+##outcome overlap
+
+#calculate overlapping outcome totals and percentages
+calc_overlap <- function(df) {
+  df %>%
+    filter(
+      combo %in% c("RSV_Mild_Total", "RSV_Severe_Total",
+                   "Flu_Mild_Total", "Flu_Severe_Total",
+                   "COVID_Mild_Total", "COVID_Severe_Total",
+                   "RSV_Mild_Flu_Mild", "RSV_Severe_Flu_Severe",
+                   "RSV_Mild_Flu_Mild_0", "RSV_Severe_Flu_Severe_0",
+                   "RSV_Mild_0_COVID_Mild", "RSV_Severe_0_COVID_Severe",
+                   "0_Flu_Mild_COVID_Mild", "0_Flu_Severe_COVID_Severe") &
+        outcome_type %in% c("mild", "severe")
+    ) %>%
+    group_by(outcome_type) %>%
+    summarise(
+      total_cases = sum(n[grepl("_Total", combo)], na.rm = TRUE),
+      total_overlapping = sum(n[!grepl("_Total", combo)], na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    mutate(perc = signif((total_overlapping / total_cases) * 100, digits = 2))
+}
+
+#compare overlap between original and alternative definitions
+df_change <- calc_overlap(df) %>%
+  pivot_longer(
+    cols = c(total_cases, total_overlapping, perc),
+    names_to = "measure",
+    values_to = "n_original"
+  ) %>%
+  full_join(
+    calc_overlap(df_alt) %>%
+      pivot_longer(
+        cols = c(total_cases, total_overlapping, perc),
+        names_to = "measure",
+        values_to = "n_alt"
+      ),
+    by = c("outcome_type", "measure")
+  ) %>%
+  mutate(
+    n_change = n_alt - n_original,
+    pct_change = (n_alt - n_original) / n_original * 100
+  )
+
+#save
+write_csv(df_change, here::here("output", "additional_sensitivity", paste0(
+  "changes_in_outcome_overlap_", cohort, "_", year(study_start_date), "_",
+  year(study_end_date), "_", codelist_type, ".csv")))
+
 ##reinfections
 
 #import the data from the original definitions
