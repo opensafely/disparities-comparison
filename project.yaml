@@ -18401,6 +18401,21 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/older_adults_table1_collated.csv
 
+  describe_cohort_ages_older_adults_all_seasons:
+    run: r:v2 analysis/age_summary.R older_adults
+    needs:
+    - process_dataset_older_adults_s1_specific_primary
+    - process_dataset_older_adults_s2_specific_primary
+    - process_dataset_older_adults_s3_specific_primary
+    - process_dataset_older_adults_s4_specific_primary
+    - process_dataset_older_adults_s5_specific_primary
+    - process_dataset_older_adults_s6_specific_primary
+    - process_dataset_older_adults_s7_specific_primary
+    - process_dataset_older_adults_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/age_summary_older_adults_collated.csv
+
   collate_secondary_table1_tables_older_adults:
     run: r:v2 analysis/collation_code/secondary_table1_table_collation.R older_adults
     needs:
@@ -18853,6 +18868,21 @@ actions:
       moderately_sensitive:
         csv: output/collated/descriptive/adults_table1_collated.csv
 
+  describe_cohort_ages_adults_all_seasons:
+    run: r:v2 analysis/age_summary.R adults
+    needs:
+    - process_dataset_adults_s1_specific_primary
+    - process_dataset_adults_s2_specific_primary
+    - process_dataset_adults_s3_specific_primary
+    - process_dataset_adults_s4_specific_primary
+    - process_dataset_adults_s5_specific_primary
+    - process_dataset_adults_s6_specific_primary
+    - process_dataset_adults_s7_specific_primary
+    - process_dataset_adults_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/age_summary_adults_collated.csv
+
   collate_rates_tables_primary_adults:
     run: r:v2 analysis/collation_code/rates_table_primary_collation.R adults
     needs:
@@ -19255,6 +19285,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/children_and_adolescents_table1_collated.csv
+
+  describe_cohort_ages_children_and_adolescents_all_seasons:
+    run: r:v2 analysis/age_summary.R children_and_adolescents
+    needs:
+    - process_dataset_children_and_adolescents_s1_specific_primary
+    - process_dataset_children_and_adolescents_s2_specific_primary
+    - process_dataset_children_and_adolescents_s3_specific_primary
+    - process_dataset_children_and_adolescents_s4_specific_primary
+    - process_dataset_children_and_adolescents_s5_specific_primary
+    - process_dataset_children_and_adolescents_s6_specific_primary
+    - process_dataset_children_and_adolescents_s7_specific_primary
+    - process_dataset_children_and_adolescents_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/age_summary_children_and_adolescents_collated.csv
 
   collate_rates_tables_primary_children_and_adolescents:
     run: r:v2 analysis/collation_code/rates_table_primary_collation.R children_and_adolescents
@@ -19683,6 +19728,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_rates_primary_collated.csv
+
+  describe_cohort_ages_infants_all_seasons:
+    run: r:v2 analysis/age_summary.R infants
+    needs:
+    - process_dataset_infants_s1_specific_primary
+    - process_dataset_infants_s2_specific_primary
+    - process_dataset_infants_s3_specific_primary
+    - process_dataset_infants_s4_specific_primary
+    - process_dataset_infants_s5_specific_primary
+    - process_dataset_infants_s6_specific_primary
+    - process_dataset_infants_s7_specific_primary
+    - process_dataset_infants_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/age_summary_infants_collated.csv
 
   collate_rates_tables_sensitivity_infants:
     run: r:v2 analysis/collation_code/rates_table_sensitivity_collation.R infants
@@ -20294,6 +20354,21 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/collated/descriptive/infants_subgroup_rates_primary_collated.csv
+
+  describe_cohort_ages_infants_subgroup_all_seasons:
+    run: r:v2 analysis/age_summary.R infants_subgroup
+    needs:
+    - process_dataset_infants_subgroup_s1_specific_primary
+    - process_dataset_infants_subgroup_s2_specific_primary
+    - process_dataset_infants_subgroup_s3_specific_primary
+    - process_dataset_infants_subgroup_s4_specific_primary
+    - process_dataset_infants_subgroup_s5_specific_primary
+    - process_dataset_infants_subgroup_s6_specific_primary
+    - process_dataset_infants_subgroup_s7_specific_primary
+    - process_dataset_infants_subgroup_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/collated/descriptive/age_summary_infants_subgroup_collated.csv
 
   collate_rates_tables_sensitivity_infants_subgroup:
     run: r:v2 analysis/collation_code/rates_table_sensitivity_collation.R infants_subgroup

@@ -2036,6 +2036,21 @@ action_finalise <- function(cohort) {
       moderately_sensitive = lst(
         csv = glue("output/collated/descriptive/{cohort}_table1_collated.csv"))
     ),
+
+    action(
+      name = glue("describe_cohort_ages_{cohort}_all_seasons"),
+      run = glue("r:v2 analysis/age_summary.R {cohort}"),
+      needs = list(glue("process_dataset_{cohort}_s1_specific_primary"),
+                   glue("process_dataset_{cohort}_s2_specific_primary"),
+                   glue("process_dataset_{cohort}_s3_specific_primary"),
+                   glue("process_dataset_{cohort}_s4_specific_primary"),
+                   glue("process_dataset_{cohort}_s5_specific_primary"),
+                   glue("process_dataset_{cohort}_s6_specific_primary"),
+                   glue("process_dataset_{cohort}_s7_specific_primary"),
+                   glue("process_dataset_{cohort}_s8_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/age_summary_{cohort}_collated.csv"))      
+    ),
     
     action(
       name = glue("collate_rates_tables_primary_{cohort}"),
@@ -2440,6 +2455,21 @@ action_finalise_older_adults <- function(cohort) {
                    glue("describe_cohort_{cohort}_s8")),
       moderately_sensitive = lst(
         csv = glue("output/collated/descriptive/{cohort}_table1_collated.csv"))
+    ),
+
+    action(
+      name = glue("describe_cohort_ages_{cohort}_all_seasons"),
+      run = glue("r:v2 analysis/age_summary.R {cohort}"),
+      needs = list(glue("process_dataset_{cohort}_s1_specific_primary"),
+                   glue("process_dataset_{cohort}_s2_specific_primary"),
+                   glue("process_dataset_{cohort}_s3_specific_primary"),
+                   glue("process_dataset_{cohort}_s4_specific_primary"),
+                   glue("process_dataset_{cohort}_s5_specific_primary"),
+                   glue("process_dataset_{cohort}_s6_specific_primary"),
+                   glue("process_dataset_{cohort}_s7_specific_primary"),
+                   glue("process_dataset_{cohort}_s8_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/age_summary_{cohort}_collated.csv"))      
     ),
     
     action(
@@ -2910,6 +2940,21 @@ action_finalise_infants <- function(cohort) {
                    glue("describe_dataset_{cohort}_s8_sensitive_primary")),
       moderately_sensitive = lst(
         csv = glue("output/collated/descriptive/{cohort}_rates_primary_collated.csv"))
+    ),
+
+    action(
+      name = glue("describe_cohort_ages_{cohort}_all_seasons"),
+      run = glue("r:v2 analysis/age_summary.R {cohort}"),
+      needs = list(glue("process_dataset_{cohort}_s1_specific_primary"),
+                   glue("process_dataset_{cohort}_s2_specific_primary"),
+                   glue("process_dataset_{cohort}_s3_specific_primary"),
+                   glue("process_dataset_{cohort}_s4_specific_primary"),
+                   glue("process_dataset_{cohort}_s5_specific_primary"),
+                   glue("process_dataset_{cohort}_s6_specific_primary"),
+                   glue("process_dataset_{cohort}_s7_specific_primary"),
+                   glue("process_dataset_{cohort}_s8_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/collated/descriptive/age_summary_{cohort}_collated.csv"))      
     ),
     
     action(
