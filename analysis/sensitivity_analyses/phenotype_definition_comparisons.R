@@ -58,7 +58,7 @@ write_csv(df_change, here::here("output", "additional_sensitivity", paste0(
 
 ##outcome overlap
 
-#calculate overlapping outcome totals and percentages
+#calculate overlapping outcome totals and percentages by pathogen and severity
 calc_overlap <- function(df) {
   df %>%
     filter(
@@ -71,7 +71,23 @@ calc_overlap <- function(df) {
                    "0_Flu_Mild_COVID_Mild", "0_Flu_Severe_COVID_Severe") &
         outcome_type %in% c("mild", "severe")
     ) %>%
-    group_by(outcome_type) %>%
+    mutate(
+      rsv = grepl("RSV", combo),
+      flu = grepl("Flu", combo),
+      covid = grepl("COVID", combo)
+    ) %>%
+    pivot_longer(
+      cols = c(rsv, flu, covid),
+      names_to = "pathogen",
+      values_to = "present"
+    ) %>%
+    filter(present) %>%
+    mutate(pathogen = recode(pathogen,
+      rsv = "RSV",
+      flu = "Flu",
+      covid = "COVID"
+    )) %>%
+    group_by(pathogen, outcome_type) %>%
     summarise(
       total_cases = sum(n[grepl("_Total", combo)], na.rm = TRUE),
       total_overlapping = sum(n[!grepl("_Total", combo)], na.rm = TRUE),
@@ -94,7 +110,7 @@ df_change <- calc_overlap(df) %>%
         names_to = "measure",
         values_to = "n_alt"
       ),
-    by = c("outcome_type", "measure")
+    by = c("pathogen", "outcome_type", "measure")
   ) %>%
   mutate(
     n_change = n_alt - n_original,
