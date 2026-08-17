@@ -21670,6 +21670,38 @@ actions:
       moderately_sensitive:
         png: output/additional_sensitivity/infants_*_second_alternative_monthly_counts.png
 
+  phenotype_testing_monthly_counts_all_cohorts_s8_alternative:
+    run: r:v2 analysis/sensitivity_analyses/plot_phenotype_monthly_counts_all_cohorts.R
+      season8_start_date season8_end_date alternative
+    needs:
+    - process_dataset_older_adults_s8_sensitive_primary
+    - process_dataset_adults_s8_sensitive_primary
+    - process_dataset_children_and_adolescents_s8_sensitive_primary
+    - process_dataset_infants_s8_sensitive_primary
+    - phenotype_testing_process_dataset_older_adults_s8_alternative_additional_sensitivity
+    - phenotype_testing_process_dataset_adults_s8_alternative_additional_sensitivity
+    - phenotype_testing_process_dataset_children_and_adolescents_s8_alternative_additional_sensitivity
+    - phenotype_testing_process_dataset_infants_s8_alternative_additional_sensitivity
+    outputs:
+      moderately_sensitive:
+        png: output/additional_sensitivity/all_cohorts_*_alternative_monthly_counts.png
+
+  phenotype_testing_monthly_counts_all_cohorts_s8_second_alternative:
+    run: r:v2 analysis/sensitivity_analyses/plot_phenotype_monthly_counts_all_cohorts.R
+      season8_start_date season8_end_date second_alternative
+    needs:
+    - process_dataset_older_adults_s8_sensitive_primary
+    - process_dataset_adults_s8_sensitive_primary
+    - process_dataset_children_and_adolescents_s8_sensitive_primary
+    - process_dataset_infants_s8_sensitive_primary
+    - phenotype_testing_process_dataset_older_adults_s8_second_alternative_additional_sensitivity
+    - phenotype_testing_process_dataset_adults_s8_second_alternative_additional_sensitivity
+    - phenotype_testing_process_dataset_children_and_adolescents_s8_second_alternative_additional_sensitivity
+    - phenotype_testing_process_dataset_infants_s8_second_alternative_additional_sensitivity
+    outputs:
+      moderately_sensitive:
+        png: output/additional_sensitivity/all_cohorts_*_second_alternative_monthly_counts.png
+
   ## # # # # # # # # # # # # # # # # # # # 
   ## End 
   ## # # # # # # # # # # # # # # # # # # # 

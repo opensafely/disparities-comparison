@@ -3747,6 +3747,30 @@ action_phenotype_testing <- function(cohort, season, dates,
   
 }
 
+action_phenotype_testing_all_cohorts <- function(season, dates,
+                                                season_start_date, season_end_date,
+                                                codelist_type) {
+
+  cohorts <- c("older_adults", "adults", "children_and_adolescents", "infants")
+
+  splice(
+
+    action(
+      name = glue("phenotype_testing_monthly_counts_all_cohorts_{season}_{codelist_type}"),
+      run = glue("r:v2 analysis/sensitivity_analyses/plot_phenotype_monthly_counts_all_cohorts.R {season_start_date} {season_end_date} {codelist_type}"),
+      needs = as.list(c(
+        glue("process_dataset_{cohorts}_{season}_sensitive_primary"),
+        glue("phenotype_testing_process_dataset_{cohorts}_{season}_{codelist_type}_additional_sensitivity")
+      )),
+      moderately_sensitive = lst(
+        png = glue("output/additional_sensitivity/all_cohorts_*_{codelist_type}_monthly_counts.png")
+      )
+    )
+
+  )
+
+}
+
 # specify project ----
 
 ## defaults ----
@@ -4371,6 +4395,9 @@ actions_list <- splice (
   action_phenotype_testing("children_and_adolescents", "s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative", "additional_sensitivity"),
   action_phenotype_testing("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date", "alternative", "additional_sensitivity"),
   action_phenotype_testing("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative", "additional_sensitivity"),
+
+  action_phenotype_testing_all_cohorts("s8", "2023_2024", "season8_start_date", "season8_end_date", "alternative"),
+  action_phenotype_testing_all_cohorts("s8", "2023_2024", "season8_start_date", "season8_end_date", "second_alternative"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "End", "# # # # # # # # # # # # # # # # # # #")
 
