@@ -21114,6 +21114,16 @@ actions:
       moderately_sensitive:
         csv: output/additional_sensitivity/changes_in_*_older_adults_2023_2024_alternative.csv
 
+  phenotype_testing_monthly_counts_older_adults_s8_alternative:
+    run: r:v2 analysis/sensitivity_analyses/plot_phenotype_monthly_counts.R older_adults
+      season8_start_date season8_end_date alternative
+    needs:
+    - process_dataset_older_adults_s8_sensitive_primary
+    - phenotype_testing_process_dataset_older_adults_s8_alternative_additional_sensitivity
+    outputs:
+      moderately_sensitive:
+        png: output/additional_sensitivity/older_adults_*_alternative_monthly_counts.png
+
   phenotype_testing_generate_dataset_older_adults_s8_second_alternative_additional_sensitivity:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -21181,6 +21191,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/additional_sensitivity/changes_in_*_older_adults_2023_2024_second_alternative.csv
+
+  phenotype_testing_monthly_counts_older_adults_s8_second_alternative:
+    run: r:v2 analysis/sensitivity_analyses/plot_phenotype_monthly_counts.R older_adults
+      season8_start_date season8_end_date second_alternative
+    needs:
+    - process_dataset_older_adults_s8_sensitive_primary
+    - phenotype_testing_process_dataset_older_adults_s8_second_alternative_additional_sensitivity
+    outputs:
+      moderately_sensitive:
+        png: output/additional_sensitivity/older_adults_*_second_alternative_monthly_counts.png
 
   phenotype_testing_generate_dataset_adults_s8_alternative_additional_sensitivity:
     run: |-
@@ -21250,6 +21270,16 @@ actions:
       moderately_sensitive:
         csv: output/additional_sensitivity/changes_in_*_adults_2023_2024_alternative.csv
 
+  phenotype_testing_monthly_counts_adults_s8_alternative:
+    run: r:v2 analysis/sensitivity_analyses/plot_phenotype_monthly_counts.R adults
+      season8_start_date season8_end_date alternative
+    needs:
+    - process_dataset_adults_s8_sensitive_primary
+    - phenotype_testing_process_dataset_adults_s8_alternative_additional_sensitivity
+    outputs:
+      moderately_sensitive:
+        png: output/additional_sensitivity/adults_*_alternative_monthly_counts.png
+
   phenotype_testing_generate_dataset_adults_s8_second_alternative_additional_sensitivity:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -21317,6 +21347,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/additional_sensitivity/changes_in_*_adults_2023_2024_second_alternative.csv
+
+  phenotype_testing_monthly_counts_adults_s8_second_alternative:
+    run: r:v2 analysis/sensitivity_analyses/plot_phenotype_monthly_counts.R adults
+      season8_start_date season8_end_date second_alternative
+    needs:
+    - process_dataset_adults_s8_sensitive_primary
+    - phenotype_testing_process_dataset_adults_s8_second_alternative_additional_sensitivity
+    outputs:
+      moderately_sensitive:
+        png: output/additional_sensitivity/adults_*_second_alternative_monthly_counts.png
 
   phenotype_testing_generate_dataset_children_and_adolescents_s8_alternative_additional_sensitivity:
     run: |-
@@ -21386,6 +21426,16 @@ actions:
       moderately_sensitive:
         csv: output/additional_sensitivity/changes_in_*_children_and_adolescents_2023_2024_alternative.csv
 
+  phenotype_testing_monthly_counts_children_and_adolescents_s8_alternative:
+    run: r:v2 analysis/sensitivity_analyses/plot_phenotype_monthly_counts.R children_and_adolescents
+      season8_start_date season8_end_date alternative
+    needs:
+    - process_dataset_children_and_adolescents_s8_sensitive_primary
+    - phenotype_testing_process_dataset_children_and_adolescents_s8_alternative_additional_sensitivity
+    outputs:
+      moderately_sensitive:
+        png: output/additional_sensitivity/children_and_adolescents_*_alternative_monthly_counts.png
+
   phenotype_testing_generate_dataset_children_and_adolescents_s8_second_alternative_additional_sensitivity:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -21453,6 +21503,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/additional_sensitivity/changes_in_*_children_and_adolescents_2023_2024_second_alternative.csv
+
+  phenotype_testing_monthly_counts_children_and_adolescents_s8_second_alternative:
+    run: r:v2 analysis/sensitivity_analyses/plot_phenotype_monthly_counts.R children_and_adolescents
+      season8_start_date season8_end_date second_alternative
+    needs:
+    - process_dataset_children_and_adolescents_s8_sensitive_primary
+    - phenotype_testing_process_dataset_children_and_adolescents_s8_second_alternative_additional_sensitivity
+    outputs:
+      moderately_sensitive:
+        png: output/additional_sensitivity/children_and_adolescents_*_second_alternative_monthly_counts.png
 
   phenotype_testing_generate_dataset_infants_s8_alternative_additional_sensitivity:
     run: |-
@@ -21522,6 +21582,16 @@ actions:
       moderately_sensitive:
         csv: output/additional_sensitivity/changes_in_*_infants_2023_2024_alternative.csv
 
+  phenotype_testing_monthly_counts_infants_s8_alternative:
+    run: r:v2 analysis/sensitivity_analyses/plot_phenotype_monthly_counts.R infants
+      season8_start_date season8_end_date alternative
+    needs:
+    - process_dataset_infants_s8_sensitive_primary
+    - phenotype_testing_process_dataset_infants_s8_alternative_additional_sensitivity
+    outputs:
+      moderately_sensitive:
+        png: output/additional_sensitivity/infants_*_alternative_monthly_counts.png
+
   phenotype_testing_generate_dataset_infants_s8_second_alternative_additional_sensitivity:
     run: |-
       ehrql:v1 generate-dataset analysis/dataset_definition.py
@@ -21589,6 +21659,16 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/additional_sensitivity/changes_in_*_infants_2023_2024_second_alternative.csv
+
+  phenotype_testing_monthly_counts_infants_s8_second_alternative:
+    run: r:v2 analysis/sensitivity_analyses/plot_phenotype_monthly_counts.R infants
+      season8_start_date season8_end_date second_alternative
+    needs:
+    - process_dataset_infants_s8_sensitive_primary
+    - phenotype_testing_process_dataset_infants_s8_second_alternative_additional_sensitivity
+    outputs:
+      moderately_sensitive:
+        png: output/additional_sensitivity/infants_*_second_alternative_monthly_counts.png
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## End 

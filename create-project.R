@@ -3732,6 +3732,15 @@ action_phenotype_testing <- function(cohort, season, dates,
                    glue("phenotype_testing_reinfections_{cohort}_{season}_{codelist_type}")),
       moderately_sensitive = lst(
         csv = glue("output/additional_sensitivity/changes_in_*_{cohort}_{dates}_{codelist_type}.csv"))      
+    ),
+
+    action(
+      name = glue("phenotype_testing_monthly_counts_{cohort}_{season}_{codelist_type}"),
+      run = glue("r:v2 analysis/sensitivity_analyses/plot_phenotype_monthly_counts.R {cohort} {season_start_date} {season_end_date} {codelist_type}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_sensitive_primary"),
+                   glue("phenotype_testing_process_dataset_{cohort}_{season}_{codelist_type}_{investigation_type}")),
+      moderately_sensitive = lst(
+        png = glue("output/additional_sensitivity/{cohort}_*_{codelist_type}_monthly_counts.png"))
     )
 
   )
