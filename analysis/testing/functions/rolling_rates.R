@@ -150,7 +150,8 @@ create_rolling_plots_overall <- function(df) {
   df <- df %>%
     mutate(
       codelist_type = factor(str_to_title(codelist_type),
-                             levels = c("Specific", "Sensitive"))
+                             levels = c("Specific", "Sensitive"),
+                             labels = c("Narrow", "Broad"))
     )
   
   df <- df %>%

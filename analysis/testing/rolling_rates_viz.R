@@ -84,7 +84,7 @@ plot_an <- annotate_figure(
   top = text_grob(
     expression(bold("30-Date Rolling Rates in Older Adults, by ") * 
                  bold(phantom("Ethnicity")) * 
-                 bold(" (Specific Phenotype)")),
+                 bold(" (Narrow Phenotype)")),
     size = 14
   ),
   bottom = text_grob("Date", vjust = 0, hjust = 1.7), 
@@ -94,7 +94,7 @@ plot_an <- annotate_figure(
   top = text_grob(
     expression(bold(phantom("30-Date Rolling Rates in Older Adults, by ")) * 
                  bold("Ethnicity") * 
-                 bold(phantom(" (Specific Phenotype)"))),
+                 bold(phantom(" (Narrow Phenotype)"))),
     size = 14, col = '#2ca02c', vjust = 2.05, hjust = 0.482
   )
 )
@@ -122,7 +122,7 @@ plot_an <- annotate_figure(
   top = text_grob(
     expression(bold("30-Date Rolling Rates in Older Adults, by ") * 
                  bold(phantom("Ethnicity")) * 
-                 bold(" (Sensitive Phenotype)")),
+                 bold(" (Broad Phenotype)")),
     size = 14
   ),
   bottom = text_grob("Date", vjust = 0, hjust = 1.7), 
@@ -132,7 +132,7 @@ plot_an <- annotate_figure(
   top = text_grob(
     expression(bold(phantom("30-Date Rolling Rates in Older Adults, by ")) * 
                  bold("Ethnicity") * 
-                 bold(phantom(" (Sensitive Phenotype)"))),
+                 bold(phantom(" (Broad Phenotype)"))),
     size = 14, col = '#2ca02c', vjust = 2.05, hjust = 0.482
   )
 )
@@ -143,9 +143,9 @@ ggsave(here::here("output", "testing", "plots",
 
 #plot spec and sens together
 plot_an <- plot_grid(
-  annotate_figure(plot_spec, top = text_grob("Specific Phenotype",
+  annotate_figure(plot_spec, top = text_grob("Narrow Phenotype",
                   hjust = 0.8)),
-  annotate_figure(plot_sens, top = text_grob("Sensitive Phenotype",
+  annotate_figure(plot_sens, top = text_grob("Broad Phenotype",
                   hjust = 0.8)),
   ncol = 1
 ) %>%

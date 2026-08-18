@@ -1362,7 +1362,8 @@ forest_over_time_plot <- function(
       series = paste(variable, label, codelist_type, sep = " | "),
       shape_type = factor(
         stringr::str_to_title(as.character(codelist_type)),
-        levels = c("Reference", "Specific", "Sensitive")
+        levels = c("Reference", "Specific", "Sensitive"),
+        labels = c("Reference", "Narrow", "Broad")
       )
     ) %>%
     mutate(
@@ -2048,7 +2049,8 @@ forest_over_time_plot_compare <- function(
       },
       shape_type = factor(
         stringr::str_to_title(as.character(codelist_type)),
-        levels = c("Reference", "Specific", "Sensitive")
+        levels = c("Reference", "Specific", "Sensitive"),
+        labels = c("Reference", "Narrow", "Broad")
       )
     ) %>%
     mutate(
@@ -2929,7 +2931,8 @@ forest_year_facet_points_plot <- function(
       ),
       shape_type = factor(
         stringr::str_to_title(as.character(codelist_type)),
-        levels = c("Reference", "Specific", "Sensitive")
+        levels = c("Reference", "Specific", "Sensitive"),
+        labels = c("Reference", "Narrow", "Broad")
       ),
       outcome_type = if ("outcome_type" %in% names(.)) outcome_type else NA_character_
     ) %>%
@@ -2978,7 +2981,8 @@ forest_year_facet_points_plot <- function(
     filter(!has_estimate) %>%
     mutate(
       estimate = 1,
-      shape_type = factor("Reference", levels = c("Reference", "Specific", "Sensitive"))
+      shape_type = factor("Reference", levels = c("Reference", "Specific", "Sensitive"),
+                          labels = c("Reference", "Narrow", "Broad"))
     )
 
   p <- ggplot(plot_df, aes(x = estimate, y = level_y, color = labels)) +
@@ -3002,7 +3006,7 @@ forest_year_facet_points_plot <- function(
     ) +
     scale_x_log10(breaks = c(0.1, 0.3, 1, 3, 10), labels = scales::label_number(accuracy = 0.1)) +
     scale_color_manual(values = colour_map, breaks = legend_order, drop = FALSE) +
-    scale_shape_manual(values = c(Reference = 16, Specific = 17, Sensitive = 15), guide = "none") +
+    scale_shape_manual(values = c(Reference = 16, Narrow = 17, Broad = 15), guide = "none") +
     labs(x = paste(pathogen_title, "Rate Ratio", sep = " "), y = NULL, color = "Characteristic") +
     theme_bw(base_size = FOREST_BASE_SIZE) +
     theme(
@@ -3060,7 +3064,7 @@ forest_year_facet_points_plot <- function(
       ) +
       scale_x_log10(breaks = c(0.1, 0.3, 1, 3, 10), labels = scales::label_number(accuracy = 0.1)) +
       scale_color_manual(values = colour_map, breaks = legend_order, drop = FALSE) +
-      scale_shape_manual(values = c(Reference = 16, Specific = 17, Sensitive = 15), guide = "none") +
+      scale_shape_manual(values = c(Reference = 16, Narrow = 17, Broad = 15), guide = "none") +
       labs(x = paste(pathogen_title, "Rate Ratio", sep = " "), y = NULL, color = "Characteristic") +
       facet_grid(
         characteristic_base ~ col_facet,

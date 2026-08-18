@@ -343,12 +343,12 @@ upset_plot <- function(input, seasons) {
 
     plot_label[["Mild"]] <- ggdraw() +
       draw_label(
-        "A. Specific Mild",
+        "A. Narrow Mild",
         x = 0.5, y = 0.5, hjust = 1.35, vjust = 0.5,
         fontface = 'bold', size = 14# color = "#71797E"
       ) +
       draw_label(
-        "B. Sensitive Mild",
+        "B. Broad Mild",
         x = 1, y = 0.5, hjust = 1.55, vjust = 0.5,
         fontface = 'bold', size = 14#, color = "#71797E"
       ) +
@@ -357,12 +357,12 @@ upset_plot <- function(input, seasons) {
 
     plot_label[["Severe"]] <- ggdraw() +
       draw_label(
-        "C. Specific Severe",
+        "C. Narrow Severe",
         x = 0.5, y = 0.5, hjust = 1.35, vjust = 0.5,
         fontface = 'bold', size = 14# color = "#71797E"
       ) +
       draw_label(
-        "D. Sensitive Severe",
+        "D. Broad Severe",
         x = 1, y = 0.5, hjust = 1.55, vjust = 0.5,
         fontface = 'bold', size = 14#, color = "#71797E"
       ) +
@@ -757,12 +757,12 @@ upset_plot_supplement <- function(input, seasons) {
     
     plot_label <- ggdraw() +
       draw_label(
-        "A. Specific Phenotype",
+        "A. Narrow Phenotype",
         x = 0.5, y = 0, hjust = 1.35, vjust = -0.75,
         fontface = 'bold', size = 14# color = "#71797E"
       ) +
       draw_label(
-        "B. Sensitive Phenotype",
+        "B. Broad Phenotype",
         x = 1, y = 0, hjust = 1.55, vjust = -0.75,
         fontface = 'bold', size = 14#, color = "#71797E"
       ) +

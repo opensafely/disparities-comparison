@@ -4,6 +4,7 @@ library(lmtest)
 library(data.table)
 library(ggpubr)
 library(ggpmisc)
+library(RColorBrewer)
 
 #create function to import data
 import <- function(pathogen) {
@@ -401,7 +402,8 @@ df_clean <- df_clean %>%
   ) %>% 
   mutate(
     pathogen = factor(pathogen, levels = c("RSV", "Influenza", "COVID-19")),
-    codelist_type = factor(codelist_type, levels = c("Specific", "Sensitive"))
+    codelist_type = factor(codelist_type, levels = c("Specific", "Sensitive"),
+                           labels = c("Narrow", "Broad"))
   )
 
 f <- function(pal) brewer.pal(3, pal)
@@ -416,7 +418,7 @@ ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
   scale_color_manual(values = c(
       "RSV" = cols[1], "Influenza" = cols[2],
       "COVID-19" = cols[3])) +
-  scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
+  scale_alpha_manual(values = c("Broad" = 0.5, "Narrow" = 1),
                        na.translate = FALSE) +
   theme_bw(base_size = 20) +
   labs(

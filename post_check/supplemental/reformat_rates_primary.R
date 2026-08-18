@@ -41,7 +41,8 @@ reformat_rates <- function(cohort) {
     ) %>%
     mutate(
       pathogen  = factor(pathogen,  levels = c("RSV", "Influenza", "COVID-19")),
-      phenotype = factor(phenotype, levels = c("Specific", "Sensitive")),
+      phenotype = factor(phenotype, levels = c("Specific", "Sensitive"),
+                         labels = c("Narrow", "Broad")),
       severity  = factor(severity,  levels = c("Mild", "Severe"))
     ) %>%
     arrange(pathogen, phenotype, severity)

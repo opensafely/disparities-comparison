@@ -642,7 +642,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           mutate(
             label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive")),
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           unique() %>%
@@ -652,7 +653,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                              values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
@@ -707,7 +708,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           ) %>%
           mutate(
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive")),
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           unique() %>%
@@ -717,7 +719,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                              values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
@@ -788,7 +790,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           mutate(
             label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive")),
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           unique() %>%
@@ -798,7 +801,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                              values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
@@ -866,7 +869,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           mutate(
             label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive")),
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           unique() %>%
@@ -876,7 +880,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                              values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
@@ -947,7 +951,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
           mutate(
             label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive")),
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           unique() %>%
@@ -957,7 +962,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                              values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
@@ -1530,7 +1535,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           mutate(
             label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive")),
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           unique() %>%
@@ -1540,7 +1546,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                              values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
@@ -1590,7 +1596,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           mutate(
             label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive")),
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           unique() %>%
@@ -1600,7 +1607,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                              values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
@@ -1652,7 +1659,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           mutate(
             label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive")),
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           unique() %>%
@@ -1662,7 +1670,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                              values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +
@@ -1714,7 +1722,8 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           mutate(
             label = relevel_forest_labels(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive")),
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad")),
             labels = factor(labels, levels = c(unique(cols_final$labels)))
           ) %>%
           unique() %>%
@@ -1724,7 +1733,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
                              values = plot_labelling) +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10(breaks = c(0.1, 0.5, 2, 10, 20)) +
           coord_cartesian(xlim = c(0.06, 20)) +

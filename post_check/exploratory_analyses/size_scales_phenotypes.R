@@ -4,6 +4,8 @@ library(ggplot2)
 library(egg)
 library(scales)
 library(RColorBrewer)
+library(cowplot)
+library(ggpubr)
 
 ggsave <- function(..., bg = 'white') ggplot2::ggsave(..., bg = bg)
 
@@ -28,7 +30,7 @@ sizes <- function(cohort) {
     ) %>% 
     mutate(
       pathogen = factor(pathogen, levels = c("RSV", "Influenza", "COVID-19")),
-      codelist_type = factor(str_to_title(codelist_type), levels = c("Specific", "Sensitive"))
+      codelist_type = factor(str_to_title(codelist_type), levels = c("Specific", "Sensitive"), labels = c("Narrow", "Broad"))
     ) %>% 
     rename("count" = `n (midpoint 10 rounded)`)
 
@@ -62,7 +64,7 @@ sizes <- function(cohort) {
       scale_fill_manual(values = c(
         "RSV" = cols[1], "Influenza" = cols[2],
         "COVID-19" = cols[3])) +
-      scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
+      scale_alpha_manual(values = c("Broad" = 0.5, "Narrow" = 1),
                         na.translate = FALSE,
                         guide = guide_legend(position = NULL)) +
       facet_wrap(~subset, scales = "fixed", nrow = 1) +

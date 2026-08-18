@@ -58,7 +58,8 @@ forest_over_time_plot_all_seasons <- function(
       series = paste(variable, label, codelist_type, sep = " | "),
       shape_type = factor(
         stringr::str_to_title(as.character(codelist_type)),
-        levels = c("Reference", "Specific", "Sensitive")
+        levels = c("Reference", "Specific", "Sensitive"),
+        labels = c("Reference", "Narrow", "Broad")
       )
     ) %>%
     mutate(

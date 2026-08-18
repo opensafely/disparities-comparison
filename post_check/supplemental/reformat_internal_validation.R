@@ -192,7 +192,7 @@ reformat_internal_validation <- function(cohort) {
       phenotype = factor(
         phenotype,
         levels = c("spec_stage", "sens_stage"),
-        labels = c("Specific", "Sensitive")
+        labels = c("Narrow", "Broad")
       ),
       secondary_care_outcome = factor(
         population,

@@ -287,9 +287,9 @@ pearson_results_formatted <- pearson_results %>%
       str_detect(test, "COVID-19") & str_detect(test, "Mild") ~ "Mild COVID-19",
       str_detect(test, "COVID-19") & str_detect(test, "Severe") ~ "Severe COVID-19"
     ),
-    Phenotype = case_when(
-      str_detect(test, "Specific") ~ "Specific",
-      str_detect(test, "Sensitive") ~ "Sensitive"
+      Phenotype = case_when(
+      str_detect(test, "Specific") ~ "Narrow",
+      str_detect(test, "Sensitive") ~ "Broad"
     ),
     `Correlation Coefficient` = round(pearson, 2),
     `95% CI` = paste0("(", round(ci_lower, 2), ", ", round(ci_upper, 2), ")")
@@ -486,9 +486,9 @@ pearson_results_seasons_formatted <- pearson_results_seasons %>%
       str_detect(test, "COVID-19") & str_detect(test, "Mild") ~ "Mild COVID-19",
       str_detect(test, "COVID-19") & str_detect(test, "Severe") ~ "Severe COVID-19"
     ),
-    Phenotype = case_when(
-      str_detect(test, "Specific") ~ "Specific",
-      str_detect(test, "Sensitive") ~ "Sensitive"
+      Phenotype = case_when(
+      str_detect(test, "Specific") ~ "Narrow",
+      str_detect(test, "Sensitive") ~ "Broad"
     ),
     Season = str_extract(test, "(?<=\\()[^)]+(?=\\))"),
     value = paste0(
@@ -498,7 +498,7 @@ pearson_results_seasons_formatted <- pearson_results_seasons %>%
       "Mild RSV", "Severe RSV", "Mild Influenza", "Severe Influenza",
       "Mild COVID-19", "Severe COVID-19"
     )),
-    Phenotype = factor(Phenotype, levels = c("Specific", "Sensitive"))
+    Phenotype = factor(Phenotype, levels = c("Narrow", "Broad"))
   ) %>%
   select(Outcome, Phenotype, Season, value) %>%
   pivot_wider(names_from = Season, values_from = value) %>%
@@ -542,7 +542,8 @@ df_clean <- df_clean %>%
     season = str_remove_all(season, "[()]"),
     pathogen = case_when(pathogen == "Flu" ~ "Influenza", TRUE ~ pathogen),
     pathogen = factor(pathogen, levels = c("RSV", "Influenza", "COVID-19")),
-    codelist_type = factor(codelist_type, levels = c("Specific", "Sensitive")),
+    codelist_type = factor(codelist_type, levels = c("Specific", "Sensitive"),
+                           labels = c("Narrow", "Broad")),
     season_or_allseason = if_else(test == "Overall", "All Seasons", "Seasonal"),
     season_or_allseason = factor(season_or_allseason, levels = c("Seasonal", "All Seasons"))
   )
@@ -560,7 +561,7 @@ ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
   scale_color_manual(values = c(
       "RSV" = cols[1], "Influenza" = cols[2],
       "COVID-19" = cols[3])) +
-  scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
+  scale_alpha_manual(values = c("Broad" = 0.5, "Narrow" = 1),
                        na.translate = FALSE) +
   #scale_shape_manual(values = c("Seasonal" = 16, "All Seasons" = 3)) + 
   # geom_point(aes(x = 8.45, y = pearson_overall, shape = 2), size = 4) +

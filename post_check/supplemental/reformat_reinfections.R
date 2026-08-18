@@ -103,7 +103,8 @@ reinfections <- function(cohort, descriptive = "no") {
     mutate(
       codelist_type = factor(
         str_to_title(codelist_type),
-        levels = c("Specific", "Sensitive")
+        levels = c("Specific", "Sensitive"),
+        labels = c("Narrow", "Broad")
       ),
       outcome_type = factor(
         str_to_title(outcome_type),
@@ -156,7 +157,8 @@ leg_df <- tibble(
   x = c("2016-17", "2016-17"),
   y = 1,
   codelist_type = factor(c("Specific", "Sensitive"),
-                         levels = c("Specific", "Sensitive"))
+                         levels = c("Specific", "Sensitive"),
+                         labels = c("Narrow", "Broad"))
 )
 legend <- get_legend(
   ggplot(leg_df) +
@@ -258,7 +260,8 @@ reinfections_28 <- function(cohort, descriptive = "no") {
     mutate(
       codelist_type = factor(
         str_to_title(codelist_type),
-        levels = c("Specific", "Sensitive")
+        levels = c("Specific", "Sensitive"),
+        labels = c("Narrow", "Broad")
       ),
       outcome_type = factor(
         str_to_title(outcome_type),
@@ -305,7 +308,8 @@ leg_df <- tibble(
   x = c("2016-17", "2016-17"),
   y = 1,
   codelist_type = factor(c("Specific", "Sensitive"),
-                         levels = c("Specific", "Sensitive"))
+                         levels = c("Specific", "Sensitive"),
+                         labels = c("Narrow", "Broad"))
 )
 legend <- get_legend(
   ggplot(leg_df) +

@@ -311,16 +311,16 @@ upset_plot_rates <- function(input, seasons, per_n = 100000) {
     plot_label <- list()
 
     plot_label[["Mild"]] <- ggdraw() +
-      draw_label("A. Specific Mild",   x = 0.5, y = 0.5,
+      draw_label("A. Narrow Mild",   x = 0.5, y = 0.5,
                  hjust = 1.35, vjust = 0.5, fontface = "bold", size = 14) +
-      draw_label("B. Sensitive Mild",  x = 1,   y = 0.5,
+      draw_label("B. Broad Mild",  x = 1,   y = 0.5,
                  hjust = 1.55, vjust = 0.5, fontface = "bold", size = 14) +
       theme(plot.background = element_rect(fill = "white", colour = "white"))
 
     plot_label[["Severe"]] <- ggdraw() +
-      draw_label("C. Specific Severe",  x = 0.5, y = 0.5,
+      draw_label("C. Narrow Severe",  x = 0.5, y = 0.5,
                  hjust = 1.35, vjust = 0.5, fontface = "bold", size = 14) +
-      draw_label("D. Sensitive Severe", x = 1,   y = 0.5,
+      draw_label("D. Broad Severe", x = 1,   y = 0.5,
                  hjust = 1.55, vjust = 0.5, fontface = "bold", size = 14) +
       theme(plot.background = element_rect(fill = "white", colour = "white"))
 
@@ -520,9 +520,9 @@ upset_plot_supplement_rates <- function(input, seasons, per_n = 100000) {
     }
 
     plot_label <- ggdraw() +
-      draw_label("A. Specific Phenotype",  x = 0.5, y = 0,
+      draw_label("A. Narrow Phenotype",  x = 0.5, y = 0,
                  hjust = 1.35, vjust = -0.75, fontface = "bold", size = 14) +
-      draw_label("B. Sensitive Phenotype", x = 1,   y = 0,
+      draw_label("B. Broad Phenotype", x = 1,   y = 0,
                  hjust = 1.55, vjust = -0.75, fontface = "bold", size = 14) +
       theme(plot.background = element_rect(fill = "white", colour = "white"))
 

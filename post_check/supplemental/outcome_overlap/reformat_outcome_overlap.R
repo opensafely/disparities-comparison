@@ -73,12 +73,14 @@ perc_overlap <- function(cohort) {
 
   df_plot <- df_plot %>% 
     mutate(codelist_type = factor(codelist_type, 
-                                  levels = c("Specific", "Sensitive")))
+                                  levels = c("Specific", "Sensitive"),
+                                  labels = c("Narrow", "Broad")))
 
   panel_labels <- expand_grid(
     outcome_type = c("Mild", "Severe"),
     codelist_type = factor(c("Specific", "Sensitive"),
-                           levels = c("Specific", "Sensitive"))
+                           levels = c("Specific", "Sensitive"),
+                           labels = c("Narrow", "Broad"))
   ) %>%
     mutate(label = LETTERS[seq_len(n())])
 

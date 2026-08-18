@@ -175,66 +175,66 @@ rate_viz <- function(df, pathogen, outcome_type, interest = "no") {
   if (interest == "yes") {
     
     orders <- case_when(
-      pathogen == "RSV" ~ c("2017-18, Specific", "2017-18, Sensitive"),
-      pathogen == "Flu" ~ c("2018-19, Specific", "2018-19, Sensitive"),
-      pathogen == "COVID" ~ c("2020-21, Specific", "2020-21, Sensitive")
+      pathogen == "RSV" ~ c("2017-18, Narrow", "2017-18, Broad"),
+      pathogen == "Flu" ~ c("2018-19, Narrow", "2018-19, Broad"),
+      pathogen == "COVID" ~ c("2020-21, Narrow", "2020-21, Broad")
     )
     
   } else if (investigation_type == "primary" & pathogen %in% c("RSV", "Flu")) {
     
     orders <- c(
-      "2016-17, Specific",
-      "2016-17, Sensitive",
-      "2017-18, Specific",
-      "2017-18, Sensitive",
-      "2018-19, Specific",
-      "2018-19, Sensitive",
-      "2019-20, Specific",
-      "2019-20, Sensitive",
-      "2020-21, Specific",
-      "2020-21, Sensitive",
-      "2021-22, Specific",
-      "2021-22, Sensitive",
-      "2022-23, Specific",
-      "2022-23, Sensitive",
-      "2023-24, Specific",
-      "2023-24, Sensitive"
+      "2016-17, Narrow",
+      "2016-17, Broad",
+      "2017-18, Narrow",
+      "2017-18, Broad",
+      "2018-19, Narrow",
+      "2018-19, Broad",
+      "2019-20, Narrow",
+      "2019-20, Broad",
+      "2020-21, Narrow",
+      "2020-21, Broad",
+      "2021-22, Narrow",
+      "2021-22, Broad",
+      "2022-23, Narrow",
+      "2022-23, Broad",
+      "2023-24, Narrow",
+      "2023-24, Broad"
     )
     
   } else if (investigation_type == "primary" & pathogen == "COVID") {
     
     orders <- c(
-      "2019-20, Specific",
-      "2019-20, Sensitive",
-      "2020-21, Specific",
-      "2020-21, Sensitive",
-      "2021-22, Specific",
-      "2021-22, Sensitive",
-      "2022-23, Specific",
-      "2022-23, Sensitive",
-      "2023-24, Specific",
-      "2023-24, Sensitive"
+      "2019-20, Narrow",
+      "2019-20, Broad",
+      "2020-21, Narrow",
+      "2020-21, Broad",
+      "2021-22, Narrow",
+      "2021-22, Broad",
+      "2022-23, Narrow",
+      "2022-23, Broad",
+      "2023-24, Narrow",
+      "2023-24, Broad"
     )
     
   } else if (investigation_type == "primary" &
              pathogen == "Overall Respiratory") {
     
     orders <- c(
-      "2016-17, Sensitive",
-      "2017-18, Sensitive",
-      "2018-19, Sensitive",
-      "2019-20, Sensitive",
-      "2020-21, Sensitive",
-      "2021-22, Sensitive",
-      "2022-23, Sensitive",
-      "2023-24, Sensitive"
+      "2016-17, Broad",
+      "2017-18, Broad",
+      "2018-19, Broad",
+      "2019-20, Broad",
+      "2020-21, Broad",
+      "2021-22, Broad",
+      "2022-23, Broad",
+      "2023-24, Broad"
     )
     
   } else {
     
-    if (pathogen == "RSV") orders <- "2017-18, Specific"
-    if (pathogen == "Flu") orders <- "2018-19, Specific"
-    if (pathogen == "COVID") orders <- "2020-21, Specific"
+    if (pathogen == "RSV") orders <- "2017-18, Narrow"
+    if (pathogen == "Flu") orders <- "2018-19, Narrow"
+    if (pathogen == "COVID") orders <- "2020-21, Narrow"
     
   }
   
@@ -278,7 +278,7 @@ rate_viz <- function(df, pathogen, outcome_type, interest = "no") {
     mutate(
       fill_type = case_when(
         pathogen == "Overall Respiratory" ~ list(subset),
-        TRUE ~ list(paste0(subset, ", ", str_to_title(codelist_type))))[[1]],
+        TRUE ~ list(paste0(subset, ", ", recode(str_to_title(codelist_type), Specific = "Narrow", Sensitive = "Broad"))))[[1]],
       Characteristic = factor(Characteristic, levels = faceting)
     )
   
@@ -497,66 +497,66 @@ rate_viz_season <- function(df, pathogen, outcome_type, interest = "no") {
   if (interest == "yes") {
     
     orders <- case_when(
-      pathogen == "RSV" ~ c("2017-18, Specific", "2017-18, Sensitive"),
-      pathogen == "Flu" ~ c("2018-19, Specific", "2018-19, Sensitive"),
-      pathogen == "COVID" ~ c("2020-21, Specific", "2020-21, Sensitive")
+      pathogen == "RSV" ~ c("2017-18, Narrow", "2017-18, Broad"),
+      pathogen == "Flu" ~ c("2018-19, Narrow", "2018-19, Broad"),
+      pathogen == "COVID" ~ c("2020-21, Narrow", "2020-21, Broad")
     )
     
   } else if (investigation_type == "primary" & pathogen %in% c("RSV", "Flu")) {
     
     orders <- c(
-      "2016-17, Specific",
-      "2016-17, Sensitive",
-      "2017-18, Specific",
-      "2017-18, Sensitive",
-      "2018-19, Specific",
-      "2018-19, Sensitive",
-      "2019-20, Specific",
-      "2019-20, Sensitive",
-      "2020-21, Specific",
-      "2020-21, Sensitive",
-      "2021-22, Specific",
-      "2021-22, Sensitive",
-      "2022-23, Specific",
-      "2022-23, Sensitive",
-      "2023-24, Specific",
-      "2023-24, Sensitive"
+      "2016-17, Narrow",
+      "2016-17, Broad",
+      "2017-18, Narrow",
+      "2017-18, Broad",
+      "2018-19, Narrow",
+      "2018-19, Broad",
+      "2019-20, Narrow",
+      "2019-20, Broad",
+      "2020-21, Narrow",
+      "2020-21, Broad",
+      "2021-22, Narrow",
+      "2021-22, Broad",
+      "2022-23, Narrow",
+      "2022-23, Broad",
+      "2023-24, Narrow",
+      "2023-24, Broad"
     )
     
   } else if (investigation_type == "primary" & pathogen == "COVID") {
     
     orders <- c(
-      "2019-20, Specific",
-      "2019-20, Sensitive",
-      "2020-21, Specific",
-      "2020-21, Sensitive",
-      "2021-22, Specific",
-      "2021-22, Sensitive",
-      "2022-23, Specific",
-      "2022-23, Sensitive",
-      "2023-24, Specific",
-      "2023-24, Sensitive"
+      "2019-20, Narrow",
+      "2019-20, Broad",
+      "2020-21, Narrow",
+      "2020-21, Broad",
+      "2021-22, Narrow",
+      "2021-22, Broad",
+      "2022-23, Narrow",
+      "2022-23, Broad",
+      "2023-24, Narrow",
+      "2023-24, Broad"
     )
     
   } else if (investigation_type == "primary" &
              pathogen == "Overall Respiratory") {
     
     orders <- c(
-      "2016-17, Sensitive",
-      "2017-18, Sensitive",
-      "2018-19, Sensitive",
-      "2019-20, Sensitive",
-      "2020-21, Sensitive",
-      "2021-22, Sensitive",
-      "2022-23, Sensitive",
-      "2023-24, Sensitive"
+      "2016-17, Broad",
+      "2017-18, Broad",
+      "2018-19, Broad",
+      "2019-20, Broad",
+      "2020-21, Broad",
+      "2021-22, Broad",
+      "2022-23, Broad",
+      "2023-24, Broad"
     )
     
   } else {
     
-    if (pathogen == "RSV") orders <- "2017-18, Specific"
-    if (pathogen == "Flu") orders <- "2018-19, Specific"
-    if (pathogen == "COVID") orders <- "2020-21, Specific"
+    if (pathogen == "RSV") orders <- "2017-18, Narrow"
+    if (pathogen == "Flu") orders <- "2018-19, Narrow"
+    if (pathogen == "COVID") orders <- "2020-21, Narrow"
     
   }
   
@@ -582,7 +582,7 @@ rate_viz_season <- function(df, pathogen, outcome_type, interest = "no") {
     mutate(
       fill_type = case_when(
         pathogen == "Overall Respiratory" ~ list(subset),
-        TRUE ~ list(paste0(subset, ", ", str_to_title(codelist_type))))[[1]]
+        TRUE ~ list(paste0(subset, ", ", recode(str_to_title(codelist_type), Specific = "Narrow", Sensitive = "Broad"))))[[1]]
     )
   
   if (pathogen != "Overall Respiratory") {
@@ -791,66 +791,66 @@ rate_viz_mult <- function(df, pathogen, outcome_type, interest = "no") {
   if (interest == "yes") {
     
     orders <- case_when(
-      pathogen == "RSV" ~ c("2017-18, Specific", "2017-18, Sensitive"),
-      pathogen == "Flu" ~ c("2018-19, Specific", "2018-19, Sensitive"),
-      pathogen == "COVID" ~ c("2020-21, Specific", "2020-21, Sensitive")
+      pathogen == "RSV" ~ c("2017-18, Narrow", "2017-18, Broad"),
+      pathogen == "Flu" ~ c("2018-19, Narrow", "2018-19, Broad"),
+      pathogen == "COVID" ~ c("2020-21, Narrow", "2020-21, Broad")
     )
     
   } else if (investigation_type == "primary" & pathogen %in% c("RSV", "Flu")) {
     
     orders <- c(
-      "2016-17, Specific",
-      "2016-17, Sensitive",
-      "2017-18, Specific",
-      "2017-18, Sensitive",
-      "2018-19, Specific",
-      "2018-19, Sensitive",
-      "2019-20, Specific",
-      "2019-20, Sensitive",
-      "2020-21, Specific",
-      "2020-21, Sensitive",
-      "2021-22, Specific",
-      "2021-22, Sensitive",
-      "2022-23, Specific",
-      "2022-23, Sensitive",
-      "2023-24, Specific",
-      "2023-24, Sensitive"
+      "2016-17, Narrow",
+      "2016-17, Broad",
+      "2017-18, Narrow",
+      "2017-18, Broad",
+      "2018-19, Narrow",
+      "2018-19, Broad",
+      "2019-20, Narrow",
+      "2019-20, Broad",
+      "2020-21, Narrow",
+      "2020-21, Broad",
+      "2021-22, Narrow",
+      "2021-22, Broad",
+      "2022-23, Narrow",
+      "2022-23, Broad",
+      "2023-24, Narrow",
+      "2023-24, Broad"
     )
     
   } else if (investigation_type == "primary" & pathogen == "COVID") {
     
     orders <- c(
-      "2019-20, Specific",
-      "2019-20, Sensitive",
-      "2020-21, Specific",
-      "2020-21, Sensitive",
-      "2021-22, Specific",
-      "2021-22, Sensitive",
-      "2022-23, Specific",
-      "2022-23, Sensitive",
-      "2023-24, Specific",
-      "2023-24, Sensitive"
+      "2019-20, Narrow",
+      "2019-20, Broad",
+      "2020-21, Narrow",
+      "2020-21, Broad",
+      "2021-22, Narrow",
+      "2021-22, Broad",
+      "2022-23, Narrow",
+      "2022-23, Broad",
+      "2023-24, Narrow",
+      "2023-24, Broad"
     )
     
   } else if (investigation_type == "primary" &
              pathogen == "Overall Respiratory") {
     
     orders <- c(
-      "2016-17, Sensitive",
-      "2017-18, Sensitive",
-      "2018-19, Sensitive",
-      "2019-20, Sensitive",
-      "2020-21, Sensitive",
-      "2021-22, Sensitive",
-      "2022-23, Sensitive",
-      "2023-24, Sensitive"
+      "2016-17, Broad",
+      "2017-18, Broad",
+      "2018-19, Broad",
+      "2019-20, Broad",
+      "2020-21, Broad",
+      "2021-22, Broad",
+      "2022-23, Broad",
+      "2023-24, Broad"
     )
     
   } else {
     
-    if (pathogen == "RSV") orders <- "2017-18, Specific"
-    if (pathogen == "Flu") orders <- "2018-19, Specific"
-    if (pathogen == "COVID") orders <- "2020-21, Specific"
+    if (pathogen == "RSV") orders <- "2017-18, Narrow"
+    if (pathogen == "Flu") orders <- "2018-19, Narrow"
+    if (pathogen == "COVID") orders <- "2020-21, Narrow"
     
   }
   
@@ -876,7 +876,7 @@ rate_viz_mult <- function(df, pathogen, outcome_type, interest = "no") {
     mutate(
       fill_type = case_when(
         pathogen == "Overall Respiratory" ~ list(subset),
-        TRUE ~ list(paste0(subset, ", ", str_to_title(codelist_type))))[[1]]
+        TRUE ~ list(paste0(subset, ", ", recode(str_to_title(codelist_type), Specific = "Narrow", Sensitive = "Broad"))))[[1]]
     )
   
   if (pathogen != "Overall Respiratory") {

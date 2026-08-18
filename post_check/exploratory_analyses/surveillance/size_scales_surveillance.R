@@ -174,7 +174,7 @@ sizes <- function(input) {
       unique() %>% 
       mutate(
         fraction = ehr/surveillance,
-        codelist_type = factor(str_to_title(codelist_type), levels = c("Specific", "Sensitive")),
+        codelist_type = factor(str_to_title(codelist_type), levels = c("Specific", "Sensitive"), labels = c("Narrow", "Broad")),
         virus = factor(virus, levels = c("RSV", "Influenza", "COVID-19"))
       )
     
@@ -197,7 +197,7 @@ sizes <- function(input) {
       scale_fill_manual(values = c(
         "RSV" = cols[1], "Influenza" = cols[2],
         "COVID-19" = cols[3])) +
-      scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
+      scale_alpha_manual(values = c("Broad" = 0.5, "Narrow" = 1),
                         na.translate = FALSE,
                         guide = guide_legend(position = NULL)) +
       scale_y_log10() +
@@ -248,7 +248,7 @@ sizes <- function(input) {
 
   legend_plot <- get_legend(input %>%
       mutate(
-        codelist_type = factor(str_to_title(codelist_type), levels = c("Specific", "Sensitive")),
+        codelist_type = factor(str_to_title(codelist_type), levels = c("Specific", "Sensitive"), labels = c("Narrow", "Broad")),
         virus = factor(virus, levels = c("RSV", "Influenza", "COVID-19"))
       ) %>% 
       ggplot() + geom_bar(aes(y = yearly_events, x = codelist_type, fill = virus, alpha = codelist_type),
@@ -256,7 +256,7 @@ sizes <- function(input) {
       scale_fill_manual(values = c(
         "RSV" = cols[1], "Influenza" = cols[2],
         "COVID-19" = cols[3])) +
-      scale_alpha_manual(values = c("Sensitive" = 0.5, "Specific" = 1),
+      scale_alpha_manual(values = c("Broad" = 0.5, "Narrow" = 1),
                          na.translate = FALSE,
                          guide = guide_legend(position = NULL)) +
       facet_wrap(~year, scales = "fixed", nrow = 1) + 

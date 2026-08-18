@@ -194,9 +194,9 @@ df_all <- df_all %>%
       virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 45000,
       virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 45000,
       virus == "Influenza" & event == "Severe" & codelist_type == "sensitive" ~ 60000,
-      virus == "COVID-19" & event == "Mild" & codelist_type == "specific" ~ 1100500,
+      virus == "COVID-19" & event == "Mild" & codelist_type == "specific" ~ 1500500,
       virus == "COVID-19" & event == "Severe" & codelist_type == "specific" ~ 45000,
-      virus == "COVID-19" & event == "Mild" & codelist_type == "sensitive" ~ 1100500,
+      virus == "COVID-19" & event == "Mild" & codelist_type == "sensitive" ~ 1500500,
       virus == "COVID-19" & event == "Severe" & codelist_type == "sensitive" ~ 45000
     )
   )
@@ -259,22 +259,12 @@ plot_combined <- function(df, pathogen, phenotype) {
       select(-coeff) %>%
       mutate(codelist_type = "surveillance")
   ) %>%
-    arrange(month) %>%
-    mutate(
-      col_type = case_when(
-        virus == "RSV" & type == "EHR" ~ "RSV - EHR",
-        virus == "RSV" & type == "Surveillance" ~ "RSV - Surveillance",
-        virus == "Influenza" & type == "EHR" ~ "Influenza - EHR",
-        virus == "Influenza" & type == "Surveillance" ~ "Influenza - Surveillance",
-        virus == "COVID-19" & type == "EHR" ~ "COVID-19 - EHR",
-        virus == "COVID-19" & type == "Surveillance" ~ "COVID-19 - Surveillance"
-      )
-    )
+    arrange(month)
   
   my_tag <- function(outcome_type, pathogen, phenotype) {
 
     tag <- paste0(outcome_type, " ", pathogen, " (",
-                  str_to_sentence(phenotype), ")")
+                  recode(phenotype, specific = "Narrow", sensitive = "Broad"), ")")
     return(tag)
 
   }
@@ -282,8 +272,8 @@ plot_combined <- function(df, pathogen, phenotype) {
   mild <- df_plot %>%
     filter(event == "Mild") %>%
     ggplot() +
-    geom_line(aes(x = month, y = total_events, color = col_type,
-                  alpha = codelist_type), linewidth = 1) +
+    geom_line(aes(x = month, y = total_events, color = virus,
+                  linetype = type), linewidth = 1) +
     geom_rect(data = rects, aes(xmin = xmin, xmax = xmax,
                                 ymin = ymin, ymax = ymax),
               fill = "grey", alpha = 0.25, col = NA) +
@@ -295,16 +285,10 @@ plot_combined <- function(df, pathogen, phenotype) {
     ) +
     scale_x_date(date_breaks = "1 years", date_labels = "%Y") + 
     scale_color_manual(values = c(
-      "RSV - EHR" = cols[1], "Influenza - EHR" = cols[2],
-      "COVID-19 - EHR" = cols[3], "RSV - Surveillance" = "#519A83",
-      "Influenza - Surveillance" = "#CE704C",
-      "COVID-19 - Surveillance" = "#6F7EA0")) +
-    scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                       labels = c("sensitive" = "Sensitive",
-                                  "specific" = "Specific"),
-                       na.translate = FALSE) +
-    labs(x = "", y = "", colour = "Virus & Data Source",
-         alpha = "Phenotype Used") + theme_bw(base_size = 16) +
+      "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3])) +
+    scale_linetype_manual(values = c("EHR" = "solid", "Surveillance" = "11")) +
+    labs(x = "", y = "", colour = "Virus",
+         linetype = "Data Source") + theme_bw(base_size = 16) +
     theme(legend.position = "none",
           axis.text.x = element_text(angle = 45, hjust = 1),
           panel.border = element_blank(),
@@ -329,8 +313,8 @@ plot_combined <- function(df, pathogen, phenotype) {
   severe <- df_plot %>%
     filter(event == "Severe") %>%
     ggplot() +
-    geom_line(aes(x = month, y = total_events, color = col_type,
-                  alpha = codelist_type), linewidth = 1) +
+    geom_line(aes(x = month, y = total_events, color = virus,
+                  linetype = type), linewidth = 1) +
     geom_rect(data = rects, aes(xmin = xmin, xmax = xmax,
                                 ymin = ymin, ymax = ymax),
               fill = "grey", alpha = 0.25, col = NA) +
@@ -342,16 +326,10 @@ plot_combined <- function(df, pathogen, phenotype) {
     ) +
     scale_x_date(date_breaks = "1 years", date_labels = "%Y") + 
     scale_color_manual(values = c(
-      "RSV - EHR" = cols[1], "Influenza - EHR" = cols[2],
-      "COVID-19 - EHR" = cols[3], "RSV - Surveillance" = "#519A83",
-      "Influenza - Surveillance" = "#CE704C",
-      "COVID-19 - Surveillance" = "#6F7EA0")) +
-    scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                       labels = c("sensitive" = "Sensitive",
-                                  "specific" = "Specific"),
-                       na.translate = FALSE) +
-    labs(x = "", y = "", colour = "Virus & Data Source",
-         alpha = "Phenotype Used") + theme_bw(base_size = 16) +
+      "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3])) +
+    scale_linetype_manual(values = c("EHR" = "solid", "Surveillance" = "11")) +
+    labs(x = "", y = "", colour = "Virus",
+         linetype = "Data Source") + theme_bw(base_size = 16) +
     theme(legend.position = "none",
           axis.text.x = element_text(angle = 45, hjust = 1),
           panel.border = element_blank(),
@@ -412,28 +390,22 @@ get_legend_2 <- function(df1, df2) {
     surv_filt %>%
       select(-coeff)
   ) %>%
-    arrange(month) %>%
-    mutate(
-      col_type = case_when(
-        virus == "RSV" & type == "EHR" ~ "RSV - EHR",
-        virus == "RSV" & type == "Surveillance" ~ "RSV - Surveillance",
-        virus == "Influenza" & type == "EHR" ~ "Influenza - EHR",
-        virus == "Influenza" & type == "Surveillance" ~ "Influenza - Surveillance",
-        virus == "COVID-19" & type == "EHR" ~ "COVID-19 - EHR",
-        virus == "COVID-19" & type == "Surveillance" ~ "COVID-19 - Surveillance"
-      )
-    )
+    arrange(month)
   
   legend <- get_legend(
     df_plot %>%
-      filter(virus != "Overall Respiratory Viruses", type == "Surveillance") %>%
+      filter(virus != "Overall Respiratory Viruses") %>%
       ggplot() +
       geom_line(aes(x = month, y = total_events, color = factor(
-        virus, levels = c("RSV", "Influenza", "COVID-19"))),
+        virus, levels = c("RSV", "Influenza", "COVID-19")),
+        linetype = factor(type, levels = c("EHR", "Surveillance"))),
         linewidth = 1) +
       scale_color_manual(values = c(
-        "RSV" = "#519A83", "Influenza" = "#CE704C", "COVID-19" = "#6F7EA0")) +
-      guides(colour = guide_legend("Surveillance Data Type", order = 1)) +
+        "RSV" = cols[1], "Influenza" = cols[2], "COVID-19" = cols[3])) +
+      scale_linetype_manual(values = c("EHR" = "solid", "Surveillance" = "11")) +
+      guides(colour = guide_legend("Virus", order = 1,
+                                  override.aes = list(linetype = "solid")),
+             linetype = guide_legend("Data Source", order = 2)) +
       theme_bw(base_size = 12) +
       theme(legend.position = "bottom",
             legend.box = "horizontal",
@@ -561,16 +533,16 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
-                    labels = c("Specific", "Sensitive"))~event,
+                    labels = c("Narrow", "Broad"))~event,
              scales = "free_x") +
   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_shape_manual(values = c("sensitive" = 15, "specific" = 17),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   labs(x = "", y = "") + theme_bw() +
@@ -588,16 +560,16 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
-                    labels = c("Specific", "Sensitive"))~event,
+                    labels = c("Narrow", "Broad"))~event,
              scales = "free_x") +
   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_shape_manual(values = c("sensitive" = 15, "specific" = 17),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   labs(x = "", y = "") + theme_bw() +
@@ -615,16 +587,16 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
-                    labels = c("Specific", "Sensitive"))~event,
+                    labels = c("Narrow", "Broad"))~event,
              scales = "free_x") +
   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_shape_manual(values = c("sensitive" = 15, "specific" = 17),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   labs(x = "", y = "") + theme_bw() +
@@ -644,13 +616,13 @@ legend <- get_legend(
       shape = factor(
         codelist_type, levels = c("specific", "sensitive"))), size = 3.5) +
     scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                       labels = c("sensitive" = "Sensitive",
-                                  "specific" = "Specific"),
+                       labels = c("sensitive" = "Broad",
+                                  "specific" = "Narrow"),
                        name = "Phenotype Used",
                        na.translate = FALSE) +
     scale_shape_manual(values = c("sensitive" = 15, "specific" = 17),
-                       labels = c("sensitive" = "Sensitive",
-                                  "specific" = "Specific"),
+                       labels = c("sensitive" = "Broad",
+                                  "specific" = "Narrow"),
                        name = "Phenotype Used",
                        na.translate = FALSE) +
     scale_color_manual(values = c(
@@ -712,16 +684,16 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
-                    labels = c("Specific", "Sensitive"))~event,
+                    labels = c("Narrow", "Broad"))~event,
              scales = "free_x") +
   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_shape_manual(values = c("sensitive" = 15, "specific" = 17),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_color_manual(values = cols2, name = "Season") +
@@ -740,16 +712,16 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
-                    labels = c("Specific", "Sensitive"))~event,
+                    labels = c("Narrow", "Broad"))~event,
              scales = "free_x") +
   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_shape_manual(values = c("sensitive" = 15, "specific" = 17),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_color_manual(values = cols2, name = "Season") +
@@ -768,16 +740,16 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
-                    labels = c("Specific", "Sensitive"))~event,
+                    labels = c("Narrow", "Broad"))~event,
              scales = "free_x") +
   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_shape_manual(values = c("sensitive" = 15, "specific" = 17),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_color_manual(values = cols2[4:8], name = "Season") +
@@ -856,11 +828,11 @@ rsv_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
-                    labels = c("Specific", "Sensitive"))~event,
+                    labels = c("Narrow", "Broad"))~event,
              scales = "free_x") +
   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_color_manual(values = cols2, name = "Season") +
@@ -880,11 +852,11 @@ flu_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
-                    labels = c("Specific", "Sensitive"))~event,
+                    labels = c("Narrow", "Broad"))~event,
              scales = "free_x") +
   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_color_manual(values = cols2, name = "Season") +
@@ -904,11 +876,11 @@ covid_all_cohorts <- df_comp_all_cohorts %>%
   scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   scale_x_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
   facet_grid(factor(codelist_type, levels = c("specific", "sensitive"),
-                    labels = c("Specific", "Sensitive"))~event,
+                    labels = c("Narrow", "Broad"))~event,
              scales = "free_x") +
   scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                     labels = c("sensitive" = "Sensitive",
-                                "specific" = "Specific"),
+                     labels = c("sensitive" = "Broad",
+                                "specific" = "Narrow"),
                      name = "Phenotype Used",
                      na.translate = FALSE) +
   scale_color_manual(values = cols2[4:8], name = "Season") +

@@ -28,7 +28,8 @@ reformat_cases <- function(virus) {
     ) %>%
     mutate(
       virus     = factor(virus, levels = c("RSV", "Influenza", "COVID-19")),
-      phenotype = factor(phenotype, levels = c("Specific", "Sensitive")),
+      phenotype = factor(phenotype, levels = c("Specific", "Sensitive"),
+                         labels = c("Narrow", "Broad")),
       severity  = factor(severity, levels = c("Mild", "Severe"))
     ) %>%
     arrange(virus, phenotype, severity)
@@ -56,7 +57,8 @@ write_csv(
   bind_rows(cases_list) %>%
     mutate(
       virus     = factor(virus, levels = c("RSV", "Influenza", "COVID-19")),
-      phenotype = factor(phenotype, levels = c("Specific", "Sensitive")),
+      phenotype = factor(phenotype, levels = c("Specific", "Sensitive"),
+                         labels = c("Narrow", "Broad")),
       severity  = factor(severity, levels = c("Mild", "Severe"))
     ) %>%
     arrange(virus, phenotype, severity),

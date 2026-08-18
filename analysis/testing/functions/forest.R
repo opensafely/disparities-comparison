@@ -181,117 +181,117 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   group_order <- case_when(
     
     model_type == "ethnicity" & cohort == "infants" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)")),
+      "Sex (Reference)", "Sex (Narrow)", "Sex (Broad)",
+      "Age Group (Reference)", "Age Group (Narrow)", "Age Group (Broad)",
+      "Ethnicity (Reference)", "Ethnicity (Narrow)", "Ethnicity (Broad)",
+      "Rurality (Reference)", "Rurality (Narrow)", "Rurality (Broad)")),
     
     model_type == "ses" & cohort == "infants" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "IMD Quintile (Sensitive)", "Rurality (Reference)",
-      "Rurality (Specific)", "Rurality (Sensitive)")),
+      "Sex (Reference)", "Sex (Narrow)", "Sex (Broad)",
+      "Age Group (Reference)", "Age Group (Narrow)", "Age Group (Broad)",
+      "IMD Quintile (Reference)", "IMD Quintile (Narrow)",
+      "IMD Quintile (Broad)", "Rurality (Reference)",
+      "Rurality (Narrow)", "Rurality (Broad)")),
     
     model_type == "ethnicity_ses" & cohort == "infants" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "IMD Quintile (Sensitive)", "Rurality (Reference)",
-      "Rurality (Specific)", "Rurality (Sensitive)")),
+      "Sex (Reference)", "Sex (Narrow)", "Sex (Broad)",
+      "Age Group (Reference)", "Age Group (Narrow)", "Age Group (Broad)",
+      "Ethnicity (Reference)", "Ethnicity (Narrow)", "Ethnicity (Broad)",
+      "IMD Quintile (Reference)", "IMD Quintile (Narrow)",
+      "IMD Quintile (Broad)", "Rurality (Reference)",
+      "Rurality (Narrow)", "Rurality (Broad)")),
     
     model_type == "ethnicity" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
-      "Maternal Age (Specific)", "Maternal Age (Sensitive)",
-      "Maternal Smoking Status (Reference)", "Maternal Smoking Status (Specific)",
-      "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
-      "Maternal Drinking (Sensitive)", "Maternal Drug Usage (Specific)",
-      "Maternal Drug Usage (Sensitive)", "Maternal Flu Vaccination (Specific)",
-      "Maternal Flu Vaccination (Sensitive)",
-      "Maternal Pertussis Vaccination (Specific)",
-      "Maternal Pertussis Vaccination (Sensitive)",
+      "Sex (Reference)", "Sex (Narrow)", "Sex (Broad)",
+      "Age Group (Reference)", "Age Group (Narrow)", "Age Group (Broad)",
+      "Ethnicity (Reference)", "Ethnicity (Narrow)", "Ethnicity (Broad)",
+      "Rurality (Reference)", "Rurality (Narrow)", "Rurality (Broad)",
+      "Maternal Age (Narrow)", "Maternal Age (Broad)",
+      "Maternal Smoking Status (Reference)", "Maternal Smoking Status (Narrow)",
+      "Maternal Smoking Status (Broad)", "Maternal Drinking (Narrow)",
+      "Maternal Drinking (Broad)", "Maternal Drug Usage (Narrow)",
+      "Maternal Drug Usage (Broad)", "Maternal Flu Vaccination (Narrow)",
+      "Maternal Flu Vaccination (Broad)",
+      "Maternal Pertussis Vaccination (Narrow)",
+      "Maternal Pertussis Vaccination (Broad)",
       "Binary Variables (Reference)")),
     
     model_type == "ses" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "IMD Quintile (Sensitive)", "Rurality (Reference)", "Rurality (Specific)",
-      "Rurality (Sensitive)", "Maternal Age (Specific)",
-      "Maternal Age (Sensitive)", "Maternal Smoking Status (Reference)",
-      "Maternal Smoking Status (Specific)",
-      "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
-      "Maternal Drinking (Sensitive)", "Maternal Drug Usage (Specific)",
-      "Maternal Drug Usage (Sensitive)", "Maternal Flu Vaccination (Specific)",
-      "Maternal Flu Vaccination (Sensitive)",
-      "Maternal Pertussis Vaccination (Specific)",
-      "Maternal Pertussis Vaccination (Sensitive)",
+      "Sex (Reference)", "Sex (Narrow)", "Sex (Broad)",
+      "Age Group (Reference)", "Age Group (Narrow)", "Age Group (Broad)",
+      "IMD Quintile (Reference)", "IMD Quintile (Narrow)",
+      "IMD Quintile (Broad)", "Rurality (Reference)", "Rurality (Narrow)",
+      "Rurality (Broad)", "Maternal Age (Narrow)",
+      "Maternal Age (Broad)", "Maternal Smoking Status (Reference)",
+      "Maternal Smoking Status (Narrow)",
+      "Maternal Smoking Status (Broad)", "Maternal Drinking (Narrow)",
+      "Maternal Drinking (Broad)", "Maternal Drug Usage (Narrow)",
+      "Maternal Drug Usage (Broad)", "Maternal Flu Vaccination (Narrow)",
+      "Maternal Flu Vaccination (Broad)",
+      "Maternal Pertussis Vaccination (Narrow)",
+      "Maternal Pertussis Vaccination (Broad)",
       "Binary Variables (Reference)")),
     
     model_type == "ethnicity_ses" & cohort == "infants_subgroup" ~ list(c(
-      "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-      "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-      "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-      "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-      "IMD Quintile (Sensitive)", "Rurality (Reference)", "Rurality (Specific)",
-      "Rurality (Sensitive)", "Maternal Age (Specific)",
-      "Maternal Age (Sensitive)", "Maternal Smoking Status (Reference)",
-      "Maternal Smoking Status (Specific)",
-      "Maternal Smoking Status (Sensitive)", "Maternal Drinking (Specific)",
-      "Maternal Drinking (Sensitive)", "Maternal Drug Usage (Specific)",
-      "Maternal Drug Usage (Sensitive)", "Maternal Flu Vaccination (Specific)",
-      "Maternal Flu Vaccination (Sensitive)",
-      "Maternal Pertussis Vaccination (Specific)",
-      "Maternal Pertussis Vaccination (Sensitive)",
+      "Sex (Reference)", "Sex (Narrow)", "Sex (Broad)",
+      "Age Group (Reference)", "Age Group (Narrow)", "Age Group (Broad)",
+      "Ethnicity (Reference)", "Ethnicity (Narrow)", "Ethnicity (Broad)",
+      "IMD Quintile (Reference)", "IMD Quintile (Narrow)",
+      "IMD Quintile (Broad)", "Rurality (Reference)", "Rurality (Narrow)",
+      "Rurality (Broad)", "Maternal Age (Narrow)",
+      "Maternal Age (Broad)", "Maternal Smoking Status (Reference)",
+      "Maternal Smoking Status (Narrow)",
+      "Maternal Smoking Status (Broad)", "Maternal Drinking (Narrow)",
+      "Maternal Drinking (Broad)", "Maternal Drug Usage (Narrow)",
+      "Maternal Drug Usage (Broad)", "Maternal Flu Vaccination (Narrow)",
+      "Maternal Flu Vaccination (Broad)",
+      "Maternal Pertussis Vaccination (Narrow)",
+      "Maternal Pertussis Vaccination (Broad)",
       "Binary Variables (Reference)")),
     
     model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
                       "ethnicity_composition", "ses_composition", "full") & 
       cohort != "infants" & cohort != "infants_subgroup" &
       pathogen == "rsv" ~ list(c(
-        "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-        "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-        "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-        "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-        "IMD Quintile (Sensitive)", "Household Composition (Reference)",
-        "Household Composition (Specific)", "Household Composition (Sensitive)",
-        "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)")),
+        "Sex (Reference)", "Sex (Narrow)", "Sex (Broad)",
+        "Age Group (Reference)", "Age Group (Narrow)", "Age Group (Broad)",
+        "Ethnicity (Reference)", "Ethnicity (Narrow)", "Ethnicity (Broad)",
+        "IMD Quintile (Reference)", "IMD Quintile (Narrow)",
+        "IMD Quintile (Broad)", "Household Composition (Reference)",
+        "Household Composition (Narrow)", "Household Composition (Broad)",
+        "Rurality (Reference)", "Rurality (Narrow)", "Rurality (Broad)")),
     
     model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
                       "ethnicity_composition", "ses_composition", "full") & 
       cohort != "infants" & cohort != "infants_subgroup" &
       pathogen == "flu" ~ list(c(
-        "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-        "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-        "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-        "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-        "IMD Quintile (Sensitive)", "Household Composition (Reference)",
-        "Household Composition (Specific)", "Household Composition (Sensitive)",
-        "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
-        "Prior Flu Vaccination (Reference)", "Prior Flu Vaccination (Specific)",
-        "Prior Flu Vaccination (Sensitive)", "Flu Vaccination (Reference)",
-        "Flu Vaccination (Specific)", "Flu Vaccination (Sensitive)")),
+        "Sex (Reference)", "Sex (Narrow)", "Sex (Broad)",
+        "Age Group (Reference)", "Age Group (Narrow)", "Age Group (Broad)",
+        "Ethnicity (Reference)", "Ethnicity (Narrow)", "Ethnicity (Broad)",
+        "IMD Quintile (Reference)", "IMD Quintile (Narrow)",
+        "IMD Quintile (Broad)", "Household Composition (Reference)",
+        "Household Composition (Narrow)", "Household Composition (Broad)",
+        "Rurality (Reference)", "Rurality (Narrow)", "Rurality (Broad)",
+        "Prior Flu Vaccination (Reference)", "Prior Flu Vaccination (Narrow)",
+        "Prior Flu Vaccination (Broad)", "Flu Vaccination (Reference)",
+        "Flu Vaccination (Narrow)", "Flu Vaccination (Broad)")),
     
     model_type %in% c("ethnicity", "ses", "composition", "ethnicity_ses",
                       "ethnicity_composition", "ses_composition", "full") & 
       cohort != "infants" & cohort != "infants_subgroup" &
       pathogen == "covid" ~ list(c(
-        "Sex (Reference)", "Sex (Specific)", "Sex (Sensitive)",
-        "Age Group (Reference)", "Age Group (Specific)", "Age Group (Sensitive)",
-        "Ethnicity (Reference)", "Ethnicity (Specific)", "Ethnicity (Sensitive)",
-        "IMD Quintile (Reference)", "IMD Quintile (Specific)",
-        "IMD Quintile (Sensitive)", "Household Composition (Reference)",
-        "Household Composition (Specific)", "Household Composition (Sensitive)",
-        "Rurality (Reference)", "Rurality (Specific)", "Rurality (Sensitive)",
+        "Sex (Reference)", "Sex (Narrow)", "Sex (Broad)",
+        "Age Group (Reference)", "Age Group (Narrow)", "Age Group (Broad)",
+        "Ethnicity (Reference)", "Ethnicity (Narrow)", "Ethnicity (Broad)",
+        "IMD Quintile (Reference)", "IMD Quintile (Narrow)",
+        "IMD Quintile (Broad)", "Household Composition (Reference)",
+        "Household Composition (Narrow)", "Household Composition (Broad)",
+        "Rurality (Reference)", "Rurality (Narrow)", "Rurality (Broad)",
         "Time Since Last Covid Vaccination (Reference)",
-        "Time Since Last Covid Vaccination (Specific)",
-        "Time Since Last Covid Vaccination (Sensitive)",
-        "Covid Vaccination (Reference)", "Covid Vaccination (Specific)",
-        "Covid Vaccination (Sensitive)"))
+        "Time Since Last Covid Vaccination (Narrow)",
+        "Time Since Last Covid Vaccination (Broad)",
+        "Covid Vaccination (Reference)", "Covid Vaccination (Narrow)",
+        "Covid Vaccination (Broad)"))
     
   )[[1]]
   
@@ -589,13 +589,16 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           ) %>%
           mutate(
             plot_label2 = paste0(
-              plot_label, " (", str_to_title(codelist_type), ")")
+              plot_label, " (", recode(str_to_title(codelist_type),
+                Specific = "Narrow", Sensitive = "Broad",
+                Reference = "Reference"), ")")
           ) %>%
           mutate(
             plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive"))
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad"))
           ) %>%
           filter(subset %in% c("2020-21", "2023-24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
@@ -603,7 +606,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           scale_color_identity() +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
@@ -649,19 +652,22 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           ) %>%
           mutate(
             plot_label2 = paste0(
-                plot_label, " (", str_to_title(codelist_type), ")")
+                plot_label, " (", recode(str_to_title(codelist_type),
+                  Specific = "Narrow", Sensitive = "Broad",
+                  Reference = "Reference"), ")")
           ) %>%
           mutate(
             plot_label2 = factor(plot_label2, levels = group_order),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive"))
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad"))
           ) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
                      color = col, shape = shape)) +
           scale_color_identity() +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
@@ -703,13 +709,16 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           ) %>%
           mutate(
             plot_label2 = paste0(
-              plot_label, " (", str_to_title(codelist_type), ")")
+              plot_label, " (", recode(str_to_title(codelist_type),
+                Specific = "Narrow", Sensitive = "Broad",
+                Reference = "Reference"), ")")
           ) %>%
           mutate(
             plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive"))
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad"))
           ) %>%
           filter(subset %in% c("2020-21", "2023-24")) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
@@ -717,7 +726,7 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           scale_color_identity() +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10() + coord_cartesian(xlim = c(0.01, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
@@ -753,20 +762,23 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
           ) %>%
           mutate(
             plot_label2 = paste0(
-              plot_label, " (", str_to_title(codelist_type), ")")
+              plot_label, " (", recode(str_to_title(codelist_type),
+                Specific = "Narrow", Sensitive = "Broad",
+                Reference = "Reference"), ")")
           ) %>%
           mutate(
             plot_label2 = factor(plot_label2, levels = group_order),
             label = forcats::fct_relevel(label, levels),
             shape_order = factor(str_to_title(codelist_type), levels = c(
-              "Reference", "Specific", "Sensitive"))
+              "Reference", "Specific", "Sensitive"), labels = c(
+              "Reference", "Narrow", "Broad"))
           ) %>%
           ggplot(aes(y = label, x = estimate, xmin = conf.low, xmax = conf.high,
                      color = col, shape = shape)) +
           scale_color_identity() +
           scale_shape_identity(name = "Est. Type", guide = "legend",
                                breaks = c(16, 17, 15), labels = c(
-                                 "Reference", "Specific", "Sensitive")) +
+                                 "Reference", "Narrow", "Broad")) +
           geom_vline(xintercept = 1, linetype = 2) +
           scale_x_log10() + coord_cartesian(xlim = c(0.1, 10)) +
           geom_pointrange(position = position_dodge(width = 0.75), size = 0.5) +
