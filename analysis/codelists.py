@@ -128,7 +128,7 @@ ari_primary_codelist = codelist_from_csv(
 )
 
 # acute respiratory illness primary - alternative
-ari_primary_codelist_alt = ari_primary_codelist + ["49727002"]
+ari_primary_codelist_alt = set(ari_primary_codelist) - set(["49727002"])
 
 # fever 
 fever_codelist = codelist_from_csv(

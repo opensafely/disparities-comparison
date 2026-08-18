@@ -3,7 +3,7 @@ opensafely/ethnicity-snomed-0removed/22911876/
 
 opensafely/rsv-identification-primary-care/13907155/
 opensafely/rsv-identification-secondary-care/5ebecaf4/
-opensafely/rsv-identification-primary-care-maximal-sensitivity/2a39834a/
+opensafely/rsv-identification-primary-care-maximal-sensitivity/621c8ee9/
 opensafely/rsv-identification-prescriptions-maximal-sensitivity-dmd/00f99051/
 opensafely/rsv-exclusion-primary-care-maximal-sensitivity/02993e02/
 opensafely/rsv-exclusion-secondary-care-maximal-sensitivity/61718aea/
@@ -18,7 +18,7 @@ opensafely/covid-19-exclusion-secondary-care-maximal-sensitivity/1e5b712d/
 opensafely/influenza-identification-primary-care/4b14d7ab/
 opensafely/influenza-identification-secondary-care/7d33be15/
 opensafely/influenza-identification-primary-care-maximal-sensitivity/64244ae0/
-opensafely/acute-respiratory-illness-primary-care/42c421db/
+opensafely/acute-respiratory-illness-primary-care/7b2c021e/
 opensafely/symptoms-fever/3cd0644e/
 opensafely/symptoms-cough/55dfd783/
 opensafely/influenza-identification-prescriptions-maximal-sensitivity-dmd/4bf6af63
