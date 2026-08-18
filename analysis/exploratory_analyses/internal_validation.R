@@ -99,10 +99,10 @@ if (cohort %in% c("infants", "infants_subgroup")) {
 }
 
 ## Define validation populations ----
-# A patient is in e.g. rsv_pop if ANY sensitive mild primary lies within 30 days
+# A patient is in e.g. rsv_pop if ANY sensitive mild primary lies within 14 days
 # before their specific RSV severe (secondary) date. Severe dates are always specific.
 
-flag_population <- function(df, secondary_outcome, primary_cols, n_days = 30) {
+flag_population <- function(df, secondary_outcome, primary_cols, n_days = 14) {
   sec_q <- enquo(secondary_outcome)
   sec_date <- pull(df, !!sec_q)
 
@@ -124,14 +124,14 @@ if (study_start_date < covid_season_min) {
         secondary_outcome = rsv_secondary_date_spec,
         primary_cols = c("rsv_primary_date_sens", "flu_primary_date_sens",
                          "bucket_date_sens", "broad_bucket_date_sens"),
-        n_days = 30
+        n_days = 14
       ),
       flu_pop = flag_population(
         df = .,
         secondary_outcome = flu_secondary_date_spec,
         primary_cols = c("rsv_primary_date_sens", "flu_primary_date_sens",
                          "bucket_date_sens", "broad_bucket_date_sens"),
-        n_days = 30
+        n_days = 14
       ),
       # Denominator: patients with any specific severe outcome this season
       sec_flag = (!is.na(rsv_secondary_date_spec)|!is.na(flu_secondary_date_spec)),
@@ -149,7 +149,7 @@ if (study_start_date < covid_season_min) {
         primary_cols = c("rsv_primary_date_sens", "flu_primary_date_sens",
                          "covid_primary_date_sens", "bucket_date_sens",
                          "broad_bucket_date_sens"),
-        n_days = 30
+        n_days = 14
       ),
       flu_pop = flag_population(
         df = .,
@@ -157,7 +157,7 @@ if (study_start_date < covid_season_min) {
         primary_cols = c("rsv_primary_date_sens", "flu_primary_date_sens",
                          "covid_primary_date_sens", "bucket_date_sens",
                          "broad_bucket_date_sens"),
-        n_days = 30
+        n_days = 14
       ),
       covid_pop = flag_population(
         df = .,
@@ -165,7 +165,7 @@ if (study_start_date < covid_season_min) {
         primary_cols = c("rsv_primary_date_sens", "flu_primary_date_sens",
                          "covid_primary_date_sens", "bucket_date_sens",
                          "broad_bucket_date_sens"),
-        n_days = 30
+        n_days = 14
       ),
       sec_flag = (!is.na(rsv_secondary_date_spec)|!is.na(flu_secondary_date_spec)|!is.na(covid_secondary_date_spec)),
       rsv_flag = (!is.na(rsv_secondary_date_spec)),
@@ -243,7 +243,7 @@ write_csv(props, file = here::here("output", "exploratory",
 # Applied within each validation population (rsv_pop, flu_pop, covid_pop).
 # Timing is always relative to that population's specific severe date.
 
-make_pop_flags <- function(df, pop_flag, secondary_date, window_days = 30,
+make_pop_flags <- function(df, pop_flag, secondary_date, window_days = 14,
                            include_covid = FALSE) {
 
   pop_q <- enquo(pop_flag)
@@ -494,7 +494,7 @@ df_rsv <- make_pop_flags(
   df = df_input,
   pop_flag = rsv_pop,
   secondary_date = rsv_secondary_date_spec,
-  window_days = 30,
+  window_days = 14,
   include_covid = (study_start_date >= covid_season_min)
 )
 
@@ -502,7 +502,7 @@ df_flu <- make_pop_flags(
   df = df_input,
   pop_flag = flu_pop,
   secondary_date = flu_secondary_date_spec,
-  window_days = 30,
+  window_days = 14,
   include_covid = (study_start_date >= covid_season_min)
 )
 
@@ -512,7 +512,7 @@ if (study_start_date >= covid_season_min) {
     df = df_input,
     pop_flag = covid_pop,
     secondary_date = covid_secondary_date_spec,
-    window_days = 30,
+    window_days = 14,
     include_covid = TRUE
   )
 
