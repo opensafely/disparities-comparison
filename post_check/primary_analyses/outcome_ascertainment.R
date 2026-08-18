@@ -188,8 +188,8 @@ load_rates_season_all <- function() {
         ),
         event = dplyr::if_else(
           stringr::str_detect(.data$Outcome, "Mild"),
-          "A. Mild",
-          "B. Severe"
+          "Mild",
+          "Severe"
         ),
         subset = stringr::str_replace(.data$subset, "_", "-")
       ) %>%
@@ -208,15 +208,59 @@ load_rates_season_all <- function() {
 
 rates_season_all <- load_rates_season_all()
 
+subset_cohort_levels <- function(keep_cohorts) {
+  intersect(cohort_levels, keep_cohorts)
+}
+
+subset_cohort_colours <- function(keep_cohorts) {
+  cohort_colours[subset_cohort_levels(keep_cohorts)]
+}
+
+subset_df_all <- function(keep_cohorts) {
+  lvls <- subset_cohort_levels(keep_cohorts)
+  df_all %>%
+    filter(as.character(.data$cohort) %in% lvls) %>%
+    mutate(cohort = factor(as.character(.data$cohort), levels = lvls, ordered = TRUE)) %>%
+    group_by(.data$subset, .data$month, .data$event, .data$virus) %>%
+    mutate(
+      total_events = sum(.data$cohort_events),
+      perc_burden = dplyr::if_else(
+        .data$total_events > 0,
+        .data$cohort_events / .data$total_events,
+        NA_real_
+      )
+    ) %>%
+    ungroup()
+}
+
+subset_df_check <- function(keep_cohorts) {
+  lvls <- subset_cohort_levels(keep_cohorts)
+  df_check %>%
+    filter(as.character(.data$cohort) %in% lvls) %>%
+    mutate(cohort = factor(as.character(.data$cohort), levels = lvls, ordered = TRUE)) %>%
+    group_by(.data$event, .data$virus) %>%
+    mutate(perc_burden = .data$perc_burden / sum(.data$perc_burden) * 100) %>%
+    ungroup()
+}
+
+subset_rates_season <- function(keep_cohorts) {
+  lvls <- subset_cohort_levels(keep_cohorts)
+  rates_season_all %>%
+    filter(as.character(.data$cohort) %in% lvls) %>%
+    mutate(cohort = factor(as.character(.data$cohort), levels = lvls, ordered = TRUE))
+}
+
 build_burden_labels <- function(
   virus_name,
   plot_data,
   y_axis_expand = Y_AXIS_EXPAND,
-  label_spacing = Y_LABEL_SPACING
+  label_spacing = Y_LABEL_SPACING,
+  check_data = df_check,
+  label_cohort_levels = cohort_levels
 ) {
-  event_levels <- c("A. Mild", "B. Severe")
-  event_labels <- c("Mild" = "A. Mild", "Severe" = "B. Severe")
-  n_labels <- length(cohort_levels)
+  event_levels <- c("Mild", "Severe")
+  event_labels <- c("Mild" = "Mild", "Severe" = "Severe")
+  n_labels <- length(label_cohort_levels)
 
   virus_plot_data <- plot_data %>%
     filter(.data$virus == virus_name)
@@ -231,14 +275,14 @@ build_burden_labels <- function(
       .groups = "drop"
     )
 
-  df_check %>%
+  check_data %>%
     filter(.data$virus == virus_name) %>%
     mutate(
       event = factor(
         event_labels[.data$event],
         levels = event_levels
       ),
-      cohort = factor(.data$cohort, levels = cohort_levels),
+      cohort = factor(.data$cohort, levels = label_cohort_levels),
       label = sprintf("%.1f%%", .data$perc_burden)
     ) %>%
     inner_join(facet_stats, by = "event") %>%
@@ -257,7 +301,9 @@ build_burden_labels <- function(
 build_burden_labels_all <- function(
   plot_data,
   y_axis_expand = Y_AXIS_EXPAND,
-  label_spacing = Y_LABEL_SPACING
+  label_spacing = Y_LABEL_SPACING,
+  check_data = df_check,
+  label_cohort_levels = cohort_levels
 ) {
   purrr::map_dfr(
     levels(plot_data$virus),
@@ -266,7 +312,9 @@ build_burden_labels_all <- function(
         virus_name,
         plot_data,
         y_axis_expand = y_axis_expand,
-        label_spacing = label_spacing
+        label_spacing = label_spacing,
+        check_data = check_data,
+        label_cohort_levels = label_cohort_levels
       )
     }
   )
@@ -295,7 +343,7 @@ stacked <- function(area = FALSE, show_legend = FALSE) {
       event = factor(
         event,
         levels = c("Mild", "Severe"),
-        labels = c("A. Mild", "B. Severe")
+        labels = c("Mild", "Severe")
       )
     )
 
@@ -374,10 +422,16 @@ burden_facet_theme <- function(show_legend = FALSE) {
 stacked_with_rate_facets <- function(
     rate_cohorts,
     area = FALSE,
-    show_legend = FALSE
+    show_legend = FALSE,
+    plot_df = df_all,
+    rate_df = rates_season_all,
+    check_df = df_check,
+    fill_colours = cohort_colours,
+    label_cohort_levels = cohort_levels,
+    fill_legend_breaks = names(fill_colours)
 ) {
   virus_levels <- c("RSV", "Influenza", "COVID-19")
-  event_levels <- c("A. Mild", "B. Severe")
+  event_levels <- c("Mild", "Severe")
   panel_levels <- c("Rate", "Monthly cases")
 
   si_labels <- function(digits, width) {
@@ -385,14 +439,14 @@ stacked_with_rate_facets <- function(
     function(x) sprintf(paste0("%", width, "s"), f(x))
   }
 
-  plot_data <- df_all %>%
+  plot_data <- plot_df %>%
     mutate(
       virus = factor(virus, levels = virus_levels),
       event = factor(event, levels = c("Mild", "Severe"), labels = event_levels),
       panel_type = factor("Monthly cases", levels = panel_levels)
     )
 
-  rate_data <- rates_season_all %>%
+  rate_data <- rate_df %>%
     filter(
       cohort %in% rate_cohorts,
       codelist_type == "specific"
@@ -403,7 +457,11 @@ stacked_with_rate_facets <- function(
       panel_type = factor("Rate", levels = panel_levels)
     )
 
-  label_data <- build_burden_labels_all(plot_data %>% select(-panel_type)) %>%
+  label_data <- build_burden_labels_all(
+    plot_data %>% select(-panel_type),
+    check_data = check_df,
+    label_cohort_levels = label_cohort_levels
+  ) %>%
     mutate(panel_type = factor("Monthly cases", levels = panel_levels))
 
   facet_background <- tidyr::expand_grid(
@@ -477,9 +535,9 @@ stacked_with_rate_facets <- function(
       )
     ) +
     labs(x = "", fill = "Cohort") +
-    scale_fill_manual(values = cohort_colours) +
+    scale_fill_manual(values = fill_colours, breaks = fill_legend_breaks) +
     scale_colour_manual(
-      values = cohort_colours,
+      values = fill_colours,
       breaks = rate_cohorts,
       name = ""
     ) +
@@ -576,8 +634,12 @@ stacked_with_rate_facets <- function(
     )
 }
 
-rate_legend_plot <- function(rate_cohorts) {
-  rates_season_all %>%
+rate_legend_plot <- function(
+    rate_cohorts,
+    rate_df = rates_season_all,
+    colours = cohort_colours
+) {
+  rate_df %>%
     filter(
       virus == "RSV",
       cohort %in% rate_cohorts,
@@ -592,9 +654,29 @@ rate_legend_plot <- function(rate_cohorts) {
     geom_line(linewidth = 0.55, alpha = 0.5) +
     geom_point(size = 1.2, alpha = 0.95) +
     scale_colour_manual(
-      values = cohort_colours,
+      values = colours,
       breaks = rate_cohorts,
       name = ""
+    ) +
+    theme_void() +
+    theme(legend.position = "top")
+}
+
+cohort_fill_legend_plot <- function(
+    fill_colours = cohort_colours,
+    legend_breaks = names(fill_colours)
+) {
+  tibble::tibble(
+    month = as.Date("2017-01-01"),
+    cohort_events = 1,
+    cohort = factor(names(fill_colours), levels = names(fill_colours))
+  ) %>%
+    ggplot(aes(x = month, y = cohort_events, fill = cohort)) +
+    geom_col() +
+    scale_fill_manual(
+      values = fill_colours,
+      breaks = legend_breaks,
+      name = "Cohort"
     ) +
     theme_void() +
     theme(legend.position = "top")
@@ -620,18 +702,24 @@ assemble_cohort_burden_figure <- function(plot_body, legend_plot) {
 
   cowplot::ggdraw(combined) +
     cowplot::draw_label(
-      "A. Mild", x = 0.28, y = 0.925, hjust = 0.5, vjust = 0.5,
+      "Mild", x = 0.28, y = 0.925, hjust = 0.5, vjust = 0.5,
       fontface = "bold", size = 10
     ) +
     cowplot::draw_label(
-      "B. Severe", x = 0.75, y = 0.925, hjust = 0.5, vjust = 0.5,
+      "Severe", x = 0.75, y = 0.925, hjust = 0.5, vjust = 0.5,
       fontface = "bold", size = 10
     )
 }
 
-assemble_cohort_burden_with_rates_figure <- function(plot_body, rate_cohorts) {
+assemble_cohort_burden_with_rates_figure <- function(
+    plot_body,
+    rate_cohorts,
+    fill_colours = cohort_colours,
+    rate_df = rates_season_all,
+    fill_legend_breaks = names(fill_colours)
+) {
   cohort_legend <- cowplot::get_legend(
-    stacked(show_legend = TRUE) +
+    cohort_fill_legend_plot(fill_colours, legend_breaks = fill_legend_breaks) +
       theme(
         legend.position = "top",
         legend.box = "horizontal",
@@ -642,7 +730,7 @@ assemble_cohort_burden_with_rates_figure <- function(plot_body, rate_cohorts) {
   )
 
   rate_legend <- cowplot::get_legend(
-    rate_legend_plot(rate_cohorts) +
+    rate_legend_plot(rate_cohorts, rate_df = rate_df, colours = fill_colours) +
       theme(
         legend.position = "top",
         legend.box = "horizontal",
@@ -666,11 +754,11 @@ assemble_cohort_burden_with_rates_figure <- function(plot_body, rate_cohorts) {
 
   cowplot::ggdraw(combined) +
     cowplot::draw_label(
-      "A. Mild", x = 0.26, y = 0.925, hjust = 0.5, vjust = 0.5,
+      "Mild", x = 0.26, y = 0.925, hjust = 0.5, vjust = 0.5,
       fontface = "bold", size = 10
     ) +
     cowplot::draw_label(
-      "B. Severe", x = 0.72, y = 0.925, hjust = 0.5, vjust = 0.5,
+      "Severe", x = 0.72, y = 0.925, hjust = 0.5, vjust = 0.5,
       fontface = "bold", size = 10
     )
 }
@@ -720,6 +808,51 @@ ggsave(
 ggsave(
   here::here(out_dir, "cohort_burden_over_time_overlay_rates_infants_children.png"),
   bar_children_rates,
+  width = 10,
+  height = 9
+)
+
+assemble_grouped_burden_with_rates_figure <- function(keep_cohorts) {
+  plot_df <- subset_df_all(keep_cohorts)
+  check_df <- subset_df_check(keep_cohorts)
+  rate_df <- subset_rates_season(keep_cohorts)
+  fill_colours <- subset_cohort_colours(keep_cohorts)
+  label_cohort_levels <- subset_cohort_levels(keep_cohorts)
+
+  assemble_cohort_burden_with_rates_figure(
+    stacked_with_rate_facets(
+      keep_cohorts,
+      plot_df = plot_df,
+      rate_df = rate_df,
+      check_df = check_df,
+      fill_colours = fill_colours,
+      label_cohort_levels = label_cohort_levels,
+      fill_legend_breaks = keep_cohorts
+    ),
+    keep_cohorts,
+    fill_colours = fill_colours,
+    rate_df = rate_df,
+    fill_legend_breaks = keep_cohorts
+  )
+}
+
+bar_adult_pop_rates <- assemble_grouped_burden_with_rates_figure(
+  c("Older Adults", "Adults")
+)
+
+bar_kid_pop_rates <- assemble_grouped_burden_with_rates_figure(
+  c("Infants", "Children and Young People")
+)
+
+ggsave(
+  here::here(out_dir, "cohort_burden_over_time_overlay_rates_adult_pop.png"),
+  bar_adult_pop_rates,
+  width = 10,
+  height = 9
+)
+ggsave(
+  here::here(out_dir, "cohort_burden_over_time_overlay_rates_kid_pop.png"),
+  bar_kid_pop_rates,
   width = 10,
   height = 9
 )
@@ -886,11 +1019,11 @@ assemble_condensed_total_rates_figure <- function(rsv_plot, flu_plot, covid_plot
 
   cowplot::ggdraw(combined) +
     cowplot::draw_label(
-      "A. Mild", x = 0.275, y = 1, hjust = 0.5, vjust = 1.5,
+      "Mild", x = 0.275, y = 1, hjust = 0.5, vjust = 1.5,
       fontface = "bold", size = 9
     ) +
     cowplot::draw_label(
-      "B. Severe", x = 0.74, y = 1, hjust = 0.5, vjust = 1.5,
+      "Severe", x = 0.74, y = 1, hjust = 0.5, vjust = 1.5,
       fontface = "bold", size = 9
     )
 }
