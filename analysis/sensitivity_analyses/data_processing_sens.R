@@ -81,7 +81,11 @@ df_input_filt <- df_input_filt %>%
     patient_end_date < study_start_date_sens ~ NA_Date_,
     TRUE ~ patient_end_date)
   ) %>%
-  filter(!is.na(patient_index_date) & !is.na(patient_end_date))
+  filter(
+    !is.na(patient_index_date),
+    !is.na(patient_end_date),
+    patient_index_date <= patient_end_date
+  )
 
 #create time dependency
 if(cohort == "infants" | cohort == "infants_subgroup") {

@@ -46,7 +46,8 @@ if (study_start_date == as.Date("2020-09-01") &
     "num_generations"= df_household$num_generations,
     "composition_category" = df_household$composition_category)
   
-  df_input <- merge(df_input, household_comp_vars, by = "patient_id")
+  df_input <- merge(df_input, household_comp_vars, by = "patient_id",
+                    all.x = TRUE)
   
 }
 
@@ -68,6 +69,11 @@ df_input <- df_input %>%
   mutate(
     patient_end_date = pmin(patient_end_date, death_date, deregistration_date,
                             na.rm = TRUE)
+  ) %>%
+  filter(
+    !is.na(patient_index_date),
+    !is.na(patient_end_date),
+    patient_index_date <= patient_end_date
   )
 
 #create time dependency
@@ -340,15 +346,33 @@ if (study_start_date >= covid_season_min) {
         covid_primary_date < as.Date("2020-03-01"),
         NA_Date_, covid_primary_date),
       covid_primary_second_date = if_else(
-        covid_primary_date < as.Date("2020-03-01"),
+        covid_primary_second_date < as.Date("2020-03-01"),
         NA_Date_, covid_primary_second_date),
       covid_secondary_date = if_else(
         covid_secondary_date < as.Date("2020-03-01"),
         NA_Date_, covid_secondary_date),
       covid_secondary_second_date = if_else(
-        covid_secondary_date < as.Date("2020-03-01"),
+        covid_secondary_second_date < as.Date("2020-03-01"),
         NA_Date_, covid_secondary_second_date)
     )
+  #if the first episode was dropped, promote the second episode to first
+  df_input <- df_input %>%
+    mutate(
+      covid_primary_promote = is.na(covid_primary_date) &
+        !is.na(covid_primary_second_date),
+      covid_primary_date = if_else(
+        covid_primary_promote, covid_primary_second_date, covid_primary_date),
+      covid_primary_second_date = if_else(
+        covid_primary_promote, NA_Date_, covid_primary_second_date),
+      covid_secondary_promote = is.na(covid_secondary_date) &
+        !is.na(covid_secondary_second_date),
+      covid_secondary_date = if_else(
+        covid_secondary_promote, covid_secondary_second_date,
+        covid_secondary_date),
+      covid_secondary_second_date = if_else(
+        covid_secondary_promote, NA_Date_, covid_secondary_second_date)
+    ) %>%
+    select(-covid_primary_promote, -covid_secondary_promote)
 }
 
 #infer outcomes from event dates 

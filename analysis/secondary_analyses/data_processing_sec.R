@@ -33,7 +33,8 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_",
              codelist_type, "_", investigation_type,".arrow")))
 
-if (study_start_date == as.Date("2020-09-01")) {
+if (study_start_date == as.Date("2020-09-01") &
+    cohort != "infants" & cohort != "infants_subgroup") {
   
   df_household <- read_feather(
     here::here("output", "data", paste0("input_household_processed_", 
@@ -43,7 +44,8 @@ if (study_start_date == as.Date("2020-09-01")) {
     "num_generations"= df_household$num_generations,
     "composition_category" = df_household$composition_category)
   
-  df_input <- merge(df_input, household_comp_vars, by = "patient_id")
+  df_input <- merge(df_input, household_comp_vars, by = "patient_id",
+                    all.x = TRUE)
   
 }
 
@@ -51,8 +53,12 @@ if (study_start_date == as.Date("2020-09-01")) {
 df_input <- df_input %>%
   mutate(
     patient_end_date = pmin(patient_end_date, death_date, deregistration_date,
-                            na.rm = TRUE),
-    patient_index_date = patient_index_date - days(1)
+                            na.rm = TRUE)
+  ) %>%
+  filter(
+    !is.na(patient_index_date),
+    !is.na(patient_end_date),
+    patient_index_date <= patient_end_date
   )
 
 #create time dependency
@@ -69,6 +75,11 @@ if(cohort == "infants" | cohort == "infants_subgroup") {
     ) %>%
     ungroup()
 }
+
+df_input <- df_input %>%
+  mutate(
+    patient_index_date = patient_index_date - days(1)
+  )
   
 #calculate age bands
 if(cohort == "older_adults") {
@@ -199,7 +210,8 @@ df_input <- df_input %>%
 
 
 #household variables for when they are included (2020-21)
-if (study_start_date == as.Date("2020-09-01")) {
+if (study_start_date == as.Date("2020-09-01") &
+    cohort != "infants" & cohort != "infants_subgroup") {
   df_input <- df_input %>%
     mutate(
       #define household size categories

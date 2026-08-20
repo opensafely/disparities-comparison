@@ -1484,7 +1484,7 @@ elif codelist_type == "sensitive" :
               .where(emergency_events.arrival_date.is_on_or_after(dataset.overall_resp_primary_date + days(14)))
               .arrival_date.minimum_for_patient()),
             (emergency_care_diagnosis_matches(codelists.copd_exacerbation_attendance)
-              .where(emergency_events.arrival_date.is_on_or_after(dataset.rsv_primary_date + days(14)))
+              .where(emergency_events.arrival_date.is_on_or_after(dataset.overall_resp_primary_date + days(14)))
               .arrival_date.minimum_for_patient()),
             (is_gp_event(codelists.copd_exacerbation_primary_codelist)
               .where(gp_events.date.is_on_or_after(dataset.overall_resp_primary_date + days(14)))
@@ -1696,7 +1696,7 @@ elif codelist_type == "sensitive" :
               .where(emergency_events.arrival_date.is_on_or_after(dataset.overall_resp_primary_date + days(14)))
               .arrival_date.minimum_for_patient()),
             (emergency_care_diagnosis_matches(codelists.copd_exacerbation_attendance)
-              .where(emergency_events.arrival_date.is_on_or_after(dataset.rsv_primary_date + days(14)))
+              .where(emergency_events.arrival_date.is_on_or_after(dataset.overall_resp_primary_date + days(14)))
               .arrival_date.minimum_for_patient()),
             (is_gp_event(codelists.copd_exacerbation_primary_codelist)
               .where(gp_events.date.is_on_or_after(dataset.overall_resp_primary_date + days(14)))
@@ -2523,7 +2523,9 @@ if (investigation_type == "secondary") & (cohort == "older_adults"):
   dataset.has_sickle_cell = has_sickle_cell
 
 ## sensitivity analyses for phenotype definitions
-if (investigation_type == "additional_sensitivity") & (codelist_type == "alternative")|(codelist_type == "second_alternative"):
+if (investigation_type == "additional_sensitivity") and (
+  codelist_type in ("alternative", "second_alternative")
+):
 
   from dataset_definition_sensitivity import (
     rsv_primary_date, rsv_primary_second_date,
@@ -2552,10 +2554,11 @@ if (investigation_type == "additional_sensitivity") & (codelist_type == "alterna
   dataset.flu_primary_second_date = flu_primary_second_date
   dataset.flu_secondary_date = flu_secondary_date
   dataset.flu_secondary_second_date = flu_secondary_second_date
-  dataset.covid_primary_date = covid_primary_date
-  dataset.covid_primary_second_date = covid_primary_second_date
-  dataset.covid_secondary_date = covid_secondary_date
-  dataset.covid_secondary_second_date = covid_secondary_second_date
+  if study_start_date >= covid_season_min:
+    dataset.covid_primary_date = covid_primary_date
+    dataset.covid_primary_second_date = covid_primary_second_date
+    dataset.covid_secondary_date = covid_secondary_date
+    dataset.covid_secondary_second_date = covid_secondary_second_date
   dataset.overall_resp_primary_date = overall_resp_primary_date
   dataset.overall_resp_primary_second_date = overall_resp_primary_second_date
   dataset.overall_resp_secondary_date = overall_resp_secondary_date

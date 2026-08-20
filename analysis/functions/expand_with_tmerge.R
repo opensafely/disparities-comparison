@@ -9,9 +9,9 @@ expand_with_tmerge <- function(df, outcome) {
   
   tstop <- case_when(
     outcome == "flu_primary" ~ "flu_primary_inf_date",
-    outcome == "flu_secondary" ~ "flu_primary_inf_date",
+    outcome == "flu_secondary" ~ "flu_secondary_inf_date",
     outcome == "covid_primary" ~ "covid_primary_inf_date",
-    outcome == "covid_secondary" ~ "covid_primary_inf_date"
+    outcome == "covid_secondary" ~ "covid_secondary_inf_date"
   )
   
   outcome_event <- case_when(

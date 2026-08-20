@@ -14,7 +14,7 @@ glm_poisson <- function(df, x, y, offset_var) {
   
   #filter out NA survival times and fix ethnicity levels
   df <- df %>%
-    filter(!is.na(offset_var)) #%>% 
+    filter(!is.na(.data[[offset_var]])) #%>% 
     # mutate(
     #   latest_ethnicity_group = relevel(factor(
     #     latest_ethnicity_group, ordered = F), ref = "White")
@@ -82,7 +82,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
   
   #filter out NA survival times and fix ethnicity levels 
   df <- df %>%
-    filter(!is.na(offset_var)) #%>% 
+    filter(!is.na(.data[[offset_var]])) #%>% 
     # mutate(
     #   latest_ethnicity_group = relevel(factor(
     #     latest_ethnicity_group, ordered = F), ref = "White")
@@ -205,7 +205,7 @@ glm_poisson_further <- function(df, x, y, prior_vacc, offset_var) {
                       "covid_primary_inf", "covid_secondary_inf")) {  
     
     #cluster standard errors by patient_id
-    model <- coeftest(model, cluster = "patient_id", sandwich = TRUE)
+    model <- coeftest(model, vcov = vcovCL(model, cluster = ~ patient_id))
     
     #tidy model output
     tidy_model <- tidy(model, conf.int = TRUE)

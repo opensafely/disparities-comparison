@@ -1299,7 +1299,7 @@ if cohort == "older_adults" :
             .where(emergency_events.arrival_date.is_on_or_after(overall_resp_primary_date + days(14)))
             .arrival_date.minimum_for_patient()),
           (emergency_care_diagnosis_matches(codelists.copd_exacerbation_attendance)
-            .where(emergency_events.arrival_date.is_on_or_after(rsv_primary_date + days(14)))
+            .where(emergency_events.arrival_date.is_on_or_after(overall_resp_primary_date + days(14)))
             .arrival_date.minimum_for_patient()),
           (is_gp_event(codelists.copd_exacerbation_primary_codelist)
             .where(gp_events.date.is_on_or_after(overall_resp_primary_date + days(14)))
@@ -1451,7 +1451,7 @@ if cohort == "older_adults" :
             .where(emergency_events.arrival_date.is_on_or_after(overall_resp_primary_date + days(14)))
             .arrival_date.minimum_for_patient()),
           (emergency_care_diagnosis_matches(codelists.copd_exacerbation_attendance)
-            .where(emergency_events.arrival_date.is_on_or_after(rsv_primary_date + days(14)))
+            .where(emergency_events.arrival_date.is_on_or_after(overall_resp_primary_date + days(14)))
             .arrival_date.minimum_for_patient()),
           (is_gp_event(codelists.copd_exacerbation_primary_codelist)
             .where(gp_events.date.is_on_or_after(overall_resp_primary_date + days(14)))
