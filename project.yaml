@@ -5010,7 +5010,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2016_2017_specific_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2016_2017.arrow
-      -- infants_subroup season1_start_date season1_end_date specific primary
+      -- infants_subgroup season1_start_date season1_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s1_specific_primary
     - process_mothers_s1_specific_primary
@@ -5197,7 +5197,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2017_2018_specific_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2017_2018.arrow
-      -- infants_subroup season2_start_date season2_end_date specific primary
+      -- infants_subgroup season2_start_date season2_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s2_specific_primary
     - process_mothers_s2_specific_primary
@@ -5384,7 +5384,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2018_2019_specific_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2018_2019.arrow
-      -- infants_subroup season3_start_date season3_end_date specific primary
+      -- infants_subgroup season3_start_date season3_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s3_specific_primary
     - process_mothers_s3_specific_primary
@@ -5571,7 +5571,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2019_2020_specific_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2019_2020.arrow
-      -- infants_subroup season4_start_date season4_end_date specific primary
+      -- infants_subgroup season4_start_date season4_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s4_specific_primary
     - process_mothers_s4_specific_primary
@@ -5812,7 +5812,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2020_2021_specific_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2020_2021.arrow
-      -- infants_subroup season5_start_date season5_end_date specific primary
+      -- infants_subgroup season5_start_date season5_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s5_specific_primary
     - process_mothers_s5_specific_primary
@@ -6053,7 +6053,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2021_2022_specific_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2021_2022.arrow
-      -- infants_subroup season6_start_date season6_end_date specific primary
+      -- infants_subgroup season6_start_date season6_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s6_specific_primary
     - process_mothers_s6_specific_primary
@@ -6294,7 +6294,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2022_2023_specific_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2022_2023.arrow
-      -- infants_subroup season7_start_date season7_end_date specific primary
+      -- infants_subgroup season7_start_date season7_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s7_specific_primary
     - process_mothers_s7_specific_primary
@@ -6535,7 +6535,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2023_2024_specific_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2023_2024.arrow
-      -- infants_subroup season8_start_date season8_end_date specific primary
+      -- infants_subgroup season8_start_date season8_end_date specific primary
     needs:
     - generate_dataset_infants_subgroup_s8_specific_primary
     - process_mothers_s8_specific_primary
@@ -11699,7 +11699,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2016_2017_sensitive_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2016_2017.arrow
-      -- infants_subroup season1_start_date season1_end_date sensitive primary
+      -- infants_subgroup season1_start_date season1_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s1_sensitive_primary
     - process_mothers_s1_sensitive_primary
@@ -11940,7 +11940,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2017_2018_sensitive_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2017_2018.arrow
-      -- infants_subroup season2_start_date season2_end_date sensitive primary
+      -- infants_subgroup season2_start_date season2_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s2_sensitive_primary
     - process_mothers_s2_sensitive_primary
@@ -12181,7 +12181,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2018_2019_sensitive_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2018_2019.arrow
-      -- infants_subroup season3_start_date season3_end_date sensitive primary
+      -- infants_subgroup season3_start_date season3_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s3_sensitive_primary
     - process_mothers_s3_sensitive_primary
@@ -12422,7 +12422,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2019_2020_sensitive_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2019_2020.arrow
-      -- infants_subroup season4_start_date season4_end_date sensitive primary
+      -- infants_subgroup season4_start_date season4_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s4_sensitive_primary
     - process_mothers_s4_sensitive_primary
@@ -12717,7 +12717,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2020_2021_sensitive_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2020_2021.arrow
-      -- infants_subroup season5_start_date season5_end_date sensitive primary
+      -- infants_subgroup season5_start_date season5_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s5_sensitive_primary
     - process_mothers_s5_sensitive_primary
@@ -13012,7 +13012,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2021_2022_sensitive_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2021_2022.arrow
-      -- infants_subroup season6_start_date season6_end_date sensitive primary
+      -- infants_subgroup season6_start_date season6_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s6_sensitive_primary
     - process_mothers_s6_sensitive_primary
@@ -13307,7 +13307,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2022_2023_sensitive_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2022_2023.arrow
-      -- infants_subroup season7_start_date season7_end_date sensitive primary
+      -- infants_subgroup season7_start_date season7_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s7_sensitive_primary
     - process_mothers_s7_sensitive_primary
@@ -13602,7 +13602,7 @@ actions:
       ehrql:v1 generate-dataset analysis/dataset_definition_mothers.py
       --output output/data/input_maternal_infants_subgroup_2023_2024_sensitive_primary.arrow
       --dummy-data-file analysis/dummydata/data/dummyextract_maternal_2023_2024.arrow
-      -- infants_subroup season8_start_date season8_end_date sensitive primary
+      -- infants_subgroup season8_start_date season8_end_date sensitive primary
     needs:
     - generate_dataset_infants_subgroup_s8_sensitive_primary
     - process_mothers_s8_sensitive_primary
