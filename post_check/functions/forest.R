@@ -1333,20 +1333,20 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
       var_labels <- case_when(
         model_type == "ethnicity" ~ list(c("Female", age, "White",
                                            "Rural Town and Fringe")),
-        model_type == "ses" ~ list(c("Female", age, "1 (most deprived)",
+        model_type == "ses" ~ list(c("Female", age, "5 (least deprived)",
                                      "Rural Town and Fringe")),
         model_type == "composition" ~ list(c(
           "Female", age, "Multiple of the Same Generation", "Rural Town and Fringe")),
         model_type == "ethnicity_ses" ~ list(c(
-          "Female", age, "White", "1 (most deprived)", "Rural Town and Fringe")),
+          "Female", age, "White", "5 (least deprived)", "Rural Town and Fringe")),
         model_type == "ethnicity_composition" ~ list(c(
           "Female", age, "White", "Multiple of the Same Generation",
           "Rural Town and Fringe")),
         model_type == "ses_composition" ~ list(c(
-          "Female", age, "1 (most deprived)", "Multiple of the Same Generation",
+          "Female", age, "5 (least deprived)", "Multiple of the Same Generation",
           "Rural Town and Fringe")),
         model_type == "full" ~ list(c(
-          "Female", age, "White", "1 (most deprived)", "Multiple of the Same Generation",
+          "Female", age, "White", "5 (least deprived)", "Multiple of the Same Generation",
           "Rural Town and Fringe"))
       )[[1]]
       

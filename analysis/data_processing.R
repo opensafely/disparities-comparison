@@ -186,7 +186,7 @@ df_input <- df_input %>%
                                                 "Chinese or Other"),
                                      ordered = FALSE), ref = "White"),
     #set imd quintile reference
-    imd_quintile = relevel(imd_quintile, ref = "1 (most deprived)"),
+    imd_quintile = relevel(imd_quintile, ref = "5 (least deprived)"),
     #recode rurality to 5 levels
     rurality_code = recode(rural_urban_classification, "1" = "1", "2" = "2", 
                            "3" = "3", "4" = "3", "5" = "4", "6" = "4", 
