@@ -29,7 +29,7 @@ covid_season_min <- as.Date("2019-09-01")
 covid_current_vacc_min = as.Date("2020-09-01", "%Y-%m-%d")
 covid_prior_vacc_min = as.Date("2021-09-01", "%Y-%m-%d")
 
-if (cohort != "infants" | cohort != "infants_subgroup") {
+if (cohort != "infants" & cohort != "infants_subgroup") {
   
   #run model files
   source(here::here("analysis", "outcome_covid", "further_covid_ethnicity_models.R"))

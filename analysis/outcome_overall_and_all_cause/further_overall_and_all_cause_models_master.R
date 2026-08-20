@@ -26,7 +26,7 @@ if (length(args) == 0) {
   investigation_type <- args[[5]]
 }
 
-if (cohort != "infants" | cohort != "infants_subgroup") {
+if (cohort != "infants" & cohort != "infants_subgroup") {
   
   #run model files
   source(here::here("analysis", "outcome_overall_and_all_cause",

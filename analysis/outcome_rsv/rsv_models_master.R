@@ -27,7 +27,7 @@ if (length(args) == 0) {
 }
 covid_season_min <- as.Date("2019-09-01")
 
-if (cohort != "infants" | cohort != "infants_subgroup") {
+if (cohort != "infants" & cohort != "infants_subgroup") {
   
   #run model files
   source(here::here("analysis", "outcome_rsv", "rsv_ethnicity_models.R"))
