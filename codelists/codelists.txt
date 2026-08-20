@@ -21,7 +21,7 @@ opensafely/influenza-identification-primary-care-maximal-sensitivity/64244ae0/
 opensafely/acute-respiratory-illness-primary-care/7b2c021e/
 opensafely/symptoms-fever/3cd0644e/
 opensafely/symptoms-cough/55dfd783/
-opensafely/influenza-identification-prescriptions-maximal-sensitivity-dmd/4bf6af63
+opensafely/influenza-identification-prescriptions-maximal-sensitivity-dmd/67820ed5
 opensafely/influenza-exclusion-primary-care-maximal-sensitivity/6989cacc/
 opensafely/acute-respiratory-illness-secondary-care/532d178d/
 opensafely/influenza-exclusion-secondary-care-maximal-sensitivity/18f5f141/

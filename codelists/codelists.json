@@ -19,10 +19,10 @@
       "sha": "ab9f9712939394b9b8f6a261ab3afb2d9f94daa4"
     },
     "opensafely-rsv-identification-primary-care-maximal-sensitivity.csv": {
-      "id": "opensafely/rsv-identification-primary-care-maximal-sensitivity/2a39834a",
-      "url": "https://www.opencodelists.org/codelist/opensafely/rsv-identification-primary-care-maximal-sensitivity/2a39834a/",
-      "downloaded_at": "2026-08-07 08:15:11.192405Z",
-      "sha": "5e42319d9050c68ab9b4c659d762cee9bebe7a09"
+      "id": "opensafely/rsv-identification-primary-care-maximal-sensitivity/621c8ee9",
+      "url": "https://www.opencodelists.org/codelist/opensafely/rsv-identification-primary-care-maximal-sensitivity/621c8ee9/",
+      "downloaded_at": "2026-08-20 08:57:54.749236+00:00Z",
+      "sha": "ad7a1c655a019364353be3dd19683a334b44c16d"
     },
     "opensafely-rsv-identification-prescriptions-maximal-sensitivity-dmd.csv": {
       "id": "opensafely/rsv-identification-prescriptions-maximal-sensitivity-dmd/00f99051",
@@ -97,10 +97,10 @@
       "sha": "3c62c02ea13b06e97c667abadd1359ae29e5d586"
     },
     "opensafely-acute-respiratory-illness-primary-care.csv": {
-      "id": "opensafely/acute-respiratory-illness-primary-care/42c421db",
-      "url": "https://www.opencodelists.org/codelist/opensafely/acute-respiratory-illness-primary-care/42c421db/",
-      "downloaded_at": "2026-08-07 08:15:12.897938Z",
-      "sha": "9bb71296a4ac128d44be9e9b54e188a7dc76fda1"
+      "id": "opensafely/acute-respiratory-illness-primary-care/7b2c021e",
+      "url": "https://www.opencodelists.org/codelist/opensafely/acute-respiratory-illness-primary-care/7b2c021e/",
+      "downloaded_at": "2026-08-20 08:57:56.420861+00:00Z",
+      "sha": "a8619bfa563c4c45c841120d6d255c38f0e4a099"
     },
     "opensafely-symptoms-fever.csv": {
       "id": "opensafely/symptoms-fever/3cd0644e",
@@ -115,10 +115,10 @@
       "sha": "a0d31ed6b250e9bc3d44939b9ac40093a1dc6729"
     },
     "opensafely-influenza-identification-prescriptions-maximal-sensitivity-dmd.csv": {
-      "id": "opensafely/influenza-identification-prescriptions-maximal-sensitivity-dmd/4bf6af63",
-      "url": "https://www.opencodelists.org/codelist/opensafely/influenza-identification-prescriptions-maximal-sensitivity-dmd/4bf6af63/",
-      "downloaded_at": "2024-05-13 10:04:39.456017Z",
-      "sha": "000e8053fa45aa912ac09bd9e7c51758fe69e04e"
+      "id": "opensafely/influenza-identification-prescriptions-maximal-sensitivity-dmd/67820ed5",
+      "url": "https://www.opencodelists.org/codelist/opensafely/influenza-identification-prescriptions-maximal-sensitivity-dmd/67820ed5/",
+      "downloaded_at": "2026-08-20 08:57:56.715410+00:00Z",
+      "sha": "2bb6297b72f87fc81703de7db01c861430d03941"
     },
     "opensafely-influenza-exclusion-primary-care-maximal-sensitivity.csv": {
       "id": "opensafely/influenza-exclusion-primary-care-maximal-sensitivity/6989cacc",

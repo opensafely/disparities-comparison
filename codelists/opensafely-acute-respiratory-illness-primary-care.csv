@@ -1,6 +1,9 @@
 code,term
 10509002,Acute bronchitis
+11833005,Dry cough
+135883003,Cough with fever
 13617004,Tracheobronchitis
+1466091000168107,Suspected viral infection
 14969004,Catarrhal laryngitis
 15199004,Acute bronchiolitis with bronchospasm
 1532007,Viral pharyngitis
@@ -18,8 +21,12 @@ code,term
 155616009,Bronchitis NOS
 15805002,Acute sinusitis
 16146001,Viral bronchitis
+161923004,Productive cough -clear sputum
+161924005,Productive cough -green sputum
+161925006,Productive cough-yellow sputum
 162397003,Pain in throat
 17357005,Acute suppuration of frontal sinus
+17986004,Barking cough
 18643000,Ethmoidal sinusitis
 195648002,(Acute nasopharyngitis or rhinitis) or (common cold)
 195656004,Acute phlegmonous pharyngitis
@@ -57,42 +64,56 @@ code,term
 196199000,[X]Other acute upper respiratory infections of multiple sites
 196215001,[X]Acute bronchitis due to other specified organisms
 196216000,[X]Acute bronchiolitis due to other specified organisms
+20670007,Brassy cough
+225576006,Able to cough up sputum
 232426008,Acute simple laryngitis
 232428009,Acute membranous laryngitis
 233596008,Viral upper respiratory tract infection NOS
 233597004,Chest infection - unspecified bronchitis
 233601004,Acute viral bronchitis
 23884004,Acute suppuration of maxillary sinus
+247410004,Painful cough
 266338006,Upper respiratory infection NOS
 266354009,Bronchitis unspecified
 266375001,Respiratory infection: [acute] or [upper]
 266377009,(Acute nasopharyngitis) or (common cold) or (acute coryza) or (acute rhinitis) or (sniffles) or (snuffles)
 266380005,Acute: [bronchitis] or [chest infections] or [tracheobronchitis]
 267102003,Sore throat
+272039006,Complaining of cough
 275499005,Acute wheezy bronchitis
 276443001,Acute laryngitis and/or tracheitis
 281794004,Viral upper respiratory tract infection
+28743005,Productive cough
+289114008,Does cough
+289965001,Croupy cough
 29591002,Purulent bronchitis
+301236000,Effective cough
+301246003,Does cough up sputum
 301824001,Acute viral laryngotracheitis
 312371005,Acute infective bronchitis
 312400008,Acute infective tracheobronchitis
 312422001,Infective pharyngitis
 312423006,Infective laryngitis
+315246003,Unexplained cough
 32398004,Bronchitis
 35301006,Acute tracheobronchitis
 363746003,Acute pharyngitis
 36971009,Sinusitis
+383350451000119103,Subacute cough
 405737000,Pharyngitis
 408669002,Acute laryngitis with obstruction
 411271000000104,[X]Other acute upper respiratory infections of multiple sites
 4120002,Bronchiolitis
+417850002,Respiratory tract congestion and cough
 418961000000106,[X]Acute bronchiolitis due to other specified organisms
+43025008,Paroxysmal cough
 431231008,Acute rhinosinusitis
 431681000000108,[X]Acute bronchitis due to other specified organisms
 441551009,Inflammation of larynx caused by virus
 444814009,Viral sinusitis
 445130008,Acute infective adenoiditis
 45913009,Laryngitis
+49727002,Cough
 5028002,Acute pansinusitis
 51476001,Nasopharyngitis
 54150009,Upper respiratory infection
@@ -101,12 +122,15 @@ code,term
 55355000,Acute laryngopharyngitis
 576581000000107,Acute viral laryngitis unspecified
 5875001,Acute bronchitis with obstruction
+59994004,Hacking cough
 603091000000105,Acute laryngitis NOS
 603141000000104,Other acute upper respiratory infections
 617931000000103,Upper respiratory tract disease NOS
 621011000000106,Acute bronchitis NOS
 621021000000100,Acute bronchiolitis due to other specified organisms
 621031000000103,Acute bronchiolitis NOS
+62731002,Increasing frequency of cough
+63000007,Spasmodic cough
 63140003,Acute suppuration of ethmoidal sinus
 644251000000101,Viral upper respiratory tract infection NOS
 644261000000103,Chest infection - unspecified bronchitis
@@ -123,6 +147,7 @@ code,term
 70020005,Adenoiditis
 70076002,Rhinitis
 705871000000109,Acute bronchitis or bronchiolitis NOS
+7142008,Cough at rest
 714203003,Acute bronchitis co-occurrent with bronchiectasis
 718004,Acute bronchiolitis with obstruction
 725917007,Acute sinusitis caused by virus
@@ -131,6 +156,7 @@ code,term
 785744001,Bronchitis co-occurrent with acute wheeze
 785745000,Acute bronchitis co-occurrent with wheeze
 78737005,Frontal sinusitis
+788062371000119104,Acute cough
 80257001,Acute bronchitis with bronchospasm
 80600003,Acute suppuration of nasal sinus
 82272006,Common cold
@@ -140,5 +166,6 @@ code,term
 88171000119100,Acute adenoiditis
 88348008,Maxillary sinusitis
 897656009,Rhinosinusitis
+901000172101,Dry tickly cough
 91038008,Acute frontal sinusitis
 921000172108,Acute sore throat

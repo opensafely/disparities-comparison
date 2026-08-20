@@ -71,14 +71,10 @@ code,term
 161924005,Productive cough -green sputum
 161925006,Productive cough-yellow sputum
 161926007,(Coughing up phlegm) or (productive cough NOS)
-161927003,Night cough present
 161929000,Chesty cough
-161932002,Morning cough
-161933007,Evening cough
 161934001,Unexplained cough
 161935000,Cough symptom NOS
 161945003,Difficulty breathing
-161947006,Nocturnal cough and wheeze
 162481009,Breathing aggravates symptom
 162896002,On examination - stertorous breathing
 162900004,On examination - air hunger
@@ -132,10 +128,8 @@ code,term
 195739001,Acute bronchiolitis caused by respiratory syncytial virus
 195741000,Acute bronchiolitis NOS
 195881003,Pneumonia caused by respiratory syncytial virus
-200151000000106,Reflux cough
 204561000000109,Respiratory syncytial virus nucleic acid detection
 20573003,Ineffective breathing pattern
-206304007,Perinatal hemoptysis of fetus and/or neonate
 20670007,Brassy cough
 206758001,[D]Pyrexia of unknown origin
 206760004,[D]Chills with fever
@@ -150,7 +144,6 @@ code,term
 209881000000102,RSV nucleic acid detection
 221051000000108,Respiratory syncytial virus prevention drugs Band 1
 221061000000106,Respiratory syncytial virus treatment and Hepatitis C treatment drugs Band 1
-225575005,Unable to cough up sputum
 225576006,Able to cough up sputum
 225914005,Bubbling respiration
 230361008,Sepsis-associated encephalopathy
@@ -182,7 +175,6 @@ code,term
 248579008,Whistling respiration
 248580006,Whistling in nose
 248592006,Character of cough
-248593001,Cough when swallowing
 248615003,Large airway sounds
 248616002,Increased vocal resonance
 248617006,Decreased vocal resonance
@@ -216,12 +208,10 @@ code,term
 274308003,On examination - hyperpyrexia
 274640006,Fever with chills
 276741000,Sepsis-associated myocardial dysfunction
-277357006,Sputum retention
 277638005,Sepsis-associated left ventricular failure
 277639002,Sepsis-associated right ventricular failure
 281794004,Viral upper respiratory tract infection
 284520004,Basal crepitations
-284523002,Persistent cough
 287121000000103,Barking cough 
 287131000000101,Barking cough 
 28743005,Productive cough
@@ -233,8 +223,6 @@ code,term
 289105003,Difficulty controlling breathing
 289113002,Able to cough
 289114008,Does cough
-289115009,Does not cough
-289116005,Difficulty coughing
 289117001,Able to expectorate
 289118006,Unable to expectorate
 289120009,Does not expectorate
@@ -247,9 +235,7 @@ code,term
 301241008,Unable to clear sputum
 301243006,Does not clear sputum
 301244000,Ability to cough up sputum
-301245004,Difficulty in coughing up sputum
 301246003,Does cough up sputum
-301247007,Does not cough up sputum
 301282008,Finding of respiration
 301287002,Expiratory stridor
 301288007,Quiet respiration
@@ -260,9 +246,6 @@ code,term
 306331000000107,Green traffic light - low risk of serious illness (Feverish illness in young children 2007) 
 306341000000103,Green traffic light - low risk of serious illness (Feverish illness in young children 2007) 
 306779000,Ability to cough voluntarily
-306780002,Able to cough voluntarily
-306781003,Unable to cough voluntarily
-306782005,Difficulty coughing voluntarily
 307487006,Biphasic stridor
 307631000000100,Amber traffic light - intermediate risk of serious illness (Feverish illness in children 2007)
 307641000000109,Amber traffic light - intermediate risk of serious illness (Feverish illness in children 2007) 
@@ -354,7 +337,6 @@ code,term
 441551009,Inflammation of larynx caused by virus
 441761000000105,"[X]Relapsing fever, unspecified"
 444814009,Viral sinusitis
-445241004,Persistent cough after viral respiratory infection
 46107006,Relapsing fever
 464581000000103,[X]Other viral infections of unspecified site
 464591000000101,"[X]Viral infection, unspecified"
@@ -409,7 +391,6 @@ code,term
 65526007,Pleuropericardial friction rub
 65949001,Increased breath sounds
 66011008,Viral tracheitis
-66857006,Hemoptysis
 677011000000103,Productive cough NOS
 67750007,Ineffective airway clearance
 68095009,Wheezing stridor
@@ -436,7 +417,6 @@ code,term
 755611000000107,Very severe wheeze
 767467006,Respiratory Syncytial Virus (RSV) immune globulin
 769210005,Strength of cough
-769211009,No cough strength
 77047003,Vesicular breathing
 773117009,Laryngeal stridor
 773551000000105,Fever care management
