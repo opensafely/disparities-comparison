@@ -275,7 +275,7 @@ copd_exacerbation_secondary_codelist = (
 
 #asthma exacerbation secondary
 asthma_exacerbation_secondary_codelist = codelist_from_csv(
-  "codelists/opensafely-copd-exacerbation.csv",
+  "codelists/opensafely-asthma-exacerbation-secondary-care.csv",
   column = "code",
 )
 asthma_exacerbation_secondary_codelist = (
