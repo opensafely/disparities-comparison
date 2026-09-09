@@ -112,6 +112,24 @@ if (study_start_date >= covid_season_min) {
     ) 
 }
 
+# infants are month-expanded; collapse to one row per patient for reinfection counts
+if (cohort %in% c("infants", "infants_subgroup")) {
+  inf_cols <- names(df_input_specific)[endsWith(names(df_input_specific), "_inf")]
+  second_cols <- names(df_input_specific)[
+    grepl("_second$", names(df_input_specific)) &
+      !endsWith(names(df_input_specific), "_date")
+  ]
+  date_cols <- names(df_input_specific)[endsWith(names(df_input_specific), "_date")]
+  df_input_specific <- df_input_specific %>%
+    group_by(patient_id) %>%
+    summarise(
+      across(all_of(inf_cols), ~ as.integer(any(.x == 1, na.rm = TRUE))),
+      across(all_of(second_cols), ~ as.integer(any(.x == 1, na.rm = TRUE))),
+      across(all_of(date_cols), ~ if (all(is.na(.x))) as.Date(NA) else min(.x, na.rm = TRUE)),
+      .groups = "drop"
+    )
+}
+
 if (study_start_date >= covid_season_min) { 
   
   total_reinfection <- df_input_specific %>%

@@ -44,59 +44,58 @@ if (study_start_date < covid_season_min) {
   )
 }
 
+# Blank censored severe dates, then (for infants) collapse month-rows before
+# merging — merge-by-patient_id on month-expanded data would otherwise be a
+# cartesian product of person-months.
+prepare_validation_input <- function(path) {
+  df <- read_feather(path) %>%
+    select(all_of(vars)) %>%
+    mutate(
+      rsv_secondary_date = if_else(rsv_secondary_inf == 1, rsv_secondary_date, as.Date(NA)),
+      flu_secondary_date = if_else(flu_secondary_inf == 1, flu_secondary_date, as.Date(NA))
+    )
+
+  if (study_start_date >= covid_season_min) {
+    df <- df %>%
+      mutate(
+        covid_secondary_date = if_else(covid_secondary_inf == 1, covid_secondary_date, as.Date(NA))
+      )
+  }
+
+  df <- df %>% select(-ends_with("_inf"))
+
+  if (cohort %in% c("infants", "infants_subgroup")) {
+    date_cols <- names(df)[endsWith(names(df), "_date") | grepl("bucket_date", names(df))]
+    df <- df %>%
+      group_by(patient_id) %>%
+      summarise(
+        across(
+          all_of(date_cols),
+          ~ if (all(is.na(.x))) as.Date(NA) else min(.x, na.rm = TRUE)
+        ),
+        .groups = "drop"
+      )
+  }
+
+  df
+}
+
 # Specific and sensitive phenotype extracts are separate arrow files; both are needed
 # because validation compares mild sens vs mild spec classification per patient.
-df_input_spec <- read_feather(
+df_input_spec <- prepare_validation_input(
   here::here("output", "data", paste0("input_processed_", cohort, "_",
              year(study_start_date), "_", year(study_end_date), "_",
-             "specific", "_", "primary",".arrow"))) %>%
-  select(all_of(vars)) %>%
-  # filter out censored outcomes
-  mutate(
-    rsv_secondary_date = if_else(rsv_secondary_inf == 1, rsv_secondary_date, as.Date(NA)),
-    flu_secondary_date = if_else(flu_secondary_inf == 1, flu_secondary_date, as.Date(NA))
-  )
+             "specific", "_", "primary",".arrow")))
 
-if (study_start_date >= covid_season_min) {
-  df_input_spec <- df_input_spec %>%
-    mutate(
-      covid_secondary_date = if_else(covid_secondary_inf == 1, covid_secondary_date, as.Date(NA))
-    )
-}
-
-df_input_sens <- read_feather(
+df_input_sens <- prepare_validation_input(
   here::here("output", "data", paste0("input_processed_", cohort, "_",
              year(study_start_date), "_", year(study_end_date), "_",
-             "sensitive", "_", "primary",".arrow"))) %>%
-  select(all_of(vars)) %>% 
-  # filter out censored outcomes
-  mutate(
-    rsv_secondary_date = if_else(rsv_secondary_inf == 1, rsv_secondary_date, as.Date(NA)),
-    flu_secondary_date = if_else(flu_secondary_inf == 1, flu_secondary_date, as.Date(NA))
-  )
-
-if (study_start_date >= covid_season_min) {
-  df_input_sens <- df_input_sens %>%
-    mutate(
-      covid_secondary_date = if_else(covid_secondary_inf == 1, covid_secondary_date, as.Date(NA))
-    )
-}
+             "sensitive", "_", "primary",".arrow")))
 
 # One row per patient with _spec and _sens suffixes on overlapping columns.
 df_input <- merge(
   df_input_spec, df_input_sens, by = "patient_id", suffixes = c("_spec", "_sens")
-) %>% 
-  select(-c(contains("_inf")))  # no longer needed after filtering above
-
-# Infant cohorts can have multiple index rows; keep the first episode only.
-if (cohort %in% c("infants", "infants_subgroup")) {
-
-  df_input <- df_input %>%
-    group_by(patient_id) %>%
-    slice_head() %>%
-    ungroup()
-
-}
+)
 
 ## Define validation populations ----
 # A patient is in e.g. rsv_pop if ANY sensitive mild primary lies within 14 days

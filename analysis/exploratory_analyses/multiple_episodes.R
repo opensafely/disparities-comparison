@@ -27,6 +27,43 @@ df_input <- read_feather(
              year(study_start_date), "_", year(study_end_date), "_", 
              "specific", "_", "primary",".arrow")))
 
+# infants are month-expanded; collapse to one row per patient for episode counts.
+# age_band is taken at the earliest mild / severe event month (not follow-up start).
+if (cohort %in% c("infants", "infants_subgroup")) {
+  inf_cols <- names(df_input)[endsWith(names(df_input), "_inf")]
+  primary_inf_cols <- inf_cols[grepl("_primary_inf$", inf_cols)]
+  secondary_inf_cols <- inf_cols[grepl("_secondary_inf$", inf_cols)]
+  date_cols <- names(df_input)[endsWith(names(df_input), "_date")]
+  other_cols <- setdiff(
+    names(df_input),
+    c("patient_id", inf_cols, date_cols, "age", "age_band", "date", "date_month")
+  )
+
+  age_band_at_event <- function(age_band, date, event_hit) {
+    if (any(event_hit, na.rm = TRUE)) {
+      age_band[event_hit][which.min(date[event_hit])]
+    } else {
+      age_band[which.min(date)]
+    }
+  }
+
+  df_input <- df_input %>%
+    group_by(patient_id) %>%
+    summarise(
+      # compute age-at-event from month-level *_inf before those columns are collapsed
+      age_band_mild = age_band_at_event(
+        age_band, date, if_any(all_of(primary_inf_cols), ~ .x %in% 1)
+      ),
+      age_band_severe = age_band_at_event(
+        age_band, date, if_any(all_of(secondary_inf_cols), ~ .x %in% 1)
+      ),
+      across(all_of(inf_cols), ~ as.integer(any(.x == 1, na.rm = TRUE))),
+      across(all_of(date_cols), ~ if (all(is.na(.x))) as.Date(NA) else min(.x, na.rm = TRUE)),
+      across(all_of(other_cols), first),
+      .groups = "drop"
+    )
+}
+
 ##define a function to create a text coding for outcomes 
 alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {
   
@@ -120,17 +157,26 @@ alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {
 #apply function
 df_input_specific <- alt_label(df_input, "specific", study_start_date, covid_season_min)
 
+# Non-infant cohorts have a single static age_band; infants have event-timed bands.
+if (!(cohort %in% c("infants", "infants_subgroup"))) {
+  df_input_specific <- df_input_specific %>%
+    mutate(
+      age_band_mild = age_band,
+      age_band_severe = age_band
+    )
+}
+
 #select necessary columns for a new dataframe to work on 
 if (study_start_date >= covid_season_min) {
   df_spec <- df_input_specific %>%
-    select(patient_id, age_band, sex, latest_ethnicity_group,
+    select(patient_id, age_band_mild, age_band_severe, sex, latest_ethnicity_group,
            imd_quintile, rurality_classification,
            rsv_mild_alt_combo, flu_mild_alt_combo, 
            covid_mild_alt_combo, rsv_severe_alt_combo,
            flu_severe_alt_combo, covid_severe_alt_combo)
 } else {
   df_spec <- df_input_specific %>%
-    select(patient_id, age_band, sex, latest_ethnicity_group,
+    select(patient_id, age_band_mild, age_band_severe, sex, latest_ethnicity_group,
            imd_quintile, rurality_classification,
            rsv_mild_alt_combo, flu_mild_alt_combo,
            rsv_severe_alt_combo, flu_severe_alt_combo)
@@ -141,26 +187,34 @@ if (study_start_date >= covid_season_min) {
 # without de-duplicating counted those patients 2-3 times.
 if (study_start_date >= covid_season_min) {
   df_spec_mild <- df_spec %>%
+    mutate(age_band = age_band_mild) %>%
     pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo, covid_mild_alt_combo), 
                  names_to = "mild_combo", values_to = "combo") %>%
     distinct(patient_id, combo, .keep_all = TRUE) %>%
-    select(-c(rsv_severe_alt_combo, flu_severe_alt_combo, covid_severe_alt_combo))
+    select(-c(rsv_severe_alt_combo, flu_severe_alt_combo, covid_severe_alt_combo,
+              age_band_mild, age_band_severe))
   df_spec_severe <- df_spec %>%
+    mutate(age_band = age_band_severe) %>%
     pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo, covid_severe_alt_combo), 
                  names_to = "severe_combo", values_to = "combo") %>%
     distinct(patient_id, combo, .keep_all = TRUE) %>%
-    select(-c(rsv_mild_alt_combo, flu_mild_alt_combo, covid_mild_alt_combo))
+    select(-c(rsv_mild_alt_combo, flu_mild_alt_combo, covid_mild_alt_combo,
+              age_band_mild, age_band_severe))
 } else {
   df_spec_mild <- df_spec %>%
+    mutate(age_band = age_band_mild) %>%
     pivot_longer(c(rsv_mild_alt_combo, flu_mild_alt_combo),
                  names_to = "mild_combo", values_to = "combo") %>%
     distinct(patient_id, combo, .keep_all = TRUE) %>%
-    select(-c(rsv_severe_alt_combo, flu_severe_alt_combo))
-  df_spec_severe <- df_spec %>% 
+    select(-c(rsv_severe_alt_combo, flu_severe_alt_combo,
+              age_band_mild, age_band_severe))
+  df_spec_severe <- df_spec %>%
+    mutate(age_band = age_band_severe) %>%
     pivot_longer(c(rsv_severe_alt_combo, flu_severe_alt_combo),
                  names_to = "severe_combo", values_to = "combo") %>%
     distinct(patient_id, combo, .keep_all = TRUE) %>%
-    select(-c(rsv_mild_alt_combo, flu_mild_alt_combo))
+    select(-c(rsv_mild_alt_combo, flu_mild_alt_combo,
+              age_band_mild, age_band_severe))
 }
 
 ##count number of patients in each category for characteristic - separately for mild and severe 
