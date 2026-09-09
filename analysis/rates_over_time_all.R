@@ -41,6 +41,13 @@ df_input <- read_feather(
       "_second_", "_inf_", "patient_")))))
 )
 
+# infants are month-expanded; collapse to one row per patient so denominators
+# and event dates are not repeated across person-months
+if (cohort %in% c("infants", "infants_subgroup")) {
+  df_input <- df_input %>%
+    distinct(patient_id, .keep_all = TRUE)
+}
+
 #set all NA categories to "Unknown"
 df_input <- df_input %>% 
   mutate_if(is.factor, forcats::fct_explicit_na, na_level = "Unknown") %>%

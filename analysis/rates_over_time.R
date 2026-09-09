@@ -40,6 +40,10 @@ if (study_start_date == as.Date("2020-09-01") & cohort != "infants" &
     cohort != "infants_subgroup") {
   columns_needed <- c(columns_needed, "composition_category")
 }
+# need person-month date to take age_band at start of follow-up for infants
+if (cohort %in% c("infants", "infants_subgroup")) {
+  columns_needed <- c(columns_needed, "date")
+}
 
 
 df_input <- read_feather(
@@ -50,6 +54,16 @@ df_input <- read_feather(
     "primary", "secondary", "mortality"))) & (!contains(c(
       "_second_", "_inf_", "patient_")))))
 )
+
+# infants are month-expanded; collapse to one row per patient so denominators
+# and event dates are not repeated across person-months. Arrange by date so
+# age_band (and other covariates) are from start of follow-up.
+if (cohort %in% c("infants", "infants_subgroup")) {
+  df_input <- df_input %>%
+    arrange(patient_id, date) %>%
+    distinct(patient_id, .keep_all = TRUE) %>%
+    select(-date)
+}
 
 #set all NA categories to "Unknown"
 df_input <- df_input %>% 

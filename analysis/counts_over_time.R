@@ -42,6 +42,13 @@ df_input <- read_feather(
       "_second_", "_inf_", "patient_")))))
 )
 
+# infants are month-expanded; event dates are repeated on every person-month
+# row, so collapse to one row per patient before counting by event date
+if (cohort %in% c("infants", "infants_subgroup")) {
+  df_input <- df_input %>%
+    distinct(patient_id, .keep_all = TRUE)
+}
+
 ## create function to get monthly counts of events 
 get_counts_over_time <- function(df, pathogen, interval_length) {
   
