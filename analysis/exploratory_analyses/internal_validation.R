@@ -99,7 +99,8 @@ df_input <- merge(
 
 ## Define validation populations ----
 # A patient is in e.g. rsv_pop if ANY sensitive mild primary lies within 14 days
-# before their specific RSV severe (secondary) date. Severe dates are always specific.
+# before their specific RSV severe (secondary) date (inclusive of same day and
+# day 14). Severe dates are always specific.
 
 flag_population <- function(df, secondary_outcome, primary_cols, n_days = 14) {
   sec_q <- enquo(secondary_outcome)
@@ -107,10 +108,10 @@ flag_population <- function(df, secondary_outcome, primary_cols, n_days = 14) {
 
   checks <- lapply(primary_cols, function(col) {
     d <- as.numeric(difftime(sec_date, df[[col]], units = "days"))
-    coalesce(d < n_days, FALSE)  # NA -> FALSE
+    coalesce(d >= 0 & d <= n_days, FALSE)  # NA -> FALSE
   })
 
-  # TRUE if any listed sensitive primary is within n_days of the severe date
+  # TRUE if any listed sensitive primary is within n_days before the severe date
   Reduce(`|`, checks, init = rep(FALSE, nrow(df)))
 }
 
@@ -264,8 +265,10 @@ make_pop_flags <- function(df, pop_flag, secondary_date, window_days = 14,
   b_spec_q  <- sym("bucket_date_spec")
 
   within <- function(a, b) {
-    # TRUE if primary a is strictly less than window_days before severe date b
-    coalesce(as.numeric(difftime(b, a, units = "days")) < window_days, FALSE)
+    # TRUE if primary a is on or before severe date b, within window_days
+    # (same rule as flag_population: 0 <= d <= window_days)
+    d <- as.numeric(difftime(b, a, units = "days"))
+    coalesce(d >= 0 & d <= window_days, FALSE)
   }
 
   # Exclusive pathogen flags (rsv_sens, flu_sens, ...) are separate columns.
