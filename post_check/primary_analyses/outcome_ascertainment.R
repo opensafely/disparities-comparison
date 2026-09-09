@@ -355,7 +355,8 @@ stacked <- function(area = FALSE, show_legend = FALSE) {
       virus ~ event,
       scales = "free_y",
       independent = "y",
-      space = "fixed"
+      space = "fixed",
+      switch = "y"
     ) +
     theme_bw() +
     x_scale +
@@ -368,12 +369,13 @@ stacked <- function(area = FALSE, show_legend = FALSE) {
     scale_color_manual(values = cohort_colours, guide = "none") +
     theme(
       strip.text.x = element_blank(),
-      strip.text.y = element_text(face = "bold"),
+      strip.text.y.left = element_text(face = "bold"),
       strip.background = element_blank(),
+      strip.placement = "outside",
       panel.border = element_blank(),
       axis.line = element_line(color = "black"),
       legend.position = if (show_legend) "top" else "none",
-      plot.margin = margin(10, 22, 5.5, 5.5)
+      plot.margin = margin(10, 22, 5.5, 8)
     )
 
   if (area) {
@@ -410,12 +412,13 @@ burden_x_scale <- function() {
 burden_facet_theme <- function(show_legend = FALSE) {
   theme(
     strip.text.x = element_blank(),
-    strip.text.y = element_text(face = "bold"),
+    strip.text.y.left = element_text(face = "bold"),
     strip.background = element_blank(),
+    strip.placement = "outside",
     panel.border = element_blank(),
     axis.line = element_line(color = "black"),
     legend.position = if (show_legend) "top" else "none",
-    plot.margin = margin(10, 22, 5.5, 5.5)
+    plot.margin = margin(10, 22, 5.5, 8)
   )
 }
 
@@ -480,14 +483,6 @@ stacked_with_rate_facets <- function(
   rate_metric_labels <- metric_labels %>% filter(panel_type == "Rate")
   count_metric_labels <- metric_labels %>% filter(panel_type == "Monthly cases")
 
-  virus_labels <- facet_background %>%
-    filter(panel_type == "Rate") %>%
-    mutate(
-      label = as.character(virus),
-      x = ymd("2016-02-01"),
-      y = Inf
-    )
-
   rate_top_pad <- rate_data %>%
     group_by(virus, event, panel_type) %>%
     summarise(
@@ -511,9 +506,16 @@ stacked_with_rate_facets <- function(
       scales = "free_y",
       independent = "y",
       space = "fixed",
+      switch = "y",
       labeller = labeller(
-        panel_type = as_labeller(c(Rate = "", `Monthly cases` = "")),
-        virus = as_labeller(function(x) rep("", length(x)))
+        panel_type = as_labeller(c(Rate = "", `Monthly cases` = ""))
+      ),
+      strip = ggh4x::strip_nested(
+        text_y = list(
+          element_text(face = "bold", angle = 90),
+          element_blank()
+        ),
+        by_layer_y = TRUE
       )
     ) +
     theme_bw() +
@@ -611,15 +613,6 @@ stacked_with_rate_facets <- function(
       size = 3
     ) +
     geom_text(
-      data = virus_labels,
-      aes(x = x, y = y, label = label),
-      inherit.aes = FALSE,
-      hjust = 0,
-      vjust = 1.1,
-      fontface = "bold",
-      size = 3.2
-    ) +
-    geom_text(
       data = label_data,
       aes(x = label_x, y = y_anchor, label = label, color = cohort),
       inherit.aes = FALSE,
@@ -702,11 +695,11 @@ assemble_cohort_burden_figure <- function(plot_body, legend_plot) {
 
   cowplot::ggdraw(combined) +
     cowplot::draw_label(
-      "Mild", x = 0.28, y = 0.925, hjust = 0.5, vjust = 0.5,
+      "Mild", x = 0.31, y = 0.925, hjust = 0.5, vjust = 0.5,
       fontface = "bold", size = 10
     ) +
     cowplot::draw_label(
-      "Severe", x = 0.75, y = 0.925, hjust = 0.5, vjust = 0.5,
+      "Severe", x = 0.76, y = 0.925, hjust = 0.5, vjust = 0.5,
       fontface = "bold", size = 10
     )
 }
@@ -754,11 +747,11 @@ assemble_cohort_burden_with_rates_figure <- function(
 
   cowplot::ggdraw(combined) +
     cowplot::draw_label(
-      "Mild", x = 0.26, y = 0.925, hjust = 0.5, vjust = 0.5,
+      "Mild", x = 0.29, y = 0.925, hjust = 0.5, vjust = 0.5,
       fontface = "bold", size = 10
     ) +
     cowplot::draw_label(
-      "Severe", x = 0.72, y = 0.925, hjust = 0.5, vjust = 0.5,
+      "Severe", x = 0.73, y = 0.925, hjust = 0.5, vjust = 0.5,
       fontface = "bold", size = 10
     )
 }
@@ -869,15 +862,6 @@ PATHOGEN_RATE_COLOURS <- setNames(
   c("rsv", "flu", "covid")
 )
 
-pathogen_title_from_key <- function(pathogen) {
-  dplyr::case_when(
-    pathogen == "rsv" ~ "RSV",
-    pathogen == "flu" ~ "Influenza",
-    pathogen == "covid" ~ "COVID-19",
-    TRUE ~ pathogen
-  )
-}
-
 load_cohort_total_rates <- function(cohort) {
   readr::read_csv(
     here::here(
@@ -941,7 +925,6 @@ total_rates_season_panel <- function(plot_data, pathogen) {
     return(ggplot2::ggplot() + ggplot2::theme_void())
   }
 
-  pathogen_title <- pathogen_title_from_key(pathogen)
   x_breaks <- season_x_breaks(pathogen)
   line_colour <- unname(PATHOGEN_RATE_COLOURS[[pathogen]])
 
@@ -969,7 +952,7 @@ total_rates_season_panel <- function(plot_data, pathogen) {
     ) +
     ggplot2::labs(
       x = NULL,
-      y = paste0(pathogen_title, "\nRate per 1000 person-years")
+      y = "Rate per 1000 person-years"
     ) +
     ggplot2::theme_bw(base_size = FOREST_BASE_SIZE) +
     ggplot2::theme(
@@ -1004,7 +987,19 @@ total_rates_season_panel <- function(plot_data, pathogen) {
 }
 
 assemble_condensed_total_rates_figure <- function(rsv_plot, flu_plot, covid_plot) {
-  combined <- cowplot::plot_grid(
+  pathogen_label <- function(label) {
+    cowplot::ggdraw() +
+      cowplot::draw_label(
+        label,
+        x = 0.55,
+        y = 0.5,
+        angle = 90,
+        fontface = "bold",
+        size = 9
+      )
+  }
+
+  plots <- cowplot::plot_grid(
     NULL,
     rsv_plot,
     NULL,
@@ -1017,13 +1012,31 @@ assemble_condensed_total_rates_figure <- function(rsv_plot, flu_plot, covid_plot
     rel_heights = c(0.05, 1, -0.02, 1.25, -0.02, 1.35)
   )
 
+  labels <- cowplot::plot_grid(
+    NULL,
+    pathogen_label("RSV"),
+    NULL,
+    pathogen_label("Influenza"),
+    NULL,
+    pathogen_label("COVID-19"),
+    ncol = 1,
+    rel_heights = c(0.05, 1, -0.02, 1.25, -0.02, 1.35)
+  )
+
+  combined <- cowplot::plot_grid(
+    labels,
+    plots,
+    ncol = 2,
+    rel_widths = c(0.045, 1)
+  )
+
   cowplot::ggdraw(combined) +
     cowplot::draw_label(
-      "Mild", x = 0.275, y = 1, hjust = 0.5, vjust = 1.5,
+      "Mild", x = 0.30, y = 1, hjust = 0.5, vjust = 1.5,
       fontface = "bold", size = 9
     ) +
     cowplot::draw_label(
-      "Severe", x = 0.74, y = 1, hjust = 0.5, vjust = 1.5,
+      "Severe", x = 0.75, y = 1, hjust = 0.5, vjust = 1.5,
       fontface = "bold", size = 9
     )
 }

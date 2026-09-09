@@ -57,7 +57,16 @@ stack_order_for_pathogen <- function(pathogen_code) {
 
 validation_flow_palette <- function() {
   c(
-    setNames(scales::hue_pal()(length(OUTCOME_ORDER)), OUTCOME_ORDER),
+    no_mild = "#4D4D4D",
+    rsv = "#1B9E77",
+    flu = "#D95F02",
+    covid = "#7570B3",
+    rsv_flu = "#E6AB02",
+    rsv_covid = "#66A61E",
+    flu_covid = "#E7298A",
+    rsv_flu_covid = "#A6761D",
+    bucket = "#1F78B4",
+    broad = "#A6CEE3",
     hosp = "white"
   )
 }
@@ -115,8 +124,8 @@ prep_flow_counts <- function(df_counts, df_pops, population, season) {
 
   for (pathogen in c("rsv", "flu", "covid")) {
     
-    if (!season_has_covid(season)) {
-      next 
+    if (pathogen == "covid" && !season_has_covid(season)) {
+      next
     }
 
     df_pops_filt <- total_patients_sec %>% 
@@ -394,7 +403,7 @@ prep_sankey_ggsankey_long <- function(df, label_with_pct = FALSE, use_pct = TRUE
       phenotype = factor(
         phenotype,
         levels = c("spec_stage", "sens_stage"),
-        labels = c("Specific", "Sensitive")
+        labels = c("Narrow", "Broad")
       ),
       population = factor(
         .data$population,
@@ -735,7 +744,7 @@ plot_sankey_between_legend <- function(
     use_pct = use_pct,
     facet_gap = facet_gap
   ) +
-    ggtitle("Specific") +
+    ggtitle("Narrow") +
     theme(
       plot.title = element_text(vjust = 2.5, face = "bold", size = 16),
       legend.position = "none",
@@ -754,7 +763,7 @@ plot_sankey_between_legend <- function(
     use_pct = use_pct,
     facet_gap = facet_gap
   ) +
-    ggtitle("Sensitive") +
+    ggtitle("Broad") +
     theme(
       plot.title = element_text(vjust = 2.5, face = "bold", size = 16),
       legend.position = "none",
@@ -833,6 +842,71 @@ plot_sankey_between_legend <- function(
 }
 
 cohort <- "older_adults"
+season <- "2017_18"
+
+df_counts <- import_validation_counts(cohort)
+df_pops <- import_validation_pops(cohort)
+
+flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
+plot_sankey_between_legend(flow_counts, space = 8, legend_rel_width = 0.4)
+
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0(cohort, "_internal_validation_", season, ".png")),
+       height = 10, width = 14)
+
+cohort <- "adults"
+season <- "2017_18"
+
+df_counts <- import_validation_counts(cohort)
+df_pops <- import_validation_pops(cohort)
+
+flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
+plot_sankey_between_legend(flow_counts, space = 8, legend_rel_width = 0.4)
+
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0(cohort, "_internal_validation_", season, ".png")),
+       height = 10, width = 14)
+
+cohort <- "children_and_adolescents"
+season <- "2017_18"
+
+df_counts <- import_validation_counts(cohort)
+df_pops <- import_validation_pops(cohort)
+
+flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
+plot_sankey_between_legend(flow_counts, space = 8, legend_rel_width = 0.4)
+
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0(cohort, "_internal_validation_", season, ".png")),
+       height = 10, width = 14)
+
+cohort <- "infants"
+season <- "2017_18"
+
+df_counts <- import_validation_counts(cohort)
+df_pops <- import_validation_pops(cohort)
+
+flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
+plot_sankey_between_legend(flow_counts, space = 8, legend_rel_width = 0.4)
+
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0(cohort, "_internal_validation_", season, ".png")),
+       height = 10, width = 14)
+
+cohort <- "infants_subgroup"
+season <- "2017_18"
+
+df_counts <- import_validation_counts(cohort)
+df_pops <- import_validation_pops(cohort)
+
+flow_counts <- prep_flow_counts(df_counts, df_pops, cohort, season)
+plot_sankey_between_legend(flow_counts, space = 8, legend_rel_width = 0.4)
+
+ggsave(here::here("post_check", "plots", "supplemental",
+            paste0(cohort, "_internal_validation_", season, ".png")),
+       height = 10, width = 14)
+
+cohort <- "older_adults"
 season <- "2023_24"
 
 df_counts <- import_validation_counts(cohort)
@@ -896,4 +970,3 @@ plot_sankey_between_legend(flow_counts, space = 8, legend_rel_width = 0.4)
 ggsave(here::here("post_check", "plots", "supplemental",
             paste0(cohort, "_internal_validation_", season, ".png")),
        height = 10, width = 14)
-

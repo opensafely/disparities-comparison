@@ -9,6 +9,12 @@ forest_over_time_plot_all_seasons <- function(
   show_ci = TRUE,
   fixed_axes = FALSE,
   show_disruption_legend = TRUE,
+  show_disruption_shading = TRUE,
+  disruption_legend_label = NULL,
+  level_colour_values = NULL,
+  level_colour_title = NULL,
+  pointrange_fatten = FOREST_POINTRANGE_FATTEN,
+  pointrange_linewidth = FOREST_POINTRANGE_LINEWIDTH,
   y_lab = NULL,
   log_y = TRUE
 ) {
@@ -297,55 +303,86 @@ forest_over_time_plot_all_seasons <- function(
   extras <- c(intersect(preferred_extra_levels, extras), setdiff(extras, preferred_extra_levels))
   level_order <- c(level_order, extras)
 
-  plot_df <- plot_df %>% mutate(label = factor(label, levels = level_order))
+  colour_by_level <- !is.null(level_colour_values) && length(level_colour_values) > 0
+  disruption_fill_label <- disruption_legend_label %||% FOREST_DISRUPTION_LABEL
 
-  # Shapes:
-  # - ONLY reference points use a filled circle (16)
-  # - use a small set of non-circle, easily distinguishable shapes
-  # - shapes can repeat across groups, but must not repeat within a group
-  # - assign the minimum number needed per group (i.e., max levels within that group)
-  # Use a small, distinguishable set (includes open square = 0).
-  shape_pool <- c(15, 17, 18, 0, 2, 5, 6, 22, 23, 24, 25)
-  max_nonref <- plot_df %>%
-    group_by(labels_col, variable, label) %>%
-    summarise(is_ref = any(is_ref_level), .groups = "drop") %>%
-    group_by(labels_col) %>%
-    summarise(n_nonref = sum(!is_ref), .groups = "drop") %>%
-    summarise(max_n = max(n_nonref, na.rm = TRUE)) %>%
-    pull(max_n)
-  if (is.finite(max_nonref) && max_nonref > length(shape_pool)) {
-    stop("Not enough distinct shapes for number of levels within a group. Please extend `shape_pool`.")
+  if (isTRUE(colour_by_level)) {
+    level_colour_values <- level_colour_values[
+      !is.na(names(level_colour_values)) & names(level_colour_values) != ""
+    ]
+    plot_df <- plot_df %>%
+      mutate(
+        label = factor(as.character(label), levels = names(level_colour_values)),
+        shape_key = factor(
+          paste0("lvl|", as.character(label)),
+          levels = paste0("lvl|", names(level_colour_values))
+        )
+      )
+    plot_df <- assign_forest_shape_jitter(
+      plot_df,
+      group_cols = c("labels_facet", "year", "outcome_type"),
+      x_col = "year",
+      jitter_scale = jitter_width,
+      span_cap = 0.9
+    )
+    shape_map <- NULL
+    shape_labels <- NULL
+    shape_legend_cols <- NULL
+  } else {
+    plot_df <- plot_df %>% mutate(label = factor(label, levels = level_order))
+
+    # Shapes:
+    # - ONLY reference points use a filled circle (16)
+    # - use a small set of non-circle, easily distinguishable shapes
+    # - shapes can repeat across groups, but must not repeat within a group
+    # - assign the minimum number needed per group (i.e., max levels within that group)
+    # Use a small, distinguishable set (includes open square = 0).
+    shape_pool <- c(15, 17, 18, 0, 2, 5, 6, 22, 23, 24, 25)
+    max_nonref <- plot_df %>%
+      group_by(labels_col, variable, label) %>%
+      summarise(is_ref = any(is_ref_level), .groups = "drop") %>%
+      group_by(labels_col) %>%
+      summarise(n_nonref = sum(!is_ref), .groups = "drop") %>%
+      summarise(max_n = max(n_nonref, na.rm = TRUE)) %>%
+      pull(max_n)
+    if (is.finite(max_nonref) && max_nonref > length(shape_pool)) {
+      stop("Not enough distinct shapes for number of levels within a group. Please extend `shape_pool`.")
+    }
+
+    shape_key_df <- build_forest_shape_key_df(plot_df, level_order, shape_pool)
+
+    plot_df <- join_forest_shape_keys(plot_df, shape_key_df)
+
+    shape_map <- stats::setNames(shape_key_df$shape_val, shape_key_df$shape_key)
+    shape_labels <- stats::setNames(stringr::str_wrap(as.character(shape_key_df$label), width = 18), shape_key_df$shape_key)
+    shape_legend_cols <- {
+      keys <- names(shape_map)
+      grp <- sub("\\s*\\|\\s*.*$", "", keys)
+      cols <- unname(colour_map[grp])
+      cols[is.na(cols)] <- "black"
+      cols
+    }
+
+    # Always jitter horizontally within each group/year/outcome to improve separation.
+    # Offsets follow the legend order of `shape_key`.
+    plot_df <- assign_forest_shape_jitter(
+      plot_df,
+      group_cols = c("labels_facet", "year", "outcome_type"),
+      x_col = "year",
+      jitter_scale = jitter_width,
+      span_cap = 0.9
+    )
   }
 
-  shape_key_df <- build_forest_shape_key_df(plot_df, level_order, shape_pool)
-
-  plot_df <- join_forest_shape_keys(plot_df, shape_key_df)
-
-  shape_map <- stats::setNames(shape_key_df$shape_val, shape_key_df$shape_key)
-  shape_labels <- stats::setNames(stringr::str_wrap(as.character(shape_key_df$label), width = 18), shape_key_df$shape_key)
-  shape_legend_cols <- {
-    keys <- names(shape_map)
-    grp <- sub("\\s*\\|\\s*.*$", "", keys)
-    cols <- unname(colour_map[grp])
-    cols[is.na(cols)] <- "black"
-    cols
+  shading_df <- if (isTRUE(show_disruption_shading)) {
+    forest_disruption_shading_df(
+      plot_df = plot_df,
+      x_breaks = x_breaks,
+      log_y = log_y
+    )
+  } else {
+    NULL
   }
-
-  # Always jitter horizontally within each group/year/outcome to improve separation.
-  # Offsets follow the legend order of `shape_key`.
-  plot_df <- assign_forest_shape_jitter(
-    plot_df,
-    group_cols = c("labels_facet", "year", "outcome_type"),
-    x_col = "year",
-    jitter_scale = jitter_width,
-    span_cap = 0.9
-  )
-
-  shading_df <- forest_disruption_shading_df(
-    plot_df = plot_df,
-    x_breaks = x_breaks,
-    log_y = log_y
-  )
 
   base_plot <- ggplot(
     plot_df,
@@ -355,38 +392,73 @@ forest_over_time_plot_all_seasons <- function(
       ymin = conf.low,
       ymax = conf.high,
       group = series,
-      color = labels_col
+      color = if (isTRUE(colour_by_level)) label else labels_col
     )
   ) +
-    geom_rect(
-      data = shading_df,
-      aes(
-        xmin = xmin,
-        xmax = xmax,
-        ymin = ymin,
-        ymax = ymax,
-        fill = disruption
-      ),
-      inherit.aes = FALSE,
-      alpha = 0.5
-    ) +
-    geom_hline(
-      data = reference_lines,
-      aes(yintercept = yintercept, color = labels_col),
-      inherit.aes = FALSE,
-      linetype = 2,
-      linewidth = 0.4,
-      alpha = 0.8
-    ) +
+    {
+      if (!is.null(shading_df) && nrow(shading_df) > 0) {
+        geom_rect(
+          data = shading_df,
+          aes(
+            xmin = xmin,
+            xmax = xmax,
+            ymin = ymin,
+            ymax = ymax,
+            fill = disruption
+          ),
+          inherit.aes = FALSE,
+          alpha = 0.5
+        )
+      }
+    } +
+    {
+      if (isTRUE(colour_by_level)) {
+        geom_hline(
+          yintercept = 1,
+          inherit.aes = FALSE,
+          colour = "grey55",
+          linetype = 2,
+          linewidth = 0.4,
+          alpha = 0.8
+        )
+      } else {
+        geom_hline(
+          data = reference_lines,
+          aes(yintercept = yintercept, color = labels_col),
+          inherit.aes = FALSE,
+          linetype = 2,
+          linewidth = 0.4,
+          alpha = 0.8
+        )
+      }
+    } +
     {
       if (isTRUE(show_ci)) {
-        geom_pointrange(
-          aes(shape = shape_key),
-          alpha = 0.8,
-          linewidth = FOREST_POINTRANGE_LINEWIDTH,
-          fatten = FOREST_POINTRANGE_FATTEN,
-          na.rm = TRUE,
-          position = position_identity()
+        if (isTRUE(colour_by_level)) {
+          geom_pointrange(
+            shape = 16,
+            alpha = 0.8,
+            linewidth = pointrange_linewidth,
+            fatten = pointrange_fatten,
+            na.rm = TRUE,
+            position = position_identity()
+          )
+        } else {
+          geom_pointrange(
+            aes(shape = shape_key),
+            alpha = 0.8,
+            linewidth = pointrange_linewidth,
+            fatten = pointrange_fatten,
+            na.rm = TRUE,
+            position = position_identity()
+          )
+        }
+      } else if (isTRUE(colour_by_level)) {
+        geom_point(
+          shape = 16,
+          alpha = 0.85,
+          size = FOREST_POINT_SIZE,
+          na.rm = TRUE
         )
       } else {
         geom_point(
@@ -424,24 +496,45 @@ forest_over_time_plot_all_seasons <- function(
         annotation_logticks(base = 10, sides = "l")
       }
     } +
-    scale_color_manual(values = colour_map, drop = FALSE) +
+    {
+      if (isTRUE(colour_by_level)) {
+        scale_color_manual(
+          values = level_colour_values,
+          drop = FALSE,
+          name = level_colour_title %||% "Level"
+        )
+      } else {
+        scale_color_manual(values = colour_map, drop = FALSE)
+      }
+    } +
     scale_fill_manual(
       values = setNames("grey85", FOREST_DISRUPTION_LABEL),
       breaks = FOREST_DISRUPTION_LABEL,
+      labels = disruption_fill_label,
       drop = FALSE
     ) +
-    scale_shape_manual(values = shape_map, labels = shape_labels, drop = FALSE) +
+    {
+      if (!isTRUE(colour_by_level)) {
+        scale_shape_manual(values = shape_map, labels = shape_labels, drop = FALSE)
+      }
+    } +
     labs(
       title = NULL,
       x = NULL,
       y = if (!is.null(y_lab)) y_lab else paste(pathogen_title, "Rate Ratio"),
-      color = "Characteristic",
+      color = if (isTRUE(colour_by_level)) {
+        level_colour_title %||% "Level"
+      } else {
+        "Characteristic"
+      },
       fill = NULL,
       shape = NULL
     ) +
     theme_bw(base_size = FOREST_BASE_SIZE) +
     theme(
       panel.grid.minor = element_blank(),
+      axis.minor.ticks.y.left = element_line(colour = "black", linewidth = 0.25),
+      axis.minor.ticks.length.y.left = unit(0.12, "cm"),
       axis.text.x = element_text(size = FOREST_AXIS_TEXT_X_SIZE),
       axis.text.y = element_text(size = FOREST_AXIS_TEXT_Y_SIZE),
       panel.border = element_blank(),
@@ -460,22 +553,40 @@ forest_over_time_plot_all_seasons <- function(
 
   base_plot <- base_plot +
     guides(
-      color = "none",
+      color = if (isTRUE(colour_by_level)) {
+        ggplot2::guide_legend(
+          title = level_colour_title %||% "Level",
+          nrow = 1,
+          ncol = length(level_colour_values),
+          byrow = TRUE,
+          order = 1,
+          override.aes = list(
+            size = FOREST_LEGEND_OVERRIDE_CI,
+            shape = 16
+          )
+        )
+      } else {
+        "none"
+      },
       fill = if (isTRUE(show_disruption_legend)) {
         forest_disruption_fill_guide(legend_position = "right")
       } else {
         "none"
       },
-      shape = guide_legend(
-        title = NULL,
-        ncol = 1,
-        order = 1,
-        override.aes = list(
-          size = FOREST_LEGEND_OVERRIDE_CI,
-          colour = shape_legend_cols,
-          fill = shape_legend_cols
+      shape = if (isTRUE(colour_by_level)) {
+        "none"
+      } else {
+        guide_legend(
+          title = NULL,
+          ncol = 1,
+          order = 1,
+          override.aes = list(
+            size = FOREST_LEGEND_OVERRIDE_CI,
+            colour = shape_legend_cols,
+            fill = shape_legend_cols
+          )
         )
-      )
+      }
     )
 
   # For test-model style: keep panel heights fixed, but allow y-ranges to vary.

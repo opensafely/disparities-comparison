@@ -30,6 +30,16 @@ classification_cols <- c(
   "Undetermined classification" = "#7570B3"
 )
 
+classifiable_levels <- c(
+  "Consistent classification",
+  "Inconsistent classification"
+)
+
+phenotype_cols <- c(
+  Narrow = "#1E88E5",
+  Broad = "#D81B60"
+)
+
 # Parse "1,970 (29.3%)" -> list(count, pct); NA stays NA
 parse_count_pct <- function(x) {
   x <- as.character(x)
@@ -181,14 +191,79 @@ plot_classification_mix <- function(df, cohort) {
     )
 }
 
+# --- % consistent among classifiable (consistent / consistent+inconsistent)
+prep_consistent_classifiable <- function(df) {
+  df %>%
+    filter(
+      outcome %in% classifiable_levels,
+      !is.na(count)
+    ) %>%
+    group_by(cohort, cohort_label, phenotype, pathogen, season) %>%
+    summarise(
+      consistent = sum(count[outcome == "Consistent classification"]),
+      classifiable = sum(count),
+      .groups = "drop"
+    ) %>%
+    filter(classifiable > 0) %>%
+    mutate(pct = 100 * consistent / classifiable)
+}
+
+plot_consistent_classifiable <- function(df, cohort) {
+  df_cons <- prep_consistent_classifiable(df) %>%
+    filter(cohort == .env$cohort)
+
+  ggplot(
+    df_cons,
+    aes(x = season, y = pct, group = phenotype, colour = phenotype)
+  ) +
+    geom_line(linewidth = 0.8) +
+    geom_point(size = 2) +
+    facet_wrap(~pathogen, nrow = 1) +
+    scale_colour_manual(values = phenotype_cols, name = "Phenotype") +
+    scale_y_continuous(
+      limits = c(0, 100),
+      breaks = seq(0, 100, 25),
+      expand = expansion(mult = c(0.02, 0.08))
+    ) +
+    labs(
+      title = paste0(
+        cohort_labels[[cohort]],
+        ": % consistent among classifiable"
+      ),
+      subtitle = paste0(
+        "% of virus-coded mild outcomes that match the hospitalised pathogen; ",
+        "denominator is consistent + inconsistent (excludes undetermined)"
+      ),
+      x = "Season",
+      y = "% consistent"
+    ) +
+    theme_bw(base_size = 13) +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      panel.grid.minor = element_blank(),
+      panel.border = element_blank(),
+      axis.line.x = element_line(colour = "black"),
+      axis.line.y = element_line(colour = "black"),
+      legend.position = "bottom",
+      strip.background = element_blank()
+    )
+}
+
 # --- Combined one-page summary per cohort ---------------------------------
 plot_cohort_trends <- function(df, cohort) {
   p_nd <- plot_not_detected(df, cohort) +
+    theme(plot.title = element_text(size = 14), legend.position = "none")
+  p_cons <- plot_consistent_classifiable(df, cohort) +
     theme(plot.title = element_text(size = 14))
   p_mix <- plot_classification_mix(df, cohort) +
     theme(plot.title = element_text(size = 14))
 
-  plot_grid(p_nd, p_mix, ncol = 1, rel_heights = c(0.9, 1.2), align = "v")
+  plot_grid(
+    p_nd, p_cons, p_mix,
+    ncol = 1,
+    rel_heights = c(0.85, 0.95, 1.2),
+    align = "v"
+  )
 }
 
 # Also: all-cohort overlay for not-detected (one pathogen per panel)
@@ -226,20 +301,77 @@ plot_not_detected_all_cohorts <- function(df) {
     )
 }
 
+plot_consistent_classifiable_all_cohorts <- function(df) {
+  df_cons <- prep_consistent_classifiable(df) %>%
+    mutate(
+      cohort_label = factor(
+        cohort_label,
+        levels = unname(cohort_labels)
+      )
+    )
+
+  ggplot(
+    df_cons,
+    aes(
+      x = season,
+      y = pct,
+      group = interaction(cohort_label, phenotype),
+      colour = cohort_label,
+      linetype = phenotype
+    )
+  ) +
+    geom_line(linewidth = 0.7) +
+    geom_point(size = 1.6) +
+    facet_wrap(~pathogen, nrow = 1) +
+    scale_linetype_manual(values = c(Narrow = "solid", Broad = "dashed")) +
+    scale_y_continuous(
+      limits = c(0, 100),
+      breaks = seq(0, 100, 25),
+      expand = expansion(mult = c(0.02, 0.08))
+    ) +
+    labs(
+      title = "% consistent among classifiable, by cohort and phenotype",
+      subtitle = paste0(
+        "% of virus-coded mild outcomes that match the hospitalised pathogen; ",
+        "denominator is consistent + inconsistent (excludes undetermined)"
+      ),
+      x = "Season",
+      y = "% consistent",
+      colour = "Cohort",
+      linetype = "Phenotype"
+    ) +
+    theme_bw(base_size = 13) +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      panel.grid.minor = element_blank(),
+      panel.border = element_blank(),
+      axis.line.x = element_line(colour = "black"),
+      axis.line.y = element_line(colour = "black"),
+      legend.position = "bottom",
+      strip.background = element_blank()
+    )
+}
+
 # Save per-cohort figures
 walk(cohorts, function(cohort) {
   p <- plot_cohort_trends(df_all, cohort)
   ggsave(
     file.path(out_dir, paste0(cohort, "_validation_trends.png")),
-    p, width = 12, height = 10
+    p, width = 14, height = 10
   )
 })
 
-# Save all-cohort not-detected overlay
+# Save all-cohort overlays
 ggsave(
   file.path(out_dir, "all_cohorts_not_detected_trends.png"),
   plot_not_detected_all_cohorts(df_all),
-  width = 12, height = 6
+  width = 14, height = 10
+)
+
+ggsave(
+  file.path(out_dir, "all_cohorts_consistent_classifiable_trends.png"),
+  plot_consistent_classifiable_all_cohorts(df_all),
+  width = 14, height = 10
 )
 
 message("Wrote figures to ", out_dir)

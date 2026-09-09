@@ -1,23 +1,16 @@
-# Test layout for further_results_condensed_key_vars.R
-# Current production figure: pathogen rows (RSV / flu / COVID), mild vs severe columns,
-#   covariates as facets within each pathogen, legends overlaid on the COVID row.
-# This test instead uses:
-#   columns: mild & severe
-#   rows: age group / IMD / ethnicity
-#   sub-rows: RSV / influenza / COVID
-#   a small legend row for that covariate above each covariate block,
-#   with a one-line "Disrupted routes of transmission" key on every row
-# COVID uses the same 2016-23 seasonal axis as RSV/flu (full panel width) but
-#   draws no points before 2019-20, including reference rows.
-# Ethnicity "Unknown" is omitted from these test plots only.
-# Current collated models used inverted IMD quintiles (1 = least, 5 = most).
-# Reverse the whole 1–5 order for this output set only (1↔5, 2↔4, 3 unchanged)
-# so display uses UK convention: 1 = most deprived, 5 = least deprived.
+# Covariate-row layout with level colours (instead of shapes).
+# Columns: mild & severe; rows: age group / IMD / ethnicity; sub-rows: RSV / flu / COVID.
+# Age and IMD use separate high-contrast sequential palettes;
+# ethnicity uses the batlow diverging palette.
+# COVID panels omit disruption shading; RSV/flu shading legend reads
+# "COVID-19 related disruption".
+# Saves two output sets: with and without ethnicity "Unknown".
 
 library(tidyverse)
 library(here)
 library(arrow)
 library(cowplot)
+library(khroma)
 
 source(here::here("post_check", "functions", "forest.R"))
 ggsave <- function(..., bg = "white") ggplot2::ggsave(..., bg = bg)
@@ -37,6 +30,26 @@ pathogen_y_labs <- c(
 full_year_breaks <- 2016:2023
 covid_min_year <- 2019L
 
+# Age: high-contrast pink sequential; IMD: high-contrast blue sequential;
+# ethnicity: batlow (colour-blind-safe diverging, via khroma).
+AGE_LEVEL_PALETTE <- c(
+  "#F48FB1", "#F06292", "#EC407A", "#E91E63",
+  "#D81B60", "#C2185B", "#AD1457", "#880E4F"
+)
+IMD_LEVEL_PALETTE <- c(
+  "#4FC3F7", "#29B6F6", "#039BE5", "#0288D1",
+  "#0277BD", "#01579B", "#004BA0", "#002171"
+)
+BATLOW_PALETTE <- "batlow"
+
+disruption_legend_label <- "COVID-19 related disruption"
+COVARIATE_ROW_LEGEND_POINT_SIZE <- 0.6
+COVARIATE_ROW_LEGEND_TITLE_SIZE <- 11
+COVARIATE_ROW_LEGEND_TEXT_SIZE <- 10
+COVARIATE_ROW_DISRUPTION_LEGEND_TEXT_SIZE <- 14
+COVARIATE_ROW_POINTRANGE_FATTEN <- 4
+COVARIATE_ROW_POINTRANGE_LINEWIDTH <- 0.6
+
 season_start_year <- function(subset) {
   suppressWarnings(as.integer(stringr::str_extract(
     gsub("_", "-", as.character(subset)),
@@ -44,65 +57,74 @@ season_start_year <- function(subset) {
   )))
 }
 
-# Current output set only: reverse the IMD quintile order (1↔5, 2↔4).
+# TEMPORARY: older collated further-model outputs used inverted IMD coding
+# (1 = least, 5 = most). Remap to UK convention only when those inverted
+# labels are present — same approach as table1_key_vars_panel_viz.R /
+# reformat_model_estimates.R.
 relabel_imd_current_outputs <- function(dat) {
   if (is_empty_forest_data(dat) || !"label" %in% names(dat)) {
     return(dat)
   }
 
-  imd_quintile_number <- function(x) {
-    x <- as.character(x)
-    dplyr::case_when(
-      stringr::str_detect(x, "imd_quintile1") | x %in% c("1", "1 (most deprived)", "1 (least deprived)") ~ 1L,
-      stringr::str_detect(x, "imd_quintile2") | x == "2" ~ 2L,
-      stringr::str_detect(x, "imd_quintile3") | x == "3" ~ 3L,
-      stringr::str_detect(x, "imd_quintile4") | x == "4" ~ 4L,
-      stringr::str_detect(x, "imd_quintile5") | x %in% c("5", "5 (most deprived)", "5 (least deprived)") ~ 5L,
-      TRUE ~ NA_integer_
-    )
-  }
-
-  canonical_imd_label <- function(q) {
-    dplyr::case_when(
-      q == 1L ~ "1 (most deprived)",
-      q == 5L ~ "5 (least deprived)",
-      q %in% 2:4 ~ as.character(q),
-      TRUE ~ NA_character_
-    )
-  }
-
   is_imd <- (!is.na(dat$variable) & dat$variable == "imd_quintile") |
     as.character(dat$labels) == "IMD Quintile"
 
-  q_label <- imd_quintile_number(dat$label)
-  q_term <- if ("term" %in% names(dat)) imd_quintile_number(dat$term) else NA_integer_
-  q_var_label <- if ("var_label" %in% names(dat)) {
-    imd_quintile_number(dat$var_label)
+  label_chr <- as.character(dat$label)
+  term_chr <- if ("term" %in% names(dat)) {
+    as.character(dat$term)
   } else {
-    NA_integer_
+    rep(NA_character_, nrow(dat))
   }
+
+  imd_inverted <- any(
+    is_imd & (
+      label_chr %in% c("1 (least deprived)", "5 (most deprived)") |
+        stringr::str_detect(
+          dplyr::coalesce(term_chr, ""),
+          "imd_quintile5 \\(most deprived\\)|imd_quintile1 \\(least deprived\\)"
+        )
+    ),
+    na.rm = TRUE
+  )
+  if (!isTRUE(imd_inverted)) {
+    return(dat)
+  }
+
+  remap_imd_label <- function(label, term) {
+    label <- as.character(label)
+    term <- dplyr::coalesce(as.character(term), "")
+    dplyr::case_when(
+      term == "imd_quintile2" | label == "2" ~ "4",
+      term == "imd_quintile3" | label == "3" ~ "3",
+      term == "imd_quintile4" | label == "4" ~ "2",
+      term == "imd_quintile5 (most deprived)" | label == "5 (most deprived)" ~
+        "1 (most deprived)",
+      term == "imd_quintile5" | label == "5" ~ "1 (most deprived)",
+      term == "imd_quintile1 (least deprived)" | label == "1 (least deprived)" ~
+        "5 (least deprived)",
+      term == "imd_quintile1" | label == "1" ~ "5 (least deprived)",
+      # Already-UK labels such as "5 (least deprived)" are left unchanged.
+      TRUE ~ label
+    )
+  }
+
+  new_label <- dplyr::if_else(
+    is_imd,
+    remap_imd_label(label_chr, term_chr),
+    label_chr
+  )
 
   dat %>%
     mutate(
-      label = if_else(
-        is_imd & !is.na(q_label),
-        canonical_imd_label(6L - q_label),
-        as.character(.data$label)
-      ),
+      label = new_label,
       term = if_else(
-        is_imd & "term" %in% names(dat) & !is.na(q_term),
-        paste0("imd_quintile", canonical_imd_label(6L - q_term)),
+        is_imd & "term" %in% names(dat),
+        paste0("imd_quintile", new_label),
         .data$term
-      ),
-      var_label = if_else(
-        is_imd & "var_label" %in% names(dat) & !is.na(q_var_label),
-        canonical_imd_label(6L - q_var_label),
-        if ("var_label" %in% names(dat)) as.character(.data$var_label) else NA_character_
       )
     )
 }
 
-# Ethnicity "Unknown" only; leave other labels (e.g. Unknown Smoking Status) untouched.
 drop_unknown_level <- function(dat) {
   if (is_empty_forest_data(dat) || !"label" %in% names(dat)) {
     return(dat)
@@ -111,7 +133,6 @@ drop_unknown_level <- function(dat) {
     filter(!stringr::str_detect(as.character(.data$label), "(?i)^unknown$"))
 }
 
-# Keep COVID's visual axis aligned with RSV/flu, but never plot pre-2019-20 points.
 drop_points_before_year <- function(dat, min_year) {
   if (is_empty_forest_data(dat) || !"subset" %in% names(dat)) {
     return(dat)
@@ -129,8 +150,94 @@ shared_season_x_scale <- function() {
       full_year_breaks, "-",
       stringr::str_sub(as.character(full_year_breaks + 1L), 3, 4)
     ),
-    expand = ggplot2::expansion(mult = c(0.08, 0.08))
+    limits = c(min(full_year_breaks) - 0.5, max(full_year_breaks) + 0.5),
+    expand = ggplot2::expansion(mult = c(0, 0))
   )
+}
+
+
+clean_level_labels <- function(levels) {
+  levels <- as.character(levels)
+  levels[!is.na(levels) & levels != ""]
+}
+
+sample_cb_palette <- function(base_cols, n) {
+  if (n == 0L) {
+    return(character())
+  }
+  if (n == 1L) {
+    return(base_cols[ceiling(length(base_cols) / 2)])
+  }
+  if (n <= length(base_cols)) {
+    idx <- round(seq(1, length(base_cols), length.out = n))
+    return(base_cols[idx])
+  }
+  grDevices::colorRampPalette(base_cols)(n)
+}
+
+sequential_level_colours <- function(levels, base_cols) {
+  levels <- clean_level_labels(levels)
+  n <- length(levels)
+  if (n == 0L) {
+    return(character())
+  }
+  stats::setNames(sample_cb_palette(base_cols, n), levels)
+}
+
+age_level_colours <- function(levels) {
+  sequential_level_colours(levels, AGE_LEVEL_PALETTE)
+}
+
+imd_level_colours <- function(levels) {
+  sequential_level_colours(levels, IMD_LEVEL_PALETTE)
+}
+
+ethnicity_level_colours <- function(levels) {
+  levels <- clean_level_labels(levels)
+  n <- length(levels)
+  if (n == 0L) {
+    return(character())
+  }
+  stats::setNames(khroma::colour(BATLOW_PALETTE)(n), levels)
+}
+
+covariate_level_colours <- function(covariate, levels) {
+  if (identical(covariate, "Age Group")) {
+    age_level_colours(levels)
+  } else if (identical(covariate, "IMD Quintile")) {
+    imd_level_colours(levels)
+  } else if (identical(covariate, "Ethnicity")) {
+    ethnicity_level_colours(levels)
+  } else {
+    sequential_level_colours(levels, AGE_LEVEL_PALETTE)
+  }
+}
+
+ordered_covariate_levels <- function(dat, covariate, model_type, pathogen) {
+  in_data <- dat %>%
+    filter(as.character(.data$labels) == covariate) %>%
+    pull(.data$label) %>%
+    unique() %>%
+    as.character()
+  in_data <- in_data[!is.na(in_data) & in_data != ""]
+
+  cohort_val <- if (exists("cohort", envir = .GlobalEnv)) {
+    get("cohort", envir = .GlobalEnv)
+  } else {
+    NA_character_
+  }
+  investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) {
+    get("investigation_type", envir = .GlobalEnv)
+  } else {
+    "primary"
+  }
+
+  level_order <- get_forest_level_order(
+    cohort_val, model_type, pathogen, investigation_val, style = "year_mult"
+  )
+  ordered <- level_order[level_order %in% in_data]
+  extras <- setdiff(in_data, ordered)
+  c(ordered, extras)
 }
 
 load_collated_further <- function(cohort, pathogen) {
@@ -179,7 +286,12 @@ load_dummy_inputs <- function(cohort, pathogen) {
   }
 }
 
-collect_pathogen_key_vars <- function(cohort, pathogen, model_type) {
+collect_pathogen_key_vars <- function(
+    cohort,
+    pathogen,
+    model_type,
+    drop_unknown_ethnicity = TRUE
+) {
   df_input <- load_collated_further(cohort, pathogen)
   df_dummy <- load_dummy_inputs(cohort, pathogen)
   dat <- bind_rows(
@@ -190,7 +302,9 @@ collect_pathogen_key_vars <- function(cohort, pathogen, model_type) {
       df_input, df_dummy, pathogen, model_type, "Severe", return_data = TRUE
     )
   )
-  dat <- drop_unknown_level(dat)
+  if (isTRUE(drop_unknown_ethnicity)) {
+    dat <- drop_unknown_level(dat)
+  }
   dat <- relabel_imd_current_outputs(dat)
   if (identical(pathogen, "covid")) {
     dat <- drop_points_before_year(dat, covid_min_year)
@@ -221,36 +335,27 @@ plot_covariate_pathogen <- function(
     return(ggplot() + theme_void())
   }
 
+  level_order <- ordered_covariate_levels(dat, covariate, model_type, pathogen)
+  level_colour_values <- covariate_level_colours(covariate, level_order)
+
   p <- forest_over_time_plot_all_seasons(
     forest_data = dat,
     pathogen = pathogen,
     model_type = model_type,
     facet_outcome = TRUE,
     show_disruption_legend = FALSE,
+    show_disruption_shading = !identical(pathogen, "covid"),
+    disruption_legend_label = disruption_legend_label,
+    level_colour_values = level_colour_values,
+    level_colour_title = covariate,
+    pointrange_fatten = COVARIATE_ROW_POINTRANGE_FATTEN,
+    pointrange_linewidth = COVARIATE_ROW_POINTRANGE_LINEWIDTH,
     log_y = TRUE,
     y_lab = unname(pathogen_y_labs[[pathogen]])
   )
 
-  # Shared 2016-23 axis so COVID panels are the same width as RSV/flu.
-  # expand_limits keeps the empty 2016-18 seasons on the COVID scale without
-  # adding points; the plot function still only expands COVID refs from 2019.
-  # Y-axis: each panel goes up to at least 5, and as far as 10 if the data need it.
   p <- p +
-    ggplot2::expand_limits(x = range(full_year_breaks)) +
     shared_season_x_scale() +
-    ggplot2::scale_y_log10(
-      breaks = log_rate_ratio_axis_breaks,
-      minor_breaks = log_rate_ratio_axis_minor_breaks,
-      labels = scales::label_number(accuracy = 0.1),
-      limits = function(x) {
-        lo <- x[[1]]
-        hi <- x[[2]]
-        if (!is.finite(hi)) {
-          hi <- 5
-        }
-        c(lo, max(5, min(10, hi)))
-      }
-    ) +
     theme(
       legend.position = "none",
       strip.text.y.left = element_blank(),
@@ -268,65 +373,12 @@ plot_covariate_pathogen <- function(
         r = 4,
         b = if (isTRUE(show_x)) 4 else 1,
         l = 2.5
-      )
+      ),
+      axis.title.y = element_text(size = FOREST_AXIS_TEXT_Y_SIZE)
     )
 
   p
 }
-
-covariate_colour <- function(dat, covariate) {
-  cols <- dat %>%
-    filter_covariate(covariate) %>%
-    mutate(col = as.character(col)) %>%
-    filter(!is.na(col), col != "") %>%
-    distinct(col) %>%
-    pull(col)
-  if (length(cols) == 0L) {
-    return("black")
-  }
-  cols[[1L]]
-}
-
-# Horizontal legends must keep the same level order as the original vertical
-# legends (get_forest_level_order / shape scale), left-to-right = top-to-bottom.
-shape_breaks_in_level_order <- function(p, model_type, pathogen) {
-  sc <- p$scales$get_scales("shape")
-  breaks <- NULL
-  if (!is.null(sc) && !is.null(sc$palette.raw) && length(names(sc$palette.raw)) > 0L) {
-    breaks <- names(sc$palette.raw)
-  } else if (!is.null(sc)) {
-    br <- tryCatch(sc$get_breaks(), error = function(e) NULL)
-    if (!is.null(br) && !inherits(br, "waiver") && length(br) > 0L) {
-      breaks <- as.character(br)
-    }
-  }
-  if (is.null(breaks) || length(breaks) == 0L) {
-    return(NULL)
-  }
-
-  cohort_val <- if (exists("cohort", envir = .GlobalEnv)) {
-    get("cohort", envir = .GlobalEnv)
-  } else {
-    NA_character_
-  }
-  investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) {
-    get("investigation_type", envir = .GlobalEnv)
-  } else {
-    "primary"
-  }
-  level_order <- get_forest_level_order(
-    cohort_val, model_type, pathogen, investigation_val, style = "year_mult"
-  )
-  labs <- trimws(sub("^.*\\|", "", breaks))
-  rank <- match(labs, level_order)
-  extras <- is.na(rank)
-  if (any(extras)) {
-    rank[extras] <- length(level_order) + seq_len(sum(extras))
-  }
-  breaks[order(rank)]
-}
-
-disruption_legend_label <- "Disrupted routes of transmission"
 
 build_covariate_legend <- function(
     legend_dat,
@@ -339,24 +391,21 @@ build_covariate_legend <- function(
     return(NULL)
   }
 
-  cov_col <- covariate_colour(dat, covariate)
+  level_order <- ordered_covariate_levels(dat, covariate, model_type, legend_pathogen)
+  level_colour_values <- covariate_level_colours(covariate, level_order)
+  n_keys <- length(level_colour_values)
+
   legend_plot <- forest_over_time_plot_all_seasons(
     forest_data = dat,
     pathogen = legend_pathogen,
     model_type = model_type,
     facet_outcome = TRUE,
     show_disruption_legend = FALSE,
+    show_disruption_shading = FALSE,
+    level_colour_values = level_colour_values,
+    level_colour_title = covariate,
     log_y = TRUE
   )
-
-  shape_breaks <- shape_breaks_in_level_order(
-    legend_plot, model_type, legend_pathogen
-  )
-  n_keys <- if (is.null(shape_breaks) || length(shape_breaks) == 0L) {
-    20L
-  } else {
-    length(shape_breaks)
-  }
 
   legend_plot <- legend_plot +
     theme(
@@ -365,8 +414,8 @@ build_covariate_legend <- function(
       legend.box = "horizontal",
       legend.justification = "left",
       legend.box.just = "left",
-      legend.title = element_text(size = 8, face = "bold"),
-      legend.text = element_text(size = 7),
+      legend.title = element_text(size = COVARIATE_ROW_LEGEND_TITLE_SIZE, face = "bold"),
+      legend.text = element_text(size = COVARIATE_ROW_LEGEND_TEXT_SIZE),
       legend.key.width = unit(1.0, "lines"),
       legend.key.height = unit(0.75, "lines"),
       legend.spacing.x = unit(0.35, "lines"),
@@ -375,19 +424,17 @@ build_covariate_legend <- function(
       legend.box.margin = margin(1, 2, 1, 2)
     ) +
     guides(
-      color = "none",
       fill = "none",
-      shape = guide_legend(
+      shape = "none",
+      color = guide_legend(
         title = covariate,
         nrow = 1,
         ncol = n_keys,
         byrow = TRUE,
         order = 1,
-        breaks = shape_breaks,
         override.aes = list(
-          size = FOREST_LEGEND_OVERRIDE_CI,
-          colour = cov_col,
-          fill = cov_col
+          size = COVARIATE_ROW_LEGEND_POINT_SIZE,
+          shape = 16
         )
       )
     )
@@ -398,7 +445,6 @@ build_covariate_legend <- function(
   )
 }
 
-# One-line disruption key, kept separate so ethnicity/IMD keys cannot clip it.
 build_disruption_legend <- function(
     legend_dat,
     model_type,
@@ -416,22 +462,21 @@ build_disruption_legend <- function(
     model_type = model_type,
     facet_outcome = TRUE,
     show_disruption_legend = TRUE,
+    show_disruption_shading = TRUE,
+    disruption_legend_label = disruption_legend_label,
     log_y = TRUE
   ) +
-    ggplot2::scale_fill_manual(
-      values = setNames("grey85", FOREST_DISRUPTION_LABEL),
-      breaks = FOREST_DISRUPTION_LABEL,
-      labels = disruption_legend_label,
-      drop = FALSE
-    ) +
     theme(
       legend.position = "bottom",
       legend.direction = "horizontal",
       legend.justification = "right",
       legend.title = element_blank(),
-      legend.text = element_text(size = 8),
-      legend.key.width = unit(1.1, "lines"),
-      legend.key.height = unit(0.7, "lines"),
+      legend.text = element_text(
+        size = COVARIATE_ROW_DISRUPTION_LEGEND_TEXT_SIZE,
+        face = "italic"
+      ),
+      legend.key.width = unit(1.4, "lines"),
+      legend.key.height = unit(0.9, "lines"),
       legend.margin = margin(0, 0, 0, 0),
       legend.box.margin = margin(1, 2, 1, 2)
     ) +
@@ -443,7 +488,7 @@ build_disruption_legend <- function(
         nrow = 1,
         ncol = 1,
         order = 1,
-        override.aes = list(alpha = 0.5)
+        override.aes = list(alpha = 0.65)
       )
     )
 
@@ -457,13 +502,22 @@ legend_row <- function(legend_grob, disruption_grob = NULL) {
   if (is.null(legend_grob) && is.null(disruption_grob)) {
     return(ggplot() + theme_void())
   }
+  if (!is.null(disruption_grob)) {
+    return(plot_grid(
+      NULL,
+      legend_grob %||% (ggplot() + theme_void()),
+      disruption_grob,
+      NULL,
+      ncol = 4,
+      rel_widths = c(0.04, 0.58, 0.34, 0.04)
+    ))
+  }
   plot_grid(
     NULL,
     legend_grob %||% (ggplot() + theme_void()),
-    disruption_grob %||% (ggplot() + theme_void()),
     NULL,
-    ncol = 4,
-    rel_widths = c(0.04, 0.58, 0.34, 0.04)
+    ncol = 3,
+    rel_widths = c(0.04, 0.92, 0.04)
   )
 }
 
@@ -500,8 +554,18 @@ assemble_covariate_row_figure <- function(
       ncol = 1,
       align = "v",
       axis = "lr",
-      rel_heights = c(1, 1, 1.18)
+      rel_heights = c(1, 1, 1)
     )
+
+    disruption_grob <- if (identical(cov, "Age Group")) {
+      build_disruption_legend(
+        legend_dat,
+        model_type = model_type,
+        covariate = cov
+      )
+    } else {
+      NULL
+    }
 
     blocks[[i]] <- plot_grid(
       legend_row(
@@ -510,11 +574,7 @@ assemble_covariate_row_figure <- function(
           model_type = model_type,
           covariate = cov
         ),
-        build_disruption_legend(
-          legend_dat,
-          model_type = model_type,
-          covariate = cov
-        )
+        disruption_grob
       ),
       pathogen_stack,
       ncol = 1,
@@ -526,26 +586,37 @@ assemble_covariate_row_figure <- function(
   combined <- plot_grid(
     plotlist = c(list(NULL), blocks),
     ncol = 1,
-    rel_heights = c(0.12, block_heights)
+    rel_heights = c(0.12, block_heights),
+    align = "v",
+    axis = "lr"
   )
 
   cowplot::ggdraw(combined) +
     cowplot::draw_label(
       "A. Mild", x = 0.275, y = 1, hjust = 0.5, vjust = 1.2,
-      fontface = "bold", size = 13
+      fontface = "bold", size = 16
     ) +
     cowplot::draw_label(
       "B. Severe", x = 0.74, y = 1, hjust = 0.5, vjust = 1.2,
-      fontface = "bold", size = 13
+      fontface = "bold", size = 16
     )
 }
 
-run_cohort_covariate_rows_test <- function(cohort) {
+run_cohort_covariate_rows_colour_levels <- function(
+    cohort,
+    drop_unknown_ethnicity = TRUE
+) {
   cohort <<- cohort
 
-  rsv_dat <- collect_pathogen_key_vars(cohort, "rsv", model_type)
-  flu_dat <- collect_pathogen_key_vars(cohort, "flu", model_type)
-  covid_dat <- collect_pathogen_key_vars(cohort, "covid", model_type)
+  rsv_dat <- collect_pathogen_key_vars(
+    cohort, "rsv", model_type, drop_unknown_ethnicity = drop_unknown_ethnicity
+  )
+  flu_dat <- collect_pathogen_key_vars(
+    cohort, "flu", model_type, drop_unknown_ethnicity = drop_unknown_ethnicity
+  )
+  covid_dat <- collect_pathogen_key_vars(
+    cohort, "covid", model_type, drop_unknown_ethnicity = drop_unknown_ethnicity
+  )
 
   legend_dat <- filter_phenotype(covid_dat, "specific")
 
@@ -556,9 +627,15 @@ run_cohort_covariate_rows_test <- function(cohort) {
     rsv_dat, flu_dat, covid_dat, legend_dat, model_type, "sensitive"
   )
 
+  unknown_suffix <- if (isTRUE(drop_unknown_ethnicity)) {
+    "excl_unknown"
+  } else {
+    "incl_unknown"
+  }
+
   out_dir <- here::here(
     "post_check", "plots", "primary_analyses", "condensed_models_key_vars",
-    "covariate_rows_test"
+    "covariate_rows_colour_levels"
   )
   dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
@@ -567,7 +644,8 @@ run_cohort_covariate_rows_test <- function(cohort) {
       out_dir,
       paste0(
         cohort, "_", model_type,
-        "_further_specific_mild_vs_severe_key_vars_covariate_rows.png"
+        "_further_specific_mild_vs_severe_key_vars_covariate_rows_colour_levels_",
+        unknown_suffix, ".png"
       )
     ),
     specific_fig,
@@ -579,7 +657,8 @@ run_cohort_covariate_rows_test <- function(cohort) {
       out_dir,
       paste0(
         cohort, "_", model_type,
-        "_further_sensitive_mild_vs_severe_key_vars_covariate_rows.png"
+        "_further_sensitive_mild_vs_severe_key_vars_covariate_rows_colour_levels_",
+        unknown_suffix, ".png"
       )
     ),
     sensitive_fig,
@@ -599,16 +678,26 @@ if (length(args) == 0) {
 }
 
 for (cohort in cohorts) {
-  message("Running key-vars covariate-row test (ethnicity_ses): ", cohort)
-  tryCatch(
-    run_cohort_covariate_rows_test(cohort),
-    error = function(e) {
-      message(
-        "Failed: cohort=", cohort,
-        " model_type=", model_type,
-        " :: ", conditionMessage(e)
-      )
-      NULL
-    }
-  )
+  for (drop_unknown in c(TRUE, FALSE)) {
+    unknown_tag <- if (drop_unknown) "excl unknown" else "incl unknown"
+    message(
+      "Running key-vars covariate-row colour levels (ethnicity_ses, ",
+      unknown_tag, "): ", cohort
+    )
+    tryCatch(
+      run_cohort_covariate_rows_colour_levels(
+        cohort,
+        drop_unknown_ethnicity = drop_unknown
+      ),
+      error = function(e) {
+        message(
+          "Failed: cohort=", cohort,
+          " model_type=", model_type,
+          " drop_unknown=", drop_unknown,
+          " :: ", conditionMessage(e)
+        )
+        NULL
+      }
+    )
+  }
 }

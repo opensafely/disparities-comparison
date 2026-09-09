@@ -61,9 +61,14 @@ ratio_axis_breaks <- function(limits) {
   br
 }
 
-# Log-scale minor ticks (1–9 within each decade); omit values outside facet limits.
+# Log-scale minor ticks: 1–9 within each decade, plus finer ticks between
+# 1×10^k and 2×10^k (e.g. 1.1–1.9 between 1 and 2).
 log_rate_ratio_axis_minor_breaks <- function(limits) {
-  minor_breaks <- rep(1:9, 7) * (10^rep(-3:3, each = 9))
+  powers <- -3:3
+  decade_1_9 <- rep(1:9, length(powers)) * (10^rep(powers, each = 9))
+  fine_1_2 <- rep(seq(1.1, 1.9, by = 0.1), length(powers)) *
+    (10^rep(powers, each = 9))
+  minor_breaks <- sort(unique(c(decade_1_9, fine_1_2)))
   rng <- range(limits, finite = TRUE, na.rm = TRUE)
   if (!is.finite(rng[1]) || !is.finite(rng[2])) return(numeric(0))
   if (rng[1] <= 0) {
@@ -76,9 +81,9 @@ log_rate_ratio_axis_minor_breaks <- function(limits) {
 
 # Shared typography and point sizes for all forest plots.
 FOREST_BASE_SIZE <- 14
-FOREST_AXIS_TEXT_X_SIZE <- 6.5
-FOREST_AXIS_TEXT_Y_SIZE <- 8
-FOREST_STRIP_TEXT_SIZE <- 8
+FOREST_AXIS_TEXT_X_SIZE <- 8
+FOREST_AXIS_TEXT_Y_SIZE <- 10
+FOREST_STRIP_TEXT_SIZE <- 10
 FOREST_LEGEND_TEXT_SIZE <- 9
 FOREST_LEGEND_TITLE_SIZE <- 10
 FOREST_TITLE_SIZE <- 10
@@ -106,6 +111,8 @@ FOREST_DISRUPTION_LABEL <- stringr::str_wrap(
   "Disrupted routes of transmission",
   width = FOREST_DISRUPTION_LABEL_WRAP_WIDTH
 )
+FOREST_DISRUPTION_SHADE_YMIN_LOG <- 0.01
+FOREST_DISRUPTION_SHADE_YMAX_LOG <- 10
 
 # Facet-strip labels: force "Maternal Age" onto two lines; wrap other long
 # labels at width 14 (same as previous label_wrap_gen default).
@@ -1176,6 +1183,47 @@ covid_filter_ref_to_axis_years <- function(plot_df, x_breaks, pathogen) {
     dplyr::filter(!.data$is_ref_level | .data$year %in% as.integer(x_breaks))
 }
 
+# Y-axis / disruption-shade range for a panel. Upper limit steps:
+#   ≤2 → 2; ≤5 → 5; otherwise up to 10.
+# Panels with only reference RR=1 values (no contrasts) use 0.9–1.1.
+# Grey bands use these bounds so they fill the panel without expanding
+# free_y scales or being censored as out-of-bounds.
+forest_panel_ylim <- function(y_vals, log_y = TRUE) {
+  y_vals <- y_vals[is.finite(y_vals)]
+  if (isTRUE(log_y)) {
+    y_vals <- y_vals[y_vals > 0]
+    if (length(y_vals) == 0L) {
+      return(c(0.9, 1.1))
+    }
+    # Reference-only panels: every estimate/CI is RR=1.
+    if (all(abs(y_vals - 1) < 1e-3)) {
+      return(c(0.9, 1.1))
+    }
+    lo <- min(y_vals)
+    hi_data <- max(y_vals)
+    hi <- if (hi_data <= 2) {
+      2
+    } else if (hi_data <= 5) {
+      5
+    } else {
+      min(10, hi_data)
+    }
+    c(lo, hi)
+  } else {
+    if (length(y_vals) == 0L) {
+      return(c(0.1, 1.1))
+    }
+    if (all(abs(y_vals - 1) < 1e-3)) {
+      return(c(0.9, 1.1))
+    }
+    pad <- diff(range(y_vals)) * 0.05
+    if (!is.finite(pad) || pad <= 0) {
+      pad <- 0.1
+    }
+    c(min(y_vals) - pad, max(y_vals) + pad)
+  }
+}
+
 forest_disruption_shade_bounds <- function(plot_df, log_y = TRUE) {
   facet_by_outcome <- "outcome_type" %in% names(plot_df) &&
     is.factor(plot_df$outcome_type) &&
@@ -1199,37 +1247,6 @@ forest_disruption_shade_bounds <- function(plot_df, log_y = TRUE) {
     NA_character_
   }
 
-  y_vals_for_range <- c(plot_df$estimate, plot_df$conf.low, plot_df$conf.high)
-  y_vals_for_range <- y_vals_for_range[is.finite(y_vals_for_range)]
-
-  if (isTRUE(log_y)) {
-    y_vals_for_range <- y_vals_for_range[y_vals_for_range > 0]
-    if (length(y_vals_for_range) == 0) {
-      y_vals_for_range <- c(0.1, 10)
-    }
-    shade_ymin <- max(min(y_vals_for_range), 1e-6)
-    shade_ymax <- max(y_vals_for_range)
-    # If a panel only contains RR=1 reference points, the range can collapse to ~1
-    # and make the disruption shading effectively invisible. Expand modestly.
-    if (!is.finite(shade_ymin) || !is.finite(shade_ymax) || shade_ymin <= 0) {
-      shade_ymin <- 0.1
-      shade_ymax <- 10
-    } else if (shade_ymax / shade_ymin < 1.25) {
-      shade_ymin <- max(shade_ymin / 2, 0.1)
-      shade_ymax <- min(shade_ymax * 2, 10)
-    }
-  } else {
-    if (length(y_vals_for_range) == 0) {
-      y_vals_for_range <- c(0.5, 1.5)
-    }
-    pad <- diff(range(y_vals_for_range)) * 0.05
-    if (!is.finite(pad) || pad <= 0) {
-      pad <- 0.1
-    }
-    shade_ymin <- min(y_vals_for_range) - pad
-    shade_ymax <- max(y_vals_for_range) + pad
-  }
-
   facet_grid <- tidyr::crossing(
     labels_facet = factor(labels_facet_levels, levels = labels_facet_levels),
     outcome_type = if (isTRUE(facet_by_outcome)) {
@@ -1239,10 +1256,30 @@ forest_disruption_shade_bounds <- function(plot_df, log_y = TRUE) {
     }
   )
 
-  facet_grid %>%
+  # Shared shade height for Mild and Severe: pool y-values within each
+  # covariate facet so both outcome panels use the same ymin/ymax.
+  bounds_by_label <- plot_df %>%
+    dplyr::group_by(.data$labels_facet) %>%
+    dplyr::summarise(
+      lims = list(forest_panel_ylim(
+        c(.data$estimate, .data$conf.low, .data$conf.high),
+        log_y = log_y
+      )),
+      .groups = "drop"
+    ) %>%
     dplyr::mutate(
-      ymin = shade_ymin,
-      ymax = shade_ymax
+      ymin = purrr::map_dbl(.data$lims, 1),
+      ymax = purrr::map_dbl(.data$lims, 2)
+    ) %>%
+    dplyr::select(-lims)
+
+  default_lims <- forest_panel_ylim(numeric(), log_y = log_y)
+
+  facet_grid %>%
+    dplyr::left_join(bounds_by_label, by = "labels_facet") %>%
+    dplyr::mutate(
+      ymin = dplyr::coalesce(.data$ymin, default_lims[[1]]),
+      ymax = dplyr::coalesce(.data$ymax, default_lims[[2]])
     )
 }
 
@@ -1757,7 +1794,8 @@ forest_over_time_plot <- function(
         fill = disruption
       ),
       inherit.aes = FALSE,
-      alpha = 0.5
+      alpha = 0.5,
+      clip = "on"
     ) +
     geom_hline(
       data = reference_lines,
@@ -2633,7 +2671,8 @@ forest_over_time_plot_compare <- function(
         fill = disruption
       ),
       inherit.aes = FALSE,
-      alpha = 0.5
+      alpha = 0.5,
+      clip = "on"
     ) +
     geom_hline(
       data = reference_lines,
