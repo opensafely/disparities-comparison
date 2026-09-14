@@ -10,6 +10,7 @@ library(egg)
 #import model functions
 source(here::here("post_check", "functions", "model.R"))
 source(here::here("post_check", "functions", "forest_level_order.R"))
+source(here::here("post_check", "functions", "forest_level_colours.R"))
 source(here::here("post_check", "functions", "forest_over_time.R"))
 source(here::here("post_check", "functions", "forest_over_time_all_seasons.R"))
 options(scipen = 999)

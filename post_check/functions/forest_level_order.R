@@ -4,13 +4,14 @@
 FOREST_IMD_LEVELS <- c(
   "5 (least deprived)", "4", "3", "2", "1 (most deprived)"
 )
+# Ethnicity "Unknown" is excluded from forest plots by default
+# (`drop_unknown_ethnicity_level()`); keep it out of the shared order too.
 FOREST_ETHNICITY_LEVELS <- c(
   "White",
   "Chinese or Other",
   "Mixed",
   "Black or Black British",
-  "Asian or Asian British",
-  "Unknown"
+  "Asian or Asian British"
 )
 
 # Rank labels against `get_forest_level_order()`; unseen labels follow in first-seen order.

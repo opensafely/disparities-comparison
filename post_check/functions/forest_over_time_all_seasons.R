@@ -13,11 +13,22 @@ forest_over_time_plot_all_seasons <- function(
   disruption_legend_label = NULL,
   level_colour_values = NULL,
   level_colour_title = NULL,
+  colour_by_level = FALSE,
+  drop_unknown_ethnicity = TRUE,
   pointrange_fatten = FOREST_POINTRANGE_FATTEN,
   pointrange_linewidth = FOREST_POINTRANGE_LINEWIDTH,
   y_lab = NULL,
   log_y = TRUE
 ) {
+  if (is.null(forest_data) || nrow(forest_data) == 0) {
+    return(ggplot() + theme_void())
+  }
+
+  forest_data <- prepare_forest_plot_data(
+    forest_data,
+    drop_unknown_ethnicity = drop_unknown_ethnicity,
+    pathogen = pathogen
+  )
   if (is.null(forest_data) || nrow(forest_data) == 0) {
     return(ggplot() + theme_void())
   }
@@ -303,7 +314,22 @@ forest_over_time_plot_all_seasons <- function(
   extras <- c(intersect(preferred_extra_levels, extras), setdiff(extras, preferred_extra_levels))
   level_order <- c(level_order, extras)
 
-  colour_by_level <- !is.null(level_colour_values) && length(level_colour_values) > 0
+  if (isTRUE(colour_by_level) &&
+      (is.null(level_colour_values) || length(level_colour_values) == 0)) {
+    covs <- unique(as.character(plot_df$labels))
+    covs <- covs[!is.na(covs) & covs != ""]
+    if (length(covs) == 1L) {
+      lvl <- ordered_forest_covariate_levels(
+        plot_df, covs[[1]], model_type, pathogen
+      )
+      level_colour_values <- covariate_forest_level_colours(covs[[1]], lvl)
+      if (is.null(level_colour_title)) {
+        level_colour_title <- covs[[1]]
+      }
+    }
+  }
+  colour_by_level <- isTRUE(colour_by_level) ||
+    (!is.null(level_colour_values) && length(level_colour_values) > 0)
   disruption_fill_label <- disruption_legend_label %||% FOREST_DISRUPTION_LABEL
 
   if (isTRUE(colour_by_level)) {

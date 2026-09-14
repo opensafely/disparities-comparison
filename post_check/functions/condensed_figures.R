@@ -1,6 +1,7 @@
 # Shared helpers for multi-virus condensed forest figures.
 # Layout is the same as further_results_condensed_key_vars.R:
 # three full-width ggplot panels (RSV, flu, COVID) stacked with cowplot.
+# Covariate-row (Age / IMD / Ethnicity) layout: condensed_figures_covariate_rows.R.
 
 load_collated_further <- function(cohort, pathogen) {
   raw <- readr::read_csv(
@@ -2427,3 +2428,7 @@ run_cohort_condensed_key_vars_adjustment_ratio <- function(
     )
   )
 }
+
+source(here::here(
+  "post_check", "functions", "condensed_figures_covariate_rows.R"
+))
