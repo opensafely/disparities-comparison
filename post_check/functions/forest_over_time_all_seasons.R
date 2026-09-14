@@ -316,16 +316,13 @@ forest_over_time_plot_all_seasons <- function(
 
   if (isTRUE(colour_by_level) &&
       (is.null(level_colour_values) || length(level_colour_values) == 0)) {
-    covs <- unique(as.character(plot_df$labels))
-    covs <- covs[!is.na(covs) & covs != ""]
-    if (length(covs) == 1L) {
-      lvl <- ordered_forest_covariate_levels(
-        plot_df, covs[[1]], model_type, pathogen
-      )
-      level_colour_values <- covariate_forest_level_colours(covs[[1]], lvl)
-      if (is.null(level_colour_title)) {
-        level_colour_title <- covs[[1]]
-      }
+    level_colour_values <- build_forest_plot_level_colours(
+      plot_df, model_type, pathogen
+    )
+    if (is.null(level_colour_title) && length(level_colour_values) > 0) {
+      covs <- unique(as.character(plot_df$labels))
+      covs <- covs[!is.na(covs) & covs != ""]
+      level_colour_title <- if (length(covs) == 1L) covs[[1]] else "Level"
     }
   }
   colour_by_level <- isTRUE(colour_by_level) ||
@@ -335,6 +332,11 @@ forest_over_time_plot_all_seasons <- function(
   if (isTRUE(colour_by_level)) {
     level_colour_values <- level_colour_values[
       !is.na(names(level_colour_values)) & names(level_colour_values) != ""
+    ]
+    present_labs <- unique(as.character(plot_df$label))
+    present_labs <- present_labs[!is.na(present_labs) & present_labs != ""]
+    level_colour_values <- level_colour_values[
+      intersect(names(level_colour_values), present_labs)
     ]
     plot_df <- plot_df %>%
       mutate(

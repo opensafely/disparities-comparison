@@ -1338,7 +1338,7 @@ forest_over_time_plot <- function(
   disruption_legend_label = NULL,
   level_colour_values = NULL,
   level_colour_title = NULL,
-  colour_by_level = FALSE,
+  colour_by_level = TRUE,
   drop_unknown_ethnicity = TRUE,
   pointrange_fatten = FOREST_POINTRANGE_FATTEN,
   pointrange_linewidth = FOREST_POINTRANGE_LINEWIDTH,
@@ -1693,16 +1693,13 @@ forest_over_time_plot <- function(
 
   if (isTRUE(colour_by_level) &&
       (is.null(level_colour_values) || length(level_colour_values) == 0)) {
-    covs <- unique(as.character(plot_df$labels))
-    covs <- covs[!is.na(covs) & covs != ""]
-    if (length(covs) == 1L) {
-      lvl <- ordered_forest_covariate_levels(
-        plot_df, covs[[1]], model_type, pathogen
-      )
-      level_colour_values <- covariate_forest_level_colours(covs[[1]], lvl)
-      if (is.null(level_colour_title)) {
-        level_colour_title <- covs[[1]]
-      }
+    level_colour_values <- build_forest_plot_level_colours(
+      plot_df, model_type, pathogen
+    )
+    if (is.null(level_colour_title) && length(level_colour_values) > 0) {
+      covs <- unique(as.character(plot_df$labels))
+      covs <- covs[!is.na(covs) & covs != ""]
+      level_colour_title <- if (length(covs) == 1L) covs[[1]] else "Level"
     }
   }
   colour_by_level <- isTRUE(colour_by_level) ||
@@ -1712,6 +1709,12 @@ forest_over_time_plot <- function(
   if (isTRUE(colour_by_level)) {
     level_colour_values <- level_colour_values[
       !is.na(names(level_colour_values)) & names(level_colour_values) != ""
+    ]
+    # Keep legend to levels actually plotted (multi-covariate maps can be wide).
+    present_labs <- unique(as.character(plot_df$label))
+    present_labs <- present_labs[!is.na(present_labs) & present_labs != ""]
+    level_colour_values <- level_colour_values[
+      intersect(names(level_colour_values), present_labs)
     ]
     plot_df <- plot_df %>%
       mutate(
@@ -1847,8 +1850,7 @@ forest_over_time_plot <- function(
             fill = disruption
           ),
           inherit.aes = FALSE,
-          alpha = 0.5,
-          clip = "on"
+          alpha = 0.5
         )
       }
     } +
@@ -1956,7 +1958,12 @@ forest_over_time_plot <- function(
       if (isTRUE(colour_by_level)) {
         scale_color_manual(
           values = level_colour_values,
-          drop = FALSE,
+          breaks = names(level_colour_values),
+          labels = stringr::str_wrap(
+            names(level_colour_values),
+            width = as.integer(legend_label_wrap_width)
+          ),
+          drop = TRUE,
           name = level_colour_title %||% "Level"
         )
       } else {
@@ -2029,10 +2036,14 @@ forest_over_time_plot <- function(
   base_plot <- base_plot +
     guides(
       color = if (isTRUE(colour_by_level)) {
+        colour_legend_ncol <- if (identical(legend_position, "bottom")) {
+          items_per_row
+        } else {
+          length(level_colour_values)
+        }
         ggplot2::guide_legend(
           title = level_colour_title %||% "Level",
-          nrow = 1,
-          ncol = length(level_colour_values),
+          ncol = max(1L, as.integer(colour_legend_ncol)),
           byrow = TRUE,
           order = 1,
           override.aes = list(
@@ -2792,8 +2803,7 @@ forest_over_time_plot_compare <- function(
         fill = disruption
       ),
       inherit.aes = FALSE,
-      alpha = 0.5,
-      clip = "on"
+      alpha = 0.5
     ) +
     geom_hline(
       data = reference_lines,

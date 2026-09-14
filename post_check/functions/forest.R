@@ -1923,12 +1923,17 @@ forest_plot_phenotype <- function(p, phenotype) {
     outcome_type = meta$outcome_type,
     facet_outcome = FALSE,
     label_levels = FALSE,
-    seasons = sensitivity_plot_seasons(meta$pathogen, investigation_val)
+    seasons = sensitivity_plot_seasons(meta$pathogen, investigation_val),
+    colour_by_level = TRUE
   )
-  attr(plot_ot, "forest_data") <- plot_dat
+  attr(plot_ot, "forest_data") <- attr(plot_ot, "forest_data") %||% plot_dat
   if (!is.null(forest_data_full) && is.data.frame(forest_data_full)) {
     attr(plot_ot, "forest_data_full") <- forest_data_full %>%
-      dplyr::filter(.data$codelist_type %in% c("reference", phenotype))
+      dplyr::filter(.data$codelist_type %in% c("reference", phenotype)) %>%
+      prepare_forest_plot_data(
+        drop_unknown_ethnicity = TRUE,
+        pathogen = meta$pathogen
+      )
   }
   attr(plot_ot, "forest_meta") <- meta
   plot_ot
@@ -2019,6 +2024,7 @@ dashboard_forest_plot <- function(p) {
     label_levels = FALSE,
     seasons = seasons_plot,
     key_groups_first = TRUE,
+    colour_by_level = TRUE,
     # Half-width dashboard PNGs. Leave legend_items_per_row NULL so the
     # compact_legend default in forest_over_time_plot() applies (edit that 2L/4L).
     compact_legend = TRUE,
@@ -2026,8 +2032,8 @@ dashboard_forest_plot <- function(p) {
     legend_label_wrap_width = 10L
   )
 
-  attr(plot_ot, "forest_data") <- plot_dat
-  attr(plot_ot, "forest_data_full") <- plot_dat
+  attr(plot_ot, "forest_data") <- attr(plot_ot, "forest_data") %||% plot_dat
+  attr(plot_ot, "forest_data_full") <- attr(plot_ot, "forest_data")
   attr(plot_ot, "forest_meta") <- meta
   plot_ot
 }

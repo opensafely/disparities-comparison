@@ -210,15 +210,60 @@ ethnicity_forest_level_colours <- function(levels) {
 }
 
 covariate_forest_level_colours <- function(covariate, levels) {
-  if (identical(covariate, "Age Group")) {
+  if (identical(covariate, "Age Group") || identical(covariate, "Maternal Age")) {
     age_forest_level_colours(levels)
   } else if (identical(covariate, "IMD Quintile")) {
     imd_forest_level_colours(levels)
   } else if (identical(covariate, "Ethnicity")) {
     ethnicity_forest_level_colours(levels)
+  } else if (identical(covariate, "Sex")) {
+    sequential_forest_level_colours(
+      levels,
+      c("#66C2A5", "#1B9E77", "#006D2C")
+    )
+  } else if (identical(covariate, "Household Composition")) {
+    sequential_forest_level_colours(
+      levels,
+      c("#FDBB84", "#FC8D59", "#E34A33", "#B30000", "#7F0000", "#4A0000")
+    )
   } else {
-    sequential_forest_level_colours(levels, FOREST_AGE_LEVEL_PALETTE)
+    sequential_forest_level_colours(
+      levels,
+      c("#B3B3B3", "#737373", "#525252", "#252525")
+    )
   }
+}
+
+# Named colour vector for every level present in a (possibly multi-covariate) plot.
+build_forest_plot_level_colours <- function(dat, model_type, pathogen) {
+  if (is.null(dat) || !is.data.frame(dat) || nrow(dat) == 0L) {
+    return(character())
+  }
+  if (!all(c("labels", "label") %in% names(dat))) {
+    return(character())
+  }
+
+  covs <- unique(as.character(dat$labels))
+  covs <- covs[!is.na(covs) & covs != ""]
+  if (length(covs) == 0L) {
+    return(character())
+  }
+
+  preferred <- c(
+    "Age Group", "Maternal Age", "Sex", "Ethnicity", "IMD Quintile",
+    "Household Composition", "Rurality", "Prior Vaccination",
+    "Current Vaccination", "Maternal Smoking Status"
+  )
+  covs <- c(intersect(preferred, covs), setdiff(covs, preferred))
+
+  out <- character()
+  for (cov in covs) {
+    lvl <- ordered_forest_covariate_levels(dat, cov, model_type, pathogen)
+    cols <- covariate_forest_level_colours(cov, lvl)
+    # Later covariates win only for truly duplicated labels (rare).
+    out <- c(out[!names(out) %in% names(cols)], cols)
+  }
+  out
 }
 
 ordered_forest_covariate_levels <- function(dat, covariate, model_type, pathogen) {
