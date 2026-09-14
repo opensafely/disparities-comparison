@@ -32,7 +32,8 @@ character_viz <- function(df, scaling, household_comp = "no",
               "Chronic Kidney Disease", "Chronic Liver Disease",
               "Chronic Neurological Disease", "Cancer Within 3 Years",
               "Immunosuppressed", "Sickle Cell Disease"),
-    count = c(1, age_groups, 2, 6, 5, 5, 5, 4, 1, 1, 1, 1, 1, 3, 4, 1,
+    # Household Composition includes Unknown (6 levels) in current collated table1.
+    count = c(1, age_groups, 2, 6, 5, 6, 5, 4, 1, 1, 1, 1, 1, 3, 4, 1,
               1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
   )
   
@@ -124,6 +125,13 @@ character_viz <- function(df, scaling, household_comp = "no",
   
   df <- df %>%
     mutate(
+      # Distinguish HH Unknown from ethnicity Unknown for factor levels / x-axis order.
+      characteristic = if_else(
+        .data$group == "Household Composition" &
+          as.character(.data$characteristic) == "Unknown",
+        "Unknown Composition",
+        as.character(.data$characteristic)
+      ),
       percentage = if_else(str_detect(percentage, "<0.1%"), "0.05%",
                            percentage)
     ) %>%
@@ -163,6 +171,7 @@ character_viz <- function(df, scaling, household_comp = "no",
                 "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation",
                 "Two Other Generations", "Three Other Generations",
+                "Unknown Composition",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
                 "Urban City and Town", "Urban Minor Conurbation",
                 "Urban Major Conurbation", "Yes",
@@ -176,7 +185,8 @@ character_viz <- function(df, scaling, household_comp = "no",
                 "2", "3", "4", "5 (least deprived)",
                 "Multiple of the Same Generation", "Living Alone",
                 "One Other Generation", "Two Other Generations",
-                "Three Other Generations", "Rural Town and Fringe",
+                "Three Other Generations", "Unknown Composition",
+                "Rural Town and Fringe",
                 "Rural Village and Dispersed", "Urban City and Town",
                 "Urban Minor Conurbation", "Urban Major Conurbation",
                 "Yes", "0-6m", "6-12m", "12m+")
@@ -192,7 +202,8 @@ character_viz <- function(df, scaling, household_comp = "no",
                 "Chinese or Other", "Unknown", "1 (most deprived)", "2", "3",
                 "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
-                "Three Other Generations", "Rural Town and Fringe",
+                "Three Other Generations", "Unknown Composition",
+                "Rural Town and Fringe",
                 "Rural Village and Dispersed", "Urban City and Town",
                 "Urban Minor Conurbation", "Urban Major Conurbation",
                 "Yes", "0-6m", "6-12m", "12m+")
@@ -316,7 +327,8 @@ character_viz_mult <- function(df, scaling) {
               "Chronic Kidney Disease", "Chronic Liver Disease",
               "Chronic Neurological Disease", "Cancer Within 3 Years",
               "Immunosuppressed", "Sickle Cell Disease"),
-    count = c(1, age_groups, 2, 6, 5, 5, 5, 4, 1, 1, 1, 1, 1, 3, 4, 1,
+    # Household Composition includes Unknown (6 levels) in current collated table1.
+    count = c(1, age_groups, 2, 6, 5, 6, 5, 4, 1, 1, 1, 1, 1, 3, 4, 1,
               1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
   )
   
@@ -398,6 +410,13 @@ character_viz_mult <- function(df, scaling) {
   
   df <- df %>%
     mutate(
+      # Distinguish HH Unknown from ethnicity Unknown for factor levels / x-axis order.
+      characteristic = if_else(
+        .data$group == "Household Composition" &
+          as.character(.data$characteristic) == "Unknown",
+        "Unknown Composition",
+        as.character(.data$characteristic)
+      ),
       percentage = if_else(str_detect(percentage, "<0.1%"), "0.05%",
                            percentage)
     ) %>%
@@ -437,6 +456,7 @@ character_viz_mult <- function(df, scaling) {
                 "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation",
                 "Two Other Generations", "Three Other Generations",
+                "Unknown Composition",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
                 "Urban City and Town", "Urban Minor Conurbation",
                 "Urban Major Conurbation", "Yes",
@@ -450,7 +470,8 @@ character_viz_mult <- function(df, scaling) {
                 "2", "3", "4", "5 (least deprived)",
                 "Multiple of the Same Generation", "Living Alone",
                 "One Other Generation", "Two Other Generations",
-                "Three Other Generations", "Rural Town and Fringe",
+                "Three Other Generations", "Unknown Composition",
+                "Rural Town and Fringe",
                 "Rural Village and Dispersed", "Urban City and Town",
                 "Urban Minor Conurbation", "Urban Major Conurbation",
                 "Yes", "0-6m", "6-12m", "12m+")
@@ -466,7 +487,8 @@ character_viz_mult <- function(df, scaling) {
                 "Chinese or Other", "Unknown", "1 (most deprived)", "2", "3",
                 "4", "5 (least deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
-                "Three Other Generations", "Rural Town and Fringe",
+                "Three Other Generations", "Unknown Composition",
+                "Rural Town and Fringe",
                 "Rural Village and Dispersed", "Urban City and Town",
                 "Urban Minor Conurbation", "Urban Major Conurbation",
                 "Yes", "0-6m", "6-12m", "12m+")
