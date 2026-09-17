@@ -113,7 +113,7 @@ perc_overlap <- function(cohort) {
     ) +
     scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
     labs(
-      x = "Season",
+      x = "Annual Cohort",
       y = "Number of cases"
     ) +
     theme_bw(base_size = 20) +
@@ -126,7 +126,7 @@ perc_overlap <- function(cohort) {
   #save the plot
   ggsave(here::here("post_check", "plots", "supplemental",
                     paste0(cohort, "_outcome_overlap.png")),
-         height = 12, width = 18)
+         height = 10, width = 18)
 
 }
 
@@ -145,7 +145,8 @@ perc_overlap("infants")
 ##  infants subgroup
 perc_overlap("infants_subgroup")
 
-#write a function to calculate percentage of bucket-only outcomes
+#write a function to calculate percentage of overall respiratory cases
+#that are also RSV, flu, and/or COVID (including pathogen combos)
 perc_bucket <- function(cohort) {
 
   #import collated phenotype sensitivity data
@@ -155,38 +156,31 @@ perc_bucket <- function(cohort) {
   )
   names(df_input) <- c("combo", "n", "outcome_type", "codelist_type", "subset")
 
-  #calculate percentage of outcomes which are overlapping
-  df_perc <- df_input %>% 
-    filter(
-      !(combo %in% c("0_0", "0_0_0",
-                  "RSV_Mild_Flu_Mild", "RSV_Severe_Flu_Severe",
-                  "RSV_Mild_Flu_Mild_0", "RSV_Severe_Flu_Severe_0",
-                  "RSV_Mild_0_COVID_Mild", "RSV_Severe_0_COVID_Severe",
-                  "0_Flu_Mild_COVID_Mild", "0_Flu_Severe_COVID_Severe")) &
-      outcome_type %in% c("mild_overall", "severe_overall")
-  ) %>%
-    group_by(outcome_type, codelist_type, subset) %>% 
-    mutate(
-      total_cases = if_else(
-        grepl("_Total", combo) & !grepl("Overall_", combo),
-        sum(n[grepl("_Total", combo) & !grepl("Overall_", combo)],
-            na.rm = TRUE),
-        NA_integer_
+  # Use mutually exclusive Overall_Resp combo cells so co-infections are not
+  # double-counted when summing RSV/Flu/COVID totals.
+  df_perc <- df_input %>%
+    filter(outcome_type %in% c("mild_overall", "severe_overall")) %>%
+    group_by(outcome_type, subset) %>%
+    summarise(
+      total_bucket = sum(
+        n[grepl("^Overall_Resp_.*_Total$", combo)],
+        na.rm = TRUE
       ),
-      total_bucket = if_else(
-        grepl("_Total", combo)& !grepl("Overall_", combo),
-        sum(n[grepl("_Total", combo)& grepl("Overall_", combo)], na.rm = TRUE),
-        NA_integer_
-      )
-    ) %>% 
-    select(-c(combo, n)) %>% 
-    filter(!is.na(total_cases)) %>% 
+      total_cases = sum(
+        n[
+          grepl("Overall_Resp", combo) &
+            !grepl("_Total$", combo) &
+            grepl("RSV|Flu|COVID", combo)
+        ],
+        na.rm = TRUE
+      ),
+      .groups = "drop"
+    ) %>%
     mutate(
-      perc = signif((total_cases/total_bucket)*100, digits = 2),
+      perc = signif((total_cases / total_bucket) * 100, digits = 2),
       outcome_type = str_to_title(gsub("_overall", "", outcome_type)),
       subset = gsub("_", "-", subset)
-    ) %>% 
-    unique()
+    )
 
   #reorder the columns
   df_perc <- df_perc[, c("subset", "outcome_type", "total_bucket",
@@ -204,7 +198,7 @@ perc_bucket <- function(cohort) {
     )
   
   names(df_perc) <- c("Season", "Severity", "Total Bucket",
-                      "Total Cases", "Percentage Bucket Only")
+                      "Total Cases", "Percentage RSV/Flu/COVID")
   
   #save the file
   write_csv(df_perc, here::here("post_check", "supplemental", "outcome_overlap",
@@ -247,7 +241,7 @@ perc_bucket <- function(cohort) {
     ) +
     scale_y_continuous(labels = scales::label_number(scale_cut = cut_si(""))) +
     labs(
-      x = "Season",
+      x = "Annual Cohort",
       y = "Number of cases",
       title = str_to_title(gsub("_", " ", cohort_title))
     ) +
@@ -260,7 +254,7 @@ perc_bucket <- function(cohort) {
   #save the plot
   ggsave(here::here("post_check", "plots", "supplemental",
                     paste0(cohort, "_bucket_overlap.png")),
-         height = 12, width = 18)
+         height = 10, width = 18)
 
 }
 

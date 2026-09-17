@@ -131,13 +131,13 @@ df_surv_mute <- bind_rows(
 df_surv_mute <- df_surv_mute %>%
   mutate(
     coeff = case_when(
-      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 10,
-      virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 5,
-      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 30,
-      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 6,
-      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 0.25,
-      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 0.25,
-      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 0.5,
+      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 1,
+      virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 1,
+      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 2,
+      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 1.75,
+      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 1,
+      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 1,
+      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 1,
       virus == "Influenza" & event == "Severe" & codelist_type == "sensitive" ~ 1
     ),
     total_events = total_events*coeff
@@ -154,14 +154,14 @@ df_all <- bind_rows(
 df_all <- df_all %>%
   mutate(
     ylims = case_when(
-      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 115000,
-      virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 58000,
-      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 310000,
-      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 62000,
-      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 12500,
-      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 12500,
-      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 25000,
-      virus == "Influenza" & event == "Severe" & codelist_type == "sensitive" ~ 52000
+      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 11500,
+      virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 11500,
+      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 42000,
+      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 20000,
+      virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 15000,
+      virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 15000,
+      virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 20000,
+      virus == "Influenza" & event == "Severe" & codelist_type == "sensitive" ~ 20000
     )
   )
 

@@ -18,6 +18,12 @@ names(df_input) <- c("characteristic", "n", "perc", "subset")
 df_input_reformat <- df_input %>%
   filter(!is.na(n)) %>%
   mutate(
+    # distinguish ethnicity Unknown from household Unknown before pivot
+    characteristic = case_when(
+      characteristic == "Unknown" &
+        lag(characteristic) == "Three Other Generations" ~ "No Household Linkage",
+      TRUE ~ characteristic
+    ),
     n_perc = paste0(n, " (", perc, ")")
   ) %>%
   select(-c(n, perc)) %>%
@@ -32,7 +38,7 @@ df_input_reformat <- df_input %>%
       "Chinese or Other", "Unknown", "5 (least deprived)", "4",
       "3", "2", "1 (most deprived)", "Multiple of the Same Generation",
       "Living Alone", "One Other Generation", "Two Other Generations",
-      "Three Other Generations", "Rural Town and Fringe",
+      "Three Other Generations", "No Household Linkage", "Rural Town and Fringe",
       "Rural Village and Dispersed", "Urban City and Town", "Urban Major Conurbation",
       "Urban Minor Conurbation", "Prior Flu Vaccine", "0-6m", "6-12m", "12m+"
     ))
@@ -59,6 +65,11 @@ names(df_input) <- c("characteristic", "n", "perc", "subset")
 df_input_reformat <- df_input %>%
   filter(!is.na(n)) %>%
   mutate(
+    characteristic = case_when(
+      characteristic == "Unknown" &
+        lag(characteristic) == "Three Other Generations" ~ "No Household Linkage",
+      TRUE ~ characteristic
+    ),
     n_perc = paste0(n, " (", perc, ")")
   ) %>%
   select(-c(n, perc)) %>%
@@ -73,7 +84,7 @@ df_input_reformat <- df_input %>%
       "Chinese or Other", "Unknown", "5 (least deprived)", "4",
       "3", "2", "1 (most deprived)", "Multiple of the Same Generation",
       "Living Alone", "One Other Generation", "Two Other Generations",
-      "Three Other Generations", "Rural Town and Fringe",
+      "Three Other Generations", "No Household Linkage", "Rural Town and Fringe",
       "Rural Village and Dispersed", "Urban City and Town", "Urban Major Conurbation",
       "Urban Minor Conurbation", "Prior Flu Vaccine", "0-6m", "6-12m", "12m+"
     ))
@@ -100,6 +111,11 @@ names(df_input) <- c("characteristic", "n", "perc", "subset")
 df_input_reformat <- df_input %>%
   filter(!is.na(n)) %>%
   mutate(
+    characteristic = case_when(
+      characteristic == "Unknown" &
+        lag(characteristic) == "Three Other Generations" ~ "No Household Linkage",
+      TRUE ~ characteristic
+    ),
     n_perc = paste0(n, " (", perc, ")")
   ) %>%
   select(-c(n, perc)) %>%
@@ -114,7 +130,7 @@ df_input_reformat <- df_input %>%
       "Chinese or Other", "Unknown", "5 (least deprived)", "4",
       "3", "2", "1 (most deprived)", "Multiple of the Same Generation",
       "Living Alone", "One Other Generation", "Two Other Generations",
-      "Three Other Generations", "Rural Town and Fringe",
+      "Three Other Generations", "No Household Linkage", "Rural Town and Fringe",
       "Rural Village and Dispersed", "Urban City and Town", "Urban Major Conurbation",
       "Urban Minor Conurbation", "Prior Flu Vaccine", "0-6m", "6-12m", "12m+"
     ))

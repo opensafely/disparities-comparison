@@ -7,6 +7,9 @@ library(cowplot)
 library(stringr)
 library(egg)
 
+# Divert batch-mode graphics (print / get_legend) away from ./Rplots.pdf.
+source(here::here("post_check", "functions", "batch_graphics.R"))
+
 #import model functions
 source(here::here("post_check", "functions", "model.R"))
 source(here::here("post_check", "functions", "forest_level_order.R"))
@@ -515,7 +518,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
 
     cols2 <- tibble(
-      variable = c("sex", "age_band", "latest_ethnicity_group", "imd_quintile",
+      variable = c("sex", "age_band", "imd_quintile", "latest_ethnicity_group",
                    "composition_category", "rurality_classification",
                    "prior_flu_vaccination", "time_since_last_covid_vaccination",
                    "vax_status", "flu_vaccination",
@@ -528,7 +531,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
                    "severe_obesity", "has_chd", "has_ckd", "has_cld", "has_cnd",
                    "has_cancer", "immunosuppressed", "has_sickle_cell",
                    "hazardous_drinking", "drug_usage"),
-      col = c('#1f77b4', '#ffbb78', '#2ca02c', '#ff9896',
+      col = c('#1f77b4', '#ffbb78', '#ff9896', '#2ca02c',
               '#aec7e8', '#ff7f0e',
               '#66C2A4',  # Prior vaccination (flu)
               '#98DF8A',  # Prior vaccination (COVID) - original green
@@ -544,7 +547,7 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
               '#38a8cb', '#9d8ff4',
               '#98df8a', '#43a1f4',
               '#8c564b', '#e377c2'),
-      labels = c("Sex", "Age Group", "Ethnicity", "IMD Quintile",
+      labels = c("Sex", "Age Group", "IMD Quintile", "Ethnicity",
                  "Household Composition", "Rurality", "Prior Vaccination",
                  "Prior Vaccination",
                  "Current Vaccination", "Current Vaccination",
@@ -1454,21 +1457,21 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
     legend_labels <- unique(str_to_title(gsub("_", " ", tidy_forest$variable)))
     
     cols2 <- tibble(
-      variable = c("sex", "age_band", "latest_ethnicity_group", "imd_quintile",
+      variable = c("sex", "age_band", "imd_quintile", "latest_ethnicity_group",
                    "composition_category", "rurality_classification",
                    vacc_prev, "vax_status", "flu_vaccination",
                    "covid_vaccination", "maternal_age",
                    "maternal_smoking_status", "maternal_drinking",
                    "maternal_drug_usage", "maternal_flu_vaccination",
                    "maternal_pertussis_vaccination", "binary_variables"),
-      col = c('#1f77b4', '#ffbb78', '#2ca02c', '#ff9896',
+      col = c('#1f77b4', '#ffbb78', '#ff9896', '#2ca02c',
               '#aec7e8', '#ff7f0e',
               '#98df8a', '#d62728', '#d62728',
               '#d62728', '#9467bd',
               '#c49c94', '#e377c2',
               '#c5b0d5', '#8c564b',
               '#f7b6d2', "#4e3f2c"),
-      labels = c("Sex", "Age Group", "Ethnicity", "IMD Quintile",
+      labels = c("Sex", "Age Group", "IMD Quintile", "Ethnicity",
                  "Household Composition", "Rurality", "Prior Vaccination",
                  "Current Vaccination", "Current Vaccination",
                  "Current Vaccination", "Maternal Age", "Smoking Status",
@@ -1924,6 +1927,7 @@ forest_plot_phenotype <- function(p, phenotype) {
     facet_outcome = FALSE,
     label_levels = FALSE,
     seasons = sensitivity_plot_seasons(meta$pathogen, investigation_val),
+    key_groups_first = TRUE,
     colour_by_level = TRUE
   )
   attr(plot_ot, "forest_data") <- attr(plot_ot, "forest_data") %||% plot_dat
@@ -2073,7 +2077,6 @@ save_supplemental_base_model_plots <- function(
     for (ph in phenotypes) {
       p_ph <- forest_plot_phenotype(p, ph)
       plotlists_out[[ph]][[name]] <- p_ph
-      print(p_ph)
       ggsave(
         here::here(
           "post_check", "plots", "supplemental", "models", cohort, ph,

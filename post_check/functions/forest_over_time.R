@@ -1,3 +1,15 @@
+# Divert batch-mode graphics when this file is sourced without forest.R.
+local({
+  ofile <- tryCatch(sys.frame(1)$ofile, error = function(e) NULL)
+  if (is.null(ofile)) {
+    return(invisible(NULL))
+  }
+  bg <- file.path(dirname(ofile), "batch_graphics.R")
+  if (file.exists(bg)) {
+    source(bg, local = FALSE)
+  }
+})
+
 # Fitted models use 12m+ as reference; `tidy_attach_model()` may mark 0-6m instead.
 # Collated coefficients are contrasts for 0-6m and 6-12m only — add an explicit 12m+ row.
 fix_covid_prior_vacc_reference_rows <- function(tidy_forest) {
@@ -92,6 +104,14 @@ FOREST_POINT_SIZE_ADJ <- 2.3
 FOREST_POINT_SIZE_ADJ_STACKED <- 2.3
 FOREST_POINTRANGE_FATTEN <- 3.0
 FOREST_POINTRANGE_LINEWIDTH <- 0.45
+# Sequential adjustment plots: filled circles; alpha encodes min vs full.
+FOREST_ADJ_SHAPE_FULL <- 16L
+FOREST_ADJ_ALPHA_MINIMAL <- 1
+FOREST_ADJ_ALPHA_FULL <- 0.55
+FOREST_ADJ_ALPHA_MAP <- c(
+  "Minimally adjusted" = FOREST_ADJ_ALPHA_MINIMAL,
+  "Fully adjusted" = FOREST_ADJ_ALPHA_FULL
+)
 FOREST_LEGEND_KEY_CI <- 1.8
 FOREST_LEGEND_KEY_POINT <- 2.8
 FOREST_LEGEND_OVERRIDE_CI <- 0.7
@@ -114,8 +134,9 @@ FOREST_DISRUPTION_LABEL <- stringr::str_wrap(
 FOREST_DISRUPTION_SHADE_YMIN_LOG <- 0.01
 FOREST_DISRUPTION_SHADE_YMAX_LOG <- 10
 
-# Facet-strip labels: force "Maternal Age" onto two lines; wrap other long
-# labels at width 14 (same as previous label_wrap_gen default).
+# Facet-strip labels: force "Maternal Age" onto two lines and "Maternal Smoking
+# Status" onto three; wrap other long labels at width 14 (same as previous
+# label_wrap_gen default).
 # Pass as labeller(labels_facet = forest_facet_labeller) — plain function, like
 # label_wrap_gen(), not as_labeller() (nesting breaks the strip wrap).
 forest_facet_labeller <- function(labels) {
@@ -124,6 +145,8 @@ forest_facet_labeller <- function(labels) {
     function(lab) {
       if (identical(lab, "Maternal Age")) {
         "Maternal\nAge"
+      } else if (identical(lab, "Maternal Smoking Status")) {
+        "Maternal\nSmoking\nStatus"
       } else {
         stringr::str_wrap(lab, width = 14L)
       }
@@ -341,61 +364,11 @@ key_exposure_display_names <- function() {
   )
 }
 
-forest_group_priority <- function(model_type, cohort = NULL) {
-  model_type <- as.character(model_type)[[1]]
-  cohort_val <- cohort
-  if (is.null(cohort_val) && exists("cohort", envir = .GlobalEnv)) {
-    cohort_val <- get("cohort", envir = .GlobalEnv)
-  }
-  if (length(cohort_val) != 1L || is.na(cohort_val)) {
-    cohort_val <- NA_character_
-  } else {
-    cohort_val <- as.character(cohort_val)[[1]]
-  }
-
-  label_map <- c(
-    latest_ethnicity_group = "Ethnicity",
-    imd_quintile = "IMD Quintile",
-    composition_category = "Household Composition"
-  )
-
-  exposure_vars <- setdiff(
-    model_key_exposure_variables(model_type, cohort_val),
-    "age_band"
-  )
-  key_exposures <- unique(stats::na.omit(unname(label_map[exposure_vars])))
-  exposure_order <- c("Ethnicity", "IMD Quintile", "Household Composition")
-
-  # infants_subgroup Further (key_groups_first): Age Group → Ethnicity → IMD
-  # → Sex → Rurality → Maternal Age → maternal vaccinations → other maternal_*.
-  # Facet labels use "Maternal Flu Vaccination" (not "Influenza").
-  # Other cohorts keep Age Group → Ethnicity → IMD → Composition → Sex.
-  maternal_other <- c(
-    "Maternal Pertussis Vaccination",
-    "Maternal Flu Vaccination",
-    "Maternal Smoking Status",
-    "Maternal Drinking",
-    "Maternal Drug Usage"
-  )
-
-  if (identical(cohort_val, "infants_subgroup")) {
-    c(
-      "Age Group",
-      intersect(exposure_order, key_exposures),
-      "Sex",
-      "Rurality",
-      "Maternal Age",
-      maternal_other
-    ) %>%
-      unique()
-  } else {
-    c(
-      "Age Group",
-      intersect(exposure_order, key_exposures),
-      "Sex"
-    ) %>%
-      unique()
-  }
+# Supplemental / dashboard facet + colour group order.
+# Always Age → IMD → Ethnicity → …, including covariates that are not key
+# exposures for this model_type (ethnicity-only used to put IMD after Sex).
+forest_group_priority <- function(model_type = NULL, cohort = NULL) {
+  FOREST_FACET_GROUP_ORDER
 }
 
 collect_key_exposure_forest_data <- function(
@@ -1049,11 +1022,11 @@ build_shared_legends_base_vs_further <- function(
   years_include <- years_include[!is.na(years_include)]
 
   groups_mid <- intersect(
-    c("Ethnicity", "IMD Quintile"),
+    c("IMD Quintile", "Ethnicity"),
     unique(as.character(legend_dat$labels))
   )
 
-  # Left column: adjustment type only (base vs further).
+  # Left column: adjustment type only (alpha = min vs full).
   legend_left <- cowplot::get_legend(
     forest_over_time_plot_compare(
       legend_dat %>% dplyr::slice(1),
@@ -1065,7 +1038,7 @@ build_shared_legends_base_vs_further <- function(
       years_include = years_include
     ) +
       theme(legend.position = "left") +
-      guides(shape = "none", fill = "none", color = "none")
+      guides(colour = "none", fill = "none", shape = "none")
   )
 
   legend_mid <- if (length(groups_mid) > 0) {
@@ -1080,7 +1053,7 @@ build_shared_legends_base_vs_further <- function(
         years_include = years_include
       ) +
         theme(legend.position = "left", legend.title = element_blank()) +
-        guides(fill = "none", alpha = "none")
+        guides(fill = "none", shape = "none", alpha = "none")
     )
   } else {
     NULL
@@ -1582,30 +1555,20 @@ forest_over_time_plot <- function(
   cohort_val <- if (exists("cohort", envir = .GlobalEnv)) get("cohort", envir = .GlobalEnv) else NA_character_
   investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) get("investigation_type", envir = .GlobalEnv) else NA_character_
 
-  # Preserve the historical group order unless a caller explicitly asks for
-  # key exposure groups first (used for the dashboard only).
+  # Always Age → IMD → Ethnicity → … (FOREST_FACET_GROUP_ORDER).
+  # key_groups_first only pushes vaccination facets/colours to the end.
   vaccination_groups_col <- c(
     "Prior Vaccination (Flu)",
     "Prior Vaccination (COVID)",
     "Current Vaccination"
   )
-  preferred_group_order <- if (isTRUE(key_groups_first)) {
-    forest_group_priority(model_type, cohort_val)
-  } else {
-    c(
-      "Sex",
-      "Age Group",
-      "Maternal Age",
-      "Ethnicity",
-      "IMD Quintile",
-      "Household Composition",
-      "Rurality",
-      vaccination_groups_col
-    )
-  }
+  preferred_group_order <- FOREST_FACET_GROUP_ORDER
   group_order <- if (isTRUE(key_groups_first)) {
     c(
-      intersect(preferred_group_order, names(colour_map)),
+      intersect(
+        setdiff(preferred_group_order, vaccination_groups_col),
+        names(colour_map)
+      ),
       setdiff(names(colour_map), c(preferred_group_order, vaccination_groups_col)),
       intersect(vaccination_groups_col, names(colour_map))
     )
@@ -1633,21 +1596,23 @@ forest_over_time_plot <- function(
   )
 
   plot_df <- clean_forest_term_labels(plot_df)
+  # Drop maternal binary "No"/reference rows after label cleaning so prefixed
+  # broom labels (e.g. maternal_drinkingNo) are caught.
+  plot_df <- drop_maternal_binary_no_levels(plot_df)
+  if (is_empty_forest_data(plot_df)) {
+    return(ggplot() + theme_void())
+  }
 
   vaccination_groups_facet <- c("Prior Vaccination", "Current Vaccination")
-  facet_group_order <- if (isTRUE(key_groups_first)) {
-    forest_group_priority(model_type, cohort_val)
-  } else {
-    c(
-      "Sex", "Age Group", "Maternal Age", "Ethnicity", "IMD Quintile", "Household Composition",
-      "Rurality", vaccination_groups_facet
-    )
-  }
+  facet_group_order <- FOREST_FACET_GROUP_ORDER
 
   observed_facets <- unique(as.character(plot_df$labels_facet))
   facet_levels <- if (isTRUE(key_groups_first)) {
     c(
-      intersect(facet_group_order, observed_facets),
+      intersect(
+        setdiff(facet_group_order, vaccination_groups_facet),
+        observed_facets
+      ),
       setdiff(observed_facets, c(facet_group_order, vaccination_groups_facet)),
       intersect(vaccination_groups_facet, observed_facets)
     )
@@ -2163,6 +2128,15 @@ forest_over_time_plot_compare <- function(
     return(ggplot() + theme_void())
   }
 
+  forest_data <- prepare_forest_plot_data(
+    forest_data,
+    drop_unknown_ethnicity = TRUE,
+    pathogen = pathogen
+  )
+  if (is_empty_forest_data(forest_data)) {
+    return(ggplot() + theme_void())
+  }
+
   pathogen_title <- case_when(
     pathogen == "rsv" ~ "RSV",
     pathogen == "flu" ~ "Influenza",
@@ -2452,30 +2426,20 @@ forest_over_time_plot_compare <- function(
     colour_map[["Prior Vaccination (COVID)"]] <- "#98DF8A"
   }
 
-  # Preserve the historical group order unless a caller explicitly asks for
-  # key exposure groups first (used for the dashboard only).
+  # Always Age → IMD → Ethnicity → … (FOREST_FACET_GROUP_ORDER).
+  # key_groups_first only pushes vaccination facets/colours to the end.
   vaccination_groups_col <- c(
     "Prior Vaccination (Flu)",
     "Prior Vaccination (COVID)",
     "Current Vaccination"
   )
-  preferred_group_order <- if (isTRUE(key_groups_first)) {
-    forest_group_priority(model_type, cohort_val)
-  } else {
-    c(
-      "Sex",
-      "Age Group",
-      "Maternal Age",
-      "Ethnicity",
-      "IMD Quintile",
-      "Household Composition",
-      "Rurality",
-      vaccination_groups_col
-    )
-  }
+  preferred_group_order <- FOREST_FACET_GROUP_ORDER
   group_order <- if (isTRUE(key_groups_first)) {
     c(
-      intersect(preferred_group_order, names(colour_map)),
+      intersect(
+        setdiff(preferred_group_order, vaccination_groups_col),
+        names(colour_map)
+      ),
       setdiff(names(colour_map), c(preferred_group_order, vaccination_groups_col)),
       intersect(vaccination_groups_col, names(colour_map))
     )
@@ -2504,21 +2468,23 @@ forest_over_time_plot_compare <- function(
   )
 
   plot_df <- clean_forest_term_labels(plot_df)
+  # Drop maternal binary "No"/reference rows after label cleaning so prefixed
+  # broom labels (e.g. maternal_drinkingNo) are caught.
+  plot_df <- drop_maternal_binary_no_levels(plot_df)
+  if (is_empty_forest_data(plot_df)) {
+    return(ggplot() + theme_void())
+  }
 
   vaccination_groups_facet <- c("Prior Vaccination", "Current Vaccination")
-  facet_group_order <- if (isTRUE(key_groups_first)) {
-    forest_group_priority(model_type, cohort_val)
-  } else {
-    c(
-      "Sex", "Age Group", "Maternal Age", "Ethnicity", "IMD Quintile", "Household Composition",
-      "Rurality", vaccination_groups_facet
-    )
-  }
+  facet_group_order <- FOREST_FACET_GROUP_ORDER
 
   observed_facets <- unique(as.character(plot_df$labels_facet))
   facet_levels <- if (isTRUE(key_groups_first)) {
     c(
-      intersect(facet_group_order, observed_facets),
+      intersect(
+        setdiff(facet_group_order, vaccination_groups_facet),
+        observed_facets
+      ),
       setdiff(observed_facets, c(facet_group_order, vaccination_groups_facet)),
       intersect(vaccination_groups_facet, observed_facets)
     )
@@ -2573,54 +2539,44 @@ forest_over_time_plot_compare <- function(
 
   plot_df <- plot_df %>% mutate(label = factor(label, levels = level_order))
 
-  # Shapes:
-  # - ONLY reference points use a filled circle (16)
-  # - use a small set of non-circle, easily distinguishable shapes
-  # - shapes can repeat across groups, but must not repeat within a group
-  # - assign the minimum number needed per group (i.e., max levels within that group)
-  # Use a small, distinguishable set (includes open square = 0).
-  shape_pool <- c(15, 17, 18, 0, 2, 5, 6, 22, 23, 24, 25)
-  max_nonref <- plot_df %>%
-    group_by(labels_col, variable, label) %>%
-    summarise(is_ref = any(is_ref_level), .groups = "drop") %>%
-    group_by(labels_col) %>%
-    summarise(n_nonref = sum(!is_ref), .groups = "drop") %>%
-    summarise(max_n = max(n_nonref, na.rm = TRUE)) %>%
-    pull(max_n)
-  if (is.finite(max_nonref) && max_nonref > length(shape_pool)) {
-    stop("Not enough distinct shapes for number of levels within a group. Please extend `shape_pool`.")
-  }
-
-  shape_key_df <- build_forest_shape_key_df(plot_df, level_order, shape_pool)
-
-  plot_df <- join_forest_shape_keys(plot_df, shape_key_df)
-
-  shape_map <- stats::setNames(shape_key_df$shape_val, shape_key_df$shape_key)
-  shape_labels <- stats::setNames(
-    stringr::str_wrap(as.character(shape_key_df$label), width = legend_label_wrap_width),
-    shape_key_df$shape_key
+  # Colour by covariate level (matches standard forest over-time formatting).
+  # Alpha encodes adjustment when both min and full are present; points are
+  # filled circles (shape_key remains for jitter only).
+  level_colour_values <- build_forest_plot_level_colours(
+    plot_df, model_type, pathogen
   )
-  shape_legend_cols <- {
-    keys <- names(shape_map)
-    grp <- sub("\\s*\\|\\s*.*$", "", keys)
-    cols <- unname(colour_map[grp])
-    cols[is.na(cols)] <- "black"
-    cols
+  level_colour_values <- level_colour_values[
+    !is.na(names(level_colour_values)) & names(level_colour_values) != ""
+  ]
+  present_labs <- unique(as.character(plot_df$label))
+  present_labs <- present_labs[!is.na(present_labs) & present_labs != ""]
+  level_colour_values <- level_colour_values[
+    intersect(names(level_colour_values), present_labs)
+  ]
+  if (length(level_colour_values) == 0L) {
+    # Fallback: keep plotting even if palette helpers return nothing.
+    level_colour_values <- stats::setNames(
+      rep("grey30", length(present_labs)),
+      present_labs
+    )
   }
 
-  shape_legend_rows <- if (identical(legend_position, "bottom")) {
-    # Allow more legend items per row; figure width can expand in condensed outputs.
-    shape_per_row <- 6L
-    max(
-      as.integer(shape_legend_nrow),
-      2L,
-      ceiling(length(shape_map) / shape_per_row)
-    )
+  covs_present <- unique(as.character(plot_df$labels))
+  covs_present <- covs_present[!is.na(covs_present) & covs_present != ""]
+  level_colour_title <- if (length(covs_present) == 1L) {
+    covs_present[[1]]
   } else {
-    # Vertical legend: let ggplot stack items (nrow = NULL); do not fix nrow = 1
-    # with ncol = 1, which fails when there are multiple shape breaks.
-    NULL
+    "Level"
   }
+
+  plot_df <- plot_df %>%
+    mutate(
+      label = factor(as.character(label), levels = names(level_colour_values)),
+      shape_key = factor(
+        paste0("lvl|", as.character(label)),
+        levels = paste0("lvl|", names(level_colour_values))
+      )
+    )
 
   panel_spacing_x <- if (isTRUE(compact_layout)) {
     0.18
@@ -2653,19 +2609,12 @@ forest_over_time_plot_compare <- function(
           levels = c("Minimally adjusted", "Fully adjusted")
         ),
         adj_alpha = dplyr::case_when(
-          .data$adjustment == "Minimally adjusted" ~ 1,
-          .data$adjustment == "Fully adjusted" ~ 0.55,
+          .data$adjustment == "Minimally adjusted" ~ FOREST_ADJ_ALPHA_MINIMAL,
+          .data$adjustment == "Fully adjusted" ~ FOREST_ADJ_ALPHA_FULL,
           TRUE ~ NA_real_
         )
       )
   }
-
-  reference_line_cols <- c(
-    "characteristic_base", "labels_col", "col", "outcome_type", "labels_facet"
-  )
-  reference_lines <- plot_df %>%
-    distinct(dplyr::across(dplyr::all_of(reference_line_cols))) %>%
-    mutate(yintercept = 1)
 
   # Horizontal positioning: dodge side by side (default), or share a season column and
   # connect minimally vs fully adjusted estimates with a line (adjustment_layout = "stack").
@@ -2789,8 +2738,7 @@ forest_over_time_plot_compare <- function(
       ymin = conf.low,
       ymax = conf.high,
       group = series,
-      color = labels_col,
-      alpha = if (show_adjustment) adj_alpha else NULL
+      color = label
     )
   ) +
     geom_rect(
@@ -2806,9 +2754,9 @@ forest_over_time_plot_compare <- function(
       alpha = 0.5
     ) +
     geom_hline(
-      data = reference_lines,
-      aes(yintercept = yintercept, color = labels_col),
+      yintercept = 1,
       inherit.aes = FALSE,
+      colour = "grey55",
       linetype = 2,
       linewidth = 0.4,
       alpha = 0.8
@@ -2821,7 +2769,7 @@ forest_over_time_plot_compare <- function(
           dplyr::pull(.data$connect_id)
         geom_line(
           data = dplyr::filter(plot_df, .data$connect_id %in% line_ids),
-          aes(group = connect_id),
+          aes(group = connect_id, color = label),
           linewidth = 0.35,
           alpha = 0.75,
           na.rm = TRUE,
@@ -2833,7 +2781,8 @@ forest_over_time_plot_compare <- function(
       if (isTRUE(show_ci)) {
         if (show_adjustment) {
           geom_pointrange(
-            aes(shape = shape_key),
+            aes(alpha = adj_alpha),
+            shape = FOREST_ADJ_SHAPE_FULL,
             linewidth = FOREST_POINTRANGE_LINEWIDTH,
             fatten = FOREST_POINTRANGE_FATTEN,
             na.rm = TRUE,
@@ -2841,7 +2790,7 @@ forest_over_time_plot_compare <- function(
           )
         } else {
           geom_pointrange(
-            aes(shape = shape_key),
+            shape = FOREST_ADJ_SHAPE_FULL,
             alpha = 0.8,
             linewidth = FOREST_POINTRANGE_LINEWIDTH,
             fatten = FOREST_POINTRANGE_FATTEN,
@@ -2851,13 +2800,14 @@ forest_over_time_plot_compare <- function(
         }
       } else if (show_adjustment) {
         geom_point(
-          aes(shape = shape_key),
+          aes(alpha = adj_alpha),
+          shape = FOREST_ADJ_SHAPE_FULL,
           size = if (adjustment_stacked) FOREST_POINT_SIZE_ADJ_STACKED else FOREST_POINT_SIZE_ADJ,
           na.rm = TRUE
         )
       } else {
         geom_point(
-          aes(shape = shape_key),
+          shape = FOREST_ADJ_SHAPE_FULL,
           alpha = 0.85,
           size = if (adjustment_stacked) FOREST_POINT_SIZE_ADJ_STACKED else FOREST_POINT_SIZE_ADJ,
           na.rm = TRUE
@@ -2899,18 +2849,27 @@ forest_over_time_plot_compare <- function(
         annotation_logticks(base = 10, sides = "l")
       }
     } +
-    scale_color_manual(values = colour_map, drop = FALSE) +
+    scale_color_manual(
+      values = level_colour_values,
+      breaks = names(level_colour_values),
+      labels = stringr::str_wrap(
+        names(level_colour_values),
+        width = as.integer(legend_label_wrap_width)
+      ),
+      drop = FALSE,
+      name = level_colour_title
+    ) +
     {
       if (show_adjustment) {
         scale_alpha(
-          range = c(0.55, 1),
-          breaks = c(1, 0.55),
+          range = c(FOREST_ADJ_ALPHA_FULL, FOREST_ADJ_ALPHA_MINIMAL),
+          breaks = c(FOREST_ADJ_ALPHA_MINIMAL, FOREST_ADJ_ALPHA_FULL),
           labels = c(
             stringr::str_wrap("Minimally adjusted", adjustment_label_wrap_width),
             stringr::str_wrap("Fully adjusted", adjustment_label_wrap_width)
           ),
           name = "Adjustment",
-          limits = c(0.55, 1)
+          limits = c(FOREST_ADJ_ALPHA_FULL, FOREST_ADJ_ALPHA_MINIMAL)
         )
       }
     } +
@@ -2919,7 +2878,6 @@ forest_over_time_plot_compare <- function(
       breaks = FOREST_DISRUPTION_LABEL,
       drop = FALSE
     ) +
-    scale_shape_manual(values = shape_map, labels = shape_labels, drop = FALSE) +
     labs(
       title = NULL,
       x = NULL,
@@ -2928,8 +2886,9 @@ forest_over_time_plot_compare <- function(
       } else {
         paste(pathogen_title, "Rate Ratio")
       },
-      color = "Characteristic",
+      color = level_colour_title,
       fill = NULL,
+      alpha = if (show_adjustment) "Adjustment" else NULL,
       shape = NULL
     ) +
     theme_bw(base_size = FOREST_BASE_SIZE) +
@@ -2961,7 +2920,22 @@ forest_over_time_plot_compare <- function(
 
   base_plot <- base_plot +
     guides(
-      color = "none",
+      color = guide_legend(
+        title = level_colour_title,
+        order = 1,
+        override.aes = list(
+          shape = FOREST_ADJ_SHAPE_FULL,
+          size = if (adjustment_stacked) {
+            FOREST_POINT_SIZE_ADJ_STACKED
+          } else if (!isTRUE(show_ci)) {
+            FOREST_LEGEND_OVERRIDE_POINT
+          } else {
+            FOREST_LEGEND_OVERRIDE_CI
+          },
+          alpha = 1,
+          linetype = 0
+        )
+      ),
       fill = if (isTRUE(show_disruption_legend)) {
         forest_disruption_fill_guide(
           legend_position = if (is.null(legend_position)) "right" else legend_position,
@@ -2972,32 +2946,25 @@ forest_over_time_plot_compare <- function(
       },
       alpha = if (show_adjustment) {
         guide_legend(
+          title = "Adjustment",
           ncol = 1,
           order = 2,
-          override.aes = list(shape = 16, size = if (adjustment_stacked) FOREST_POINT_SIZE_ADJ_STACKED else FOREST_LEGEND_OVERRIDE_SHAPE, colour = "black", fill = "black")
+          override.aes = list(
+            shape = FOREST_ADJ_SHAPE_FULL,
+            colour = "black",
+            fill = "black",
+            size = if (adjustment_stacked) {
+              FOREST_POINT_SIZE_ADJ_STACKED
+            } else {
+              FOREST_LEGEND_OVERRIDE_SHAPE
+            },
+            linetype = 0
+          )
         )
       } else {
         "none"
       },
-      shape = guide_legend(
-        title = NULL,
-        nrow = shape_legend_rows,
-        ncol = if (identical(legend_position, "bottom")) NULL else 1L,
-        byrow = identical(legend_position, "bottom"),
-        order = 1,
-        override.aes = list(
-          size = if (adjustment_stacked) {
-            FOREST_POINT_SIZE_ADJ_STACKED
-          } else if (!isTRUE(show_ci)) {
-            FOREST_LEGEND_OVERRIDE_POINT
-          } else {
-            FOREST_LEGEND_OVERRIDE_CI
-          },
-          colour = shape_legend_cols,
-          fill = shape_legend_cols,
-          alpha = 1
-        )
-      )
+      shape = "none"
     )
 
   facet_labeller <- labeller(labels_facet = forest_facet_labeller)

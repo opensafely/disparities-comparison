@@ -13,7 +13,7 @@ forest_over_time_plot_all_seasons <- function(
   disruption_legend_label = NULL,
   level_colour_values = NULL,
   level_colour_title = NULL,
-  colour_by_level = FALSE,
+  colour_by_level = TRUE,
   drop_unknown_ethnicity = TRUE,
   pointrange_fatten = FOREST_POINTRANGE_FATTEN,
   pointrange_linewidth = FOREST_POINTRANGE_LINEWIDTH,
@@ -232,17 +232,7 @@ forest_over_time_plot_all_seasons <- function(
   }
 
   # Enforce stable group ordering across all plots/legends.
-  preferred_group_order <- c(
-    "Sex",
-    "Age Group",
-    "Ethnicity",
-    "IMD Quintile",
-    "Household Composition",
-    "Rurality",
-    "Prior Vaccination (Flu)",
-    "Prior Vaccination (COVID)",
-    "Current Vaccination"
-  )
+  preferred_group_order <- FOREST_FACET_GROUP_ORDER
   group_order <- c(
     intersect(preferred_group_order, names(colour_map)),
     setdiff(names(colour_map), preferred_group_order)
@@ -268,6 +258,10 @@ forest_over_time_plot_all_seasons <- function(
   )
 
   plot_df <- clean_forest_term_labels(plot_df)
+  plot_df <- drop_maternal_binary_no_levels(plot_df)
+  if (is_empty_forest_data(plot_df)) {
+    return(ggplot() + theme_void())
+  }
 
   # Shapes:
   # - legend shows level names (no "(Reference)" entry)
@@ -292,8 +286,8 @@ forest_over_time_plot_all_seasons <- function(
         TRUE ~ as.character(label)
       ),
       labels_facet = factor(labels_facet, levels = c(
-        intersect(c("Sex", "Age Group", "Ethnicity", "IMD Quintile", "Household Composition", "Rurality", "Prior Vaccination", "Current Vaccination"), unique(labels_facet)),
-        setdiff(unique(labels_facet), c("Sex", "Age Group", "Ethnicity", "IMD Quintile", "Household Composition", "Rurality", "Prior Vaccination", "Current Vaccination"))
+        intersect(FOREST_FACET_GROUP_ORDER, unique(labels_facet)),
+        setdiff(unique(labels_facet), FOREST_FACET_GROUP_ORDER)
       )),
       labels_col = factor(labels_col, levels = group_order),
       label = as.character(label)

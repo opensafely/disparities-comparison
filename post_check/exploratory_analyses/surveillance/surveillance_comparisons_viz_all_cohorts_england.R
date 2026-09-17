@@ -154,10 +154,10 @@ df_surv_mute <- bind_rows(
 df_surv_mute <- df_surv_mute %>%
   mutate(
     coeff = case_when(
-      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 10,
-      virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 5,
-      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 25,
-      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 5,
+      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 1,
+      virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 1,
+      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 2,
+      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 1.75,
       virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 1,
       virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 1,
       virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 1,
@@ -186,10 +186,10 @@ df_all <- bind_rows(
 df_all <- df_all %>%
   mutate(
     ylims = case_when(
-      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 115000,
-      virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 58000,
-      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 320000,
-      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 65000,
+      virus == "RSV" & event == "Mild" & codelist_type == "specific" ~ 11500,
+      virus == "RSV" & event == "Severe" & codelist_type == "specific" ~ 11500,
+      virus == "RSV" & event == "Mild" & codelist_type == "sensitive" ~ 42000,
+      virus == "RSV" & event == "Severe" & codelist_type == "sensitive" ~ 20000,
       virus == "Influenza" & event == "Mild" & codelist_type == "specific" ~ 45000,
       virus == "Influenza" & event == "Severe" & codelist_type == "specific" ~ 45000,
       virus == "Influenza" & event == "Mild" & codelist_type == "sensitive" ~ 45000,

@@ -45,23 +45,23 @@ rurality_levels <- c(
 # Table-only sex order; forest plots keep get_forest_level_order().
 sex_levels <- c("Female", "Male")
 
-# Matches forest_over_time facet order for further models.
+# Matches forest facet order (Age → IMD → Ethnicity → …).
 variable_facet_order <- c(
-  "Age Group", 
-  "Sex",
-  "Ethnicity",
+  "Age Group",
   "IMD quintile",
+  "Ethnicity",
+  "Sex",
   "Rurality",
   "Prior Flu Vaccination",
   "Current Flu Vaccination",
   "Prior COVID Vaccination",
   "Current COVID Vaccination",
+  "Maternal Age",
   "Maternal Pertussis Vaccination",
   "Maternal Flu Vaccination",
-  "Maternal Drug Usage",
-  "Maternal Drinking",
   "Maternal Smoking Status",
-  "Maternal Age"
+  "Maternal Drinking",
+  "Maternal Drug Usage"
 )
 
 format_est_ci <- function(estimate, conf.low, conf.high, digits = 2) {
@@ -366,10 +366,8 @@ parse_term_rows <- function(df) {
         str_starts(term, "sex") ~ str_remove(term, "^sex"),
         str_starts(term, "latest_ethnicity_group") ~
           str_remove(term, "^latest_ethnicity_group"),
-        term == "imd_quintile2" ~ "4",
-        term == "imd_quintile3" ~ "3",
-        term == "imd_quintile4" ~ "2",
-        term == "imd_quintile5 (most deprived)" ~ "1 (most deprived)",
+        str_starts(term, "imd_quintile") ~
+          str_remove(term, "^imd_quintile"),
         str_starts(term, "rurality_classification") ~
           str_remove(term, "^rurality_classification"),
         term == "prior_flu_vaccinationYes" ~ "Yes",
@@ -451,7 +449,7 @@ reformat_further_ethnicity_ses <- function(cohort, pathogen) {
     }
 
     present_variables <- unique(c(
-      "Age Group", "Sex", "Ethnicity", "IMD quintile", "Rurality",
+      "Age Group", "IMD quintile", "Ethnicity", "Sex", "Rurality",
       parsed$variable
     ))
 

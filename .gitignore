@@ -11,6 +11,7 @@ metadata/*
 venv/
 .DS_Store
 .Rhistory
+Rplots.pdf
 .Rproj.user/
 .RData
 /IMG/*

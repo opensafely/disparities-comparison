@@ -104,7 +104,7 @@
 #   ggsave(
 #     here("post_check", "plots", "supplemental", "models", cohort, "secondary",
 #          paste0(cohort, "_", name, ".png")),
-#     p, height = 10, width = 8
+#     p, height = 14, width = 8
 #   )
 # }
 
@@ -141,6 +141,6 @@
 #   ggsave(
 #     here("post_check", "plots", "secondary_analyses",
 #          paste0(cohort, "_", name, ".png")),
-#     p, height = 10, width = 8
+#     p, height = 14, width = 8
 #   )
 # }

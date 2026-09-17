@@ -357,7 +357,7 @@ walk(cohorts, function(cohort) {
   p <- plot_cohort_trends(df_all, cohort)
   ggsave(
     file.path(out_dir, paste0(cohort, "_validation_trends.png")),
-    p, width = 14, height = 10
+    p, width = 12, height = 14
   )
 })
 
@@ -365,13 +365,13 @@ walk(cohorts, function(cohort) {
 ggsave(
   file.path(out_dir, "all_cohorts_not_detected_trends.png"),
   plot_not_detected_all_cohorts(df_all),
-  width = 14, height = 10
+  width = 14, height = 8
 )
 
 ggsave(
   file.path(out_dir, "all_cohorts_consistent_classifiable_trends.png"),
   plot_consistent_classifiable_all_cohorts(df_all),
-  width = 14, height = 10
+  width = 14, height = 8
 )
 
 message("Wrote figures to ", out_dir)

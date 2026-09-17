@@ -11,6 +11,71 @@ library(forcats)
 library(cowplot)
 #library(ingrid)
 
+# Fixed intersection column order (display names).
+COMBO_ORDER <- c(
+  "RSV", "Influenza", "COVID-19",
+  "RSV&Influenza", "RSV&COVID-19",
+  "Influenza&COVID-19", "RSV&Influenza&COVID-19"
+)
+
+# UpSetR's intersections= path uses plyr::count(), which mangles "COVID-19"
+# to "COVID.19". Use a hyphen-free internal label, then restore display text.
+UPSET_INTERSECTIONS <- list(
+  # First element seeds Set_names as COVID19, Influenza, RSV (bottom -> top
+  # in the matrix). Degree sorting then moves this triple to the last column.
+  list("COVID19", "Influenza", "RSV"),
+  list("RSV"),
+  list("Influenza"),
+  list("COVID19"),
+  list("RSV", "Influenza"),
+  list("RSV", "COVID19"),
+  list("Influenza", "COVID19")
+)
+
+to_upset_expression <- function(input_expr) {
+  setNames(
+    as.integer(round(as.numeric(input_expr))),
+    gsub("COVID-19", "COVID19", names(input_expr), fixed = TRUE)
+  )
+}
+
+relabel_upset_covid <- function(grob) {
+  if (inherits(grob, "gtable")) {
+    grob$grobs <- lapply(grob$grobs, relabel_upset_covid)
+    return(grob)
+  }
+  if (inherits(grob, "text") && !is.null(grob$label)) {
+    grob$label <- gsub("COVID19", "COVID-19", grob$label, fixed = TRUE)
+    return(grob)
+  }
+  if (inherits(grob, "gTree") && !is.null(grob$children)) {
+    grob$children <- lapply(grob$children, relabel_upset_covid)
+    return(grob)
+  }
+  grob
+}
+
+make_upset <- function(input_expr, mainbar.y.label, sets.bar.color) {
+  uu <- upset(
+    fromExpression(to_upset_expression(input_expr)),
+    nsets = 3,
+    keep.order = TRUE,
+    order.by = "degree",
+    decreasing = FALSE,
+    group.by = "degree",
+    intersections = UPSET_INTERSECTIONS,
+    mb.ratio = c(0.8, 0.2),
+    text.scale = c(1.25, 1.25, 1.25, 1.25, 1.25, 1.25),
+    point.size = 2,
+    line.size = 1,
+    mainbar.y.label = mainbar.y.label,
+    sets.bar.color = sets.bar.color
+  )
+  uu$Matrix <- relabel_upset_covid(uu$Matrix)
+  uu$Main_bar <- relabel_upset_covid(uu$Main_bar)
+  uu
+}
+
 #define function to create upset plot of multiple infection outcomes
 upset_plot <- function(input, seasons) {
   
@@ -210,13 +275,17 @@ upset_plot <- function(input, seasons) {
         combo == "Flu & COVID" ~ "Flu&COVID",
         combo == "RSV & Flu & COVID" ~ "RSV&Flu&COVID",
         TRUE ~ as.character(combo)
-      ), levels = c("RSV", "Flu", "COVID", "RSV&COVID", "RSV&Flu",
+      ), levels = c("RSV", "Flu", "COVID", "RSV&Flu", "RSV&COVID",
                     "Flu&COVID", "RSV&Flu&COVID"))
     )
   
+  combo_order <- COMBO_ORDER
+
   df_plot <- df_plot %>%
-    mutate(combo = gsub("COVID", "COVID-19",
-                        gsub("Flu", "Influenza", combo)))
+    mutate(
+      combo = gsub("COVID", "COVID-19", gsub("Flu", "Influenza", as.character(combo))),
+      combo = factor(combo, levels = combo_order)
+    )
   
   outcomes <- c("Mild", "Severe")
   codelists <- c("Specific", "Sensitive")
@@ -237,31 +306,20 @@ upset_plot <- function(input, seasons) {
         input2 <- as.data.table(df_plot %>%
                                   filter(outcome_type == outcome, subset == season,
                                          codelist_type == phenotype) %>%
-                                  select(combo, n))
+                                  select(combo, n) %>%
+                                  arrange(combo))
         input_expr <- tibble::deframe(input2)
+        input_expr <- input_expr[combo_order]
+        input_expr[is.na(input_expr)] <- 0
         
         col <- if_else(phenotype == "Specific", "#71797E", "#71797E")
         f <- function(pal) brewer.pal(3, pal)
         cols <- f("Set2")
         
-        uu <- upset(fromExpression(input_expr),
-                    nsets = 3,
-                    keep.order = T,
-                    order.by = "degree",
-                    decreasing = FALSE,
-                    mb.ratio = c(0.8, 0.2),
-                    text.scale = c(1.25, 1.25, 1.25, 1.25, 1.25, 1.25),
-                    point.size = 2,
-                    line.size = 1,
-                    mainbar.y.label = "Intersection Cases",
-                    # set_size.show = FALSE,
-                    # set_size.angles = 45,
-                    # scale.sets = "log10",
-                    empty.intersections = TRUE,
-                    # main.bar.color = col,
-                    sets.bar.color = cols,
-                    # matrix.color = cols,
-                    sets = c("COVID-19", "Influenza", "RSV")
+        uu <- make_upset(
+          input_expr,
+          mainbar.y.label = "Intersection Cases",
+          sets.bar.color = cols
         )
 
         sizes_data <- data.frame(
@@ -344,12 +402,12 @@ upset_plot <- function(input, seasons) {
     plot_label[["Mild"]] <- ggdraw() +
       draw_label(
         "A. Narrow Mild",
-        x = 0.5, y = 0.5, hjust = 1.35, vjust = 0.5,
+        x = 0.475, y = 0.5, hjust = 1.35, vjust = 0.5,
         fontface = 'bold', size = 14# color = "#71797E"
       ) +
       draw_label(
         "B. Broad Mild",
-        x = 1, y = 0.5, hjust = 1.55, vjust = 0.5,
+        x = 0.955, y = 0.5, hjust = 1.55, vjust = 0.5,
         fontface = 'bold', size = 14#, color = "#71797E"
       ) +
       theme(plot.background = element_rect(
@@ -363,7 +421,7 @@ upset_plot <- function(input, seasons) {
       ) +
       draw_label(
         "D. Broad Severe",
-        x = 1, y = 0.5, hjust = 1.55, vjust = 0.5,
+        x = 0.99, y = 0.5, hjust = 1.55, vjust = 0.5,
         fontface = 'bold', size = 14#, color = "#71797E"
       ) +
       theme(plot.background = element_rect(
@@ -626,13 +684,17 @@ upset_plot_supplement <- function(input, seasons) {
         combo == "Flu & COVID" ~ "Flu&COVID",
         combo == "RSV & Flu & COVID" ~ "RSV&Flu&COVID",
         TRUE ~ as.character(combo)
-      ), levels = c("RSV", "Flu", "COVID", "RSV&COVID", "RSV&Flu",
+      ), levels = c("RSV", "Flu", "COVID", "RSV&Flu", "RSV&COVID",
                     "Flu&COVID", "RSV&Flu&COVID"))
     )
   
+  combo_order <- COMBO_ORDER
+
   df_plot <- df_plot %>%
-    mutate(combo = gsub("COVID", "COVID-19",
-                        gsub("Flu", "Influenza", combo)))
+    mutate(
+      combo = gsub("COVID", "COVID-19", gsub("Flu", "Influenza", as.character(combo))),
+      combo = factor(combo, levels = combo_order)
+    )
   
   outcomes <- c("Mild", "Severe")
   codelists <- c("Specific", "Sensitive")
@@ -653,31 +715,20 @@ upset_plot_supplement <- function(input, seasons) {
         input2 <- as.data.table(df_plot %>%
                                   filter(outcome_type == outcome, subset == season,
                                          codelist_type == phenotype) %>%
-                                  select(combo, n))
+                                  select(combo, n) %>%
+                                  arrange(combo))
         input_expr <- tibble::deframe(input2)
+        input_expr <- input_expr[combo_order]
+        input_expr[is.na(input_expr)] <- 0
         
         col <- if_else(phenotype == "Specific", "#71797E", "#71797E")
         f <- function(pal) brewer.pal(3, pal)
         cols <- f("Set2")
         
-        uu <- upset(fromExpression(input_expr),
-                    nsets = 3,
-                    keep.order = T,
-                    order.by = "degree",
-                    decreasing = FALSE,
-                    mb.ratio = c(0.8, 0.2),
-                    text.scale = c(1.25, 1.25, 1.25, 1.25, 1.25, 1.25),
-                    point.size = 2,
-                    line.size = 1,
-                    mainbar.y.label = "Intersection Cases",
-                    # set_size.show = FALSE,
-                    # set_size.angles = 45,
-                    # scale.sets = "log10",
-                    empty.intersections = TRUE,
-                    # main.bar.color = col,
-                    sets.bar.color = cols,
-                    # matrix.color = cols,
-                    sets = c("COVID-19", "Influenza", "RSV")
+        uu <- make_upset(
+          input_expr,
+          mainbar.y.label = "Intersection Cases",
+          sets.bar.color = cols
         )
 
         sizes_data <- data.frame(
@@ -758,12 +809,12 @@ upset_plot_supplement <- function(input, seasons) {
     plot_label <- ggdraw() +
       draw_label(
         "A. Narrow Phenotype",
-        x = 0.5, y = 0, hjust = 1.35, vjust = -0.75,
+        x = 0.455, y = 0, hjust = 1.35, vjust = -0.75,
         fontface = 'bold', size = 14# color = "#71797E"
       ) +
       draw_label(
         "B. Broad Phenotype",
-        x = 1, y = 0, hjust = 1.55, vjust = -0.75,
+        x = 0.955, y = 0, hjust = 1.55, vjust = -0.75,
         fontface = 'bold', size = 14#, color = "#71797E"
       ) +
       theme(plot.background = element_rect(

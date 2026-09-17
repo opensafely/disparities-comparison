@@ -65,14 +65,16 @@ load_dummy_inputs <- function(cohort, pathogen) {
           "6-12m",
           .data$time_since_last_covid_vaccination
         )
-      )
+      ) %>%
+      normalise_imd_quintile_to_uk()
   } else {
     arrow::read_feather(
       here::here(
         "output", "data",
         paste0("input_processed_", cohort, "_2020_2021_specific_primary.arrow")
       )
-    )
+    ) %>%
+      normalise_imd_quintile_to_uk()
   }
 }
 
@@ -249,7 +251,7 @@ make_facet_outcome_plots_key_vars <- function(df_input, df_dummy, pathogen, mode
 build_shared_legends_key_vars <- function(legend_dat, model_type, legend_pathogen = "covid") {
   groups_left <- intersect("Age Group", unique(as.character(legend_dat$labels)))
   groups_mid <- intersect(
-    c("Ethnicity", "IMD Quintile"),
+    c("IMD Quintile", "Ethnicity"),
     unique(as.character(legend_dat$labels))
   )
 
@@ -1490,7 +1492,7 @@ build_shared_legends_key_vars_ratio_all_seasons <- function(
 ) {
   groups_left <- intersect("Age Group", unique(as.character(legend_dat$labels)))
   groups_mid <- intersect(
-    c("Ethnicity", "IMD Quintile"),
+    c("IMD Quintile", "Ethnicity"),
     unique(as.character(legend_dat$labels))
   )
 
@@ -1574,7 +1576,7 @@ build_shared_legends_base_vs_further <- function(
         show_disruption_legend = FALSE
       ) +
         legend_theme +
-        ggplot2::guides(shape = "none", fill = "none", colour = "none")
+        ggplot2::guides(colour = "none", fill = "none", shape = "none")
     )
   } else {
     NULL
@@ -1592,7 +1594,7 @@ build_shared_legends_base_vs_further <- function(
       ) +
         legend_theme +
         ggplot2::theme(legend.title = element_blank()) +
-        ggplot2::guides(fill = "none", alpha = "none")
+        ggplot2::guides(fill = "none", shape = "none", alpha = "none")
     )
   } else {
     NULL
@@ -1639,7 +1641,7 @@ build_shared_legends_base_vs_further <- function(
       ) +
         legend_theme +
         ggplot2::theme(legend.title = element_blank()) +
-        ggplot2::guides(fill = "none", alpha = "none")
+        ggplot2::guides(fill = "none", shape = "none", alpha = "none")
     )
   } else {
     NULL
@@ -1657,7 +1659,7 @@ build_shared_legends_base_vs_further <- function(
       ) +
         legend_theme +
         ggplot2::theme(legend.title = element_blank()) +
-        ggplot2::guides(fill = "none", alpha = "none")
+        ggplot2::guides(fill = "none", shape = "none", alpha = "none")
     )
   } else {
     NULL
@@ -2089,9 +2091,11 @@ stacked_compare_legend_plot <- function(
     years_include,
     legend_theme,
     show_disruption_legend = FALSE,
-    guides_keep = c("shape")
+    guides_keep = c("colour")
 ) {
-  p <- if (identical(guides_keep, "shape")) {
+  # Level legends: match condensed key-vars / covariate-row colour legends.
+  # Adjustment / disruption: come from the compare plot (alpha / fill).
+  p <- if (identical(guides_keep, "colour") || identical(guides_keep, "shape")) {
     forest_over_time_plot_all_seasons(
       legend_dat,
       pathogen = legend_pathogen,
@@ -2167,14 +2171,14 @@ build_shared_legends_base_vs_further_stacked <- function(
     )
   }
 
-  # Match the legacy condensed-figure legend layout:
-  # - left column: Adjustment + Age Group + Disruption
-  # - mid column (overlay on COVID): Ethnicity + IMD Quintile
+  # Match the condensed-figure legend layout:
+  # - left column: Adjustment (alpha) + Age Group (colour) + Disruption
+  # - mid column (overlay on COVID): Ethnicity + IMD Quintile (colour)
   legend_adj_grob <- if (nrow(legend_adj) > 0) legend_grob(legend_adj, guides_keep = "alpha") else NULL
   legend_age_grob <- if ("Age Group" %in% labels_present) {
     legend_grob(
       legend_dat %>% dplyr::filter(as.character(.data$labels) == "Age Group"),
-      guides_keep = "shape"
+      guides_keep = "colour"
     )
   } else {
     NULL
@@ -2201,7 +2205,7 @@ build_shared_legends_base_vs_further_stacked <- function(
   legend_eth <- if ("Ethnicity" %in% labels_present) {
     legend_grob(
       legend_dat %>% dplyr::filter(as.character(.data$labels) == "Ethnicity"),
-      guides_keep = "shape"
+      guides_keep = "colour"
     )
   } else {
     NULL
@@ -2209,7 +2213,7 @@ build_shared_legends_base_vs_further_stacked <- function(
   legend_imd <- if ("IMD Quintile" %in% labels_present) {
     legend_grob(
       legend_dat %>% dplyr::filter(as.character(.data$labels) == "IMD Quintile"),
-      guides_keep = "shape"
+      guides_keep = "colour"
     )
   } else {
     NULL

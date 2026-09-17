@@ -19,6 +19,68 @@ library(cowplot)
 #   post-COVID seasons -> combo == "0_0_0" (RSV + Flu + COVID)
 # matched on codelist_type, outcome_type (mild/severe), and subset (season).
 
+# Fixed intersection column order (must match make_upset() / UPSET_INTERSECTIONS).
+COMBO_ORDER <- c(
+  "RSV", "Influenza", "COVID-19",
+  "RSV&Influenza", "RSV&COVID-19",
+  "Influenza&COVID-19", "RSV&Influenza&COVID-19"
+)
+
+# plyr::count() in UpSetR mangling: use COVID19 internally, restore label after.
+UPSET_INTERSECTIONS <- list(
+  list("COVID19", "Influenza", "RSV"),
+  list("RSV"),
+  list("Influenza"),
+  list("COVID19"),
+  list("RSV", "Influenza"),
+  list("RSV", "COVID19"),
+  list("Influenza", "COVID19")
+)
+
+to_upset_expression <- function(input_expr) {
+  setNames(
+    as.integer(round(as.numeric(input_expr))),
+    gsub("COVID-19", "COVID19", names(input_expr), fixed = TRUE)
+  )
+}
+
+relabel_upset_covid <- function(grob) {
+  if (inherits(grob, "gtable")) {
+    grob$grobs <- lapply(grob$grobs, relabel_upset_covid)
+    return(grob)
+  }
+  if (inherits(grob, "text") && !is.null(grob$label)) {
+    grob$label <- gsub("COVID19", "COVID-19", grob$label, fixed = TRUE)
+    return(grob)
+  }
+  if (inherits(grob, "gTree") && !is.null(grob$children)) {
+    grob$children <- lapply(grob$children, relabel_upset_covid)
+    return(grob)
+  }
+  grob
+}
+
+make_upset <- function(input_expr, mainbar.y.label, sets.bar.color) {
+  uu <- upset(
+    fromExpression(to_upset_expression(input_expr)),
+    nsets = 3,
+    keep.order = TRUE,
+    order.by = "degree",
+    decreasing = FALSE,
+    group.by = "degree",
+    intersections = UPSET_INTERSECTIONS,
+    mb.ratio = c(0.8, 0.2),
+    text.scale = c(1.25, 1.25, 1.25, 1.25, 1.25, 1.25),
+    point.size = 2,
+    line.size = 1,
+    mainbar.y.label = mainbar.y.label,
+    sets.bar.color = sets.bar.color
+  )
+  uu$Matrix <- relabel_upset_covid(uu$Matrix)
+  uu$Main_bar <- relabel_upset_covid(uu$Main_bar)
+  uu
+}
+
 
 # ---- helpers -----------------------------------------------------------------
 
@@ -177,14 +239,19 @@ upset_plot_rates <- function(input, seasons, per_n = 100000) {
         combo == "Flu & COVID"       ~ "Flu&COVID",
         combo == "RSV & Flu & COVID" ~ "RSV&Flu&COVID",
         TRUE ~ as.character(combo)
-      ), levels = c("RSV", "Flu", "COVID", "RSV&COVID", "RSV&Flu",
+      ), levels = c("RSV", "Flu", "COVID", "RSV&Flu", "RSV&COVID",
                     "Flu&COVID", "RSV&Flu&COVID"))
     ) %>%
-    mutate(combo = gsub("COVID", "COVID-19", gsub("Flu", "Influenza", combo)))
+    mutate(
+      combo = gsub("COVID", "COVID-19", gsub("Flu", "Influenza", as.character(combo))),
+      combo = factor(combo, levels = c(
+        "RSV", "Influenza", "COVID-19",
+        "RSV&Influenza", "RSV&COVID-19",
+        "Influenza&COVID-19", "RSV&Influenza&COVID-19"
+      ))
+    )
 
-  combo_order <- c("RSV", "Influenza", "COVID-19",
-                   "RSV&Influenza", "RSV&COVID-19",
-                   "Influenza&COVID-19", "RSV&Influenza&COVID-19")
+  combo_order <- COMBO_ORDER
 
   outcomes   <- c("Mild", "Severe")
   subsets    <- unique(final_df$subset)
@@ -204,32 +271,25 @@ upset_plot_rates <- function(input, seasons, per_n = 100000) {
 
         sub_df <- final_df %>%
           filter(outcome_type == outcome, subset == season,
-                 codelist_type == phenotype)
+                 codelist_type == phenotype) %>%
+          arrange(combo)
 
         # Integer counts for UpSetR matrix layout
         input2     <- as.data.table(sub_df %>% select(combo, n))
         input_expr <- tibble::deframe(input2)
+        input_expr <- input_expr[combo_order]
         # ensure no NAs
         input_expr[is.na(input_expr)] <- 0L
 
-        uu <- upset(fromExpression(input_expr),
-                    nsets             = 3,
-                    keep.order        = TRUE,
-                    order.by          = "degree",
-                    decreasing        = FALSE,
-                    mb.ratio          = c(0.8, 0.2),
-                    text.scale        = c(1.25, 1.25, 1.25, 1.25, 1.25, 1.25),
-                    point.size        = 2,
-                    line.size         = 1,
-                    mainbar.y.label   = y_label,
-                    empty.intersections = TRUE,
-                    sets.bar.color    = rev(f_cols),
-                    sets              = c("COVID-19", "Influenza", "RSV")
+        uu <- make_upset(
+          input_expr,
+          mainbar.y.label = y_label,
+          sets.bar.color = rev(f_cols)
         )
 
         # Rate vector in combo_order
         rate_vec <- setNames(
-          sub_df$rate[match(combo_order, sub_df$combo)],
+          sub_df$rate[match(combo_order, as.character(sub_df$combo))],
           combo_order
         )
         rate_vec[is.na(rate_vec)] <- 0
@@ -400,14 +460,19 @@ upset_plot_supplement_rates <- function(input, seasons, per_n = 100000) {
         combo == "Flu & COVID"       ~ "Flu&COVID",
         combo == "RSV & Flu & COVID" ~ "RSV&Flu&COVID",
         TRUE ~ as.character(combo)
-      ), levels = c("RSV", "Flu", "COVID", "RSV&COVID", "RSV&Flu",
+      ), levels = c("RSV", "Flu", "COVID", "RSV&Flu", "RSV&COVID",
                     "Flu&COVID", "RSV&Flu&COVID"))
     ) %>%
-    mutate(combo = gsub("COVID", "COVID-19", gsub("Flu", "Influenza", combo)))
+    mutate(
+      combo = gsub("COVID", "COVID-19", gsub("Flu", "Influenza", as.character(combo))),
+      combo = factor(combo, levels = c(
+        "RSV", "Influenza", "COVID-19",
+        "RSV&Influenza", "RSV&COVID-19",
+        "Influenza&COVID-19", "RSV&Influenza&COVID-19"
+      ))
+    )
 
-  combo_order <- c("RSV", "Influenza", "COVID-19",
-                   "RSV&Influenza", "RSV&COVID-19",
-                   "Influenza&COVID-19", "RSV&Influenza&COVID-19")
+  combo_order <- COMBO_ORDER
 
   outcomes   <- c("Mild", "Severe")
   subsets    <- unique(final_df$subset)
@@ -427,29 +492,22 @@ upset_plot_supplement_rates <- function(input, seasons, per_n = 100000) {
 
         sub_df <- final_df %>%
           filter(outcome_type == outcome, subset == season,
-                 codelist_type == phenotype)
+                 codelist_type == phenotype) %>%
+          arrange(combo)
 
         input2     <- as.data.table(sub_df %>% select(combo, n))
         input_expr <- tibble::deframe(input2)
+        input_expr <- input_expr[combo_order]
         input_expr[is.na(input_expr)] <- 0L
 
-        uu <- upset(fromExpression(input_expr),
-                    nsets             = 3,
-                    keep.order        = TRUE,
-                    order.by          = "degree",
-                    decreasing        = FALSE,
-                    mb.ratio          = c(0.8, 0.2),
-                    text.scale        = c(1.25, 1.25, 1.25, 1.25, 1.25, 1.25),
-                    point.size        = 2,
-                    line.size         = 1,
-                    mainbar.y.label   = y_label,
-                    empty.intersections = TRUE,
-                    sets.bar.color    = rev(f_cols),
-                    sets              = c("COVID-19", "Influenza", "RSV")
+        uu <- make_upset(
+          input_expr,
+          mainbar.y.label = y_label,
+          sets.bar.color = rev(f_cols)
         )
 
         rate_vec <- setNames(
-          sub_df$rate[match(combo_order, sub_df$combo)],
+          sub_df$rate[match(combo_order, as.character(sub_df$combo))],
           combo_order
         )
         rate_vec[is.na(rate_vec)] <- 0
