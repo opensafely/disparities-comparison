@@ -31,22 +31,34 @@ covid_season_min <- as.Date("2019-09-01")
 
 source(here::here("analysis", "functions", "redaction.R"))
 
-columns_needed <- c("patient_id", "patient_index_date", "patient_end_date")
+columns_needed <- c("patient_id")
 
 df_input <- read_feather(
   here::here("output", "data", paste0("input_processed_", cohort, "_",
              year(study_start_date), "_", year(study_end_date), "_",
              codelist_type, "_", investigation_type, ".arrow")),
-  col_select = c(all_of(columns_needed), ((ends_with("_date")) & (contains(c(
-    "primary", "secondary", "mortality"))) & (!contains(c(
-      "_second_", "_inf_", "patient_")))))
+  col_select = c(
+    all_of(columns_needed),
+    # event dates: primary/secondary only (exclude second events, censor end dates)
+    ((ends_with("_date")) & (contains(c("primary", "secondary"))) &
+       (!contains(c("_second_", "_inf_", "patient_")))),
+    # matching infection flags (censoring is outcome-specific)
+    (ends_with("_inf") & contains(c("primary", "secondary")))
+  )
 )
 
-# infants are month-expanded; event dates are repeated on every person-month
-# row, so collapse to one row per patient before counting by event date
+# infants are month-expanded; collapse to one row per patient so an event
+# counted in any person-month (inf == 1) is retained with its event date
 if (cohort %in% c("infants", "infants_subgroup")) {
+  inf_cols <- names(df_input)[endsWith(names(df_input), "_inf")]
+  date_cols <- names(df_input)[endsWith(names(df_input), "_date")]
   df_input <- df_input %>%
-    distinct(patient_id, .keep_all = TRUE)
+    group_by(patient_id) %>%
+    summarise(
+      across(all_of(inf_cols), ~ as.integer(any(.x == 1, na.rm = TRUE))),
+      across(all_of(date_cols), ~ if (all(is.na(.x))) as.Date(NA) else min(.x, na.rm = TRUE)),
+      .groups = "drop"
+    )
 }
 
 ## create function to get monthly counts of events 
@@ -58,15 +70,26 @@ get_counts_over_time <- function(df, pathogen, interval_length) {
   
   int <- if_else(interval_length == "month", "monthly", "weekly")
   
-  ##format the data
-  df_long <- df %>%
-    pivot_longer(cols = starts_with(pathogen) & ends_with("date"),
-                 names_to = "event", values_to = "date") %>%
-    select(contains("patient"), event, date)
+  ## format the data: keep only events that remain after outcome-specific censoring
+  pathogen_cols <- names(df)[
+    startsWith(names(df), paste0(pathogen, "_")) &
+      (endsWith(names(df), "_date") | endsWith(names(df), "_inf")) &
+      str_detect(names(df), "primary|secondary") &
+      !str_detect(names(df), "_second_|_inf_")
+  ]
   
-  df_long <- df_long %>%
-    filter(!is.na(date)) %>%
-    mutate(date = as_datetime(date))
+  df_long <- df %>%
+    select(patient_id, all_of(pathogen_cols)) %>%
+    pivot_longer(
+      cols = -patient_id,
+      names_to = c("event", ".value"),
+      names_pattern = "(.+)_(date|inf)$"
+    ) %>%
+    filter(!is.na(date), inf == 1) %>%
+    mutate(
+      event = paste0(event, "_date"),
+      date = as_datetime(date)
+    )
   
   df_long <- df_long %>%
     group_by(date, event) %>%

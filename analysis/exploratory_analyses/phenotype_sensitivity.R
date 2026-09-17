@@ -262,83 +262,83 @@ alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {
         ) %>%
         mutate(
           rsv_mild_alt_combo = case_when(
-            primary_rsv_flu_covid_overall_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
-            primary_rsv_covid_overall_within_14 ~ "RSV_Mild_0_COVID_Mild_Overall_Resp_Mild",
-            primary_rsv_flu_overall_within_14 ~ "RSV_Mild_Flu_Mild_0_Overall_Resp_Mild",
-            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_0",
-            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0_0",
-            primary_rsv_covid_within_14 ~ "RSV_Mild_0_COVID_Mild_0",
-            primary_rsv_overall_within_14 ~ "RSV_Mild_0_0_Overall_Resp_Mild",
+            primary_rsv_flu_covid_overall_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_covid_overall_within_14 & rsv_primary_inf == 1 & covid_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_0_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_overall_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_0_Overall_Resp_Mild",
+            primary_rsv_flu_covid_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild_0",
+            primary_rsv_flu_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_0_0",
+            primary_rsv_covid_within_14 & rsv_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_0_COVID_Mild_0",
+            primary_rsv_overall_within_14 & rsv_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_0_0_Overall_Resp_Mild",
             TRUE ~ rsv_mild_alt
           ),
           flu_mild_alt_combo = case_when(
-            primary_rsv_flu_covid_overall_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
-            primary_flu_covid_overall_within_14 ~ "0_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
-            primary_rsv_flu_overall_within_14 ~ "RSV_Mild_Flu_Mild_0_Overall_Resp_Mild",
-            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_0",
-            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0_0",
-            primary_flu_covid_within_14 ~ "0_Flu_Mild_COVID_Mild_0",
-            primary_flu_overall_within_14 ~ "0_Flu_Mild_0_Overall_Resp_Mild",
+            primary_rsv_flu_covid_overall_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            primary_flu_covid_overall_within_14 & flu_primary_inf == 1 & covid_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "0_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_overall_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_0_Overall_Resp_Mild",
+            primary_rsv_flu_covid_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild_0",
+            primary_rsv_flu_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_0_0",
+            primary_flu_covid_within_14 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "0_Flu_Mild_COVID_Mild_0",
+            primary_flu_overall_within_14 & flu_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "0_Flu_Mild_0_Overall_Resp_Mild",
             TRUE ~ flu_mild_alt
           ),
           covid_mild_alt_combo = case_when(
-            primary_rsv_flu_covid_overall_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
-            primary_flu_covid_overall_within_14 ~ "0_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
-            primary_rsv_covid_overall_within_14 ~ "RSV_Mild_0_COVID_Mild_Overall_Resp_Mild",
-            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_0",
-            primary_rsv_covid_within_14 ~ "RSV_Mild_0_COVID_Mild_0",
-            primary_flu_covid_within_14 ~ "0_Flu_Mild_COVID_Mild_0",
-            primary_covid_overall_within_14 ~ "0_0_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_covid_overall_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            primary_flu_covid_overall_within_14 & flu_primary_inf == 1 & covid_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "0_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_covid_overall_within_14 & rsv_primary_inf == 1 & covid_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_0_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_covid_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild_0",
+            primary_rsv_covid_within_14 & rsv_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_0_COVID_Mild_0",
+            primary_flu_covid_within_14 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "0_Flu_Mild_COVID_Mild_0",
+            primary_covid_overall_within_14 & covid_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "0_0_COVID_Mild_Overall_Resp_Mild",
             TRUE ~ covid_mild_alt
           ),
           overall_resp_mild_alt_combo = case_when(
-            primary_rsv_flu_covid_overall_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
-            primary_flu_covid_overall_within_14 ~ "0_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
-            primary_rsv_covid_overall_within_14 ~ "RSV_Mild_0_COVID_Mild_Overall_Resp_Mild",
-            primary_rsv_flu_overall_within_14 ~ "RSV_Mild_Flu_Mild_0_Overall_Resp_Mild",
-            primary_rsv_overall_within_14 ~ "RSV_Mild_0_0_Overall_Resp_Mild",
-            primary_flu_overall_within_14 ~ "0_Flu_Mild_0_Overall_Resp_Mild",
-            primary_covid_overall_within_14 ~ "0_0_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_covid_overall_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            primary_flu_covid_overall_within_14 & flu_primary_inf == 1 & covid_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "0_Flu_Mild_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_covid_overall_within_14 & rsv_primary_inf == 1 & covid_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_0_COVID_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_overall_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_0_Overall_Resp_Mild",
+            primary_rsv_overall_within_14 & rsv_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_0_0_Overall_Resp_Mild",
+            primary_flu_overall_within_14 & flu_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "0_Flu_Mild_0_Overall_Resp_Mild",
+            primary_covid_overall_within_14 & covid_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "0_0_COVID_Mild_Overall_Resp_Mild",
             TRUE ~ overall_resp_mild_alt
           ),
           rsv_severe_alt_combo = case_when(
-            secondary_rsv_flu_covid_overall_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
-            secondary_rsv_covid_overall_within_14 ~ "RSV_Severe_0_COVID_Severe_Overall_Resp_Severe",
-            secondary_rsv_flu_overall_within_14 ~ "RSV_Severe_Flu_Severe_0_Overall_Resp_Severe",
-            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_0",
-            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0_0",
-            secondary_rsv_covid_within_14 ~ "RSV_Severe_0_COVID_Severe_0",
-            secondary_rsv_overall_within_14 ~ "RSV_Severe_0_0_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_overall_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_covid_overall_within_14 & rsv_secondary_inf == 1 & covid_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_0_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_overall_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_0_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe_0",
+            secondary_rsv_flu_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_0_0",
+            secondary_rsv_covid_within_14 & rsv_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_0_COVID_Severe_0",
+            secondary_rsv_overall_within_14 & rsv_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_0_0_Overall_Resp_Severe",
             TRUE ~ rsv_severe_alt
           ),
           flu_severe_alt_combo = case_when(
-            secondary_rsv_flu_covid_overall_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
-            secondary_flu_covid_overall_within_14 ~ "0_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
-            secondary_rsv_flu_overall_within_14 ~ "RSV_Severe_Flu_Severe_0_Overall_Resp_Severe",
-            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_0",
-            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0_0",
-            secondary_flu_covid_within_14 ~ "0_Flu_Severe_COVID_Severe_0",
-            secondary_flu_overall_within_14 ~ "0_Flu_Severe_0_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_overall_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            secondary_flu_covid_overall_within_14 & flu_secondary_inf == 1 & covid_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "0_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_overall_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_0_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe_0",
+            secondary_rsv_flu_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_0_0",
+            secondary_flu_covid_within_14 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "0_Flu_Severe_COVID_Severe_0",
+            secondary_flu_overall_within_14 & flu_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "0_Flu_Severe_0_Overall_Resp_Severe",
             TRUE ~ flu_severe_alt
           ),
           covid_severe_alt_combo = case_when(
-            secondary_rsv_flu_covid_overall_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
-            secondary_flu_covid_overall_within_14 ~ "0_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
-            secondary_rsv_covid_overall_within_14 ~ "RSV_Severe_0_COVID_Severe_Overall_Resp_Severe",
-            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_0",
-            secondary_rsv_covid_within_14 ~ "RSV_Severe_0_COVID_Severe_0",
-            secondary_flu_covid_within_14 ~ "0_Flu_Severe_COVID_Severe_0",
-            secondary_covid_overall_within_14 ~ "0_0_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_overall_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            secondary_flu_covid_overall_within_14 & flu_secondary_inf == 1 & covid_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "0_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_covid_overall_within_14 & rsv_secondary_inf == 1 & covid_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_0_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe_0",
+            secondary_rsv_covid_within_14 & rsv_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_0_COVID_Severe_0",
+            secondary_flu_covid_within_14 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "0_Flu_Severe_COVID_Severe_0",
+            secondary_covid_overall_within_14 & covid_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "0_0_COVID_Severe_Overall_Resp_Severe",
             TRUE ~ covid_severe_alt
           ),
           overall_severe_alt_combo = case_when(
-            secondary_rsv_flu_covid_overall_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
-            secondary_flu_covid_overall_within_14 ~ "0_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
-            secondary_rsv_covid_overall_within_14 ~ "RSV_Severe_0_COVID_Severe_Overall_Resp_Severe",
-            secondary_rsv_flu_overall_within_14 ~ "RSV_Severe_Flu_Severe_0_Overall_Resp_Severe",
-            secondary_rsv_overall_within_14 ~ "RSV_Severe_0_0_Overall_Resp_Severe",
-            secondary_flu_overall_within_14 ~ "0_Flu_Severe_0_Overall_Resp_Severe",
-            secondary_covid_overall_within_14 ~ "0_0_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_covid_overall_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            secondary_flu_covid_overall_within_14 & flu_secondary_inf == 1 & covid_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "0_Flu_Severe_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_covid_overall_within_14 & rsv_secondary_inf == 1 & covid_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_0_COVID_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_overall_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_0_Overall_Resp_Severe",
+            secondary_rsv_overall_within_14 & rsv_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_0_0_Overall_Resp_Severe",
+            secondary_flu_overall_within_14 & flu_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "0_Flu_Severe_0_Overall_Resp_Severe",
+            secondary_covid_overall_within_14 & covid_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "0_0_COVID_Severe_Overall_Resp_Severe",
             TRUE ~ overall_resp_severe_alt
           )
         )
@@ -377,39 +377,39 @@ alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {
         ) %>%
         mutate(
           rsv_mild_alt_combo = case_when(
-            primary_rsv_flu_overall_within_14 ~ "RSV_Mild_Flu_Mild_Overall_Resp_Mild",
-            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0",
-            primary_rsv_overall_within_14 ~ "RSV_Mild_0_Overall_Resp_Mild",
+            primary_rsv_flu_overall_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_0",
+            primary_rsv_overall_within_14 & rsv_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_0_Overall_Resp_Mild",
             TRUE ~ rsv_mild_alt
           ),
           flu_mild_alt_combo = case_when(
-            primary_rsv_flu_overall_within_14 ~ "RSV_Mild_Flu_Mild_Overall_Resp_Mild",
-            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0",
-            primary_flu_overall_within_14 ~ "0_Flu_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_overall_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_0",
+            primary_flu_overall_within_14 & flu_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "0_Flu_Mild_Overall_Resp_Mild",
             TRUE ~ flu_mild_alt
           ),
           overall_resp_mild_alt_combo = case_when(
-            primary_rsv_flu_overall_within_14 ~ "RSV_Mild_Flu_Mild_Overall_Resp_Mild",
-            primary_rsv_overall_within_14 ~ "RSV_Mild_0_Overall_Resp_Mild",
-            primary_flu_overall_within_14 ~ "0_Flu_Mild_Overall_Resp_Mild",
+            primary_rsv_flu_overall_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_Overall_Resp_Mild",
+            primary_rsv_overall_within_14 & rsv_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "RSV_Mild_0_Overall_Resp_Mild",
+            primary_flu_overall_within_14 & flu_primary_inf == 1 & overall_resp_primary_inf == 1 ~ "0_Flu_Mild_Overall_Resp_Mild",
             TRUE ~ overall_resp_mild_alt
           ),
           rsv_severe_alt_combo = case_when(
-            secondary_rsv_flu_overall_within_14 ~ "RSV_Severe_Flu_Severe_Overall_Resp_Severe",
-            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0",
-            secondary_rsv_overall_within_14 ~ "RSV_Severe_0_Overall_Resp_Severe",
+            secondary_rsv_flu_overall_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_0",
+            secondary_rsv_overall_within_14 & rsv_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_0_Overall_Resp_Severe",
             TRUE ~ rsv_severe_alt
           ),
           flu_severe_alt_combo = case_when(
-            secondary_rsv_flu_overall_within_14 ~ "RSV_Severe_Flu_Severe_Overall_Resp_Severe",
-            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0",
-            secondary_flu_overall_within_14 ~ "0_Flu_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_overall_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_0",
+            secondary_flu_overall_within_14 & flu_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "0_Flu_Severe_Overall_Resp_Severe",
             TRUE ~ flu_severe_alt
           ),
           overall_severe_alt_combo = case_when(
-            secondary_rsv_flu_overall_within_14 ~ "RSV_Severe_Flu_Severe_Overall_Resp_Severe",
-            secondary_rsv_overall_within_14 ~ "RSV_Severe_0_Overall_Resp_Severe",
-            secondary_flu_overall_within_14 ~ "0_Flu_Severe_Overall_Resp_Severe",
+            secondary_rsv_flu_overall_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_Overall_Resp_Severe",
+            secondary_rsv_overall_within_14 & rsv_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "RSV_Severe_0_Overall_Resp_Severe",
+            secondary_flu_overall_within_14 & flu_secondary_inf == 1 & overall_resp_secondary_inf == 1 ~ "0_Flu_Severe_Overall_Resp_Severe",
             TRUE ~ overall_resp_severe_alt
           )
         )
@@ -451,39 +451,39 @@ alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {
         ) %>%
         mutate(
           rsv_mild_alt_combo = case_when(
-            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
-            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0",
-            primary_rsv_covid_within_14 ~ "RSV_Mild_0_COVID_Mild",
+            primary_rsv_flu_covid_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
+            primary_rsv_flu_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_0",
+            primary_rsv_covid_within_14 & rsv_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_0_COVID_Mild",
             TRUE ~ rsv_mild_alt
           ),
           flu_mild_alt_combo = case_when(
-            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
-            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0",
-            primary_flu_covid_within_14 ~ "0_Flu_Mild_COVID_Mild",
+            primary_rsv_flu_covid_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
+            primary_rsv_flu_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_0",
+            primary_flu_covid_within_14 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "0_Flu_Mild_COVID_Mild",
             TRUE ~ flu_mild_alt
           ),
           covid_mild_alt_combo = case_when(
-            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
-            primary_rsv_covid_within_14 ~ "RSV_Mild_0_COVID_Mild",
-            primary_flu_covid_within_14 ~ "0_Flu_Mild_COVID_Mild",
+            primary_rsv_flu_covid_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
+            primary_rsv_covid_within_14 & rsv_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_0_COVID_Mild",
+            primary_flu_covid_within_14 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "0_Flu_Mild_COVID_Mild",
             TRUE ~ covid_mild_alt
           ),
           rsv_severe_alt_combo = case_when(
-            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
-            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0",
-            secondary_rsv_covid_within_14 ~ "RSV_Severe_0_COVID_Severe",
+            secondary_rsv_flu_covid_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
+            secondary_rsv_flu_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_0",
+            secondary_rsv_covid_within_14 & rsv_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_0_COVID_Severe",
             TRUE ~ rsv_severe_alt
           ),
           flu_severe_alt_combo = case_when(
-            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
-            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0",
-            secondary_flu_covid_within_14 ~ "0_Flu_Severe_COVID_Severe",
+            secondary_rsv_flu_covid_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
+            secondary_rsv_flu_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_0",
+            secondary_flu_covid_within_14 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "0_Flu_Severe_COVID_Severe",
             TRUE ~ flu_severe_alt
           ),
           covid_severe_alt_combo = case_when(
-            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
-            secondary_rsv_covid_within_14 ~ "RSV_Severe_0_COVID_Severe",
-            secondary_flu_covid_within_14 ~ "0_Flu_Severe_COVID_Severe",
+            secondary_rsv_flu_covid_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
+            secondary_rsv_covid_within_14 & rsv_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_0_COVID_Severe",
+            secondary_flu_covid_within_14 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "0_Flu_Severe_COVID_Severe",
             TRUE ~ covid_severe_alt
           )
         )
@@ -502,19 +502,19 @@ alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {
         ) %>%
         mutate(
           rsv_mild_alt_combo = if_else(
-            primary_rsv_flu_within_14 == TRUE, "RSV_Mild_Flu_Mild",
+            primary_rsv_flu_within_14 == TRUE & rsv_primary_inf == 1 & flu_primary_inf == 1, "RSV_Mild_Flu_Mild",
             rsv_mild_alt
           ),
           flu_mild_alt_combo = if_else(
-            primary_rsv_flu_within_14 == TRUE, "RSV_Mild_Flu_Mild",
+            primary_rsv_flu_within_14 == TRUE & rsv_primary_inf == 1 & flu_primary_inf == 1, "RSV_Mild_Flu_Mild",
             flu_mild_alt
           ),
           rsv_severe_alt_combo = if_else(
-            secondary_rsv_flu_within_14 == TRUE, "RSV_Severe_Flu_Severe",
+            secondary_rsv_flu_within_14 == TRUE & rsv_secondary_inf == 1 & flu_secondary_inf == 1, "RSV_Severe_Flu_Severe",
             rsv_severe_alt
           ),
           flu_severe_alt_combo = if_else(
-            secondary_rsv_flu_within_14 == TRUE, "RSV_Severe_Flu_Severe",
+            secondary_rsv_flu_within_14 == TRUE & rsv_secondary_inf == 1 & flu_secondary_inf == 1, "RSV_Severe_Flu_Severe",
             flu_severe_alt
           )
         )
@@ -557,39 +557,39 @@ alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {
           ) %>%
         mutate(
           rsv_mild_alt_combo = case_when(
-            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
-            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0",
-            primary_rsv_covid_within_14 ~ "RSV_Mild_0_COVID_Mild",
+            primary_rsv_flu_covid_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
+            primary_rsv_flu_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_0",
+            primary_rsv_covid_within_14 & rsv_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_0_COVID_Mild",
             TRUE ~ rsv_mild_alt
           ),
           flu_mild_alt_combo = case_when(
-            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
-            primary_rsv_flu_within_14 ~ "RSV_Mild_Flu_Mild_0",
-            primary_flu_covid_within_14 ~ "0_Flu_Mild_COVID_Mild",
+            primary_rsv_flu_covid_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
+            primary_rsv_flu_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_0",
+            primary_flu_covid_within_14 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "0_Flu_Mild_COVID_Mild",
             TRUE ~ flu_mild_alt
           ),
           covid_mild_alt_combo = case_when(
-            primary_rsv_flu_covid_within_14 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
-            primary_rsv_covid_within_14 ~ "RSV_Mild_0_COVID_Mild",
-            primary_flu_covid_within_14 ~ "0_Flu_Mild_COVID_Mild",
+            primary_rsv_flu_covid_within_14 & rsv_primary_inf == 1 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_Flu_Mild_COVID_Mild",
+            primary_rsv_covid_within_14 & rsv_primary_inf == 1 & covid_primary_inf == 1 ~ "RSV_Mild_0_COVID_Mild",
+            primary_flu_covid_within_14 & flu_primary_inf == 1 & covid_primary_inf == 1 ~ "0_Flu_Mild_COVID_Mild",
             TRUE ~ covid_mild_alt
           ),
           rsv_severe_alt_combo = case_when(
-            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
-            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0",
-            secondary_rsv_covid_within_14 ~ "RSV_Severe_0_COVID_Severe",
+            secondary_rsv_flu_covid_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
+            secondary_rsv_flu_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_0",
+            secondary_rsv_covid_within_14 & rsv_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_0_COVID_Severe",
             TRUE ~ rsv_severe_alt
           ),
           flu_severe_alt_combo = case_when(
-            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
-            secondary_rsv_flu_within_14 ~ "RSV_Severe_Flu_Severe_0",
-            secondary_flu_covid_within_14 ~ "0_Flu_Severe_COVID_Severe",
+            secondary_rsv_flu_covid_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
+            secondary_rsv_flu_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_0",
+            secondary_flu_covid_within_14 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "0_Flu_Severe_COVID_Severe",
             TRUE ~ flu_severe_alt
           ),
           covid_severe_alt_combo = case_when(
-            secondary_rsv_flu_covid_within_14 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
-            secondary_rsv_covid_within_14 ~ "RSV_Severe_0_COVID_Severe",
-            secondary_flu_covid_within_14 ~ "0_Flu_Severe_COVID_Severe",
+            secondary_rsv_flu_covid_within_14 & rsv_secondary_inf == 1 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_Flu_Severe_COVID_Severe",
+            secondary_rsv_covid_within_14 & rsv_secondary_inf == 1 & covid_secondary_inf == 1 ~ "RSV_Severe_0_COVID_Severe",
+            secondary_flu_covid_within_14 & flu_secondary_inf == 1 & covid_secondary_inf == 1 ~ "0_Flu_Severe_COVID_Severe",
             TRUE ~ covid_severe_alt
           )
         )
@@ -608,13 +608,13 @@ alt_label <- function(input, sensitivity, study_start_date, covid_season_min) {
           across(contains("_within_14"), ~if_else(is.na(.x), FALSE, .x))
         ) %>%
         mutate(
-          rsv_mild_alt_combo = if_else(primary_rsv_flu_within_14 == TRUE, 
+          rsv_mild_alt_combo = if_else(primary_rsv_flu_within_14 == TRUE & rsv_primary_inf == 1 & flu_primary_inf == 1, 
                                        "RSV_Mild_Flu_Mild", rsv_mild_alt),
-          flu_mild_alt_combo = if_else(primary_rsv_flu_within_14 == TRUE, 
+          flu_mild_alt_combo = if_else(primary_rsv_flu_within_14 == TRUE & rsv_primary_inf == 1 & flu_primary_inf == 1, 
                                        "RSV_Mild_Flu_Mild", flu_mild_alt),
-          rsv_severe_alt_combo = if_else(secondary_rsv_flu_within_14 == TRUE, 
+          rsv_severe_alt_combo = if_else(secondary_rsv_flu_within_14 == TRUE & rsv_secondary_inf == 1 & flu_secondary_inf == 1, 
                                          "RSV_Severe_Flu_Severe", rsv_severe_alt),
-          flu_severe_alt_combo = if_else(secondary_rsv_flu_within_14 == TRUE, 
+          flu_severe_alt_combo = if_else(secondary_rsv_flu_within_14 == TRUE & rsv_secondary_inf == 1 & flu_secondary_inf == 1, 
                                          "RSV_Severe_Flu_Severe", flu_severe_alt)
         )
       
