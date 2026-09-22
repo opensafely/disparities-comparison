@@ -107,7 +107,12 @@ forest_over_time_plot_all_seasons <- function(
 
   if (facet_outcome) {
     plot_df <- plot_df %>%
-      mutate(outcome_type = factor(outcome_type, levels = c("Mild", "Severe")))
+      mutate(
+        outcome_type = factor(
+          .data$outcome_type,
+          levels = forest_facet_outcome_levels(.data$outcome_type)
+        )
+      )
   }
 
   # Seasonal year axis.

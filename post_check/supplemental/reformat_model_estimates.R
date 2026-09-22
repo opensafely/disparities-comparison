@@ -8,7 +8,8 @@ source(here::here("post_check", "functions", "forest_level_order.R"))
 # Reformat collated further ethnicity_ses model outputs into supplemental-style
 # tables: Variable | Category | season columns with point estimate (95% CI).
 # Specific phenotype definition only. One table per cohort × phenotype.
-# Row and level ordering matches forest plot key-variable ordering.
+# Within-variable level ordering mostly follows forest plots; table variable
+# group order is Age → Sex → Ethnicity → IMD → Rurality (not forest facets).
 
 cohorts <- c(
   "older_adults",
@@ -45,12 +46,15 @@ rurality_levels <- c(
 # Table-only sex order; forest plots keep get_forest_level_order().
 sex_levels <- c("Female", "Male")
 
-# Matches forest facet order (Age → IMD → Ethnicity → …).
+# Table-only ethnicity order (keeps Unknown); forest plots drop it.
+ethnicity_levels <- c(FOREST_ETHNICITY_LEVELS, "Unknown")
+
+# Table variable group order (Age → Sex → Ethnicity → IMD → Rurality → …).
 variable_facet_order <- c(
   "Age Group",
-  "IMD quintile",
-  "Ethnicity",
   "Sex",
+  "Ethnicity",
+  "IMD quintile",
   "Rurality",
   "Prior Flu Vaccination",
   "Current Flu Vaccination",
@@ -90,7 +94,7 @@ classify_forest_label <- function(label, cohort, pathogen, age_levels) {
       is_reference = label == "5 (least deprived)"
     ))
   }
-  if (label %in% FOREST_ETHNICITY_LEVELS) {
+  if (label %in% ethnicity_levels) {
     return(list(
       variable = "Ethnicity",
       category = label,
@@ -314,7 +318,28 @@ category_skeleton <- function(cohort, pathogen, present_variables) {
   mapped <- bind_rows(
     mapped,
     implicit_reference_rows(present_variables, mapped)
-  ) %>%
+  )
+
+  # Forest level order omits Unknown ethnicity; keep it in supplemental tables.
+  if ("Ethnicity" %in% present_variables) {
+    eth_present <- mapped %>%
+      filter(variable == "Ethnicity") %>%
+      pull(category)
+    missing_eth <- setdiff(ethnicity_levels, eth_present)
+    if (length(missing_eth) > 0) {
+      mapped <- bind_rows(
+        mapped,
+        tibble(
+          variable = "Ethnicity",
+          category = missing_eth,
+          is_reference = missing_eth == "White",
+          label_rank = NA_real_
+        )
+      )
+    }
+  }
+
+  mapped <- mapped %>%
     filter(variable %in% present_variables) %>%
     distinct(variable, category, .keep_all = TRUE)
 
@@ -323,6 +348,8 @@ category_skeleton <- function(cohort, pathogen, present_variables) {
       label_rank = case_when(
         variable == "Rurality" ~ as.numeric(match(category, rurality_levels)),
         variable == "Sex" ~ as.numeric(match(category, sex_levels)),
+        variable == "Ethnicity" ~
+          as.numeric(match(category, ethnicity_levels)),
         TRUE ~ label_rank
       ),
       variable = factor(variable, levels = variable_facet_order)
@@ -449,7 +476,7 @@ reformat_further_ethnicity_ses <- function(cohort, pathogen) {
     }
 
     present_variables <- unique(c(
-      "Age Group", "IMD quintile", "Ethnicity", "Sex", "Rurality",
+      "Age Group", "Sex", "Ethnicity", "IMD quintile", "Rurality",
       parsed$variable
     ))
 

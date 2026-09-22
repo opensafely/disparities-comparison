@@ -129,7 +129,7 @@ character_viz <- function(df, scaling, household_comp = "no",
       characteristic = if_else(
         .data$group == "Household Composition" &
           as.character(.data$characteristic) == "Unknown",
-        "Unknown Composition",
+        "No Household Linkage",
         as.character(.data$characteristic)
       ),
       percentage = if_else(str_detect(percentage, "<0.1%"), "0.05%",
@@ -146,32 +146,33 @@ character_viz <- function(df, scaling, household_comp = "no",
   if (cohort == "infants") {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
-                "Mixed", "Asian or Asian British", "Black or Black British",
-                "Chinese or Other", "Unknown", "1 (most deprived)",
-                "2", "3", "4", "5 (least deprived)", "Rural Town and Fringe",
+                "Chinese or Other", "Mixed", "Black or Black British",
+                "Asian or Asian British", "Unknown", "5 (least deprived)",
+                "4", "3", "2", "1 (most deprived)", "Rural Town and Fringe",
                 "Rural Village and Dispersed", "Urban City and Town",
                 "Urban Minor Conurbation", "Urban Major Conurbation")
     
   } else if (cohort == "infants_subgroup") {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
-                "Mixed", "Asian or Asian British", "Black or Black British",
-                "Chinese or Other", "Unknown", "1 (most deprived)",
-                "2", "3", "4", "5 (least deprived)", "Rural Town and Fringe",
+                "Chinese or Other", "Mixed", "Black or Black British",
+                "Asian or Asian British", "Never", "Former", "Current",
+                "Unknown", "5 (least deprived)", "4", "3", "2",
+                "1 (most deprived)", "Rural Town and Fringe",
                 "Rural Village and Dispersed", "Urban City and Town",
                 "Urban Minor Conurbation", "Urban Major Conurbation",
-                "Yes", "Never", "Former", "Current")
+                "Yes", "Unknown Smoking Status")
     
   } else if (cohort == "children_and_adolescents") {
     
     levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Female",
-                "Male", "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Chinese or Other",
-                "Unknown", "1 (most deprived)", "2", "3", "4",
-                "5 (least deprived)", "Multiple of the Same Generation",
+                "Male", "White", "Chinese or Other", "Mixed",
+                "Black or Black British", "Asian or Asian British",
+                "Unknown", "5 (least deprived)", "4", "3", "2",
+                "1 (most deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation",
                 "Two Other Generations", "Three Other Generations",
-                "Unknown Composition",
+                "No Household Linkage",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
                 "Urban City and Town", "Urban Minor Conurbation",
                 "Urban Major Conurbation", "Yes",
@@ -180,12 +181,12 @@ character_viz <- function(df, scaling, household_comp = "no",
   } else if (cohort == "adults") {
     
     levels <- c("18-39y", "40-64y", "Female", "Male", "White",
-                "Mixed", "Asian or Asian British", "Black or Black British",
-                "Chinese or Other", "Unknown", "1 (most deprived)",
-                "2", "3", "4", "5 (least deprived)",
+                "Chinese or Other", "Mixed", "Black or Black British",
+                "Asian or Asian British", "Unknown", "5 (least deprived)",
+                "4", "3", "2", "1 (most deprived)",
                 "Multiple of the Same Generation", "Living Alone",
                 "One Other Generation", "Two Other Generations",
-                "Three Other Generations", "Unknown Composition",
+                "Three Other Generations", "No Household Linkage",
                 "Rural Town and Fringe",
                 "Rural Village and Dispersed", "Urban City and Town",
                 "Urban Minor Conurbation", "Urban Major Conurbation",
@@ -198,17 +199,22 @@ character_viz <- function(df, scaling, household_comp = "no",
   } else {
     
     levels <- c("65-74y", "75-89y", "90y+", "Female", "Male", "White",
-                "Mixed", "Asian or Asian British", "Black or Black British",
-                "Chinese or Other", "Unknown", "1 (most deprived)", "2", "3",
-                "4", "5 (least deprived)", "Multiple of the Same Generation",
+                "Chinese or Other", "Mixed", "Black or Black British",
+                "Asian or Asian British", "Unknown", "5 (least deprived)",
+                "4", "3", "2", "1 (most deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
-                "Three Other Generations", "Unknown Composition",
+                "Three Other Generations", "No Household Linkage",
                 "Rural Town and Fringe",
                 "Rural Village and Dispersed", "Urban City and Town",
                 "Urban Minor Conurbation", "Urban Major Conurbation",
                 "Yes", "0-6m", "6-12m", "12m+")
     
   }
+
+  # Keep data level "Unknown Smoking Status" for matching/order; show as Unknown.
+  level_labels <- ifelse(
+    levels == "Unknown Smoking Status", "Unknown", levels
+  )
   
   if (investigation_type == "primary") {
     
@@ -274,7 +280,7 @@ character_viz <- function(df, scaling, household_comp = "no",
     ) %>%
     mutate(
       characteristic = factor(characteristic, levels = levels,
-                              labels = str_wrap(levels, width = 12)),
+                              labels = str_wrap(level_labels, width = 12)),
       subset = str_to_title(gsub("_", "-", subset)),
       group = factor(group, levels = group_order, 
                      labels = str_wrap(group_order, width = 20))
@@ -414,7 +420,7 @@ character_viz_mult <- function(df, scaling) {
       characteristic = if_else(
         .data$group == "Household Composition" &
           as.character(.data$characteristic) == "Unknown",
-        "Unknown Composition",
+        "No Household Linkage",
         as.character(.data$characteristic)
       ),
       percentage = if_else(str_detect(percentage, "<0.1%"), "0.05%",
@@ -431,32 +437,33 @@ character_viz_mult <- function(df, scaling) {
   if (cohort == "infants") {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
-                "Mixed", "Asian or Asian British", "Black or Black British",
-                "Chinese or Other", "Unknown", "1 (most deprived)",
-                "2", "3", "4", "5 (least deprived)", "Rural Town and Fringe",
+                "Chinese or Other", "Mixed", "Black or Black British",
+                "Asian or Asian British", "Unknown", "5 (least deprived)",
+                "4", "3", "2", "1 (most deprived)", "Rural Town and Fringe",
                 "Rural Village and Dispersed", "Urban City and Town",
                 "Urban Minor Conurbation", "Urban Major Conurbation")
     
   } else if (cohort == "infants_subgroup") {
     
     levels <- c("0-2m", "3-5m", "6-11m", "12-23m", "Female", "Male", "White",
-                "Mixed", "Asian or Asian British", "Black or Black British",
-                "Chinese or Other", "Unknown", "1 (most deprived)",
-                "2", "3", "4", "5 (least deprived)", "Rural Town and Fringe",
+                "Chinese or Other", "Mixed", "Black or Black British",
+                "Asian or Asian British","Never", "Former", "Current",
+                "Unknown", "5 (least deprived)", "4", "3", "2",
+                "1 (most deprived)", "Rural Town and Fringe",
                 "Rural Village and Dispersed", "Urban City and Town",
                 "Urban Minor Conurbation", "Urban Major Conurbation",
-                "Yes", "Never", "Former", "Current")
+                "Yes", "Unknown Smoking Status")
     
   } else if (cohort == "children_and_adolescents") {
     
     levels <- c("2-5y", "6-9y", "10-13y", "14-17y", "Female",
-                "Male", "White", "Mixed", "Asian or Asian British",
-                "Black or Black British", "Chinese or Other",
-                "Unknown", "1 (most deprived)", "2", "3", "4",
-                "5 (least deprived)", "Multiple of the Same Generation",
+                "Male", "White", "Chinese or Other", "Mixed",
+                "Black or Black British", "Asian or Asian British",
+                "Unknown", "5 (least deprived)", "4", "3", "2",
+                "1 (most deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation",
                 "Two Other Generations", "Three Other Generations",
-                "Unknown Composition",
+                "No Household Linkage",
                 "Rural Town and Fringe", "Rural Village and Dispersed",
                 "Urban City and Town", "Urban Minor Conurbation",
                 "Urban Major Conurbation", "Yes",
@@ -465,12 +472,12 @@ character_viz_mult <- function(df, scaling) {
   } else if (cohort == "adults") {
     
     levels <- c("18-39y", "40-64y", "Female", "Male", "White",
-                "Mixed", "Asian or Asian British", "Black or Black British",
-                "Chinese or Other", "Unknown", "1 (most deprived)",
-                "2", "3", "4", "5 (least deprived)",
+                "Chinese or Other", "Mixed", "Black or Black British",
+                "Asian or Asian British", "Unknown", "5 (least deprived)",
+                "4", "3", "2", "1 (most deprived)",
                 "Multiple of the Same Generation", "Living Alone",
                 "One Other Generation", "Two Other Generations",
-                "Three Other Generations", "Unknown Composition",
+                "Three Other Generations", "No Household Linkage",
                 "Rural Town and Fringe",
                 "Rural Village and Dispersed", "Urban City and Town",
                 "Urban Minor Conurbation", "Urban Major Conurbation",
@@ -483,17 +490,22 @@ character_viz_mult <- function(df, scaling) {
   } else {
     
     levels <- c("65-74y", "75-89y", "90y+", "Female", "Male", "White",
-                "Mixed", "Asian or Asian British", "Black or Black British",
-                "Chinese or Other", "Unknown", "1 (most deprived)", "2", "3",
-                "4", "5 (least deprived)", "Multiple of the Same Generation",
+                "Chinese or Other", "Mixed", "Black or Black British",
+                "Asian or Asian British", "Unknown", "5 (least deprived)", "4", "3",
+                "2", "1 (most deprived)", "Multiple of the Same Generation",
                 "Living Alone", "One Other Generation", "Two Other Generations",
-                "Three Other Generations", "Unknown Composition",
+                "Three Other Generations", "No Household Linkage",
                 "Rural Town and Fringe",
                 "Rural Village and Dispersed", "Urban City and Town",
                 "Urban Minor Conurbation", "Urban Major Conurbation",
                 "Yes", "0-6m", "6-12m", "12m+")
     
   }
+
+  # Keep data level "Unknown Smoking Status" for matching/order; show as Unknown.
+  level_labels <- ifelse(
+    levels == "Unknown Smoking Status", "Unknown", levels
+  )
   
   if (investigation_type == "secondary") {
     
@@ -528,7 +540,7 @@ character_viz_mult <- function(df, scaling) {
     ) %>%
     mutate(
       characteristic = factor(characteristic, levels = levels,
-                              labels = str_wrap(levels, width = 12)),
+                              labels = str_wrap(level_labels, width = 12)),
       subset = str_to_title(gsub("_", "-", subset)),
       group = factor(group, levels = group_order)
     )

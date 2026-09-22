@@ -1,4 +1,6 @@
 # Ethnicity_ses further-model condensed figures (sensitivity phenotypes).
+# Same covariate-row layout as primary condensed key-vars:
+# legends above each Age / IMD / Ethnicity block; RSV / flu sub-rows within.
 # Output: post_check/plots/sensitivity_analyses/condensed_models_key_vars/
 library(tidyverse)
 library(here)

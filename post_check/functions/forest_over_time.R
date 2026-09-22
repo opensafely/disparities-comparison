@@ -748,7 +748,8 @@ seasons_to_years <- function(seasons) {
 }
 
 # Compare figures: COVID data and x-axis are 2020-21 only; RSV/flu use all selected seasons.
-# Maternally linked infants include 2019-20 on COVID panels even without estimates.
+# Maternally linked infants expand to the full COVID axis only when the request
+# also includes pre-COVID RSV/flu seasons; a 2020-21-only request stays 2020-21.
 seasons_for_pathogen_compare <- function(
     pathogen,
     seasons = c("2017_18", "2018_19", "2020_21")
@@ -757,7 +758,12 @@ seasons_for_pathogen_compare <- function(
     return(seasons)
   }
   if (is_maternally_linked_infant_cohort()) {
-    return(primary_plot_seasons_underscore("covid"))
+    covid_seasons <- primary_plot_seasons_underscore("covid")
+    covid_norm <- normalize_season_label(covid_seasons)
+    req_norm <- normalize_season_label(seasons)
+    if (any(!req_norm %in% covid_norm)) {
+      return(covid_seasons)
+    }
   }
   norm <- normalize_season_label(seasons)
   out <- seasons[norm == "2020-21"]
@@ -1425,7 +1431,12 @@ forest_over_time_plot <- function(
 
   if (facet_outcome) {
     plot_df <- plot_df %>%
-      mutate(outcome_type = factor(outcome_type, levels = c("Mild", "Severe")))
+      mutate(
+        outcome_type = factor(
+          .data$outcome_type,
+          levels = forest_facet_outcome_levels(.data$outcome_type)
+        )
+      )
   }
 
   # Seasonal year axis.
@@ -1444,6 +1455,11 @@ forest_over_time_plot <- function(
   } else {
     "primary"
   }
+  cohort_val <- if (exists("cohort", envir = .GlobalEnv)) {
+    get("cohort", envir = .GlobalEnv)
+  } else {
+    NA_character_
+  }
 
   # Remove vaccination points in early COVID seasons.
   # - Current COVID vaccination: suppress before 2020-21 (year < 2020)
@@ -1457,8 +1473,10 @@ forest_over_time_plot <- function(
           (characteristic_base %in% c("Current\nVaccination", "Current Vaccination") & year < 2020) |
           (characteristic_base %in% c("Prior\nVaccination", "Prior Vaccination") & year < 2021)
       ))
+    # Pass season-constrained x_breaks (not full year_breaks) so explicit
+    # seasons= e.g. 2020_21 is respected for primary COVID panels.
     x_breaks <- covid_x_breaks_from_data(
-      plot_df, year_breaks,
+      plot_df, x_breaks,
       cohort = cohort_val,
       investigation_type = investigation_val
     )
@@ -1551,9 +1569,6 @@ forest_over_time_plot <- function(
   if ("Prior Vaccination (COVID)" %in% names(colour_map)) {
     colour_map[["Prior Vaccination (COVID)"]] <- "#98DF8A"
   }
-
-  cohort_val <- if (exists("cohort", envir = .GlobalEnv)) get("cohort", envir = .GlobalEnv) else NA_character_
-  investigation_val <- if (exists("investigation_type", envir = .GlobalEnv)) get("investigation_type", envir = .GlobalEnv) else NA_character_
 
   # Always Age → IMD → Ethnicity → … (FOREST_FACET_GROUP_ORDER).
   # key_groups_first only pushes vaccination facets/colours to the end.
@@ -2107,6 +2122,8 @@ forest_over_time_plot_compare <- function(
   show_ci = TRUE,
   fixed_axes = FALSE,
   show_disruption_legend = TRUE,
+  show_disruption_shading = TRUE,
+  disruption_legend_label = NULL,
   years_include = NULL,
   season_axis_years = NULL,
   disruption_season_width_scale = 1,
@@ -2233,7 +2250,12 @@ forest_over_time_plot_compare <- function(
 
   if (facet_outcome) {
     plot_df <- plot_df %>%
-      mutate(outcome_type = factor(outcome_type, levels = c("Mild", "Severe")))
+      mutate(
+        outcome_type = factor(
+          .data$outcome_type,
+          levels = forest_facet_outcome_levels(.data$outcome_type)
+        )
+      )
   }
 
   # Seasonal year axis.
@@ -2578,6 +2600,8 @@ forest_over_time_plot_compare <- function(
       )
     )
 
+  disruption_fill_label <- disruption_legend_label %||% FOREST_DISRUPTION_LABEL
+
   panel_spacing_x <- if (isTRUE(compact_layout)) {
     0.18
   } else if (identical(pathogen, "covid")) {
@@ -2722,13 +2746,17 @@ forest_over_time_plot_compare <- function(
       )
   }
 
-  shading_df <- forest_disruption_shading_df(
-    plot_df = plot_df,
-    x_breaks = x_breaks,
-    log_y = log_y,
-    use_discrete_season_axis = use_discrete_season_axis,
-    season_axis = season_axis
-  )
+  shading_df <- if (isTRUE(show_disruption_shading)) {
+    forest_disruption_shading_df(
+      plot_df = plot_df,
+      x_breaks = x_breaks,
+      log_y = log_y,
+      use_discrete_season_axis = use_discrete_season_axis,
+      season_axis = season_axis
+    )
+  } else {
+    NULL
+  }
 
   base_plot <- ggplot(
     plot_df,
@@ -2741,18 +2769,22 @@ forest_over_time_plot_compare <- function(
       color = label
     )
   ) +
-    geom_rect(
-      data = shading_df,
-      aes(
-        xmin = xmin,
-        xmax = xmax,
-        ymin = ymin,
-        ymax = ymax,
-        fill = disruption
-      ),
-      inherit.aes = FALSE,
-      alpha = 0.5
-    ) +
+    {
+      if (!is.null(shading_df) && nrow(shading_df) > 0) {
+        geom_rect(
+          data = shading_df,
+          aes(
+            xmin = xmin,
+            xmax = xmax,
+            ymin = ymin,
+            ymax = ymax,
+            fill = disruption
+          ),
+          inherit.aes = FALSE,
+          alpha = 0.5
+        )
+      }
+    } +
     geom_hline(
       yintercept = 1,
       inherit.aes = FALSE,
@@ -2876,6 +2908,7 @@ forest_over_time_plot_compare <- function(
     scale_fill_manual(
       values = setNames("grey85", FOREST_DISRUPTION_LABEL),
       breaks = FOREST_DISRUPTION_LABEL,
+      labels = disruption_fill_label,
       drop = FALSE
     ) +
     labs(

@@ -1,7 +1,8 @@
-# Ethnicity_ses base vs further condensed figures (RSV / flu / COVID stacked).
-# All seasons per virus (continuous year axis).
-# Minimally vs fully adjusted estimates are connected by a line per level (same season column);
-# points only (no confidence intervals).
+# Ethnicity_ses base vs further condensed figures (RSV / flu / COVID).
+# Same covariate-row layout as further_results_condensed_key_vars.R:
+# legends above each Age / IMD / Ethnicity block; pathogen sub-rows within.
+# Minimally vs fully adjusted estimates are connected by a line per level
+# (points only; no confidence intervals).
 # Output: post_check/plots/primary_analyses/condensed_models_key_vars/sequential_adjustment/
 library(tidyverse)
 library(here)

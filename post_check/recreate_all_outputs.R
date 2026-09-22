@@ -69,6 +69,7 @@ post_check_jobs <- list(
   reformat = c(
     "post_check/supplemental/reformat_table1.R",
     "post_check/supplemental/reformat_rates_primary.R",
+    "post_check/supplemental/reformat_case_burden.R",
     "post_check/supplemental/reformat_all_cohort_cases.R",
     "post_check/supplemental/reformat_internal_validation.R",
     "post_check/supplemental/reformat_reinfections.R",
@@ -102,6 +103,7 @@ post_check_jobs <- list(
   condensed = c(
     "post_check/primary_analyses/further_results_condensed_key_vars.R",
     "post_check/primary_analyses/key_exposures_condensed_base_vs_further_stacked_all_seasons.R",
+    "post_check/primary_analyses/infants_vs_maternal_base_condensed_key_vars.R",
     "post_check/primary_analyses/full_model_condensed_key_vars_2020_21.R",
     "post_check/sensitivity_analyses/further_model_results_condensed_sens.R"
   ),

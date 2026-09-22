@@ -1943,15 +1943,198 @@ forest_plot_phenotype <- function(p, phenotype) {
   plot_ot
 }
 
+dashboard_facet_order <- function(labels_present) {
+  labels_present <- unique(as.character(labels_present))
+  labels_present <- labels_present[!is.na(labels_present) & labels_present != ""]
+  vaccination_groups <- c(
+    "Prior Vaccination",
+    "Prior Vaccination (Flu)",
+    "Prior Vaccination (COVID)",
+    "Current Vaccination"
+  )
+  c(
+    intersect(setdiff(FOREST_FACET_GROUP_ORDER, vaccination_groups), labels_present),
+    setdiff(labels_present, c(FOREST_FACET_GROUP_ORDER, vaccination_groups)),
+    intersect(vaccination_groups, labels_present)
+  )
+}
+
+dashboard_covariate_level_legend <- function(
+    legend_dat,
+    model_type,
+    covariate,
+    pathogen
+) {
+  dat <- legend_dat %>%
+    dplyr::filter(as.character(.data$labels) == covariate)
+  if (is_empty_forest_data(dat)) {
+    return(NULL)
+  }
+
+  level_order <- ordered_forest_covariate_levels(
+    dat, covariate, model_type, pathogen
+  )
+  level_colour_values <- covariate_forest_level_colours(covariate, level_order)
+  n_keys <- length(level_colour_values)
+  if (n_keys < 1L) {
+    return(NULL)
+  }
+
+  legend_plot <- forest_over_time_plot(
+    forest_data = dat,
+    pathogen = pathogen,
+    model_type = model_type,
+    facet_outcome = FALSE,
+    show_disruption_legend = FALSE,
+    show_disruption_shading = FALSE,
+    level_colour_values = level_colour_values,
+    level_colour_title = covariate,
+    colour_by_level = TRUE,
+    drop_unknown_ethnicity = FALSE,
+    compact_legend = TRUE,
+    legend_position = "bottom"
+  ) +
+    ggplot2::theme(
+      legend.position = "bottom",
+      legend.direction = "horizontal",
+      legend.box = "horizontal",
+      legend.justification = "left",
+      legend.box.just = "left",
+      legend.title = ggplot2::element_text(size = 10, face = "bold"),
+      legend.text = ggplot2::element_text(size = 9),
+      legend.key.width = ggplot2::unit(1.0, "lines"),
+      legend.key.height = ggplot2::unit(0.75, "lines"),
+      legend.spacing.x = ggplot2::unit(0.3, "lines"),
+      legend.margin = ggplot2::margin(0, 4, 0, 4),
+      legend.box.margin = ggplot2::margin(1, 2, 1, 2)
+    ) +
+    ggplot2::guides(
+      fill = "none",
+      shape = "none",
+      color = ggplot2::guide_legend(
+        title = covariate,
+        nrow = 1,
+        ncol = n_keys,
+        byrow = TRUE,
+        order = 1,
+        override.aes = list(size = 0.6, shape = 16)
+      )
+    )
+
+  tryCatch(cowplot::get_legend(legend_plot), error = function(e) NULL)
+}
+
+dashboard_disruption_legend <- function(
+    legend_dat,
+    model_type,
+    covariate,
+    pathogen
+) {
+  dat <- legend_dat %>%
+    dplyr::filter(as.character(.data$labels) == covariate)
+  if (is_empty_forest_data(dat)) {
+    return(NULL)
+  }
+
+  legend_plot <- forest_over_time_plot(
+    forest_data = dat,
+    pathogen = pathogen,
+    model_type = model_type,
+    facet_outcome = FALSE,
+    show_disruption_legend = TRUE,
+    show_disruption_shading = TRUE,
+    disruption_legend_label = FOREST_COVID_DISRUPTION_LEGEND_LABEL,
+    colour_by_level = TRUE,
+    drop_unknown_ethnicity = FALSE,
+    legend_position = "bottom"
+  ) +
+    ggplot2::theme(
+      legend.position = "bottom",
+      legend.direction = "horizontal",
+      legend.justification = "right",
+      legend.title = ggplot2::element_blank(),
+      legend.text = ggplot2::element_text(size = 12, face = "italic"),
+      legend.key.width = ggplot2::unit(1.4, "lines"),
+      legend.key.height = ggplot2::unit(0.9, "lines"),
+      legend.margin = ggplot2::margin(0, 0, 0, 0),
+      legend.box.margin = ggplot2::margin(1, 2, 1, 2)
+    ) +
+    ggplot2::guides(
+      color = "none",
+      shape = "none",
+      fill = ggplot2::guide_legend(
+        title = NULL,
+        nrow = 1,
+        ncol = 1,
+        order = 1,
+        override.aes = list(alpha = 0.65)
+      )
+    )
+
+  tryCatch(cowplot::get_legend(legend_plot), error = function(e) NULL)
+}
+
+dashboard_legend_row <- function(legend_grob, disruption_grob = NULL) {
+  if (is.null(legend_grob) && is.null(disruption_grob)) {
+    return(ggplot2::ggplot() + ggplot2::theme_void())
+  }
+  if (!is.null(disruption_grob)) {
+    return(cowplot::plot_grid(
+      NULL,
+      legend_grob %||% (ggplot2::ggplot() + ggplot2::theme_void()),
+      disruption_grob,
+      NULL,
+      ncol = 4,
+      rel_widths = c(0.02, 0.58, 0.36, 0.04)
+    ))
+  }
+  cowplot::plot_grid(
+    NULL,
+    legend_grob %||% (ggplot2::ggplot() + ggplot2::theme_void()),
+    NULL,
+    ncol = 3,
+    rel_widths = c(0.02, 0.96, 0.02)
+  )
+}
+
+dashboard_forest_title <- function(pathogen, model_type, outcome_type) {
+  pathogen_title <- dplyr::case_when(
+    pathogen == "rsv" ~ "RSV",
+    pathogen == "flu" ~ "Influenza",
+    pathogen == "covid" ~ "COVID-19",
+    pathogen == "overall_resp" ~ "Overall Respiratory Virus",
+    TRUE ~ as.character(pathogen)
+  )
+  model_title <- dplyr::case_when(
+    model_type == "ethnicity" ~ "Ethnicity",
+    model_type == "ses" ~ "IMD Quintile",
+    model_type == "composition" ~ "Household Composition",
+    model_type == "ethnicity_ses" ~ "Ethnicity and IMD Quintile",
+    model_type == "ethnicity_composition" ~ "Ethnicity and Household Composition",
+    model_type == "ses_composition" ~ "IMD Quintile and Household Composition",
+    model_type == "full" ~ "Ethnicity, IMD Quintile, and Household Composition",
+    TRUE ~ as.character(model_type)
+  )
+  if (!is.null(outcome_type) && !is.na(outcome_type) && nzchar(outcome_type)) {
+    paste0(outcome_type, " ", pathogen_title, " by ", model_title)
+  } else {
+    paste0(pathogen_title, " by ", model_title)
+  }
+}
+
 dashboard_forest_plot <- function(p) {
   forest_data_full <- attr(p, "forest_data_full")
   forest_data <- attr(p, "forest_data")
   meta <- attr(p, "forest_meta")
 
-  plot_dat <- if (!is.null(forest_data_full) && is.data.frame(forest_data_full)) {
+  # Prefer the full covariate set for dashboard plots (not key-vars-only).
+  plot_dat <- if (!is.null(forest_data_full) && is.data.frame(forest_data_full) &&
+      !is_empty_forest_data(forest_data_full)) {
     forest_data_full
-  } else {
+  } else if (!is.null(forest_data) && is.data.frame(forest_data)) {
     forest_data
+  } else {
+    NULL
   }
 
   if (is.null(plot_dat) || is.null(meta) || is_empty_forest_data(plot_dat)) {
@@ -2019,26 +2202,131 @@ dashboard_forest_plot <- function(p) {
     }
   }
 
-  plot_ot <- forest_over_time_plot(
-    forest_data = plot_dat,
-    pathogen = meta$pathogen,
-    model_type = meta$model_type,
-    outcome_type = meta$outcome_type,
-    facet_outcome = FALSE,
-    label_levels = FALSE,
-    seasons = seasons_plot,
-    key_groups_first = TRUE,
-    colour_by_level = TRUE,
-    # Half-width dashboard PNGs. Leave legend_items_per_row NULL so the
-    # compact_legend default in forest_over_time_plot() applies (edit that 2L/4L).
-    compact_legend = TRUE,
-    legend_items_per_row = NULL,
-    legend_label_wrap_width = 10L
+  plot_dat <- prepare_forest_plot_data(
+    plot_dat,
+    drop_unknown_ethnicity = TRUE,
+    pathogen = meta$pathogen
+  )
+  if (is_empty_forest_data(plot_dat)) {
+    return(ggplot2::ggplot() + ggplot2::theme_void())
+  }
+
+  covariates <- dashboard_facet_order(plot_dat$labels)
+  if (length(covariates) == 0L) {
+    return(ggplot2::ggplot() + ggplot2::theme_void())
+  }
+
+  shade_disruption <- !identical(meta$pathogen, "covid")
+  blocks <- vector("list", length(covariates))
+  block_heights <- numeric(length(covariates))
+
+  for (i in seq_along(covariates)) {
+    cov <- covariates[[i]]
+    dat_cov <- plot_dat %>%
+      dplyr::filter(as.character(.data$labels) == cov)
+    if (is_empty_forest_data(dat_cov)) {
+      blocks[[i]] <- ggplot2::ggplot() + ggplot2::theme_void()
+      block_heights[[i]] <- 0.2
+      next
+    }
+
+    level_order <- ordered_forest_covariate_levels(
+      dat_cov, cov, meta$model_type, meta$pathogen
+    )
+    level_colour_values <- covariate_forest_level_colours(cov, level_order)
+    show_x <- identical(i, length(covariates))
+    legend_h <- 0.34
+
+    panel <- forest_over_time_plot(
+      forest_data = dat_cov,
+      pathogen = meta$pathogen,
+      model_type = meta$model_type,
+      outcome_type = meta$outcome_type,
+      facet_outcome = FALSE,
+      label_levels = FALSE,
+      seasons = seasons_plot,
+      colour_by_level = TRUE,
+      level_colour_values = level_colour_values,
+      level_colour_title = cov,
+      show_disruption_legend = FALSE,
+      show_disruption_shading = shade_disruption,
+      disruption_legend_label = FOREST_COVID_DISRUPTION_LEGEND_LABEL,
+      drop_unknown_ethnicity = FALSE,
+      compact_legend = TRUE,
+      legend_items_per_row = NULL,
+      legend_label_wrap_width = 10L,
+      y_lab = forest_pathogen_y_lab(meta$pathogen)
+    ) +
+      ggplot2::theme(
+        legend.position = "none",
+        plot.title = ggplot2::element_blank(),
+        strip.text.y.left = ggplot2::element_blank(),
+        strip.text.y.right = ggplot2::element_blank(),
+        axis.title.x = ggplot2::element_blank(),
+        axis.text.x = if (isTRUE(show_x)) {
+          ggplot2::element_text(size = FOREST_AXIS_TEXT_X_SIZE)
+        } else {
+          ggplot2::element_blank()
+        },
+        axis.ticks.x = if (isTRUE(show_x)) {
+          ggplot2::element_line()
+        } else {
+          ggplot2::element_blank()
+        },
+        plot.margin = ggplot2::margin(
+          t = 1,
+          r = 4,
+          b = if (isTRUE(show_x)) 4 else 1,
+          l = 2.5
+        )
+      )
+
+    disruption_grob <- if (isTRUE(shade_disruption) && identical(i, 1L)) {
+      dashboard_disruption_legend(
+        plot_dat, meta$model_type, cov, meta$pathogen
+      )
+    } else {
+      NULL
+    }
+
+    blocks[[i]] <- cowplot::plot_grid(
+      dashboard_legend_row(
+        dashboard_covariate_level_legend(
+          plot_dat, meta$model_type, cov, meta$pathogen
+        ),
+        disruption_grob
+      ),
+      panel,
+      ncol = 1,
+      rel_heights = c(legend_h, 1.85)
+    )
+    block_heights[[i]] <- legend_h + 1.85
+  }
+
+  title_lab <- dashboard_forest_title(
+    meta$pathogen, meta$model_type, meta$outcome_type
+  )
+  title_row <- cowplot::ggdraw() +
+    cowplot::draw_label(
+      title_lab,
+      x = 0.01,
+      hjust = 0,
+      fontface = "plain",
+      size = FOREST_TITLE_SIZE
+    )
+
+  plot_ot <- cowplot::plot_grid(
+    plotlist = c(list(title_row), blocks),
+    ncol = 1,
+    rel_heights = c(0.18, block_heights),
+    align = "v",
+    axis = "lr"
   )
 
-  attr(plot_ot, "forest_data") <- attr(plot_ot, "forest_data") %||% plot_dat
-  attr(plot_ot, "forest_data_full") <- attr(plot_ot, "forest_data")
+  attr(plot_ot, "forest_data") <- plot_dat
+  attr(plot_ot, "forest_data_full") <- plot_dat
   attr(plot_ot, "forest_meta") <- meta
+  attr(plot_ot, "dashboard_fig_height") <- 0.6 + sum(block_heights)
   plot_ot
 }
 

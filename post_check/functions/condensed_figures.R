@@ -95,20 +95,21 @@ assemble_condensed_figure <- function(
   covid_body <- covid_plot
   if (!is.null(legend_mid)) {
     if (is.list(legend_mid)) {
-      if (!is.null(legend_mid$eth)) {
+      # Facet order is Age / IMD / Ethnicity; Age is in the left column.
+      if (!is.null(legend_mid$imd)) {
         covid_body <- cowplot::ggdraw(covid_body) +
           cowplot::draw_grob(
-            legend_mid$eth,
+            legend_mid$imd,
             x = 0.435,
             y = 0.52,
             width = 0.11,
             height = 0.4
           )
       }
-      if (!is.null(legend_mid$imd)) {
+      if (!is.null(legend_mid$eth)) {
         covid_body <- cowplot::ggdraw(covid_body) +
           cowplot::draw_grob(
-            legend_mid$imd,
+            legend_mid$eth,
             x = 0.435,
             y = 0.06,
             width = 0.11,
@@ -815,7 +816,8 @@ load_dummy_inputs_sensitivity <- function(cohort, pathogen) {
         age_band = dplyr::if_else(.data$age_band == "18-29y", "18-39y", .data$age_band)
       )
   }
-  df
+  # Match primary loader: sensitivity arrows still use inverted IMD labels.
+  normalise_imd_quintile_to_uk(df)
 }
 
 assemble_condensed_figure_sensitivity <- function(
@@ -1426,23 +1428,24 @@ assemble_condensed_figure_stacked_all_seasons <- function(
   covid_plot_with_mid <- covid_plot
   if (!is.null(legend_mid)) {
     if (is.list(legend_mid)) {
-      if (!is.null(legend_mid$eth)) {
-        covid_plot_with_mid <- cowplot::ggdraw(covid_plot_with_mid) +
-          cowplot::draw_grob(
-            legend_mid$eth,
-            x = 0.42,
-            y = 0.52,
-            width = 0.12,
-            height = 0.4
-          )
-      }
+      # Facet order is Age / IMD / Ethnicity; Age is in the left column.
       if (!is.null(legend_mid$imd)) {
         covid_plot_with_mid <- cowplot::ggdraw(covid_plot_with_mid) +
           cowplot::draw_grob(
             legend_mid$imd,
-            x = 0.42,
+            x = 0.405,
+            y = 0.52,
+            width = 0.15,
+            height = 0.4
+          )
+      }
+      if (!is.null(legend_mid$eth)) {
+        covid_plot_with_mid <- cowplot::ggdraw(covid_plot_with_mid) +
+          cowplot::draw_grob(
+            legend_mid$eth,
+            x = 0.405,
             y = 0.06,
-            width = 0.12,
+            width = 0.15,
             height = 0.4
           )
       }
@@ -1455,7 +1458,7 @@ assemble_condensed_figure_stacked_all_seasons <- function(
   covid_row <- cowplot::plot_grid(
     NULL, legend_left, covid_plot_with_mid, NULL,
     ncol = 4,
-    rel_widths = c(-0.1, 0.9, 5.1, -0.16),
+    rel_widths = c(-0.05, 1.15, 4.95, -0.16),
     align = "h",
     axis = "tb"
   )
@@ -1994,92 +1997,18 @@ run_cohort_condensed_key_vars_base_vs_further_stacked <- function(
     cohort,
     model_type = "ethnicity_ses",
     out_root = CONDENSED_SEQUENTIAL_OUT_ROOT,
-    fig_width = CONDENSED_FIG_WIDTH,
-    fig_height = 12
+    fig_width = COVARIATE_ROW_FIG_WIDTH,
+    fig_height = COVARIATE_ROW_FIG_HEIGHT
 ) {
-  assign("cohort", cohort, envir = .GlobalEnv)
-
-  pathogen <- "rsv"
-  df_min <- load_collated_base(cohort, pathogen)
-  df_full <- load_collated_further(cohort, pathogen)
-  df_dummy <- load_dummy_inputs(cohort, pathogen)
-  rsv_plots <- make_facet_outcome_plots_key_vars_base_vs_further_stacked_all_seasons(
-    df_min, df_full, df_dummy, pathogen, model_type
-  )
-
-  pathogen <- "flu"
-  df_min <- load_collated_base(cohort, pathogen)
-  df_full <- load_collated_further(cohort, pathogen)
-  df_dummy <- load_dummy_inputs(cohort, pathogen)
-  flu_plots <- make_facet_outcome_plots_key_vars_base_vs_further_stacked_all_seasons(
-    df_min, df_full, df_dummy, pathogen, model_type
-  )
-
-  pathogen <- "covid"
-  df_min <- load_collated_base(cohort, pathogen)
-  df_full <- load_collated_further(cohort, pathogen)
-  df_dummy <- load_dummy_inputs(cohort, pathogen)
-  covid_plots <- make_facet_outcome_plots_key_vars_base_vs_further_stacked_all_seasons(
-    df_min, df_full, df_dummy, pathogen, model_type
-  )
-
-  legend_dat <- dplyr::bind_rows(
-    forest_year_base_vs_further_mult_key_vars(
-      df_min, df_full, df_dummy, "covid", model_type, "Mild", seasons = NULL
-    ),
-    forest_year_base_vs_further_mult_key_vars(
-      df_min, df_full, df_dummy, "covid", model_type, "Severe", seasons = NULL
-    )
-  ) %>%
-    dplyr::filter(.data$codelist_type %in% c("reference", "specific"))
-
-  shared_legends <- build_shared_legends_base_vs_further_stacked(
-    legend_dat,
-    model_type = model_type,
-    legend_pathogen = "covid",
-    seasons = NULL
-  )
-
-  specific_condensed <- assemble_condensed_figure_stacked_all_seasons(
-    rsv_plots$specific,
-    flu_plots$specific,
-    covid_plots$specific,
-    shared_legends$left,
-    shared_legends$mid
-  )
-  sensitive_condensed <- assemble_condensed_figure_stacked_all_seasons(
-    rsv_plots$sensitive,
-    flu_plots$sensitive,
-    covid_plots$sensitive,
-    shared_legends$left,
-    shared_legends$mid
-  )
-
-  dir.create(out_root, recursive = TRUE, showWarnings = FALSE)
-
-  specific_path <- file.path(
-    out_root,
-    paste0(
-      cohort, "_", model_type,
-      "_base_vs_further_stacked_specific_mild_vs_severe.png"
-    )
-  )
-  sensitive_path <- file.path(
-    out_root,
-    paste0(
-      cohort, "_", model_type,
-      "_base_vs_further_stacked_sensitive_mild_vs_severe.png"
-    )
-  )
-  message("Saving stacked sequential figures to: ", out_root)
-  ggplot2::ggsave(specific_path, specific_condensed, width = fig_width, height = fig_height, bg = "white")
-  ggplot2::ggsave(sensitive_path, sensitive_condensed, width = fig_width, height = fig_height, bg = "white")
-
+  # Same layout as further condensed key-vars: legends above each
+  # Age / IMD / Ethnicity block; RSV / flu / COVID stacked within blocks.
+  # fig_width / fig_height kept for call-site compatibility; layout uses
+  # covariate-row figure dimensions.
   invisible(
-    list(
-      specific = specific_condensed,
-      sensitive = sensitive_condensed,
-      per_virus = list(rsv = rsv_plots, flu = flu_plots, covid = covid_plots)
+    run_cohort_condensed_key_vars_base_vs_further_by_covariate(
+      cohort = cohort,
+      model_type = model_type,
+      out_root = out_root
     )
   )
 }
@@ -2093,32 +2022,82 @@ stacked_compare_legend_plot <- function(
     show_disruption_legend = FALSE,
     guides_keep = c("colour")
 ) {
-  # Level legends: match condensed key-vars / covariate-row colour legends.
+  # Level legends: same colours as condensed covariate-row plots, but vertical
+  # (ncol = 1) so they fit the side / mid legend columns used by stacked figures.
   # Adjustment / disruption: come from the compare plot (alpha / fill).
-  p <- if (identical(guides_keep, "colour") || identical(guides_keep, "shape")) {
-    forest_over_time_plot_all_seasons(
+  keep_colour <- identical(guides_keep, "colour") || identical(guides_keep, "shape")
+
+  if (isTRUE(keep_colour)) {
+    covs <- unique(as.character(legend_dat$labels))
+    cov <- if (length(covs) == 1L) covs[[1]] else NULL
+    # Match covariate-row legends: drop Unknown ethnicity before assigning colours
+    # so palette positions stay locked to the same levels.
+    legend_dat_levels <- prepare_forest_plot_data(
       legend_dat,
+      drop_unknown_ethnicity = TRUE,
+      pathogen = legend_pathogen
+    )
+    level_order <- if (!is.null(cov) && !is_empty_forest_data(legend_dat_levels)) {
+      ordered_forest_covariate_levels(
+        legend_dat_levels, cov, model_type, legend_pathogen
+      )
+    } else {
+      character()
+    }
+    level_colour_values <- if (length(level_order) > 0L) {
+      covariate_forest_level_colours(cov, level_order)
+    } else {
+      NULL
+    }
+    n_keys <- max(1L, length(level_colour_values %||% list()))
+
+    p <- forest_over_time_plot_all_seasons(
+      legend_dat_levels,
       pathogen = legend_pathogen,
       model_type = model_type,
       facet_outcome = TRUE,
-      show_disruption_legend = show_disruption_legend,
+      show_disruption_legend = FALSE,
+      show_disruption_shading = FALSE,
+      level_colour_values = level_colour_values,
+      level_colour_title = cov,
+      drop_unknown_ethnicity = FALSE,
       log_y = TRUE
-    )
-  } else {
-    forest_over_time_plot_compare(
-      legend_dat,
-      pathogen = legend_pathogen,
-      model_type = model_type,
-      facet_outcome = FALSE,
-      show_disruption_legend = show_disruption_legend,
-      show_ci = FALSE,
-      years_include = years_include,
-      adjustment_layout = "stack"
-    )
+    ) +
+      legend_theme +
+      ggplot2::theme(
+        legend.title = element_blank(),
+        legend.direction = "vertical"
+      ) +
+      ggplot2::guides(
+        fill = "none",
+        shape = "none",
+        alpha = "none",
+        colour = ggplot2::guide_legend(
+          title = NULL,
+          ncol = 1L,
+          nrow = n_keys,
+          byrow = FALSE,
+          override.aes = list(size = 0.6, shape = 16)
+        )
+      )
+    return(p)
   }
-  p <- p +
+
+  p <- forest_over_time_plot_compare(
+    legend_dat,
+    pathogen = legend_pathogen,
+    model_type = model_type,
+    facet_outcome = FALSE,
+    show_disruption_legend = show_disruption_legend,
+    show_ci = FALSE,
+    years_include = years_include,
+    adjustment_layout = "stack"
+  ) +
     legend_theme +
-    ggplot2::theme(legend.title = element_blank())
+    ggplot2::theme(
+      legend.title = element_blank(),
+      legend.direction = "vertical"
+    )
 
   guide_drop <- setdiff(c("shape", "alpha", "fill", "colour"), guides_keep)
   guide_specs <- stats::setNames(
@@ -2139,13 +2118,15 @@ build_shared_legends_base_vs_further_stacked <- function(
 
   legend_theme <- ggplot2::theme(
     legend.position = "left",
-    legend.justification = c(0, 0.5),
+    legend.justification = c(0, 1),
     legend.box.just = "left",
     legend.box = "vertical",
     legend.text = ggplot2::element_text(size = 7.5),
-    legend.key.width = ggplot2::unit(1.1, "lines"),
-    legend.key.height = ggplot2::unit(0.85, "lines"),
-    legend.spacing.y = ggplot2::unit(0.15, "lines")
+    legend.key.width = ggplot2::unit(0.9, "lines"),
+    legend.key.height = ggplot2::unit(0.7, "lines"),
+    legend.spacing.y = ggplot2::unit(0.08, "lines"),
+    legend.margin = ggplot2::margin(1, 2, 1, 2),
+    legend.box.margin = ggplot2::margin(0, 0, 0, 0)
   )
 
   legend_adj <- legend_dat %>%
@@ -2171,9 +2152,9 @@ build_shared_legends_base_vs_further_stacked <- function(
     )
   }
 
-  # Match the condensed-figure legend layout:
+  # Match the condensed-figure legend layout (facet order Age / IMD / Ethnicity):
   # - left column: Adjustment (alpha) + Age Group (colour) + Disruption
-  # - mid column (overlay on COVID): Ethnicity + IMD Quintile (colour)
+  # - mid column (overlay on COVID): IMD Quintile then Ethnicity (colour)
   legend_adj_grob <- if (nrow(legend_adj) > 0) legend_grob(legend_adj, guides_keep = "alpha") else NULL
   legend_age_grob <- if ("Age Group" %in% labels_present) {
     legend_grob(
@@ -2186,7 +2167,22 @@ build_shared_legends_base_vs_further_stacked <- function(
   legend_disruption_grob <- legend_grob(legend_src, guides_keep = "fill", show_disruption = TRUE)
 
   legend_left_parts <- list(legend_adj_grob, legend_age_grob, legend_disruption_grob)
-  legend_left_parts <- legend_left_parts[!vapply(legend_left_parts, is.null, logical(1))]
+  legend_left_keep <- !vapply(legend_left_parts, is.null, logical(1))
+  legend_left_parts <- legend_left_parts[legend_left_keep]
+
+  n_age_keys <- if ("Age Group" %in% labels_present) {
+    length(unique(as.character(
+      legend_dat$label[as.character(legend_dat$labels) == "Age Group"]
+    )))
+  } else {
+    0L
+  }
+  # Pack toward the top of the COVID row; Age needs room for its colour keys.
+  left_heights <- c(
+    if (!is.null(legend_adj_grob)) 0.85 else NULL,
+    if (!is.null(legend_age_grob)) max(1.2, 0.38 * n_age_keys) else NULL,
+    if (!is.null(legend_disruption_grob)) 0.7 else NULL
+  )
 
   legend_left <- if (length(legend_left_parts) == 0) {
     NULL
@@ -2194,11 +2190,11 @@ build_shared_legends_base_vs_further_stacked <- function(
     legend_left_parts[[1]]
   } else {
     cowplot::plot_grid(
-      plotlist = legend_left_parts,
+      plotlist = c(legend_left_parts, list(NULL)),
       ncol = 1,
       align = "v",
       axis = "l",
-      rel_heights = rep(1, length(legend_left_parts))
+      rel_heights = c(left_heights, 0.35)
     )
   }
 

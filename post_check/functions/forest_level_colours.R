@@ -101,8 +101,27 @@ FOREST_COVARIATE_PALETTE_REGISTRY <- list(
 
 FOREST_COVID_DISRUPTION_LEGEND_LABEL <- "COVID-19 related disruption"
 
+# Facet column levels for Mild | Severe (default) or custom pairs (e.g. cohorts).
+# Preserves existing factor levels when already a factor.
+forest_facet_outcome_levels <- function(outcome_type) {
+  if (is.factor(outcome_type)) {
+    lv <- levels(outcome_type)
+    return(lv[!is.na(lv) & nzchar(lv)])
+  }
+  present <- unique(as.character(outcome_type))
+  present <- present[!is.na(present) & nzchar(present)]
+  default <- c("Mild", "Severe")
+  if (length(present) > 0L && all(present %in% default)) {
+    return(intersect(default, present))
+  }
+  present
+}
+
 # Condensed key-variable row stack (top → bottom).
-FOREST_COVARIATE_ROW_ORDER <- c("Age Group", "IMD Quintile", "Ethnicity")
+# Household Composition appears for full models; ethnicity_ses omits it.
+FOREST_COVARIATE_ROW_ORDER <- c(
+  "Age Group", "IMD Quintile", "Ethnicity", "Household Composition"
+)
 
 # Supplemental / full forest facet order (top → bottom).
 # Keep Age → IMD → Ethnicity ahead of Sex and the remaining covariates.
@@ -128,8 +147,19 @@ FOREST_FACET_GROUP_ORDER <- c(
 FOREST_PATHOGEN_Y_LABS <- c(
   rsv = "RSV",
   flu = "Influenza",
-  covid = "COVID-19"
+  covid = "COVID-19",
+  overall_resp = "Overall Respiratory Virus",
+  overall_and_all_cause = "Overall Respiratory Virus"
 )
+
+# Safe lookup: unknown pathogen codes return NULL (never subscript-error).
+forest_pathogen_y_lab <- function(pathogen) {
+  key <- as.character(pathogen)[[1]]
+  if (is.na(key) || !nzchar(key) || !key %in% names(FOREST_PATHOGEN_Y_LABS)) {
+    return(NULL)
+  }
+  unname(FOREST_PATHOGEN_Y_LABS[[key]])
+}
 
 FOREST_FULL_YEAR_BREAKS <- 2016:2023
 FOREST_COVID_MIN_YEAR <- 2019L
