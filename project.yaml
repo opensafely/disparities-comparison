@@ -14871,6 +14871,15 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/internal_validation_*_older_adults_2023_2024.csv
 
+  explore_los_older_adults_s8_specific_primary:
+    run: r:v2 analysis/exploratory_analyses/los_checks.R older_adults season8_start_date
+      season8_end_date
+    needs:
+    - process_dataset_older_adults_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/los_summary_older_adults_2023_2024.csv
+
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Adults 
   ## # # # # # # # # # # # # # # # # # # # 
@@ -15250,6 +15259,15 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/internal_validation_*_adults_2023_2024.csv
+
+  explore_los_adults_s8_specific_primary:
+    run: r:v2 analysis/exploratory_analyses/los_checks.R adults season8_start_date
+      season8_end_date
+    needs:
+    - process_dataset_adults_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/los_summary_adults_2023_2024.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Children and Adolescents 
@@ -15631,6 +15649,15 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/internal_validation_*_children_and_adolescents_2023_2024.csv
 
+  explore_los_children_and_adolescents_s8_specific_primary:
+    run: r:v2 analysis/exploratory_analyses/los_checks.R children_and_adolescents
+      season8_start_date season8_end_date
+    needs:
+    - process_dataset_children_and_adolescents_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/los_summary_children_and_adolescents_2023_2024.csv
+
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Infants 
   ## # # # # # # # # # # # # # # # # # # # 
@@ -16011,6 +16038,15 @@ actions:
       moderately_sensitive:
         csv: output/exploratory/internal_validation_*_infants_2023_2024.csv
 
+  explore_los_infants_s8_specific_primary:
+    run: r:v2 analysis/exploratory_analyses/los_checks.R infants season8_start_date
+      season8_end_date
+    needs:
+    - process_dataset_infants_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/los_summary_infants_2023_2024.csv
+
   ## # # # # # # # # # # # # # # # # # # # 
   ## Cohort: Infants Subgroup 
   ## # # # # # # # # # # # # # # # # # # # 
@@ -16390,6 +16426,15 @@ actions:
     outputs:
       moderately_sensitive:
         csv: output/exploratory/internal_validation_*_infants_subgroup_2023_2024.csv
+
+  explore_los_infants_subgroup_s8_specific_primary:
+    run: r:v2 analysis/exploratory_analyses/los_checks.R infants_subgroup season8_start_date
+      season8_end_date
+    needs:
+    - process_dataset_infants_subgroup_s8_specific_primary
+    outputs:
+      moderately_sensitive:
+        csv: output/exploratory/los_summary_infants_subgroup_2023_2024.csv
 
   ## # # # # # # # # # # # # # # # # # # # 
   ## SENSITIVITY ANALYSES: REDUCED SEASONS 

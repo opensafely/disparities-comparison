@@ -1605,6 +1605,23 @@ action_exploratory_children <- function(cohort, season, dates,
   
 }
 
+action_exploratory_los <- function(cohort, season, dates, season_start_date, season_end_date) {
+
+  splice(
+
+    action(
+      name = glue("explore_los_{cohort}_{season}_specific_primary"),
+      run = glue("r:v2 analysis/exploratory_analyses/los_checks.R {cohort} {season_start_date} {season_end_date}"),
+      needs = list(glue("process_dataset_{cohort}_{season}_specific_primary")),
+      moderately_sensitive = lst(
+        csv = glue("output/exploratory/los_summary_{cohort}_{dates}.csv")
+      )
+    )
+
+  )
+
+}
+
 ##sensitivity analyses
 
 action_sensitivity_rsv <- function(cohort, season, dates, season_start_date,
@@ -4265,6 +4282,7 @@ actions_list <- splice (
   action_exploratory("older_adults", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
   action_exploratory("older_adults", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
   action_exploratory("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
+  action_exploratory_los("older_adults", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Adults", "# # # # # # # # # # # # # # # # # # #"),
   
@@ -4276,6 +4294,7 @@ actions_list <- splice (
   action_exploratory("adults", "s6", "2021_2022", "season6_start_date", "season6_end_date"),
   action_exploratory("adults", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
   action_exploratory("adults", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
+  action_exploratory_los("adults", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Children and Adolescents", "# # # # # # # # # # # # # # # # # # #"),
   
@@ -4295,6 +4314,7 @@ actions_list <- splice (
   #action_exploratory_children("children_and_adolescents", "s7", "2022_2023", "season7_start_date", "season7_end_date", "specific", "primary"),
   action_exploratory("children_and_adolescents", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
   #action_exploratory_children("children_and_adolescents", "s8", "2023_2024", "season8_start_date", "season8_end_date", "specific", "primary"),
+  action_exploratory_los("children_and_adolescents", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
   
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants", "# # # # # # # # # # # # # # # # # # #"),
   
@@ -4314,7 +4334,8 @@ actions_list <- splice (
   #action_exploratory_infants("infants", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
   action_exploratory("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
   #action_exploratory_infants("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
-  
+  action_exploratory_los("infants", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
+
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Infants Subgroup", "# # # # # # # # # # # # # # # # # # #"),
   
   action_exploratory("infants_subgroup", "s1", "2016_2017", "season1_start_date", "season1_end_date"),
@@ -4333,14 +4354,14 @@ actions_list <- splice (
   #action_exploratory_infants("infants_subgroup", "s7", "2022_2023", "season7_start_date", "season7_end_date"),
   action_exploratory("infants_subgroup", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
   #action_exploratory_infants("infants_subgroup", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
-  
+  action_exploratory_los("infants_subgroup", "s8", "2023_2024", "season8_start_date", "season8_end_date"),
+
   comment("# # # # # # # # # # # # # # # # # # #", "SENSITIVITY ANALYSES: REDUCED SEASONS", "# # # # # # # # # # # # # # # # # # #"),
 
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Older Adults, Codelist Type: Specific,","Investigation Type: Sensitivity", "# # # # # # # # # # # # # # # # # # #"),
 
   action_sensitivity_rsv("older_adults", "s2", "2017_2018", "season2_start_date", "season2_end_date", "specific", "primary", "sensitivity"),
   action_sensitivity_flu("older_adults", "s3", "2018_2019", "season3_start_date", "season3_end_date", "specific", "primary", "sensitivity"),
-  
 
   comment("# # # # # # # # # # # # # # # # # # #", "Cohort: Adults, Codelist Type: Specific,","Investigation Type: Sensitivity", "# # # # # # # # # # # # # # # # # # #"),
 
