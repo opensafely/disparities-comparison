@@ -55,6 +55,20 @@ relabel_upset_covid <- function(grob) {
   grob
 }
 
+# Y-axis labels are drawn in the left margin so they do not narrow the bars.
+# shift nudges the panel right, toward the matrix, without changing its width.
+overflow_y_labels <- function(plot, shift = unit(0.3, "cm")) {
+  g <- ggplotGrob(plot)
+  g$layout$clip <- "off"
+  axis_i <- which(g$layout$name == "axis-l")
+  if (length(axis_i) == 1) {
+    g$widths[g$layout$l[axis_i]] <- unit(0, "cm")
+  }
+  g$widths[1] <- g$widths[1] + shift
+  g$widths[length(g$widths)] <- g$widths[length(g$widths)] - shift
+  g
+}
+
 make_upset <- function(input_expr, mainbar.y.label, sets.bar.color) {
   uu <- upset(
     fromExpression(to_upset_expression(input_expr)),
@@ -360,7 +374,11 @@ upset_plot <- function(input, seasons) {
           ) +
           ggrepel::geom_text_repel(aes(label = size), size = 3, direction = "y", point.padding = NA, segment.color = NA) +
           labs(x = NULL) +
-          scale_y_continuous(name = NULL, expand = expansion(mult = c(0, 0.1))) +
+          scale_y_continuous(
+            name = NULL,
+            expand = expansion(mult = c(0, 0.1)),
+            labels = scales::label_number(scale_cut = cut_si(""))
+          ) +
           #expand_limits(x = c(-0.1, 4)) +
           theme_bw() + theme(
             axis.line = element_line(colour = "black"),
@@ -379,11 +397,11 @@ upset_plot <- function(input, seasons) {
         legend <- get_legend(sizes_plot)
 
         plot[[phenotype]] <- plot_grid(
-          plot_grid(sizes_plot + theme(legend.position = "none"),
+          plot_grid(overflow_y_labels(sizes_plot + theme(legend.position = "none")),
                     NULL, nrow = 2, rel_heights = c(0.95, 0.05)),
           plot_grid(uu$Matrix, uu$Main_bar, NULL, nrow = 3,
                     rel_heights = c(1, 2.75, 0.05), align = 'hv'),
-          ncol = 2, align = 'hv', rel_widths = c(0.25, 0.75)
+          ncol = 2, align = 'hv', rel_widths = c(0.20, 0.80)
         )
         
       }
@@ -769,7 +787,11 @@ upset_plot_supplement <- function(input, seasons) {
           ) +
           ggrepel::geom_text_repel(aes(label = size), size = 3, direction = "y", point.padding = NA, segment.color = NA) +
           labs(x = NULL) +
-          scale_y_continuous(name = NULL, expand = expansion(mult = c(0, 0.1))) +
+          scale_y_continuous(
+            name = NULL,
+            expand = expansion(mult = c(0, 0.1)),
+            labels = scales::label_number(scale_cut = cut_si(""))
+          ) +
           #expand_limits(x = c(-0.1, 4)) +
           theme_bw() + theme(
             axis.line = element_line(colour = "black"),
@@ -788,11 +810,11 @@ upset_plot_supplement <- function(input, seasons) {
         legend <- get_legend(sizes_plot)
 
         plot[[phenotype]] <- plot_grid(
-          plot_grid(sizes_plot + theme(legend.position = "none"),
+          plot_grid(overflow_y_labels(sizes_plot + theme(legend.position = "none")),
                     NULL, nrow = 2, rel_heights = c(0.95, 0.05)),
           plot_grid(uu$Matrix, uu$Main_bar, NULL, nrow = 3,
                     rel_heights = c(1, 2.75, 0.05), align = 'hv'),
-          ncol = 2, align = 'hv', rel_widths = c(0.25, 0.75)
+          ncol = 2, align = 'hv', rel_widths = c(0.20, 0.80)
         )
         
       }

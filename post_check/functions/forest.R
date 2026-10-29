@@ -125,6 +125,9 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     df_dummy <- enrich_dummy_household_composition(df_dummy, cohort)
   }
 
+  # Match collated UK IMD coding before the dummy GLM builds the tidy frame.
+  df_dummy <- normalise_imd_quintile_to_uk(df_dummy)
+
   if (further == "no") {
 
     dummy_model <- glm_poisson(df_dummy, exposure, outcome, offset)
@@ -1044,6 +1047,8 @@ forest <- function(df, df_dummy, pathogen, model_type, outcome_type,
     facet_outcome = FALSE,
     label_levels = FALSE,
     seasons = seasons_plot,
+    # Supplemental plots name the pathogen in the title, not on the axis.
+    y_lab = "Rate Ratio",
     ...
   )
 
@@ -1174,7 +1179,10 @@ forest_year_further_mult <- function(df, df_dummy, pathogen, model_type,
   if ("composition_category" %in% exposure) {
     df_dummy <- enrich_dummy_household_composition(df_dummy, cohort)
   }
-  
+
+  # Match collated UK IMD coding before the dummy GLM builds the tidy frame.
+  df_dummy <- normalise_imd_quintile_to_uk(df_dummy)
+
   if (cohort == "infants" | cohort == "infants_subgroup") {
     
     dummy_model <- glm_poisson_further(
@@ -1928,7 +1936,8 @@ forest_plot_phenotype <- function(p, phenotype) {
     label_levels = FALSE,
     seasons = sensitivity_plot_seasons(meta$pathogen, investigation_val),
     key_groups_first = TRUE,
-    colour_by_level = TRUE
+    colour_by_level = TRUE,
+    y_lab = "Rate Ratio"
   )
   attr(plot_ot, "forest_data") <- attr(plot_ot, "forest_data") %||% plot_dat
   if (!is.null(forest_data_full) && is.data.frame(forest_data_full)) {
@@ -2255,7 +2264,7 @@ dashboard_forest_plot <- function(p) {
       compact_legend = TRUE,
       legend_items_per_row = NULL,
       legend_label_wrap_width = 10L,
-      y_lab = forest_pathogen_y_lab(meta$pathogen)
+      y_lab = "Rate Ratio"
     ) +
       ggplot2::theme(
         legend.position = "none",

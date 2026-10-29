@@ -65,16 +65,14 @@ load_dummy_inputs <- function(cohort, pathogen) {
           "6-12m",
           .data$time_since_last_covid_vaccination
         )
-      ) %>%
-      normalise_imd_quintile_to_uk()
+      )
   } else {
     arrow::read_feather(
       here::here(
         "output", "data",
         paste0("input_processed_", cohort, "_2020_2021_specific_primary.arrow")
       )
-    ) %>%
-      normalise_imd_quintile_to_uk()
+    )
   }
 }
 
@@ -816,8 +814,7 @@ load_dummy_inputs_sensitivity <- function(cohort, pathogen) {
         age_band = dplyr::if_else(.data$age_band == "18-29y", "18-39y", .data$age_band)
       )
   }
-  # Match primary loader: sensitivity arrows still use inverted IMD labels.
-  normalise_imd_quintile_to_uk(df)
+  df
 }
 
 assemble_condensed_figure_sensitivity <- function(

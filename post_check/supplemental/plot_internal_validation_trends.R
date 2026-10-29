@@ -113,7 +113,11 @@ plot_not_detected <- function(df, cohort) {
     geom_line(linewidth = 0.8) +
     geom_point(size = 2) +
     facet_wrap(~pathogen, nrow = 1) +
-    scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0.02, 0.08))) +
+    scale_y_continuous(
+      limits = c(0, 100),
+      breaks = seq(0, 100, 25),
+      expand = expansion(mult = c(0.02, 0.08))
+    ) +
     labs(
       title = paste0(cohort_labels[[cohort]], ": % not detected"),
       subtitle = "% of pathogen-specific hospitalisations with no mild primary in window",
@@ -132,23 +136,29 @@ plot_not_detected <- function(df, cohort) {
     )
 }
 
-# --- Classification mix among detected (stacked % of detected) ------------
+# --- Classification mix among identified cases (stacked % summing to 100) --
+# Recalculated from counts so the stack is independent of the table
+# percentages (those use hospitalisations or classifiable as the denominator).
 plot_classification_mix <- function(df, cohort) {
   df_det <- df %>%
     filter(
       cohort == .env$cohort,
       outcome %in% classification_levels,
-      !is.na(pct),
       !is.na(count)
     ) %>%
     mutate(
       outcome = factor(as.character(outcome), levels = classification_levels)
-    )
-
-  # Detected n for each bar (denominator of the stacked %)
-  df_n <- df_det %>%
+    ) %>%
     group_by(phenotype, pathogen, season) %>%
-    summarise(detected = sum(count), .groups = "drop")
+    mutate(
+      detected = sum(count),
+      pct = if_else(detected > 0, 100 * count / detected, NA_real_)
+    ) %>%
+    ungroup() %>%
+    filter(!is.na(pct))
+
+  df_n <- df_det %>%
+    distinct(phenotype, pathogen, season, detected)
 
   ggplot(df_det, aes(x = season, y = pct, fill = outcome)) +
     geom_col(width = 0.75, colour = "white", linewidth = 0.2) +
@@ -262,7 +272,12 @@ plot_cohort_trends <- function(df, cohort) {
     p_nd, p_cons, p_mix,
     ncol = 1,
     rel_heights = c(0.85, 0.95, 1.2),
-    align = "v"
+    align = "v",
+    labels = c("A)", "B)", "C)"),
+    label_size = 14,
+    label_fontface = "bold",
+    label_x = 0, label_y = 1,
+    hjust = 0, vjust = 1
   )
 }
 
@@ -281,7 +296,11 @@ plot_not_detected_all_cohorts <- function(df) {
     geom_line(linewidth = 0.7) +
     geom_point(size = 1.6) +
     facet_wrap(~pathogen, nrow = 1) +
-    scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0.02, 0.08))) +
+    scale_y_continuous(
+      limits = c(0, 100),
+      breaks = seq(0, 100, 25),
+      expand = expansion(mult = c(0.02, 0.08))
+    ) +
     labs(
       title = "% not detected over seasons, by cohort",
       subtitle = "% of pathogen-specific hospitalisations with no mild primary in window",

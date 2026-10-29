@@ -9,9 +9,9 @@ all_seasons <- c("2016-17", "2017-18", "2018-19", "2019-20",
 
 outcome_order <- c(
   "Not detected",
+  "Undetermined classification",
   "Consistent classification",
-  "Inconsistent classification",
-  "Undetermined classification"
+  "Inconsistent classification"
 )
 
 # Spec-stage "other" = sensitive mild in window but no specific mild.
@@ -175,14 +175,22 @@ reformat_internal_validation <- function(cohort) {
       .groups = "drop"
     )
 
-  # Detected = all mild outcomes (excludes "Not detected")
+  # Not detected and undetermined (not classifiable) are % of hospitalisations.
+  # Consistent and inconsistent are % of classifiable (those two groups).
   df_formatted <- df_grouped %>%
     group_by(population, phenotype, subset) %>%
     mutate(
-      detected = sum(rounded[outcome != "Not detected"], na.rm = TRUE),
+      classifiable = sum(
+        rounded[outcome %in% c(
+          "Consistent classification",
+          "Inconsistent classification"
+        )],
+        na.rm = TRUE
+      ),
       pct = case_when(
-        outcome == "Not detected" ~ 100 * rounded / denom,
-        detected > 0 ~ 100 * rounded / detected,
+        outcome %in% c("Not detected", "Undetermined classification") ~
+          100 * rounded / denom,
+        classifiable > 0 ~ 100 * rounded / classifiable,
         TRUE ~ NA_real_
       ),
       cell = format_count_pct(rounded, pct)
@@ -203,7 +211,17 @@ reformat_internal_validation <- function(cohort) {
       outcome = factor(outcome, levels = outcome_order),
       season = gsub("_", "-", subset)
     ) %>%
-    select(phenotype, secondary_care_outcome, outcome, season, cell) %>%
+    group_by(phenotype, secondary_care_outcome, outcome) %>%
+    mutate(
+      median_pct = median(pct, na.rm = TRUE),
+      median_pct = if_else(
+        is.finite(median_pct),
+        sprintf("%.1f%%", median_pct),
+        NA_character_
+      )
+    ) %>%
+    ungroup() %>%
+    select(phenotype, secondary_care_outcome, outcome, season, cell, median_pct) %>%
     pivot_wider(
       names_from = season,
       values_from = cell
@@ -214,7 +232,10 @@ reformat_internal_validation <- function(cohort) {
   df_formatted[missing_cols] <- NA_character_
 
   df_formatted %>%
-    select(phenotype, secondary_care_outcome, outcome, all_of(all_seasons))
+    select(
+      phenotype, secondary_care_outcome, outcome,
+      all_of(all_seasons), median_pct
+    )
 
 }
 

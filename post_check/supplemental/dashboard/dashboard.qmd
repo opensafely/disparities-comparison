@@ -286,14 +286,14 @@ ui <- fluidPage(
       actionButton("clear_cache", "Clear Cached Plots", icon = icon("broom"))
     ),
     mainPanel(
-      h4("Minimally Adjusted Model"),
+      h4("Minimally-Adjusted Model"),
       shinycssloaders::withSpinner(
         plotOutput("mainPlot", height = "500px")
       ),
       conditionalPanel(
         condition = "input.investigation == 'Primary'",
         hr(),
-        h4("Fully Adjusted Model (Primary Investigations Only)"),
+        h4("Fully-Adjusted Model (Primary Investigations Only)"),
         shinycssloaders::withSpinner(
           plotOutput("secondPlot", height = "500px")
         )

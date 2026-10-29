@@ -41,8 +41,8 @@ if (length(only_arg) == 1L) {
 }
 
 known_stages <- c(
-  "reformat", "primary", "models", "condensed",
-  "exploratory", "dashboard", "scrape"
+  "reformat", "primary", "condensed",
+  "exploratory", "models", "dashboard", "scrape"
 )
 if (!is.null(stages_requested)) {
   bad <- setdiff(stages_requested, known_stages)
@@ -84,22 +84,6 @@ post_check_jobs <- list(
     "post_check/primary_analyses/counts_viz_all.R",
     "post_check/primary_analyses/outcome_ascertainment.R"
   ),
-  models = c(
-    "post_check/primary_analyses/models/rsv_model_results.R",
-    "post_check/primary_analyses/models/rsv_further_model_results.R",
-    "post_check/primary_analyses/models/flu_model_results.R",
-    "post_check/primary_analyses/models/flu_further_model_results.R",
-    "post_check/primary_analyses/models/covid_model_results.R",
-    "post_check/primary_analyses/models/covid_further_model_results.R",
-    "post_check/secondary_analyses/secondary_table1_viz.R",
-    "post_check/secondary_analyses/rsv_model_results.R",
-    "post_check/secondary_analyses/flu_model_results.R",
-    "post_check/secondary_analyses/covid_model_results.R",
-    "post_check/sensitivity_analyses/rsv_model_results.R",
-    "post_check/sensitivity_analyses/flu_model_results.R",
-    "post_check/sensitivity_analyses/overall_and_all_cause_model_results.R",
-    "post_check/sensitivity_analyses/overall_and_all_cause_further_model_results.R"
-  ),
   condensed = c(
     "post_check/primary_analyses/further_results_condensed_key_vars.R",
     "post_check/primary_analyses/key_exposures_condensed_base_vs_further_stacked_all_seasons.R",
@@ -122,6 +106,22 @@ post_check_jobs <- list(
     "post_check/exploratory_analyses/surveillance/surveillance_comparisons_viz_all_cohorts_england.R",
     "post_check/exploratory_analyses/surveillance/surveillance_comparisons_viz_all_cohorts_england_weekly.R",
     "post_check/exploratory_analyses/surveillance/surveillance_comparisons_viz_all_cohorts_ukhsa.R"
+  ),
+  models = c(
+    "post_check/primary_analyses/models/rsv_model_results.R",
+    "post_check/primary_analyses/models/rsv_further_model_results.R",
+    "post_check/primary_analyses/models/flu_model_results.R",
+    "post_check/primary_analyses/models/flu_further_model_results.R",
+    "post_check/primary_analyses/models/covid_model_results.R",
+    "post_check/primary_analyses/models/covid_further_model_results.R",
+    "post_check/secondary_analyses/secondary_table1_viz.R",
+    "post_check/secondary_analyses/rsv_model_results.R",
+    "post_check/secondary_analyses/flu_model_results.R",
+    "post_check/secondary_analyses/covid_model_results.R",
+    "post_check/sensitivity_analyses/rsv_model_results.R",
+    "post_check/sensitivity_analyses/flu_model_results.R",
+    "post_check/sensitivity_analyses/overall_and_all_cause_model_results.R",
+    "post_check/sensitivity_analyses/overall_and_all_cause_further_model_results.R"
   ),
   dashboard = c(
     "post_check/supplemental/dashboard/build_static_dashboard.R"

@@ -232,7 +232,8 @@ remap_imd_label_to_uk <- function(x) {
   )
 }
 
-# Fix imd_quintile factor on dummy / processed inputs before GLM attach.
+# Remap dummy-data IMD before the dummy GLM is attached to collated coefficients.
+# Older inputs used 1 = least deprived; models use the UK coding (1 = most).
 normalise_imd_quintile_to_uk <- function(dat) {
   if (is.null(dat) || !is.data.frame(dat) || !"imd_quintile" %in% names(dat)) {
     return(dat)
@@ -248,71 +249,6 @@ normalise_imd_quintile_to_uk <- function(dat) {
       ),
       imd_quintile = stats::relevel(.data$imd_quintile, ref = "5 (least deprived)")
     )
-}
-
-# Fix IMD labels/terms on forest plot data after attach to a stale inverted dummy.
-normalise_forest_imd_labels <- function(dat) {
-  if (is.null(dat) || !is.data.frame(dat) || nrow(dat) == 0L) {
-    return(dat)
-  }
-  has_label <- "label" %in% names(dat)
-  has_term <- "term" %in% names(dat)
-  if (!has_label && !has_term) {
-    return(dat)
-  }
-
-  is_imd <- rep(FALSE, nrow(dat))
-  if ("variable" %in% names(dat)) {
-    is_imd <- is_imd | (!is.na(dat$variable) & dat$variable == "imd_quintile")
-  }
-  if ("labels" %in% names(dat)) {
-    is_imd <- is_imd |
-      (!is.na(dat$labels) & as.character(dat$labels) == "IMD Quintile")
-  }
-  if (!any(is_imd)) {
-    return(dat)
-  }
-
-  check_vals <- character()
-  if (has_label) {
-    check_vals <- c(check_vals, as.character(dat$label[is_imd]))
-  }
-  if (has_term) {
-    check_vals <- c(
-      check_vals,
-      stringr::str_remove(as.character(dat$term[is_imd]), "^imd_quintile")
-    )
-  }
-  if (!imd_labels_are_inverted(check_vals)) {
-    return(dat)
-  }
-
-  if (has_label) {
-    dat <- dat %>%
-      dplyr::mutate(
-        label = dplyr::if_else(
-          is_imd,
-          remap_imd_label_to_uk(.data$label),
-          as.character(.data$label)
-        )
-      )
-  }
-  if (has_term) {
-    dat <- dat %>%
-      dplyr::mutate(
-        term = dplyr::if_else(
-          is_imd,
-          paste0(
-            "imd_quintile",
-            remap_imd_label_to_uk(
-              stringr::str_remove(as.character(.data$term), "^imd_quintile")
-            )
-          ),
-          as.character(.data$term)
-        )
-      )
-  }
-  dat
 }
 
 # Dichotomous maternal exposures: drop the "No" (reference) level so facets
@@ -387,7 +323,6 @@ prepare_forest_plot_data <- function(
   if (isTRUE(drop_unknown_ethnicity)) {
     dat <- drop_unknown_ethnicity_level(dat)
   }
-  dat <- normalise_forest_imd_labels(dat)
   if (identical(pathogen, "covid")) {
     dat <- drop_forest_points_before_year(dat, FOREST_COVID_MIN_YEAR)
   }

@@ -572,7 +572,7 @@ ggplot(df_clean, aes(x = season, y = pearson, alpha = codelist_type,
   labs(
     #title = "Pearson Correlation Between EHR and Surveillance Data Over Time",
     #subtitle = "By pathogen, severity, and codelist type",
-    x = "Season (September-September)",
+    x = "Annual Cohort (1st September-31st August)",
     y = "Correlation (r)",
     alpha = "Codelist type",
     color = "Virus",

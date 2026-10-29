@@ -205,7 +205,7 @@ perc_bucket <- function(cohort) {
                                 paste0(cohort, "_bucket_overlap.csv")))
 
   cohort_title <- if_else(cohort == "infants_subgroup",
-                          "maternally_linked_infants", cohort)
+                          "maternally-linked_infants", cohort)
 
   panel_labels <- tibble(
     outcome_type = c("Mild", "Severe"),

@@ -262,16 +262,6 @@ pathogen_code_for_population <- function(population) {
   )
 }
 
-pathogen_label_for_population <- function(population) {
-  recode(
-    as.character(population),
-    RSV = "RSV",
-    Influenza = "Influenza",
-    `COVID-19` = "COVID-19",
-    .default = as.character(population)
-  )
-}
-
 # Cubic Bezier helper for curly-brace paths
 bezier_cubic <- function(p1, p2, p3, p4, n = 40) {
   t <- seq(0, 1, length.out = n)
@@ -342,8 +332,9 @@ sankey_pathogen_brace_data <- function(sankey_long, space, width,
     ungroup()
 
   # Brace spans virus-coded outcomes (excl. no_mild / bucket / broad).
-  # Label % = pathogen-matching share of all detected mild outcomes
-  # (everything except no_mild).
+  # Two shares of the pathogen-matching outcomes:
+  # - all detected mild outcomes (everything except no_mild)
+  # - classifiable outcomes (coded as RSV, influenza, and/or COVID-19)
   brace_meta <- outcome_positions %>%
     group_by(population, phenotype, pathogen_code) %>%
     summarise(
@@ -351,6 +342,7 @@ sankey_pathogen_brace_data <- function(sankey_long, space, width,
       ymax = max(ymax[in_brace], na.rm = TRUE),
       n_x = first(n_x),
       detected_pct = sum(pct[!outcome_code %in% "no_mild"], na.rm = TRUE),
+      classifiable_pct = sum(pct[in_brace], na.rm = TRUE),
       pathogen_pct = sum(pct[is_pathogen_specific], na.rm = TRUE),
       has_brace = any(in_brace),
       .groups = "drop"
@@ -362,11 +354,20 @@ sankey_pathogen_brace_data <- function(sankey_long, space, width,
         100 * pathogen_pct / detected_pct,
         NA_real_
       ),
-      pathogen_label = pathogen_label_for_population(population),
+      classifiable_share = if_else(
+        classifiable_pct > 0,
+        100 * pathogen_pct / classifiable_pct,
+        NA_real_
+      ),
       brace_x = n_x + width / 2 + brace_gap,
       y = (ymin + ymax) / 2,
       label_x = brace_x + brace_width + label_gap,
-      label = sprintf("%% %s\n%.1f%%", pathogen_label, pathogen_share)
+      label = sprintf(
+        "%s:\n%.1f%% of detected cases\n%.1f%% of classifiable cases",
+        population,
+        pathogen_share,
+        classifiable_share
+      )
     )
 
   if (nrow(brace_meta) == 0) {
@@ -509,6 +510,35 @@ prep_sankey_ggsankey_long <- function(df, label_with_pct = FALSE, use_pct = TRUE
   long_df
 }
 
+# Half-height of the ggsankey stack (flows plus the space gaps between bars).
+# Pairing narrow and broad on the larger of the two keeps the 100%
+# hospitalisation boxes the same height.
+shared_sankey_half <- function(df, space, use_pct = TRUE) {
+  df %>%
+    filter(outcome != "mild", outcome %in% OUTCOME_ORDER, rounded > 0) %>%
+    group_by(population, phenotype) %>%
+    summarise(
+      n = dplyr::n(),
+      total = sum(
+        .data[[if (isTRUE(use_pct)) "pct" else "rounded"]],
+        na.rm = TRUE
+      ),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      space_use = if (is.numeric(space) && length(space) == 1 &&
+                      space > 0 && space < 1) {
+        pmax(0.1, space * total)
+      } else {
+        space
+      },
+      half = (total + pmax(n - 1, 0) * space_use) / 2
+    ) %>%
+    group_by(population) %>%
+    summarise(half = max(half), .groups = "drop") %>%
+    deframe()
+}
+
 plot_sankey_one_population <- function(
   df,
   pathogen,
@@ -518,7 +548,8 @@ plot_sankey_one_population <- function(
   hosp_width = 0.85,
   hosp_height_pad = 0,
   label_with_pct = FALSE,
-  use_pct = TRUE
+  use_pct = TRUE,
+  y_half = NULL
 ) {
 
   stack_order <- stack_order_for_pathogen(pathogen)
@@ -642,14 +673,17 @@ plot_sankey_one_population <- function(
       guide = "none"
     ) +
     scale_colour_identity(guide = "none") +
-    scale_x_discrete(expand = expansion(add = c(0.15, 1.55))) +
+    scale_x_discrete(expand = expansion(add = c(0.15, 2.85))) +
     scale_y_continuous(expand = expansion(mult = 0.002)) +
     labs(
       x = NULL,
       y = if (isTRUE(use_pct)) "% of Hospitalisations" else "Hospitalisations (count)"
     ) +
-    coord_cartesian(clip = "off") +
-    flow_base_theme(plot_margin = margin(2, 78, 12, 14)) +
+    coord_cartesian(
+      ylim = if (is.null(y_half)) NULL else c(-y_half, y_half),
+      clip = "off"
+    ) +
+    flow_base_theme(plot_margin = margin(2, 16, 12, 14)) +
     theme(
       axis.title.y = element_text(size = 12, margin = margin(r = 10)),
       legend.position = "none",
@@ -671,7 +705,8 @@ plot_sankey_ggsankey <- function(
   # ---------------------------------------------------------------------
   label_with_pct = FALSE,
   use_pct = TRUE,
-  facet_gap = 0.12
+  facet_gap = 0.12,
+  y_half = NULL
 ) {
 
   # One panel per pathogen so pathogen-specific outcomes can stack contiguously
@@ -689,7 +724,12 @@ plot_sankey_ggsankey <- function(
       hosp_width = hosp_width,
       hosp_height_pad = hosp_height_pad,
       label_with_pct = label_with_pct,
-      use_pct = use_pct
+      use_pct = use_pct,
+      y_half = if (is.null(y_half) || !pathogen %in% names(y_half)) {
+        NULL
+      } else {
+        unname(y_half[[pathogen]])
+      }
     )
   })
 
@@ -728,10 +768,13 @@ plot_sankey_between_legend <- function(
   label_with_pct = FALSE,
   use_pct = TRUE,
   legend_rel_width = 0.45,
-  facet_gap = 0.12
+  facet_gap = 0.12,
+  # Gap after the legend. The broad column keeps the same width as narrow.
+  broad_gap = 0.12
 ) {
   df_spec <- df %>% filter(phenotype == "spec_stage")
   df_sens <- df %>% filter(phenotype == "sens_stage")
+  y_half <- shared_sankey_half(df, space = space, use_pct = use_pct)
 
   left <- plot_sankey_ggsankey(
     df_spec,
@@ -742,15 +785,9 @@ plot_sankey_between_legend <- function(
     hosp_height_pad = hosp_height_pad,
     label_with_pct = label_with_pct,
     use_pct = use_pct,
-    facet_gap = facet_gap
-  ) +
-    ggtitle("Narrow") +
-    theme(
-      plot.title = element_text(vjust = 2.5, face = "bold", size = 16),
-      legend.position = "none",
-      strip.text.x = element_blank(),
-      strip.background = element_blank()
-    )
+    facet_gap = facet_gap,
+    y_half = y_half
+  )
 
   right <- plot_sankey_ggsankey(
     df_sens,
@@ -761,15 +798,9 @@ plot_sankey_between_legend <- function(
     hosp_height_pad = hosp_height_pad,
     label_with_pct = label_with_pct,
     use_pct = use_pct,
-    facet_gap = facet_gap
-  ) +
-    ggtitle("Broad") +
-    theme(
-      plot.title = element_text(vjust = 2.5, face = "bold", size = 16),
-      legend.position = "none",
-      strip.text.x = element_blank(),
-      strip.background = element_blank()
-    )
+    facet_gap = facet_gap,
+    y_half = y_half
+  )
 
   # Build the legend from all possible outcomes, not only those present in
   # this cohort/season, so rare or absent categories still have colour keys.
@@ -800,16 +831,58 @@ plot_sankey_between_legend <- function(
 
   legend <- get_legend(legend_plot)
 
+  # One shared title row so Narrow and Broad sit on the same baseline,
+  # using the same column widths as the plots underneath.
+  column_title <- function(label) {
+    ggdraw() +
+      draw_label(
+        label,
+        fontface = "bold",
+        size = 16,
+        x = 0.5,
+        hjust = 0.5,
+        vjust = 0.5
+      ) +
+      theme(plot.margin = margin(0, 0, 0, 0))
+  }
+  base_widths <- c(1, 0.1, legend_rel_width, 1)
+  col_widths <- c(base_widths[1:3], broad_gap, base_widths[4])
+  titles <- plot_grid(
+    column_title("Narrow"),
+    NULL,
+    NULL,
+    NULL,
+    column_title("Broad"),
+    nrow = 1,
+    rel_widths = col_widths
+  )
+
+  # Gap after the legend shifts the broad column right. The row is drawn
+  # slightly wider than the canvas so that shift is clipped off the right,
+  # where each panel already has unused space.
   plot_row <- plot_grid(
     left,
     NULL,
     legend,
+    NULL,
     right,
     nrow = 1,
-    rel_widths = c(1, -0.1, legend_rel_width, 1),
+    rel_widths = col_widths,
     align = "h",
     axis = "tb"
   )
+  plot_body <- plot_grid(
+    titles,
+    plot_row,
+    ncol = 1,
+    rel_heights = c(0.03, 1)
+  )
+  plot_body <- ggdraw(clip = "on") +
+    draw_plot(
+      plot_body,
+      x = 0, y = 0, height = 1,
+      width = sum(c(base_widths, broad_gap)) / sum(base_widths)
+    )
 
   cohort_label <- case_when(
     cohort == "older_adults" ~ "Older Adults",
@@ -834,10 +907,11 @@ plot_sankey_between_legend <- function(
     )
 
   plot_grid(
-    title, plot_row,
+    title, plot_body,
     ncol = 1,
-    # rel_heights values control vertical title margins
-    rel_heights = c(0.1, 1)
+    # Keep the cohort title short so the sankeys are not shortened
+    # by the Narrow / Broad heading row.
+    rel_heights = c(0.05, 1)
   )
 }
 

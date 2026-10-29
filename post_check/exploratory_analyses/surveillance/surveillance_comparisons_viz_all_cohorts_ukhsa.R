@@ -223,15 +223,7 @@ plot_combined <- function(df, pathogen, phenotype) {
       select(-coeff) %>%
       mutate(codelist_type = "surveillance")
   ) %>%
-    arrange(month) %>%
-    mutate(
-      col_type = case_when(
-        virus == "RSV" & type == "EHR" ~ "RSV - EHR",
-        virus == "RSV" & type == "Surveillance" ~ "RSV - Surveillance",
-        virus == "Influenza" & type == "EHR" ~ "Influenza - EHR",
-        virus == "Influenza" & type == "Surveillance" ~ "Influenza - Surveillance"
-      )
-    )
+    arrange(month)
   
   my_tag <- function(outcome_type, pathogen, phenotype) {
 
@@ -244,8 +236,8 @@ plot_combined <- function(df, pathogen, phenotype) {
   mild <- df_plot %>%
     filter(event == "Mild") %>%
     ggplot() +
-    geom_line(aes(x = month, y = total_events, color = col_type,
-                  alpha = codelist_type), linewidth = 1) +
+    geom_line(aes(x = month, y = total_events, color = virus,
+                  linetype = type), linewidth = 1) +
     geom_rect(data = rects, aes(xmin = xmin, xmax = xmax,
                                 ymin = ymin, ymax = ymax),
               fill = "grey", alpha = 0.25, col = NA) +
@@ -255,22 +247,27 @@ plot_combined <- function(df, pathogen, phenotype) {
                           labels = scales::label_number(scale_cut = cut_si(""))),
       labels = scales::label_number(scale_cut = cut_si(""))
     ) +
-    scale_x_date(date_breaks = "1 years", date_labels = "%y") + 
+    scale_x_date(date_breaks = "1 years", date_labels = "%Y") + 
     scale_color_manual(values = c(
-      "RSV - EHR" = cols[1], "Influenza - EHR" = cols[2],
-      "RSV - Surveillance" = "#519A83",
-      "Influenza - Surveillance" = "#CE704C")) +
-    scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                       labels = c("sensitive" = "Broad",
-                                  "specific" = "Narrow"),
-                       na.translate = FALSE) +
-    labs(x = "", y = "", colour = "Virus & Data Source",
-         alpha = "Phenotype Used") + theme_bw(base_size = 16) +
-    theme(legend.position = "none")
+      "RSV" = cols[1], "Influenza" = cols[2])) +
+    scale_linetype_manual(values = c("EHR" = "solid", "Surveillance" = "11")) +
+    labs(x = "", y = "", colour = "Virus",
+         linetype = "Data Source") + theme_bw(base_size = 16) +
+    theme(legend.position = "none",
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.border = element_blank(),
+          axis.line = element_line(color = 'black'))
+
+  if (phenotype == "specific") {
+
+    mild <- mild + theme(axis.text.x = element_blank(),
+                         axis.ticks.x = element_blank())
+
+  }
 
   mild <- tag_facet(mild,
                     x = df_plot$month[[1]], y = limits_mild,
-                    hjust = 0, vjust = 0.5,
+                    hjust = 0, vjust = 1,
                     open = "", close = "",
                     fontface = 4,
                     size = 4,
@@ -280,8 +277,8 @@ plot_combined <- function(df, pathogen, phenotype) {
   severe <- df_plot %>%
     filter(event == "Severe") %>%
     ggplot() +
-    geom_line(aes(x = month, y = total_events, color = col_type,
-                  alpha = codelist_type), linewidth = 1) +
+    geom_line(aes(x = month, y = total_events, color = virus,
+                  linetype = type), linewidth = 1) +
     geom_rect(data = rects, aes(xmin = xmin, xmax = xmax,
                                 ymin = ymin, ymax = ymax),
               fill = "grey", alpha = 0.25, col = NA) +
@@ -291,27 +288,32 @@ plot_combined <- function(df, pathogen, phenotype) {
                           labels = scales::label_number(scale_cut = cut_si(""))),
       labels = scales::label_number(scale_cut = cut_si(""))
     ) +
-    scale_x_date(date_breaks = "1 years", date_labels = "%y") + 
+    scale_x_date(date_breaks = "1 years", date_labels = "%Y") + 
     scale_color_manual(values = c(
-      "RSV - EHR" = cols[1], "Influenza - EHR" = cols[2],
-      "RSV - Surveillance" = "#519A83",
-      "Influenza - Surveillance" = "#CE704C")) +
-    scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                       labels = c("sensitive" = "Broad",
-                                  "specific" = "Narrow"),
-                       na.translate = FALSE) +
-    labs(x = "", y = "", colour = "Virus & Data Source",
-         alpha = "Phenotype Used") + theme_bw(base_size = 16) +
-    theme(legend.position = "none")
+      "RSV" = cols[1], "Influenza" = cols[2])) +
+    scale_linetype_manual(values = c("EHR" = "solid", "Surveillance" = "11")) +
+    labs(x = "", y = "", colour = "Virus",
+         linetype = "Data Source") + theme_bw(base_size = 16) +
+    theme(legend.position = "none",
+          axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.border = element_blank(),
+          axis.line = element_line(color = 'black'))
 
-    severe <- tag_facet(severe,
-                        x = df_plot$month[[1]], y = limits_severe,
-                        hjust = 0, vjust = 0.5,
-                        open = "", close = "",
-                        fontface = 4,
-                        size = 4,
-                        family = "sans",
-                        tag_pool = my_tag("Severe", pathogen, phenotype))
+  if (phenotype == "specific") {
+
+    severe <- severe + theme(axis.text.x = element_blank(),
+                             axis.ticks.x = element_blank())
+
+  }
+
+  severe <- tag_facet(severe,
+                      x = df_plot$month[[1]], y = limits_severe,
+                      hjust = 0, vjust = 1,
+                      open = "", close = "",
+                      fontface = 4,
+                      size = 4,
+                      family = "sans",
+                      tag_pool = my_tag("Severe", pathogen, phenotype))
   
   # # Create a text label grob with the phenotype name
   # label <- ggdraw() + 
@@ -350,40 +352,27 @@ get_legend_2 <- function(df1, df2) {
     surv_filt %>%
       select(-coeff)
   ) %>%
-    arrange(month) %>%
-    mutate(
-      col_type = case_when(
-        virus == "RSV" & type == "EHR" ~ "RSV - EHR",
-        virus == "RSV" & type == "Surveillance" ~ "RSV - Surveillance",
-        virus == "Influenza" & type == "EHR" ~ "Influenza - EHR",
-        virus == "Influenza" & type == "Surveillance" ~ "Influenza - Surveillance"
-      )
-    )
+    arrange(month)
   
   legend <- get_legend(
     df_plot %>%
       filter(virus != "Overall Respiratory Viruses") %>%
       ggplot() +
       geom_line(aes(x = month, y = total_events, color = factor(
-        col_type, levels = c(
-          "RSV - EHR", "RSV - Surveillance", "Influenza - EHR",
-          "Influenza - Surveillance")),
-        alpha = factor(codelist_type, levels = c("specific", "sensitive"))),
+        virus, levels = c("RSV", "Influenza")),
+        linetype = factor(type, levels = c("EHR", "Surveillance"))),
         linewidth = 1) +
       scale_color_manual(values = c(
-        "RSV - EHR" = cols[1], "Influenza - EHR" = cols[2],
-        "RSV - Surveillance" = "#519A83",
-        "Influenza - Surveillance" = "#CE704C")) +
-      scale_alpha_manual(values = c("sensitive" = 0.5, "specific" = 1),
-                         labels = c("sensitive" = "Broad",
-                                    "specific" = "Narrow"),
-                         na.translate = FALSE) +
-      guides(colour = guide_legend("Virus & Data Source", order = 1),
-             alpha = guide_legend("Phenotype Used", order = 3)) +
+        "RSV" = cols[1], "Influenza" = cols[2])) +
+      scale_linetype_manual(values = c("EHR" = "solid", "Surveillance" = "11")) +
+      guides(colour = guide_legend("Virus", order = 1,
+                                  override.aes = list(linetype = "solid")),
+             linetype = guide_legend("Data Source", order = 2)) +
       theme_bw(base_size = 12) +
       theme(legend.position = "bottom",
             legend.box = "horizontal",
-            legend.title = element_text())
+            legend.title = element_text(),
+            legend.text=element_text(size = 10))
   )
   
   return(legend)
@@ -393,9 +382,11 @@ get_legend_2 <- function(df1, df2) {
 legend <- get_legend_2(df_surv_mute, df_all)
 
 plot <- plot_grid(
-  spec_rsv, sens_rsv,
-  spec_flu, sens_flu,
+  plot_grid(spec_rsv, NULL, sens_rsv, nrow = 3, rel_heights = c(0.85, -0.1, 1)),
+  NULL,
+  plot_grid(spec_flu, NULL, sens_flu, nrow = 3, rel_heights = c(0.85, -0.1, 1)),
   ncol = 1,
+  rel_heights = c(1, -0.05, 1),
   label_size = 14
 ) %>% annotate_figure(
   left = text_grob("Monthly Events Identified", rot = 90, vjust = 1, size = 16),
@@ -426,17 +417,17 @@ bottom_row <- plot_grid(
 )
 
 plot_grid(
-  NULL,
+  legend,
   plot,
-  bottom_row,
   NULL,
+  bottom_row,
   ncol = 1,
-  rel_heights = c(0.02, 1, 0.05, 0.025)
+  rel_heights = c(0.02, 1, -0.025, 0.05)
 ) %>% annotate_figure(
   # top = text_grob(
   #   "Monthly Counts of RSV, Influenza and COVID-19 in All Cohorts ",
   #   face = "bold", size = 14),
-  bottom = text_grob("Year", vjust = -9.5, size = 15)
+  bottom = text_grob("Year", vjust = -5, size = 15)
 )
 
 #save
