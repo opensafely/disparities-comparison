@@ -51,10 +51,10 @@ for (i in 1:nrow(patients_df)) {
                                 start = 1, stop = 4), "-09-01 (n = ", fmt_n(
                                 patients_df[i, ]$total),")")
   
-  follow_up_excl_label[i] <- paste0("Less than three months of prior follow-up","\n(n = ", 
+  follow_up_excl_label[i] <- paste0("Less than three months of prior registration","\n(n = ", 
                                     fmt_n(patients_df[i, ]$not_registered), ")")
   
-  follow_up_label[i] <- paste0("At least three months of registration during study period \n 01-09-", 
+  follow_up_label[i] <- paste0("At least three months of continuous registration during study period \n 01-09-", 
                                substr(patients_df[i, ]$subset, start = 1, stop = 4),
                                " to 31-08-20", substr(patients_df[i, ]$subset, start = 6, stop = 7),
                                "\nafter which follow-up begins (n = ",
@@ -158,10 +158,10 @@ for (i in 1:nrow(patients_df)) {
                                 start = 1, stop = 4), "-09-01 (n = ", fmt_n(
                                 patients_df[i, ]$total),")")
   
-  follow_up_excl_label[i] <- paste0("Less than three months of prior follow-up","\n(n = ", 
+  follow_up_excl_label[i] <- paste0("Less than three months of prior registration","\n(n = ", 
                                     fmt_n(patients_df[i, ]$not_registered), ")")
   
-  follow_up_label[i] <- paste0("At least three months of follow-up during study period \n 01-09-", 
+  follow_up_label[i] <- paste0("At least three months of continuous registration during study period \n 01-09-", 
                                substr(patients_df[i, ]$subset, start = 1, stop = 4),
                                " to 31-08-20", substr(patients_df[i, ]$subset, start = 6, stop = 7),
                                "\nafter which follow-up begins (n = ",
@@ -265,10 +265,10 @@ for (i in 1:nrow(patients_df)) {
                                 start = 1, stop = 4), "-09-01 (n = ", fmt_n(
                                 patients_df[i, ]$total),")")
   
-  follow_up_excl_label[i] <- paste0("Less than three months of prior follow-up","\n(n = ", 
+  follow_up_excl_label[i] <- paste0("Less than three months of prior registration","\n(n = ", 
                                     fmt_n(patients_df[i, ]$not_registered), ")")
   
-  follow_up_label[i] <- paste0("At least three months of follow-up during study period \n 01-09-", 
+  follow_up_label[i] <- paste0("At least three months of continuous registration during study period \n 01-09-", 
                                substr(patients_df[i, ]$subset, start = 1, stop = 4),
                                " to 31-08-20", substr(patients_df[i, ]$subset, start = 6, stop = 7),
                                "\nafter which follow-up begins (n = ",
@@ -377,7 +377,7 @@ for (i in 1:nrow(patients_df)) {
                                 start = 1, stop = 4), "-09-01 (n = ", fmt_n(
                                 patients_df[i, ]$total),")")
   
-  follow_up_excl_label[i] <- paste0("Registation does not exist during follow-up","\n(n = ", 
+  follow_up_excl_label[i] <- paste0("Registration does not exist during study period","\n(n = ", 
                                     fmt_n(patients_df[i, ]$not_registered), ")")
   
   follow_up_label[i] <- paste0("Current registration exists during study period \n 01-09-", 
@@ -503,7 +503,7 @@ for (i in 1:nrow(patients_df)) {
                                 start = 1, stop = 4), "-09-01 (n = ", fmt_n(
                                 patients_df[i, ]$total),")")
   
-  follow_up_excl_label[i] <- paste0("Registation does not exist during follow-up",
+  follow_up_excl_label[i] <- paste0("Registation does not exist during study period",
                                     "\n or maternal registration not available", "\n(n = ", 
                                     fmt_n(patients_df[i, ]$not_registered), ")")
   
