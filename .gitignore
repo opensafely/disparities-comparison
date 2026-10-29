@@ -44,3 +44,6 @@ analysis/old_model_files/*
 !dashboard.qmd
 !_quarto.yml
 !.gitignore
+
+/.quarto/
+**/*.quarto_ipynb
